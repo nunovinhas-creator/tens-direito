@@ -40,13 +40,84 @@ CNAME               → tensdireito.com (não apagar)
 - `redator-ptpt` — redigir/rever conteúdo seguindo as 10 regras
 - `atualizador-schema` — gerar/atualizar JSON-LD
 
-## Valores de referência (atualizar anualmente)
+## FONTES OBRIGATÓRIAS POR TEMA
 
-| Indicador | 2026 | Fonte |
-|---|---|---|
-| IAS | 537,13 € | Portaria n.º XX/2026 |
-| Salário Mínimo | confirmar | DR |
-| Escalão ASE-A (rendimento máx.) | confirmar | Ministério Educação |
+### Regra absoluta
+NUNCA escrever valores, condições ou prazos de memória.
+Sempre ir à fonte primária ANTES de redigir.
+Se a fonte não confirmar o facto, o facto não entra no site.
+
+### Manuais escolares / MEGA
+- Fonte primária: https://mega.mec.pt
+- Legislação: Portaria que regulamenta o MEGA (pesquisar no DRE)
+- Verificar: quem tem direito, como levantar, calendário
+- ATENÇÃO CONFIRMADA: manuais gratuitos para TODOS os alunos
+  do ensino público, independentemente de escalão ASE
+
+### ASE — Ação Social Escolar
+- Fonte primária: https://www.dge.mec.pt/acao-social-escolar
+- Despacho anual que fixa escalões e valores (pesquisar DRE)
+- Verificar: escalões A e B, o que cobre cada um, prazos
+- ATENÇÃO: a declaração que os EE entregam é emitida
+  pela Segurança Social, não é declaração de rendimentos própria
+
+### Abono de família
+- Fonte primária: https://www.seg-social.pt/abono-de-familia
+- IAS 2026: 537,13€ (Portaria n.º XX/2026)
+- Verificar escalões e valores no portal antes de publicar
+
+### Bolsa de mérito
+- Fonte primária: https://www.dge.mec.pt/bolsa-de-merito
+- Despacho anual (pesquisar DRE pelo título "bolsa de mérito")
+- Verificar: média mínima, condição de ASE, valor exato
+
+### Passe sub-23
+- Fonte primária: https://www.imtt.pt ou https://www.gov.pt
+- Verificar: condições actuais, como pedir, o que muda aos 23
+
+### Segurança Social (geral)
+- Simulador oficial: https://simulador.seg-social.pt
+- Portal de prestações: https://www.seg-social.pt/prestacoes-pecuniarias
+- Legislação: https://dre.pt (pesquisar pelo nome da prestação)
+
+### Diário da República (todas as áreas)
+- https://dre.pt/pesquisa — pesquisar pelo nome da medida + ano
+- Usar sempre o número da Portaria/Despacho como referência
+
+---
+
+## FLUXO OBRIGATÓRIO ANTES DE PUBLICAR QUALQUER PÁGINA
+
+Passo 1 — FETCH da fonte primária
+  Antes de escrever qualquer facto, fazer web_fetch ao URL
+  da fonte oficial e ler o conteúdo actual.
+
+Passo 2 — VERIFICAR no DRE
+  Para valores e condições de acesso, confirmar com o
+  Despacho/Portaria mais recente em dre.pt.
+
+Passo 3 — REGISTAR a fonte
+  Anotar: URL exacto + data de acesso + número do diploma legal.
+
+Passo 4 — SÓ ENTÃO redigir
+  Escrever apenas o que foi confirmado na fonte.
+  Se um facto não foi confirmado, não entra — nunca inventar.
+
+Passo 5 — ASSINALAR o que falta confirmar
+  Se uma fonte estava inacessível, marcar com
+  [VERIFICAR — fonte inacessível em DD/MM/AAAA].
+
+---
+
+## CHECKLIST DE PUBLICAÇÃO (obrigatória em cada página)
+
+Antes de fazer commit, confirmar:
+[ ] Fui à fonte primária e li o conteúdo actual
+[ ] Cada valor tem número de diploma legal ou URL de fonte datada
+[ ] Não há factos de memória — tudo confirmado na fonte
+[ ] Links testados e funcionais
+[ ] Disclaimer de não-vinculação presente
+[ ] Data de verificação visível
 
 ## Workflow de publicação
 
