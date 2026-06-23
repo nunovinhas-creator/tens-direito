@@ -1,0 +1,268 @@
+name: Auto-actualizar README
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/scraper_playwright.py'
+      - '.github/workflows/*.yml'
+      - '.claude/agents/*.md'
+      - '.claude/commands/*.md'
+      - '.claude/skills/*.md'
+      - 'data/scraped/_fontes_config.json'
+      - 'CLAUDE.md'
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gerar secções técnicas e actualizar README
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const hoje = new Date();
+            const data_str = hoje.toLocaleDateString('pt-PT', {
+              day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon'
+            });
+            const hora_str = hoje.toLocaleTimeString('pt-PT', {
+              hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon'
+            });
+            const data_iso = hoje.toISOString().slice(0, 10);
+
+            // ── 1. Páginas HTML publicadas ─────────────────────────────────
+            const htmls = fs.readdirSync('.').filter(f =>
+              f.endsWith('.html') && f !== '404.html'
+            ).sort();
+
+            const paginas_linhas = htmls.map(f => {
+              // Tentar extrair título do <title>
+              let titulo = f.replace('.html', '');
+              try {
+                const conteudo = fs.readFileSync(f, 'utf8');
+                const m = conteudo.match(/<title>([^<]+)<\/title>/i);
+                if (m) titulo = m[1].trim();
+              } catch(_) {}
+              return `| [\`${f}\`](${f}) | ${titulo} |`;
+            });
+
+            const secao_estado = [
+              '## ESTADO ATUAL',
+              '',
+              `Actualizado automaticamente a partir do repositório em **${data_str}**.`,
+              '',
+              '### Páginas publicadas',
+              '',
+              '| Ficheiro | Título |',
+              '|---|---|',
+              ...paginas_linhas,
+            ].join('\n');
+
+            // ── 2. Arquitetura técnica real ────────────────────────────────
+            const listar = (dir, ext) => {
+              try {
+                return fs.readdirSync(dir)
+                  .filter(f => !ext || f.endsWith(ext))
+                  .sort();
+              } catch(_) { return []; }
+            };
+
+            const workflows = listar('.github/workflows', '.yml');
+            const agents   = listar('.claude/agents', '.md');
+            const commands = listar('.claude/commands', '.md');
+            const skills   = listar('.claude/skills', '.md');
+            const scripts  = listar('scripts', '.py');
+
+            const fmt_lista = (items, dir) =>
+              items.length
+                ? items.map(f => `│   ├── ${f}`).join('\n')
+                : '│   └── (vazio)';
+
+            const secao_arq = [
+              '## 7. Arquitetura técnica',
+              '',
+              'Browser-only / mobile, Python, agentes Claude, deploy estático grátis (GitHub Pages).',
+              '',
+              '```',
+              'tens-direito/',
+              '├── README.md',
+              '├── data/',
+              '│   ├── apoios/',
+              '│   ├── burocracia/',
+              '│   └── scraped/            ← JSONs diários das fontes (gerados automaticamente)',
+              '│       └── _fontes_config.json',
+              '├── .github/',
+              '│   └── workflows/',
+              ...workflows.map(f => `│       ├── ${f}`),
+              '├── .claude/',
+              '│   ├── agents/',
+              ...agents.map(f => `│   │   ├── ${f}`),
+              '│   ├── commands/',
+              ...commands.map(f => `│   │   ├── ${f}`),
+              '│   └── skills/',
+              ...skills.map(f => `│       ├── ${f}`),
+              '├── scripts/',
+              ...scripts.map(f => `│   ├── ${f}`),
+              '└── *.html                  ← páginas estáticas publicadas',
+              '```',
+            ].join('\n');
+
+            // ── 3. Tabela GitHub Actions ───────────────────────────────────
+            // Ler cron de cada workflow
+            const wf_info = {
+              'scrape-fontes.yml':      { cron: '`0 6 * * *` (diário 06:00 UTC)',   fn: 'Playwright scrape 6 fontes + Issue se conteúdo mudou' },
+              'verificar-links.yml':    { cron: '`0 7 * * 1` (segunda 07:00 UTC)',  fn: 'lychee testa todos os links HTML + Issue se 404' },
+              'detectar-mudancas.yml':  { cron: '`0 6,18 * * *` (2× dia)',          fn: 'Compara hash com latest + Issue se mudança detectada' },
+              'noticias-diarias.yml':   { cron: '`0 7 * * *` (diário 07:00 UTC)',   fn: 'RSS → selecciona notícia relevante → insere em noticias.html' },
+              'atualizar-readme.yml':   { cron: 'push para main (paths filtrados)', fn: 'Actualiza secções técnicas deste README automaticamente' },
+            };
+
+            const wf_linhas = workflows.map(f => {
+              const info = wf_info[f] || { cron: '—', fn: f.replace('.yml','') };
+              return `| \`${f}\` | ${info.cron} | ${info.fn} |`;
+            });
+
+            const secao_actions = [
+              '## GitHub Actions',
+              '',
+              '> Stack 100% gratuito — sem serviços externos.',
+              '',
+              '| Workflow | Cron / Trigger | Função |',
+              '|---|---|---|',
+              ...wf_linhas,
+              '',
+              '**Labels de Issues automáticas:**',
+              '- `fonte-alterada` — conteúdo de uma fonte mudou',
+              '- `link-quebrado` — link com 404 confirmado',
+              '- `verificar` — revisão pendente',
+            ].join('\n');
+
+            // ── 4. Tabela de fontes ────────────────────────────────────────
+            let fontes_linhas = [];
+            try {
+              const cfg = JSON.parse(fs.readFileSync('data/scraped/_fontes_config.json', 'utf8'));
+              for (const [slug, info] of Object.entries(cfg.fontes || {})) {
+                const url = info.url_principal || '—';
+                const status = info.status_bot
+                  ? (info.status_bot.includes('403') ? '⚠️ 403 esperado' : info.status_bot)
+                  : '✓';
+                const verif = info.verificado_manualmente || '—';
+                fontes_linhas.push(`| \`${slug}\` | ${url} | ${status} | ${verif} |`);
+              }
+            } catch(_) {}
+
+            const secao_fontes_auto = fontes_linhas.length ? [
+              '',
+              '### Fontes monitorizadas',
+              '',
+              '| Slug | URL principal | Status (bot) | Verificado |',
+              '|---|---|---|---|',
+              ...fontes_linhas,
+            ].join('\n') : '';
+
+            // ── 5. Agentes disponíveis ─────────────────────────────────────
+            const fmt_md_links = (items, dir) =>
+              items.map(f => {
+                const nome = f.replace('.md','');
+                return `- [\`${nome}\`](.claude/${dir}/${f})`;
+              }).join('\n');
+
+            const secao_agentes = [
+              '## Agentes disponíveis',
+              '',
+              '**Commands** (`.claude/commands/`) — invocar com `/nome-do-ficheiro`:',
+              '',
+              ...(commands.length ? commands.map(f => `- [\`/${f.replace('.md','')}\`](.claude/commands/${f})`) : ['- (nenhum)']),
+              '',
+              '**Skills** (`.claude/skills/`) — usadas internamente pelos commands:',
+              '',
+              ...(skills.length ? skills.map(f => `- [\`${f.replace('.md','')}\`](.claude/skills/${f})`) : ['- (nenhuma)']),
+              '',
+              '**Agents** (`.claude/agents/`) — agentes especializados:',
+              '',
+              ...(agents.length ? agents.map(f => `- [\`${f.replace('.md','')}\`](.claude/agents/${f})`) : ['- (nenhum)']),
+            ].join('\n');
+
+            // ── 6. Rodapé ──────────────────────────────────────────────────
+            const rodape = `---\n\n*Atualizado em ${data_str} às ${hora_str} · gerado automaticamente por \`atualizar-readme.yml\`*`;
+
+            // ── Ler README actual ──────────────────────────────────────────
+            let readme = fs.readFileSync('README.md', 'utf8');
+
+            // Função para substituir ou inserir uma secção delimitada por marcadores
+            // Se os marcadores não existirem, não faz nada (preserva secções manuais)
+            const substituir_secao = (texto, marca_inicio, marca_fim, novo_conteudo) => {
+              const re = new RegExp(
+                `(<!-- ${marca_inicio} -->)[\\s\\S]*?(<!-- ${marca_fim} -->)`,
+                'g'
+              );
+              if (re.test(texto)) {
+                return texto.replace(re, `<!-- ${marca_inicio} -->\n\n${novo_conteudo}\n\n<!-- ${marca_fim} -->`);
+              }
+              // Marcador não existe — inserir antes do rodapé ou no fim
+              return texto + `\n\n<!-- ${marca_inicio} -->\n\n${novo_conteudo}\n\n<!-- ${marca_fim} -->`;
+            };
+
+            // Substituir secção 7 (Arquitetura técnica) se existir no README
+            // Usa regex sobre o heading
+            const substituir_heading = (texto, heading_re, novo_conteudo) => {
+              // Encontrar o heading e substituir tudo até ao próximo heading de mesmo nível
+              const m = texto.match(heading_re);
+              if (!m) return texto;
+              const idx_start = texto.indexOf(m[0]);
+              // Próximo heading de mesmo nível (## )
+              const nivel = m[0].match(/^(#+)/)[1];
+              const re_next = new RegExp(`\\n${nivel}[^#]`, 'g');
+              re_next.lastIndex = idx_start + m[0].length;
+              const next = re_next.exec(texto);
+              const idx_end = next ? next.index : texto.length;
+              return texto.slice(0, idx_start) + novo_conteudo + '\n\n' + texto.slice(idx_end);
+            };
+
+            // Aplicar substituições com marcadores HTML (não destrutivas para secções manuais)
+            readme = substituir_secao(readme, 'AUTO:ESTADO', 'END:ESTADO', secao_estado);
+            readme = substituir_secao(readme, 'AUTO:ACTIONS', 'END:ACTIONS', secao_actions);
+            readme = substituir_secao(readme, 'AUTO:AGENTES', 'END:AGENTES', secao_agentes);
+            readme = substituir_secao(readme, 'AUTO:FONTES', 'END:FONTES', secao_fontes_auto);
+
+            // Secção 7 — Arquitetura técnica: substituir pelo heading
+            readme = substituir_heading(readme, /^## 7\. Arquitetura técnica[^\n]*/m, secao_arq);
+
+            // Rodapé: substituir marcador ou anexar
+            readme = substituir_secao(readme, 'AUTO:RODAPE', 'END:RODAPE', rodape);
+
+            // Verificar se o README mudou de facto
+            const readme_atual = fs.readFileSync('README.md', 'utf8');
+            if (readme === readme_atual) {
+              console.log('README sem alterações — nenhum commit necessário.');
+              core.setOutput('changed', 'false');
+              return;
+            }
+
+            fs.writeFileSync('README.md', readme);
+            console.log('README actualizado.');
+            core.setOutput('changed', 'true');
+
+      - name: Commit README se mudou
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if git diff --staged --quiet; then
+            echo "README sem alterações — sem commit."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "docs: README auto-actualizado ${DATE}"
+            git push
+          fi

@@ -3,6 +3,10 @@
 > **Os teus direitos, com data e fonte.**
 > O registo PT-PT, datado e referenciado à fonte primária, de **dinheiro + direitos + burocracia**.
 
+<!-- AUTO:ESTADO -->
+
+<!-- END:ESTADO -->
+
 Documento-mestre do projeto. É a base de verdade: define o que é, porque existe, como se posiciona, como cresce em tráfego orgânico, e as regras que o tornam credível e inatacável. Mantém este ficheiro versionado no repositório (equivalente ao `REGRAS-PADRAO` do blog).
 
 ---
@@ -231,3 +235,21 @@ disclaimer: "Conteúdo informativo e não vinculativo. Não substitui a consulta
 
 ### Fontes da pesquisa de base
 Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (dez. 2025); Comissão Europeia (literacia financeira ~25%); Barómetro Doutor Finanças / Univ. Católica (investimento); Portal da Queixa / Consumers Trust Lab — Relatório de Satisfação com os Serviços Públicos 2025; Segurança Social / ISS (simulador de prestações; 60+ apoios); calendário escolar e ASE 2025/2026 (Ministério da Educação, CGD Saldo Positivo, DECO, idealista). *Confirmar sempre os valores na fonte oficial antes de publicar.*
+
+---
+
+<!-- AUTO:ACTIONS -->
+
+<!-- END:ACTIONS -->
+
+<!-- AUTO:AGENTES -->
+
+<!-- END:AGENTES -->
+
+<!-- AUTO:FONTES -->
+
+<!-- END:FONTES -->
+
+<!-- AUTO:RODAPE -->
+
+<!-- END:RODAPE -->
