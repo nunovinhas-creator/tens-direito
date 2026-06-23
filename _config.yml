@@ -1,0 +1,9 @@
+# GitHub Pages config
+# O site serve os ficheiros da pasta /site
+
+title: Tens Direito
+description: Apoios sociais, direitos e burocracia em Portugal. Fontes oficiais, sempre atualizado.
+url: "https://tensdireito.com"
+lang: pt-PT
+
+# Não usar Jekyll para não processar ficheiros — serve HTML estático direto
