@@ -24,14 +24,13 @@
 
 ---
 
-## Aviso de verificação pendente #001
+## ~~Aviso de verificação pendente #001~~ — RESOLVIDO
 
 **Data de detecção:** 23 de junho de 2026
+**Data de resolução:** 23 de junho de 2026
 **Página afectada:** abono-de-familia.html
-**Situação:** Os valores da tabela de escalões (ex.: 68,19 € para 1.º escalão até 36 meses) foram calculados com base em IAS 537,13 € e percentagens históricas do abono de família, sem fetch confirmado à fonte primária (seg-social.pt devolveu HTTP 403 em 23/06/2026).
-**Estado:** Marcado com [VERIFICAR] na nota da tabela. Valores não removidos porque a metodologia de cálculo é conhecida, mas carecem de confirmação oficial.
-**Acção necessária:** Quando seg-social.pt estiver acessível, confirmar os valores exactos e remover o aviso [VERIFICAR].
-**Prazo:** Próxima sessão de revisão mensal.
+**Situação inicial:** Valores da tabela calculados sem fetch confirmado (seg-social.pt devolveu HTTP 403 automaticamente). Marcados com [VERIFICAR].
+**Resolução:** Valores confirmados manualmente pelo utilizador em seg-social.pt/abono-de-familia a 23/06/2026. Tabela completamente restruturada com os valores reais por faixa etária (IAS 2026 = 537,13 €). Limite do 1.º escalão corrigido: 1 IAS (537,13 €), não 2 IAS como estava. Faixas etárias alinhadas com a fonte oficial. Marcador [VERIFICAR] removido. JSON-LD FAQ atualizado com os valores correctos.
 
 ---
 
