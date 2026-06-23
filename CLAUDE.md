@@ -61,7 +61,8 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 - Verificar escalões e valores no portal antes de publicar
 
 ### ASE — Ação Social Escolar
-- URL canónico DGE: https://www.dge.mec.pt/acao-social-escolar
+- URL canónico DGE: https://www.dge.mec.pt ← USAR ESTE
+- RESTRITO (não usar no HTML público): https://www.dge.mec.pt/acao-social-escolar (devolve 403)
 - Despacho anual que fixa escalões e valores (pesquisar DRE)
 - Verificar: escalões A e B, o que cobre cada um, prazos
 - ATENÇÃO: não existe portal público para EE — candidatura é

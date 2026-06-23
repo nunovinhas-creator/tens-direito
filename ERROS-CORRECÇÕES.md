@@ -39,3 +39,14 @@
 **Data de detecção:** 23 de junho de 2026
 **Situação:** bolsa-de-merito.html foi referenciada para revisão mas não existe no repositório.
 **Acção necessária:** Criar a página com base nas regras do CLAUDE.md, fazendo fetch prévio a dge.mec.pt/bolsa-de-merito antes de redigir qualquer valor ou condição.
+
+---
+
+## Correcção #004
+
+**Data de detecção:** 23 de junho de 2026
+**Página afectada:** acao-social-escolar.html
+**Erro encontrado:** 4 ocorrências do link `https://www.dge.mec.pt/acao-social-escolar` no HTML público. Este URL devolve 403 (restrito/requer autenticação) — nunca deve aparecer como link clicável numa página pública.
+**Correcção aplicada:** Todas as ocorrências substituídas por `https://www.dge.mec.pt` com texto âncora "Direção-Geral da Educação (dge.mec.pt)". Adicionada nota "Para informação sobre ASE, consulta a secretaria da tua escola ou o portal da DGE." nos locais relevantes.
+**Fonte que confirmou a correcção:** Skill `verificar-url` — regra 401/403: página existe mas é restrita, NUNCA usar no HTML público.
+**Data de publicação da correcção:** 23 de junho de 2026

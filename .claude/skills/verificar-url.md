@@ -32,7 +32,7 @@ def verificar_url(url: str, timeout: int = 10) -> dict:
 |---|---|---|
 | **200** | URL válido e acessível | ✓ Usar o URL tal como está |
 | **301 / 302** | Redirect permanente / temporário | Usar `final_url` (URL de destino) |
-| **403** | Portal bloqueia scrapers/bots | Substituir pelo URL da página-mãe |
+| **401 / 403** | Página existe mas é restrita / requer autenticação | Substituir pelo URL da página-mãe ou página de pesquisa do site oficial. **NUNCA usar este URL no HTML público.** |
 | **404** | Página não existe | Remover o link; texto fica sem âncora |
 | **500 / 503** | Erro temporário do servidor | Marcar `[VERIFICAR — erro servidor DD/MM/AAAA]` |
 | **timeout** | Inacessível (rede ou servidor lento) | Marcar `[VERIFICAR — timeout DD/MM/AAAA]` |
