@@ -1,0 +1,128 @@
+{
+  "url": "https://www.dge.mec.pt",
+  "url_original": "https://www.dge.mec.pt",
+  "data_acesso": "2026-06-23T21:13:55.369454+00:00",
+  "status": "ok",
+  "conteudo_extraido": {
+    "titulo": "",
+    "paragrafos": [
+      "Este sítio utiliza cookies para proporcionar uma melhor experiência de navegação e utilização de funcionalidades da plataforma. Ao continuar a navegar ou fechar este alerta, está a concordar com a utilização de cookies."
+    ],
+    "itens_lista": [
+      "Transição para o EduQA, I.P.",
+      "Transição para o EduQA, I.P.",
+      "Transição para o EduQA, I.P.",
+      "Currículo Legislação Geral | FAQ Portal de Apoio Online Perfil dos Alunos Aprendizagens Essenciais Educação para a Cidadania Educação de Infância Currículo Nacional Português Língua Não Materna Projetos Curriculares AEC Conferências Estudos e Relatórios",
+      "Legislação Geral | FAQ",
+      "Portal de Apoio Online",
+      "Perfil dos Alunos",
+      "Aprendizagens Essenciais",
+      "Educação para a Cidadania",
+      "Educação de Infância",
+      "Currículo Nacional",
+      "Português Língua Não Materna",
+      "Projetos Curriculares",
+      "Conferências",
+      "Estudos e Relatórios",
+      "Projetos Medidas de Promoção do Sucesso Educativo Academia Digital para Pais Crianças e Jovens Refugiados – medidas educativas Comunidades Ciganas Programa Regressar Plano Nacional das Artes Acordo Ortográfico Clubes Europeus Formação Contínua Programa Nacional de Promoção do Sucesso Escolar Rede de Clubes Ciência Viva na Escola Projeto Partnerships for Science Education – PAFSE Assess@Learning",
+      "Medidas de Promoção do Sucesso Educativo",
+      "Academia Digital para Pais",
+      "Crianças e Jovens Refugiados – medidas educativas",
+      "Comunidades Ciganas",
+      "Programa Regressar",
+      "Plano Nacional das Artes",
+      "Acordo Ortográfico",
+      "Clubes Europeus",
+      "Formação Contínua",
+      "Programa Nacional de Promoção do Sucesso Escolar",
+      "Rede de Clubes Ciência Viva na Escola",
+      "Projeto Partnerships for Science Education – PAFSE",
+      "Assess@Learning",
+      "Recursos Educativos Estudo Autónomo – GTA Património Cultural Manuais Escolares Revista Noesis Bullying e Ciberbullying Recursos Multimédia online Kit Básico de Saúde Mental"
+    ],
+    "links_uteis": [
+      {
+        "texto": "Portal de Apoio Online",
+        "href": "http://area.dge.mec.pt/dsdccomext"
+      },
+      {
+        "texto": "Perfil dos Alunos",
+        "href": "https://www.dge.mec.pt/perfil-dos-alunos"
+      },
+      {
+        "texto": "Educação para a Cidadania",
+        "href": "https://cidadania.dge.mec.pt"
+      },
+      {
+        "texto": "Estudo Autónomo – GTA",
+        "href": "https://estudoautonomo.dge.mec.pt/"
+      },
+      {
+        "texto": "SeguraNet",
+        "href": "https://www.seguranet.pt/"
+      },
+      {
+        "texto": "Plataforma DGE",
+        "href": "https://plataforma.dge.mec.pt/"
+      },
+      {
+        "texto": "Plano 21|23 | Escola +",
+        "href": "https://escolamais.dge.mec.pt/"
+      },
+      {
+        "texto": "Euroguidance Portugal",
+        "href": "https://euroguidance.gov.pt/pt"
+      },
+      {
+        "texto": "eTwinning",
+        "href": "https://etwinning.pt"
+      },
+      {
+        "texto": "Equipa de Recursos e Tecnologias Educativas",
+        "href": "https://erte.dge.mec.pt/"
+      },
+      {
+        "texto": "Educação para a Cidadania",
+        "href": "https://enec.dge.mec.pt/"
+      },
+      {
+        "texto": "Desporto Escolar",
+        "href": "https://desportoescolar.dge.medu.pt/"
+      },
+      {
+        "texto": "Capacitação Digital das Escolas",
+        "href": "https://digital.dge.mec.pt/"
+      },
+      {
+        "texto": "Autonomia e Flexibilidade Curricular",
+        "href": "https://afc.dge.mec.pt/"
+      },
+      {
+        "texto": "Apoio às Escolas",
+        "href": "https://apoioescolas.dge.mec.pt/"
+      },
+      {
+        "texto": "#EstudoEmCasaApoia",
+        "href": "https://estudoemcasaapoia.dge.mec.pt/"
+      },
+      {
+        "texto": "Educação Inclusiva",
+        "href": "https://educacaoinclusiva.dge.mec.pt/"
+      },
+      {
+        "texto": "Aprendizagens Essenciais de Matemática",
+        "href": "https://aem.dge.mec.pt/pt"
+      },
+      {
+        "texto": "Clubes Ciência Viva",
+        "href": "https://clubes.cienciaviva.pt/"
+      },
+      {
+        "texto": "Recupera",
+        "href": "https://recupera.dge.mec.pt/"
+      }
+    ]
+  },
+  "nota": "dge.mec.pt/acao-social-escolar bloqueado — usar DRE como fonte primária para ASE",
+  "hash_conteudo": "1568d00f026328fbdd1e173f3db536a6d7bfed66227712bcf6e403a8b0e95d5a"
+}
