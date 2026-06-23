@@ -63,6 +63,8 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 ### ASE — Ação Social Escolar
 - URL canónico DGE: https://www.dge.mec.pt ← USAR ESTE
 - RESTRITO (não usar no HTML público): https://www.dge.mec.pt/acao-social-escolar (devolve 403)
+- Fonte primária para diplomas: https://dre.pt/pesquisa?q=acao+social+escolar
+- Scraper usa: homepage DGE + DRE como fallback (ver data/scraped/_fontes_config.json)
 - Despacho anual que fixa escalões e valores (pesquisar DRE)
 - Verificar: escalões A e B, o que cobre cada um, prazos
 - ATENÇÃO: não existe portal público para EE — candidatura é
@@ -80,10 +82,13 @@ Se a fonte não confirmar o facto, o facto não entra no site.
   do ensino público, independentemente de escalão ASE
 
 ### Bolsa de Mérito
-- URL canónico DGE: https://www.dge.mec.pt/bolsas-de-merito
+- URL canónico DGE: RESTRITO — https://www.dge.mec.pt/bolsas-de-merito devolve 403
+- Fonte primária: https://dre.pt/pesquisa?q=bolsa+merito+ensino+basico ← USAR ESTE
+- Alternativo DRE: https://dre.pt/pesquisa?q=bolsa+de+merito
 - Candidatura: presencial na secretaria da escola
 - Despacho anual (pesquisar DRE pelo título "bolsa de mérito")
 - Verificar: média mínima, condição de ASE, valor exato
+- Nota: não existe portal público DGE para esta prestação — DRE é a única fonte fiável
 
 ### Passe sub-23
 - Portal cidadão: https://www.gov.pt
@@ -95,7 +100,10 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 - Legislação: https://dre.pt (pesquisar pelo nome da prestação)
 
 ### IEFP — Subsídio de Desemprego
-- URL: https://www.iefp.pt/subsidio-de-desemprego
+- URL correcto: https://www.iefp.pt/subsidio-desemprego ← SEM hífen antes de desemprego
+- URL antigo (incorrecto): https://www.iefp.pt/subsidio-de-desemprego — NÃO usar
+- Fallback (entidade pagadora): https://www.seg-social.pt/subsidio-de-desemprego
+- ATENÇÃO: IEFP só recebe o pedido. Decisão e pagamento são da Segurança Social.
 
 ### Diário da República (todas as áreas)
 - Pesquisa: https://dre.pt/pesquisa

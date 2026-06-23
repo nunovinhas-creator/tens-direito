@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "descricao": "Mapa completo de URLs correctos e alternativos para cada fonte monitorizada",
+    "ultima_actualizacao": "2026-06-23",
+    "nota": "Verificar este ficheiro antes de qualquer scrape manual. URLs marcados RESTRITO devolvem 403 para bots."
+  },
+  "fontes": {
+    "seg_social_abono": {
+      "url_principal": "https://www.seg-social.pt/abono-de-familia",
+      "url_alternativo": "https://www.seg-social.pt/abono-de-familia-para-criancas-e-jovens",
+      "simulador": "https://www.seg-social.pt/ptss/sps/simulador/6",
+      "url_pai": "https://www.seg-social.pt",
+      "status_bot": "403 esperado — comportamento normal do portal",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "Devolve 403 para scrapers mas URL é válido. Playwright com IPs limpos consegue aceder."
+    },
+    "seg_social_rsi": {
+      "url_principal": "https://www.seg-social.pt/rendimento-social-de-insercao",
+      "url_pai": "https://www.seg-social.pt",
+      "status_bot": "403 esperado",
+      "verificado_manualmente": "2026-06-23"
+    },
+    "dge_ase": {
+      "url_principal": "https://www.dge.mec.pt",
+      "url_restrito": "https://www.dge.mec.pt/acao-social-escolar",
+      "url_dre_pesquisa": "https://dre.pt/pesquisa?q=acao+social+escolar",
+      "status_url_restrito": "403 — NÃO USAR em HTML público",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "dge.mec.pt/acao-social-escolar bloqueado — usar DRE como fonte primária para diplomas ASE. Homepage DGE para notícias e links."
+    },
+    "dge_bolsa_merito": {
+      "url_principal": "https://dre.pt/pesquisa?q=bolsa+merito+ensino+basico",
+      "url_alternativo": "https://dre.pt/pesquisa?q=bolsa+de+merito",
+      "url_dge_restrito": "https://www.dge.mec.pt/bolsas-de-merito",
+      "status_url_dge": "403 — NÃO USAR",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "Não existe portal DGE público para bolsa de mérito — fonte primária é o Diário da República. Pesquisar pelo título do Despacho anual."
+    },
+    "dge_manuais": {
+      "url_principal": "https://www.dge.mec.pt/manuais-escolares",
+      "url_invalido": "https://mega.mec.pt",
+      "status_url_invalido": "NÃO É URL PÚBLICO — não usar",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "mega.mec.pt é sistema interno das escolas. O portal público é exclusivamente dge.mec.pt/manuais-escolares."
+    },
+    "iefp_desemprego": {
+      "url_principal": "https://www.iefp.pt/subsidio-desemprego",
+      "url_antigo_incorreto": "https://www.iefp.pt/subsidio-de-desemprego",
+      "url_fallback": "https://www.seg-social.pt/subsidio-de-desemprego",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "IEFP só recebe o pedido presencialmente. Decisão e pagamento são da Segurança Social. URL correcto não tem hífen: /subsidio-desemprego. Fallback para seg-social.pt que é a entidade pagadora."
+    },
+    "dre_legislacao": {
+      "url_pesquisa": "https://dre.pt/pesquisa",
+      "url_serie_i": "https://dre.pt/dre/legislacao-consolidada",
+      "url_pai": "https://dre.pt",
+      "status_bot": "403 esperado para scrapers",
+      "verificado_manualmente": "2026-06-23",
+      "nota": "Usar sempre número da Portaria/Despacho como referência. Playwright consegue aceder com IPs limpos."
+    }
+  }
+}

@@ -57,22 +57,31 @@ FONTES = [
             "listas": "ul li, ol li",
         },
     },
+    # dge.mec.pt/acao-social-escolar devolve 403 para bots.
+    # Estratégia: homepage DGE para links/notícias ASE + DRE para diplomas.
     {
         "slug": "dge_ase",
-        "url": "https://www.dge.mec.pt/acao-social-escolar",
+        "url": "https://www.dge.mec.pt",
+        "url_fallback": "https://dre.pt/pesquisa?q=acao+social+escolar",
+        "nota": "dge.mec.pt/acao-social-escolar bloqueado — usar DRE como fonte primária para ASE",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
             "listas": "ul li, ol li",
+            "links": "a[href]",
         },
     },
+    # dge.mec.pt/bolsas-de-merito devolve 403.
+    # Fonte primária: DRE — é onde é publicado o Despacho anual.
     {
         "slug": "dge_bolsa_merito",
-        "url": "https://www.dge.mec.pt/bolsas-de-merito",
+        "url": "https://dre.pt/pesquisa?q=bolsa+merito+ensino+basico",
+        "nota": "Não existe portal DGE público para bolsa de mérito — fonte primária é o Diário da República",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
             "listas": "ul li, ol li",
+            "links": "a[href]",
         },
     },
     {
@@ -84,9 +93,14 @@ FONTES = [
             "listas": "ul li, ol li",
         },
     },
+    # IEFP só recebe o pedido; decisão e pagamento são da Seg. Social.
+    # URL correcto: /subsidio-desemprego (sem /en/ e sem hífen duplo).
+    # Fallback: seg-social.pt que é a entidade pagadora.
     {
         "slug": "iefp_desemprego",
-        "url": "https://www.iefp.pt/subsidio-de-desemprego",
+        "url": "https://www.iefp.pt/subsidio-desemprego",
+        "url_fallback": "https://www.seg-social.pt/subsidio-de-desemprego",
+        "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social — fallback para seg-social.pt",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -134,26 +148,48 @@ def _extrair_conteudo(html: str, seletores: dict) -> dict:
                 tabelas.append(rows)
         conteudo["tabelas"] = tabelas
 
+    if "links" in seletores:
+        conteudo["links_uteis"] = [
+            {"texto": _texto_limpo(a), "href": a.get("href", "")}
+            for a in soup.select(seletores["links"])
+            if a.get("href", "").startswith("http") and len(a.get_text(strip=True)) > 5
+        ][:20]
+
     return conteudo
 
 
-def scrape_fonte(page, fonte: dict) -> dict | None:
-    url = fonte["url"]
-    slug = fonte["slug"]
-    log.info("A scrape: %s", url)
-
+def _tentar_goto(page, url: str) -> bool:
     for attempt in range(1, 4):
         try:
             response = page.goto(url, timeout=30_000, wait_until="networkidle")
             if response and response.status in (200, 301, 302):
-                break
+                return True
             log.warning("HTTP %s em %s (tentativa %d)", response.status if response else "N/A", url, attempt)
         except Exception as exc:
             log.warning("Erro tentativa %d para %s: %s", attempt, url, exc)
         if attempt < 3:
             time.sleep(2 ** attempt)
-    else:
-        log.error("Falhou após 3 tentativas: %s", url)
+    return False
+
+
+def scrape_fonte(page, fonte: dict) -> dict | None:
+    url = fonte["url"]
+    slug = fonte["slug"]
+    url_fallback = fonte.get("url_fallback")
+    nota = fonte.get("nota", "")
+    log.info("A scrape: %s", url)
+
+    url_usado = url
+    ok = _tentar_goto(page, url)
+
+    if not ok and url_fallback:
+        log.warning("%s: URL principal falhou — a tentar fallback %s", slug, url_fallback)
+        url_usado = url_fallback
+        ok = _tentar_goto(page, url_fallback)
+
+    if not ok:
+        log.error("Falhou após 3 tentativas (principal%s): %s",
+                  " + fallback" if url_fallback else "", url)
         return None
 
     # Aguardar estabilização
@@ -161,18 +197,20 @@ def scrape_fonte(page, fonte: dict) -> dict | None:
         page.wait_for_load_state("networkidle", timeout=10_000)
     except Exception:
         pass
-
     time.sleep(2)
 
     html = page.content()
     conteudo = _extrair_conteudo(html, fonte["seletores"])
 
     resultado = {
-        "url": url,
+        "url": url_usado,
+        "url_original": url,
         "data_acesso": datetime.now(timezone.utc).isoformat(),
         "status": "ok",
         "conteudo_extraido": conteudo,
     }
+    if nota:
+        resultado["nota"] = nota
 
     # Calcular hash do conteúdo (sem data_acesso)
     hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
