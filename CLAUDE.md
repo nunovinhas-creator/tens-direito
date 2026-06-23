@@ -36,9 +36,14 @@ CNAME               → tensdireito.com (não apagar)
 
 ## Agentes disponíveis
 
-- `validador-fontes` — comando `/scan` para verificar se as fontes mudaram
-- `redator-ptpt` — redigir/rever conteúdo seguindo as 10 regras
-- `atualizador-schema` — gerar/atualizar JSON-LD
+**Commands** (`.claude/commands/`):
+- `/publicar-pagina` — pipeline completo: scrape → validar → gerar HTML → auditar links → commit
+- `/verificar-fontes` — audita todos os links de todas as páginas publicadas
+- `/nova-noticia` — lê RSS, selecciona notícia relevante, actualiza noticias.html
+
+**Skills** (`.claude/skills/`):
+- `verificar-url` — testa se um URL existe e devolve acção correcta (200/403/404/timeout)
+- `estrutura-pagina` — template HTML com as 10 secções obrigatórias e JSON-LD pronto a preencher
 
 ## FONTES OBRIGATÓRIAS POR TEMA
 
@@ -116,109 +121,23 @@ sem link nenhum.
 
 ---
 
-## FLUXO OBRIGATÓRIO ANTES DE PUBLICAR QUALQUER PÁGINA
+## FLUXO DE PUBLICAÇÃO
 
-Passo 1 — FETCH da fonte primária
-  Antes de escrever qualquer facto, fazer web_fetch ao URL
-  da fonte oficial e ler o conteúdo actual.
-
-Passo 2 — VERIFICAR no DRE
-  Para valores e condições de acesso, confirmar com o
-  Despacho/Portaria mais recente em dre.pt.
-
-Passo 3 — REGISTAR a fonte
-  Anotar: URL exacto + data de acesso + número do diploma legal.
-
-Passo 4 — SÓ ENTÃO redigir
-  Escrever apenas o que foi confirmado na fonte.
-  Se um facto não foi confirmado, não entra — nunca inventar.
-
-Passo 5 — ASSINALAR o que falta confirmar
-  Se uma fonte estava inacessível, marcar com
-  [VERIFICAR — fonte inacessível em DD/MM/AAAA].
-
----
-
-## CHECKLIST DE PUBLICAÇÃO (obrigatória em cada página)
-
-Antes de fazer commit, confirmar:
-[ ] Fui à fonte primária e li o conteúdo actual
-[ ] Cada valor tem número de diploma legal ou URL de fonte datada
-[ ] Não há factos de memória — tudo confirmado na fonte
-[ ] Links testados e funcionais
-[ ] Disclaimer de não-vinculação presente
-[ ] Data de verificação visível
-
-## Workflow de publicação
-
-1. Verificar/criar o `.yml` em `data/apoios/`
-2. Redigir HTML em `site/[slug].html` com o agente `redator-ptpt`
-3. Adicionar JSON-LD com o agente `atualizador-schema`
-4. Confirmar fontes com `/scan`
-5. Commit + push → GitHub Pages publica automaticamente
-
-## PIPELINE OBRIGATÓRIO DE GERAÇÃO DE CONTEÚDO
+→ Ver `.claude/commands/publicar-pagina.md` para o pipeline completo (6 passos).
+→ Ver `.claude/skills/estrutura-pagina.md` para o template HTML obrigatório.
+→ Ver `.claude/skills/verificar-url.md` para a lógica de validação de links.
 
 ### Regra absoluta
-NUNCA gerar HTML de conteúdo sem primeiro correr o scraper.
-Sem dados do scraper = sem página. Sem excepções.
+NUNCA gerar HTML de conteúdo sem dados do scraper.
+Sem scrape confirmado = sem página. Sem excepções.
 
-### Ordem de execução obrigatória
-
-Passo 1 — SCRAPE
-  Correr: python scripts/scraper_fontes.py [fonte]
-  Output obrigatório: data/scraped/[fonte]_[data].json
-  Se falhar: registar em VERIFICACAO-PENDENTE.md e PARAR.
-  Nunca avançar com dados de memória.
-
-Passo 2 — VALIDAR
-  Confirmar que o JSON tem conteúdo real (não página de erro).
-  Confirmar que os valores fazem sentido (ex: IAS ~537€,
-  não 5€ nem 5000€).
-  Se inválido: registar motivo e PARAR.
-
-Passo 3 — GERAR
-  Correr: python scripts/gerar_pagina.py [slug] [fonte_json]
-  O HTML é gerado a partir do JSON — nunca de memória.
-  Cada facto no HTML tem tag de origem:
-  [FONTE: url | data_acesso]
-
-Passo 4 — AUDITAR LINKS
-  Antes do commit, testar TODOS os links da página com
-  web_fetch ou requests.get().
-  Link com erro = link removido ou marcado [VERIFICAR].
-  Nunca publicar links não testados.
-
-Passo 5 — REGISTAR
-  Atualizar data/scraped/_index.json com:
-  - página gerada
-  - fonte usada
-  - data do scrape
-  - próxima revisão recomendada
-
-Passo 6 — COMMIT
-  Mensagem obrigatória inclui sempre:
-  "fonte: [url] | scraped: [data] | próxima revisão: [data]"
-
-### O que fazer se o scraper falhar
-
-1. Registar em VERIFICACAO-PENDENTE.md com motivo
-2. Tentar fonte alternativa (ex: DRE em vez do portal)
-3. Se todas as fontes falharem: NÃO publicar a página
-4. Nunca usar memória como fallback
-
-### Links — regra de ouro
-Um link só entra no site se passar em requests.get()
-com status 200. Se devolver 403, 404 ou timeout:
-- Substituir pelo URL da página-mãe que funciona
-- Ou remover e mencionar "consulta nos serviços da escola/portal"
-- Nunca inventar URLs plausíveis
-
-### Auditoria periódica de links
-O agente validador-fontes corre semanalmente:
-python scripts/scraper_fontes.py --audit-links
-Verifica todos os links de todas as páginas publicadas.
-Links quebrados são corrigidos antes da próxima publicação.
+### Checklist antes de cada commit
+- [ ] `data/scraped/[fonte]_[data].json` existe com `status: "ok"`
+- [ ] Todos os links testados com `verificar-url` — nenhum com 404
+- [ ] JSON-LD FAQPage e HowTo presentes (ver `estrutura-pagina`)
+- [ ] Disclaimer de independência presente
+- [ ] Data de verificação visível na página
+- [ ] `sitemap.xml` actualizado
 
 ---
 
