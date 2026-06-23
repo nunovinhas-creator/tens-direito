@@ -5,6 +5,22 @@
 
 <!-- AUTO:ESTADO -->
 
+## ESTADO ATUAL
+
+Actualizado automaticamente a partir do repositório em **23 de junho de 2026**.
+
+### Páginas publicadas
+
+| Ficheiro | Título |
+|---|---|
+| [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
+| [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
+| [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
+| [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
+| [`noticias.html`](noticias.html) | Notícias — Tens Direito |
+| [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
+| [`sobre.html`](sobre.html) | Sobre — Tens Direito |
+
 <!-- END:ESTADO -->
 
 Documento-mestre do projeto. É a base de verdade: define o que é, porque existe, como se posiciona, como cresce em tráfego orgânico, e as regras que o tornam credível e inatacável. Mantém este ficheiro versionado no repositório (equivalente ao `REGRAS-PADRAO` do blog).
@@ -143,67 +159,36 @@ Browser-only / mobile, Python, agentes Claude, deploy estático grátis (GitHub 
 
 ```
 tens-direito/
-├── README.md              # este documento
-├── data/                  # fonte de verdade: 1 ficheiro YAML por apoio/taxa/processo
+├── README.md
+├── data/
 │   ├── apoios/
-│   │   └── abono-familia.yml
 │   ├── burocracia/
-│   └── _fontes.yml        # registo central de fontes oficiais + datas de verificação
+│   └── scraped/            ← JSONs diários das fontes (gerados automaticamente)
+│       └── _fontes_config.json
+├── .github/
+│   └── workflows/
+│       ├── atualizar-readme.yml
+│       ├── detectar-mudancas.yml
+│       ├── noticias-diarias.yml
+│       ├── scrape-fontes.yml
+│       ├── verificar-links.yml
 ├── .claude/
-│   └── agents/
-│       ├── validador-fontes.md   # corre o /scan; verifica se a fonte oficial mudou
-│       ├── redator-ptpt.md       # rascunha em PT-PT seguindo as 10 regras
-│       └── atualizador-schema.md # gera/atualiza JSON-LD FAQPage/HowTo
+│   ├── agents/
+│   ├── commands/
+│   │   ├── nova-noticia.md
+│   │   ├── publicar-pagina.md
+│   │   ├── verificar-fontes.md
+│   └── skills/
+│       ├── estrutura-pagina.md
+│       ├── verificar-url.md
 ├── scripts/
-│   ├── scan_fontes.py     # deteta alterações nas fontes oficiais → sinaliza revisão
-│   └── build_site.py      # gera HTML estático + JSON-LD a partir do data/ + content/
-├── content/               # respostas geradas, revistas e versionadas (markdown)
-├── templates/             # template de página que força as 10 regras
-└── site/                  # output estático (GitHub Pages)
+│   ├── gerar_noticias.py
+│   ├── gerar_pagina.py
+│   ├── scraper_fontes.py
+│   ├── scraper_playwright.py
+└── *.html                  ← páginas estáticas publicadas
 ```
 
-### Esquema de uma entrada de dados (exemplo)
-```yaml
-# data/apoios/abono-familia.yml
-slug: abono-de-familia
-titulo: "Abono de família 2026: escalões, valores e como pedir"
-tipo: apoio
-entidade: "Segurança Social"
-atualizado: 2026-06-23
-fontes:
-  - nome: "Portaria n.º XXX/2026 (Diário da República)"
-    url: "https://diariodarepublica.pt/..."
-    verificado: 2026-06-23
-  - nome: "Segurança Social — Abono de família"
-    url: "https://seg-social.pt/..."
-    verificado: 2026-06-23
-quem_tem_direito:
-  condicoes:
-    - "Criança/jovem residente em Portugal, enquanto não trabalha"
-    - "Agregado dentro do teto de rendimento do escalão aplicável"
-  nota: "Direito condicional. Confirmar no simulador oficial."
-valores:                     # sempre com ano e fonte
-  ano: 2026
-  ias_referencia: 537.13
-  escaloes: []               # preencher a partir da fonte oficial, datado
-como_pedir:
-  canal: "Segurança Social Direta > Família > Abono de Família e de Pré-Natal"
-  passos: []
-  automatico: "Em certos casos é proposto automaticamente; confirmar a proposta no prazo."
-disclaimer: "Conteúdo informativo e não vinculativo. Não substitui a consulta às entidades oficiais."
-```
-
-### Estrutura obrigatória de cada página (template)
-1. Resposta direta no topo (1-2 frases) — para snippet/AI Overview.
-2. "Quem tem direito" (condicional, nunca veredito pessoal).
-3. "Quanto recebe" (valor + ano + fonte datada).
-4. "Como pedir" (passo-a-passo do canal atual).
-5. Bloco **Fontes** (oficiais, com data de verificação) + "Atualizado em".
-6. Remissão para o simulador/portal oficial.
-7. Disclaimer de independência e não-vinculação.
-8. JSON-LD `FAQPage` e/ou `HowTo`.
-
----
 
 ## 8. Monetização
 
@@ -240,16 +225,67 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 <!-- AUTO:ACTIONS -->
 
+## GitHub Actions
+
+> Stack 100% gratuito — sem serviços externos.
+
+| Workflow | Cron / Trigger | Função |
+|---|---|---|
+| `atualizar-readme.yml` | push para main (paths filtrados) | Actualiza secções técnicas deste README automaticamente |
+| `detectar-mudancas.yml` | `0 6,18 * * *` (2× dia) | Compara hash com latest + Issue se mudança detectada |
+| `noticias-diarias.yml` | `0 7 * * *` (diário 07:00 UTC) | RSS → selecciona notícia relevante → insere em noticias.html |
+| `scrape-fontes.yml` | `0 6 * * *` (diário 06:00 UTC) | Playwright scrape 6 fontes + Issue se conteúdo mudou |
+| `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 |
+
+**Labels de Issues automáticas:**
+- `fonte-alterada` — conteúdo de uma fonte mudou
+- `link-quebrado` — link com 404 confirmado
+- `verificar` — revisão pendente
+
 <!-- END:ACTIONS -->
 
 <!-- AUTO:AGENTES -->
+
+## Agentes disponíveis
+
+**Commands** (`.claude/commands/`) — invocar com `/nome-do-ficheiro`:
+
+- [`/nova-noticia`](.claude/commands/nova-noticia.md)
+- [`/publicar-pagina`](.claude/commands/publicar-pagina.md)
+- [`/verificar-fontes`](.claude/commands/verificar-fontes.md)
+
+**Skills** (`.claude/skills/`) — usadas internamente pelos commands:
+
+- [`estrutura-pagina`](.claude/skills/estrutura-pagina.md)
+- [`verificar-url`](.claude/skills/verificar-url.md)
+
+**Agents** (`.claude/agents/`) — agentes especializados:
+
+- (nenhum)
 
 <!-- END:AGENTES -->
 
 <!-- AUTO:FONTES -->
 
+
+### Fontes monitorizadas
+
+| Slug | URL principal | Status (bot) | Verificado |
+|---|---|---|---|
+| `seg_social_abono` | https://www.seg-social.pt/abono-de-familia | ⚠️ 403 esperado | 2026-06-23 |
+| `seg_social_rsi` | https://www.seg-social.pt/rendimento-social-de-insercao | ⚠️ 403 esperado | 2026-06-23 |
+| `dge_ase` | https://www.dge.mec.pt | ✓ | 2026-06-23 |
+| `dge_bolsa_merito` | https://dre.pt/pesquisa?q=bolsa+merito+ensino+basico | ✓ | 2026-06-23 |
+| `dge_manuais` | https://www.dge.mec.pt/manuais-escolares | ✓ | 2026-06-23 |
+| `iefp_desemprego` | https://www.iefp.pt/subsidio-desemprego | ✓ | 2026-06-23 |
+| `dre_legislacao` | — | ⚠️ 403 esperado | 2026-06-23 |
+
 <!-- END:FONTES -->
 
 <!-- AUTO:RODAPE -->
+
+---
+
+*Atualizado em 23 de junho de 2026 às 22:56 · gerado automaticamente por `atualizar-readme.yml`*
 
 <!-- END:RODAPE -->
