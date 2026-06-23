@@ -5,16 +5,29 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <title>Tens Direito — Apoios Sociais e Direitos em Portugal</title>
   <meta name="description" content="Informação clara sobre apoios sociais, direitos e burocracia em Portugal. Cada facto verificado com fonte oficial.">
+  <!-- Google Analytics 4 — substituir GA_MEASUREMENT_ID pelo ID real -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; }
     header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
-    nav { display: flex; align-items: center; gap: 0.75rem; max-width: 860px; margin: 0 auto; }
+    nav { display: flex; align-items: center; gap: 1.5rem; max-width: 860px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
     .logo-text { font-size: 1.4rem; font-weight: 700; line-height: 1; }
     .logo-text span.tens { color: #0F172A; }
     .logo-text span.direito { color: #0D9488; }
+    nav a.nav-link { color: #0F172A; text-decoration: none; font-size: 0.95rem; }
+    nav a.nav-link:hover { color: #0D9488; }
     .hero { background: #0F766E; color: white; padding: 3rem 1.5rem; text-align: center; }
     .hero h1 { font-size: 2rem; margin-bottom: 0.75rem; }
     .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
@@ -22,8 +35,10 @@
     .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
     .card h2 { color: #0F766E; margin-bottom: 0.75rem; }
     .card p { line-height: 1.6; color: #495057; }
+    .card a { color: #0D9488; font-weight: 600; }
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; margin-top: 2rem; line-height: 1.5; }
     footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; }
+    footer a { color: #6c757d; }
   </style>
   <script type="application/ld+json">
   {
@@ -39,14 +54,18 @@
 <body>
   <header>
     <nav>
-      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="36" height="36" rx="9" fill="#0F766E"/>
-        <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff"
-              stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div class="logo-text">
-        <span class="tens">Tens </span><span class="direito">Direito</span>
-      </div>
+      <a href="/" class="logo">
+        <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff"
+                stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text">
+          <span class="tens">Tens </span><span class="direito">Direito</span>
+        </div>
+      </a>
+      <a href="/noticias.html" class="nav-link">Notícias</a>
+      <a href="/sobre.html" class="nav-link">Sobre</a>
     </nav>
   </header>
   <section class="hero">
@@ -54,6 +73,10 @@
     <p>Apoios sociais, burocracia e direitos dos cidadãos em Portugal — com fontes oficiais e datas de verificação.</p>
   </section>
   <main>
+    <div class="card">
+      <h2>Última notícia</h2>
+      <p>O Governo aprovou a fusão de 13 apoios sociais numa Prestação Social Única (PSU), com entrada em vigor prevista para agosto de 2026. <a href="/noticias.html">Ver todas as notícias →</a></p>
+    </div>
     <div class="card">
       <h2>O que encontras aqui</h2>
       <p>Informação clara e verificada sobre apoios do Estado, processos burocráticos e direitos dos cidadãos em Portugal. Cada facto tem data de verificação e ligação à fonte oficial (Diário da República, gov.pt, Segurança Social).</p>
@@ -68,6 +91,9 @@
   </main>
   <footer>
     <p>tensdireito.com — Informação verificada para cidadãos portugueses</p>
+    <p style="margin-top:0.5rem;">
+      <a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a>
+    </p>
   </footer>
 </body>
 </html>
