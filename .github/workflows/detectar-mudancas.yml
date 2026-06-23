@@ -1,0 +1,187 @@
+name: Detectar Mudanças nas Fontes
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4 lxml
+          playwright install chromium --with-deps
+
+      - name: Scrape e comparar
+        id: compare
+        run: python scripts/scraper_playwright.py --mode=detect
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      - name: Processar mudanças e abrir issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+
+            const scraped_dir = 'data/scraped';
+            if (!fs.existsSync(scraped_dir)) return;
+
+            const hoje = new Date().toISOString().slice(0, 10);
+            const hora = new Date().toISOString().slice(11, 16);
+
+            // Fontes a monitorizar e respectivos URLs
+            const fontes = {
+              'seg_social_abono': 'https://www.seg-social.pt/abono-de-familia',
+              'seg_social_rsi': 'https://www.seg-social.pt/rendimento-social-de-insercao',
+              'dge_ase': 'https://www.dge.mec.pt/acao-social-escolar',
+              'dge_bolsa_merito': 'https://www.dge.mec.pt/bolsas-de-merito',
+              'dge_manuais': 'https://www.dge.mec.pt/manuais-escolares',
+              'iefp_desemprego': 'https://www.iefp.pt/subsidio-de-desemprego',
+            };
+
+            for (const [slug, url] of Object.entries(fontes)) {
+              const latest_path = path.join(scraped_dir, `${slug}_latest.json`);
+
+              // Procurar ficheiro de hoje
+              const files = fs.readdirSync(scraped_dir)
+                .filter(f => f.startsWith(slug + '_') && f.includes(hoje) && !f.endsWith('_latest.json'))
+                .sort()
+                .reverse();
+
+              if (files.length === 0) {
+                console.log(`${slug}: sem scrape de hoje`);
+                continue;
+              }
+
+              const new_path = path.join(scraped_dir, files[0]);
+              const new_content = fs.readFileSync(new_path, 'utf8');
+
+              // Extrair apenas conteúdo relevante para o hash (excluir data_acesso)
+              let new_data, old_data;
+              try {
+                new_data = JSON.parse(new_content);
+                delete new_data.data_acesso;
+              } catch(e) {
+                console.log(`${slug}: erro a parsear JSON novo`);
+                continue;
+              }
+
+              if (!fs.existsSync(latest_path)) {
+                fs.writeFileSync(latest_path, new_content);
+                console.log(`${slug}: primeiro scrape guardado como latest`);
+                continue;
+              }
+
+              const old_content = fs.readFileSync(latest_path, 'utf8');
+              try {
+                old_data = JSON.parse(old_content);
+                delete old_data.data_acesso;
+              } catch(e) {
+                // Se o latest está corrompido, substituir sem abrir issue
+                fs.writeFileSync(latest_path, new_content);
+                continue;
+              }
+
+              const new_hash = crypto.createHash('sha256')
+                .update(JSON.stringify(new_data)).digest('hex');
+              const old_hash = crypto.createHash('sha256')
+                .update(JSON.stringify(old_data)).digest('hex');
+
+              if (new_hash === old_hash) {
+                console.log(`${slug}: sem alterações`);
+                continue;
+              }
+
+              console.log(`${slug}: MUDANÇA DETECTADA`);
+
+              // Diff legível
+              const stringify_pretty = obj => JSON.stringify(obj, null, 2);
+              const old_str = stringify_pretty(old_data).split('\n');
+              const new_str = stringify_pretty(new_data).split('\n');
+              const removed = old_str.filter(l => !new_str.includes(l)).slice(0, 15);
+              const added = new_str.filter(l => !old_str.includes(l)).slice(0, 15);
+
+              const body = [
+                `## 🔔 Mudança detectada: \`${slug}\``,
+                ``,
+                `**Data/hora:** ${hoje} ${hora} UTC`,
+                `**Fonte:** ${url}`,
+                ``,
+                `### O que mudou`,
+                ``,
+                `**Removido:**`,
+                '```json',
+                removed.join('\n') || '(nada removido)',
+                '```',
+                ``,
+                `**Adicionado:**`,
+                '```json',
+                added.join('\n') || '(nada adicionado)',
+                '```',
+                ``,
+                `### Acção necessária`,
+                `1. Verificar a fonte manualmente: ${url}`,
+                `2. Se os valores/condições mudaram: actualizar a página HTML correspondente`,
+                `3. Actualizar a data de verificação na página`,
+                `4. Fechar esta issue após correcção`,
+              ].join('\n');
+
+              // Evitar duplicados — verificar se já existe issue aberta para este slug hoje
+              const existing = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'fonte-alterada',
+              });
+
+              const duplicate = existing.data.find(i =>
+                i.title.includes(slug) && i.title.includes(hoje)
+              );
+
+              if (!duplicate) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `🔔 Mudança detectada: ${slug} (${hoje})`,
+                  body,
+                  labels: ['fonte-alterada', 'verificar'],
+                });
+              }
+
+              // Actualizar latest com novo conteúdo
+              fs.writeFileSync(latest_path, new_content);
+            }
+
+      - name: Commit latest JSONs
+        run: |
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git add data/scraped/*_latest.json data/scraped/*.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Sem alterações para commitar."
+          else
+            DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
+            git commit -m "data: detectar-mudancas ${DATE}"
+            git push
+          fi

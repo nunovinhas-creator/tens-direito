@@ -1,0 +1,114 @@
+name: Verificar Links (lychee)
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run lychee
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: |
+            --accept 200,201,204,301,302
+            --exclude-status-code 403
+            --timeout 15
+            --max-retries 3
+            --user-agent "Mozilla/5.0 (compatible; tensdireito-linkcheck/1.0)"
+            --exclude "localhost"
+            --exclude "127.0.0.1"
+            ./*.html
+          fail: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Abrir issue se houver 404
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const hoje = new Date().toISOString().slice(0, 10);
+
+            // lychee grava relatório em lychee/out.md por defeito
+            const report_paths = ['lychee/out.md', 'lychee_out.md', 'out.md'];
+            let report = '';
+            for (const p of report_paths) {
+              if (fs.existsSync(p)) {
+                report = fs.readFileSync(p, 'utf8');
+                break;
+              }
+            }
+
+            if (!report) {
+              console.log('Relatório lychee não encontrado — nada a reportar.');
+              return;
+            }
+
+            // Detectar apenas 404 reais (excluir 403 que são restrições esperadas)
+            const broken = report
+              .split('\n')
+              .filter(l => l.match(/\[404\]|\[500\]|\[410\]/));
+
+            if (broken.length === 0) {
+              console.log('Sem links quebrados. ✓');
+              return;
+            }
+
+            const body = [
+              `## ❌ Links quebrados detectados — ${hoje}`,
+              ``,
+              `Auditoria semanal com [lychee](https://lychee.cli.rs/).`,
+              `Status 403 excluídos (portais .pt que bloqueiam bots — comportamento esperado).`,
+              ``,
+              `### Links com erro`,
+              '```',
+              broken.join('\n'),
+              '```',
+              ``,
+              `### Acção`,
+              `- Para cada link com 404: remover o \`href\` da página ou substituir pelo URL pai.`,
+              `- Após correcção, fechar esta issue.`,
+              ``,
+              `**Relatório completo:**`,
+              '```',
+              report.slice(0, 3000),
+              '```',
+            ].join('\n');
+
+            // Verificar se já existe issue aberta para esta semana
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'link-quebrado',
+            });
+
+            if (issues.data.length > 0) {
+              // Actualizar issue existente
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: `### Actualização ${hoje}\n\n${broken.join('\n')}`,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `❌ Link quebrado detectado (${hoje})`,
+                body,
+                labels: ['link-quebrado', 'verificar'],
+              });
+            }

@@ -122,6 +122,30 @@ sem link nenhum.
 
 ---
 
+## STACK DE AUTOMAÇÃO (100% gratuito, sem serviços externos)
+
+```
+GitHub Actions Playwright  →  data/scraped/  (diário 06:00 UTC)
+GitHub Actions lychee      →  verificação links  (semanal segunda 07:00 UTC)
+GitHub Actions detectar    →  Issues automáticas  (2x/dia 06:00 e 18:00 UTC)
+Claude Code (local)        →  lê JSONs → gera HTML
+GitHub Pages               →  publica tensdireito.com
+```
+
+### Workflows
+
+| Ficheiro | Cron | Função |
+|---|---|---|
+| `scrape-fontes.yml` | `0 6 * * *` | Playwright scrape das 5 fontes + Issue se conteúdo mudou |
+| `verificar-links.yml` | `0 7 * * 1` | lychee testa todos os links HTML + Issue se 404 |
+| `detectar-mudancas.yml` | `0 6,18 * * *` | Compara hash com latest + Issue se mudança |
+| `noticias-diarias.yml` | `0 7 * * *` | RSS → selecciona → insere em noticias.html |
+
+### Labels de Issues automáticas
+- `fonte-alterada` — conteúdo de uma fonte mudou, verificar e actualizar HTML
+- `link-quebrado` — link com 404 confirmado, remover ou corrigir
+- `verificar` — marcador genérico de revisão pendente
+
 ## FLUXO DE PUBLICAÇÃO
 
 → Ver `.claude/commands/publicar-pagina.md` para o pipeline completo (6 passos).

@@ -1,0 +1,133 @@
+name: Scrape Fontes Oficiais
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4 lxml
+          playwright install chromium --with-deps
+
+      - name: Run Playwright scraper
+        run: python scripts/scraper_playwright.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      - name: Detect changes and open issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+
+            const scraped_dir = 'data/scraped';
+            if (!fs.existsSync(scraped_dir)) {
+              console.log('Directório data/scraped não existe ainda.');
+              return;
+            }
+
+            const files = fs.readdirSync(scraped_dir)
+              .filter(f => f.endsWith('.json') && !f.endsWith('_latest.json'));
+
+            const hoje = new Date().toISOString().slice(0, 10);
+
+            for (const file of files) {
+              const slug = file.replace(/_\d{4}-\d{2}-\d{2}\.json$/, '');
+              const latest_path = path.join(scraped_dir, `${slug}_latest.json`);
+              const new_path = path.join(scraped_dir, file);
+
+              if (!file.includes(hoje)) continue;
+
+              const new_content = fs.readFileSync(new_path, 'utf8');
+              const new_hash = crypto.createHash('sha256').update(new_content).digest('hex');
+
+              if (!fs.existsSync(latest_path)) {
+                fs.writeFileSync(latest_path, new_content);
+                console.log(`Criado latest para ${slug}`);
+                continue;
+              }
+
+              const old_content = fs.readFileSync(latest_path, 'utf8');
+              const old_hash = crypto.createHash('sha256').update(old_content).digest('hex');
+
+              if (new_hash === old_hash) {
+                console.log(`${slug}: sem alterações`);
+                continue;
+              }
+
+              console.log(`${slug}: MUDANÇA DETECTADA`);
+
+              // Comparação simples de linhas para diff legível
+              const old_lines = old_content.split('\n');
+              const new_lines = new_content.split('\n');
+              const removed = old_lines.filter(l => !new_lines.includes(l)).slice(0, 20);
+              const added = new_lines.filter(l => !old_lines.includes(l)).slice(0, 20);
+
+              const diff_body = [
+                `## ⚠️ Fonte alterada: \`${slug}\``,
+                ``,
+                `**Data:** ${hoje}`,
+                `**Ficheiro anterior:** \`${slug}_latest.json\``,
+                `**Ficheiro novo:** \`${file}\``,
+                ``,
+                `### Linhas removidas`,
+                '```',
+                removed.join('\n') || '(nenhuma)',
+                '```',
+                ``,
+                `### Linhas adicionadas`,
+                '```',
+                added.join('\n') || '(nenhuma)',
+                '```',
+                ``,
+                `### Acção recomendada`,
+                `Verificar manualmente a fonte e actualizar a página HTML se necessário.`,
+                `Após revisão, fechar esta issue e actualizar a data de verificação na página.`,
+              ].join('\n');
+
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `⚠️ Fonte alterada: ${slug} (${hoje})`,
+                body: diff_body,
+                labels: ['fonte-alterada', 'verificar'],
+              });
+
+              // Actualizar latest
+              fs.writeFileSync(latest_path, new_content);
+            }
+
+      - name: Commit JSONs
+        run: |
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git add data/scraped/
+          if git diff --staged --quiet; then
+            echo "Sem novos JSONs para commitar."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "data: scrape fontes ${DATE}"
+            git push
+          fi
