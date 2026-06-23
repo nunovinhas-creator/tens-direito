@@ -47,42 +47,72 @@ NUNCA escrever valores, condições ou prazos de memória.
 Sempre ir à fonte primária ANTES de redigir.
 Se a fonte não confirmar o facto, o facto não entra no site.
 
-### Manuais escolares / MEGA
-- Fonte primária: https://mega.mec.pt
-- Legislação: Portaria que regulamenta o MEGA (pesquisar no DRE)
-- Verificar: quem tem direito, como levantar, calendário
-- ATENÇÃO CONFIRMADA: manuais gratuitos para TODOS os alunos
-  do ensino público, independentemente de escalão ASE
+### Abono de Família
+- URL canónico: https://www.seg-social.pt/abono-de-familia-para-criancas-e-jovens
+- Simulador oficial: https://www.seg-social.pt/ptss/sps/simulador/6
+- Segurança Social Direta: https://app.seg-social.pt/ptss/ssd
+- Prova escolar / menu Família: https://app.seg-social.pt/ptss/ssd (menu Família)
+- IAS 2026: 537,13 € (Portaria em vigor)
+- Verificar escalões e valores no portal antes de publicar
 
 ### ASE — Ação Social Escolar
-- Fonte primária: https://www.dge.mec.pt/acao-social-escolar
+- URL canónico DGE: https://www.dge.mec.pt/acao-social-escolar
 - Despacho anual que fixa escalões e valores (pesquisar DRE)
 - Verificar: escalões A e B, o que cobre cada um, prazos
+- ATENÇÃO: não existe portal público para EE — candidatura é
+  presencial nos serviços administrativos da escola/agrupamento.
+  Não linkar para SIGE — é sistema interno das escolas.
 - ATENÇÃO: a declaração que os EE entregam é emitida
   pela Segurança Social, não é declaração de rendimentos própria
 
-### Abono de família
-- Fonte primária: https://www.seg-social.pt/abono-de-familia
-- IAS 2026: 537,13€ (Portaria n.º XX/2026)
-- Verificar escalões e valores no portal antes de publicar
+### MEGA — Manuais Escolares Gratuitos
+- URL canónico DGE: https://www.dge.mec.pt/manuais-escolares
+- Gestão interna (só escolas): https://www.igefe.mec.pt
+- ATENÇÃO: mega.mec.pt NÃO é URL público válido — não usar.
+  O portal público é dge.mec.pt/manuais-escolares
+- ATENÇÃO CONFIRMADA: manuais gratuitos para TODOS os alunos
+  do ensino público, independentemente de escalão ASE
 
-### Bolsa de mérito
-- Fonte primária: https://www.dge.mec.pt/bolsa-de-merito
+### Bolsa de Mérito
+- URL canónico DGE: https://www.dge.mec.pt/bolsas-de-merito
+- Candidatura: presencial na secretaria da escola
 - Despacho anual (pesquisar DRE pelo título "bolsa de mérito")
 - Verificar: média mínima, condição de ASE, valor exato
 
 ### Passe sub-23
-- Fonte primária: https://www.imtt.pt ou https://www.gov.pt
+- Portal cidadão: https://www.gov.pt
 - Verificar: condições actuais, como pedir, o que muda aos 23
 
 ### Segurança Social (geral)
-- Simulador oficial: https://simulador.seg-social.pt
-- Portal de prestações: https://www.seg-social.pt/prestacoes-pecuniarias
+- Informação geral: https://www.seg-social.pt
+- Segurança Social Direta: https://app.seg-social.pt/ptss/ssd
 - Legislação: https://dre.pt (pesquisar pelo nome da prestação)
 
+### IEFP — Subsídio de Desemprego
+- URL: https://www.iefp.pt/subsidio-de-desemprego
+
 ### Diário da República (todas as áreas)
-- https://dre.pt/pesquisa — pesquisar pelo nome da medida + ano
+- Pesquisa: https://dre.pt/pesquisa
+- Série I (diplomas principais): https://dre.pt/dre/legislacao-consolidada
 - Usar sempre o número da Portaria/Despacho como referência
+
+### Gov.pt — Portal do Cidadão
+- Portal cidadão: https://www.gov.pt
+
+---
+
+## REGRA DE LINKS (obrigatória)
+
+Antes de qualquer link entrar numa página HTML:
+1. O URL tem de estar na lista de URLs verificados acima, OU
+2. Ter sido testado com requests.get() com status 200, OU
+3. Ser um URL do tipo https://www.[dominio-oficial].pt/[path]
+   confirmado na pesquisa Google com site:[dominio]
+
+NUNCA inventar subpaths de portais oficiais.
+Se não houver URL confirmado: linkar para a página-mãe
+ou escrever "consulta nos serviços da escola/agrupamento"
+sem link nenhum.
 
 ---
 
