@@ -157,6 +157,71 @@ Antes de fazer commit, confirmar:
 4. Confirmar fontes com `/scan`
 5. Commit + push → GitHub Pages publica automaticamente
 
+## PIPELINE OBRIGATÓRIO DE GERAÇÃO DE CONTEÚDO
+
+### Regra absoluta
+NUNCA gerar HTML de conteúdo sem primeiro correr o scraper.
+Sem dados do scraper = sem página. Sem excepções.
+
+### Ordem de execução obrigatória
+
+Passo 1 — SCRAPE
+  Correr: python scripts/scraper_fontes.py [fonte]
+  Output obrigatório: data/scraped/[fonte]_[data].json
+  Se falhar: registar em VERIFICACAO-PENDENTE.md e PARAR.
+  Nunca avançar com dados de memória.
+
+Passo 2 — VALIDAR
+  Confirmar que o JSON tem conteúdo real (não página de erro).
+  Confirmar que os valores fazem sentido (ex: IAS ~537€,
+  não 5€ nem 5000€).
+  Se inválido: registar motivo e PARAR.
+
+Passo 3 — GERAR
+  Correr: python scripts/gerar_pagina.py [slug] [fonte_json]
+  O HTML é gerado a partir do JSON — nunca de memória.
+  Cada facto no HTML tem tag de origem:
+  [FONTE: url | data_acesso]
+
+Passo 4 — AUDITAR LINKS
+  Antes do commit, testar TODOS os links da página com
+  web_fetch ou requests.get().
+  Link com erro = link removido ou marcado [VERIFICAR].
+  Nunca publicar links não testados.
+
+Passo 5 — REGISTAR
+  Atualizar data/scraped/_index.json com:
+  - página gerada
+  - fonte usada
+  - data do scrape
+  - próxima revisão recomendada
+
+Passo 6 — COMMIT
+  Mensagem obrigatória inclui sempre:
+  "fonte: [url] | scraped: [data] | próxima revisão: [data]"
+
+### O que fazer se o scraper falhar
+
+1. Registar em VERIFICACAO-PENDENTE.md com motivo
+2. Tentar fonte alternativa (ex: DRE em vez do portal)
+3. Se todas as fontes falharem: NÃO publicar a página
+4. Nunca usar memória como fallback
+
+### Links — regra de ouro
+Um link só entra no site se passar em requests.get()
+com status 200. Se devolver 403, 404 ou timeout:
+- Substituir pelo URL da página-mãe que funciona
+- Ou remover e mencionar "consulta nos serviços da escola/portal"
+- Nunca inventar URLs plausíveis
+
+### Auditoria periódica de links
+O agente validador-fontes corre semanalmente:
+python scripts/scraper_fontes.py --audit-links
+Verifica todos os links de todas as páginas publicadas.
+Links quebrados são corrigidos antes da próxima publicação.
+
+---
+
 ## Não fazer
 
 - Não usar Jekyll ou qualquer SSG (`.nojekyll` garante HTML puro)
