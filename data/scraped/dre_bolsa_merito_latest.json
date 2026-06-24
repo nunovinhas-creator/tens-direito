@@ -1,16 +1,17 @@
 {
   "url": "https://dre.pt/rss/dr1s.rss",
-  "data_acesso": "2026-06-24T06:11:29.750350+00:00",
+  "data_acesso": "2026-06-24T10:31:25.311235+00:00",
   "status": "ok",
   "fonte": "DRE RSS Série I",
   "conteudo_extraido": {
     "keywords": [
-      "bolsa",
-      "mérito"
+      "Despacho",
+      "bolsa"
     ],
     "total_no_rss": 0,
     "resultados": []
   },
   "nota": "Despacho anual que fixa condições e valor da bolsa de mérito — Série I do DR",
-  "hash_conteudo": "f7fcac7521e315357c07e53fcdfc57e215bc37579921482d5152957755f6ff98"
+  "hash_conteudo": "87ceb7ca7d62b5de9564f8d48c536a7bff255cc4a0424117a8a967c0553f7b19",
+  "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
 }

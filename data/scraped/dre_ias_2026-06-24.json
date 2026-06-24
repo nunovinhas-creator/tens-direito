@@ -1,17 +1,16 @@
 {
   "url": "https://dre.pt/rss/dr1s.rss",
-  "data_acesso": "2026-06-24T10:26:43.786227+00:00",
+  "data_acesso": "2026-06-24T10:31:25.312460+00:00",
   "status": "ok",
   "fonte": "DRE RSS Série I",
   "conteudo_extraido": {
     "keywords": [
-      "indexante",
-      "apoios sociais"
+      "indexante dos apoios sociais"
     ],
     "total_no_rss": 0,
     "resultados": []
   },
   "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
-  "hash_conteudo": "af691b9e3f2e843f44b1f1a3001677082362df5dde5b191bf4ff6056dc22e40f",
+  "hash_conteudo": "72475a36f7f695cbfb3fa871df40dff8df10ff21c1bde70d6a9bb8b2bbc82481",
   "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
 }
