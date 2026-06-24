@@ -1,6 +1,6 @@
 {
   "url": "https://dre.pt/rss/dr1s.rss",
-  "data_acesso": "2026-06-24T06:30:48.641857+00:00",
+  "data_acesso": "2026-06-24T09:42:34.779577+00:00",
   "status": "ok",
   "fonte": "DRE RSS Série I",
   "conteudo_extraido": {
@@ -12,5 +12,6 @@
     "resultados": []
   },
   "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
-  "hash_conteudo": "af691b9e3f2e843f44b1f1a3001677082362df5dde5b191bf4ff6056dc22e40f"
+  "hash_conteudo": "af691b9e3f2e843f44b1f1a3001677082362df5dde5b191bf4ff6056dc22e40f",
+  "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
 }

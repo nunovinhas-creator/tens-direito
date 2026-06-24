@@ -1,12 +1,13 @@
 {
   "url": "https://www.seg-social.pt/rendimento-social-de-insercao",
   "url_original": "https://www.seg-social.pt/rendimento-social-de-insercao",
-  "data_acesso": "2026-06-24T06:29:53.957500+00:00",
+  "data_acesso": "2026-06-24T09:41:42.485308+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "",
     "paragrafos": [],
     "itens_lista": []
   },
-  "hash_conteudo": "17bdc1116d1e915644b68b5e67f4e4cc080bd51b501c2bb80bf9cb63794c2b25"
+  "hash_conteudo": "17bdc1116d1e915644b68b5e67f4e4cc080bd51b501c2bb80bf9cb63794c2b25",
+  "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
 }

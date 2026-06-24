@@ -1,7 +1,7 @@
 {
   "url": "https://www.seg-social.pt/abono-de-familia",
   "url_original": "https://www.seg-social.pt/abono-de-familia",
-  "data_acesso": "2026-06-24T06:29:46.891258+00:00",
+  "data_acesso": "2026-06-24T09:41:34.947016+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "",
@@ -9,5 +9,6 @@
     "itens_lista": [],
     "tabelas": []
   },
-  "hash_conteudo": "773ec15d5106c462e46cfe9fdf84ceb9f50384b4f8665073312621700f9a4a00"
+  "hash_conteudo": "773ec15d5106c462e46cfe9fdf84ceb9f50384b4f8665073312621700f9a4a00",
+  "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
 }
