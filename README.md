@@ -15,6 +15,7 @@ Actualizado automaticamente a partir do repositório em **24 de junho de 2026**.
 |---|---|
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
+| [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de Mérito 2025/2026: quem tem direito, valor e como candidatar |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`noticias.html`](noticias.html) | Notícias — Tens Direito |
@@ -279,6 +280,9 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 | `dge_manuais` | https://www.dge.mec.pt/manuais-escolares | ✓ | 2026-06-23 |
 | `iefp_desemprego` | https://www.iefp.pt/subsidio-desemprego | ✓ | 2026-06-23 |
 | `dre_legislacao` | — | ⚠️ 403 esperado | 2026-06-23 |
+| `dre_bolsa_merito` | https://dre.pt/api/dre/v1/search/?q=bolsa+merito+ensino+secundario&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
+| `dre_ase_escaloes` | https://dre.pt/api/dre/v1/search/?q=acao+social+escolar+escaloes&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
+| `dre_ias` | https://dre.pt/api/dre/v1/search/?q=indexante+apoios+sociais+2026&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
 
 <!-- END:FONTES -->
 
@@ -286,6 +290,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 24 de junho de 2026 às 06:24 · gerado automaticamente por `atualizar-readme.yml`*
+*Atualizado em 24 de junho de 2026 às 06:49 · gerado automaticamente por `atualizar-readme.yml`*
 
 <!-- END:RODAPE -->
