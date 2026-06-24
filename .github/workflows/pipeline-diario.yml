@@ -128,6 +128,49 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
 
+      # ── Step 4b: Verificar datas sazonais ───────────────────────────────────
+      - name: Verificar datas expiradas
+        run: python3 scripts/verificar_datas.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      - name: Abrir Issues de datas expiradas
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let alertas = [];
+            try {
+              alertas = JSON.parse(fs.readFileSync('data/alertas_datas.json', 'utf8'));
+            } catch(_) {}
+
+            const hoje = new Date().toISOString().slice(0, 10);
+
+            for (const a of alertas) {
+              // Evitar duplicados: verificar se já existe issue com o mesmo título este ano
+              const ano = new Date().getFullYear();
+              const existing = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'data-expirada',
+              });
+              const duplicate = existing.data.find(i => i.title === a.titulo);
+              if (!duplicate) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: a.titulo,
+                  body: a.corpo,
+                  labels: ['data-expirada', 'verificar'],
+                });
+                console.log(`Issue criada: ${a.titulo}`);
+              } else {
+                console.log(`Issue já existe: ${a.titulo}`);
+              }
+            }
+            console.log(`${alertas.length} alerta(s) processado(s)`);
+
       # ── Step 5: Actualizar README ────────────────────────────────────────────
       - name: Actualizar README
         uses: actions/github-script@v7
