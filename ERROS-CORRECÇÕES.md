@@ -115,6 +115,20 @@ Fonte: DL n.º 220/2006 + Instituto da Segurança Social + IAS 2026 (537,13 €)
 - **Correcção 10 — Trabalhadores independentes:** Adicionadas duas modalidades distintas: economicamente dependentes (≥50% receitas de um cliente) → 360 dias/24 meses; cessação de actividade involuntária → 720 dias/48 meses, taxa 25,2%.
 - **Correcção 11 — Declaração do empregador:** Adicionado Modelo RP5044-DGSS como documento obrigatório; se empregador recusar emitir, ACT emite em 30 dias.
 
+## Correcção #011 — 2026-06-24
+
+**`rsi.html` — 7 erros corrigidos**
+
+Fontes: Portaria n.º 71/2026/1, de 13 de fevereiro · Lei n.º 13/2003, de 21 de maio · verificado 24/06/2026.
+
+- **Correcção 1 — Formulário RSI 1 (crítico):** Todas as referências a "formulário RSI 28" substituídas por "formulário RSI 1" (Requerimento inicial). RSI 28 é a Declaração de Alterações, usada após aprovação. RSI 1 é o formulário para o pedido inicial. Corrigido no HTML visível, no passo a passo, no bloco de documentos e no JSON-LD HowTo.
+- **Correcção 2 — Prazo de 45 dias:** Substituída a indicação errada "a Segurança Social tem 45 dias para decidir" pela regra correcta: "após a aprovação, o Contrato de Inserção deve ser formalizado com o Núcleo Local de Inserção (NLI) no prazo de 45 dias seguidos". Corrigido no HTML e no JSON-LD HowTo.
+- **Correcção 3 — Valores oficiais 2026 confirmados:** Removido o aviso de dúvida sobre valores. A Portaria n.º 71/2026/1, de 13 de fevereiro, confirmou o RSI base em 247,56 € (46,09% do IAS 537,13 €): titular 247,56 €; adulto adicional 173,29 € (70%); menor 123,78 € (50%).
+- **Correcção 4 — Limite de património confirmado:** Removido aviso de dúvida. O limite de 32.227,80 € (60 × IAS 537,13 €) está confirmado para 2026.
+- **Correcção 5 — Exemplo prático actualizado 2026:** Substituído exemplo com valores 2025 (654,03 €) por valores 2026 confirmados: 2 adultos + 2 crianças = 668,41 €; rendimentos 450,50 €; RSI = 217,91 €/mês. Adicionada nota sobre rendimentos de trabalho (80% após contribuições).
+- **Correcção 6 — FAQ acumulação com subsídio de desemprego:** Actualizado o item da tabela de acumulação com regra explícita: subsídio conta 100% nos rendimentos; se exceder valor máximo RSI, RSI = 0; acumulação útil em agregados grandes com subsídios baixos. Adicionado novo bloco FAQ com exemplo ilustrativo.
+- **Correcção 7 — FAQ menores de 18 anos:** Actualizada a condição de elegibilidade: "rendimentos próprios superiores a 70% do RSI base = 173,29 €/mês em 2026 (Portaria n.º 71/2026/1)" — valor concreto explicitado. Adicionados ao JSON-LD FAQPage: formulário RSI 1, prazo 45 dias (contrato inserção), valor RSI 2026. Fonte adicionada: Portaria n.º 71/2026/1, de 13 de fevereiro (diariodarepublica.pt).
+
 ## Correcção #009 — 2026-06-24
 
 **`abono-de-familia.html` — 12 erros corrigidos, valores actualizados Portaria n.º 60/2026/1**

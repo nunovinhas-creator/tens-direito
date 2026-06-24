@@ -58,6 +58,30 @@
       },
       {
         "@type": "Question",
+        "name": "Qual é o formulário para pedir o RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O formulário para o pedido inicial de RSI é o RSI 1 (Requerimento inicial). O formulário RSI 28 é a Declaração de Alterações, usada apenas para comunicar alterações após a aprovação. O RSI 1 está disponível na Segurança Social Direta (seg-social.pt)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que são os 45 dias do RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Os 45 dias no contexto do RSI referem-se ao prazo máximo para celebrar o Contrato de Inserção após a aprovação da prestação. Após seres notificado da aprovação do RSI, deves formalizar o Contrato de Inserção com o Núcleo Local de Inserção (NLI) no prazo de 45 dias seguidos. Não é o prazo de decisão da Segurança Social."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Qual o valor do RSI em 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O RSI base em 2026 é de 247,56€ por adulto titular (46,09% do IAS 2026 de 537,13€), fixado pela Portaria n.º 71/2026/1, de 13 de fevereiro. Cada adulto adicional soma 173,29€ (70% do RSI base) e cada menor de 18 anos soma 123,78€ (50% do RSI base). O valor total do agregado é calculado somando estes componentes e subtraindo os rendimentos actuais."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "O RSI conta como rendimento para outros apoios?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -85,8 +109,8 @@
     "step": [
       {"@type": "HowToStep", "position": 1, "name": "Aceder à Segurança Social Direta", "text": "Acede a www.seg-social.pt e autentica com Cartão de Cidadão, Chave Móvel Digital ou NISS."},
       {"@type": "HowToStep", "position": 2, "name": "Navegar para RSI", "text": "Vai a \"Prestações\" → \"Rendimento Social de Inserção\". Em \"Evento de Vida\" selecciona \"Apoio Social\", em \"Assunto\" selecciona \"Rendimento Social de Inserção\" e em \"Motivo\" selecciona \"Apresentar um pedido\"."},
-      {"@type": "HowToStep", "position": 3, "name": "Preencher o formulário RSI 28", "text": "Preenche o formulário RSI 28 e anexa os documentos necessários: identificação de todos os membros do agregado, recibos de remuneração, e outros conforme o teu caso."},
-      {"@type": "HowToStep", "position": 4, "name": "Submeter e guardar o número do pedido", "text": "Submete o requerimento e guarda o número do pedido. A Segurança Social tem 45 dias para decidir."},
+      {"@type": "HowToStep", "position": 3, "name": "Preencher o formulário RSI 1", "text": "Preenche o formulário RSI 1 (Requerimento inicial) e anexa os documentos necessários: identificação de todos os membros do agregado, recibos de remuneração, e outros conforme o teu caso."},
+      {"@type": "HowToStep", "position": 4, "name": "Submeter e guardar o número do pedido", "text": "Submete o requerimento e guarda o número do pedido. Após a aprovação, o Contrato de Inserção deve ser formalizado com o Núcleo Local de Inserção (NLI) no prazo de 45 dias seguidos."},
       {"@type": "HowToStep", "position": 5, "name": "Cumprir o contrato de inserção", "text": "Após aprovação, assina e cumpre o contrato de inserção obrigatório com o Núcleo Local de Inserção."}
     ]
   }
@@ -259,7 +283,7 @@ footer a{color:#6c757d}
       <div style="background:#FEF9EC;border:1px solid #FDE68A;border-radius:6px;padding:.9rem 1.1rem;margin-top:1rem">
         <strong>Excepção à regra dos 18 anos</strong><br>
         <p style="margin-top:.4rem;font-size:.9rem;color:#495057">Menores de 18 anos têm direito <strong>se</strong>:<br>
-        — Rendimentos próprios superiores a 70% do RSI (≈ 173,29 €/mês), <strong>E</strong><br>
+        — Rendimentos próprios superiores a 70% do RSI base = <strong>173,29 €/mês</strong> em 2026 (Portaria n.º 71/2026/1), <strong>E</strong><br>
         — Grávida, casada/o ou em união de facto há mais de 2 anos, <strong>OU</strong><br>
         — Tem menores ou pessoas com deficiência a cargo
         </p>
@@ -288,11 +312,8 @@ footer a{color:#6c757d}
         </table>
       </div>
 
-      <p class="nota-tabela">Exemplo: 2 adultos + 1 criança → limite = 247,56 + 173,29 + 123,78 = <strong>544,63 €/mês</strong></p>
+      <p class="nota-tabela">Exemplo: 2 adultos + 1 criança → limite = 247,56 + 173,29 + 123,78 = <strong>544,63 €/mês</strong> · Valores confirmados — Portaria n.º 71/2026/1, de 13 de fevereiro</p>
 
-      <div class="aviso-valores" style="margin-top:1rem">
-        ⚠️ <strong>Confirma os valores exactos 2026 em seg-social.pt.</strong> Os valores base publicados em algumas fontes são de 2025 (242,23€ por adulto titular). Os valores de 2026 com o novo IAS (537,13€) podem ter sido actualizados. Verifica sempre em <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> antes de tomar decisões.
-      </div>
 
       <p style="margin-top:.75rem;font-size:.9rem;color:#495057"><strong>Limite de património:</strong> O agregado não pode ter activos financeiros superiores a <strong>32.227,80 €</strong> (60 × IAS 2026). A habitação própria permanente <em>não</em> conta para este limite.</p>
     </div>
@@ -304,11 +325,14 @@ footer a{color:#6c757d}
       <p style="background:#f0fdf9;padding:.75rem 1rem;border-radius:6px;font-family:monospace;font-size:.95rem;color:#0F172A;margin:.75rem 0"><strong>Valor RSI = Valor máximo do agregado − Rendimentos actuais</strong></p>
 
       <div class="exemplo-box">
-        <p><strong>Exemplo prático — 2 adultos + 2 crianças</strong></p>
-        <p>Valor máximo = 242,23 + 169,56 + 121,12 + 121,12 = <strong>654,03 €</strong></p>
+        <p><strong>Exemplo prático 2026 — 2 adultos + 2 crianças</strong></p>
+        <p>Valor máximo = 247,56 + 173,29 + 123,78 + 123,78 = <strong>668,41 €</strong></p>
         <p>Rendimento actual do agregado = <strong>450,50 €</strong></p>
-        <p>RSI a receber = 654,03 − 450,50 = <strong>203,53 €/mês</strong></p>
-        <p style="font-size:.8rem;color:#3B82F6;margin-top:.5rem">Nota: este exemplo usa valores publicados de 2025. Confirma os valores actualizados de 2026 em seg-social.pt.</p>
+        <p>RSI a receber = 668,41 − 450,50 = <strong>217,91 €/mês</strong></p>
+        <p style="font-size:.8rem;color:#3B82F6;margin-top:.5rem">Valores de 2026 confirmados — Portaria n.º 71/2026/1, de 13 de fevereiro.</p>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:.85rem 1.1rem;margin-top:.75rem;font-size:.88rem;color:#1E40AF">
+        <strong>Nota sobre rendimentos de trabalho:</strong> Os rendimentos de trabalho dependente não contam a 100% — a Segurança Social contabiliza apenas 80% após deduzidas as contribuições. Se o beneficiário começar a trabalhar durante o RSI, aplica-se protecção adicional no 1.º ano.
       </div>
     </div>
 
@@ -322,8 +346,8 @@ footer a{color:#6c757d}
           Em "Assunto": selecciona <em>"Rendimento Social de Inserção"</em><br>
           Em "Motivo": selecciona <em>"Apresentar um pedido"</em>
         </span></li>
-        <li><span>Preenche o <strong>formulário RSI 28</strong> e anexa os documentos necessários (ver lista abaixo).</span></li>
-        <li><span>Submete o requerimento e <strong>guarda o número do pedido</strong>. A Segurança Social tem 45 dias para decidir.</span></li>
+        <li><span>Preenche o <strong>formulário RSI 1</strong> (Requerimento inicial) e anexa os documentos necessários (ver lista abaixo).</span></li>
+        <li><span>Submete o requerimento e <strong>guarda o número do pedido</strong>. Após a aprovação, o Contrato de Inserção deve ser formalizado com o Núcleo Local de Inserção (NLI) no prazo de <strong>45 dias seguidos</strong>.</span></li>
         <li><span>Após aprovação, assina e cumpre o <strong>contrato de inserção</strong> com o Núcleo Local de Inserção.</span></li>
       </ol>
       <p style="font-size:.88rem;color:#6c757d;margin-top:.5rem">Também podes pedir <strong>presencialmente</strong> num balcão da Segurança Social da tua área de residência.</p>
@@ -333,7 +357,7 @@ footer a{color:#6c757d}
       <span class="badge">Documentos</span>
       <h2>O que precisas de juntar</h2>
       <ul>
-        <li>Requerimento <strong>RSI 28</strong> (disponível na SS Direta)</li>
+        <li>Requerimento <strong>RSI 1</strong> — Formulário de requerimento inicial (disponível na SS Direta)</li>
         <li>Documentos de identificação de <strong>todos os membros do agregado</strong> (CC, BI ou certidão de nascimento)</li>
         <li>Recibos de remuneração do <strong>mês anterior</strong> (rendimentos regulares) ou dos <strong>3 meses anteriores</strong> (rendimentos variáveis)</li>
         <li>Comprovativo de residência legal (para não cidadãos portugueses)</li>
@@ -366,7 +390,7 @@ footer a{color:#6c757d}
       <ul>
         <li><span class="tag-sim">SIM</span> Prestação Social para a Inclusão (componente base)</li>
         <li><span class="tag-sim">SIM</span> Abono de família</li>
-        <li><span class="tag-sim">SIM</span> Subsídio de desemprego (em alguns casos — confirmar)</li>
+        <li><span class="tag-sim">SIM</span> Subsídio de desemprego — o subsídio soma-se aos rendimentos do agregado a 100%; se o subsídio exceder o valor máximo RSI do agregado, RSI = 0. Útil em agregados grandes com subsídios baixos ou parciais.</li>
         <li><span class="tag-nao">NÃO</span> Apoios do estatuto de asilo/refugiado</li>
       </ul>
     </div>
@@ -401,8 +425,17 @@ footer a{color:#6c757d}
       <details>
         <summary>Posso receber RSI se tiver casa própria?</summary>
         <div class="resposta">
-          <p>Sim. A <strong>habitação própria permanente não conta</strong> para o limite de património. O que conta são os activos financeiros (depósitos, investimentos, etc.). O limite é de 32.227,80 € em activos financeiros (60 × IAS 2026).</p>
-          <p class="fonte-inline">Fonte: gov.pt · seg-social.pt — verificado 24/06/2026</p>
+          <p>Sim. A <strong>habitação própria permanente não conta</strong> para o limite de património. O que conta são os activos financeiros (depósitos, investimentos, etc.). O limite é de <strong>32.227,80 €</strong> em activos financeiros (60 × IAS 2026 = 60 × 537,13 €). Confirmado — não há aviso de dúvida sobre este valor.</p>
+          <p class="fonte-inline">Fonte: Portaria n.º 71/2026/1 · seg-social.pt — verificado 24/06/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Posso acumular o RSI com o subsídio de desemprego?</summary>
+        <div class="resposta">
+          <p>Sim. O RSI pode acumular com o subsídio de desemprego. O subsídio de desemprego é somado aos rendimentos do agregado a <strong>100%</strong>. Se o subsídio for igual ou superior ao valor máximo de RSI do teu agregado, o RSI = 0 € (não recebes nada). A acumulação é útil em agregados grandes com subsídios de desemprego baixos ou parciais.</p>
+          <p><strong>Exemplo:</strong> Agregado 2 adultos + 2 crianças, valor máximo RSI = 668,41 €. Se o subsídio de desemprego for 450 €, o RSI será 668,41 − 450 = 218,41 €/mês.</p>
+          <p class="fonte-inline">Fonte: seg-social.pt · Lei n.º 13/2003 — verificado 24/06/2026</p>
         </div>
       </details>
     </section>
@@ -413,7 +446,8 @@ footer a{color:#6c757d}
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — Segurança Social, informação sobre RSI<br>
       · <a href="https://www.gov.pt" target="_blank" rel="noopener">gov.pt</a> — Portal único do governo<br>
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta (seg-social.pt)</a> — pedido online<br>
-      · <a href="https://dre.pt" target="_blank" rel="noopener">dre.pt</a> — Lei n.º 13/2003, de 21 de maio (legislação base)
+      · <a href="https://dre.pt" target="_blank" rel="noopener">dre.pt</a> — Lei n.º 13/2003, de 21 de maio (legislação base)<br>
+      · <a href="https://diariodarepublica.pt" target="_blank" rel="noopener">diariodarepublica.pt</a> — Portaria n.º 71/2026/1, de 13 de fevereiro (valor RSI 2026: 247,56 €)
     </div>
 
     <div class="disclaimer">
