@@ -141,6 +141,14 @@ Fonte: IGeFE / Ministério da Educação · verificado 24/06/2026.
 - **Nuance 4 — Voucher indica novo vs reutilizado:** Adicionado bloco informativo: o próprio vale especifica "Livraria" (manual novo) ou "Escola" (manual reutilizado); atribuição aleatória pelo sistema para 5.º ao 12.º ano.
 - **Nuance 5 — Bloqueio automático por NIF do educando:** Reforçada a secção de devolução: bloqueio é automático (sistema cruza com escolas) e afecta o NIF do educando, não o do encarregado. JSON-LD actualizado com as nuances 1, 3, 4 e 5.
 
+## Fact-checking Bolsa de Mérito — 2026-06-24
+
+**`bolsa-de-merito.html` — sem erros críticos; 1 nuance adicionada**
+
+Fonte: Despacho n.º 8452-A/2015, art. 14.º · verificado 24/06/2026.
+
+- **Nuance 1 — Arredondamento da média:** Adicionada nota após a linha da média ≥ 14 valores para o 10.º/11.º ano: "A média é arredondada às unidades para efeitos de elegibilidade. Um aluno com 13,5 de média vê a nota arredondada para 14 e torna-se elegível." Com referência ao Despacho n.º 8452-A/2015, art. 14.º.
+
 ## Correcção #009 — 2026-06-24
 
 **`abono-de-familia.html` — 12 erros corrigidos, valores actualizados Portaria n.º 60/2026/1**
