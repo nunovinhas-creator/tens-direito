@@ -167,8 +167,29 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 | IMT | https://www.imt-ip.pt | OK |
 | Portal Finanças | https://www.portaldasfinancas.gov.pt | OK |
 
+### Diplomas legais confirmados (link para homepage diariodarepublica.pt)
+
+| Diploma | Tema | Nota |
+|---|---|---|
+| Portaria n.º 480-A/2025/1 | IAS 2026 = 537,13 € | 30 dez 2025 |
+| Portaria n.º 60/2026/1 | Abono família — valores 2026 | 5 fev 2026 |
+| Portaria n.º 71/2026/1 | RSI base 2026 = 247,56 € | 13 fev 2026 |
+| DL n.º 220/2006 | Subsídio desemprego — regime jurídico | 3 nov 2006 |
+| DL n.º 91/2009 | Subsídio parental — regime jurídico | 9 abr 2009 |
+| Despacho n.º 8452-A/2015 | ASE e bolsa de mérito | link directo DR disponível |
+| Despacho n.º 5296/2017 | Alteração ao ASE 8452-A/2015 | link directo DR disponível |
+| Lei n.º 13/2003 | RSI — lei base | 21 mai 2003 |
+| Portaria n.º 7-A/2024 | Passe sub-23 gratuito | 5 jan 2024 |
+
 ### Valores de referência (2026)
-- **IAS 2026**: 537,13 € (Portaria em vigor)
+- **IAS 2026**: 537,13 € (Portaria n.º 480-A/2025/1, de 30 de dezembro)
+- **Salário mínimo 2026**: 920,00 €
+- **RSI base 2026**: 247,56 € (Portaria n.º 71/2026/1)
+- **Abono 1.º escalão ≤36 meses**: 190,98 €/mês (Portaria n.º 60/2026/1)
+- **Abono 1.º escalão >72 meses**: 75,13 €/mês (Portaria n.º 60/2026/1)
+- **Subsídio desemprego mínimo**: 537,13 €/mês (100% IAS)
+- **Subsídio desemprego máximo**: 1.342,83 €/mês (2,5 × IAS)
+- **Bolsa de mérito 2025/2026**: 1.306,25 € (2,5 × IAS 2025 = 2,5 × 522,50 €)
 - Limite 2.º escalão abono: 1,5 × 537,13 = **805,70 €/mês** per capita
 
 ### Regra de links
@@ -249,4 +270,4 @@ Triggers obrigatórios de actualização:
 
 ---
 
-*Última revisão automática: 2026-06-24*
+*Última revisão automática: 2026-06-24 — diplomas legais e valores 2026 adicionados*
