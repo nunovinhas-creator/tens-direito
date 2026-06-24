@@ -69,3 +69,14 @@ Regra aplicada: quando um subpath de portal oficial devolve erro, usar a homepag
 - **Substituição aplicada:** `https://app.seg-social.pt/ptss/ssd` → `https://www.seg-social.pt`
 - **Texto âncora actualizado:** "Segurança Social Direta" → "Segurança Social Direta (seg-social.pt)"
 - **Regra adicionada ao CLAUDE.md:** tabela de URLs PROIBIDOS com `app.seg-social.pt/ptss/ssd` marcado como área privada.
+
+## Correcção #007 — 2026-06-24
+
+**`acao-social-escolar.html` — NEE removido, visitas e material corrigidos, legislação completa**
+
+- **Correcção 1 — NEE removida:** A frase "Alunos com necessidades educativas especiais (NEE) poderão ter acesso independentemente do escalão de rendimento — confirmar junto do agrupamento" foi removida. Informação não confirmada na legislação base (Despacho n.º 8452-A/2015 e alterações).
+- **Correcção 2 — Visitas de estudo:** Substituída menção genérica a "isenção ou redução de custos" pela regra real: os encarregados pagam sempre; os alunos com escalão são ressarcidos posteriormente até ao limite anual (Escalão A: 20 €/ano letivo; Escalão B: 10 €/ano letivo).
+- **Correcção 3 — Material escolar:** Actualizados os valores do apoio de material de desgaste (cadernos, lápis, mochilas — NÃO livros): Escalão A 16 €/ano letivo; Escalão B 8 €/ano letivo.
+- **Correcção 4 — Nota MEGA:** Reforçado o bloco MEGA com explicação de que o programa abrange todos os alunos do ensino público desde 2016/2017 e que o apoio de "material escolar" da ASE é exclusivamente para material de desgaste.
+- **Correcção 5 — Legislação:** Substituídas fontes genéricas pela legislação base completa: Despacho n.º 8452-A/2015, Despacho n.º 5296/2017, Despacho n.º 7255/2018, com links para diariodarepublica.pt.
+- **Correcção 6 — JSON-LD:** FAQ sobre manuais actualizada com distinção MEGA vs. material de desgaste e valores; adicionada pergunta/resposta sobre visitas de estudo com regra de ressarcimento posterior.
