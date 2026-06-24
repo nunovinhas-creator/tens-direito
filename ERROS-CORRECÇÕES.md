@@ -59,3 +59,13 @@
 - `passe-sub23.html`: subpath `cp.pt/passageiros/pt/consultar-horarios/precos/passes-sub18-e-sub23` → `https://www.cp.pt`
 
 Regra aplicada: quando um subpath de portal oficial devolve erro, usar a homepage do domínio.
+
+## Correcção #006 — 2026-06-24
+
+**`app.seg-social.pt/ptss/ssd` substituído por `seg-social.pt` em todas as páginas**
+
+- **Erro:** O URL `https://app.seg-social.pt/ptss/ssd` (Segurança Social Direta) foi usado como link público em `rsi.html` e `subsidio-desemprego.html`. Este URL devolve 404 para utilizadores não autenticados — é uma área privada que exige login prévio.
+- **Páginas corrigidas:** `rsi.html` (3 ocorrências), `subsidio-desemprego.html` (7 ocorrências)
+- **Substituição aplicada:** `https://app.seg-social.pt/ptss/ssd` → `https://www.seg-social.pt`
+- **Texto âncora actualizado:** "Segurança Social Direta" → "Segurança Social Direta (seg-social.pt)"
+- **Regra adicionada ao CLAUDE.md:** tabela de URLs PROIBIDOS com `app.seg-social.pt/ptss/ssd` marcado como área privada.

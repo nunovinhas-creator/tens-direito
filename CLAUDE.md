@@ -150,7 +150,7 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 |---|---|---|
 | Abono de família | https://www.seg-social.pt/abono-de-familia | OK |
 | Abono — simulador | https://www.seg-social.pt/ptss/sps/simulador/6 | OK |
-| Segurança Social Direta | https://app.seg-social.pt/ptss/ssd | OK |
+| Segurança Social Direta | https://www.seg-social.pt | OK (usar homepage — /ptss/ssd devolve 404 sem autenticação) |
 | Segurança Social (geral) | https://www.seg-social.pt | OK |
 | ASE — DGE homepage | https://www.dge.mec.pt | OK (subpath /acao-social-escolar devolve 403) |
 | MEGA — manuais | https://www.dge.mec.pt/manuais-escolares | OK |
@@ -175,6 +175,11 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 NUNCA inventar subpaths de portais oficiais.
 Quando um subpath devolve erro: usar a homepage do domínio.
 Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupamento" sem link.
+
+### URLs PROIBIDOS (devolvem 404 ou área privada)
+| URL proibido | Motivo | Usar em substituição |
+|---|---|---|
+| `https://app.seg-social.pt/ptss/ssd` | Área privada — 404 sem autenticação | `https://www.seg-social.pt` |
 
 ---
 
