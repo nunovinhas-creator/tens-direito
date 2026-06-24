@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XP46PM8H1Q');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Começa aqui — Tens Direito</title>
+  <meta name="description" content="Não sabes por onde começar? Responde a três perguntas e descobre os apoios sociais e direitos que podem aplicar-se ao teu caso.">
+  <meta property="og:title" content="Começa aqui — Tens Direito">
+  <meta property="og:description" content="Não sabes por onde começar? Responde a três perguntas e descobre os apoios sociais e direitos que podem aplicar-se ao teu caso.">
+  <meta property="og:url" content="https://tensdireito.com/comecar-aqui.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f8f9fa;color:#212529;line-height:1.6}
+header{background:#fff;border-bottom:2px solid #0F766E;padding:1rem 1.5rem}
+nav{display:flex;align-items:center;gap:1.5rem;max-width:900px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+.logo-text{font-size:1.4rem;font-weight:700;line-height:1}
+.logo-text span.tens{color:#0F172A}
+.logo-text span.direito{color:#0D9488}
+nav a.nav-link{color:#0F172A;text-decoration:none;font-size:0.95rem}
+nav a.nav-link:hover{color:#0D9488}
+nav a.nav-link.active{color:#0D9488;font-weight:700}
+.hero{background:#0F766E;color:white;padding:2.5rem 1.5rem;text-align:center}
+.hero h1{font-size:1.8rem;margin-bottom:0.5rem}
+.hero p{opacity:.9;font-size:1.05rem;max-width:540px;margin:0 auto}
+main{max-width:740px;margin:2.5rem auto;padding:0 1rem}
+.wizard-step{display:none}
+.wizard-step.active{display:block}
+.step-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D9488;margin-bottom:0.5rem}
+.step-question{font-size:1.3rem;font-weight:800;color:#0F172A;margin-bottom:1.75rem;line-height:1.3}
+.opcoes{display:flex;flex-direction:column;gap:0.75rem}
+.opcao{background:#fff;border:2px solid #dee2e6;border-radius:10px;padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:0.9rem;font-size:1rem;font-weight:500;color:#0F172A;transition:border-color .15s,background .15s;text-align:left;width:100%}
+.opcao:hover{border-color:#0D9488;background:#f0fdf9}
+.opcao .opcao-icon{font-size:1.6rem;flex-shrink:0}
+.opcao .opcao-texto strong{display:block;font-size:0.98rem}
+.opcao .opcao-texto span{font-size:0.83rem;color:#6c757d}
+.resultados{display:none}
+.resultados.active{display:block}
+.resultados-titulo{font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:1.25rem}
+.resultado-cards{display:flex;flex-direction:column;gap:1rem}
+.res-card{background:#fff;border-radius:10px;padding:1.25rem 1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;align-items:flex-start;gap:1rem}
+.res-card .res-icon{font-size:2rem;flex-shrink:0}
+.res-card h3{font-size:1rem;font-weight:800;color:#0F172A;margin-bottom:0.2rem}
+.res-card p{font-size:0.87rem;color:#495057;line-height:1.5;margin-bottom:0.65rem}
+.res-card a.btn-res{display:inline-block;background:#0F766E;color:#fff;font-size:0.85rem;font-weight:700;padding:0.45rem 1rem;border-radius:6px;text-decoration:none}
+.res-card a.btn-res:hover{background:#115E59}
+.tag-res{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:4px;margin-bottom:0.5rem}
+.tag-res.vermelho{background:#FEE2E2;color:#991B1B}
+.tag-res.verde{background:#D1FAE5;color:#065F46}
+.tag-res.azul{background:#DBEAFE;color:#1E40AF}
+.reiniciar{background:none;border:none;color:#0D9488;font-size:0.9rem;cursor:pointer;padding:0;margin-top:1.5rem;text-decoration:underline}
+.progress-bar{height:4px;background:#e9ecef;border-radius:4px;margin-bottom:2rem;overflow:hidden}
+.progress-fill{height:100%;background:#0D9488;border-radius:4px;transition:width .3s ease}
+.nenhum{background:#fff3cd;border-left:4px solid #ffc107;padding:1rem 1.25rem;border-radius:4px;font-size:0.9rem;color:#664d03;margin-bottom:1rem}
+footer{text-align:center;padding:2rem;color:#6c757d;font-size:0.85rem}
+footer a{color:#6c757d}
+@media(max-width:600px){.hero h1{font-size:1.5rem}.step-question{font-size:1.1rem}}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">
+        <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+      <a href="/comecar-aqui.html" class="nav-link active">Começa aqui</a>
+      <a href="/#guias-de-apoios" class="nav-link">Guias</a>
+      <a href="/noticias.html" class="nav-link">Notícias</a>
+      <a href="/sobre.html" class="nav-link">Sobre</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Por onde queres começar?</h1>
+    <p>Três perguntas rápidas para encontrar o apoio certo para o teu caso.</p>
+  </section>
+
+  <main>
+    <div class="progress-bar"><div class="progress-fill" id="barra" style="width:0%"></div></div>
+
+    <!-- Pergunta 1 -->
+    <div class="wizard-step active" id="passo-1">
+      <div class="step-label">Pergunta 1 de 3</div>
+      <div class="step-question">Qual é a tua situação principal agora?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(1,'familia')">
+          <span class="opcao-icon">👨‍👩‍👧</span>
+          <span class="opcao-texto"><strong>Tenho filhos ou dependentes</strong><span>Quero saber apoios para a minha família</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(1,'trabalho')">
+          <span class="opcao-icon">💼</span>
+          <span class="opcao-texto"><strong>Estou desempregado/a ou a procurar emprego</strong><span>Quero saber sobre subsídios e apoios ao emprego</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(1,'estudar')">
+          <span class="opcao-icon">🎓</span>
+          <span class="opcao-texto"><strong>Estudo ou tenho filhos a estudar</strong><span>Quero saber sobre apoios escolares e bolsas</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(1,'outro')">
+          <span class="opcao-icon">🔍</span>
+          <span class="opcao-texto"><strong>Outra situação</strong><span>Habitação, saúde, transportes ou outros apoios</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 (família) -->
+    <div class="wizard-step" id="passo-2-familia">
+      <div class="step-label">Pergunta 2 de 3</div>
+      <div class="step-question">Que idade têm os teus filhos ou dependentes?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(2,'familia-bebes')">
+          <span class="opcao-icon">🍼</span>
+          <span class="opcao-texto"><strong>Até 5 anos</strong><span>Bebés e crianças pequenas</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'familia-escola')">
+          <span class="opcao-icon">🏫</span>
+          <span class="opcao-texto"><strong>6 a 17 anos</strong><span>Em idade escolar obrigatória</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'familia-jovem')">
+          <span class="opcao-icon">📚</span>
+          <span class="opcao-texto"><strong>18 a 24 anos</strong><span>A estudar no secundário ou superior</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 (estudar) -->
+    <div class="wizard-step" id="passo-2-estudar">
+      <div class="step-label">Pergunta 2 de 3</div>
+      <div class="step-question">Em que nível de ensino?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(2,'estudar-basico')">
+          <span class="opcao-icon">🏫</span>
+          <span class="opcao-texto"><strong>Ensino básico (1.º ao 9.º ano)</strong><span>ASE, refeições e manuais gratuitos</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'estudar-secundario')">
+          <span class="opcao-icon">🎒</span>
+          <span class="opcao-texto"><strong>Ensino secundário (10.º ao 12.º ano)</strong><span>ASE, bolsa de mérito e manuais</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'estudar-superior')">
+          <span class="opcao-icon">🎓</span>
+          <span class="opcao-texto"><strong>Ensino superior</strong><span>Bolsas de acção social e apoios</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 (trabalho) -->
+    <div class="wizard-step" id="passo-2-trabalho">
+      <div class="step-label">Pergunta 2 de 3</div>
+      <div class="step-question">Como descreves a tua situação no trabalho?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(2,'trabalho-desemprego')">
+          <span class="opcao-icon">📋</span>
+          <span class="opcao-texto"><strong>Fui despedido/a ou o contrato terminou</strong><span>Posso ter direito a subsídio de desemprego</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'trabalho-procura')">
+          <span class="opcao-icon">🔎</span>
+          <span class="opcao-texto"><strong>Nunca trabalhei ou perdi a proteção</strong><span>Apoios para inserção e formação</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 2 (outro) -->
+    <div class="wizard-step" id="passo-2-outro">
+      <div class="step-label">Pergunta 2 de 3</div>
+      <div class="step-question">Qual é a área que te interessa?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(2,'outro-transportes')">
+          <span class="opcao-icon">🚌</span>
+          <span class="opcao-texto"><strong>Transportes públicos</strong><span>Passes gratuitos ou com desconto</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(2,'outro-geral')">
+          <span class="opcao-icon">📖</span>
+          <span class="opcao-texto"><strong>Ver todos os guias disponíveis</strong><span>Lista completa de apoios explicados</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pergunta 3 (rendimento — para maioria dos fluxos) -->
+    <div class="wizard-step" id="passo-3">
+      <div class="step-label">Pergunta 3 de 3</div>
+      <div class="step-question">O rendimento do teu agregado familiar é baixo ou médio?</div>
+      <div class="opcoes">
+        <button class="opcao" onclick="escolher(3,'rend-baixo')">
+          <span class="opcao-icon">⬇️</span>
+          <span class="opcao-texto"><strong>Baixo</strong><span>Poderás aceder a escalões mais favoráveis</span></span>
+        </button>
+        <button class="opcao" onclick="escolher(3,'rend-medio')">
+          <span class="opcao-icon">➡️</span>
+          <span class="opcao-texto"><strong>Médio ou não sei</strong><span>Ainda podes ter direito a apoios parciais</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="resultados" id="resultados">
+      <div class="resultados-titulo" id="resultados-titulo">Com base nas tuas respostas, estes apoios podem aplicar-se ao teu caso:</div>
+      <div class="resultado-cards" id="resultado-cards"></div>
+      <p style="font-size:0.82rem;color:#6c757d;margin-top:1.25rem;line-height:1.5;">Esta ferramenta é orientativa. Confirma sempre os requisitos exactos nas fontes oficiais antes de submeter qualquer pedido.</p>
+      <button class="reiniciar" onclick="reiniciar()">↩ Recomeçar</button>
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p style="margin-top:0.5rem">tensdireito.com — Informação verificada para cidadãos portugueses</p>
+  </footer>
+
+  <script>
+    var respostas = {};
+    var passoAtual = 1;
+
+    var RESULTADOS = {
+      'familia-bebes': [
+        {icon:'👶', tag:'Segurança Social', tagCor:'verde', titulo:'Abono de família', desc:'Prestação mensal para crianças e jovens até aos 24 anos. O valor varia conforme o escalão de rendimento do agregado.', url:'/abono-de-familia.html'},
+      ],
+      'familia-escola': [
+        {icon:'👨‍👩‍👧', tag:'Segurança Social', tagCor:'verde', titulo:'Abono de família', desc:'Prestação mensal para filhos até 24 anos. Inclui majoração para escalões mais baixos.', url:'/abono-de-familia.html'},
+        {icon:'🍽️', tag:'Ministério da Educação', tagCor:'azul', titulo:'Ação Social Escolar (ASE)', desc:'Refeições subsidiadas, manuais escolares e transporte escolar para alunos do básico e secundário em função do escalão.', url:'/acao-social-escolar.html'},
+        {icon:'📚', tag:'DGE', tagCor:'azul', titulo:'Manuais escolares MEGA', desc:'Manuais gratuitos para todos os alunos do ensino público, independentemente do escalão ASE.', url:'/manuais-escolares-mega.html'},
+      ],
+      'familia-jovem': [
+        {icon:'👨‍👩‍👧', tag:'Segurança Social', tagCor:'verde', titulo:'Abono de família', desc:'Pode ser pago até aos 24 anos se o jovem estiver a estudar. Condicionado ao aproveitamento escolar.', url:'/abono-de-familia.html'},
+        {icon:'🏆', tag:'Ministério da Educação', tagCor:'azul', titulo:'Bolsa de mérito', desc:'Atribuída a alunos do ensino secundário com boas notas, independentemente do rendimento.', url:'/bolsa-de-merito.html'},
+        {icon:'🚌', tag:'IMT', tagCor:'azul', titulo:'Passe sub-23 gratuito', desc:'Passe de transportes gratuito para jovens até 23 anos em todo o país.', url:'/passe-sub23.html'},
+      ],
+      'estudar-basico': [
+        {icon:'🍽️', tag:'DGE', tagCor:'azul', titulo:'Ação Social Escolar (ASE)', desc:'Refeições subsidiadas, manuais e transporte escolar para alunos do básico conforme escalão de rendimento.', url:'/acao-social-escolar.html'},
+        {icon:'📚', tag:'DGE', tagCor:'azul', titulo:'Manuais escolares MEGA', desc:'Manuais gratuitos para todos os alunos do ensino público, sem necessidade de escalão ASE.', url:'/manuais-escolares-mega.html'},
+      ],
+      'estudar-secundario': [
+        {icon:'🍽️', tag:'DGE', tagCor:'azul', titulo:'Ação Social Escolar (ASE)', desc:'Apoio a refeições, transporte e material para alunos do secundário conforme rendimento.', url:'/acao-social-escolar.html'},
+        {icon:'📚', tag:'DGE', tagCor:'azul', titulo:'Manuais escolares MEGA', desc:'Manuais gratuitos para todos os alunos do ensino público.', url:'/manuais-escolares-mega.html'},
+        {icon:'🏆', tag:'Ministério da Educação', tagCor:'azul', titulo:'Bolsa de mérito', desc:'Para alunos do secundário com boas classificações. Candidatura na secretaria da escola.', url:'/bolsa-de-merito.html'},
+      ],
+      'estudar-superior': [
+        {icon:'🎓', tag:'Em breve', tagCor:'verde', titulo:'Bolsas de Ação Social para o Superior', desc:'Informação detalhada sobre bolsas universitárias em preparação.', url:'/#guias-de-apoios'},
+      ],
+      'trabalho-desemprego': [
+        {icon:'💼', tag:'IEFP / Seg. Social', tagCor:'vermelho', titulo:'Subsídio de desemprego', desc:'Se descontaste pelo menos 360 dias nos últimos 24 meses, podes ter direito. O pedido é feito no IEFP nos primeiros 90 dias após o término do contrato.', url:'/noticias.html'},
+      ],
+      'trabalho-procura': [
+        {icon:'🔎', tag:'IEFP', tagCor:'azul', titulo:'Subsídio social de desemprego', desc:'Para quem esgotou o subsídio de desemprego ou não reúne as condições. Condicionado ao rendimento do agregado.', url:'/noticias.html'},
+      ],
+      'outro-transportes': [
+        {icon:'🚌', tag:'IMT', tagCor:'azul', titulo:'Passe sub-23 gratuito', desc:'Passe de transportes gratuito para jovens até 23 anos em toda a rede nacional.', url:'/passe-sub23.html'},
+      ],
+      'outro-geral': [],
+    };
+
+    function escolher(passo, valor) {
+      respostas['p' + passo] = valor;
+
+      if (passo === 1) {
+        document.getElementById('barra').style.width = '33%';
+        document.getElementById('passo-1').classList.remove('active');
+        if (valor === 'familia') document.getElementById('passo-2-familia').classList.add('active');
+        else if (valor === 'estudar') document.getElementById('passo-2-estudar').classList.add('active');
+        else if (valor === 'trabalho') document.getElementById('passo-2-trabalho').classList.add('active');
+        else if (valor === 'outro') document.getElementById('passo-2-outro').classList.add('active');
+      } else if (passo === 2) {
+        document.getElementById('barra').style.width = '66%';
+        ['familia','estudar','trabalho','outro'].forEach(function(s) {
+          var el = document.getElementById('passo-2-' + s);
+          if (el) el.classList.remove('active');
+        });
+        if (valor === 'outro-geral') {
+          mostrarResultados(valor);
+        } else {
+          document.getElementById('passo-3').classList.add('active');
+        }
+      } else if (passo === 3) {
+        document.getElementById('barra').style.width = '100%';
+        document.getElementById('passo-3').classList.remove('active');
+        mostrarResultados(respostas['p2']);
+      }
+    }
+
+    function mostrarResultados(chave) {
+      var cards = RESULTADOS[chave] || [];
+      var container = document.getElementById('resultado-cards');
+      var titulo = document.getElementById('resultados-titulo');
+
+      if (chave === 'outro-geral' || !cards.length) {
+        titulo.textContent = 'Consulta todos os nossos guias disponíveis:';
+        container.innerHTML = '<a href="/#guias-de-apoios" style="display:inline-block;background:#0F766E;color:#fff;font-weight:700;padding:0.7rem 1.4rem;border-radius:8px;text-decoration:none;font-size:0.95rem">Ver todos os guias →</a>';
+      } else {
+        titulo.textContent = 'Com base nas tuas respostas, estes apoios podem aplicar-se ao teu caso:';
+        container.innerHTML = cards.map(function(c) {
+          return '<div class="res-card"><div class="res-icon">' + c.icon + '</div><div><span class="tag-res ' + c.tagCor + '">' + c.tag + '</span><h3>' + c.titulo + '</h3><p>' + c.desc + '</p><a class="btn-res" href="' + c.url + '">Ver guia completo →</a></div></div>';
+        }).join('');
+      }
+
+      document.getElementById('resultados').classList.add('active');
+    }
+
+    function reiniciar() {
+      respostas = {};
+      document.getElementById('barra').style.width = '0%';
+      document.getElementById('resultados').classList.remove('active');
+      ['1','2-familia','2-estudar','2-trabalho','2-outro','3'].forEach(function(id) {
+        var el = document.getElementById('passo-' + id);
+        if (el) el.classList.remove('active');
+      });
+      document.getElementById('passo-1').classList.add('active');
+    }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+          {"@type": "ListItem", "position": 2, "name": "Começa aqui", "item": "https://tensdireito.com/comecar-aqui.html"}
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "name": "Começa aqui — Tens Direito",
+        "description": "Assistente interactivo para descobrir apoios sociais e direitos aplicáveis à tua situação em Portugal.",
+        "url": "https://tensdireito.com/comecar-aqui.html",
+        "inLanguage": "pt-PT",
+        "isPartOf": {"@type": "WebSite", "url": "https://tensdireito.com"}
+      }
+    ]
+  }
+  </script>
+</body>
+</html>

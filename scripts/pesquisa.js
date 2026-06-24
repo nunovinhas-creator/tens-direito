@@ -14,6 +14,9 @@ var paginas = [
   {url: '/passe-sub23.html',
    titulo: 'Passe sub-23 gratuito',
    keywords: 'passe sub23 gratuito transportes como pedir metro bus comboio'},
+  {url: '/comecar-aqui.html',
+   titulo: 'Começa aqui — encontra o teu apoio',
+   keywords: 'comecar começar por onde apoio situação família trabalho estudar desemprego'},
   {url: '/noticias.html',
    titulo: 'Notícias',
    keywords: 'notícias novidades alterações apoios'}

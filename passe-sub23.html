@@ -11,6 +11,8 @@
     gtag('js', new Date());
     gtag('config', 'G-XP46PM8H1Q');
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,65 +28,58 @@
   <meta property="og:site_name" content="Tens Direito">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; line-height: 1.6; }
-    header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
-    nav { display: flex; align-items: center; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
-    .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-    .logo-text { font-size: 1.4rem; font-weight: 700; line-height: 1; }
-    .logo-text span.tens { color: #0F172A; }
-    .logo-text span.direito { color: #0D9488; }
-    nav a.nav-link { color: #0F172A; text-decoration: none; font-size: 0.95rem; }
-    nav a.nav-link:hover { color: #0D9488; }
-    .hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; }
-    .hero-inner { max-width: 900px; margin: 0 auto; }
-    .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
-    .hero .resposta-direta { background: rgba(255,255,255,0.15); border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
-    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-    h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
-    .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-    .card p { color: #495057; margin-bottom: 0.6rem; }
-    .card ul, .card ol { padding-left: 1.4rem; color: #495057; }
-    .card li { margin-bottom: 0.4rem; }
-    .card a { color: #0D9488; }
-    .badge { display: inline-block; background: #e6f4f1; color: #0F766E; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    /* Tabela */
-    .tabela-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-    thead tr { background: #0F766E; color: white; }
-    thead th { padding: 0.7rem 0.9rem; text-align: left; font-weight: 600; }
-    tbody tr:nth-child(even) { background: #f1faf9; }
-    tbody td { padding: 0.65rem 0.9rem; color: #212529; border-bottom: 1px solid #e9ecef; }
-    tbody tr:last-child td { border-bottom: none; }
-    .nota-tabela { font-size: 0.82rem; color: #6c757d; margin-top: 0.6rem; }
-    /* Passo-a-passo */
-    .passos ol { padding-left: 0; list-style: none; counter-reset: passos; }
-    .passos li { counter-increment: passos; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
-    .passos li::before { content: counter(passos); background: #0F766E; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-    .passos li span { color: #495057; padding-top: 0.2rem; }
-    /* Checklist */
-    .checklist { list-style: none; padding-left: 0; }
-    .checklist li { padding: 0.4rem 0 0.4rem 1.75rem; position: relative; color: #495057; }
-    .checklist li::before { content: "✓"; position: absolute; left: 0; color: #0F766E; font-weight: 700; }
-    /* Aviso */
-    .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.85rem 1.1rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; color: #78350f; margin-bottom: 1rem; }
-    /* Destaque */
-    .destaque-verde { background: #e6f4f1; border-left: 4px solid #0F766E; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: #1a5c56; }
-    /* Região grid */
-    .regiao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
-    @media (max-width: 600px) { .regiao-grid { grid-template-columns: 1fr; } }
-    .regiao-box { border-radius: 6px; padding: 1rem 1.25rem; background: #f8f9fa; border: 1px solid #dee2e6; }
-    .regiao-box h3 { font-size: 0.95rem; font-weight: 700; color: #0F766E; margin-bottom: 0.5rem; }
-    .regiao-box p, .regiao-box ul { font-size: 0.88rem; color: #495057; }
-    .regiao-box ul { padding-left: 1.2rem; }
-    .regiao-box li { margin-bottom: 0.3rem; }
-    /* Fonte */
-    .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
-    .fonte-bloco a { color: #0F766E; font-weight: 600; }
-    /* Disclaimer */
-    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
-    footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
-    footer a { color: #6c757d; }
-  </style>
+body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; line-height: 1.6; }
+header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
+nav { display: flex; align-items: center; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+.logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.logo-text { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.logo-text span.tens { color: #0F172A; }
+.logo-text span.direito { color: #0D9488; }
+nav a.nav-link { color: #0F172A; text-decoration: none; font-size: 0.95rem; }
+nav a.nav-link: hover { color: #0D9488; }
+.hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; }
+.hero-inner { max-width: 900px; margin: 0 auto; }
+.hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
+.hero .resposta-direta { background: rgba(255, 255, 255, 0.15); border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
+.card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
+.card p { color: #495057; margin-bottom: 0.6rem; }
+.card ul, .card ol { padding-left: 1.4rem; color: #495057; }
+.card li { margin-bottom: 0.4rem; }
+.card a { color: #0D9488; }
+.badge { display: inline-block; background: #e6f4f1; color: #0F766E; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.tabela-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+thead tr { background: #0F766E; color: white; }
+thead th { padding: 0.7rem 0.9rem; text-align: left; font-weight: 600; }
+tbody tr: nth-child(even) { background: #f1faf9; }
+tbody td { padding: 0.65rem 0.9rem; color: #212529; border-bottom: 1px solid #e9ecef; }
+tbody tr: last-child td { border-bottom: none; }
+.nota-tabela { font-size: 0.82rem; color: #6c757d; margin-top: 0.6rem; }
+.passos ol { padding-left: 0; list-style: none; counter-reset: passos; }
+.passos li { counter-increment: passos; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+.passos li: : before { content: counter(passos); background: #0F766E; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+.passos li span { color: #495057; padding-top: 0.2rem; }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 0.4rem 0 0.4rem 1.75rem; position: relative; color: #495057; }
+.checklist li: : before { content: "✓"; position: absolute; left: 0; color: #0F766E; font-weight: 700; }
+.aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.85rem 1.1rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; color: #78350f; margin-bottom: 1rem; }
+.destaque-verde { background: #e6f4f1; border-left: 4px solid #0F766E; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: #1a5c56; }
+.regiao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+@media (max-width: 600px) { .regiao-grid { grid-template-columns: 1fr; }
+    }
+.regiao-box { border-radius: 6px; padding: 1rem 1.25rem; background: #f8f9fa; border: 1px solid #dee2e6; }
+.regiao-box h3 { font-size: 0.95rem; font-weight: 700; color: #0F766E; margin-bottom: 0.5rem; }
+.regiao-box p, .regiao-box ul { font-size: 0.88rem; color: #495057; }
+.regiao-box ul { padding-left: 1.2rem; }
+.regiao-box li { margin-bottom: 0.3rem; }
+.fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
+.fonte-bloco a { color: #0F766E; font-weight: 600; }
+.disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
+footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
+footer a { color: #6c757d; }
+</style>
 
   <!-- JSON-LD FAQPage -->
   <script type="application/ld+json">
@@ -200,6 +195,7 @@
         </svg>
         <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
       </a>
+      <a href="/comecar-aqui.html" class="nav-link">Começa aqui</a>
       <a href="/#guias-de-apoios" class="nav-link">Guias</a>
       <a href="/noticias.html" class="nav-link">Notícias</a>
       <a href="/sobre.html" class="nav-link">Sobre</a>
