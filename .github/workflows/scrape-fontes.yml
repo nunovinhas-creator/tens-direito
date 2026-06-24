@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install playwright beautifulsoup4 lxml requests
+          pip install playwright beautifulsoup4 lxml requests feedparser
           playwright install chromium --with-deps
 
       - name: Run Playwright scraper

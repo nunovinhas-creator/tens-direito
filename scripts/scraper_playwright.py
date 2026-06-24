@@ -2,7 +2,7 @@
 """
 Scraper para fontes oficiais portuguesas.
 - Fontes Playwright (Chromium headless): portais .pt com browser real
-- Fontes DRE: API REST pública do Diário da República
+- Fontes DRE: RSS público da Série I (https://dre.pt/rss/dr1s.rss)
 
 Guarda resultados em data/scraped/[slug]_[YYYY-MM-DD].json
 e data/scraped/[slug]_latest.json.
@@ -13,6 +13,7 @@ Modo de uso:
 """
 
 import argparse
+import feedparser
 import hashlib
 import json
 import logging
@@ -100,30 +101,26 @@ FONTES_PLAYWRIGHT = [
     },
 ]
 
-# ── Fontes DRE (API REST) ──────────────────────────────────────────────────────
-# O DRE renderiza resultados via XHR após networkidle — Playwright fica com
-# página vazia. A API REST pública evita esse problema.
-DRE_API_URL = "https://dre.pt/api/dre/v1/search/"
+# ── Fontes DRE (RSS Série I) ───────────────────────────────────────────────────
+# O DRE não tem API REST pública. O RSS da Série I é o canal oficial e público.
+DRE_RSS_URL = "https://dre.pt/rss/dr1s.rss"
 
-FONTES_DRE = [
+FONTES_DRE_RSS = [
     {
         "slug": "dre_bolsa_merito",
-        "termo": "bolsa merito ensino secundario",
-        "tipo": "DR1S",
-        "max_resultados": 5,
+        "keywords": ["bolsa", "mérito"],
+        "max_resultados": 3,
         "nota": "Despacho anual que fixa condições e valor da bolsa de mérito — Série I do DR",
     },
     {
         "slug": "dre_ase_escaloes",
-        "termo": "acao social escolar escaloes",
-        "tipo": "DR1S",
-        "max_resultados": 5,
+        "keywords": ["ação social escolar"],
+        "max_resultados": 3,
         "nota": "Despacho anual que fixa os escalões e valores da Ação Social Escolar",
     },
     {
         "slug": "dre_ias",
-        "termo": "indexante apoios sociais 2026",
-        "tipo": "DR1S",
+        "keywords": ["indexante", "apoios sociais"],
         "max_resultados": 3,
         "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
     },
@@ -240,69 +237,61 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     return resultado
 
 
-# ── DRE API REST ───────────────────────────────────────────────────────────────
+# ── DRE RSS ────────────────────────────────────────────────────────────────────
 
-def scrape_dre(fonte: dict) -> dict | None:
-    slug = fonte["slug"]
-    termo = fonte["termo"]
-    tipo = fonte.get("tipo", "DR1S")
-    max_resultados = fonte.get("max_resultados", 5)
-    nota = fonte.get("nota", "")
-
-    log.info("A scrape (DRE API): %s — termo: %s", slug, termo)
-
-    params = {
-        "q": termo,
-        "type": tipo,
-        "sort": "date",
-        "rows": max_resultados,
-    }
-    headers = {
-        "Accept": "application/json",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    }
-
-    data = None
+def _carregar_rss_dre() -> list:
+    """Carrega o RSS da Série I — uma única chamada partilhada por todas as fontes."""
+    log.info("A carregar RSS DRE Série I: %s", DRE_RSS_URL)
     for attempt in range(1, 4):
         try:
-            r = requests.get(DRE_API_URL, params=params, headers=headers, timeout=15)
-            r.raise_for_status()
-            data = r.json()
-            break
+            feed = feedparser.parse(DRE_RSS_URL)
+            if feed.bozo and not feed.entries:
+                raise ValueError(f"feedparser bozo: {feed.bozo_exception}")
+            log.info("RSS DRE: %d entradas", len(feed.entries))
+            return feed.entries
         except Exception as exc:
-            log.warning("DRE API tentativa %d para %s: %s", attempt, slug, exc)
+            log.warning("RSS DRE tentativa %d: %s", attempt, exc)
             if attempt < 3:
                 time.sleep(2 ** attempt)
+    log.error("RSS DRE falhou após 3 tentativas")
+    return []
 
-    if data is None:
-        log.error("DRE API falhou após 3 tentativas: %s", slug)
-        return None
+
+def scrape_dre_rss(fonte: dict, entries: list) -> dict | None:
+    slug = fonte["slug"]
+    keywords = [k.lower() for k in fonte["keywords"]]
+    max_resultados = fonte.get("max_resultados", 3)
+    nota = fonte.get("nota", "")
+
+    log.info("A filtrar RSS DRE: %s — keywords: %s", slug, keywords)
 
     resultados = []
-    for item in data.get("results", []):
-        resultados.append({
-            "titulo": item.get("title", ""),
-            "numero": item.get("claint", ""),
-            "data": item.get("date", ""),
-            "url": item.get("url", ""),
-            "sumario": item.get("summary", ""),
-        })
+    for entry in entries:
+        titulo = entry.get("title", "").lower()
+        if all(k in titulo for k in keywords):
+            resultados.append({
+                "titulo": entry.get("title", ""),
+                "data": entry.get("published", ""),
+                "url": entry.get("link", ""),
+                "sumario": entry.get("summary", "")[:500],
+            })
+        if len(resultados) >= max_resultados:
+            break
 
     if not resultados:
-        log.warning("%s: DRE API devolveu 0 resultados para '%s'", slug, termo)
+        log.warning("%s: 0 resultados no RSS para keywords %s", slug, keywords)
 
     conteudo = {
-        "termo_pesquisa": termo,
-        "tipo": tipo,
-        "total_resultados": data.get("totalCount", len(resultados)),
+        "keywords": fonte["keywords"],
+        "total_no_rss": len(entries),
         "resultados": resultados,
     }
 
     resultado = {
-        "url": f"{DRE_API_URL}?q={termo.replace(' ', '+')}&type={tipo}",
+        "url": DRE_RSS_URL,
         "data_acesso": datetime.now(timezone.utc).isoformat(),
         "status": "ok",
-        "fonte": "DRE API REST",
+        "fonte": "DRE RSS Série I",
         "conteudo_extraido": conteudo,
     }
     if nota:
@@ -398,19 +387,19 @@ def main(mode: str = "scrape"):
         context.close()
         browser.close()
 
-    # ── DRE API REST ──────────────────────────────────────────────────────────
-    for fonte in FONTES_DRE:
+    # ── DRE RSS ───────────────────────────────────────────────────────────────
+    dre_entries = _carregar_rss_dre()
+    for fonte in FONTES_DRE_RSS:
         print(f"\n{'='*60}")
-        print(f"[DRE API] {fonte['slug']} — {fonte['termo']}")
+        print(f"[DRE RSS] {fonte['slug']} — keywords: {fonte['keywords']}")
         print("=" * 60)
         try:
-            r = scrape_dre(fonte)
+            r = scrape_dre_rss(fonte, dre_entries)
             if r:
                 resultados[fonte["slug"]] = "ok"
                 c = r.get("conteudo_extraido", {})
                 n = len(c.get("resultados", []))
-                total = c.get("total_resultados", "?")
-                print(f"✓ OK — {n} resultado(s) de {total} no DRE")
+                print(f"✓ OK — {n} resultado(s) filtrado(s) de {c.get('total_no_rss', '?')} no RSS")
                 for item in c.get("resultados", [])[:2]:
                     print(f"  · {item.get('data', '')} — {item.get('titulo', '')[:70]}")
                 print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
