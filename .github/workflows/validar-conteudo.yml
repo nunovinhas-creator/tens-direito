@@ -1,0 +1,125 @@
+name: Validar Conteúdo HTML
+
+on:
+  push:
+    branches: [main]
+    paths: ['**.html']
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 lxml
+
+      - name: Validar páginas HTML alteradas
+        id: validar
+        run: |
+          python3 - << 'PYEOF'
+          import subprocess, sys, re
+          from pathlib import Path
+          from bs4 import BeautifulSoup
+
+          # Páginas a excluir da validação de conteúdo
+          EXCLUIR = {"404.html", "privacidade.html", "sobre.html", "fontes.html", "noticias.html", "index.html"}
+
+          # Descobrir ficheiros HTML alterados neste push
+          result = subprocess.run(
+              ["git", "diff", "--name-only", "HEAD~1", "HEAD"],
+              capture_output=True, text=True
+          )
+          alterados = [
+              f for f in result.stdout.strip().splitlines()
+              if f.endswith(".html") and Path(f).name not in EXCLUIR and Path(f).exists()
+          ]
+
+          if not alterados:
+              print("Nenhuma página de conteúdo alterada — nada a validar.")
+              sys.exit(0)
+
+          avisos = []
+          summary_lines = ["## Validação de Conteúdo HTML\n"]
+
+          for fpath in alterados:
+              html = Path(fpath).read_text(encoding="utf-8")
+              soup = BeautifulSoup(html, "lxml")
+              checks = []
+
+              # GA4
+              if "G-XP46PM8H1Q" in html:
+                  checks.append("✅ GA4 snippet presente")
+              else:
+                  checks.append("❌ GA4 snippet em falta")
+                  avisos.append(f"{fpath}: GA4 em falta")
+
+              # og:title
+              if soup.find("meta", property="og:title"):
+                  checks.append("✅ og:title presente")
+              else:
+                  checks.append("❌ og:title em falta")
+                  avisos.append(f"{fpath}: og:title em falta")
+
+              # og:description
+              if soup.find("meta", property="og:description"):
+                  checks.append("✅ og:description presente")
+              else:
+                  checks.append("❌ og:description em falta")
+                  avisos.append(f"{fpath}: og:description em falta")
+
+              # JSON-LD
+              ld_scripts = soup.find_all("script", type="application/ld+json")
+              if ld_scripts:
+                  checks.append(f"✅ JSON-LD presente ({len(ld_scripts)} bloco(s))")
+              else:
+                  checks.append("❌ JSON-LD em falta")
+                  avisos.append(f"{fpath}: JSON-LD em falta")
+
+              # Disclaimer
+              if "Aviso de independência" in html or "disclaimer" in html.lower():
+                  checks.append("✅ Disclaimer presente")
+              else:
+                  checks.append("❌ Disclaimer em falta")
+                  avisos.append(f"{fpath}: disclaimer em falta")
+
+              # Verificado a [data]
+              if re.search(r"Verificado a \d{1,2}", html):
+                  checks.append("✅ Data de verificação presente")
+              else:
+                  checks.append("❌ Data de verificação em falta")
+                  avisos.append(f"{fpath}: 'Verificado a [data]' em falta")
+
+              estado = "✅" if all(c.startswith("✅") for c in checks) else "⚠️"
+              summary_lines.append(f"\n### {estado} `{fpath}`\n")
+              for c in checks:
+                  summary_lines.append(f"- {c}\n")
+
+          summary_lines.append(f"\n---\n**Total de avisos: {len(avisos)}**\n")
+          if avisos:
+              summary_lines.append("\n**Avisos:**\n")
+              for a in avisos:
+                  summary_lines.append(f"- {a}\n")
+
+          summary = "".join(summary_lines)
+          print(summary)
+
+          # Escrever no GitHub Actions Step Summary
+          import os
+          summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_file:
+              with open(summary_file, "a") as f:
+                  f.write(summary)
+
+          # NÃO bloquear deploy — exit 0 sempre
+          sys.exit(0)
+          PYEOF

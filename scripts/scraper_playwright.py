@@ -306,10 +306,47 @@ def scrape_dre_rss(fonte: dict, entries: list) -> dict | None:
 
 # ── Guardar resultado ──────────────────────────────────────────────────────────
 
+AVISOS_LOG = SCRAPED_DIR / "avisos.log"
+MIN_CHARS_CONTEUDO = 100
+
+
+def _conteudo_chars(conteudo: dict) -> int:
+    """Conta caracteres totais do conteúdo extraído (títulos + parágrafos + listas)."""
+    total = len(conteudo.get("titulo", ""))
+    for p in conteudo.get("paragrafos", []):
+        total += len(p)
+    for li in conteudo.get("itens_lista", []):
+        total += len(li)
+    for r in conteudo.get("resultados", []):
+        total += len(r.get("titulo", "")) + len(r.get("sumario", ""))
+    return total
+
+
+def _registar_aviso(slug: str, motivo: str) -> None:
+    ts = datetime.now(timezone.utc).isoformat()
+    linha = f"{ts} AVISO slug={slug} motivo={motivo}\n"
+    with open(AVISOS_LOG, "a", encoding="utf-8") as f:
+        f.write(linha)
+    log.warning("AVISO registado em avisos.log: %s — %s", slug, motivo)
+
+
 def _guardar_resultado(slug: str, resultado: dict) -> None:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     daily_path = SCRAPED_DIR / f"{slug}_{today}.json"
     latest_path = SCRAPED_DIR / f"{slug}_latest.json"
+
+    # Validação mínima de conteúdo
+    conteudo = resultado.get("conteudo_extraido", {})
+    chars = _conteudo_chars(conteudo)
+    if chars < MIN_CHARS_CONTEUDO:
+        motivo = f"conteúdo suspeito: apenas {chars} caracteres (mínimo {MIN_CHARS_CONTEUDO})"
+        _registar_aviso(slug, motivo)
+        # Guardar o ficheiro diário mesmo assim (para auditoria), mas NÃO actualizar latest
+        resultado["aviso"] = motivo
+        with open(daily_path, "w", encoding="utf-8") as f:
+            json.dump(resultado, f, ensure_ascii=False, indent=2)
+        log.warning("%s: latest NÃO actualizado — %s", slug, motivo)
+        return
 
     with open(daily_path, "w", encoding="utf-8") as f:
         json.dump(resultado, f, ensure_ascii=False, indent=2)

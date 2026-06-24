@@ -26,6 +26,20 @@ Verificação obrigatória antes de cada push:
   git branch  → deve mostrar * main
   Se não mostrar: git checkout main primeiro
 
+## CHECKLIST OBRIGATÓRIA ANTES DE COMMIT
+
+Antes de qualquer `git commit`, verificar cada ponto:
+
+- [ ] `git branch` mostra `* main`
+- [ ] Página tem GA4 snippet `G-XP46PM8H1Q`
+- [ ] Página tem `og:title` e `og:description`
+- [ ] Página tem JSON-LD (`FAQPage` ou `HowTo` + `BreadcrumbList`)
+- [ ] Página tem `"Verificado a [data]"` visível no corpo
+- [ ] Página tem disclaimer de independência (`Aviso de independência`)
+- [ ] Links testados — nenhum inventado (ver regra de links no CLAUDE.md)
+- [ ] `sitemap.xml` actualizado se nova página
+- [ ] Commit vai directamente para `main` (não para branch)
+
 ## O que é este projeto
 
 Site informativo PT-PT sobre apoios sociais, direitos e burocracia em Portugal.
