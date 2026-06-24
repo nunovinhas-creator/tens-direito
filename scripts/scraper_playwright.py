@@ -45,6 +45,7 @@ FONTES_PLAYWRIGHT = [
     {
         "slug": "seg_social_abono",
         "url": "https://www.seg-social.pt/abono-de-familia",
+        "titulo_js": True,
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -55,6 +56,7 @@ FONTES_PLAYWRIGHT = [
     {
         "slug": "seg_social_rsi",
         "url": "https://www.seg-social.pt/rendimento-social-de-insercao",
+        "titulo_js": True,
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -209,6 +211,19 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 
     html = page.content()
     conteudo = _extrair_conteudo(html, fonte["seletores"])
+
+    if fonte.get("titulo_js"):
+        try:
+            titulo_js = page.evaluate(
+                "document.querySelector('h1')?.innerText || "
+                "document.querySelector('.page-title')?.innerText || "
+                "document.title || ''"
+            )
+            if titulo_js and titulo_js.strip():
+                conteudo["titulo"] = titulo_js.strip()
+                log.info("%s: título via JS: %s", slug, conteudo["titulo"][:80])
+        except Exception as exc:
+            log.warning("%s: page.evaluate título falhou: %s", slug, exc)
 
     resultado = {
         "url": url_usado,
