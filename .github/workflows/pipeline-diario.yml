@@ -1,0 +1,395 @@
+name: Pipeline Diário
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4 lxml requests feedparser mlscraper
+          playwright install chromium --with-deps
+
+      # ── Step 1: Scrape fontes ────────────────────────────────────────────────
+      - name: Scrape fontes oficiais
+        run: python scripts/scraper_playwright.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      # ── Step 2: Detectar mudanças ────────────────────────────────────────────
+      - name: Detectar mudanças e registar
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+
+            const scraped_dir = 'data/scraped';
+            if (!fs.existsSync(scraped_dir)) return;
+
+            const hoje = new Date().toISOString().slice(0, 10);
+            const hora = new Date().toISOString().slice(11, 16);
+
+            const fontes = {
+              'seg_social_abono': 'https://www.seg-social.pt/abono-de-familia',
+              'seg_social_rsi': 'https://www.seg-social.pt/rendimento-social-de-insercao',
+              'dge_ase': 'https://www.dge.mec.pt',
+              'dge_manuais': 'https://www.dge.mec.pt/manuais-escolares',
+              'mega_datas': 'https://www.dge.mec.pt/manuais-escolares',
+              'iefp_desemprego': 'https://www.iefp.pt/subsidio-desemprego',
+            };
+
+            const mudancas = [];
+
+            for (const [slug, url] of Object.entries(fontes)) {
+              const latest_path = path.join(scraped_dir, `${slug}_latest.json`);
+
+              const files = fs.readdirSync(scraped_dir)
+                .filter(f => f.startsWith(slug + '_') && f.includes(hoje) && !f.endsWith('_latest.json'))
+                .sort().reverse();
+
+              if (files.length === 0) {
+                console.log(`${slug}: sem scrape de hoje`);
+                continue;
+              }
+
+              const new_path = path.join(scraped_dir, files[0]);
+              const new_content = fs.readFileSync(new_path, 'utf8');
+              let new_data;
+              try { new_data = JSON.parse(new_content); } catch(e) { continue; }
+
+              if (!fs.existsSync(latest_path)) {
+                fs.writeFileSync(latest_path, new_content);
+                console.log(`${slug}: primeiro scrape guardado como latest`);
+                continue;
+              }
+
+              const old_content = fs.readFileSync(latest_path, 'utf8');
+              let old_data;
+              try { old_data = JSON.parse(old_content); } catch(e) {
+                fs.writeFileSync(latest_path, new_content);
+                continue;
+              }
+
+              const hashOf = (d) => {
+                const c = {...d};
+                ['data_acesso','data_scrape','timestamp','data_run'].forEach(k => delete c[k]);
+                return crypto.createHash('sha256').update(JSON.stringify(c, Object.keys(c).sort())).digest('hex');
+              };
+
+              const new_hash = new_data.hash_conteudo || hashOf(new_data);
+              const old_hash = old_data.hash_conteudo || hashOf(old_data);
+
+              if (new_hash === old_hash) {
+                console.log(`${slug}: sem alterações`);
+              } else {
+                console.log(`${slug}: MUDANÇA DETECTADA`);
+                mudancas.push({ slug, url, hoje, hora, new_data, old_data });
+                fs.writeFileSync(latest_path, new_content);
+              }
+            }
+
+            // Guardar lista de mudanças para step de Issues (mais tarde)
+            fs.mkdirSync('data', { recursive: true });
+            fs.writeFileSync('data/mudancas.json', JSON.stringify(mudancas.map(m => ({
+              slug: m.slug, url: m.url, data: m.hoje, hora: m.hora
+            })), null, 2));
+            console.log(`${mudancas.length} mudança(s) registada(s) em data/mudancas.json`);
+
+      # ── Step 3: Notícias diárias ─────────────────────────────────────────────
+      - name: Notícias diárias
+        run: python scripts/gerar_noticias.py || echo "gerar_noticias.py falhou ou não existe — a continuar"
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      # ── Step 4: Validar valores estruturados ────────────────────────────────
+      - name: Validar valores estruturados
+        run: python scripts/extrair_valores.py || echo "extrair_valores.py falhou — a continuar"
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      # ── Step 5: Actualizar README ────────────────────────────────────────────
+      - name: Actualizar README
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const hoje = new Date();
+            const data_str = hoje.toLocaleDateString('pt-PT', {
+              day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon'
+            });
+            const hora_str = hoje.toLocaleTimeString('pt-PT', {
+              hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon'
+            });
+
+            const listar = (dir, ext) => {
+              try { return fs.readdirSync(dir).filter(f => !ext || f.endsWith(ext)).sort(); }
+              catch(_) { return []; }
+            };
+
+            const htmls = fs.readdirSync('.').filter(f => f.endsWith('.html') && f !== '404.html').sort();
+            const paginas_linhas = htmls.map(f => {
+              let titulo = f.replace('.html', '');
+              try {
+                const m = fs.readFileSync(f, 'utf8').match(/<title>([^<]+)<\/title>/i);
+                if (m) titulo = m[1].trim();
+              } catch(_) {}
+              return `| [\`${f}\`](${f}) | ${titulo} |`;
+            });
+
+            const workflows = listar('.github/workflows', '.yml');
+            const agents   = listar('.claude/agents', '.md');
+            const commands = listar('.claude/commands', '.md');
+            const skills   = listar('.claude/skills', '.md');
+            const scripts  = listar('scripts', '.py');
+
+            const wf_info = {
+              'pipeline-diario.yml': { cron: '`0 6 * * *` (diário 06:00 UTC)', fn: 'Pipeline único: scrape + detectar mudanças + notícias + validar + README + push' },
+              'verificar-links.yml': { cron: '`0 7 * * 1` (segunda 07:00 UTC)', fn: 'lychee testa todos os links HTML + Issue se 404' },
+              'validar-conteudo.yml': { cron: 'push para main (`**.html`)', fn: 'Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator' },
+            };
+
+            const wf_linhas = workflows.map(f => {
+              const info = wf_info[f] || { cron: '—', fn: f.replace('.yml','') };
+              return `| \`${f}\` | ${info.cron} | ${info.fn} |`;
+            });
+
+            const secao_estado = [
+              '## ESTADO ATUAL',
+              '',
+              `Actualizado automaticamente a partir do repositório em **${data_str}**.`,
+              '',
+              '### Páginas publicadas',
+              '',
+              '| Ficheiro | Título |',
+              '|---|---|',
+              ...paginas_linhas,
+            ].join('\n');
+
+            const secao_arq = [
+              '## 7. Arquitetura técnica',
+              '',
+              'Browser-only / mobile, Python, agentes Claude, deploy estático grátis (GitHub Pages).',
+              '',
+              '```',
+              'tens-direito/',
+              '├── README.md',
+              '├── data/',
+              '│   ├── apoios/',
+              '│   ├── burocracia/',
+              '│   └── scraped/            ← JSONs diários das fontes (gerados automaticamente)',
+              '│       └── _fontes_config.json',
+              '├── .github/',
+              '│   └── workflows/',
+              ...workflows.map(f => `│       ├── ${f}`),
+              '├── .claude/',
+              '│   ├── agents/',
+              ...agents.map(f => `│   │   ├── ${f}`),
+              '│   ├── commands/',
+              ...commands.map(f => `│   │   ├── ${f}`),
+              '│   └── skills/',
+              ...skills.map(f => `│       ├── ${f}`),
+              '├── scripts/',
+              ...scripts.map(f => `│   ├── ${f}`),
+              '└── *.html                  ← páginas estáticas publicadas',
+              '```',
+            ].join('\n');
+
+            const secao_actions = [
+              '## GitHub Actions',
+              '',
+              '> Stack 100% gratuito — sem serviços externos.',
+              '> Apenas `pipeline-diario.yml` faz `git push`.',
+              '',
+              '| Workflow | Cron / Trigger | Função |',
+              '|---|---|---|',
+              ...wf_linhas,
+              '',
+              '**Labels de Issues automáticas:**',
+              '- `fonte-alterada` — conteúdo de uma fonte mudou',
+              '- `link-quebrado` — link com 404 confirmado',
+              '- `verificar` — revisão pendente',
+            ].join('\n');
+
+            const secao_agentes = [
+              '## Agentes disponíveis',
+              '',
+              '**Commands** (`.claude/commands/`) — invocar com `/nome-do-ficheiro`:',
+              '',
+              ...(commands.length ? commands.map(f => `- [\`/${f.replace('.md','')}\`](.claude/commands/${f})`) : ['- (nenhum)']),
+              '',
+              '**Skills** (`.claude/skills/`) — usadas internamente pelos commands:',
+              '',
+              ...(skills.length ? skills.map(f => `- [\`${f.replace('.md','')}\`](.claude/skills/${f})`) : ['- (nenhuma)']),
+              '',
+              '**Agents** (`.claude/agents/`) — agentes especializados:',
+              '',
+              ...(agents.length ? agents.map(f => `- [\`${f.replace('.md','')}\`](.claude/agents/${f})`) : ['- (nenhum)']),
+            ].join('\n');
+
+            let fontes_linhas = [];
+            try {
+              const cfg = JSON.parse(fs.readFileSync('data/scraped/_fontes_config.json', 'utf8'));
+              for (const [slug, info] of Object.entries(cfg.fontes || {})) {
+                const url = info.url_principal || '—';
+                const status = info.status_bot ? (info.status_bot.includes('403') ? '⚠️ 403 esperado' : info.status_bot) : '✓';
+                const verif = info.verificado_manualmente || '—';
+                fontes_linhas.push(`| \`${slug}\` | ${url} | ${status} | ${verif} |`);
+              }
+            } catch(_) {}
+
+            const secao_fontes_auto = fontes_linhas.length ? [
+              '',
+              '### Fontes monitorizadas',
+              '',
+              '| Slug | URL principal | Status (bot) | Verificado |',
+              '|---|---|---|---|',
+              ...fontes_linhas,
+            ].join('\n') : '';
+
+            const rodape = `---\n\n*Atualizado em ${data_str} às ${hora_str} · gerado automaticamente por \`pipeline-diario.yml\`*`;
+
+            const substituir_secao = (texto, marca_inicio, marca_fim, novo_conteudo) => {
+              const re = new RegExp(`(<!-- ${marca_inicio} -->)[\\s\\S]*?(<!-- ${marca_fim} -->)`, 'g');
+              if (re.test(texto)) {
+                return texto.replace(re, `<!-- ${marca_inicio} -->\n\n${novo_conteudo}\n\n<!-- ${marca_fim} -->`);
+              }
+              return texto + `\n\n<!-- ${marca_inicio} -->\n\n${novo_conteudo}\n\n<!-- ${marca_fim} -->`;
+            };
+
+            const substituir_heading = (texto, heading_re, novo_conteudo) => {
+              const m = texto.match(heading_re);
+              if (!m) return texto;
+              const idx_start = texto.indexOf(m[0]);
+              const nivel = m[0].match(/^(#+)/)[1];
+              const re_next = new RegExp(`\\n${nivel}[^#]`, 'g');
+              re_next.lastIndex = idx_start + m[0].length;
+              const next = re_next.exec(texto);
+              const idx_end = next ? next.index : texto.length;
+              return texto.slice(0, idx_start) + novo_conteudo + '\n\n' + texto.slice(idx_end);
+            };
+
+            let readme = fs.readFileSync('README.md', 'utf8');
+            readme = substituir_secao(readme, 'AUTO:ESTADO', 'END:ESTADO', secao_estado);
+            readme = substituir_secao(readme, 'AUTO:ACTIONS', 'END:ACTIONS', secao_actions);
+            readme = substituir_secao(readme, 'AUTO:AGENTES', 'END:AGENTES', secao_agentes);
+            readme = substituir_secao(readme, 'AUTO:FONTES', 'END:FONTES', secao_fontes_auto);
+            readme = substituir_heading(readme, /^## 7\. Arquitetura técnica[^\n]*/m, secao_arq);
+            readme = substituir_secao(readme, 'AUTO:RODAPE', 'END:RODAPE', rodape);
+
+            const readme_atual = fs.readFileSync('README.md', 'utf8');
+            if (readme !== readme_atual) {
+              fs.writeFileSync('README.md', readme);
+              console.log('README actualizado.');
+            } else {
+              console.log('README sem alterações.');
+            }
+
+      # ── Step 6: Actualizar data de verificação no index.html ────────────────
+      - name: Actualizar data de verificação no index.html
+        run: |
+          DATE_PT=$(date -u +%d/%m/%Y)
+          sed -i "s|Verificado a [0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]|Verificado a ${DATE_PT}|g" index.html
+          echo "Data atualizada: ${DATE_PT}"
+
+      # ── Step 7: Push único ───────────────────────────────────────────────────
+      - name: Commit e push (único por dia)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ index.html noticias.html README.md
+          if git diff --staged --quiet; then
+            echo "Sem alterações para commitar."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "auto: pipeline diário ${DATE}"
+            git pull --rebase origin main
+            git push
+          fi
+
+      # ── Step 8: Abrir Issues se mudanças ou divergências ────────────────────
+      - name: Abrir Issues se mudanças detectadas
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const hoje = new Date().toISOString().slice(0, 10);
+            const hora = new Date().toISOString().slice(11, 16);
+
+            // Issues de mudanças de fontes
+            let mudancas = [];
+            try {
+              mudancas = JSON.parse(fs.readFileSync('data/mudancas.json', 'utf8'));
+            } catch(_) {}
+
+            for (const m of mudancas) {
+              const existing = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'fonte-alterada',
+              });
+              const duplicate = existing.data.find(i => i.title.includes(m.slug) && i.title.includes(hoje));
+              if (!duplicate) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `🔔 Mudança detectada: ${m.slug} (${hoje})`,
+                  body: [
+                    `## 🔔 Mudança detectada: \`${m.slug}\``,
+                    ``,
+                    `**Data/hora:** ${hoje} ${hora} UTC`,
+                    `**Fonte:** ${m.url}`,
+                    ``,
+                    `### Acção necessária`,
+                    `1. Verificar a fonte manualmente: ${m.url}`,
+                    `2. Se os valores/condições mudaram: actualizar a página HTML correspondente`,
+                    `3. Actualizar a data de verificação na página`,
+                    `4. Fechar esta issue após correcção`,
+                  ].join('\n'),
+                  labels: ['fonte-alterada', 'verificar'],
+                });
+              }
+            }
+
+            // Issues de divergências de valores
+            let divergencias = [];
+            try {
+              divergencias = JSON.parse(fs.readFileSync('data/divergencias.json', 'utf8'));
+            } catch(_) {}
+
+            if (divergencias.length > 0) {
+              const linhas = divergencias.map(d =>
+                `**${d.descricao}** (\`${d.campo}\`)\n- Fonte \`${d.slug_fonte}\`: \`${d.valor_fonte}\`\n- HTML \`${d.html_file}\`: \`${d.valor_publicado}\``
+              ).join('\n\n');
+
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `⚠️ ${divergencias.length} divergência(s) de valores (${hoje})`,
+                body: `Os valores nas fontes oficiais não coincidem com os publicados no site.\n\n${linhas}\n\nActualizar o HTML com o valor correcto e registar nova data de verificação.`,
+                labels: ['fonte-alterada'],
+              });
+            }

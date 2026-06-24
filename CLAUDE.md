@@ -170,21 +170,27 @@ sem link nenhum.
 ## STACK DE AUTOMAÇÃO (100% gratuito, sem serviços externos)
 
 ```
-GitHub Actions Playwright  →  data/scraped/  (diário 06:00 UTC)
-GitHub Actions lychee      →  verificação links  (semanal segunda 07:00 UTC)
-GitHub Actions detectar    →  Issues automáticas  (2x/dia 06:00 e 18:00 UTC)
-Claude Code (local)        →  lê JSONs → gera HTML
-GitHub Pages               →  publica tensdireito.com
+GitHub Actions pipeline-diario  →  scrape + detectar + notícias + validar + push  (06:00 UTC)
+GitHub Actions lychee            →  verificação links  (semanal segunda 07:00 UTC)
+GitHub Actions validar-conteudo  →  valida HTML em cada push (sem push)
+Claude Code (local)              →  lê JSONs → gera HTML
+GitHub Pages                     →  publica tensdireito.com
 ```
+
+### ARQUITECTURA DE DADOS — PRINCÍPIO PUSH ÚNICO
+
+**Apenas `pipeline-diario.yml` faz `git push`.** Os outros dois workflows
+só lêem — nunca escrevem no repositório.
+
+Isto elimina race conditions entre workflows concorrentes.
 
 ### Workflows
 
-| Ficheiro | Cron | Função |
-|---|---|---|
-| `scrape-fontes.yml` | `0 6 * * *` | Playwright scrape das 5 fontes + Issue se conteúdo mudou |
-| `verificar-links.yml` | `0 7 * * 1` | lychee testa todos os links HTML + Issue se 404 |
-| `detectar-mudancas.yml` | `0 6,18 * * *` | Compara hash com latest + Issue se mudança |
-| `noticias-diarias.yml` | `0 7 * * *` | RSS → selecciona → insere em noticias.html |
+| Ficheiro | Cron / Trigger | Função | `git push`? |
+|---|---|---|---|
+| `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Scrape + detectar mudanças + notícias + validar valores + README + push único | ✅ sim |
+| `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
+| `validar-conteudo.yml` | push para main (`**.html`) | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 
 ### Labels de Issues automáticas
 - `fonte-alterada` — conteúdo de uma fonte mudou, verificar e actualizar HTML
