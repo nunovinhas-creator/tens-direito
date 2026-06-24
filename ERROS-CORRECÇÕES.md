@@ -97,6 +97,24 @@ Fonte das correcções: relatório de fact-checking externo, verificado a 24/06/
 - **Correcção 8 — Subsídio Social Parental:** Adicionadas condições de recursos obrigatórias: rendimento per capita máximo 80% IAS (429,70 €/mês em 2026); património mobiliário máximo 240 × IAS (128.911,20 € em 2026).
 - **Correcção 9 — Estado da proposta legislativa:** Aviso actualizado com estado actual: aprovado generalidade 23 jan 2026, em discussão especialidade na Comissão de Trabalho (10.ª), audição ISS realizada 26 jun 2026, NÃO em vigor.
 
+## Correcção #010 — 2026-06-24
+
+**`subsidio-desemprego.html` — 11 erros críticos corrigidos**
+
+Fonte: DL n.º 220/2006 + Instituto da Segurança Social + IAS 2026 (537,13 €) · verificado 24/06/2026.
+
+- **Correcção 1 — Prazo de garantia:** Corrigido para 360 dias de trabalho com registo nos 24 meses imediatamente anteriores à data de desemprego.
+- **Correcção 2 — Prazo do pedido:** Corrigido para 90 dias consecutivos a contar do registo no IEFP. Pedido fora do prazo não perde o direito na totalidade — o período de concessão é reduzido pelo número de dias de atraso.
+- **Correcção 3 — Fórmula de cálculo:** Corrigida para soma dos primeiros 12 meses dos últimos 14 meses anteriores ao desemprego ÷ 360 = Remuneração de Referência diária. Subsídio diário = RR × 65%.
+- **Correcção 4 — Limites 2026:** Adicionados todos os limites: mínimo 537,13 € (100% IAS); mínimo absoluto 349,13 € (65% IAS, quando RR líquida < IAS); máximo 1.342,83 € (2,5×IAS); máximo majorado 1.477,11 € (+10% quando ambos os cônjuges estão desempregados com dependentes).
+- **Correcção 5 — Subsídio Social de Desemprego:** Adicionadas condições de recursos: rendimento per capita máximo 80% IAS (429,70 €/mês); duração 180 dias/12 meses; limite de património mobiliário 240×IAS = 128.911,20 €.
+- **Correcção 6 — Justa causa:** Distinguidas as duas situações: despedimento disciplinar pelo empregador = voluntário = SEM direito; resolução pelo trabalhador com justa causa = involuntário = COM direito + indemnização 15–45 dias/ano.
+- **Correcção 7 — Mútuo acordo:** Adicionadas as condições legais: apenas em reestruturações económicas; PME: máximo 3 trabalhadores ou 25% do efectivo; grandes empresas: máximo 62 ou 20%, absoluto 80/triénio.
+- **Correcção 8 — Mobilidade UE:** Adicionado procedimento completo: comunicar ao IEFP 4 semanas antes da saída; obter Documento Portátil U2; registar no serviço de emprego do país de destino em 7 dias; portabilidade máxima 3 meses, extensível mais 3 meses (pedir 30 dias antes do término).
+- **Correcção 9 — Deveres do beneficiário:** Adicionada regra: comunicar qualquer facto relevante em 5 dias úteis; baixa médica com CIT ou auto-declaração SNS (máx. 3 dias, máx. 2×/ano); incumprimento → 90 dias sem re-inscrição.
+- **Correcção 10 — Trabalhadores independentes:** Adicionadas duas modalidades distintas: economicamente dependentes (≥50% receitas de um cliente) → 360 dias/24 meses; cessação de actividade involuntária → 720 dias/48 meses, taxa 25,2%.
+- **Correcção 11 — Declaração do empregador:** Adicionado Modelo RP5044-DGSS como documento obrigatório; se empregador recusar emitir, ACT emite em 30 dias.
+
 ## Correcção #009 — 2026-06-24
 
 **`abono-de-familia.html` — 12 erros corrigidos, valores actualizados Portaria n.º 60/2026/1**
