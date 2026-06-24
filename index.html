@@ -250,14 +250,21 @@
       position: relative;
     }
     .apoio-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); border-color: #D1D5DB; }
-    .apoio-card.em-breve { opacity: 0.6; pointer-events: none; }
+    .apoio-card.em-breve { opacity: 0.7; }
 
-    .apoio-card .badge-soon {
+    .apoio-card .badge-breve {
       position: absolute; top: 0.9rem; right: 0.9rem;
       background: #F3F4F6; color: var(--muted);
       font-size: 0.7rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.5px;
       padding: 0.2rem 0.5rem; border-radius: 20px;
+    }
+    .apoio-card .link-aviso {
+      font-size: 0.75rem;
+      color: var(--teal-mid);
+      text-decoration: none;
+      display: block;
+      margin-top: 6px;
     }
 
     .apoio-card .emoji { font-size: 2rem; margin-bottom: 0.6rem; }
@@ -411,7 +418,10 @@
     "inLanguage": "pt-PT",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.google.com/search?q=site:tensdireito.com+{search_term_string}",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://tensdireito.com/?pesquisa={search_term_string}"
+      },
       "query-input": "required name=search_term_string"
     }
   }
@@ -440,6 +450,7 @@
       </div>
 
       <div class="nav-links">
+        <a href="/#guias-de-apoios">Guias</a>
         <a href="/noticias.html">Notícias</a>
         <a href="/sobre.html">Sobre</a>
       </div>
@@ -461,6 +472,7 @@
         <input type="text" name="q" placeholder="Pesquisar no site…" aria-label="Pesquisar">
         <button type="submit" aria-label="Pesquisar">🔍</button>
       </form>
+      <a href="/#guias-de-apoios">Guias</a>
       <a href="/noticias.html">Notícias</a>
       <a href="/sobre.html">Sobre</a>
     </div>
@@ -529,7 +541,7 @@
   </div>
 
   <!-- TODOS OS APOIOS -->
-  <section class="apoios-section" aria-labelledby="apoios-titulo">
+  <section class="apoios-section" id="guias-de-apoios" aria-labelledby="apoios-titulo">
     <div class="section-header">
       <h2 id="apoios-titulo">Guias de apoios</h2>
       <p>Cada guia verificado com fonte oficial e data de actualização.</p>
@@ -578,7 +590,8 @@
       </a>
 
       <div class="apoio-card em-breve" aria-hidden="true">
-        <span class="badge-soon">A preparar</span>
+        <span class="badge-breve">Em breve</span>
+        <a href="/noticias.html" class="link-aviso">🔔 Segue as notícias para ser avisado</a>
         <div class="emoji">💶</div>
         <h3>RSI</h3>
         <p class="desc">Rendimento Social de Inserção — condições e como pedir.</p>
@@ -587,7 +600,8 @@
       </div>
 
       <div class="apoio-card em-breve" aria-hidden="true">
-        <span class="badge-soon">A preparar</span>
+        <span class="badge-breve">Em breve</span>
+        <a href="/noticias.html" class="link-aviso">🔔 Segue as notícias para ser avisado</a>
         <div class="emoji">📋</div>
         <h3>Subsídio de desemprego</h3>
         <p class="desc">Quem tem direito, valor e como pedir ao IEFP.</p>
@@ -596,7 +610,8 @@
       </div>
 
       <div class="apoio-card em-breve" aria-hidden="true">
-        <span class="badge-soon">A preparar</span>
+        <span class="badge-breve">Em breve</span>
+        <a href="/noticias.html" class="link-aviso">🔔 Segue as notícias para ser avisado</a>
         <div class="emoji">🍼</div>
         <h3>Licença parental</h3>
         <p class="desc">Duração, valor e como registar na Segurança Social.</p>
@@ -676,6 +691,19 @@
   </footer>
 
   <script src="/scripts/pesquisa.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      var params = new URLSearchParams(window.location.search);
+      var termo = params.get('pesquisa');
+      if (termo) {
+        var campo = document.getElementById('campo-pesquisa');
+        if (campo) {
+          campo.value = termo;
+          campo.dispatchEvent(new Event('input'));
+        }
+      }
+    });
+  </script>
   <script>
     function toggleMenu(btn) {
       const menu = document.getElementById('mobileMenu');
