@@ -147,6 +147,17 @@ Fonte: IGeFE / Ministério da Educação · verificado 24/06/2026.
 
 Fonte: Despacho n.º 8452-A/2015, art. 14.º · verificado 24/06/2026.
 
+## Fact-checking Passe Sub-23 — 2026-06-24
+
+**`passe-sub23.html` — sem erros críticos; 4 nuances adicionadas**
+
+Fonte: Portaria n.º 7-A/2024 · verificado 24/06/2026.
+
+- **Nuance 1 — Declaração digital verificada:** Adicionada nota na secção de documentos: a declaração de matrícula (19+ anos) deve ser o modelo oficial preferencialmente em formato digital verificado (QR Code/hash); muitas operadoras exigem este formato.
+- **Nuance 2 — Zona geográfica:** Adicionada nova secção "O que não está coberto": passe associado à zona geográfica de residência/estudo; não cobre Alfa Pendular/Intercidades fora da zona; alertar para percursos multi-operadora.
+- **Nuance 3 — Perda do cartão:** Adicionada nota em "Não esquecer": reportar imediatamente à operadora; segunda via tem custo de emissão mesmo com carregamento gratuito.
+- **Nuance 4 — Mudança de curso integrado:** Adicionada nota na excepção dos 25 anos: submeter nova declaração de matrícula ao mudar de curso integrado para manter a extensão.
+
 - **Nuance 1 — Arredondamento da média:** Adicionada nota após a linha da média ≥ 14 valores para o 10.º/11.º ano: "A média é arredondada às unidades para efeitos de elegibilidade. Um aluno com 13,5 de média vê a nota arredondada para 14 e torna-se elegível." Com referência ao Despacho n.º 8452-A/2015, art. 14.º.
 
 ## Correcção #009 — 2026-06-24
