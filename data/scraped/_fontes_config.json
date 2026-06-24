@@ -57,6 +57,30 @@
       "status_bot": "403 esperado para scrapers",
       "verificado_manualmente": "2026-06-23",
       "nota": "Usar sempre número da Portaria/Despacho como referência. Playwright consegue aceder com IPs limpos."
+    },
+    "dre_bolsa_merito": {
+      "url_principal": "https://dre.pt/api/dre/v1/search/?q=bolsa+merito+ensino+secundario&type=DR1S",
+      "metodo": "API REST",
+      "termo": "bolsa merito ensino secundario",
+      "status_bot": "API REST — sem bloqueio 403",
+      "verificado_manualmente": "2026-06-24",
+      "nota": "Substitui scrape Playwright que ficava com página vazia por JavaScript dinâmico"
+    },
+    "dre_ase_escaloes": {
+      "url_principal": "https://dre.pt/api/dre/v1/search/?q=acao+social+escolar+escaloes&type=DR1S",
+      "metodo": "API REST",
+      "termo": "acao social escolar escaloes",
+      "status_bot": "API REST — sem bloqueio 403",
+      "verificado_manualmente": "2026-06-24",
+      "nota": "Despacho anual que fixa escalões ASE — complementa scrape Playwright do DGE"
+    },
+    "dre_ias": {
+      "url_principal": "https://dre.pt/api/dre/v1/search/?q=indexante+apoios+sociais+2026&type=DR1S",
+      "metodo": "API REST",
+      "termo": "indexante apoios sociais 2026",
+      "status_bot": "API REST — sem bloqueio 403",
+      "verificado_manualmente": "2026-06-24",
+      "nota": "Portaria anual do IAS — base de cálculo de abono, bolsas e RSI"
     }
   }
 }

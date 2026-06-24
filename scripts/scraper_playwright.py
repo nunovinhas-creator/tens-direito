@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Scraper com Playwright (Chromium headless) para fontes oficiais portuguesas.
-Usa IPs limpos do GitHub Actions e simula browser real.
+Scraper para fontes oficiais portuguesas.
+- Fontes Playwright (Chromium headless): portais .pt com browser real
+- Fontes DRE: API REST pública do Diário da República
+
 Guarda resultados em data/scraped/[slug]_[YYYY-MM-DD].json
 e data/scraped/[slug]_latest.json.
 
@@ -18,6 +20,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import requests
 from bs4 import BeautifulSoup
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +40,8 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-FONTES = [
+# ── Fontes Playwright ──────────────────────────────────────────────────────────
+FONTES_PLAYWRIGHT = [
     {
         "slug": "seg_social_abono",
         "url": "https://www.seg-social.pt/abono-de-familia",
@@ -58,25 +62,12 @@ FONTES = [
         },
     },
     # dge.mec.pt/acao-social-escolar devolve 403 para bots.
-    # Estratégia: homepage DGE para links/notícias ASE + DRE para diplomas.
+    # Estratégia: homepage DGE para links/notícias ASE + DRE API para diplomas.
     {
         "slug": "dge_ase",
         "url": "https://www.dge.mec.pt",
         "url_fallback": "https://dre.pt/pesquisa?q=acao+social+escolar",
         "nota": "dge.mec.pt/acao-social-escolar bloqueado — usar DRE como fonte primária para ASE",
-        "seletores": {
-            "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li",
-            "links": "a[href]",
-        },
-    },
-    # dge.mec.pt/bolsas-de-merito devolve 403.
-    # Fonte primária: DRE — é onde é publicado o Despacho anual.
-    {
-        "slug": "dge_bolsa_merito",
-        "url": "https://dre.pt/pesquisa?q=bolsa+merito+ensino+basico",
-        "nota": "Não existe portal DGE público para bolsa de mérito — fonte primária é o Diário da República",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -109,6 +100,37 @@ FONTES = [
     },
 ]
 
+# ── Fontes DRE (API REST) ──────────────────────────────────────────────────────
+# O DRE renderiza resultados via XHR após networkidle — Playwright fica com
+# página vazia. A API REST pública evita esse problema.
+DRE_API_URL = "https://dre.pt/api/dre/v1/search/"
+
+FONTES_DRE = [
+    {
+        "slug": "dre_bolsa_merito",
+        "termo": "bolsa merito ensino secundario",
+        "tipo": "DR1S",
+        "max_resultados": 5,
+        "nota": "Despacho anual que fixa condições e valor da bolsa de mérito — Série I do DR",
+    },
+    {
+        "slug": "dre_ase_escaloes",
+        "termo": "acao social escolar escaloes",
+        "tipo": "DR1S",
+        "max_resultados": 5,
+        "nota": "Despacho anual que fixa os escalões e valores da Ação Social Escolar",
+    },
+    {
+        "slug": "dre_ias",
+        "termo": "indexante apoios sociais 2026",
+        "tipo": "DR1S",
+        "max_resultados": 3,
+        "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
+    },
+]
+
+
+# ── Utilitários Playwright ─────────────────────────────────────────────────────
 
 def _texto_limpo(el) -> str:
     return " ".join(el.get_text(separator=" ").split()) if el else ""
@@ -172,12 +194,12 @@ def _tentar_goto(page, url: str) -> bool:
     return False
 
 
-def scrape_fonte(page, fonte: dict) -> dict | None:
+def scrape_playwright(page, fonte: dict) -> dict | None:
     url = fonte["url"]
     slug = fonte["slug"]
     url_fallback = fonte.get("url_fallback")
     nota = fonte.get("nota", "")
-    log.info("A scrape: %s", url)
+    log.info("A scrape (Playwright): %s", url)
 
     url_usado = url
     ok = _tentar_goto(page, url)
@@ -192,7 +214,6 @@ def scrape_fonte(page, fonte: dict) -> dict | None:
                   " + fallback" if url_fallback else "", url)
         return None
 
-    # Aguardar estabilização
     try:
         page.wait_for_load_state("networkidle", timeout=10_000)
     except Exception:
@@ -212,10 +233,91 @@ def scrape_fonte(page, fonte: dict) -> dict | None:
     if nota:
         resultado["nota"] = nota
 
-    # Calcular hash do conteúdo (sem data_acesso)
     hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
     resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
 
+    _guardar_resultado(slug, resultado)
+    return resultado
+
+
+# ── DRE API REST ───────────────────────────────────────────────────────────────
+
+def scrape_dre(fonte: dict) -> dict | None:
+    slug = fonte["slug"]
+    termo = fonte["termo"]
+    tipo = fonte.get("tipo", "DR1S")
+    max_resultados = fonte.get("max_resultados", 5)
+    nota = fonte.get("nota", "")
+
+    log.info("A scrape (DRE API): %s — termo: %s", slug, termo)
+
+    params = {
+        "q": termo,
+        "type": tipo,
+        "sort": "date",
+        "rows": max_resultados,
+    }
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    }
+
+    data = None
+    for attempt in range(1, 4):
+        try:
+            r = requests.get(DRE_API_URL, params=params, headers=headers, timeout=15)
+            r.raise_for_status()
+            data = r.json()
+            break
+        except Exception as exc:
+            log.warning("DRE API tentativa %d para %s: %s", attempt, slug, exc)
+            if attempt < 3:
+                time.sleep(2 ** attempt)
+
+    if data is None:
+        log.error("DRE API falhou após 3 tentativas: %s", slug)
+        return None
+
+    resultados = []
+    for item in data.get("results", []):
+        resultados.append({
+            "titulo": item.get("title", ""),
+            "numero": item.get("claint", ""),
+            "data": item.get("date", ""),
+            "url": item.get("url", ""),
+            "sumario": item.get("summary", ""),
+        })
+
+    if not resultados:
+        log.warning("%s: DRE API devolveu 0 resultados para '%s'", slug, termo)
+
+    conteudo = {
+        "termo_pesquisa": termo,
+        "tipo": tipo,
+        "total_resultados": data.get("totalCount", len(resultados)),
+        "resultados": resultados,
+    }
+
+    resultado = {
+        "url": f"{DRE_API_URL}?q={termo.replace(' ', '+')}&type={tipo}",
+        "data_acesso": datetime.now(timezone.utc).isoformat(),
+        "status": "ok",
+        "fonte": "DRE API REST",
+        "conteudo_extraido": conteudo,
+    }
+    if nota:
+        resultado["nota"] = nota
+
+    hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
+    resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
+
+    _guardar_resultado(slug, resultado)
+    return resultado
+
+
+# ── Guardar resultado ──────────────────────────────────────────────────────────
+
+def _guardar_resultado(slug: str, resultado: dict) -> None:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     daily_path = SCRAPED_DIR / f"{slug}_{today}.json"
     latest_path = SCRAPED_DIR / f"{slug}_latest.json"
@@ -224,28 +326,28 @@ def scrape_fonte(page, fonte: dict) -> dict | None:
         json.dump(resultado, f, ensure_ascii=False, indent=2)
     log.info("Guardado: %s", daily_path)
 
-    # Actualizar latest apenas se conteúdo mudou
     if latest_path.exists():
         try:
             old = json.loads(latest_path.read_text(encoding="utf-8"))
             if old.get("hash_conteudo") == resultado["hash_conteudo"]:
-                log.info("%s: conteúdo idêntico ao latest — sem actualização", slug)
-                return resultado
+                log.info("%s: conteúdo idêntico ao latest — sem atualização", slug)
+                return
         except Exception:
             pass
 
     with open(latest_path, "w", encoding="utf-8") as f:
         json.dump(resultado, f, ensure_ascii=False, indent=2)
-    log.info("Actualizado latest: %s", latest_path)
+    log.info("Atualizado latest: %s", latest_path)
 
-    return resultado
 
+# ── Main ───────────────────────────────────────────────────────────────────────
 
 def main(mode: str = "scrape"):
     from playwright.sync_api import sync_playwright
 
     resultados = {}
 
+    # ── Playwright ────────────────────────────────────────────────────────────
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
@@ -273,12 +375,12 @@ def main(mode: str = "scrape"):
 
         page = context.new_page()
 
-        for fonte in FONTES:
+        for fonte in FONTES_PLAYWRIGHT:
             print(f"\n{'='*60}")
-            print(f"Fonte: {fonte['slug']} — {fonte['url']}")
+            print(f"[Playwright] {fonte['slug']} — {fonte['url']}")
             print("=" * 60)
             try:
-                r = scrape_fonte(page, fonte)
+                r = scrape_playwright(page, fonte)
                 if r:
                     resultados[fonte["slug"]] = "ok"
                     c = r.get("conteudo_extraido", {})
@@ -295,6 +397,30 @@ def main(mode: str = "scrape"):
         page.close()
         context.close()
         browser.close()
+
+    # ── DRE API REST ──────────────────────────────────────────────────────────
+    for fonte in FONTES_DRE:
+        print(f"\n{'='*60}")
+        print(f"[DRE API] {fonte['slug']} — {fonte['termo']}")
+        print("=" * 60)
+        try:
+            r = scrape_dre(fonte)
+            if r:
+                resultados[fonte["slug"]] = "ok"
+                c = r.get("conteudo_extraido", {})
+                n = len(c.get("resultados", []))
+                total = c.get("total_resultados", "?")
+                print(f"✓ OK — {n} resultado(s) de {total} no DRE")
+                for item in c.get("resultados", [])[:2]:
+                    print(f"  · {item.get('data', '')} — {item.get('titulo', '')[:70]}")
+                print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
+            else:
+                resultados[fonte["slug"]] = "falhou"
+                print("✗ Falhou")
+        except Exception as exc:
+            resultados[fonte["slug"]] = f"erro: {exc}"
+            log.exception("Erro inesperado em %s", fonte["slug"])
+            print(f"✗ Erro: {exc}")
 
     print(f"\n{'='*60}")
     print("RESUMO")
