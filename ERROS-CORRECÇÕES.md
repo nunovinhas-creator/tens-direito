@@ -50,3 +50,12 @@
 **Correcção aplicada:** Todas as ocorrências substituídas por `https://www.dge.mec.pt` com texto âncora "Direção-Geral da Educação (dge.mec.pt)". Adicionada nota "Para informação sobre ASE, consulta a secretaria da tua escola ou o portal da DGE." nos locais relevantes.
 **Fonte que confirmou a correcção:** Skill `verificar-url` — regra 401/403: página existe mas é restrita, NUNCA usar no HTML público.
 **Data de publicação da correcção:** 23 de junho de 2026
+
+## Correcção #005 — 2026-06-24
+
+**Links DRE e CP corrigidos para homepage**
+
+- `bolsa-de-merito.html`: subpath `dre.pt/pesquisa?q=bolsa+merito+ensino+basico` → `https://dre.pt`
+- `passe-sub23.html`: subpath `cp.pt/passageiros/pt/consultar-horarios/precos/passes-sub18-e-sub23` → `https://www.cp.pt`
+
+Regra aplicada: quando um subpath de portal oficial devolve erro, usar a homepage do domínio.

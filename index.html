@@ -2,6 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
   <script>
@@ -430,12 +431,12 @@
       </a>
 
       <!-- Pesquisa desktop -->
-      <div class="nav-search" role="search">
-        <form action="https://www.google.com/search" method="get" target="_blank">
-          <input type="hidden" name="sitesearch" value="tensdireito.com">
-          <input type="text" name="q" placeholder="Pesquisar no site…" aria-label="Pesquisar">
-          <button type="submit" aria-label="Pesquisar">🔍</button>
-        </form>
+      <div class="nav-search" role="search" style="position:relative;">
+        <input type="search" id="campo-pesquisa" placeholder="Pesquisar no site…" aria-label="Pesquisar"
+          autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value)"
+          style="padding:0.4rem 0.75rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.9rem;width:200px;">
+        <div id="resultados-pesquisa" style="display:none;position:absolute;top:100%;right:0;background:white;border:1px solid #cbd5e1;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);min-width:240px;z-index:100;margin-top:4px;"></div>
       </div>
 
       <div class="nav-links">
@@ -674,6 +675,7 @@
     </p>
   </footer>
 
+  <script src="/scripts/pesquisa.js"></script>
   <script>
     function toggleMenu(btn) {
       const menu = document.getElementById('mobileMenu');
