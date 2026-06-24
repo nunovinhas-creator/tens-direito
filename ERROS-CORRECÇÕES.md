@@ -147,6 +147,18 @@ Fonte: IGeFE / Ministério da Educação · verificado 24/06/2026.
 
 Fonte: Despacho n.º 8452-A/2015, art. 14.º · verificado 24/06/2026.
 
+## Fact-checking ASE 2026/2027 — 2026-06-24
+
+**`acao-social-escolar.html` — sem erros críticos; 5 enriquecimentos adicionados**
+
+Verificado 24/06/2026.
+
+- **Enriquecimento 1 — Atalho do Abono de Família:** Adicionada dica no passo 2 ("Dirige-te à escola"): se já recebe o Abono de Família, perguntar na secretaria se conseguem importar o escalão directamente pela interface com a SS — pode dispensar declarações extra.
+- **Enriquecimento 2 — Checklist visual de documentos:** Substituída lista de documentos do passo 1 por tabela com colunas "Documento" e "Onde obter" (declaração de escalão SS, comprovativo de morada, CC, formulário ASE).
+- **Enriquecimento 3 — Data de referência dos rendimentos:** Adicionado bloco de aviso antes do passo a passo: declaração SS deve reflectir rendimentos de 2025 para ASE 2026/2027; declaração desactualizada pode causar indeferimento.
+- **Enriquecimento 4 — Agregados complexos:** Adicionado parágrafo na secção "Quem poderá ter direito": guarda partilhada/uniões de facto — SS considera todos com mesma morada fiscal; secretaria da escola é a entidade competente para determinar composição.
+- **Enriquecimento 5 — Tabela escalões com mensal e anual:** Já presente na versão anterior (correcção anterior incluía ambas as colunas). Confirmada como correcta: Escalão A ≤268,57€/mês / ≤3.222,81€/ano; Escalão B 268,58–537,13€/mês / 3.222,82–6.445,56€/ano.
+
 ## Fact-checking Passe Sub-23 — 2026-06-24
 
 **`passe-sub23.html` — sem erros críticos; 4 nuances adicionadas**
