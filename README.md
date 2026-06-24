@@ -18,7 +18,9 @@ Actualizado automaticamente a partir do repositório em **24 de junho de 2026**.
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de Mérito 2025/2026: quem tem direito, valor e como candidatar |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
+| [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
 | [`noticias.html`](noticias.html) | Notícias — Tens Direito |
+| [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 
@@ -290,6 +292,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 24 de junho de 2026 às 07:26 · gerado automaticamente por `atualizar-readme.yml`*
+*Atualizado em 24 de junho de 2026 às 08:07 · gerado automaticamente por `atualizar-readme.yml`*
 
 <!-- END:RODAPE -->
