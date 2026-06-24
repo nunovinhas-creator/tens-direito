@@ -1,4 +1,14 @@
 
+## RSI — seg_social_rsi — 2026-06-24
+
+- **Página**: rsi.html (por publicar)
+- **Fonte**: https://www.seg-social.pt/rendimento-social-de-insercao
+- **Problema**: Scraper devolve 0 parágrafos ("conteúdo suspeito: apenas 23 caracteres"). A página da Segurança Social para o RSI exige JavaScript adicional para carregar conteúdo.
+- **Acção**: Rever o scraper `seg_social_rsi` — provavelmente necessita de scroll + espera extra. Testar com `--headed` no Playwright.
+- **Decisão**: Não publicar rsi.html até o scraper devolver ≥ 2 parágrafos com status "ok".
+
+---
+
 ## Verificação pendente — 2026-06-23 20:29 UTC
 - **URL:** https://www.seg-social.pt/abono-de-familia
 - **Motivo:** Falhou após 3 tentativas
