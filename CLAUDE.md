@@ -3,6 +3,29 @@
 Instruções globais para o Claude Code neste repositório.
 Ler sempre antes de qualquer tarefa.
 
+## REGRA ABSOLUTA — GIT
+
+NUNCA criar branches. SEMPRE trabalhar em main.
+
+Workflow obrigatório em TODOS os commits:
+  git add .
+  git commit -m "mensagem"
+  git push origin main
+
+PROIBIDO:
+  git checkout -b [qualquer nome]
+  git switch -c [qualquer nome]
+  Criar Pull Requests
+  Trabalhar em qualquer branch que não seja main
+
+Se o Claude Code sugerir criar uma branch: RECUSAR.
+Se estiver numa branch diferente de main: fazer
+merge imediato para main antes de qualquer trabalho.
+
+Verificação obrigatória antes de cada push:
+  git branch  → deve mostrar * main
+  Se não mostrar: git checkout main primeiro
+
 ## O que é este projeto
 
 Site informativo PT-PT sobre apoios sociais, direitos e burocracia em Portugal.
