@@ -13,7 +13,6 @@ Modo de uso:
 """
 
 import argparse
-import feedparser
 import hashlib
 import json
 import logging
@@ -101,8 +100,8 @@ FONTES_PLAYWRIGHT = [
     },
     {
         "slug": "mega_datas",
-        "url": "https://www.manuaisescolares.pt",
-        "nota": "Portal MEGA — detectar datas de atribuição de vouchers 2026/2027",
+        "url": "https://www.dge.mec.pt/manuais-escolares",
+        "nota": "DGE manuais escolares — detectar datas de atribuição de vouchers 2026/2027",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -112,30 +111,10 @@ FONTES_PLAYWRIGHT = [
     },
 ]
 
-# ── Fontes DRE (RSS Série I) ───────────────────────────────────────────────────
-# O DRE não tem API REST pública. O RSS da Série I é o canal oficial e público.
-DRE_RSS_URL = "https://dre.pt/rss/dr1s.rss"
-
-FONTES_DRE_RSS = [
-    {
-        "slug": "dre_bolsa_merito",
-        "keywords": ["Despacho", "bolsa"],
-        "max_resultados": 3,
-        "nota": "Despacho anual que fixa condições e valor da bolsa de mérito — Série I do DR",
-    },
-    {
-        "slug": "dre_ase_escaloes",
-        "keywords": ["Despacho", "ação social"],
-        "max_resultados": 3,
-        "nota": "Despacho anual que fixa os escalões e valores da Ação Social Escolar",
-    },
-    {
-        "slug": "dre_ias",
-        "keywords": ["indexante dos apoios sociais"],
-        "max_resultados": 3,
-        "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
-    },
-]
+# O DRE não disponibiliza feed RSS acessível nos runners GitHub Actions.
+# Verificação de nova legislação é feita manualmente em https://dre.pt
+# quando o validador de conteúdo detecta mudanças nas fontes principais.
+# Ver data/scraped/dre_status.json para o estado actual.
 
 
 # ── Utilitários Playwright ─────────────────────────────────────────────────────
@@ -226,7 +205,7 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
         page.wait_for_load_state("networkidle", timeout=10_000)
     except Exception:
         pass
-    time.sleep(2)
+    time.sleep(5)
 
     html = page.content()
     conteudo = _extrair_conteudo(html, fonte["seletores"])
@@ -252,89 +231,6 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
         log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
 
-    return resultado
-
-
-# ── DRE RSS ────────────────────────────────────────────────────────────────────
-
-def _carregar_rss_dre() -> list:
-    """Carrega o RSS da Série I com fetch manual para forçar UTF-8 e limpar XML inválido."""
-    import re as _re
-    log.info("A carregar RSS DRE Série I: %s", DRE_RSS_URL)
-    for tentativa in range(1, 4):
-        try:
-            r = requests.get(DRE_RSS_URL, timeout=15, headers={
-                "User-Agent": "Mozilla/5.0",
-                "Accept": "application/rss+xml, application/xml, text/xml",
-            })
-            r.encoding = "utf-8"
-            conteudo = r.text
-
-            feed = feedparser.parse(conteudo)
-            if not feed.entries:
-                # Remover caracteres de controlo inválidos em XML e tentar de novo
-                conteudo_limpo = _re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', conteudo)
-                feed = feedparser.parse(conteudo_limpo)
-
-            if feed.entries:
-                log.info("RSS DRE%s: %d entradas", " (limpo)" if not feedparser.parse(conteudo).entries else "", len(feed.entries))
-                primeiro = feed.entries[0]
-                log.info("Primeiro entry DRE: %s", primeiro.get("title", "sem titulo"))
-                return feed.entries
-
-            log.warning("RSS DRE tentativa %d: sem entradas", tentativa)
-        except Exception as exc:
-            log.warning("RSS DRE tentativa %d: %s", tentativa, exc)
-        if tentativa < 3:
-            time.sleep(2 ** tentativa)
-    log.error("RSS DRE falhou após 3 tentativas")
-    return []
-
-
-def scrape_dre_rss(fonte: dict, entries: list) -> dict | None:
-    slug = fonte["slug"]
-    keywords = [k.lower() for k in fonte["keywords"]]
-    max_resultados = fonte.get("max_resultados", 3)
-    nota = fonte.get("nota", "")
-
-    log.info("A filtrar RSS DRE: %s — keywords: %s", slug, keywords)
-
-    resultados = []
-    for entry in entries:
-        titulo = entry.get("title", "").lower()
-        if all(k in titulo for k in keywords):
-            resultados.append({
-                "titulo": entry.get("title", ""),
-                "data": entry.get("published", ""),
-                "url": entry.get("link", ""),
-                "sumario": entry.get("summary", "")[:500],
-            })
-        if len(resultados) >= max_resultados:
-            break
-
-    if not resultados:
-        log.warning("%s: 0 resultados no RSS para keywords %s", slug, keywords)
-
-    conteudo = {
-        "keywords": fonte["keywords"],
-        "total_no_rss": len(entries),
-        "resultados": resultados,
-    }
-
-    resultado = {
-        "url": DRE_RSS_URL,
-        "data_acesso": datetime.now(timezone.utc).isoformat(),
-        "status": "ok",
-        "fonte": "DRE RSS Série I",
-        "conteudo_extraido": conteudo,
-    }
-    if nota:
-        resultado["nota"] = nota
-
-    hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
-    resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
-
-    _guardar_resultado(slug, resultado)
     return resultado
 
 
@@ -458,29 +354,19 @@ def main(mode: str = "scrape"):
         context.close()
         browser.close()
 
-    # ── DRE RSS ───────────────────────────────────────────────────────────────
-    dre_entries = _carregar_rss_dre()
-    for fonte in FONTES_DRE_RSS:
-        print(f"\n{'='*60}")
-        print(f"[DRE RSS] {fonte['slug']} — keywords: {fonte['keywords']}")
-        print("=" * 60)
-        try:
-            r = scrape_dre_rss(fonte, dre_entries)
-            if r:
-                resultados[fonte["slug"]] = "ok"
-                c = r.get("conteudo_extraido", {})
-                n = len(c.get("resultados", []))
-                print(f"✓ OK — {n} resultado(s) filtrado(s) de {c.get('total_no_rss', '?')} no RSS")
-                for item in c.get("resultados", [])[:2]:
-                    print(f"  · {item.get('data', '')} — {item.get('titulo', '')[:70]}")
-                print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
-            else:
-                resultados[fonte["slug"]] = "falhou"
-                print("✗ Falhou")
-        except Exception as exc:
-            resultados[fonte["slug"]] = f"erro: {exc}"
-            log.exception("Erro inesperado em %s", fonte["slug"])
-            print(f"✗ Erro: {exc}")
+    # ── DRE — estado manual ───────────────────────────────────────────────────
+    dre_status = {
+        "status": "manual",
+        "nota": (
+            "O DRE não tem feed público acessível nos runners GitHub Actions — "
+            "verificação de nova legislação é feita manualmente em https://dre.pt "
+            "quando o validador de conteúdo detecta mudanças nas fontes principais"
+        ),
+        "data": datetime.now(timezone.utc).date().isoformat(),
+    }
+    dre_status_path = SCRAPED_DIR / "dre_status.json"
+    dre_status_path.write_text(json.dumps(dre_status, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("\n[DRE] Estado manual registado em dre_status.json")
 
     print(f"\n{'='*60}")
     print("RESUMO")
