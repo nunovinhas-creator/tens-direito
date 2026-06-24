@@ -87,6 +87,17 @@
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
     footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
     footer a { color: #6c757d; }
+
+    .zona-cinzenta { background: #F8FAFC; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; }
+    .zona-cinzenta h2 { color: #0F766E; margin-bottom: 1rem; }
+    details { border-bottom: 1px solid #E5E7EB; padding: 0.75rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; list-style: none; font-weight: 600; color: #0F172A; }
+    summary::-webkit-details-marker { display: none; }
+    summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
+    .resposta { padding: 0.75rem 0 0.25rem; color: #475569; line-height: 1.7; }
+    .resposta p { margin-bottom: 0.5rem; }
+    .fonte-inline { font-size: 0.8rem; color: #94A3B8; margin-top: 0.5rem; }
   </style>
 
   <!-- JSON-LD FAQPage -->
@@ -134,6 +145,38 @@
           "@type": "Answer",
           "text": "Todos os alunos do ensino público têm direito a manuais escolares gratuitos através do programa MEGA (Manuais Escolares Gratuitos), independentemente do escalão ASE. Os manuais são fornecidos em regime de empréstimo pela escola. A ASE não é condição de acesso ao MEGA."
         }
+      },
+      {
+            "@type": "Question",
+            "name": "O escalão da ASE mudou a meio do ano — o que devo fazer?",
+            "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "É possível fazer nova candidatura se o escalão do abono de família mudar primeiro. Os passos são: pedir reavaliação do abono na Segurança Social Direta, obter nova declaração de escalão, e entregar nos serviços da escola. A ASE não muda automaticamente — tens de pedir."
+            }
+      },
+      {
+            "@type": "Question",
+            "name": "Posso pedir reavaliação do escalão da ASE se discordar?",
+            "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sim. Podes preencher um requerimento fundamentado nos serviços da escola com documentos comprovativos. Situações que podem justificar reavaliação: desemprego, doença, separação, ou variação significativa de rendimentos."
+            }
+      },
+      {
+            "@type": "Question",
+            "name": "A ASE cobre as refeições nas férias da Páscoa e Natal?",
+            "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sim, muitas escolas servem refeições nas férias da Páscoa e Natal a alunos beneficiários da ASE. O escalão A pode incluir pequeno-almoço gratuito durante todo o ano letivo. Os critérios variam por escola e município."
+            }
+      },
+      {
+            "@type": "Question",
+            "name": "Com mais de um filho na escola, preciso de candidatura separada para cada um?",
+            "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Depende. Se um filho muda de ciclo de ensino, é obrigatória nova candidatura. Nova candidatura de um filho pode actualizar automaticamente o escalão dos outros no mesmo agregado familiar."
+            }
       }
     ]
   }
@@ -330,6 +373,49 @@
         <li><strong>Matrículas tardias:</strong> alunos matriculados após 30 de setembro poderão candidatar-se até 15 dias após a matrícula.</li>
       </ul>
     </div>
+
+
+    <!-- DÚVIDAS FREQUENTES -->
+    <section class="zona-cinzenta" aria-label="Dúvidas frequentes">
+      <h2>Dúvidas frequentes</h2>
+      <details>
+        <summary><h3>O escalão da ASE mudou a meio do ano — o que fazer?</h3></summary>
+        <div class="resposta">
+          <p>É possível fazer nova candidatura a qualquer momento se o escalão do abono de família mudar primeiro. O processo é:</p>
+          <ol style="padding-left:1.25rem;margin:0.5rem 0;">
+            <li>Pedir reavaliação do abono na Segurança Social Direta.</li>
+            <li>Obter nova declaração de escalão.</li>
+            <li>Entregar nos serviços administrativos da escola.</li>
+          </ol>
+          <p>Atenção: a ASE não muda automaticamente — tens de pedir expressamente.</p>
+          <p class="fonte-inline">Fonte: Segurança Social · Verificado a 24/06/2026</p>
+        </div>
+      </details>
+      <details>
+        <summary><h3>Posso pedir reavaliação se discordar do escalão atribuído?</h3></summary>
+        <div class="resposta">
+          <p>Sim — podes preencher um requerimento fundamentado nos serviços administrativos da escola, juntando documentos comprovativos da situação actual.</p>
+          <p>Situações que poderão justificar reavaliação: desemprego, doença grave, separação ou divórcio, aumento ou diminuição significativa de rendimentos.</p>
+          <p class="fonte-inline">Fonte: serviços administrativos escolares · Verificado a 24/06/2026</p>
+        </div>
+      </details>
+      <details>
+        <summary><h3>A ASE cobre as refeições nas férias da Páscoa e do Natal?</h3></summary>
+        <div class="resposta">
+          <p>Sim — muitas escolas servem refeições nas férias da Páscoa e do Natal aos alunos beneficiários da ASE. Os alunos de escalão A poderão também ter direito a pequeno-almoço gratuito durante todo o ano letivo.</p>
+          <p>Os critérios exactos podem variar por escola e município — confirma nos serviços da tua escola.</p>
+          <p class="fonte-inline">Fonte: Ministério da Educação · Verificado a 24/06/2026</p>
+        </div>
+      </details>
+      <details>
+        <summary><h3>Tenho mais de um filho na escola — preciso de candidatura separada para cada um?</h3></summary>
+        <div class="resposta">
+          <p>Depende: se um filho muda de ciclo de ensino (por exemplo, do 1.º para o 2.º ciclo), é obrigatória nova candidatura para esse filho.</p>
+          <p>Atenção: a nova candidatura de um filho poderá actualizar automaticamente o escalão dos outros filhos do mesmo agregado familiar.</p>
+          <p class="fonte-inline">Fonte: serviços administrativos escolares · Verificado a 24/06/2026</p>
+        </div>
+      </details>
+    </section>
 
     <!-- FONTE -->
     <div class="fonte-bloco">
