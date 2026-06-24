@@ -129,6 +129,18 @@ Fontes: Portaria n.º 71/2026/1, de 13 de fevereiro · Lei n.º 13/2003, de 21 d
 - **Correcção 6 — FAQ acumulação com subsídio de desemprego:** Actualizado o item da tabela de acumulação com regra explícita: subsídio conta 100% nos rendimentos; se exceder valor máximo RSI, RSI = 0; acumulação útil em agregados grandes com subsídios baixos. Adicionado novo bloco FAQ com exemplo ilustrativo.
 - **Correcção 7 — FAQ menores de 18 anos:** Actualizada a condição de elegibilidade: "rendimentos próprios superiores a 70% do RSI base = 173,29 €/mês em 2026 (Portaria n.º 71/2026/1)" — valor concreto explicitado. Adicionados ao JSON-LD FAQPage: formulário RSI 1, prazo 45 dias (contrato inserção), valor RSI 2026. Fonte adicionada: Portaria n.º 71/2026/1, de 13 de fevereiro (diariodarepublica.pt).
 
+## Fact-checking MEGA — 2026-06-24
+
+**`manuais-escolares-mega.html` — sem erros críticos; 5 nuances adicionadas**
+
+Fonte: IGeFE / Ministério da Educação · verificado 24/06/2026.
+
+- **Nuance 1 — Senha Portal das Finanças:** Adicionada nota no passo de registo: "Tens de ter à mão a senha de acesso ao Portal das Finanças do Encarregado de Educação para fazer esta ligação no primeiro acesso."
+- **Nuance 2 — Vales dependem do fecho de turmas:** Adicionada nota na secção de calendário: os vales só aparecem depois de a escola ter inserido e fechado oficialmente as turmas do ano letivo; se a data indicativa já passou sem vales, aguardar que a escola finalize os dados.
+- **Nuance 3 — 1.º ciclo sempre manuais novos desde 2024:** Confirmada e reforçada a regra com data explícita: "desde 2024, alunos do 1.º ciclo têm sempre manuais novos e não precisam de devolver".
+- **Nuance 4 — Voucher indica novo vs reutilizado:** Adicionado bloco informativo: o próprio vale especifica "Livraria" (manual novo) ou "Escola" (manual reutilizado); atribuição aleatória pelo sistema para 5.º ao 12.º ano.
+- **Nuance 5 — Bloqueio automático por NIF do educando:** Reforçada a secção de devolução: bloqueio é automático (sistema cruza com escolas) e afecta o NIF do educando, não o do encarregado. JSON-LD actualizado com as nuances 1, 3, 4 e 5.
+
 ## Correcção #009 — 2026-06-24
 
 **`abono-de-familia.html` — 12 erros corrigidos, valores actualizados Portaria n.º 60/2026/1**

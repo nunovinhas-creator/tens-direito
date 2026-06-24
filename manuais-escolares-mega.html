@@ -119,7 +119,7 @@ footer a { color: #6c757d; }
         "name": "Como registar em manuaisescolares.pt para receber os vales?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Acede a manuaisescolares.pt ou à app Edu Rede Escolar, clica em 'Sou Encarregado de Educação', preenche nome, email e NIF, e valida o NIF com os dados do Portal das Finanças. No 1.º acesso é necessária esta validação. Os vales aparecem automaticamente na conta nas datas previstas para cada ciclo de escolaridade."
+          "text": "Acede a manuaisescolares.pt ou à app Edu Rede Escolar, clica em 'Sou Encarregado de Educação', preenche nome, email e NIF, e valida o NIF com os dados do Portal das Finanças. No 1.º acesso é necessária esta validação — tens de ter à mão a senha do Portal das Finanças do Encarregado de Educação. Os vales aparecem automaticamente na conta nas datas previstas para cada ciclo de escolaridade, mas só depois de a escola ter fechado oficialmente as turmas no sistema."
         }
       },
       {
@@ -135,7 +135,7 @@ footer a { color: #6c757d; }
         "name": "Os manuais do 1.º ciclo têm de ser devolvidos?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Não. Os alunos do 1.º ciclo (1.º ao 4.º ano) recebem sempre manuais novos e não precisam de os devolver no final do ano. Do 5.º ao 12.º ano os manuais são em regime de empréstimo e devem ser devolvidos em bom estado no final do ano letivo."
+          "text": "Não. Os alunos do 1.º ciclo (1.º ao 4.º ano) recebem sempre manuais novos desde 2024 e não precisam de os devolver no final do ano. Do 5.º ao 12.º ano os manuais são em regime de empréstimo e devem ser devolvidos em bom estado no final do ano letivo. O próprio voucher indica se o manual é para levantar em 'Livraria' (novo) ou na 'Escola' (reutilizado)."
         }
       },
       {
@@ -143,7 +143,7 @@ footer a { color: #6c757d; }
         "name": "O que acontece se não devolver os manuais?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Quem não devolver os manuais em bom estado fica impedido de receber os vales MEGA no ano letivo seguinte. Para disciplinas com exame nacional, a devolução deve ser feita nos 3 dias úteis após o exame."
+          "text": "Quem não devolver os manuais em bom estado fica impedido de receber os vales MEGA no ano letivo seguinte. O bloqueio é automático — o sistema MEGA cruza os dados com as escolas e bloqueia o NIF do educando (não o do encarregado de educação). Para disciplinas com exame nacional, a devolução deve ser feita nos 3 dias úteis após o exame."
         }
       }
     ]
@@ -276,7 +276,7 @@ footer a { color: #6c757d; }
         <li><span><strong>Acede a <a href="https://manuaisescolares.pt" target="_blank" rel="noopener">manuaisescolares.pt</a></strong> no computador ou instala a app <strong>Edu Rede Escolar</strong> (disponível para Android e iOS).</span></li>
         <li><span><strong>Clica em "Sou Encarregado de Educação"</strong> na página inicial da plataforma.</span></li>
         <li><span><strong>Preenche os dados de registo:</strong> nome, endereço de email e NIF.</span></li>
-        <li><span><strong>No 1.º acesso:</strong> valida o NIF com os dados do Portal das Finanças. Este passo só é necessário uma vez.</span></li>
+        <li><span><strong>No 1.º acesso:</strong> valida o NIF com os dados do Portal das Finanças. Tens de ter à mão a <strong>senha de acesso ao Portal das Finanças do Encarregado de Educação</strong> para fazer esta ligação no primeiro acesso. Este passo só é necessário uma vez.</span></li>
         <li><span><strong>Os vales aparecem automaticamente</strong> na conta nas datas previstas para cada ciclo de escolaridade (ver calendário abaixo). Sem internet: pede os vales em papel nos serviços administrativos da escola.</span></li>
       </ol>
     </div>
@@ -313,6 +313,9 @@ footer a { color: #6c757d; }
         </table>
       </div>
       <p class="nota-tabela">Confirmar datas em manuaisescolares.pt em julho de 2026 antes de se deslocar à livraria.</p>
+      <div class="aviso" style="margin-top:0.75rem">
+        <strong>Os vales só aparecem depois de a escola fechar as turmas.</strong> Os vales só ficam disponíveis na conta depois de a escola ter inserido e fechado oficialmente as turmas do ano letivo no sistema. Se a data indicativa já passou e ainda não tens vales, aguarda que a escola finalize os dados — não precisas de contactar o MEGA ou a plataforma.
+      </div>
     </div>
 
     <!-- COMO LEVANTAR -->
@@ -322,8 +325,11 @@ footer a { color: #6c757d; }
       <ul>
         <li><strong>Manual novo</strong> (1.º ciclo e outros): apresentar o QR code do vale numa <strong>livraria aderente</strong> ou resgatar online com o código do vale.</li>
         <li><strong>Manual reutilizado</strong> (5.º ao 12.º ano): levantar directamente <strong>na escola</strong>, que fornece os exemplares em regime de empréstimo.</li>
-        <li><strong>1.º ciclo (1.º ao 4.º ano):</strong> os manuais são sempre novos — nunca reutilizados.</li>
+        <li><strong>1.º ciclo (1.º ao 4.º ano):</strong> os manuais são sempre novos desde 2024 — nunca reutilizados e <strong>não precisam de ser devolvidos</strong> no final do ano.</li>
       </ul>
+      <div style="background:#FEF9EC;border:1px solid #FDE68A;border-radius:6px;padding:.85rem 1.1rem;margin-top:.85rem;font-size:.9rem;color:#78350f">
+        <strong>O voucher indica se o manual é novo ou reutilizado.</strong> O próprio vale especifica explicitamente se o manual é para levantar em <em>"Livraria"</em> (manual novo) ou na <em>"Escola"</em> (manual reutilizado). A atribuição entre novo e reutilizado é feita aleatoriamente pelo sistema MEGA para os alunos do 5.º ao 12.º ano.
+      </div>
       <p style="margin-top:0.85rem;font-size:0.9rem;color:#6c757d;">A lista de livrarias aderentes está disponível em manuaisescolares.pt.</p>
     </div>
 
@@ -360,6 +366,9 @@ footer a { color: #6c757d; }
         </table>
       </div>
       <p class="nota-tabela">Os manuais devem ser devolvidos sem marcações excessivas, rasgões ou danos que impeçam a reutilização.</p>
+      <div class="aviso" style="margin-top:.75rem">
+        <strong>Bloqueio automático por NIF do educando.</strong> O bloqueio é automático — o sistema MEGA cruza os dados com as escolas. Se a escola registar que os manuais não foram devolvidos ou foram entregues inutilizados, os vales do ano seguinte ficam bloqueados para o <strong>NIF do educando</strong> (não para o encarregado de educação).
+      </div>
     </div>
 
     <!-- O QUE NÃO ESTÁ INCLUÍDO -->
