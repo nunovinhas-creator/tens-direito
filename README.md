@@ -175,6 +175,7 @@ tens-direito/
 │       ├── noticias-diarias.yml
 │       ├── scrape-fontes.yml
 │       ├── validar-conteudo.yml
+│       ├── validar-valores.yml
 │       ├── verificar-links.yml
 ├── .claude/
 │   ├── agents/
@@ -186,6 +187,7 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
 │   ├── scraper_fontes.py
@@ -240,6 +242,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 | `noticias-diarias.yml` | `0 7 * * *` (diário 07:00 UTC) | RSS → selecciona notícia relevante → insere em noticias.html |
 | `scrape-fontes.yml` | `0 6 * * *` (diário 06:00 UTC) | Playwright scrape 6 fontes + Issue se conteúdo mudou |
 | `validar-conteudo.yml` | — | validar-conteudo |
+| `validar-valores.yml` | — | validar-valores |
 | `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 |
 
 **Labels de Issues automáticas:**
@@ -294,6 +297,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 24 de junho de 2026 às 08:28 · gerado automaticamente por `atualizar-readme.yml`*
+*Atualizado em 24 de junho de 2026 às 11:23 · gerado automaticamente por `atualizar-readme.yml`*
 
 <!-- END:RODAPE -->
