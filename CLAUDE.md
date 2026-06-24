@@ -241,3 +241,7 @@ Triggers obrigatórios de actualização:
 - Adição ou remoção de página HTML publicada
 - Mudança nas regras de conteúdo ou de links
 - Mudança na stack (novos serviços, remoção de dependências)
+
+---
+
+*Última revisão automática: 2026-06-24*

@@ -313,12 +313,45 @@ jobs:
           sed -i "s|Verificado a [0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]|Verificado a ${DATE_PT}|g" index.html
           echo "Data atualizada: ${DATE_PT}"
 
+      # ── Step 6b: Actualizar CLAUDE.md ───────────────────────────────────────
+      - name: Actualizar CLAUDE.md
+        run: |
+          python3 - << 'PYEOF'
+          import glob, re
+          from datetime import datetime, timezone
+
+          paginas = sorted(glob.glob("*.html"))
+          paginas = [p for p in paginas if p not in
+              ["404.html", "sobre.html", "fontes.html", "privacidade.html"]]
+
+          with open("CLAUDE.md", encoding="utf-8") as f:
+              conteudo = f.read()
+
+          data = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+          novo = re.sub(
+              r"Última revisão automática: \d{4}-\d{2}-\d{2}",
+              f"Última revisão automática: {data}",
+              conteudo
+          )
+
+          if novo == conteudo:
+              # Linha ainda não existe — adicionar antes do último newline
+              novo = conteudo.rstrip() + f"\n\n---\n\n*Última revisão automática: {data}*\n"
+
+          if novo != conteudo:
+              with open("CLAUDE.md", "w", encoding="utf-8") as f:
+                  f.write(novo)
+              print(f"CLAUDE.md actualizado: {data}")
+          else:
+              print("CLAUDE.md sem alterações.")
+          PYEOF
+
       # ── Step 7: Push único ───────────────────────────────────────────────────
       - name: Commit e push (único por dia)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ index.html noticias.html README.md
+          git add data/ index.html noticias.html README.md CLAUDE.md
           if git diff --staged --quiet; then
             echo "Sem alterações para commitar."
           else
