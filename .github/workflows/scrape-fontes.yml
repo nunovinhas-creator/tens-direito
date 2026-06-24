@@ -61,7 +61,8 @@ jobs:
               if (!file.includes(hoje)) continue;
 
               const new_content = fs.readFileSync(new_path, 'utf8');
-              const new_hash = crypto.createHash('sha256').update(new_content).digest('hex');
+              const new_data = JSON.parse(new_content);
+              const new_hash = new_data.hash_conteudo || crypto.createHash('sha256').update(new_content).digest('hex');
 
               if (!fs.existsSync(latest_path)) {
                 fs.writeFileSync(latest_path, new_content);
@@ -70,7 +71,8 @@ jobs:
               }
 
               const old_content = fs.readFileSync(latest_path, 'utf8');
-              const old_hash = crypto.createHash('sha256').update(old_content).digest('hex');
+              const old_data = JSON.parse(old_content);
+              const old_hash = old_data.hash_conteudo || crypto.createHash('sha256').update(old_content).digest('hex');
 
               if (new_hash === old_hash) {
                 console.log(`${slug}: sem alterações`);
