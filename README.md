@@ -280,9 +280,9 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 | `dge_manuais` | https://www.dge.mec.pt/manuais-escolares | ✓ | 2026-06-23 |
 | `iefp_desemprego` | https://www.iefp.pt/subsidio-desemprego | ✓ | 2026-06-23 |
 | `dre_legislacao` | — | ⚠️ 403 esperado | 2026-06-23 |
-| `dre_bolsa_merito` | https://dre.pt/api/dre/v1/search/?q=bolsa+merito+ensino+secundario&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
-| `dre_ase_escaloes` | https://dre.pt/api/dre/v1/search/?q=acao+social+escolar+escaloes&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
-| `dre_ias` | https://dre.pt/api/dre/v1/search/?q=indexante+apoios+sociais+2026&type=DR1S | ⚠️ 403 esperado | 2026-06-24 |
+| `dre_bolsa_merito` | https://dre.pt/rss/dr1s.rss | ⚠️ 403 esperado | 2026-06-24 |
+| `dre_ase_escaloes` | https://dre.pt/rss/dr1s.rss | ⚠️ 403 esperado | 2026-06-24 |
+| `dre_ias` | https://dre.pt/rss/dr1s.rss | ⚠️ 403 esperado | 2026-06-24 |
 
 <!-- END:FONTES -->
 
@@ -290,6 +290,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 24 de junho de 2026 às 06:49 · gerado automaticamente por `atualizar-readme.yml`*
+*Atualizado em 24 de junho de 2026 às 07:10 · gerado automaticamente por `atualizar-readme.yml`*
 
 <!-- END:RODAPE -->
