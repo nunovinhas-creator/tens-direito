@@ -123,3 +123,10 @@ jobs:
           # NÃO bloquear deploy — exit 0 sempre
           sys.exit(0)
           PYEOF
+
+      - name: HTML5 Validator
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: .
+          css: false
+        continue-on-error: true

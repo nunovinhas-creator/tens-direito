@@ -1,0 +1,116 @@
+name: Validar Valores Estruturados
+
+on:
+  workflow_run:
+    workflows: ["Scrape Fontes Oficiais"]
+    types: [completed]
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Extrair e comparar valores
+        id: extrair
+        run: python3 scripts/extrair_valores.py
+
+      - name: Verificar divergências
+        run: |
+          python3 - << 'PYEOF'
+          import json, os
+          from pathlib import Path
+
+          divergencias_path = Path("data/divergencias.json")
+          if not divergencias_path.exists():
+              print("Ficheiro divergencias.json não encontrado — nada a reportar.")
+              exit(0)
+
+          divergencias = json.loads(divergencias_path.read_text(encoding="utf-8"))
+          if not divergencias:
+              print("Nenhuma divergência detectada.")
+              exit(0)
+
+          # Escrever no step summary
+          lines = ["## ⚠️ Divergências de Valores Detectadas\n\n"]
+          for d in divergencias:
+              lines.append(f"### `{d['campo']}` — {d['descricao']}\n")
+              lines.append(f"- **Fonte** (`{d['slug_fonte']}`): `{d['valor_fonte']}`\n")
+              lines.append(f"- **HTML publicado** (`{d['html_file']}`): `{d['valor_publicado']}`\n")
+              lines.append(f"- **Data**: {d['data']}\n\n")
+
+          summary = "".join(lines)
+          print(summary)
+
+          summary_file = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_file:
+              with open(summary_file, "a") as f:
+                  f.write(summary)
+
+          # Escrever output para passo seguinte
+          with open(os.environ.get("GITHUB_OUTPUT", "/dev/null"), "a") as f:
+              f.write(f"tem_divergencias=true\n")
+              f.write(f"total={len(divergencias)}\n")
+          PYEOF
+
+      - name: Abrir Issue se há divergências
+        if: ${{ always() }}
+        run: |
+          python3 - << 'PYEOF'
+          import json, os, subprocess
+          from pathlib import Path
+
+          divergencias_path = Path("data/divergencias.json")
+          if not divergencias_path.exists():
+              exit(0)
+
+          divergencias = json.loads(divergencias_path.read_text(encoding="utf-8"))
+          if not divergencias:
+              exit(0)
+
+          token = os.environ.get("GITHUB_TOKEN", "")
+          if not token:
+              print("GITHUB_TOKEN não disponível — a saltar criação de Issue.")
+              exit(0)
+
+          repo = os.environ.get("GITHUB_REPOSITORY", "")
+          linhas = ["Os valores nas fontes oficiais não coincidem com os publicados no site.\n\n"]
+          for d in divergencias:
+              linhas.append(f"**{d['descricao']}** (`{d['campo']}`)\n")
+              linhas.append(f"- Fonte `{d['slug_fonte']}`: `{d['valor_fonte']}`\n")
+              linhas.append(f"- HTML `{d['html_file']}`: `{d['valor_publicado']}`\n\n")
+
+          linhas.append("Actualizar o HTML com o valor correcto e registar nova data de verificação.\n")
+          body = "".join(linhas)
+          title = f"⚠️ {len(divergencias)} divergência(s) de valores detectada(s)"
+
+          payload = json.dumps({
+              "title": title,
+              "body": body,
+              "labels": ["fonte-alterada"],
+          })
+
+          result = subprocess.run(
+              ["curl", "-s", "-X", "POST",
+               f"https://api.github.com/repos/{repo}/issues",
+               "-H", f"Authorization: Bearer {token}",
+               "-H", "Content-Type: application/json",
+               "-d", payload],
+              capture_output=True, text=True
+          )
+          if result.returncode == 0:
+              data = json.loads(result.stdout)
+              print(f"Issue criada: {data.get('html_url', '?')}")
+          else:
+              print(f"Erro ao criar Issue: {result.stderr}")
+          PYEOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

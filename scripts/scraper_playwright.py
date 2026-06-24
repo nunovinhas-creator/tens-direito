@@ -99,6 +99,17 @@ FONTES_PLAYWRIGHT = [
             "listas": "ul li, ol li",
         },
     },
+    {
+        "slug": "mega_datas",
+        "url": "https://www.manuaisescolares.pt",
+        "nota": "Portal MEGA — detectar datas de atribuição de vouchers 2026/2027",
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "p",
+            "listas": "ul li, ol li",
+        },
+        "detectar_ano": "2026/2027",
+    },
 ]
 
 # ── Fontes DRE (RSS Série I) ───────────────────────────────────────────────────
@@ -234,6 +245,13 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
 
     _guardar_resultado(slug, resultado)
+
+    # Detectar ano lectivo novo (ex: MEGA 2026/2027)
+    ano_detectar = fonte.get("detectar_ano")
+    if ano_detectar and ano_detectar in html:
+        _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
+        log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
+
     return resultado
 
 
