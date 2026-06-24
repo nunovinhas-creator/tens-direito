@@ -119,19 +119,19 @@ DRE_RSS_URL = "https://dre.pt/rss/dr1s.rss"
 FONTES_DRE_RSS = [
     {
         "slug": "dre_bolsa_merito",
-        "keywords": ["bolsa", "mérito"],
+        "keywords": ["Despacho", "bolsa"],
         "max_resultados": 3,
         "nota": "Despacho anual que fixa condições e valor da bolsa de mérito — Série I do DR",
     },
     {
         "slug": "dre_ase_escaloes",
-        "keywords": ["ação social escolar"],
+        "keywords": ["Despacho", "ação social"],
         "max_resultados": 3,
         "nota": "Despacho anual que fixa os escalões e valores da Ação Social Escolar",
     },
     {
         "slug": "dre_ias",
-        "keywords": ["indexante", "apoios sociais"],
+        "keywords": ["indexante dos apoios sociais"],
         "max_resultados": 3,
         "nota": "Portaria anual que fixa o IAS — base de cálculo de todas as prestações sociais",
     },
