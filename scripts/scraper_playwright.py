@@ -258,19 +258,35 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 # ── DRE RSS ────────────────────────────────────────────────────────────────────
 
 def _carregar_rss_dre() -> list:
-    """Carrega o RSS da Série I — uma única chamada partilhada por todas as fontes."""
+    """Carrega o RSS da Série I com fetch manual para forçar UTF-8 e limpar XML inválido."""
+    import re as _re
     log.info("A carregar RSS DRE Série I: %s", DRE_RSS_URL)
-    for attempt in range(1, 4):
+    for tentativa in range(1, 4):
         try:
-            feed = feedparser.parse(DRE_RSS_URL)
-            if feed.bozo and not feed.entries:
-                raise ValueError(f"feedparser bozo: {feed.bozo_exception}")
-            log.info("RSS DRE: %d entradas", len(feed.entries))
-            return feed.entries
+            r = requests.get(DRE_RSS_URL, timeout=15, headers={
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "application/rss+xml, application/xml, text/xml",
+            })
+            r.encoding = "utf-8"
+            conteudo = r.text
+
+            feed = feedparser.parse(conteudo)
+            if not feed.entries:
+                # Remover caracteres de controlo inválidos em XML e tentar de novo
+                conteudo_limpo = _re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', conteudo)
+                feed = feedparser.parse(conteudo_limpo)
+
+            if feed.entries:
+                log.info("RSS DRE%s: %d entradas", " (limpo)" if not feedparser.parse(conteudo).entries else "", len(feed.entries))
+                primeiro = feed.entries[0]
+                log.info("Primeiro entry DRE: %s", primeiro.get("title", "sem titulo"))
+                return feed.entries
+
+            log.warning("RSS DRE tentativa %d: sem entradas", tentativa)
         except Exception as exc:
-            log.warning("RSS DRE tentativa %d: %s", attempt, exc)
-            if attempt < 3:
-                time.sleep(2 ** attempt)
+            log.warning("RSS DRE tentativa %d: %s", tentativa, exc)
+        if tentativa < 3:
+            time.sleep(2 ** tentativa)
     log.error("RSS DRE falhou após 3 tentativas")
     return []
 
