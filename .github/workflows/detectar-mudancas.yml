@@ -77,11 +77,9 @@ jobs:
               const new_path = path.join(scraped_dir, files[0]);
               const new_content = fs.readFileSync(new_path, 'utf8');
 
-              // Extrair apenas conteúdo relevante para o hash (excluir data_acesso)
               let new_data, old_data;
               try {
                 new_data = JSON.parse(new_content);
-                delete new_data.data_acesso;
               } catch(e) {
                 console.log(`${slug}: erro a parsear JSON novo`);
                 continue;
@@ -96,17 +94,23 @@ jobs:
               const old_content = fs.readFileSync(latest_path, 'utf8');
               try {
                 old_data = JSON.parse(old_content);
-                delete old_data.data_acesso;
               } catch(e) {
                 // Se o latest está corrompido, substituir sem abrir issue
                 fs.writeFileSync(latest_path, new_content);
                 continue;
               }
 
-              const new_hash = crypto.createHash('sha256')
-                .update(JSON.stringify(new_data)).digest('hex');
-              const old_hash = crypto.createHash('sha256')
-                .update(JSON.stringify(old_data)).digest('hex');
+              // Usar hash_conteudo já calculado pelo Python (exclui data_acesso e similares)
+              const new_hash = new_data.hash_conteudo || (() => {
+                const d = {...new_data};
+                ['data_acesso','data_scrape','timestamp','data_run'].forEach(k => delete d[k]);
+                return crypto.createHash('sha256').update(JSON.stringify(d, Object.keys(d).sort())).digest('hex');
+              })();
+              const old_hash = old_data.hash_conteudo || (() => {
+                const d = {...old_data};
+                ['data_acesso','data_scrape','timestamp','data_run'].forEach(k => delete d[k]);
+                return crypto.createHash('sha256').update(JSON.stringify(d, Object.keys(d).sort())).digest('hex');
+              })();
 
               if (new_hash === old_hash) {
                 console.log(`${slug}: sem alterações`);
