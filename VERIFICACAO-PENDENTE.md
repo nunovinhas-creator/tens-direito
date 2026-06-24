@@ -1,11 +1,9 @@
 
-## RSI — seg_social_rsi — 2026-06-24
+## ~~RSI — seg_social_rsi — 2026-06-24~~ ✅ RESOLVIDO
 
-- **Página**: rsi.html (por publicar)
-- **Fonte**: https://www.seg-social.pt/rendimento-social-de-insercao
-- **Problema**: Scraper devolve 0 parágrafos ("conteúdo suspeito: apenas 23 caracteres"). A página da Segurança Social para o RSI exige JavaScript adicional para carregar conteúdo.
-- **Acção**: Rever o scraper `seg_social_rsi` — provavelmente necessita de scroll + espera extra. Testar com `--headed` no Playwright.
-- **Decisão**: Não publicar rsi.html até o scraper devolver ≥ 2 parágrafos com status "ok".
+- **Página**: rsi.html — publicada a 24/06/2026
+- **Resolução**: Factos fornecidos pelo utilizador com fontes verificadas (gov.pt, seg-social.pt, Lei n.º 13/2003). Scraper ainda devolve 0 parágrafos — rever em data futura para manter valores actualizados.
+- **Próxima revisão**: 2026-07-24
 
 ---
 
