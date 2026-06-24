@@ -16,48 +16,115 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notícias — Tens Direito</title>
-  <meta name="description" content="Notícias sobre apoios sociais, direitos e burocracia em Portugal. Atualizado diariamente com fontes verificadas.">
-  <meta property="og:title" content="Notícias — Tens Direito">
-  <meta property="og:description" content="Últimas alterações a apoios sociais, direitos e burocracia em Portugal. Informação verificada com fonte oficial.">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Atualidades — Tens Direito</title>
+  <meta name="description" content="O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada. Arquivo com histórico por categoria.">
+  <meta property="og:title" content="Atualidades — Tens Direito">
+  <meta property="og:description" content="O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada.">
   <meta property="og:url" content="https://tensdireito.com/noticias.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
-  <meta name="robots" content="index, follow">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; }
-header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
-nav { display: flex; align-items: center; gap: 1.5rem; max-width: 860px; margin: 0 auto; }
-.logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-.logo-text { font-size: 1.4rem; font-weight: 700; }
-.logo-text span.tens { color: #0F172A; }
-.logo-text span.direito { color: #0D9488; }
-nav a.nav-link { color: #0F172A; text-decoration: none; font-size: 0.95rem; }
-nav a.nav-link: hover { color: #0D9488; }
-.hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; text-align: center; }
-.hero h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-.hero p { opacity: 0.9; font-size: 0.95rem; }
-main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
-.noticia { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); border-left: 4px solid #0F766E; }
-.noticia .meta { font-size: 0.8rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.noticia h2 { font-size: 1.15rem; color: #0F172A; margin-bottom: 0.75rem; line-height: 1.4; }
-.noticia p { line-height: 1.7; color: #495057; margin-bottom: 0.75rem; }
-.noticia a.fonte { color: #0D9488; font-size: 0.9rem; font-weight: 600; }
-.disclaimer-noticia { background: #f1f5f9; border-radius: 4px; padding: 0.6rem 1rem; font-size: 0.82rem; color: #6c757d; margin-top: 0.5rem; }
-footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; }
-</style>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Notícias — Tens Direito",
+    "name": "Atualidades — Tens Direito",
     "url": "https://tensdireito.com/noticias.html",
-    "description": "Notícias diárias sobre apoios sociais, direitos e burocracia em Portugal",
-    "inLanguage": "pt-PT"
+    "description": "O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada.",
+    "inLanguage": "pt-PT",
+    "isPartOf": {"@type": "WebSite", "url": "https://tensdireito.com"}
   }
   </script>
+
+  <style>
+    :root{--teal:#0F766E;--teal-dark:#115E59;--teal-light:#F0FDF9;--ink:#0F172A;--muted:#6B7280;--border:#E5E7EB;--white:#fff;--radius:10px;--cat-apoios:#0F766E;--cat-educacao:#2563EB;--cat-emprego:#D97706;--cat-habitacao:#16A34A;--cat-fiscal:#7C3AED;--cat-legislacao:#DC2626}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f8f9fa;color:#212529;line-height:1.6}
+a{text-decoration:none;color:inherit}
+header{background:#fff;border-bottom:2px solid var(--teal);padding:1rem 1.5rem}
+nav{display:flex;align-items:center;gap:1.5rem;max-width:900px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:0.75rem}
+.logo-text{font-size:1.4rem;font-weight:700;line-height:1}
+.logo-text span.tens{color:var(--ink)}
+.logo-text span.direito{color:#0D9488}
+nav a.nav-link{color:var(--ink);font-size:0.95rem}
+nav a.nav-link:hover{color:#0D9488}
+.hero{background:var(--teal);color:#fff;padding:2.5rem 1.5rem;text-align:center}
+.hero h1{font-size:1.8rem;margin-bottom:0.4rem}
+.hero p{opacity:.9;font-size:0.95rem;max-width:540px;margin:0 auto}
+main{max-width:900px;margin:2rem auto;padding:0 1rem}
+/* Filtros */
+.filtros{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem}
+.filtro-btn{background:#fff;border:2px solid var(--border);border-radius:20px;padding:.35rem .9rem;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.filtro-btn:hover{border-color:var(--teal);color:var(--teal)}
+.filtro-btn.ativo{background:var(--teal);border-color:var(--teal);color:#fff}
+.filtro-btn .count{display:inline-block;background:rgba(255,255,255,.25);border-radius:10px;padding:0 .4rem;font-size:.75rem;margin-left:.3rem}
+.filtro-btn:not(.ativo) .count{background:#f0f0f0;color:var(--muted)}
+/* Destaque */
+.destaque-wrap{margin-bottom:2rem}
+.destaque-card{background:#fff;border-radius:var(--radius);padding:1.75rem;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:5px solid var(--teal)}
+.destaque-card .top-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap}
+.badge-hoje{background:var(--teal);color:#fff;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.25rem .6rem;border-radius:20px}
+.cat-badge{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:20px;color:#fff}
+.cat-badge.apoios{background:var(--cat-apoios)}
+.cat-badge.educacao{background:var(--cat-educacao)}
+.cat-badge.emprego{background:var(--cat-emprego)}
+.cat-badge.habitacao{background:var(--cat-habitacao)}
+.cat-badge.fiscal{background:var(--cat-fiscal)}
+.cat-badge.legislacao{background:var(--cat-legislacao)}
+.data-str{font-size:.82rem;color:var(--muted)}
+.destaque-card h2{font-size:1.25rem;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:.75rem}
+.destaque-card .resumo{font-size:.95rem;color:#374151;line-height:1.7;margin-bottom:1rem}
+.destaque-card .fonte-link{font-size:.88rem;font-weight:700;color:var(--teal)}
+.destaque-card .fonte-link:hover{color:var(--teal-dark)}
+.disclaimer-not{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
+/* Arquivo */
+.arquivo-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
+.arquivo-header h2{font-size:1rem;font-weight:800;color:var(--ink)}
+.contador-str{font-size:.82rem;color:var(--muted)}
+.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.noticia-card{background:#fff;border-radius:var(--radius);padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:.4rem;transition:box-shadow .15s}
+.noticia-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.1)}
+.noticia-card .card-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.noticia-card .cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cat-dot.apoios{background:var(--cat-apoios)}
+.cat-dot.educacao{background:var(--cat-educacao)}
+.cat-dot.emprego{background:var(--cat-emprego)}
+.cat-dot.habitacao{background:var(--cat-habitacao)}
+.cat-dot.fiscal{background:var(--cat-fiscal)}
+.cat-dot.legislacao{background:var(--cat-legislacao)}
+.noticia-card .cat-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.cat-label.apoios{color:var(--cat-apoios)}
+.cat-label.educacao{color:var(--cat-educacao)}
+.cat-label.emprego{color:var(--cat-emprego)}
+.cat-label.habitacao{color:var(--cat-habitacao)}
+.cat-label.fiscal{color:var(--cat-fiscal)}
+.cat-label.legislacao{color:var(--cat-legislacao)}
+.noticia-card .card-data{font-size:.75rem;color:var(--muted);margin-left:auto}
+.noticia-card h3{font-size:.95rem;font-weight:800;color:var(--ink);line-height:1.4}
+.noticia-card .card-resumo{font-size:.85rem;color:#4B5563;line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.noticia-card .card-fonte{font-size:.8rem;font-weight:700;color:var(--teal);margin-top:.25rem}
+.noticia-card .card-fonte:hover{color:var(--teal-dark)}
+/* Paginação */
+.paginacao{display:flex;align-items:center;justify-content:space-between;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
+.pag-info{font-size:.83rem;color:var(--muted)}
+.pag-btns{display:flex;gap:.5rem}
+.pag-btn{background:#fff;border:2px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.85rem;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s,color .15s}
+.pag-btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.pag-btn:disabled{opacity:.4;cursor:default}
+/* Banner */
+.banner-sub{background:var(--teal-light);border:1px solid #99F6E4;border-radius:var(--radius);padding:1.25rem 1.5rem;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.banner-sub p{font-size:.9rem;color:var(--ink)}
+.banner-sub p strong{font-size:1rem}
+.banner-sub a{font-size:.88rem;font-weight:700;color:var(--teal);white-space:nowrap}
+.vazio{text-align:center;padding:2rem;color:var(--muted);font-size:.9rem;grid-column:1/-1}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+footer a{color:var(--muted)}
+@media(max-width:600px){.cards-grid{grid-template-columns:1fr}.hero h1{font-size:1.5rem}}
+  </style>
 </head>
 <body>
   <header>
@@ -69,30 +136,196 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
         </svg>
         <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
       </a>
-      <a href="/" class="nav-link">Início</a>
       <a href="/comecar-aqui.html" class="nav-link">Começa aqui</a>
       <a href="/#guias-de-apoios" class="nav-link">Guias</a>
       <a href="/noticias.html" class="nav-link">Notícias</a>
       <a href="/sobre.html" class="nav-link">Sobre</a>
     </nav>
   </header>
+
   <section class="hero">
-    <h1>Notícias</h1>
-    <p>Uma notícia por dia — apoios sociais, direitos e burocracia em Portugal</p>
+    <h1>Atualidades</h1>
+    <p>O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada</p>
   </section>
+
   <main>
-    <!-- INÍCIO NOTÍCIAS GERADAS AUTOMATICAMENTE -->
-    <article class="noticia">
-      <div class="meta">24 de junho de 2026 · Apoios Sociais</div>
-      <h2>Os 13 apoios que se juntam na prestação social única - Observador</h2>
-      <p>Os 13 apoios que se juntam na prestação social única&amp;nbsp;&amp;nbsp;Observador…</p>
-      <a href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxOa1FETEZnamM2UE02OUFIRkZyN2V2T21WN2dzUHFrSWZuS0FMMGFXRDlaTFBBdndadFN5YjBLM0dpRWZnTFB4c2ctTF9uNk52bEpXWFhzdlExT2R5REJsX0NMUWhSdS16XzFTbzBxZVhXZU92cG9zaWhaQ3pzMUF4bk15YjBUQW15ck5kMzJvU2VQYk8tZ210MWl3UkZyOVBQeUR6RjBjQkpEZ0tRd0lJTWNBTGoxMUZuY2QzVkZWb09VczZwTHl4dU1XVDlqbkU1QTFHWFZYdWF1RUZHQW9BOENsYkRrZHJUQ0RvTmstUHJzbTlyZWwtNg?oc=5" class="fonte" target="_blank" rel="noopener">→ Fonte: Observador</a>
-      <div class="disclaimer-noticia">Resumo informativo. Lê a notícia completa na fonte antes de tomar decisões.</div>
-    </article>
-    <!-- FIM NOTÍCIAS GERADAS AUTOMATICAMENTE -->
+    <!-- Filtros por categoria -->
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por categoria">
+      <button class="filtro-btn ativo" data-cat="todas" onclick="filtrar('todas')">Todas <span class="count" id="cnt-todas"></span></button>
+      <button class="filtro-btn" data-cat="apoios" onclick="filtrar('apoios')">Apoios Sociais <span class="count" id="cnt-apoios"></span></button>
+      <button class="filtro-btn" data-cat="educacao" onclick="filtrar('educacao')">Educação <span class="count" id="cnt-educacao"></span></button>
+      <button class="filtro-btn" data-cat="emprego" onclick="filtrar('emprego')">Emprego <span class="count" id="cnt-emprego"></span></button>
+      <button class="filtro-btn" data-cat="habitacao" onclick="filtrar('habitacao')">Habitação <span class="count" id="cnt-habitacao"></span></button>
+      <button class="filtro-btn" data-cat="fiscal" onclick="filtrar('fiscal')">Fiscalidade <span class="count" id="cnt-fiscal"></span></button>
+      <button class="filtro-btn" data-cat="legislacao" onclick="filtrar('legislacao')">Legislação <span class="count" id="cnt-legislacao"></span></button>
+    </div>
+
+    <!-- Notícia em destaque -->
+    <!-- DESTAQUE-INICIO -->
+    <div class="destaque-wrap" id="destaque-wrap">
+      <article class="destaque-card" data-cat="apoios">
+        <div class="top-row">
+          <span class="badge-hoje">Hoje</span>
+          <span class="cat-badge apoios">Apoios Sociais</span>
+          <span class="data-str">24 Jun 2026</span>
+        </div>
+        <h2>PSU: os 13 apoios que se juntam na Prestação Social Única</h2>
+        <p class="resumo">O Governo anunciou que a PSU deverá simplificar o acesso a apoios como o RSI, o Complemento Solidário para Idosos e o Abono de Família. Em vez de 13 pedidos separados, os beneficiários poderão fazer um único pedido integrado. A medida está em fase de discussão pública — os detalhes finais ainda não foram publicados em Diário da República.</p>
+        <a href="https://www.seg-social.pt" class="fonte-link" target="_blank" rel="noopener">→ Fonte: seg-social.pt</a>
+        <p class="disclaimer-not">Resumo informativo. Confirma sempre na fonte oficial antes de tomar decisões.</p>
+      </article>
+    </div>
+    <!-- DESTAQUE-FIM -->
+
+    <!-- Arquivo de notícias -->
+    <div id="arquivo" style="scroll-margin-top:1rem">
+      <div class="arquivo-header">
+        <h2>Arquivo</h2>
+        <span class="contador-str" id="contador-str"></span>
+      </div>
+
+      <div class="cards-grid" id="cards-grid">
+
+        <!-- ARQUIVO-INICIO -->
+        <article class="noticia-card" data-cat="educacao">
+          <div class="card-meta">
+            <span class="cat-dot educacao"></span>
+            <span class="cat-label educacao">Educação</span>
+            <span class="card-data">23 Jun 2026</span>
+          </div>
+          <h3>Candidaturas à ASE 2026/2027 abrem em setembro — prazo até 30 de setembro</h3>
+          <p class="card-resumo">As candidaturas à Ação Social Escolar para o ano letivo 2026/2027 abrem com o início das aulas. O prazo termina a 30 de setembro. Famílias com escalão do abono atribuído podem candidatar-se nos serviços da escola.</p>
+          <a href="https://www.dge.mec.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: dge.mec.pt</a>
+        </article>
+
+        <article class="noticia-card" data-cat="apoios">
+          <div class="card-meta">
+            <span class="cat-dot apoios"></span>
+            <span class="cat-label apoios">Apoios Sociais</span>
+            <span class="card-data">20 Jun 2026</span>
+          </div>
+          <h3>IAS sobe para 537,13 € em 2026 — escalões de apoios actualizados</h3>
+          <p class="card-resumo">O Indexante dos Apoios Sociais foi fixado em 537,13 € para 2026, afectando os limites de elegibilidade e os valores de apoios como o abono de família, o RSI e o subsídio de desemprego.</p>
+          <a href="https://www.seg-social.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: seg-social.pt</a>
+        </article>
+
+        <article class="noticia-card" data-cat="educacao">
+          <div class="card-meta">
+            <span class="cat-dot educacao"></span>
+            <span class="cat-label educacao">Educação</span>
+            <span class="card-data">18 Jun 2026</span>
+          </div>
+          <h3>Bolsas de mérito 2026: candidaturas abertas até 30 de setembro nas escolas</h3>
+          <p class="card-resumo">Alunos do ensino secundário com escalão A ou B da ASE e aprovação em todas as disciplinas podem candidatar-se à bolsa de mérito. O valor estimado para 2026/2027 é de 1.342,83 € pagos em 3 prestações.</p>
+          <a href="https://www.dge.mec.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: dge.mec.pt</a>
+        </article>
+        <!-- ARQUIVO-FIM -->
+
+      </div><!-- /cards-grid -->
+
+      <div class="paginacao" id="paginacao">
+        <span class="pag-info" id="pag-info"></span>
+        <div class="pag-btns">
+          <button class="pag-btn" id="btn-ant" onclick="mudarPagina(-1)" disabled>← Anterior</button>
+          <button class="pag-btn" id="btn-prox" onclick="mudarPagina(1)">Próxima →</button>
+        </div>
+      </div>
+    </div><!-- /arquivo -->
+
+    <div class="banner-sub">
+      <p><strong>📬 Fica a par das atualizações</strong><br>Novas entradas todos os dias úteis.</p>
+      <a href="/noticias.html#arquivo">Ver arquivo completo →</a>
+    </div>
   </main>
+
   <footer>
-    <p>tensdireito.com — Informação verificada para cidadãos portugueses</p>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p style="margin-top:.5rem">tensdireito.com — Informação verificada para cidadãos portugueses</p>
   </footer>
+
+  <script>
+    var catAtiva = 'todas';
+    var paginaAtual = 0;
+    var POR_PAGINA = 6;
+
+    function todosCards() {
+      return Array.from(document.querySelectorAll('#cards-grid .noticia-card'));
+    }
+
+    function cardsFiltrados() {
+      var cards = todosCards();
+      if (catAtiva === 'todas') return cards;
+      return cards.filter(function(c) { return c.dataset.cat === catAtiva; });
+    }
+
+    function atualizarContadores() {
+      var todos = todosCards();
+      var cats = ['todas','apoios','educacao','emprego','habitacao','fiscal','legislacao'];
+      cats.forEach(function(cat) {
+        var el = document.getElementById('cnt-' + cat);
+        if (!el) return;
+        var n = cat === 'todas' ? todos.length : todos.filter(function(c){return c.dataset.cat===cat;}).length;
+        el.textContent = n;
+      });
+    }
+
+    function renderizar() {
+      var filtrados = cardsFiltrados();
+      var total = filtrados.length;
+      var inicio = paginaAtual * POR_PAGINA;
+      var fim = Math.min(inicio + POR_PAGINA, total);
+
+      todosCards().forEach(function(c) { c.style.display = 'none'; });
+      filtrados.slice(inicio, fim).forEach(function(c) { c.style.display = 'flex'; });
+
+      var infoEl = document.getElementById('pag-info');
+      var grid = document.getElementById('cards-grid');
+
+      if (total === 0) {
+        infoEl.textContent = 'Sem notícias nesta categoria.';
+        var vazio = document.getElementById('vazio-msg');
+        if (!vazio) {
+          vazio = document.createElement('p');
+          vazio.id = 'vazio-msg';
+          vazio.className = 'vazio';
+          vazio.textContent = 'Sem notícias nesta categoria por enquanto.';
+          grid.appendChild(vazio);
+        }
+      } else {
+        var vazio = document.getElementById('vazio-msg');
+        if (vazio) vazio.remove();
+        infoEl.textContent = 'Mostrando ' + (inicio+1) + '–' + fim + ' de ' + total + ' notícias';
+      }
+
+      document.getElementById('btn-ant').disabled = paginaAtual === 0;
+      document.getElementById('btn-prox').disabled = fim >= total;
+
+      /* destaque: mostrar/ocultar conforme filtro */
+      var destaque = document.querySelector('#destaque-wrap .destaque-card');
+      if (destaque) {
+        var destCat = destaque.dataset.cat;
+        document.getElementById('destaque-wrap').style.display =
+          (catAtiva === 'todas' || catAtiva === destCat) ? 'block' : 'none';
+      }
+    }
+
+    function filtrar(cat) {
+      catAtiva = cat;
+      paginaAtual = 0;
+      document.querySelectorAll('.filtro-btn').forEach(function(btn) {
+        btn.classList.toggle('ativo', btn.dataset.cat === cat);
+      });
+      renderizar();
+    }
+
+    function mudarPagina(delta) {
+      paginaAtual += delta;
+      renderizar();
+      document.getElementById('arquivo').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    atualizarContadores();
+    renderizar();
+  </script>
 </body>
 </html>
