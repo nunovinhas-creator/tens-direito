@@ -119,13 +119,19 @@ jobs:
               fs.writeFileSync(latest_path, new_content);
             }
 
-      - name: Commit JSONs
+      - name: Atualizar data de verificação no index.html
+        run: |
+          DATE_PT=$(date -u +%d/%m/%Y)
+          sed -i "s|Verificado a [0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]|Verificado a ${DATE_PT}|g" index.html
+          echo "Data atualizada: ${DATE_PT}"
+
+      - name: Commit JSONs e index.html
         run: |
           git config user.name "Claude"
           git config user.email "noreply@anthropic.com"
-          git add data/scraped/
+          git add data/scraped/ index.html
           if git diff --staged --quiet; then
-            echo "Sem novos JSONs para commitar."
+            echo "Sem alterações para commitar."
           else
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "data: scrape fontes ${DATE}"

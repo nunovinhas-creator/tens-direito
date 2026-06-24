@@ -186,8 +186,11 @@
       margin-bottom: 1rem;
     }
     .urgente-cards {
-      display: flex; gap: 0.75rem;
-      overflow-x: auto; padding-bottom: 0.5rem;
+      display: flex; gap: 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      padding: 0 16px 12px;
       scrollbar-width: thin; scrollbar-color: var(--amber) transparent;
     }
     .urgente-cards::-webkit-scrollbar { height: 4px; }
@@ -195,7 +198,8 @@
     .urgente-cards::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 4px; }
 
     .urgente-card {
-      flex-shrink: 0; width: 220px;
+      flex-shrink: 0; min-width: 260px;
+      scroll-snap-align: start;
       background: var(--white);
       border: 1px solid #FDE68A;
       border-radius: var(--radius);
@@ -441,14 +445,14 @@
   <!-- HERO -->
   <section class="hero">
     <h1>O que precisas de saber sobre os teus <em>direitos</em></h1>
-    <p class="hero-sub">Informação verificada. Fonte oficial. Sempre actualizado.</p>
+    <p class="hero-sub">Informação verificada. Fonte oficial. Sempre atualizado.</p>
     <div class="hero-ctas">
       <a href="/acao-social-escolar.html" class="btn btn-primary">Ver apoios escolares →</a>
       <a href="/abono-de-familia.html" class="btn btn-outline">Abono de família →</a>
     </div>
     <div class="trust-seals" aria-label="Selos de confiança">
       <span><span class="tick">✓</span> Fontes oficiais</span>
-      <span><span class="tick">✓</span> Verificado a 23/06/2026</span>
+      <span><span class="tick">✓</span> Verificado a <span id="data-verificacao">recentemente</span></span>
       <span><span class="tick">✓</span> Sem fins comerciais</span>
     </div>
   </section>
@@ -623,6 +627,23 @@
       const open = menu.classList.toggle('open');
       btn.setAttribute('aria-expanded', open);
     }
+
+    // Data de verificação dinâmica a partir do último scrape
+    (function() {
+      const el = document.getElementById('data-verificacao');
+      if (!el) return;
+      fetch('/data/scraped/seg_social_abono_latest.json')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (!data || !data.data_acesso) return;
+          const d = new Date(data.data_acesso);
+          const fmt = d.toLocaleDateString('pt-PT', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+          });
+          el.textContent = fmt;
+        })
+        .catch(() => {});
+    })();
   </script>
 
 </body>
