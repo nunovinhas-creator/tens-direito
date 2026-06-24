@@ -1,13 +1,14 @@
 {
   "url": "https://www.seg-social.pt/abono-de-familia",
   "url_original": "https://www.seg-social.pt/abono-de-familia",
-  "data_acesso": "2026-06-24T06:11:00.702830+00:00",
+  "data_acesso": "2026-06-24T10:53:36.349123+00:00",
   "status": "ok",
   "conteudo_extraido": {
-    "titulo": "",
+    "titulo": "Segurança Social Direta",
     "paragrafos": [],
     "itens_lista": [],
     "tabelas": []
   },
-  "hash_conteudo": "773ec15d5106c462e46cfe9fdf84ceb9f50384b4f8665073312621700f9a4a00"
+  "hash_conteudo": "a0b189d4177e6a616e8613fff1ac4a990dfc45e987a6952ec048dd114c7292f6",
+  "aviso": "conteúdo suspeito: apenas 23 caracteres (mínimo 100)"
 }
