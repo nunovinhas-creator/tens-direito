@@ -187,5 +187,6 @@ jobs:
           else
             DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
             git commit -m "data: detectar-mudancas ${DATE}"
+            git pull --rebase origin main
             git push
           fi
