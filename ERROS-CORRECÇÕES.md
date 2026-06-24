@@ -2,6 +2,17 @@
 
 ---
 
+## Guardrail #001 — 2026-06-24
+
+**Sistema de protecção de ficheiros implementado**
+
+- **Regra:** o pipeline automático (`pipeline-diario.yml`) só pode escrever em `index.html` e `noticias.html`. Todos os outros HTML são automaticamente protegidos — incluindo páginas futuras ainda não criadas.
+- **Implementação 1 — Python:** função `escrever_ficheiro_seguro()` em `scripts/gerar_noticias.py` lança excepção se o script tentar escrever em qualquer HTML fora da lista `FICHEIROS_AUTO_GERADOS`.
+- **Implementação 2 — CI:** step "Verificar ficheiros protegidos" no `pipeline-diario.yml` corre antes do commit; faz `exit 1` se `git diff --name-only HEAD` revelar qualquer HTML protegido modificado.
+- **Documentação:** secção "REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS" adicionada ao topo do CLAUDE.md.
+
+---
+
 ## Correcção #001
 
 **Data de detecção:** 23 de junho de 2026

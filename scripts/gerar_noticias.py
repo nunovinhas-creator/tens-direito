@@ -3,9 +3,24 @@
 
 import feedparser
 import html
+import os
 import re
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+
+# Guardrail: único ficheiro HTML que este script pode modificar.
+FICHEIROS_AUTO_GERADOS = ["noticias.html"]
+
+
+def escrever_ficheiro_seguro(caminho, conteudo):
+    nome = os.path.basename(caminho)
+    if nome.endswith(".html") and nome not in FICHEIROS_AUTO_GERADOS:
+        raise Exception(
+            f"BLOQUEADO: tentativa de escrever em ficheiro protegido: {nome}. "
+            f"Apenas {FICHEIROS_AUTO_GERADOS} podem ser modificados automaticamente."
+        )
+    with open(caminho, "w", encoding="utf-8") as f:
+        f.write(conteudo)
 
 FEEDS = [
     "https://news.google.com/rss/search?q=apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
@@ -199,8 +214,7 @@ def load_template():
 
 
 def save(content):
-    with open("noticias.html", "w", encoding="utf-8") as f:
-        f.write(content)
+    escrever_ficheiro_seguro("noticias.html", content)
 
 
 def main():

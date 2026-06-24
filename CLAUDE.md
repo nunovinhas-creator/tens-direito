@@ -5,6 +5,31 @@ Ler sempre antes de qualquer tarefa.
 
 ---
 
+## REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS
+
+O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
+- `index.html` — actualização da data de verificação
+- `noticias.html` — notícia do dia via RSS
+- `CLAUDE.md` — data de revisão automática
+- `README.md` — estado do repositório
+- `data/scraped/*.json` — dados do scraper
+
+**TODOS os outros HTML são manuais e protegidos.**
+Esta regra aplica-se a páginas actuais E futuras.
+Qualquer novo HTML criado está automaticamente protegido — não precisa de ser adicionado a listas.
+
+O guardrail está implementado em dois locais:
+1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` bloqueia qualquer escrita em HTML que não seja `noticias.html`
+2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit
+
+Para modificar uma página de conteúdo:
+1. Sessão Claude Code manual
+2. Fact-checking prévio da informação
+3. Commit manual com mensagem descritiva
+4. **Nunca via pipeline automático**
+
+---
+
 ## REGRA ABSOLUTA — GIT
 
 NUNCA criar branches. SEMPRE trabalhar em main.

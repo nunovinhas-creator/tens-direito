@@ -346,6 +346,27 @@ jobs:
               print("CLAUDE.md sem alterações.")
           PYEOF
 
+      # ── Step 6c: Guardrail — verificar ficheiros protegidos ─────────────────
+      - name: Verificar ficheiros protegidos
+        run: |
+          python3 -c "
+          import subprocess, sys
+          AUTO_GERADOS = ['index.html', 'noticias.html', 'CLAUDE.md', 'README.md']
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', 'HEAD'],
+              capture_output=True, text=True
+          )
+          modificados = [f.strip() for f in result.stdout.strip().split('\n') if f.strip()]
+          violacoes = [f for f in modificados if f.endswith('.html') and f not in AUTO_GERADOS]
+          if violacoes:
+              print('ERRO CRITICO: ficheiros protegidos modificados pelo pipeline:')
+              for f in violacoes:
+                  print(f'  - {f}')
+              print('Apenas index.html e noticias.html podem ser modificados automaticamente.')
+              sys.exit(1)
+          print(f'Guardrail OK — {len(modificados)} ficheiro(s) modificado(s), nenhum protegido afectado.')
+          "
+
       # ── Step 7: Push único ───────────────────────────────────────────────────
       - name: Commit e push (único por dia)
         run: |
