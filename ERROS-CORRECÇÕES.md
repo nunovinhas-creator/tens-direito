@@ -96,3 +96,23 @@ Fonte das correcções: relatório de fact-checking externo, verificado a 24/06/
 - **Correcção 7 — Acompanhamento legislativo:** Substituído link para dre.pt (publica apenas diplomas promulgados) pelo link correcto: parlamento.pt. Aviso actualizado com estado actual da proposta.
 - **Correcção 8 — Subsídio Social Parental:** Adicionadas condições de recursos obrigatórias: rendimento per capita máximo 80% IAS (429,70 €/mês em 2026); património mobiliário máximo 240 × IAS (128.911,20 € em 2026).
 - **Correcção 9 — Estado da proposta legislativa:** Aviso actualizado com estado actual: aprovado generalidade 23 jan 2026, em discussão especialidade na Comissão de Trabalho (10.ª), audição ISS realizada 26 jun 2026, NÃO em vigor.
+
+## Correcção #009 — 2026-06-24
+
+**`abono-de-familia.html` — 12 erros corrigidos, valores actualizados Portaria n.º 60/2026/1**
+
+Fontes: Portaria n.º 60/2026/1, de 5 de fevereiro · Instituto da Segurança Social · verificado 24/06/2026.
+
+- **Correcção 1 — Estrutura etária:** Substituída a segmentação obsoleta (até 12 meses / 1–3 anos / 3–6 anos / 6–24 anos) pela estrutura oficial com 3 grupos: ≤ 36 meses / > 36 a ≤ 72 meses / > 72 meses.
+- **Correcção 2 — Valores mensais:** Substituída toda a tabela de valores pelos dados da Portaria n.º 60/2026/1: 1.º escalão ≤36m 190,98 €; 2.º escalão ≤36m 161,65 €; 3.º escalão ≤36m 132,07 €; 4.º escalão ≤36m 88,43 €; valores completos por escalão e grupo etário.
+- **Correcção 3 — Metodologia escalões:** Substituída a indicação errada de "rendimento mensal per capita ÷ IAS" pela fórmula do Rendimento de Referência anual: RR = rendimento bruto anual ÷ (n.º crianças + 1). Adicionados limites anuais para novos pedidos 2026 (IAS 2025=522,50€), pedidos activos (IAS 2024=509,26€) e reavaliações (IAS 2026=537,13€).
+- **Correcção 4 — 4.º escalão perde direito aos 72 meses:** Adicionada nota obrigatória: crianças no 4.º escalão perdem o direito ao abono quando completam 72 meses (6 anos).
+- **Correcção 5 — Majorações:** Adicionada secção de majorações: família monoparental +50%; famílias numerosas 2+ crianças ≤36m (+64,96 € a +39,28 € conforme escalão); 3+ crianças ≤36m 1.º escalão +106,96 €.
+- **Correcção 6 — Garantia para a Infância:** Adicionada nova secção: crianças 1.º escalão com RR < 2.631,94 €/ano têm garantido 127,33 €/mês; complemento pago automaticamente pela SS sem necessidade de pedido.
+- **Correcção 7 — Atribuição automática:** Adicionada informação sobre atribuição automática para recém-nascidos (proposta enviada à SS Direta após registo civil e CC; pais aceitam expressamente).
+- **Correcção 8 — Prazo:** Actualizado para 6 meses a contar do 1.º dia do mês seguinte ao nascimento; esclarecido que pedido fora do prazo perde retroactivos.
+- **Correcção 9 — Data de pagamento:** Adicionado que o pagamento é tipicamente no dia 16 de cada mês.
+- **Correcção 10 — Limite de património:** Adicionada condição de acesso: património mobiliário máximo 240 × IAS = 128.911,20 € em 2026.
+- **Correcção 11 — Trabalhadores independentes:** Adicionada regra: dívida à SS não regularizada em 3 meses após suspensão → direito perde-se definitivamente.
+- **Correcção 12 — Formulário reavaliação:** Adicionada referência ao Modelo GF58-DGSS para pedidos de reavaliação de escalão a meio do ano.
+
