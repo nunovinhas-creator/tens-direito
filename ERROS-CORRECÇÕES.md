@@ -80,3 +80,19 @@ Regra aplicada: quando um subpath de portal oficial devolve erro, usar a homepag
 - **Correcção 4 — Nota MEGA:** Reforçado o bloco MEGA com explicação de que o programa abrange todos os alunos do ensino público desde 2016/2017 e que o apoio de "material escolar" da ASE é exclusivamente para material de desgaste.
 - **Correcção 5 — Legislação:** Substituídas fontes genéricas pela legislação base completa: Despacho n.º 8452-A/2015, Despacho n.º 5296/2017, Despacho n.º 7255/2018, com links para diariodarepublica.pt.
 - **Correcção 6 — JSON-LD:** FAQ sobre manuais actualizada com distinção MEGA vs. material de desgaste e valores; adicionada pergunta/resposta sobre visitas de estudo com regra de ressarcimento posterior.
+
+## Correcção #008 — 2026-06-24
+
+**`subsidio-parental.html` — 9 erros críticos corrigidos após fact-checking externo**
+
+Fonte das correcções: relatório de fact-checking externo, verificado a 24/06/2026.
+
+- **Correcção 1 — Dias do pai (tipo):** "28 dias úteis" corrigido para "28 dias de calendário (incluindo fins de semana e feriados)".
+- **Correcção 2 — Distribuição dos 28 dias:** Substituída a divisão errada "20 dias imediatos + 8 dias nos primeiros 30 dias" pela divisão correcta: 7 dias seguidos imediatamente após o nascimento + 21 dias seguidos ou interpolados (blocos mínimos de 7 dias) nos primeiros 42 dias.
+- **Correcção 3 — 7 dias facultativos do pai:** Adicionado o direito a 7 dias facultativos adicionais, gozados em simultâneo com a licença da mãe nas primeiras 6 semanas após o parto, pagos a 100%. Total máximo licença exclusiva do pai: 35 dias (28+7).
+- **Correcção 4 — Fórmula RR:** Fórmula corrigida para "soma dos salários brutos dos 6 meses mais antigos dos 8 meses anteriores ao mês de início da licença ÷ 180". Adicionado método alternativo para trabalhadores com menos de 6 meses de contribuições.
+- **Correcção 5 — Tabela de modalidades:** Reformulação das descrições para reflectir o critério correcto de partilha (pai goza ≥30 dias seguidos ou 2×15; ou ≥60 dias seguidos ou 2×30). Adicionada nota obrigatória: na modalidade de 180 dias a 90%, os 60 dias do pai estão incluídos nos 180 dias totais.
+- **Correcção 6 — Pedido online:** Substituída referência ao formulário RP 5049-DGSS como canal online pelo formulário electrónico dinâmico da SS Direta (seg-social.pt). RP 5049-DGSS mantido como referência para canal presencial/correio.
+- **Correcção 7 — Acompanhamento legislativo:** Substituído link para dre.pt (publica apenas diplomas promulgados) pelo link correcto: parlamento.pt. Aviso actualizado com estado actual da proposta.
+- **Correcção 8 — Subsídio Social Parental:** Adicionadas condições de recursos obrigatórias: rendimento per capita máximo 80% IAS (429,70 €/mês em 2026); património mobiliário máximo 240 × IAS (128.911,20 € em 2026).
+- **Correcção 9 — Estado da proposta legislativa:** Aviso actualizado com estado actual: aprovado generalidade 23 jan 2026, em discussão especialidade na Comissão de Trabalho (10.ª), audição ISS realizada 26 jun 2026, NÃO em vigor.
