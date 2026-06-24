@@ -82,8 +82,29 @@ Os portais do governo português (.pt) bloqueiam pedidos automáticos com ProxyE
 
 ---
 
+---
+
+## Verificação pendente — 2026-06-24 (Correcção #007)
+
+Três links do Diário da República adicionados a `acao-social-escolar.html` (legislação base ASE). Não foi possível confirmar os subpaths a partir do sandbox — verificar manualmente.
+
+- **URL:** `https://diariodarepublica.pt/dr/detalhe/despacho/8452-a-2015-69927755`
+  - **Contexto:** Despacho n.º 8452-A/2015 — diploma base da ASE
+  - **Acção se 404:** substituir por `https://dre.pt` com texto "Despacho n.º 8452-A/2015 (dre.pt)"
+
+- **URL:** `https://diariodarepublica.pt/dr/detalhe/despacho/5296-2017-107516544`
+  - **Contexto:** Despacho n.º 5296/2017 — alteração principal da ASE
+  - **Acção se 404:** substituir por `https://dre.pt` com texto "Despacho n.º 5296/2017 (dre.pt)"
+
+- **URL:** `https://diariodarepublica.pt/dr/detalhe/despacho/7255-2018-115811903`
+  - **Contexto:** Despacho n.º 7255/2018 — clarificação de regras ASE
+  - **Acção se 404:** substituir por `https://dre.pt` com texto "Despacho n.º 7255/2018 (dre.pt)"
+
+---
+
 ## Histórico de auditorias
 
 | Data | Páginas | Links | Quebrados | Corrigidos |
 |------|---------|-------|-----------|------------|
 | 23/06/2026 | 5 | 13 | 0 | 0 |
+| 24/06/2026 | 1 (acao-social-escolar.html) | 3 novos (DRE) | pendente verificação manual | — |
