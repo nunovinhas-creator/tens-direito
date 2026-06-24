@@ -447,3 +447,46 @@ jobs:
                 labels: ['fonte-alterada'],
               });
             }
+
+            // Issue específica: datas MEGA 2026/2027 detectadas
+            try {
+              const avisos_txt = fs.readFileSync('data/scraped/avisos.log', 'utf8');
+              if (avisos_txt.includes('mega_datas_publicadas:2026/2027')) {
+                const existing = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'verificar',
+                });
+                const duplicate = existing.data.find(i => i.title.includes('MEGA 2026/2027') && i.title.includes('datas'));
+                if (!duplicate) {
+                  // Extrair excertos do log
+                  const match = avisos_txt.match(/mega_datas_publicadas:2026\/2027:([^\n]*)/);
+                  const excertos = match ? match[1].trim() : '(ver data/scraped/mega_datas_latest.json)';
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `📅 MEGA 2026/2027 — datas de emissão detectadas — actualizar manuais-escolares-mega.html`,
+                    body: [
+                      `## 📅 Datas MEGA 2026/2027 detectadas automaticamente`,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte:** https://www.dge.mec.pt/manuais-escolares`,
+                      ``,
+                      `### Excertos detectados`,
+                      `\`\`\``,
+                      excertos,
+                      `\`\`\``,
+                      ``,
+                      `### Acção necessária`,
+                      `1. Confirmar as datas em https://manuaisescolares.pt`,
+                      `2. Actualizar o calendário em \`manuais-escolares-mega.html\` com as datas reais`,
+                      `3. Substituir "Final de julho / Início de agosto / Meados de agosto" pelas datas exactas`,
+                      `4. Actualizar a data de verificação na página`,
+                      `5. Fechar esta issue após actualização`,
+                    ].join('\n'),
+                    labels: ['verificar', 'fonte-alterada'],
+                  });
+                }
+              }
+            } catch(_) {}

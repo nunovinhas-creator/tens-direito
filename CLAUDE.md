@@ -295,4 +295,22 @@ Triggers obrigatórios de actualização:
 
 ---
 
-*Última revisão automática: 2026-06-24 — diplomas legais e valores 2026 adicionados*
+---
+
+## PÁGINAS COM DATAS SAZONAIS
+
+Páginas que têm datas que expiram e precisam de revisão manual anual:
+
+| Página | Data a rever | Trigger |
+|---|---|---|
+| `manuais-escolares-mega.html` | Julho (datas MEGA) | Issue automática do scraper |
+| `acao-social-escolar.html` | Setembro (prazo ASE) | Calendário anual |
+| `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
+| `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
+| `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
+| `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
+| `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
+
+---
+
+*Última revisão automática: 2026-06-24 — datas sazonais + MEGA detecção automática adicionados*

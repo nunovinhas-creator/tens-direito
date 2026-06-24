@@ -240,9 +240,33 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 
     _guardar_resultado(slug, resultado)
 
-    # Detectar ano lectivo novo (ex: MEGA 2026/2027)
+    # Detectar ano lectivo novo e datas MEGA (ex: MEGA 2026/2027)
     ano_detectar = fonte.get("detectar_ano")
-    if ano_detectar and ano_detectar in html:
+    if ano_detectar and slug == "mega_datas":
+        import re as _re
+        html_lower = html.lower()
+        ano_confirmado = ano_detectar in html
+        datas_confirmadas = bool(
+            _re.search(r"\b(julho|agosto)\b.*\b2026\b", html_lower) or
+            _re.search(r"\b2026\b.*\b(julho|agosto)\b", html_lower) or
+            _re.search(r"\b\d{1,2}\s+de\s+(julho|agosto)\b", html_lower)
+        )
+        if ano_confirmado:
+            _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
+            log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
+        if datas_confirmadas:
+            # Extrair excertos relevantes para facilitar actualização manual
+            excertos = []
+            for p in conteudo.get("paragrafos", []) + conteudo.get("itens_lista", []):
+                if any(kw in p.lower() for kw in ["julho", "agosto", "voucher", "vale"]):
+                    excertos.append(p[:200])
+            excertos_txt = "\n".join(f"- {e}" for e in excertos[:5]) or "(sem excertos — ver scrape JSON)"
+            _registar_aviso(slug, f"mega_datas_publicadas:2026/2027:{excertos_txt[:300]}")
+            log.warning(
+                "%s: DATAS MEGA 2026/2027 DETECTADAS — actualizar manuais-escolares-mega.html!\n%s",
+                slug, excertos_txt
+            )
+    elif ano_detectar and ano_detectar in html:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
         log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
 
