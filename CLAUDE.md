@@ -313,4 +313,4 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 ---
 
-*Última revisão automática: 2026-06-24 — datas sazonais + MEGA detecção automática adicionados*
+*Última revisão automática: 2026-06-25 — datas sazonais + MEGA detecção automática adicionados*

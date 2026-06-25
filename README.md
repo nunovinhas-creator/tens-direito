@@ -7,7 +7,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **24 de junho de 2026**.
+Actualizado automaticamente a partir do repositório em **25 de junho de 2026**.
 
 ### Páginas publicadas
 
@@ -16,13 +16,17 @@ Actualizado automaticamente a partir do repositório em **24 de junho de 2026**.
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de Mérito 2025/2026: quem tem direito, valor e como candidatar |
+| [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
-| [`noticias.html`](noticias.html) | Notícias — Tens Direito |
+| [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
+| [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
+| [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
+| [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
 
 <!-- END:ESTADO -->
 
@@ -188,6 +192,7 @@ tens-direito/
 │   ├── gerar_pagina.py
 │   ├── scraper_fontes.py
 │   ├── scraper_playwright.py
+│   ├── verificar_datas.py
 └── *.html                  ← páginas estáticas publicadas
 ```
 
@@ -290,6 +295,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 24 de junho de 2026 às 11:54 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 25 de junho de 2026 às 10:32 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
