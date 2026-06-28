@@ -134,7 +134,6 @@ def render_destaque(entry):
     title = html.escape(limpar_texto(entry.get("title", "Sem título")))
     summary = html.escape(limpar_texto(entry.get("summary", "")))[:400]
     link = html.escape(entry.get("link", "#"))
-    source = html.escape(entry.get("source", {}).get("title", link[:60]))
     dt = parse_date(entry)
     date_str = format_date_pt(dt)
     date_iso = format_date_iso(dt)
@@ -160,7 +159,6 @@ def render_archive_card(entry):
     title = html.escape(limpar_texto(entry.get("title", "Sem título")))
     summary = html.escape(limpar_texto(entry.get("summary", "")))[:200]
     link = html.escape(entry.get("link", "#"))
-    source = html.escape(entry.get("source", {}).get("title", link[:60]))
     dt = parse_date(entry)
     date_str = format_date_pt(dt)
     date_iso = format_date_iso(dt)

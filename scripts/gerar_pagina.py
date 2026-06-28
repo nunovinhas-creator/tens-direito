@@ -5,7 +5,6 @@ Usa o scraper para obter factos verificados antes de gerar qualquer HTML.
 Marca cada secção com [FONTE VERIFICADA: data] ou [VERIFICAR MANUALMENTE: motivo].
 """
 
-import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,7 +12,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from scraper_fontes import (
+from scraper_fontes import (  # noqa: E402
     scrape_dge_ase,
     scrape_dge_bolsa_merito,
     scrape_mega_manuais,
@@ -51,8 +50,6 @@ def _extrair_listas(resultado: dict, max_l: int = 3) -> list[list]:
 
 def _secao_factos(resultado: dict | None, fonte_nome: str) -> str:
     """Gera bloco HTML de factos com badge de verificação."""
-    hoje = datetime.now(timezone.utc).isoformat()
-
     if resultado is None or resultado.get("status") != "ok":
         badge = _badge_verificar(f"fonte {fonte_nome} inacessível em {datetime.now(timezone.utc).strftime('%d/%m/%Y')}")
         return f"""
@@ -91,7 +88,6 @@ def gerar_pagina(slug: str, titulo: str, descricao: str) -> str:
     print(f"A verificar fonte para '{slug}'…")
     resultado = scraper()
 
-    data_geracao = datetime.now(timezone.utc).strftime("%d de %B de %Y").lower()
     secao_factos = _secao_factos(resultado, slug)
 
     if resultado and resultado.get("status") == "ok":
