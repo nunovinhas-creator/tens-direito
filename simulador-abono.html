@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XP46PM8H1Q');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador de Abono de Família 2026</title>
+  <meta name="description" content="Calculadora online do abono de família 2026. Simula o escalão e valor mensal com base no rendimento do agregado. Cálculos no browser, sem envio de dados.">
+  <meta property="og:title" content="Simulador de Abono de Família 2026">
+  <meta property="og:description" content="Calculadora online do abono de família 2026. Simula escalão e valor mensal. Cálculos cliente-side, privados.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-abono.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como funciona o Rendimento de Referência?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O Rendimento de Referência (RR) é calculado dividindo o rendimento anual bruto do agregado pelo número de crianças elegíveis mais 1. Exemplo: agregado com 2 crianças e 36.000€ anuais → RR = 36.000 ÷ 3 = 12.000€."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é a Garantia para a Infância?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.631,94€ anuais, o abono é garantido em pelo menos 127,33€/mês por criança, mesmo que o cálculo normal seja inferior."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como é a majoração por monoparentalidade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Famílias monoparentais (um único encarregado de educação) recebem uma majoração de 50% sobre o valor base do abono calculado."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A que idade perdem as crianças o direito ao abono?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No 4.º escalão, crianças com mais de 72 meses (6 anos) perdem o direito. Nos restantes escalões (1.º a 3.º), o direito mantém-se até aos 16 anos (ou 25 anos se a criança estiver a estudar)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Este simulador é apenas uma estimativa educativa. A decisão final sobre escalão e valor é da Segurança Social. Confirma a tua situação no simulador oficial em seg-social.pt."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simulador de Abono de Família", "item": "https://tensdireito.com/simulador-abono.html"}
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --blue: #2563EB;
+      --orange: #D97706;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .nav-wrap { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+    nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; }
+    .logo { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .logo-text { font-size: 1.25rem; font-weight: 800; line-height: 1; }
+    .logo-text .tens { color: var(--ink); }
+    .logo-text .direito { color: var(--teal); }
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; margin-left: auto; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); white-space: nowrap; }
+    .nav-links a:hover { color: var(--teal); }
+    @media (max-width: 640px) { .nav-links { display: none; } }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .criancas-list { background: #F9FAFB; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
+    .crianca-item { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .crianca-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .crianca-titulo { font-weight: 600; color: var(--ink); grid-column: 1 / -1; font-size: 0.9rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .resultado-card { border-radius: var(--radius); padding: 2rem; color: var(--white); margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+    .resultado-card.escalo-1 { background: linear-gradient(135deg, var(--green) 0%, #15803d 100%); }
+    .resultado-card.escalo-2 { background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .resultado-card.escalo-3 { background: linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); }
+    .resultado-card.escalo-4 { background: linear-gradient(135deg, var(--orange) 0%, #b45309 100%); }
+    .resultado-card.escalo-5 { background: linear-gradient(135deg, var(--red) 0%, #991b1b 100%); }
+    .resultado-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.95; }
+    .resultado-valor { font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0; }
+    .resultado-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .resultado-detalhe p { margin-bottom: 0.5rem; }
+    .resultado-detalhe strong { font-weight: 700; }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .crianca-item { grid-template-columns: 1fr; } .resultado-valor { font-size: 1.8rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="/abono-de-familia.html">Guia abono</a>
+        <a href="/">Início</a>
+        <a href="/sobre.html">Sobre</a>
+      </div>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Simulador de Abono de Família 2026</h1>
+    <p class="hero-sub">Calcula o escalão e valor mensal estimado. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+  </section>
+
+  <main>
+    <div class="info-box">
+      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026 · IAS: 537,13€
+    </div>
+
+    <div class="calc-card">
+      <form id="formAbono" onsubmit="calcularAbono(event)">
+        <div class="form-group">
+          <label for="rendimento">Rendimento anual bruto do agregado (€)</label>
+          <input type="number" id="rendimento" placeholder="36000" min="0" step="100" required>
+          <small>Soma de todos os rendimentos do agregado familiar (12 meses)</small>
+        </div>
+
+        <div class="form-group">
+          <label for="monoparental">Familia monoparental?</label>
+          <select id="monoparental">
+            <option value="nao">Não</option>
+            <option value="sim">Sim (majoração de 50%)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="numCriancas">Número de crianças a simular (1 a 5)</label>
+          <select id="numCriancas" onchange="atualizarCriancas()">
+            <option value="1">1 criança</option>
+            <option value="2">2 crianças</option>
+            <option value="3">3 crianças</option>
+            <option value="4">4 crianças</option>
+            <option value="5">5 crianças</option>
+          </select>
+        </div>
+
+        <div class="criancas-list" id="criancasList"></div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary">🧮 Calcular abono</button>
+          <button type="reset" class="btn btn-secondary">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como funciona o Rendimento de Referência?</summary>
+        <div class="faq-resposta">
+          O Rendimento de Referência (RR) é calculado dividindo o rendimento anual bruto do agregado pelo número de crianças elegíveis mais 1. <strong>Exemplo:</strong> agregado com 2 crianças e 36.000€ anuais → RR = 36.000 ÷ 3 = 12.000€. Este valor define o escalão.
+        </div>
+      </details>
+
+      <details>
+        <summary>O que é a Garantia para a Infância?</summary>
+        <div class="faq-resposta">
+          Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.631,94€ anuais, o abono é garantido em pelo menos <strong>127,33€/mês por criança</strong>, mesmo que o cálculo normal seja inferior. Isto assegura um piso mínimo.
+        </div>
+      </details>
+
+      <details>
+        <summary>Como é a majoração por monoparentalidade?</summary>
+        <div class="faq-resposta">
+          Famílias monoparentais (um único encarregado de educação) recebem uma majoração de <strong>50% sobre o valor base</strong> do abono calculado. Isto aplica-se a cada criança do agregado.
+        </div>
+      </details>
+
+      <details>
+        <summary>A que idade perdem as crianças o direito?</summary>
+        <div class="faq-resposta">
+          No 4.º escalão, crianças com mais de 72 meses (6 anos) perdem o direito ao abono. Nos escalões 1.º a 3.º, o direito mantém-se até aos 16 anos (ou 25 anos se a criança estiver a estudar em horário escolar).
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. Este simulador é apenas uma <strong>estimativa educativa</strong>. A decisão final sobre escalão e valor é da Segurança Social. Confirma a tua situação no simulador oficial em <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a>.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Portaria n.º 60/2026/1), mas podem conter erros ou omissões. Confirma sempre a tua situação no <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; font-weight: 600;">simulador oficial da Segurança Social</a>.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+  </footer>
+
+  <script>
+    const escaloes = {
+      1: { limite: 3657.50, valores: { a36: 190.98, a72: 75.13, mais72: 75.13 }, cor: 'escalo-1', nome: '1.º escalão' },
+      2: { limite: 7315.00, valores: { a36: 161.65, a72: 75.13, mais72: 75.13 }, cor: 'escalo-2', nome: '2.º escalão' },
+      3: { limite: 12435.50, valores: { a36: 132.07, a72: 59.33, mais72: 54.35 }, cor: 'escalo-3', nome: '3.º escalão' },
+      4: { limite: 18287.50, valores: { a36: 88.43, a72: 44.77, mais72: 0 }, cor: 'escalo-4', nome: '4.º escalão' },
+      5: { limite: Infinity, valores: { a36: 0, a72: 0, mais72: 0 }, cor: 'escalo-5', nome: 'Sem direito' }
+    };
+
+    const GARANTIA_INFANCIA = 127.33;
+    const LIMITE_GARANTIA = 2631.94;
+
+    function atualizarCriancas() {
+      const num = parseInt(document.getElementById('numCriancas').value);
+      const lista = document.getElementById('criancasList');
+      lista.innerHTML = '';
+      for (let i = 1; i <= num; i++) {
+        lista.innerHTML += `
+          <div class="crianca-item">
+            <div class="crianca-titulo">Criança ${i}</div>
+            <div class="form-group">
+              <label for="idade${i}">Idade em meses</label>
+              <input type="number" id="idade${i}" placeholder="24" min="0" max="216" step="1" required>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function getValorPorIdade(escalao, idadesMeses) {
+      const obj = escaloes[escalao];
+      if (!obj || escalao === 5) return 0;
+
+      let valor = 0;
+      idadesMeses.forEach(idade => {
+        if (idade <= 36) valor += obj.valores.a36;
+        else if (idade <= 72) valor += obj.valores.a72;
+        else valor += obj.valores.mais72;
+      });
+      return valor;
+    }
+
+    function getEscalao(rr) {
+      for (let i = 1; i <= 5; i++) {
+        if (rr <= escaloes[i].limite) return i;
+      }
+      return 5;
+    }
+
+    function calcularAbono(e) {
+      e.preventDefault();
+
+      const rendimento = parseFloat(document.getElementById('rendimento').value);
+      const numCriancas = parseInt(document.getElementById('numCriancas').value);
+      const monoparental = document.getElementById('monoparental').value === 'sim';
+
+      const idades = [];
+      for (let i = 1; i <= numCriancas; i++) {
+        idades.push(parseInt(document.getElementById(`idade${i}`).value));
+      }
+
+      const rr = rendimento / (numCriancas + 1);
+      const escalao = getEscalao(rr);
+      let valorPorCrianca = getValorPorIdade(escalao, idades);
+
+      if (escalao === 1 && rr < LIMITE_GARANTIA) {
+        valorPorCrianca = Math.max(valorPorCrianca, GARANTIA_INFANCIA);
+      }
+
+      let valorTotal = valorPorCrianca * numCriancas;
+      const majoracao = monoparental ? valorTotal * 0.5 : 0;
+      valorTotal += majoracao;
+
+      const escaloObj = escaloes[escalao];
+      const resultDiv = document.getElementById('resultado');
+
+      let html = `<div class="resultado-card ${escaloObj.cor}">`;
+      html += `<div class="resultado-titulo">Resultado da simulação</div>`;
+
+      if (escalao === 5) {
+        html += `<div class="resultado-valor">Sem direito</div>`;
+        html += `<div class="resultado-detalhe"><p>Rendimento de Referência: <strong>€${rr.toFixed(2)}</strong></p>`;
+        html += `<p>O agregado ultrapassa o limite máximo do 4.º escalão (€18.287,50).</p></div>`;
+      } else {
+        html += `<div class="resultado-valor">€${valorTotal.toFixed(2)}/mês</div>`;
+        html += `<div class="resultado-detalhe">`;
+        html += `<p><strong>${escaloObj.nome}</strong></p>`;
+        html += `<p>Rendimento de Referência: €${rr.toFixed(2)}</p>`;
+        html += `<p>Valor por criança: €${valorPorCrianca.toFixed(2)}</p>`;
+        if (numCriancas > 1) html += `<p>Valor total (${numCriancas} crianças): €${(valorPorCrianca * numCriancas).toFixed(2)}</p>`;
+        if (majoracao > 0) html += `<p>Majoração monoparental (+50%): €${majoracao.toFixed(2)}</p>`;
+        if (escalao === 1 && rr < LIMITE_GARANTIA) html += `<p>✓ Aplicada Garantia para a Infância (mín. €127,33)</p>`;
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+      html += `<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6;">💡 Esta estimativa baseia-se em Portaria n.º 60/2026/1. Confirma a tua situação no <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: #0F766E; font-weight: 600;">simulador oficial da Segurança Social</a>.</p>`;
+
+      resultDiv.innerHTML = html;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    atualizarCriancas();
+  </script>
+
+</body>
+</html>
