@@ -94,6 +94,11 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .urgente-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.4; }
 .urgente-card a { font-size: 0.82rem; font-weight: 700; color: var(--teal); display: inline-flex; align-items: center; gap: 0.2rem; }
 .urgente-card a: hover { color: var(--teal-dark); }
+.badge-novo { display: inline-block; background: #DC2626; color: var(--white); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.badge-aprovada { display: inline-block; background: #F59E0B; color: #1C1917; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.alerta-banda { background: #F59E0B; color: #1C1917; text-align: center; padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600; width: 100%; }
+.alerta-banda a { color: #1C1917; text-decoration: underline; font-weight: 700; }
+.alerta-banda a: hover { opacity: 0.8; }
 .apoios-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem; }
 .section-header { margin-bottom: 1.75rem; }
 .section-header h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--ink); }
@@ -169,6 +174,11 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 </head>
 <body>
 
+  <!-- ALERTA PSU -->
+  <div class="alerta-banda">
+    🔔 NOVO: Prestação Social Única aprovada no Parlamento — saiba o que muda nos apoios sociais → <a href="/prestacao-social-unica.html">Ver o guia completo</a>
+  </div>
+
   <!-- NAV -->
   <div class="nav-wrap">
     <nav>
@@ -242,6 +252,17 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     <div class="urgente-inner">
       <p class="urgente-titulo" id="urgente-titulo">⏰ Prazo a aproximar-se — Setembro 2026</p>
       <div class="urgente-cards" role="list">
+
+        <div class="urgente-card" role="listitem">
+          <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;">
+            <span class="badge-novo">NOVO</span>
+            <span class="badge-aprovada">Aprovada</span>
+          </div>
+          <div class="icon">🔄</div>
+          <h3>Prestação Social Única</h3>
+          <p>13 apoios sociais num só. Aprovada no Parlamento a 25/06/2026.</p>
+          <a href="/prestacao-social-unica.html">Ver guia →</a>
+        </div>
 
         <div class="urgente-card" role="listitem">
           <div class="icon">🎒</div>
@@ -363,13 +384,12 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
         <span class="link-ver">→ Ver guia</span>
       </a>
 
-      <a href="/prestacao-social-unica.html" class="apoio-card em-breve">
-        <div class="emoji">🆕</div>
+      <a href="/prestacao-social-unica.html" class="apoio-card">
+        <div class="emoji">🔄</div>
         <h3>Prestação Social Única (PSU)</h3>
-        <p class="desc">Aprovada em Parlamento 25/06/2026, unifica 13 apoios. Aguarda decreto-lei. Meta: agosto 2026.</p>
-        <span class="badge-breve">⏳ Em aprovação</span>
-        <span class="tag-verif">Aguarda DR</span>
-        <span class="link-ver">→ Ver estado</span>
+        <p class="desc">O que muda, quem é afectado e quando entra em vigor.</p>
+        <span class="badge-novo" style="margin-bottom:0.75rem;">NOVO — JUN 2026</span>
+        <span class="link-ver">→ Ver guia</span>
       </a>
 
     </div>
@@ -419,13 +439,12 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       <h2 id="noticia-titulo">Notícia do dia</h2>
     </div>
     <div class="noticia-card">
-      <span class="badge-hoje">Hoje</span>
-      <h3>Prestação Social Única entra em vigor: um único formulário para 9 apoios sociais</h3>
+      <span class="badge-hoje">25 Jun 2026</span>
+      <h3>PSU aprovada no Parlamento: 13 apoios sociais passam a um só</h3>
       <p>
-        O Governo anunciou que a PSU deverá simplificar o acesso a apoios como o RSI, o Complemento Solidário para Idosos e o Abono de Família.
-        O pedido único substitui nove formulários distintos, reduzindo a burocracia para famílias em situação de carência.
+        O Parlamento aprovou a 25 de junho a lei que autoriza o Governo a criar a Prestação Social Única, que unifica 13 apoios sociais não contributivos. A medida aguarda publicação em Diário da República e decreto-lei com os valores. O RSI, o subsídio social de desemprego e outros apoios são absorvidos. O CSI não é afectado.
       </p>
-      <a href="/noticias.html" class="link-ler">Ler mais → Notícias</a>
+      <a href="/prestacao-social-unica.html" class="link-ler">Saber mais sobre a PSU →</a>
     </div>
   </section>
 
