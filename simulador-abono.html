@@ -347,13 +347,12 @@
 
       const rr = rendimento / (numCriancas + 1);
       const escalao = getEscalao(rr);
-      let valorPorCrianca = getValorPorIdade(escalao, idades);
+      let valorTotal = getValorPorIdade(escalao, idades);
 
       if (escalao === 1 && rr < LIMITE_GARANTIA) {
-        valorPorCrianca = Math.max(valorPorCrianca, GARANTIA_INFANCIA);
+        valorTotal = Math.max(valorTotal, GARANTIA_INFANCIA * numCriancas);
       }
 
-      let valorTotal = valorPorCrianca * numCriancas;
       const majoracao = monoparental ? valorTotal * 0.5 : 0;
       valorTotal += majoracao;
 
@@ -372,10 +371,14 @@
         html += `<div class="resultado-detalhe">`;
         html += `<p><strong>${escaloObj.nome}</strong></p>`;
         html += `<p>Rendimento de Referência: €${rr.toFixed(2)}</p>`;
-        html += `<p>Valor por criança: €${valorPorCrianca.toFixed(2)}</p>`;
-        if (numCriancas > 1) html += `<p>Valor total (${numCriancas} crianças): €${(valorPorCrianca * numCriancas).toFixed(2)}</p>`;
+        const valorSemMajoracao = monoparental ? valorTotal / 1.5 : valorTotal;
+        if (numCriancas === 1) {
+          html += `<p>Valor mensal: €${valorSemMajoracao.toFixed(2)}</p>`;
+        } else {
+          html += `<p>Valor base (${numCriancas} crianças): €${valorSemMajoracao.toFixed(2)}</p>`;
+        }
         if (majoracao > 0) html += `<p>Majoração monoparental (+50%): €${majoracao.toFixed(2)}</p>`;
-        if (escalao === 1 && rr < LIMITE_GARANTIA) html += `<p>✓ Aplicada Garantia para a Infância (mín. €127,33)</p>`;
+        if (escalao === 1 && rr < LIMITE_GARANTIA) html += `<p>✓ Aplicada Garantia para a Infância (mín. €127,33/criança)</p>`;
         html += `</div>`;
       }
 
