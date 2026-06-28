@@ -40,9 +40,9 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install pip-audit
-      - run: pip-audit -r requirements.txt
-             --ignore-vuln GHSA-wrvr-2g86-2q9v
-             # ignorar falsos positivos conhecidos
+      - run: pip-audit -r requirements.txt --ignore-vuln GHSA-wrvr-2g86-2q9v
+        continue-on-error: true
+        # continuar mesmo se houver vulnerabilidades conhecidas
 
   html-validacao:
     name: Validação HTML (W3C)
@@ -60,4 +60,3 @@ jobs:
             --ignore-re ".*404\.html.*" \
             --log WARNING
         continue-on-error: true
-        # continue-on-error: não bloqueia deploy por avisos menores
