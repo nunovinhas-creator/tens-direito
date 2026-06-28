@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XP46PM8H1Q');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador de Ação Social Escolar (ASE) 2026/2027</title>
+  <meta name="description" content="Calculadora do escalão ASE 2026/2027. Descobre a que categoria tens direito — refeições, material escolar, transportes. Cálculos no browser, privados.">
+  <meta property="og:title" content="Simulador de Ação Social Escolar (ASE) 2026/2027">
+  <meta property="og:description" content="Calculadora do escalão ASE. Descobre se tens direito a refeições, material e transportes gratuitos.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-ase.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como se calcula o Rendimento Per Capita (RPC)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O RPC é calculado dividindo o rendimento anual bruto do agregado pelo número de elementos da família e depois por 12 meses. Exemplo: agregado com 4 pessoas e 24.000€ anuais → RPC = 24.000 ÷ 4 ÷ 12 = 500€/mês."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Qual é a diferença entre escalão A e B?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Escalão A: refeições gratuitas, €16/ano material, até €20/ano visitas. Escalão B: refeições com valor reduzido, €8/ano material, até €10/ano visitas. Ambos têm transportes gratuitos (onde aplicável)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quando devo candidatar-me à ASE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A candidatura à ASE 2026/2027 deve ser feita até 30 de setembro de 2026. Confirma os prazos específicos da tua escola, pois podem ser diferentes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "E os manuais escolares? São incluídos na ASE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Os manuais escolares são gratuitos para TODOS os alunos via MEGA, independentemente do escalão ASE. A ASE cobre apenas refeições, material escolar (lápis, cadernos), visitas e transportes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Este simulador é apenas uma estimativa educativa. A decisão final sobre escalão e direitos é da secretaria da tua escola. Confirma a tua situação na secretaria ou portal da escola."
+        }
+      }
+    ]
+  }
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Tens Direito", "item": "https://tensdireito.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Ação Social Escolar", "item": "https://tensdireito.com/acao-social-escolar.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador ASE", "item": "https://tensdireito.com/simulador-ase.html"}
+    ]
+  }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #FAFAFA;
+      color: #1F2937;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #0F766E;
+      color: #FFF;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    header h1 { font-size: 1.8rem; margin: 0.5rem 0; }
+    header nav { margin-top: 0.5rem; }
+    header nav a {
+      color: #FFF;
+      text-decoration: none;
+      margin: 0 0.75rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    header nav a:hover { opacity: 1; text-decoration: underline; }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem 2rem;
+    }
+
+    .urgencia-badge {
+      background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-weight: 700;
+      color: #1C1917;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .calc-card {
+      background: #FFF;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #0F766E;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #0F766E;
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+    }
+
+    small {
+      display: block;
+      color: #6B7280;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-grupo {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #0F766E;
+      color: #FFF;
+    }
+
+    .btn-primary:hover {
+      background: #0D5F59;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+    }
+
+    .btn-secondary {
+      background: #E5E7EB;
+      color: #1F2937;
+    }
+
+    .btn-secondary:hover {
+      background: #D1D5DB;
+    }
+
+    #resultado {
+      display: none;
+      margin: 2rem 0;
+    }
+
+    #resultado.show {
+      display: block;
+      animation: slideIn 0.4s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .resultado-card {
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      color: #FFF;
+    }
+
+    .escalao-a {
+      background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+    }
+
+    .escalao-b {
+      background: linear-gradient(135deg, #0F766E 0%, #0D5F59 100%);
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+    }
+
+    .sem-direito {
+      background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+
+    .resultado-titulo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      opacity: 0.95;
+    }
+
+    .resultado-valor {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 1rem 0;
+    }
+
+    .resultado-detalhe {
+      margin-top: 1.5rem;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .resultado-detalhe p {
+      margin: 0.5rem 0;
+    }
+
+    .cobertura-table {
+      background: #FFF;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cobertura-header {
+      background: #F3F4F6;
+      padding: 1rem;
+      font-weight: 700;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      border-bottom: 2px solid #E5E7EB;
+    }
+
+    .cobertura-row {
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      border-bottom: 1px solid #E5E7EB;
+      align-items: center;
+    }
+
+    .cobertura-row:last-child {
+      border-bottom: none;
+    }
+
+    .cobertura-item {
+      font-size: 0.95rem;
+    }
+
+    .checkmark {
+      color: #16A34A;
+      font-weight: 700;
+    }
+
+    .cross {
+      color: #DC2626;
+    }
+
+    .valor-info {
+      color: #6B7280;
+      font-size: 0.9rem;
+    }
+
+    .aviso-escura {
+      background: #FEF3C7;
+      border-left: 4px solid #F59E0B;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      color: #1C1917;
+    }
+
+    .aviso-escura strong {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: #FFF;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .faq-section h2 {
+      color: #0F766E;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    details {
+      margin-bottom: 1rem;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 1rem;
+      font-weight: 600;
+      background: #F9FAFB;
+      color: #0F766E;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.3s;
+    }
+
+    summary:hover {
+      background: #F3F4F6;
+    }
+
+    details[open] summary {
+      background: #ECFDF5;
+    }
+
+    .faq-resposta {
+      padding: 1rem;
+      color: #4B5563;
+      line-height: 1.8;
+    }
+
+    .faq-resposta a {
+      color: #0F766E;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .disclaimer {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #4B5563;
+      line-height: 1.8;
+    }
+
+    .disclaimer a {
+      color: #0F766E;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #F3F4F6;
+      padding: 2rem 1rem;
+      text-align: center;
+      color: #6B7280;
+      margin-top: 3rem;
+      border-top: 1px solid #E5E7EB;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #0F766E;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.5rem; }
+      main { padding: 0 0.75rem 1.5rem; }
+      .calc-card { padding: 1.5rem; }
+      .btn-grupo { flex-direction: column; }
+
+      .cobertura-header,
+      .cobertura-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .cobertura-header { padding: 0.75rem; }
+      .cobertura-row { padding: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎓 Simulador ASE</h1>
+    <p>Ação Social Escolar 2026/2027</p>
+    <nav>
+      <a href="/">Voltar</a>
+      <a href="/acao-social-escolar.html">Guia ASE</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="urgencia-badge">
+      ⏰ Candidatura até 30 de Setembro de 2026
+    </div>
+
+    <div class="calc-card">
+      <h2 style="color: #0F766E; margin-bottom: 1.5rem;">Descobre o teu escalão ASE</h2>
+
+      <form id="formASE" onsubmit="calcularASE(event)">
+        <div class="form-group">
+          <label for="rendimento">Rendimento anual bruto do agregado (€)</label>
+          <input type="number" id="rendimento" placeholder="24000" min="0" step="100" required>
+          <small>Soma de todos os rendimentos do agregado (12 meses) — rendimentos 2025</small>
+        </div>
+
+        <div class="form-group">
+          <label for="numPessoas">Número de pessoas no agregado familiar</label>
+          <select id="numPessoas" required>
+            <option value="">— Selecciona —</option>
+            <option value="1">1 pessoa</option>
+            <option value="2">2 pessoas</option>
+            <option value="3">3 pessoas</option>
+            <option value="4">4 pessoas</option>
+            <option value="5">5 pessoas</option>
+            <option value="6">6 pessoas</option>
+            <option value="7">7 pessoas</option>
+            <option value="8">8+ pessoas</option>
+          </select>
+          <small>Inclui o aluno e todos os encarregados de educação</small>
+        </div>
+
+        <div class="form-group">
+          <label for="tipoEscola">A escola é pública ou privada com protocolo ASE?</label>
+          <select id="tipoEscola" required>
+            <option value="">— Selecciona —</option>
+            <option value="publica">Pública ou privada com protocolo</option>
+            <option value="privada">Privada sem protocolo ASE</option>
+          </select>
+          <small>Apenas escolas públicas e privadas com contrato têm direito à ASE</small>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary">📊 Calcular escalão ASE</button>
+          <button type="reset" class="btn btn-secondary">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como se calcula o Rendimento Per Capita (RPC)?</summary>
+        <div class="faq-resposta">
+          O RPC é calculado dividindo o rendimento anual bruto do agregado pelo número de elementos da família e depois por 12 meses. <strong>Exemplo:</strong> agregado com 4 pessoas e 24.000€ anuais → RPC = 24.000 ÷ 4 ÷ 12 = 500€/mês.
+        </div>
+      </details>
+
+      <details>
+        <summary>Qual é a diferença entre escalão A e B?</summary>
+        <div class="faq-resposta">
+          <strong>Escalão A:</strong> refeições gratuitas, 16€/ano material escolar, até 20€/ano visitas de estudo, transportes gratuitos.
+          <br><strong>Escalão B:</strong> refeições com valor reduzido (varia por escola), 8€/ano material, até 10€/ano visitas, transportes gratuitos.
+        </div>
+      </details>
+
+      <details>
+        <summary>Quando devo candidatar-me à ASE?</summary>
+        <div class="faq-resposta">
+          A candidatura à ASE 2026/2027 deve ser feita até <strong>30 de setembro de 2026</strong>. Confirma os prazos e procedimentos específicos da tua escola, pois podem variar. Algumas escolas têm candidaturas antecipadas antes do início do ano lectivo.
+        </div>
+      </details>
+
+      <details>
+        <summary>E os manuais escolares? São incluídos na ASE?</summary>
+        <div class="faq-resposta">
+          Não. Os manuais escolares são <strong>gratuitos para TODOS os alunos via MEGA</strong>, independentemente do escalão ASE ou do rendimento do agregado. A ASE cobre apenas refeições, material escolar (lápis, cadernos, etc), visitas e transportes.
+        </div>
+      </details>
+
+      <details>
+        <summary>Que documentos preciso para candidatar-me?</summary>
+        <div class="faq-resposta">
+          Tipicamente a escola pede: <strong>declaração de rendimentos da Segurança Social</strong> (do ano anterior), identificação do encarregado de educação, comprovativo de morada. Confirma a lista exata na secretaria da tua escola, pois pode variar.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. Este simulador é apenas uma <strong>estimativa educativa</strong>. A decisão final sobre escalão e direitos é da secretaria da tua escola. Confirma a tua situação no portal da escola ou directamente na secretaria.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. A ASE é regulada por Despacho 8452-A/2015 (e Despacho 5296/2017), mas os procedimentos podem variar por escola. <strong>A declaração da Segurança Social deve reflectir rendimentos de 2025 para a ASE 2026/2027.</strong> Em caso de <strong>guarda partilhada</strong>, consulta a secretaria da tua escola. Para informações oficiais, consulta <a href="/acao-social-escolar.html" target="_blank" rel="noopener">o guia completo de ASE</a>.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+  </footer>
+
+  <script>
+    const IAS_2026 = 537.13;
+    const LIMITE_A = 268.57;
+    const LIMITE_B = 537.13;
+
+    const cobertura = {
+      a: {
+        refeicoes: { valor: 'Gratuitas', descricao: 'Todas as refeições' },
+        material: { valor: '16€/ano', descricao: 'Lápis, cadernos, etc' },
+        visitas: { valor: 'Até 20€/ano', descricao: 'Ressarcimento' },
+        transportes: { valor: 'Gratuitos', descricao: 'Onde aplicável' }
+      },
+      b: {
+        refeicoes: { valor: 'Valor reduzido', descricao: 'Varia por escola' },
+        material: { valor: '8€/ano', descricao: 'Lápis, cadernos, etc' },
+        visitas: { valor: 'Até 10€/ano', descricao: 'Ressarcimento' },
+        transportes: { valor: 'Gratuitos', descricao: 'Onde aplicável' }
+      }
+    };
+
+    function calcularASE(e) {
+      e.preventDefault();
+
+      const rendimento = parseFloat(document.getElementById('rendimento').value);
+      const numPessoas = parseInt(document.getElementById('numPessoas').value);
+      const tipoEscola = document.getElementById('tipoEscola').value;
+
+      if (tipoEscola === 'privada') {
+        mostrarResultadoPrivada();
+        return;
+      }
+
+      const rpc = rendimento / numPessoas / 12;
+      let escalao = 'nao';
+
+      if (rpc <= LIMITE_A) escalao = 'a';
+      else if (rpc <= LIMITE_B) escalao = 'b';
+
+      const resultDiv = document.getElementById('resultado');
+      let html = '';
+
+      if (escalao === 'nao') {
+        html = `
+          <div class="resultado-card sem-direito">
+            <div class="resultado-titulo">Resultado da simulação</div>
+            <div class="resultado-valor">Sem direito</div>
+            <div class="resultado-detalhe">
+              <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
+              <p>O rendimento do agregado ultrapassa o limite para ASE (€${LIMITE_B.toFixed(2)}/mês).</p>
+            </div>
+          </div>
+        `;
+      } else {
+        const nomeEscalao = escalao === 'a' ? 'Escalão A' : 'Escalão B';
+        const corClass = escalao === 'a' ? 'escalao-a' : 'escalao-b';
+
+        html = `
+          <div class="resultado-card ${corClass}">
+            <div class="resultado-titulo">Resultado da simulação</div>
+            <div class="resultado-valor">${nomeEscalao}</div>
+            <div class="resultado-detalhe">
+              <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
+              <p>Limite do escalão: até €${escalao === 'a' ? LIMITE_A : LIMITE_B}/mês</p>
+            </div>
+          </div>
+
+          <h3 style="color: #0F766E; margin: 2rem 0 1rem;">O que cobre o ${nomeEscalao}</h3>
+
+          <div class="cobertura-table">
+            <div class="cobertura-header">
+              <div>Apoio</div>
+              <div>Cobertura</div>
+              <div>Detalhe</div>
+            </div>
+            <div class="cobertura-row">
+              <div class="cobertura-item"><strong>🍽️ Refeições</strong></div>
+              <div class="cobertura-item"><span class="checkmark">✓</span> ${cobertura[escalao].refeicoes.valor}</div>
+              <div class="cobertura-item valor-info">${cobertura[escalao].refeicoes.descricao}</div>
+            </div>
+            <div class="cobertura-row">
+              <div class="cobertura-item"><strong>📚 Material escolar</strong></div>
+              <div class="cobertura-item"><span class="checkmark">✓</span> ${cobertura[escalao].material.valor}</div>
+              <div class="cobertura-item valor-info">${cobertura[escalao].material.descricao}</div>
+            </div>
+            <div class="cobertura-row">
+              <div class="cobertura-item"><strong>🚌 Transportes</strong></div>
+              <div class="cobertura-item"><span class="checkmark">✓</span> ${cobertura[escalao].transportes.valor}</div>
+              <div class="cobertura-item valor-info">${cobertura[escalao].transportes.descricao}</div>
+            </div>
+            <div class="cobertura-row">
+              <div class="cobertura-item"><strong>🎒 Visitas de estudo</strong></div>
+              <div class="cobertura-item"><span class="checkmark">✓</span> ${cobertura[escalao].visitas.valor}</div>
+              <div class="cobertura-item valor-info">${cobertura[escalao].visitas.descricao}</div>
+            </div>
+            <div class="cobertura-row" style="background: #ECFDF5;">
+              <div class="cobertura-item"><strong>📖 Manuais escolares</strong></div>
+              <div class="cobertura-item"><span class="checkmark">✓</span> Gratuitos (MEGA)</div>
+              <div class="cobertura-item valor-info">Para TODOS, sem depender da ASE</div>
+            </div>
+          </div>
+
+          <div class="aviso-escura">
+            <strong>📋 Próximos passos:</strong>
+            <p>1. Recolhe a declaração de rendimentos da Segurança Social (2025)
+            <br>2. Entrega a candidatura na secretaria da escola até <strong>30 de setembro de 2026</strong>
+            <br>3. A secretaria confirmará o escalão e os direitos após análise</p>
+          </div>
+        `;
+      }
+
+      html += `<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-top: 1.5rem;">💡 Esta estimativa baseia-se em Despacho 8452-A/2015 e 5296/2017. Confirma a tua situação na <a href="/acao-social-escolar.html" target="_blank" rel="noopener" style="color: #0F766E; font-weight: 600;">secretaria da tua escola</a>.</p>`;
+
+      resultDiv.innerHTML = html;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function mostrarResultadoPrivada() {
+      const resultDiv = document.getElementById('resultado');
+      const html = `
+        <div class="resultado-card sem-direito">
+          <div class="resultado-titulo">Resultado da simulação</div>
+          <div class="resultado-valor">Sem direito</div>
+          <div class="resultado-detalhe">
+            <p>A ASE é apenas para escolas públicas e privadas com protocolo/contrato com o Estado.</p>
+            <p>Verifica se a tua escola privada tem protocolo ou contrato de ASE. Se tiver, podes candidatar-te através da secretaria.</p>
+          </div>
+        </div>
+      `;
+
+      resultDiv.innerHTML = html;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+
+</body>
+</html>
