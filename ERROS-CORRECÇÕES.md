@@ -202,3 +202,16 @@ Fontes: Portaria n.º 60/2026/1, de 5 de fevereiro · Instituto da Segurança So
 - **Correcção 11 — Trabalhadores independentes:** Adicionada regra: dívida à SS não regularizada em 3 meses após suspensão → direito perde-se definitivamente.
 - **Correcção 12 — Formulário reavaliação:** Adicionada referência ao Modelo GF58-DGSS para pedidos de reavaliação de escalão a meio do ano.
 
+## Actualização #012 — 2026-06-28
+
+**`rsi.html` — aviso de transição PSU adicionado**
+
+- **Data de aprovação legislativa:** 25 de junho de 2026
+- **Conteúdo do aviso:** Banner de transição inserido no topo da página (antes do hero) informando que a Prestação Social Única (PSU) foi aprovada pelo Parlamento e absorverá o RSI numa prestação única.
+- **Garantias:** O aviso reforça que o RSI continua em vigor até à entrada em vigor da PSU (prevista para agosto de 2026) e que os beneficiários mantêm as condições actuais durante a transição.
+- **CSS:** `.aviso-transicao-psu` — fundo amarelo âmbar (#FEF3C7), borda esquerda #F59E0B, padding 1rem 1.25rem, fonte 0.9rem, cor #92400E.
+- **Meta description actualizada:** Adicionada referência à PSU no meta description do rsi.html.
+- **Página mantém conteúdo válido** até entrada em vigor da PSU — nenhuma alteração ao guia factual do RSI foi feita, apenas adicionado o aviso legislativo.
+
+Fonte: votação parlamentar 25/06/2026 · projeto de lei aprovado em votação final global.
+
