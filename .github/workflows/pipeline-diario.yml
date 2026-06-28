@@ -130,7 +130,8 @@ jobs:
           with open('noticias.html', 'r', encoding='utf-8') as f:
               conteudo = f.read()
 
-          # Remover todas as formas de non-breaking space
+          # Remover todas as formas de non-breaking space (incluindo dupla codificação)
+          conteudo = conteudo.replace('&amp;nbsp;', ' ')
           conteudo = conteudo.replace('&nbsp;&nbsp;', ' ')
           conteudo = conteudo.replace('&nbsp;', ' ')
           conteudo = conteudo.replace('&#160;', ' ')
