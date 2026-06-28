@@ -122,6 +122,28 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
 
+      # ── Step 3b: Sanitizar noticias.html ─────────────────────────────────────
+      - name: Sanitizar noticias.html
+        run: |
+          python3 << 'PYEOF'
+          import re
+          with open('noticias.html', 'r', encoding='utf-8') as f:
+              conteudo = f.read()
+
+          # Remover todas as formas de non-breaking space
+          conteudo = conteudo.replace('&nbsp;&nbsp;', ' ')
+          conteudo = conteudo.replace('&nbsp;', ' ')
+          conteudo = conteudo.replace('&#160;', ' ')
+          conteudo = conteudo.replace('\xa0', ' ')
+
+          # Limpar espaços múltiplos
+          conteudo = re.sub(r'  +', ' ', conteudo)
+
+          with open('noticias.html', 'w', encoding='utf-8') as f:
+              f.write(conteudo)
+          print('✓ noticias.html sanitizado')
+          PYEOF
+
       # ── Step 4: Validar valores estruturados ────────────────────────────────
       - name: Validar valores estruturados
         run: python scripts/extrair_valores.py || echo "extrair_valores.py falhou — a continuar"

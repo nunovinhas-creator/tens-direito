@@ -108,13 +108,15 @@ def limpar_texto(texto):
     """Limpa entidades HTML e espaços múltiplos do texto."""
     if not texto:
         return ""
-    # Converter entidades HTML (&nbsp; etc)
+    # Limpar non-breaking spaces (ANTES de unescape para garantir)
+    texto = texto.replace('\xa0', ' ')
+    texto = texto.replace('&nbsp;', ' ')
+    texto = texto.replace('&#160;', ' ')
+    texto = texto.replace('&nbsp;&nbsp;', ' ')
+    # Converter entidades HTML restantes
     texto = unescape(texto)
     # Remover tags HTML residuais
     texto = re.sub(r'<[^>]+>', '', texto)
-    # Substituir não-breaking spaces e variantes
-    texto = texto.replace('\xa0', ' ')
-    texto = texto.replace('&nbsp;', ' ')
     # Limpar espaços múltiplos
     texto = re.sub(r'\s+', ' ', texto).strip()
     return texto
