@@ -215,3 +215,44 @@ Fontes: Portaria n.º 60/2026/1, de 5 de fevereiro · Instituto da Segurança So
 
 Fonte: votação parlamentar 25/06/2026 · projeto de lei aprovado em votação final global.
 
+## Actualização #013 — 2026-06-28
+
+**`subsidio-desemprego.html` e `subsidio-parental.html` — avisos de transição PSU com distinção contributivo/não-contributivo**
+
+- **Páginas modificadas:** subsidio-desemprego.html, subsidio-parental.html
+- **Data de implementação:** 28 de junho de 2026
+- **Contexto legislativo:** PSU aprovada 25/06/2026; absorve modalidades NÃO-CONTRIBUTIVAS de desemprego e parentalidade.
+
+### subsidio-desemprego.html
+
+- **Banner adicionado:** Antes do hero, informando que o Subsídio SOCIAL de Desemprego (não-contributivo) será absorvido pela PSU.
+- **Distinção crítica:** O Subsídio de Desemprego CONTRIBUTIVO (para quem descontou 360 dias) NÃO é afectado e mantém regras actuais.
+- **Nota de página:** "Esta página cobre ambas as modalidades" — esclarecimento que o guia abrange contribuitiva e não-contributiva, mas apenas a segunda será absorvida.
+- **CSS:** `.aviso-transicao-psu` — fundo amarelo (#FEF3C7), borda esquerda #F59E0B, padding 1rem 1.25rem, font-size 0.9rem, color #92400E.
+- **Link:** "Saber mais sobre a PSU" → /prestacao-social-unica.html
+
+### subsidio-parental.html
+
+- **Banner adicionado:** Antes do hero, informando que os apoios de parentalidade NÃO-CONTRIBUTIVOS serão absorvidos pela PSU.
+- **Distinção crítica:** O Subsídio Parental CONTRIBUTIVO (para quem descontou 6 meses) NÃO é afectado e mantém regras actuais.
+- **CSS:** `.aviso-transicao-psu` adicionada à secção de estilos (estava presente em subsidio-desemprego.html).
+- **Link:** "Saber mais sobre a PSU" → /prestacao-social-unica.html
+
+### Páginas SEM aviso de transição PSU (não absorvidas)
+
+- `complemento-solidario-idosos.html` — CSI NÃO é absorvida pela PSU (confirmado na página PSU)
+- `subsidio-parental.html` — Apenas a versão NÃO-CONTRIBUTIVA é absorvida (banner adicionado com esta distinção)
+- `subsidio-desemprego.html` — Apenas a versão NÃO-CONTRIBUTIVA é absorvida (banner adicionado com esta distinção)
+- `bolsa-de-merito.html` — NÃO mencionada na PSU; sem aviso
+- `passe-sub23.html` — NÃO mencionada na PSU; sem aviso
+- Outros apoios listados apenas em `prestacao-social-unica.html`
+
+### Conteúdo preservado
+
+- Nenhuma alteração ao guia factual de desemprego ou parentalidade
+- Apenas avisos legislativos adicionados (banners informativos)
+- JSON-LD e meta descriptions mantidos sem alteração
+- Consistência com `rsi.html` (Actualização #012)
+
+Fonte: PSU aprovada 25/06/2026 · conteúdo PSU publicado em prestacao-social-unica.html · Portaria n.º 60/2026/1, DL n.º 220/2006.
+
