@@ -319,6 +319,44 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 ---
 
+## IMPACTO DA PSU (Prestação Social Única)
+
+Estado: aprovada parlamento 25/06/2026.
+Aguarda: decreto-lei com valores + publicação DR.
+Meta entrada em vigor: agosto 2026.
+
+### Páginas NÃO afectadas pela PSU
+
+Estas páginas mantêm-se inalteradas — os subsistemas/apoios são explicitamente excluídos do âmbito da PSU:
+
+- `abono-de-familia.html` — subsistema familiar (excluído)
+- `acao-social-escolar.html` — educação (excluído)
+- `bolsa-de-merito.html` — educação (excluído)
+- `manuais-escolares-mega.html` — educação (excluído)
+- `passe-sub23.html` — transporte (excluído)
+- `complemento-solidario-idosos.html` — CSI explicitamente excluído (confirmado audição parlamentar)
+- `simulador-abono.html` — ferramenta abono (excluído)
+- `simulador-ase.html` — ferramenta ASE (excluído)
+
+### Páginas com aviso PSU activo
+
+Manter avisos de transição até DR publicado:
+
+| Página | Absorção | Aviso |
+|---|---|---|
+| `rsi.html` | Absorvido integralmente | "RSI será absorvido pela PSU" |
+| `subsidio-desemprego.html` | Só subsídio SOCIAL absorvido | "Subsídio SOCIAL absorvido; CONTRIBUTIVO não afectado" |
+| `subsidio-parental.html` | Só apoios NÃO contributivos absorvidos | "Apoios não-contributivos absorvidos; contributivo mantém-se" |
+
+### Plano de acção (quando DR for publicado)
+
+1. Actualizar `prestacao-social-unica.html` com valores reais do decreto-lei
+2. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
+3. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
+4. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
+
+---
+
 ## GSTACK
 
 Skills disponíveis via gstack instalado globalmente.
@@ -358,4 +396,4 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
-*Última revisão automática: 2026-06-28 — CSI e PSU publicadas; fact-checking completo registado; GSTACK adicionado; PSU destaque implementado; datas sazonais + MEGA detecção automática*
+*Última revisão: 2026-06-28 — CSI e PSU publicadas; fact-checking completo; GSTACK adicionado; PSU destaque; datas sazonais; simulador abono (fix múltiplas crianças); simulador ASE completo; plano impacto PSU documentado*
