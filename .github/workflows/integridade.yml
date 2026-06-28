@@ -1,0 +1,62 @@
+name: Integridade do Código
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 8 * * 1'  # semanal segunda 08:00
+
+jobs:
+
+  segredos:
+    name: Verificar Segredos (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  python-qualidade:
+    name: Qualidade Python (Ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/ruff-action@v3
+        with:
+          args: check scripts/ --select E,F,W --ignore E501
+          # E=erros, F=pyflakes, W=warnings
+          # E501 ignorado (linhas longas são OK nos scripts)
+
+  python-seguranca:
+    name: Vulnerabilidades Packages (pip-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pip-audit
+      - run: pip-audit -r requirements.txt
+             --ignore-vuln GHSA-wrvr-2g86-2q9v
+             # ignorar falsos positivos conhecidos
+
+  html-validacao:
+    name: Validação HTML (W3C)
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, '.html')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar validator
+        run: |
+          pip install html5validator --break-system-packages
+      - name: Validar HTML
+        run: |
+          html5validator --root . \
+            --ignore-re ".*noticias\.html.*" \
+            --ignore-re ".*404\.html.*" \
+            --log WARNING
+        continue-on-error: true
+        # continue-on-error: não bloqueia deploy por avisos menores
