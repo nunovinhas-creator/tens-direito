@@ -56,6 +56,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tensdireito.com/prestacao-social-unica.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tensdireito.com/noticias.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
