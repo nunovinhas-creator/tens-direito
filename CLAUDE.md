@@ -315,4 +315,43 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 ---
 
-*Última revisão automática: 2026-06-28 — datas sazonais + MEGA detecção automática adicionados*
+## GSTACK
+
+Skills disponíveis via gstack instalado globalmente.
+
+### Instalação (ambiente local)
+
+```bash
+git clone --single-branch --depth 1 \
+  https://github.com/garrytan/gstack.git \
+  ~/.claude/skills/gstack \
+  && cd ~/.claude/skills/gstack \
+  && ./setup
+
+# Desactivar telemetria
+gstack-config set telemetry off
+```
+
+### Skills relevantes para este projecto
+
+- **`/design-html`** — gerar infografias e calculadoras em HTML com design de alta qualidade
+- **`/browse`** — navegação com anti-bot stealth (substitui Playwright quando bloqueado)
+- **`/qa`** — revisão de qualidade antes de publicar páginas
+- **`/review`** — revisão de código e HTML gerado
+- **`/careful`** — modo seguro para edições críticas em páginas de conteúdo
+
+**Usar `/browse` em vez de Playwright/mcp__claude-in-chrome__* tools quando o site-alvo tem proteção anti-bot.**
+
+### Skills NÃO relevantes para este projecto (não usar)
+
+- `/office-hours`, `/plan-ceo-review` — gestão startup (não aplicável)
+- `/land-and-deploy` — deploy já é via GitHub Pages (não precisa)
+- `/setup-gbrain` — base de dados (não usamos)
+
+### Telemetria
+
+Desactivada globalmente via `gstack-config set telemetry off`.
+
+---
+
+*Última revisão automática: 2026-06-28 — GSTACK adicionado; PSU destaque implementado; datas sazonais + MEGA detecção automática*
