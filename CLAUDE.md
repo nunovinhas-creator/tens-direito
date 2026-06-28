@@ -103,6 +103,8 @@ Isto elimina race conditions entre workflows concorrentes.
 | `bolsa-de-merito.html` | Bolsa de Mérito 2026 | jun. 2026 |
 | `manuais-escolares-mega.html` | Manuais Escolares Gratuitos MEGA | jun. 2026 |
 | `passe-sub23.html` | Passe Sub-23 Gratuito | jun. 2026 |
+| `complemento-solidario-idosos.html` | Complemento Solidário para Idosos (CSI) 2026 | 28 jun. 2026 |
+| `prestacao-social-unica.html` | Prestação Social Única (PSU) 2026 | 28 jun. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -216,6 +218,8 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 - **Subsídio desemprego máximo**: 1.342,83 €/mês (2,5 × IAS)
 - **Bolsa de mérito 2025/2026**: 1.306,25 € (2,5 × IAS 2025 = 2,5 × 522,50 €)
 - Limite 2.º escalão abono: 1,5 × 537,13 = **805,70 €/mês** per capita
+
+**✓ Confirmados após fact-checking completo (2026-06-28)**: Todos os valores de referência foram verificados e confirmados em páginas publicadas. Nenhuma discrepância encontrada entre valores scraped e valores publicados. CSI e PSU fact-checked e publicadas.
 
 ### Regra de links
 NUNCA inventar subpaths de portais oficiais.
@@ -354,4 +358,4 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
-*Última revisão automática: 2026-06-28 — GSTACK adicionado; PSU destaque implementado; datas sazonais + MEGA detecção automática*
+*Última revisão automática: 2026-06-28 — CSI e PSU publicadas; fact-checking completo registado; GSTACK adicionado; PSU destaque implementado; datas sazonais + MEGA detecção automática*
