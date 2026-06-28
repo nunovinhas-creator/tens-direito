@@ -308,6 +308,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
+| `complemento-solidario-idosos.html` | Janeiro (novo valor CSI) | Issue automática do scraper |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 
