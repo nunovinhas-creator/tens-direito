@@ -7,6 +7,7 @@ import os
 import re
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+from html import unescape
 
 # Guardrail: único ficheiro HTML que este script pode modificar.
 FICHEIROS_AUTO_GERADOS = ["noticias.html"]
@@ -103,6 +104,22 @@ def strip_tags(text):
     return re.sub(r"<[^>]+>", "", text or "").strip()
 
 
+def limpar_texto(texto):
+    """Limpa entidades HTML e espaços múltiplos do texto."""
+    if not texto:
+        return ""
+    # Converter entidades HTML (&nbsp; etc)
+    texto = unescape(texto)
+    # Remover tags HTML residuais
+    texto = re.sub(r'<[^>]+>', '', texto)
+    # Substituir não-breaking spaces e variantes
+    texto = texto.replace('\xa0', ' ')
+    texto = texto.replace('&nbsp;', ' ')
+    # Limpar espaços múltiplos
+    texto = re.sub(r'\s+', ' ', texto).strip()
+    return texto
+
+
 CAT_LABELS = {
     "apoios": "Apoios Sociais",
     "educacao": "Educação",
@@ -114,8 +131,8 @@ CAT_LABELS = {
 
 
 def render_destaque(entry):
-    title = html.escape(strip_tags(entry.get("title", "Sem título")))
-    summary = html.escape(strip_tags(entry.get("summary", "")))[:400]
+    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
+    summary = html.escape(limpar_texto(entry.get("summary", "")))[:400]
     link = html.escape(entry.get("link", "#"))
     source = html.escape(entry.get("source", {}).get("title", link[:60]))
     dt = parse_date(entry)
@@ -140,8 +157,8 @@ def render_destaque(entry):
 
 def render_archive_card(entry):
     """Render a card for the archive grid (from a destaque entry dict or feedparser entry)."""
-    title = html.escape(strip_tags(entry.get("title", "Sem título")))
-    summary = html.escape(strip_tags(entry.get("summary", "")))[:200]
+    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
+    summary = html.escape(limpar_texto(entry.get("summary", "")))[:200]
     link = html.escape(entry.get("link", "#"))
     source = html.escape(entry.get("source", {}).get("title", link[:60]))
     dt = parse_date(entry)
@@ -180,8 +197,8 @@ def extract_destaque_as_archive(content):
     cat_m = re.search(r'data-cat="([^"]*)"', block)
     cat_label_m = re.search(r'class="cat-label">([^<]*)</span>', block)
 
-    title = title_m.group(1) if title_m else "Notícia anterior"
-    summary = (summary_m.group(1) if summary_m else "")[:200]
+    title = limpar_texto(title_m.group(1)) if title_m else "Notícia anterior"
+    summary = (limpar_texto(summary_m.group(1)) if summary_m else "")[:200]
     link = link_m.group(1) if link_m else "#"
     date_iso = date_m.group(1) if date_m else ""
     cat = cat_m.group(1) if cat_m else "apoios"
