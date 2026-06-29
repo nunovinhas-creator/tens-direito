@@ -386,6 +386,106 @@ print(f'{meses[now.month-1]} {now.year}')
           sed -i "s|\"dateModified\": \"[0-9-]*\"|\"dateModified\": \"${DATE_FULL}\"|g" index.html
           echo "Revisão atualizada: ${DATE_MES} (dateModified: ${DATE_FULL})"
 
+      # ── Step 6a: Destaque sazonal no index.html ──────────────────────────────
+      - name: Destaque sazonal
+        run: |
+          python3 << 'PYEOF'
+          import json, re
+          from datetime import datetime, timezone
+
+          EVERGREEN = {
+              'id': 'evergreen-fallback',
+              'titulo': 'Descobre os apoios a que tens direito',
+              'texto': 'Guias verificados com fonte oficial e data de actualização. Sem publicidade.',
+              'cta_texto': 'Começa aqui →',
+              'cta_url': '/comecar-aqui.html',
+              'icone': '✅',
+          }
+
+          hoje = datetime.now(timezone.utc)
+          mes  = hoje.month
+          destaque = None
+          avisos   = []
+
+          # 1. Evento pontual (ativo == true)
+          try:
+              with open('data/destaque_evento.json', encoding='utf-8') as f:
+                  ev = json.load(f).get('evento') or {}
+              if ev.get('ativo') is True:
+                  destaque = ev
+                  print(f'Destaque: evento [{ev.get("id","?")}]')
+              else:
+                  print(f'Destaque: evento [{ev.get("id","?")}] inativo — a tentar sazonal')
+          except FileNotFoundError:
+              avisos.append('AVISO: data/destaque_evento.json não encontrado — a usar sazonal')
+          except (json.JSONDecodeError, Exception) as e:
+              avisos.append(f'AVISO: destaque_evento.json inválido ({e}) — a usar sazonal')
+
+          # 2. Sazonal por mês
+          if not destaque:
+              try:
+                  with open('data/destaques_sazonais.json', encoding='utf-8') as f:
+                      sazonais = json.load(f).get('destaques') or []
+                  if not isinstance(sazonais, list):
+                      raise ValueError('campo "destaques" não é lista')
+                  for s in sazonais:
+                      if mes in (s.get('meses') or []):
+                          destaque = s
+                          print(f'Destaque: sazonal [{s.get("id","?")}] (mês {mes})')
+                          break
+                  if not destaque:
+                      avisos.append(f'AVISO: mês {mes} não coberto em destaques_sazonais.json — a usar evergreen')
+              except FileNotFoundError:
+                  avisos.append('AVISO: data/destaques_sazonais.json não encontrado — a usar evergreen')
+              except (json.JSONDecodeError, ValueError, Exception) as e:
+                  avisos.append(f'AVISO: destaques_sazonais.json inválido ({e}) — a usar evergreen')
+
+          # 3. Evergreen (nunca falha — hardcoded)
+          if not destaque:
+              destaque = EVERGREEN
+              print('Destaque: evergreen (fallback de segurança)')
+
+          for av in avisos:
+              print(av)
+
+          icone  = destaque.get('icone', '✅')
+          titulo = destaque['titulo']
+          texto  = destaque['texto']
+          cta_t  = destaque['cta_texto']
+          cta_u  = destaque['cta_url']
+
+          bloco = (
+              f'<span class="destaque-icone">{icone}</span>\n'
+              f'    <div class="destaque-body">\n'
+              f'      <strong class="destaque-titulo">{titulo}</strong>\n'
+              f'      <span class="destaque-texto">{texto}</span>\n'
+              f'    </div>\n'
+              f'    <a href="{cta_u}" class="destaque-cta">{cta_t}</a>'
+          )
+
+          with open('index.html', encoding='utf-8') as f:
+              html = f.read()
+
+          novo = re.sub(
+              r'<!-- DESTAQUE:INICIO -->[\s\S]*?<!-- DESTAQUE:FIM -->',
+              (
+                  '<!-- DESTAQUE:INICIO -->\n'
+                  '  <div id="destaque-sazonal" class="destaque-banda">\n'
+                  f'    {bloco}\n'
+                  '  </div>\n'
+                  '  <!-- DESTAQUE:FIM -->'
+              ),
+              html
+          )
+
+          if novo == html:
+              print('AVISO: marcadores DESTAQUE:INICIO/FIM não encontrados em index.html — sem injecção')
+          else:
+              with open('index.html', 'w', encoding='utf-8') as f:
+                  f.write(novo)
+              print(f'index.html: destaque injectado [{destaque.get("id","fallback")}]')
+          PYEOF
+
       # ── Step 6b: Actualizar CLAUDE.md ───────────────────────────────────────
       - name: Actualizar CLAUDE.md
         run: |

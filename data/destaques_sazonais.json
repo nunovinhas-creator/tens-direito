@@ -1,0 +1,31 @@
+{
+  "destaques": [
+    {
+      "id": "escolar-setembro",
+      "meses": [7, 8, 9],
+      "titulo": "Candidaturas escolares até 30 de setembro",
+      "texto": "ASE, bolsa de mérito e manuais MEGA — abre já o processo para o ano letivo 2026/2027.",
+      "cta_texto": "Ver guia da ASE →",
+      "cta_url": "/acao-social-escolar.html",
+      "icone": "🎒"
+    },
+    {
+      "id": "novo-ias",
+      "meses": [1, 2, 3],
+      "titulo": "Novos valores em vigor",
+      "texto": "IAS e salário mínimo atualizados. Verifica se o teu escalão mudou.",
+      "cta_texto": "Ver abono de família →",
+      "cta_url": "/abono-de-familia.html",
+      "icone": "📋"
+    },
+    {
+      "id": "evergreen",
+      "meses": [4, 5, 6, 10, 11, 12],
+      "titulo": "Descobre os apoios a que tens direito",
+      "texto": "Guias verificados com fonte oficial e data de actualização. Sem publicidade.",
+      "cta_texto": "Começa aqui →",
+      "cta_url": "/comecar-aqui.html",
+      "icone": "✅"
+    }
+  ]
+}

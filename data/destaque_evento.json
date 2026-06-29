@@ -1,0 +1,13 @@
+{
+  "_nota": "Para activar/desactivar um evento: mudar 'ativo' para true/false. data_inicio e data_fim são OPCIONAIS — só usar quando o fim é realmente conhecido (ex. prazo fixo a 30/09). Quando a PSU sair em DR: actualizar 'titulo' e 'texto' para reflectir 'em vigor'. Quando deixar de ser novidade: pôr ativo:false.",
+  "evento": {
+    "id": "psu-2026",
+    "ativo": true,
+    "data_inicio": "2026-06-25",
+    "titulo": "Nova Prestação Social Única aprovada",
+    "texto": "13 apoios num só. Aprovada no Parlamento a 25/06/2026. Aguarda decreto-lei com valores.",
+    "cta_texto": "Ver o que muda →",
+    "cta_url": "/prestacao-social-unica.html",
+    "icone": "🔔"
+  }
+}

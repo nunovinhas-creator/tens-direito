@@ -97,9 +97,14 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .urgente-card a: hover { color: var(--teal-dark); }
 .badge-novo { display: inline-block; background: #DC2626; color: var(--white); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border-radius: 4px; }
 .badge-aprovada { display: inline-block; background: #F59E0B; color: #1C1917; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border-radius: 4px; }
-.alerta-banda { background: #F59E0B; color: #1C1917; text-align: center; padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600; width: 100%; }
-.alerta-banda a { color: #1C1917; text-decoration: underline; font-weight: 700; }
-.alerta-banda a: hover { opacity: 0.8; }
+.destaque-banda { background: var(--amber-bg); border-top: 2px solid var(--amber); border-bottom: 2px solid var(--amber); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.destaque-icone { font-size: 1.25rem; flex-shrink: 0; }
+.destaque-body { display: flex; flex-direction: column; gap: 0.1rem; }
+.destaque-titulo { font-size: 0.9rem; font-weight: 700; color: #92400E; }
+.destaque-texto { font-size: 0.82rem; color: #78350f; line-height: 1.4; }
+.destaque-cta { display: inline-block; background: #92400E; color: white; font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 6px; white-space: nowrap; text-decoration: none; }
+.destaque-cta:hover { background: #78350f; }
+@media (max-width: 640px) { .destaque-banda { flex-direction: column; text-align: center; gap: 0.6rem; } }
 .apoios-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem; }
 .section-header { margin-bottom: 1.75rem; }
 .section-header h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--ink); }
@@ -176,10 +181,16 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 </head>
 <body>
 
-  <!-- ALERTA PSU -->
-  <div class="alerta-banda">
-    🔔 NOVO: Prestação Social Única aprovada no Parlamento — saiba o que muda nos apoios sociais → <a href="/prestacao-social-unica.html">Ver o guia completo</a>
+  <!-- DESTAQUE:INICIO -->
+  <div id="destaque-sazonal" class="destaque-banda">
+    <span class="destaque-icone">🔔</span>
+    <div class="destaque-body">
+      <strong class="destaque-titulo">Nova Prestação Social Única aprovada</strong>
+      <span class="destaque-texto">13 apoios num só. Aprovada no Parlamento a 25/06/2026. Aguarda decreto-lei com valores.</span>
+    </div>
+    <a href="/prestacao-social-unica.html" class="destaque-cta">Ver o que muda →</a>
   </div>
+  <!-- DESTAQUE:FIM -->
 
   <!-- NAV -->
   <div class="nav-wrap">
