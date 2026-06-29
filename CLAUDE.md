@@ -397,3 +397,7 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 ---
 
 *Última revisão: 2026-06-28 — CSI e PSU publicadas; fact-checking completo; GSTACK adicionado; PSU destaque; datas sazonais; simulador abono (fix múltiplas crianças); simulador ASE completo; plano impacto PSU documentado*
+
+---
+
+*Última revisão automática: 2026-06-29*

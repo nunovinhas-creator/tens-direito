@@ -7,7 +7,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **28 de junho de 2026**.
+Actualizado automaticamente a partir do repositório em **29 de junho de 2026**.
 
 ### Páginas publicadas
 
@@ -26,6 +26,8 @@ Actualizado automaticamente a partir do repositório em **28 de junho de 2026**.
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
+| [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
+| [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
@@ -176,6 +178,7 @@ tens-direito/
 │       └── _fontes_config.json
 ├── .github/
 │   └── workflows/
+│       ├── integridade.yml
 │       ├── pipeline-diario.yml
 │       ├── validar-conteudo.yml
 │       ├── verificar-links.yml
@@ -241,6 +244,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
+| `integridade.yml` | — | integridade |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
 | `validar-conteudo.yml` | push para main (`**.html`) | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator |
 | `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 |
@@ -297,6 +301,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 28 de junho de 2026 às 10:19 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 29 de junho de 2026 às 12:11 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
