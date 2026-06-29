@@ -81,6 +81,7 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .trust-seals { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.25rem; font-size: 0.82rem; color: var(--muted); }
 .trust-seals span { display: flex; align-items: center; gap: 0.3rem; }
 .trust-seals .tick { color: var(--teal); font-weight: 700; }
+.revisao-auto { text-align: center; font-size: 0.76rem; color: var(--muted); margin-top: 0.6rem; opacity: 0.85; }
 .urgente-banda { background: var(--amber-bg); border-top: 2px solid var(--amber); border-bottom: 2px solid var(--amber); padding: 1.5rem 0; }
 .urgente-inner { max-width: 1080px; margin: 0 auto; padding: 0 1rem; }
 .urgente-titulo { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #92400E; margin-bottom: 1rem; }
@@ -161,6 +162,7 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     "url": "https://tensdireito.com",
     "description": "Informação verificada sobre apoios sociais, direitos e burocracia em Portugal.",
     "inLanguage": "pt-PT",
+    "dateModified": "2026-06-29",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -244,9 +246,10 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     </div>
     <div class="trust-seals" aria-label="Selos de confiança">
       <span><span class="tick">✓</span> Fontes oficiais</span>
-      <span><span class="tick">✓</span> Verificado a <span id="data-verificacao">recentemente</span></span>
+      <span><span class="tick">✓</span> Valores em vigor: 2026</span>
       <span><span class="tick">✓</span> Sem fins comerciais</span>
     </div>
+    <p class="revisao-auto">Fontes oficiais verificadas automaticamente · última revisão: <span id="ultima-revisao-mes">junho 2026</span></p>
   </section>
 
   <hr class="divider">
@@ -521,22 +524,6 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       }
     });
 
-    // Data de verificação dinâmica a partir do último scrape
-    (function() {
-      const el = document.getElementById('data-verificacao');
-      if (!el) return;
-      fetch('/data/scraped/seg_social_abono_latest.json')
-        .then(r => r.ok ? r.json() : null)
-        .then(data => {
-          if (!data || !data.data_acesso) return;
-          const d = new Date(data.data_acesso);
-          const fmt = d.toLocaleDateString('pt-PT', {
-            day: '2-digit', month: '2-digit', year: 'numeric'
-          });
-          el.textContent = fmt;
-        })
-        .catch(() => {});
-    })();
   </script>
 
 </body>
