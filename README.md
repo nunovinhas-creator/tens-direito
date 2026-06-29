@@ -1,5 +1,7 @@
 # Tens Direito
 
+📋 Documentação interna e índice de portfólio mantidos em repositório privado.
+
 > **Os teus direitos, com data e fonte.**
 > O registo PT-PT, datado e referenciado à fonte primária, de **dinheiro + direitos + burocracia**.
 
