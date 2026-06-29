@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install playwright beautifulsoup4 lxml requests feedparser mlscraper
+          pip install -r requirements.txt
           playwright install chromium --with-deps
 
       # ── Step 1: Scrape fontes ────────────────────────────────────────────────
