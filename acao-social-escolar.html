@@ -119,6 +119,15 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
 .resumo-rapido ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .resumo-rapido li { font-size: 0.95rem; color: #212529; line-height: 1.5; }
 .resumo-rapido strong { color: #0F766E; }
+.prazo-topo { background: #fff8e1; border-left: 4px solid #f59e0b; border-radius: 0 6px 6px 0; padding: 0.75rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.97rem; color: #78350f; }
+.prazo-topo strong { color: #92400e; }
+.faq-geo { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.faq-geo > h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 1rem; }
+.faq-item { border-bottom: 1px solid #e9ecef; padding: 0.9rem 0; }
+.faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+.faq-item h3 { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: 0.45rem; }
+.faq-item p { font-size: 0.93rem; color: #495057; line-height: 1.65; margin-bottom: 0.3rem; }
+.faq-item a { color: #0D9488; }
 </style>
 
   <!-- JSON-LD FAQPage -->
@@ -206,6 +215,46 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
                   "@type": "Answer",
                   "text": "Depende. Se um filho muda de ciclo de ensino, é obrigatória nova candidatura. Nova candidatura de um filho pode actualizar automaticamente o escalão dos outros no mesmo agregado familiar."
             }
+      },
+      {
+        "@type": "Question",
+        "name": "Quem tem direito à Ação Social Escolar 2026/2027?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Poderás ter direito SE tens filhos ou dependentes matriculados no ensino público e o rendimento mensal per capita do agregado não excede 537,13 € (IAS 2026). Escalão A: até 268,57 € por pessoa. Escalão B: até 537,13 € por pessoa. Acima deste valor não há direito à ASE."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que cobre o escalão A da ASE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O escalão A cobre: refeições gratuitas todos os dias letivos, 16 € por ano para material de desgaste, transporte gratuito se justificado e reembolso de visitas de estudo até 20 € por ano letivo. Os manuais escolares são gratuitos para todos via programa MEGA, independentemente do escalão ASE."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Até quando posso candidatar à ASE 2026/2027?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O prazo habitual para novas candidaturas é até 30 de setembro de 2026. Quem já beneficiou no ano anterior tem renovação automática se não houver alteração de escalão. Para matrículas tardias, o prazo é de 15 dias úteis a contar da data de matrícula."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A ASE paga os manuais escolares?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Os manuais escolares são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) via programa MEGA, independentemente do escalão ASE. O apoio de material escolar da ASE é exclusivamente para material de desgaste: 16 €/ano no escalão A e 8 €/ano no escalão B."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como sei qual é o meu escalão da ASE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O escalão ASE é determinado pelo escalão do abono de família. Consulta em Segurança Social Direta → Família → Abono de família. O rendimento per capita calcula-se dividindo o rendimento bruto mensal do agregado pelo número de membros. Até 268,57 €: escalão A. Entre 268,58 € e 537,13 €: escalão B."
+        }
       }
     ]
   }
@@ -317,6 +366,38 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
         <li>📝 <strong>Como pedir:</strong> Presencialmente nos serviços administrativos do agrupamento de escolas. Prazo: até 30 de setembro de 2026.</li>
       </ul>
     </div>
+
+    <p class="prazo-topo">📅 <strong>Prazo de candidatura:</strong> até 30 de setembro de 2026.</p>
+
+    <section class="faq-geo" aria-label="Perguntas frequentes sobre a Ação Social Escolar">
+      <h2>Perguntas frequentes</h2>
+
+      <div class="faq-item">
+        <h3>Quem tem direito à Ação Social Escolar 2026/2027?</h3>
+        <p>Poderás ter direito SE tens filhos ou dependentes matriculados no ensino público (do pré-escolar ao 12.º ano) e o rendimento mensal <em>per capita</em> do agregado é inferior ao IAS. <strong>Escalão A:</strong> até 268,57 € por pessoa (50% do IAS 2026). <strong>Escalão B:</strong> até 537,13 € por pessoa (100% do IAS 2026). Acima deste valor não há direito.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>O que cobre o escalão A da ASE?</h3>
+        <p><strong>Refeições:</strong> almoço gratuito todos os dias letivos. <strong>Material escolar:</strong> 16 €/ano para material de desgaste. <strong>Transporte:</strong> passe gratuito se a distância à escola o justificar. <strong>Visitas de estudo:</strong> reembolso até 20 €/ano letivo. O escalão B cobre metade dos valores acima (refeições com 50% desconto, 8 € de material, até 10 € de visitas).</p>
+        <p>Os manuais escolares são gratuitos para todos via <a href="/manuais-escolares-mega.html">programa MEGA</a> — não dependem do escalão ASE.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Até quando posso candidatar à ASE 2026/2027?</h3>
+        <p>O prazo habitual para novas candidaturas é até <strong>30 de setembro de 2026</strong>. Quem já beneficiou no ano anterior tem renovação automática se não houver alteração de escalão. Para matrículas tardias, o prazo é de 15 dias úteis a contar da data de matrícula. Confirma sempre junto do teu agrupamento.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>A ASE paga os manuais escolares?</h3>
+        <p>Não directamente. Desde 2016/2017, os manuais são gratuitos para <em>todos</em> os alunos do ensino público (1.º ao 12.º ano) através do <a href="/manuais-escolares-mega.html">programa MEGA</a>, independentemente do escalão. O apoio de "material escolar" da ASE é exclusivamente para material de desgaste (cadernos, lápis, mochilas): 16 €/ano no escalão A e 8 €/ano no escalão B.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Como sei qual é o meu escalão da ASE?</h3>
+        <p>O escalão ASE é determinado pelo escalão do abono de família. Podes consultar o teu escalão em <strong>Segurança Social Direta → Família → Abono de família</strong>. O rendimento per capita calcula-se dividindo o rendimento bruto mensal de todos os membros do agregado pelo número de pessoas. Se o resultado for ≤ 268,57 €, és escalão A; entre 268,58 € e 537,13 €, és escalão B. Vê também o <a href="/simulador-ase.html">simulador ASE</a>.</p>
+      </div>
+    </section>
 
     <!-- QUEM TEM DIREITO -->
     <div class="card">
