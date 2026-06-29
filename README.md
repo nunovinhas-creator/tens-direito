@@ -303,6 +303,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 29 de junho de 2026 às 12:11 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 29 de junho de 2026 às 17:24 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
