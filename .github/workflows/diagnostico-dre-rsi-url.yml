@@ -1,0 +1,112 @@
+name: Diagnóstico DRE — URL Portaria 71/2026/1 v2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extrair-url:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Playwright
+        run: pip install playwright && playwright install chromium
+
+      - name: Extrair URL portaria 71/2026/1
+        run: |
+          python3 - <<'EOF'
+          import asyncio, re
+          from playwright.async_api import async_playwright
+
+          raw_bodies = []
+
+          async def main():
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch()
+                  context = await browser.new_context(
+                      user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+                      viewport={"width": 1280, "height": 900},
+                  )
+                  page = await context.new_page()
+
+                  async def handle_response(response):
+                      if "DataActionGetPesquisas" in response.url and response.status == 200:
+                          try:
+                              text = await response.text()
+                              raw_bodies.append(text)
+                              print(f"[API] Capturada resposta {len(raw_bodies)}, {len(text)} chars")
+                          except Exception as e:
+                              print(f"[ERRO] {e}")
+
+                  page.on("response", handle_response)
+
+                  print("A navegar para /dr/pesquisa ...")
+                  await page.goto(
+                      "https://diariodarepublica.pt/dr/pesquisa",
+                      wait_until="networkidle",
+                      timeout=45000,
+                  )
+                  await asyncio.sleep(2)
+                  print(f"URL após load: {page.url}")
+
+                  # Injetar valor via JS e disparar eventos para triggerar o OutSystems
+                  print("A injetar pesquisa via JS ...")
+                  await page.evaluate("""
+                      const inp = document.querySelector('#b2-b10-Input_Search');
+                      if (inp) {
+                          inp.value = 'Portaria 71/2026/1';
+                          inp.dispatchEvent(new Event('input', {bubbles: true}));
+                          inp.dispatchEvent(new Event('change', {bubbles: true}));
+                          console.log('input preenchido');
+                      } else {
+                          console.log('input NAO encontrado');
+                      }
+                  """)
+                  await asyncio.sleep(1)
+
+                  # Pressionar Enter no campo via focus+keypress
+                  await page.evaluate("""
+                      const inp = document.querySelector('#b2-b10-Input_Search');
+                      if (inp) {
+                          inp.focus();
+                          inp.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', keyCode: 13, bubbles: true}));
+                          inp.dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter', keyCode: 13, bubbles: true}));
+                      }
+                  """)
+                  await asyncio.sleep(5)
+
+                  print(f"Respostas API após JS: {len(raw_bodies)}")
+
+                  # Se não funcionou via JS, tentar via locator com force=True
+                  if not raw_bodies:
+                      print("JS não triggou API — tentando locator force ...")
+                      try:
+                          await page.locator("#b2-b10-Input_Search").fill("Portaria 71/2026/1", force=True)
+                          await page.keyboard.press("Enter")
+                          await asyncio.sleep(6)
+                          print(f"Respostas após locator force: {len(raw_bodies)}")
+                      except Exception as e:
+                          print(f"locator force falhou: {e}")
+
+                  # Mostrar primeiros 3000 chars de cada resposta e procurar padrões
+                  for i, body in enumerate(raw_bodies):
+                      print(f"\n=== Resposta {i+1} ({len(body)} chars) ===")
+                      print(body[:3000])
+                      print(f"=== Fim {i+1} ===")
+
+                      for pattern in ['"71/2026"', '71-2026', '71\\/2026', '"numero":"71"']:
+                          idx = body.find(pattern)
+                          if idx >= 0:
+                              print(f"\n>> Encontrou {pattern!r} em pos {idx}")
+                              snippet = body[max(0, idx-300):idx+700]
+                              print(f"Contexto: {repr(snippet)}")
+                              file_ids = re.findall(r'"fileId"\s*:\s*(\d+)', snippet)
+                              ids_num = re.findall(r'"Id"\s*:\s*(\d+)', snippet)
+                              links = re.findall(r'detalhe[^\s"\'\\]+', snippet)
+                              print(f"fileIds: {file_ids}")
+                              print(f"Ids: {ids_num}")
+                              print(f"links: {links}")
+                              break
+
+                  await browser.close()
+
+          asyncio.run(main())
+          EOF
