@@ -375,12 +375,7 @@ jobs:
       # ── Step 6: Actualizar data de verificação no index.html ────────────────
       - name: Actualizar data de verificação no index.html
         run: |
-          DATE_MES=$(python3 -c "
-from datetime import datetime, timezone
-meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
-now = datetime.now(timezone.utc)
-print(f'{meses[now.month-1]} {now.year}')
-")
+          DATE_MES=$(python3 -c "from datetime import datetime,timezone; meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']; now=datetime.now(timezone.utc); print(f'{meses[now.month-1]} {now.year}')")
           DATE_FULL=$(date -u +%Y-%m-%d)
           sed -i "s|id=\"ultima-revisao-mes\">[^<]*<|id=\"ultima-revisao-mes\">${DATE_MES}<|g" index.html
           sed -i "s|\"dateModified\": \"[0-9-]*\"|\"dateModified\": \"${DATE_FULL}\"|g" index.html
