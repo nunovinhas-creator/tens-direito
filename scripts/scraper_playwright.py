@@ -24,7 +24,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).parent))
-from classificador_resposta import classificar_resposta, FonteConfig, Estado  # noqa: E402
+from classificador_resposta import classificar_resposta, FonteConfig  # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SCRAPED_DIR = BASE_DIR / "data" / "scraped"
