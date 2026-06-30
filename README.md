@@ -17,7 +17,7 @@ Actualizado automaticamente a partir do repositório em **30 de junho de 2026**.
 |---|---|
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
-| [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de Mérito 2025/2026: quem tem direito, valor e como candidatar |
+| [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
@@ -195,6 +195,7 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── classificador_resposta.py
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
@@ -304,6 +305,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 30 de junho de 2026 às 08:09 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 30 de junho de 2026 às 13:54 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
