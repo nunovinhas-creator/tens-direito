@@ -1,0 +1,139 @@
+name: Diagnóstico DRE — URL Portaria 71/2026/1 v3
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extrair-url:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Playwright
+        run: pip install playwright && playwright install chromium
+
+      - name: Extrair URL portaria 71/2026/1
+        run: |
+          python3 - <<'EOF'
+          import asyncio, re
+          from playwright.async_api import async_playwright
+
+          raw_bodies = []
+
+          async def main():
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch()
+                  context = await browser.new_context(
+                      user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+                      viewport={"width": 1280, "height": 900},
+                  )
+                  page = await context.new_page()
+
+                  async def handle_response(response):
+                      if "DataActionGetPesquisas" in response.url and response.status == 200:
+                          try:
+                              text = await response.text()
+                              raw_bodies.append(text)
+                              print(f"[API] Capturada resposta {len(raw_bodies)}, {len(text)} chars")
+                          except Exception as e:
+                              print(f"[ERRO] {e}")
+
+                  page.on("response", handle_response)
+
+                  print("A navegar para /dr/pesquisa ...")
+                  await page.goto(
+                      "https://diariodarepublica.pt/dr/pesquisa",
+                      wait_until="networkidle",
+                      timeout=45000,
+                  )
+                  await asyncio.sleep(2)
+                  print(f"URL após load: {page.url}")
+
+                  # Inspecionar DOM — quais elementos existem visíveis/clicáveis
+                  dom_info = await page.evaluate("""
+                      () => {
+                          const inp = document.querySelector('#b2-b10-Input_Search');
+                          const rect = inp ? inp.getBoundingClientRect() : null;
+                          const parent = inp ? inp.parentElement : null;
+                          const grandparent = parent ? parent.parentElement : null;
+                          return {
+                              inp_exists: !!inp,
+                              inp_type: inp ? inp.type : null,
+                              inp_rect: rect ? {top: rect.top, left: rect.left, width: rect.width, height: rect.height} : null,
+                              inp_style: inp ? inp.getAttribute('style') : null,
+                              parent_tag: parent ? parent.tagName : null,
+                              parent_class: parent ? parent.className : null,
+                              grandparent_tag: grandparent ? grandparent.tagName : null,
+                              grandparent_class: grandparent ? grandparent.className : null,
+                              grandparent_style: grandparent ? grandparent.getAttribute('style') : null,
+                          };
+                      }
+                  """)
+                  print(f"DOM info: {dom_info}")
+
+                  # Tentar JS click no próprio input primeiro
+                  await page.evaluate("""
+                      const inp = document.querySelector('#b2-b10-Input_Search');
+                      if (inp) {
+                          inp.click();
+                          inp.focus();
+                      }
+                  """)
+                  await asyncio.sleep(1)
+
+                  # Depois usar page.keyboard.type para escrever caractere a caractere
+                  print("A escrever via keyboard.type ...")
+                  await page.keyboard.type("Portaria 71/2026/1", delay=50)
+                  await asyncio.sleep(1)
+                  await page.keyboard.press("Enter")
+                  await asyncio.sleep(6)
+
+                  print(f"Respostas API após keyboard.type: {len(raw_bodies)}")
+
+                  # Se ainda sem resposta, tentar via outro elemento (botão de pesquisa)
+                  if not raw_bodies:
+                      print("Sem API — procurando botão de pesquisa ...")
+                      btns = await page.evaluate("""
+                          () => {
+                              const btns = Array.from(document.querySelectorAll('button, [role=button], [type=submit]'));
+                              return btns.map(b => ({tag: b.tagName, id: b.id, class: b.className, text: b.textContent.trim().slice(0,50)}));
+                          }
+                      """)
+                      print(f"Botões encontrados: {btns[:10]}")
+
+                      # Tentar clicar num botão de pesquisa
+                      for btn_sel in ['button[type="submit"]', 'button.search', '[aria-label*="pesquis" i]', '[title*="pesquis" i]']:
+                          try:
+                              btn = await page.query_selector(btn_sel)
+                              if btn:
+                                  print(f"Clicando {btn_sel}")
+                                  await btn.click(force=True)
+                                  await asyncio.sleep(5)
+                                  break
+                          except Exception as e:
+                              print(f"  erro: {e}")
+
+                      print(f"Respostas após botão: {len(raw_bodies)}")
+
+                  # Processar respostas capturadas
+                  for i, body in enumerate(raw_bodies):
+                      print(f"\n=== Resposta {i+1} ({len(body)} chars) ===")
+                      print(body[:3000])
+                      print(f"=== Fim {i+1} ===")
+
+                      for pattern in ['"71/2026"', '71-2026', '71\\/2026']:
+                          idx = body.find(pattern)
+                          if idx >= 0:
+                              print(f"\n>> Encontrou {pattern!r} em pos {idx}")
+                              snippet = body[max(0, idx-300):idx+700]
+                              print(f"Contexto: {repr(snippet)}")
+                              file_ids = re.findall(r'"fileId"\s*:\s*(\d+)', snippet)
+                              ids_num = re.findall(r'"Id"\s*:\s*(\d+)', snippet)
+                              links = re.findall(r'detalhe[^\s"\'\\]+', snippet)
+                              print(f"fileIds: {file_ids}")
+                              print(f"Ids: {ids_num}")
+                              print(f"links: {links}")
+                              break
+
+                  await browser.close()
+
+          asyncio.run(main())
+          EOF
