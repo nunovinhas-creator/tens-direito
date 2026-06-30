@@ -4,7 +4,9 @@ Distingue "recebi a PAGINA" de "recebi o SEGURANCA A PORTA" ANTES de calcular
 hash. Regra de ouro: QUALQUER sinal de bloqueio -> BLOQUEADO.
 """
 from __future__ import annotations
-import hashlib, re, unicodedata
+import hashlib
+import re
+import unicodedata
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional
@@ -78,17 +80,21 @@ def classificar_resposta(*, status_code, corpo, url_final, config, headers=None)
     url_norm = _normalizar(url_final)
     for dom in config.dominios_login:
         if dom and _normalizar(dom) in url_norm:
-            motivos.append(f"redirect_login:{dom}"); break
+            motivos.append(f"redirect_login:{dom}")
+            break
     corpo_norm = _normalizar(corpo)
     for m in _MARCADORES_DESAFIO:
         if m in corpo_norm:
-            motivos.append(f"desafio:{m}"); break
+            motivos.append(f"desafio:{m}")
+            break
     titulo_norm = _normalizar(_titulo(corpo))
     if titulo_norm:
         for f in config.titulos_bloqueio:
             if _normalizar(f) in titulo_norm:
-                motivos.append(f"titulo_login:{f}"); break
-    util = texto_util(corpo); n = len(util)
+                motivos.append(f"titulo_login:{f}")
+                break
+    util = texto_util(corpo)
+    n = len(util)
     if n < config.min_chars_uteis:
         motivos.append(f"texto_util={n}<min={config.min_chars_uteis}")
     if motivos:
