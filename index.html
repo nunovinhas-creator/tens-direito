@@ -47,6 +47,14 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .nav-links { display: flex; align-items: center; gap: 1.25rem; margin-left: auto; }
 .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); white-space: nowrap; }
 .nav-links a: hover { color: var(--teal); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-btn { font-size: 0.9rem; font-weight: 500; color: var(--muted); white-space: nowrap; background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 0.3rem; }
+.nav-dropdown-btn:hover { color: var(--teal); }
+.nav-dropdown-btn::after { content: '▾'; font-size: 0.7rem; }
+.nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 200px; z-index: 200; padding: 0.25rem 0; }
+.nav-dropdown-menu a { display: block; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 500; color: #0F172A; text-decoration: none; white-space: nowrap; }
+.nav-dropdown-menu a:hover { background: #f8f9fa; color: var(--teal); }
+.nav-dropdown.open .nav-dropdown-menu { display: block; }
 .nav-toggle { display: none; flex-shrink: 0; margin-left: auto; background: none; border: none; cursor: pointer; color: var(--ink); padding: 0.25rem; }
 .nav-mobile-menu {
   position: fixed;
@@ -66,6 +74,8 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .nav-mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
 .nav-mobile-menu a:last-child { border-bottom: none; }
 .nav-mobile-menu a:hover { color: #0D9488; }
+.nav-mobile-sim-label { display: block; padding: 0.75rem 0 0.1rem; font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-mobile-sim-link { padding-left: 1.25rem !important; font-size: 0.95rem !important; }
 .nav-mobile-menu form { display: flex; align-items: center; background: #F3F4F6; border-radius: 8px; padding: 0.4rem 0.75rem; gap: 0.4rem; margin-bottom: 0.5rem; }
 .nav-mobile-menu input { flex: 1; border: none; background: transparent; font-size: 0.95rem; color: var(--ink); outline: none; }
 .hero { padding: 3.5rem 1rem 3rem; text-align: center; background: var(--white); }
@@ -216,8 +226,13 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
         <a href="/comecar-aqui.html">Começa aqui</a>
         <a href="/p/apoios-escolares.html">Apoios Escolares</a>
         <a href="/#guias-de-apoios">Guias</a>
-        <a href="/simulador-abono.html">Sim. Abono</a>
-        <a href="/simulador-ase.html">Sim. ASE</a>
+        <div class="nav-dropdown" id="navSimDropdown">
+          <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleSimDropdown(this)">Simuladores</button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/simulador-abono.html" role="menuitem">Simulador de Abono</a>
+            <a href="/simulador-ase.html" role="menuitem">Simulador de ASE</a>
+          </div>
+        </div>
         <a href="/noticias.html">Notícias</a>
         <a href="/sobre.html">Sobre</a>
       </div>
@@ -242,8 +257,9 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       <a href="/comecar-aqui.html">Começa aqui</a>
       <a href="/p/apoios-escolares.html">🎒 Apoios Escolares</a>
       <a href="/#guias-de-apoios">Guias</a>
-      <a href="/simulador-abono.html">🧮 Simulador Abono</a>
-      <a href="/simulador-ase.html">🧮 Simulador ASE</a>
+      <span class="nav-mobile-sim-label">Simuladores</span>
+      <a href="/simulador-abono.html" class="nav-mobile-sim-link">› Simulador de Abono</a>
+      <a href="/simulador-ase.html" class="nav-mobile-sim-link">› Simulador de ASE</a>
       <a href="/noticias.html">Notícias</a>
       <a href="/sobre.html">Sobre</a>
     </div>
@@ -534,6 +550,19 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
           menu.classList.remove('open');
           hamburger.setAttribute('aria-expanded', 'false');
         }
+      }
+    });
+    function toggleSimDropdown(btn) {
+      const wrap = document.getElementById('navSimDropdown');
+      const open = wrap.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    }
+    document.addEventListener('click', function(e) {
+      const wrap = document.getElementById('navSimDropdown');
+      if (wrap && !wrap.contains(e.target)) {
+        wrap.classList.remove('open');
+        const btn = wrap.querySelector('.nav-dropdown-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
 
