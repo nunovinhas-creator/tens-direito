@@ -12,6 +12,12 @@
     "corpo": "A página `bolsa-de-merito.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Ano letivo\n**Mês actual:** 6/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário."
   },
   {
+    "pagina": "passe-sub23.html",
+    "tipo": "ano_letivo",
+    "titulo": "📅 REVER: passe-sub23.html — Ano letivo",
+    "corpo": "A página `passe-sub23.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Ano letivo\n**Mês actual:** 6/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário."
+  },
+  {
     "pagina": "manuais-escolares-mega.html",
     "tipo": "ano_letivo",
     "titulo": "📅 REVER: manuais-escolares-mega.html — Ano letivo",

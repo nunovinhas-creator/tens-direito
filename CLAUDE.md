@@ -401,8 +401,8 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
-*Última revisão automática: 2026-06-29*
+*Última revisão automática: 2026-06-30*
 
 ---
 
-*Última revisão automática: 2026-06-29*
+*Última revisão automática: 2026-06-30*

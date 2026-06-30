@@ -9,7 +9,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **29 de junho de 2026**.
+Actualizado automaticamente a partir do repositório em **30 de junho de 2026**.
 
 ### Páginas publicadas
 
@@ -20,6 +20,7 @@ Actualizado automaticamente a partir do repositório em **29 de junho de 2026**.
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de Mérito 2025/2026: quem tem direito, valor e como candidatar |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
+| [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
@@ -303,6 +304,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 29 de junho de 2026 às 17:24 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 30 de junho de 2026 às 08:09 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
