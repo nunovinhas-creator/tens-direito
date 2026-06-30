@@ -103,6 +103,7 @@ Isto elimina race conditions entre workflows concorrentes.
 | `bolsa-de-merito.html` | Bolsa de Mérito 2026 | jun. 2026 |
 | `manuais-escolares-mega.html` | Manuais Escolares Gratuitos MEGA | jun. 2026 |
 | `passe-sub23.html` | Passe Sub-23 Gratuito | jun. 2026 |
+| `p/apoios-escolares.html` | Apoios Escolares em Portugal 2026/2027 — Guia Completo | 30 jun. 2026 |
 | `complemento-solidario-idosos.html` | Complemento Solidário para Idosos (CSI) 2026 | 28 jun. 2026 |
 | `prestacao-social-unica.html` | Prestação Social Única (PSU) 2026 | 28 jun. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
