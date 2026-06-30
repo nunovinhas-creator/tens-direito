@@ -1,0 +1,108 @@
+name: Diagnóstico — URL Portaria RSI 71/2026
+
+on:
+  workflow_dispatch:
+
+jobs:
+  encontrar-url:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Playwright
+        run: pip install playwright && playwright install chromium
+
+      - name: Pesquisar Portaria 71/2026 no DRE via Playwright
+        run: |
+          python3 - <<'EOF'
+          import asyncio, re
+          from playwright.async_api import async_playwright
+
+          async def main():
+              search_url = "https://diariodarepublica.pt/dr/pesquisa/-/search/details/portaria%2071%2F2026"
+              print(f"Pesquisa: {search_url}")
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch()
+                  page = await browser.new_page(
+                      user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+                  )
+
+                  # Tentar primeiro o URL de pesquisa
+                  resp = await page.goto(search_url, wait_until="networkidle", timeout=30000)
+                  print(f"status pesquisa: {resp.status}")
+                  corpo = await page.content()
+                  # Extrair links /dr/detalhe/ da página
+                  links = re.findall(r'href="(/dr/detalhe/[^"]+)"', corpo)
+                  links_71 = [l for l in links if "71" in l]
+                  print(f"links /dr/detalhe/ com '71': {links_71[:10]}")
+
+                  # Se não encontrou, tentar pesquisa alternativa
+                  if not links_71:
+                      alt = "https://diariodarepublica.pt/dr/pesquisa/-/search/details/71%2F2026%2F1"
+                      resp2 = await page.goto(alt, wait_until="networkidle", timeout=30000)
+                      print(f"status alt: {resp2.status}")
+                      corpo2 = await page.content()
+                      links2 = re.findall(r'href="(/dr/detalhe/[^"]+)"', corpo2)
+                      links_71b = [l for l in links2 if "71" in l]
+                      print(f"links alt com '71': {links_71b[:10]}")
+
+                      # Mostrar todos os links /dr/detalhe/ encontrados
+                      all_links = re.findall(r'href="(/dr/detalhe/[^"]+)"', corpo2)
+                      print(f"todos links /dr/detalhe/ alt: {all_links[:15]}")
+
+                  # Mostrar todos os links /dr/detalhe/ da primeira pesquisa
+                  all_links1 = re.findall(r'href="(/dr/detalhe/[^"]+)"', corpo)
+                  print(f"todos links /dr/detalhe/ pesquisa1: {all_links1[:15]}")
+
+                  await browser.close()
+
+          asyncio.run(main())
+          EOF
+        continue-on-error: true
+
+      - name: Tentar URL directo Portaria 71/2026 (padrão conhecido)
+        run: |
+          python3 - <<'EOF'
+          import asyncio, re
+          from playwright.async_api import async_playwright
+
+          def texto_util(html):
+              s = re.sub(r'<(script|style)\b.*?</\1>', ' ', html, flags=re.I|re.S)
+              s = re.sub(r'<[^>]+>', ' ', s)
+              return re.sub(r'\s+', ' ', s).strip()
+
+          async def testar(browser, url, label):
+              page = await browser.new_page(
+                  user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+              )
+              try:
+                  resp = await page.goto(url, wait_until="networkidle", timeout=20000)
+                  status = resp.status
+                  corpo = await page.content()
+                  util = texto_util(corpo)
+                  tem_rsi = "RSI" in util or "rendimento social" in util.lower()
+                  tem_valor = "247,56" in util or "247.56" in util
+                  titulo = re.search(r'<title[^>]*>(.*?)</title>', corpo, re.I|re.S)
+                  print(f"[{label}] status={status} chars={len(util)} RSI={tem_rsi} 247,56={tem_valor}")
+                  print(f"  titulo: {titulo.group(1).strip()[:100] if titulo else '(sem titulo)'}")
+                  if tem_valor:
+                      idx = util.find("247")
+                      print(f"  excerto: {util[max(0,idx-80):idx+80]!r}")
+              except Exception as e:
+                  print(f"[{label}] ERRO: {e}")
+              finally:
+                  await page.close()
+
+          async def main():
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch()
+                  # Candidatos de URL - padrão DRE para portarias de 2026
+                  candidatos = [
+                      ("71-2026-1", "https://diariodarepublica.pt/dr/detalhe/portaria/71-2026-1"),
+                      ("portaria/71-2026", "https://diariodarepublica.pt/dr/legislacao-consolidada/portaria/2026-71"),
+                      ("pesq-rsi-legislacao", "https://diariodarepublica.pt/dr/legislacao-consolidada/portaria/2026"),
+                  ]
+                  for label, url in candidatos:
+                      await testar(browser, url, label)
+                  await browser.close()
+
+          asyncio.run(main())
+          EOF
