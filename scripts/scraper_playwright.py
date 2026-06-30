@@ -16,11 +16,15 @@ import argparse
 import hashlib
 import json
 import logging
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+
+sys.path.insert(0, str(Path(__file__).parent))
+from classificador_resposta import classificar_resposta, FonteConfig, Estado  # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SCRAPED_DIR = BASE_DIR / "data" / "scraped"
@@ -28,6 +32,32 @@ LOG_DIR = Path(__file__).resolve().parent / "logs"
 
 SCRAPED_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+BLOQUEIOS_PATH = BASE_DIR / "data" / "bloqueios.json"
+
+# FonteConfig por slug — calibrado com dados reais (2026-06-30)
+# seg_social reais esperados >>500 chars; login page = 23 chars (título apenas)
+# dge/mega reais: 1731–2534 chars; iefp real: 4280 chars
+_FONTE_CONFIGS: dict[str, FonteConfig] = {
+    "seg_social_abono": FonteConfig(
+        nome="Segurança Social — Abono de Família",
+        min_chars_uteis=500,
+        dominios_login=("app.seg-social.pt",),
+    ),
+    "seg_social_rsi": FonteConfig(
+        nome="Segurança Social — RSI",
+        min_chars_uteis=500,
+        dominios_login=("app.seg-social.pt",),
+    ),
+    "dge_ase": FonteConfig(nome="DGE — ASE", min_chars_uteis=300),
+    "dge_manuais": FonteConfig(nome="DGE — Manuais Escolares", min_chars_uteis=300),
+    "iefp_desemprego": FonteConfig(nome="IEFP — Subsídio de Desemprego", min_chars_uteis=500),
+    "mega_datas": FonteConfig(nome="DGE — MEGA datas", min_chars_uteis=300),
+}
+
+
+def _fonte_config(slug: str) -> FonteConfig:
+    return _FONTE_CONFIGS.get(slug, FonteConfig(nome=slug))
 
 logging.basicConfig(
     level=logging.INFO,
@@ -209,6 +239,20 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     time.sleep(5)
 
     html = page.content()
+
+    # CAMADA 1 — classificar ANTES de calcular hash
+    config = _fonte_config(slug)
+    classif = classificar_resposta(
+        status_code=200,
+        corpo=html,
+        url_final=page.url,
+        config=config,
+    )
+    if classif.bloqueado:
+        log.warning("%s: BLOQUEADO (Camada 1) — motivos: %s", slug, classif.motivos)
+        _registar_bloqueio(slug, url_usado, classif)
+        return None
+
     conteudo = _extrair_conteudo(html, fonte["seletores"])
 
     if fonte.get("titulo_js"):
@@ -296,6 +340,30 @@ def _registar_aviso(slug: str, motivo: str) -> None:
     with open(AVISOS_LOG, "a", encoding="utf-8") as f:
         f.write(linha)
     log.warning("AVISO registado em avisos.log: %s — %s", slug, motivo)
+
+
+def _registar_bloqueio(slug: str, url: str, classif) -> None:
+    """Acrescenta entrada a data/bloqueios.json (lida pelo pipeline para abrir Issue)."""
+    entrada = {
+        "slug": slug,
+        "url": url,
+        "data": datetime.now(timezone.utc).isoformat(),
+        "motivos": classif.motivos,
+        "chars_uteis": classif.chars_uteis,
+    }
+    bloqueios: list = []
+    if BLOQUEIOS_PATH.exists():
+        try:
+            bloqueios = json.loads(BLOQUEIOS_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    # Substituir entrada anterior do mesmo slug para o mesmo dia
+    hoje = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    bloqueios = [b for b in bloqueios if not (b["slug"] == slug and b["data"][:10] == hoje)]
+    bloqueios.append(entrada)
+    BLOQUEIOS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    BLOQUEIOS_PATH.write_text(json.dumps(bloqueios, ensure_ascii=False, indent=2), encoding="utf-8")
+    log.info("Bloqueio registado: %s → %s", slug, BLOQUEIOS_PATH)
 
 
 def _guardar_resultado(slug: str, resultado: dict) -> None:
