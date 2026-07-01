@@ -29,6 +29,10 @@ Actualizado automaticamente a partir do repositório em **01 de julho de 2026**.
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
+| [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
+| [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: o que já foi aprovado e o que ainda falta decidir |
+| [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU — condições de acesso aprovadas pela Assembleia da República |
+| [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU e Abono de Família: são apoios diferentes — não se confundem |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
@@ -189,6 +193,7 @@ tens-direito/
 ├── .claude/
 │   ├── agents/
 │   ├── commands/
+│   │   ├── atualizar-cluster-psu.md
 │   │   ├── nova-noticia.md
 │   │   ├── publicar-pagina.md
 │   │   ├── verificar-fontes.md
@@ -196,6 +201,7 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── atualizar_claude_md.py
 │   ├── classificador_resposta.py
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
@@ -267,6 +273,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 **Commands** (`.claude/commands/`) — invocar com `/nome-do-ficheiro`:
 
+- [`/atualizar-cluster-psu`](.claude/commands/atualizar-cluster-psu.md)
 - [`/nova-noticia`](.claude/commands/nova-noticia.md)
 - [`/publicar-pagina`](.claude/commands/publicar-pagina.md)
 - [`/verificar-fontes`](.claude/commands/verificar-fontes.md)
@@ -306,6 +313,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 01 de julho de 2026 às 10:44 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 01 de julho de 2026 às 16:05 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

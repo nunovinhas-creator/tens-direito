@@ -1,0 +1,48 @@
+{
+  "url": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
+  "url_original": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
+  "data_acesso": "2026-07-01T15:05:47.862265+00:00",
+  "status": "ok",
+  "conteudo_extraido": {
+    "titulo": "",
+    "paragrafos": [],
+    "itens_lista": [],
+    "links_uteis": [
+      {
+        "texto": "Submissão de Atos",
+        "href": "https://submissao.diariodarepublica.pt/"
+      },
+      {
+        "texto": "Atributos Profissionais",
+        "href": "https://submissao.diariodarepublica.pt/LoginAtributosProfissionais"
+      },
+      {
+        "texto": "50 anos do Diário da República",
+        "href": "https://50anos.diariodarepublica.pt/"
+      },
+      {
+        "texto": "Sítio INCM",
+        "href": "https://incm.pt/"
+      },
+      {
+        "texto": "Coleção Legislação",
+        "href": "https://loja.incm.pt/collections/publicacoes-oficiais"
+      },
+      {
+        "texto": "Loja do Diário",
+        "href": "https://loja.incm.pt/collections/diario-da-republica"
+      },
+      {
+        "texto": "Jornal Oficial da União Europeia",
+        "href": "https://eur-lex.europa.eu/"
+      },
+      {
+        "texto": "INCM, SA - TODOS OS DIREITOS RESERVADOS",
+        "href": "https://incm.pt/"
+      }
+    ]
+  },
+  "nota": "DRE — vigiar publicação do decreto-lei da PSU (prazo PRR: 31 ago 2026)",
+  "hash_conteudo": "5d97797f64964bf7c329b6fe2289c442b2fc49b902d770d024617bd21895b595",
+  "aviso": "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
+}
