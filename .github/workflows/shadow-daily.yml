@@ -1,0 +1,84 @@
+name: Shadow Mode Diário
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  shadow-daily:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "Sem requirements.txt — nada a instalar."
+          fi
+
+      # ── Executa o orquestrador já existente — não decide nada aqui,
+      # só liga run_shadow_daily.py, que por sua vez liga shadow_mode.py,
+      # shadow_mode_analytics.py e shadow_report_md.py (nenhum alterado
+      # por este workflow).
+      - name: Executar Shadow Mode diário
+        run: python scripts/run_shadow_daily.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      # ── Guardrail: o script só pode ter alterado shadow_history/, e
+      # nunca apagar histórico existente. Falha em segurança (sem
+      # commitar nada) se alguma destas garantias não se verificar.
+      - name: Verificar que só shadow_history/ foi alterado
+        run: |
+          set -e
+          ALTERACOES=$(git status --porcelain)
+          if [ -z "$ALTERACOES" ]; then
+            echo "Sem alterações — nada a verificar."
+            exit 0
+          fi
+
+          FORA_DE_SHADOW_HISTORY=$(echo "$ALTERACOES" | awk '{print $2}' | grep -v '^shadow_history/' || true)
+          if [ -n "$FORA_DE_SHADOW_HISTORY" ]; then
+            echo "ERRO CRÍTICO: alterações fora de shadow_history/ detectadas:"
+            echo "$FORA_DE_SHADOW_HISTORY"
+            exit 1
+          fi
+
+          APAGADOS=$(echo "$ALTERACOES" | grep '^ D ' || true)
+          if [ -n "$APAGADOS" ]; then
+            echo "ERRO CRÍTICO: ficheiros de histórico apagados — recusado."
+            echo "$APAGADOS"
+            exit 1
+          fi
+
+          echo "Guardrail OK — só shadow_history/ foi alterado, nada apagado."
+
+      # ── Commit automático só se houver alterações reais em
+      # shadow_history/ — nunca cria um commit vazio.
+      - name: Commit e push (só se houver alterações)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add shadow_history/
+          if git diff --staged --quiet; then
+            echo "Sem alterações em shadow_history/ — nada para commitar."
+          else
+            git commit -m "chore(shadow): daily shadow mode report update"
+            git pull --rebase origin main
+            git push
+          fi

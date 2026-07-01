@@ -22,6 +22,13 @@ O guardrail está implementado em dois locais:
 1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` bloqueia qualquer escrita em HTML que não seja `noticias.html`
 2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit
 
+**Segundo workflow com push, âmbito completamente separado**: `shadow-daily.yml`
+só pode escrever em `shadow_history/*.md` (relatórios do Shadow Mode — ver secção
+"SHADOW MODE" mais abaixo). Guardrail próprio no próprio workflow: falha
+(`exit 1`, sem commit) se detectar qualquer alteração fora de `shadow_history/`
+ou qualquer ficheiro de histórico apagado. Nunca escreve HTML, nunca toca em
+Issues, nunca activa auto-update real.
+
 Para modificar uma página de conteúdo:
 1. Sessão Claude Code manual
 2. Fact-checking prévio da informação
@@ -80,15 +87,19 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `scripts/gerar_noticias.py` → `noticias.html` |
 
-### Workflows (3 — só 1 faz push)
+### Workflows (5 — 2 fazem push, âmbitos disjuntos)
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
-| `pipeline-diario.yml` | cron `0 6 * * *` | Scrape → detectar mudanças → notícias → validar valores → README → push único | ✅ sim |
+| `pipeline-diario.yml` | cron `0 6 * * *` | Scrape → detectar mudanças → notícias → validar valores → README → push único | ✅ sim (`data/`, `index.html`, `noticias.html`, `README.md`, `CLAUDE.md`) |
+| `shadow-daily.yml` | cron `0 3 * * *` | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
+| `integridade.yml` | ver ficheiro | Verificações de integridade adicionais | ❌ não |
 
-**Apenas `pipeline-diario.yml` faz `git push`.** Os outros dois só lêem.
+**`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`,
+cada um com um âmbito de escrita disjunto e garantido por guardrail próprio**
+(ficheiros de conteúdo/dados vs. só `shadow_history/*.md`). Os restantes só lêem.
 Isto elimina race conditions entre workflows concorrentes.
 
 ---
@@ -148,16 +159,30 @@ tens-direito/
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
 │   ├── gerar_noticias.py     ← RSS → noticias.html
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
+│   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
+│   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
+│   ├── decisao_datas.py      ← Camada 3: estado → acção (AUTO_UPDATE_HABILITADO=False)
+│   ├── auto_update_engine.py ← Camada 4: auto-update sandbox, só em memória
+│   ├── orquestrador_datas.py ← Camada 5: único ponto autorizado a chamar a Camada 4
+│   ├── source_adapter.py     ← Camada 6: obtenção de valores oficiais (providers placeholder)
+│   ├── shadow_mode.py        ← corre a cadeia completa em modo observação pura
+│   ├── shadow_mode_analytics.py ← agrega relatórios do Shadow Mode em métricas
+│   ├── shadow_report_md.py   ← métricas → relatório Markdown legível
+│   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
 │   ├── pesquisa.js           ← pesquisa interna (JS puro, sem servidor)
 │   └── logs/                 ← logs do scraper
 ├── data/
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
 │   ├── mudancas.json         ← mudanças detectadas pelo pipeline
 │   └── divergencias.json     ← valores scraped vs publicado
+├── shadow_history/
+│   └── shadow_report_AAAA-MM-DD.md ← 1 relatório/dia, gerado por shadow-daily.yml
 ├── .github/workflows/
-│   ├── pipeline-diario.yml   ← pipeline único com push
+│   ├── pipeline-diario.yml   ← pipeline de conteúdo/dados, com push
+│   ├── shadow-daily.yml      ← Shadow Mode diário, com push (só shadow_history/)
 │   ├── verificar-links.yml   ← lychee (só lê)
-│   └── validar-conteudo.yml  ← validador HTML (só lê)
+│   ├── validar-conteudo.yml  ← validador HTML (só lê)
+│   └── integridade.yml       ← verificações de integridade (só lê)
 ├── .claude/
 │   ├── commands/             ← /publicar-pagina, /verificar-fontes, /nova-noticia
 │   └── skills/               ← estrutura-pagina, verificar-url
@@ -416,6 +441,46 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
+## SHADOW MODE — SISTEMA DE OBSERVAÇÃO (deteção de datas expiradas)
+
+Camadas incrementais construídas sobre `verificar_datas.py`, todas com testes
+próprios em `tests/`. Cada uma só faz a sua parte — nenhuma decide sozinha se
+uma Issue é criada ou um valor é alterado:
+
+1. **Deteção** (`verificar_datas.py`) — encontra datas/valores potencialmente
+   expirados em cada HTML; continua a ser a única coisa que gera
+   `data/alertas_datas.json` e as Issues `data-expirada` do `pipeline-diario.yml`.
+2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
+   `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
+   `BLOCKED_SOURCE`.
+3. **Decisão** (`decisao_datas.py`) — estado → acção (`IGNORAR`/`LOG_ONLY`/
+   `CREATE_ISSUE`/`AUTO_UPDATE`). `AUTO_UPDATE_HABILITADO = False` — **nunca
+   mudar isto sem decisão explícita e revisão de segurança à parte**.
+4. **Auto-update engine** (`auto_update_engine.py`) — sandbox: só actua em
+   memória, nunca escreve ficheiros; nunca chamado directamente por outro
+   módulo além do orquestrador.
+5. **Orquestrador** (`orquestrador_datas.py`) — único ponto autorizado a
+   chamar a Camada 4; falha sempre para `LOG_ONLY` em caso de erro inesperado.
+6. **Source adapter** (`source_adapter.py`) — providers ainda placeholder
+   (Segurança Social, IEFP, DGE, Diário da República); nunca inventa valores.
+7. **Shadow Mode** (`shadow_mode.py` + `shadow_mode_analytics.py` +
+   `shadow_report_md.py`) — corre a cadeia inteira em modo observação pura e
+   produz um relatório humano em Markdown, sem qualquer efeito real.
+8. **Execução diária** (`run_shadow_daily.py` + `.github/workflows/shadow-daily.yml`,
+   cron `0 3 * * *`) — liga os três módulos da Camada 7 e guarda 1 relatório/dia
+   em `shadow_history/shadow_report_AAAA-MM-DD.md`. Guardrail próprio no
+   workflow recusa (sem commitar) qualquer alteração fora de `shadow_history/`
+   ou qualquer ficheiro de histórico apagado.
+
+**Estado actual: sistema 100% observacional.** Nenhuma camada activa
+auto-update real, nenhuma cria/fecha Issues por si própria, nenhuma escreve
+HTML. Antes de alguma vez pôr `AUTO_UPDATE_HABILITADO = True`: rever
+`shadow_history/` com dados reais acumulados, confirmar que os providers do
+`source_adapter` já devolvem valores reais (não só placeholders) e fazer essa
+mudança numa sessão manual dedicada, nunca de ânimo leve.
+
+---
+
 *Última revisão: 2026-06-28 — CSI e PSU publicadas; fact-checking completo; GSTACK adicionado; PSU destaque; datas sazonais; simulador abono (fix múltiplas crianças); simulador ASE completo; plano impacto PSU documentado*
 
 ---
@@ -425,3 +490,7 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 ---
 
 *Última revisão automática: 2026-07-01*
+
+---
+
+*Última revisão: 2026-07-01 — criado `shadow-daily.yml` (cron `0 3 * * *`, push restrito a `shadow_history/*.md`, guardrail próprio); documentado o subsistema Shadow Mode completo (Camadas 2-8: classificação, decisão, auto-update engine sandbox, orquestrador, source adapter, Shadow Mode + analytics + relatório Markdown, execução diária); actualizada tabela de workflows (5, 2 com push, âmbitos disjuntos)*
