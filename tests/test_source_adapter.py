@@ -67,6 +67,11 @@ def test_placeholder_nunca_afirma_ter_encontrado_valor():
     assert resultado.valor is None
 
 
+def test_resultado_identifica_o_nome_do_provider_escolhido():
+    resultado = obter_valor_oficial(_alerta(pagina="abono-de-familia.html"), agora=AGORA)
+    assert resultado.provider == "seguranca_social"
+
+
 # ── Seleção correta do provider ─────────────────────────────────────────────
 
 @pytest.mark.parametrize(

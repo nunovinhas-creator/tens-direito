@@ -55,6 +55,7 @@ class ResultadoFonte:
     data_consulta: Optional[str] = None
     confianca: float = 0.0
     motivo: Optional[str] = None
+    provider: Optional[str] = None
 
 
 def _agora(agora: Optional[str]) -> str:
@@ -120,6 +121,7 @@ class _ProviderPlaceholder(FonteProvider):
                 f"provider '{self.nome}' é um placeholder — obtenção real "
                 f"de valores ainda não implementada"
             ),
+            provider=self.nome,
         )
 
 
