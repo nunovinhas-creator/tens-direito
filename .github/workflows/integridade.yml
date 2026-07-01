@@ -45,7 +45,6 @@ jobs:
   html-validacao:
     name: Validação HTML (W3C)
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.modified, '.html')
     steps:
       - uses: actions/checkout@v4
       - name: Instalar validator

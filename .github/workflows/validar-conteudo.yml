@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -25,24 +25,42 @@ jobs:
 
       - name: Validar páginas HTML alteradas
         id: validar
+        env:
+          BASE_SHA: ${{ github.event.before }}
         run: |
           python3 - << 'PYEOF'
-          import subprocess, sys, re
+          import os, subprocess, sys, re
           from pathlib import Path
           from bs4 import BeautifulSoup
 
           # Páginas a excluir da validação de conteúdo
           EXCLUIR = {"404.html", "privacidade.html", "sobre.html", "fontes.html", "noticias.html", "index.html"}
 
-          # Descobrir ficheiros HTML alterados neste push
+          # Comparar contra o SHA anterior ao push, não "HEAD~1": um push pode
+          # incluir vários commits, e "HEAD~1" só via o último, perdendo
+          # ficheiros HTML alterados em commits anteriores do mesmo push.
+          base_sha = os.environ.get("BASE_SHA", "")
+          if not base_sha or set(base_sha) == {"0"}:
+              # Primeiro push do branch (ou 'before' indisponível): comparar
+              # com a árvore vazia do git em vez de assumir "HEAD~1" existe.
+              base_sha = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+
           result = subprocess.run(
-              ["git", "diff", "--name-only", "HEAD~1", "HEAD"],
+              ["git", "diff", "--name-only", base_sha, "HEAD"],
               capture_output=True, text=True
           )
-          alterados = [
-              f for f in result.stdout.strip().splitlines()
-              if f.endswith(".html") and Path(f).name not in EXCLUIR and Path(f).exists()
-          ]
+          if result.returncode != 0:
+              print(f"AVISO: 'git diff {base_sha} HEAD' falhou (código {result.returncode}): {result.stderr.strip()}")
+              print("A validar todas as páginas HTML como salvaguarda.")
+              alterados = [
+                  str(p) for p in Path(".").glob("*.html")
+                  if p.name not in EXCLUIR
+              ]
+          else:
+              alterados = [
+                  f for f in result.stdout.strip().splitlines()
+                  if f.endswith(".html") and Path(f).name not in EXCLUIR and Path(f).exists()
+              ]
 
           if not alterados:
               print("Nenhuma página de conteúdo alterada — nada a validar.")

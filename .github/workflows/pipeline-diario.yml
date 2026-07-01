@@ -471,58 +471,36 @@ jobs:
           with open('index.html', encoding='utf-8') as f:
               html = f.read()
 
-          novo = re.sub(
-              r'<!-- DESTAQUE:INICIO -->[\s\S]*?<!-- DESTAQUE:FIM -->',
-              (
-                  '<!-- DESTAQUE:INICIO -->\n'
-                  '  <div id="destaque-sazonal" class="destaque-banda">\n'
-                  f'    {bloco}\n'
-                  '  </div>\n'
-                  '  <!-- DESTAQUE:FIM -->'
-              ),
-              html
-          )
+          padrao_destaque = re.compile(r'<!-- DESTAQUE:INICIO -->[\s\S]*?<!-- DESTAQUE:FIM -->')
 
-          if novo == html:
+          # Verificar a presença dos marcadores em separado da substituição:
+          # se o destaque de hoje for igual ao já publicado, re.sub() também
+          # produz um texto idêntico ao original — isso não significa que os
+          # marcadores estão em falta, só que não há nada para actualizar.
+          if not padrao_destaque.search(html):
               print('AVISO: marcadores DESTAQUE:INICIO/FIM não encontrados em index.html — sem injecção')
           else:
-              with open('index.html', 'w', encoding='utf-8') as f:
-                  f.write(novo)
-              print(f'index.html: destaque injectado [{destaque.get("id","fallback")}]')
+              novo = padrao_destaque.sub(
+                  (
+                      '<!-- DESTAQUE:INICIO -->\n'
+                      '  <div id="destaque-sazonal" class="destaque-banda">\n'
+                      f'    {bloco}\n'
+                      '  </div>\n'
+                      '  <!-- DESTAQUE:FIM -->'
+                  ),
+                  html
+              )
+              if novo != html:
+                  with open('index.html', 'w', encoding='utf-8') as f:
+                      f.write(novo)
+                  print(f'index.html: destaque injectado [{destaque.get("id","fallback")}]')
+              else:
+                  print(f'index.html: destaque já actualizado [{destaque.get("id","fallback")}] — sem alterações')
           PYEOF
 
       # ── Step 6b: Actualizar CLAUDE.md ───────────────────────────────────────
       - name: Actualizar CLAUDE.md
-        run: |
-          python3 - << 'PYEOF'
-          import glob, re
-          from datetime import datetime, timezone
-
-          paginas = sorted(glob.glob("*.html"))
-          paginas = [p for p in paginas if p not in
-              ["404.html", "sobre.html", "fontes.html", "privacidade.html"]]
-
-          with open("CLAUDE.md", encoding="utf-8") as f:
-              conteudo = f.read()
-
-          data = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-          novo = re.sub(
-              r"Última revisão automática: \d{4}-\d{2}-\d{2}",
-              f"Última revisão automática: {data}",
-              conteudo
-          )
-
-          if novo == conteudo:
-              # Linha ainda não existe — adicionar antes do último newline
-              novo = conteudo.rstrip() + f"\n\n---\n\n*Última revisão automática: {data}*\n"
-
-          if novo != conteudo:
-              with open("CLAUDE.md", "w", encoding="utf-8") as f:
-                  f.write(novo)
-              print(f"CLAUDE.md actualizado: {data}")
-          else:
-              print("CLAUDE.md sem alterações.")
-          PYEOF
+        run: python3 scripts/atualizar_claude_md.py
 
       # ── Step 6c: Guardrail — verificar ficheiros protegidos ─────────────────
       - name: Verificar ficheiros protegidos
