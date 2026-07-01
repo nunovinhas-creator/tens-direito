@@ -1,30 +1,4 @@
-/* NV Labs — badge no header + atribuição no footer.
-   Troca light/dark apenas via prefers-color-scheme; não introduz sistema de tema. */
-
-.nv-labs-badge {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.nv-labs-badge svg {
-  display: block;
-  height: 28px;
-  width: auto;
-}
-
-.nv-labs-badge .nv-labs-dark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .nv-labs-badge .nv-labs-light { display: none; }
-  .nv-labs-badge .nv-labs-dark { display: block; }
-}
-
-@media (max-width: 640px) {
-  .nv-labs-badge { display: none; }
-}
+/* NV Labs — atribuição no footer. */
 
 .footer-nvlabs {
   margin-top: 0.75rem;
