@@ -107,6 +107,10 @@ Isto elimina race conditions entre workflows concorrentes.
 | `complemento-solidario-idosos.html` | Complemento Solidário para Idosos (CSI) 2026 | 28 jun. 2026 |
 | `prestacao-social-unica.html` | Prestação Social Única (PSU) 2026 | 28 jun. 2026 |
 | `amim.html` | AMIM — Atestado Médico de Incapacidade Multiuso | 1 jul. 2026 |
+| `psu-quando-entra-em-vigor.html` | PSU 2026: o que já foi aprovado e o que ainda falta decidir | 1 jul. 2026 |
+| `psu-quem-tem-direito.html` | Quem tem direito à PSU — condições de acesso aprovadas | 1 jul. 2026 |
+| `psu-vs-abono-familia.html` | PSU e Abono de Família: são apoios diferentes | 1 jul. 2026 |
+| `psu-lista-13-apoios.html` | As 13 prestações que a PSU vai substituir (lista completa 2026) | 1 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -315,7 +319,9 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
 | `complemento-solidario-idosos.html` | Janeiro (novo valor CSI) | Issue automática do scraper |
-| `prestacao-social-unica.html` | Agosto (entrada em vigor?) | Verificação manual/news |
+| `prestacao-social-unica.html` | Ago 2026 (decreto-lei) + Jan 2027 (entrada vigor) | Verificação manual/news dre.pt |
+| `psu-quando-entra-em-vigor.html` | Ago 2026 (decreto-lei) + Jan 2027 (entrada vigor) | Verificação manual/news dre.pt |
+| `psu-quem-tem-direito.html` | Ago 2026 (valores confirmados pelo decreto-lei) | Decreto-lei publicado |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
@@ -326,7 +332,9 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 Estado: aprovada parlamento 25/06/2026.
 Aguarda: decreto-lei com valores + publicação DR.
-Meta entrada em vigor: agosto 2026.
+Prazo PRR decreto-lei: 31 ago 2026.
+Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado pelo decreto-lei).
+Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas).
 
 ### Páginas NÃO afectadas pela PSU
 
@@ -351,12 +359,21 @@ Manter avisos de transição até DR publicado:
 | `subsidio-desemprego.html` | Só subsídio SOCIAL absorvido | "Subsídio SOCIAL absorvido; CONTRIBUTIVO não afectado" |
 | `subsidio-parental.html` | Só apoios NÃO contributivos absorvidos | "Apoios não-contributivos absorvidos; contributivo mantém-se" |
 
+### Cluster PSU — páginas em espera (NÃO criar ainda)
+
+| Página | Gatilho para escrever |
+|---|---|
+| `como-pedir-psu.html` | Decreto-lei da PSU publicado em dre.pt com procedimento definido |
+| `calendario-pagamentos-psu.html` | Decreto-lei da PSU publicado em dre.pt com valores e datas |
+
 ### Plano de acção (quando DR for publicado)
 
 1. Actualizar `prestacao-social-unica.html` com valores reais do decreto-lei
-2. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
-3. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
-4. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
+2. Actualizar `psu-quando-entra-em-vigor.html` e `psu-quem-tem-direito.html` com valores confirmados
+3. Criar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`
+4. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
+5. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
+6. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
 
 ---
 
