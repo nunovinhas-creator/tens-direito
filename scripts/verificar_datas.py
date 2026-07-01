@@ -5,11 +5,15 @@ Cada correspondência de data é avaliada com o ano que ela própria capta —
 não com uma verificação solta de "o ano antigo aparece algures nesta
 página". Só é tratada como expirada se esse ano for anterior ao ano actual
 E não estiver explicado por um contexto legítimo: referência legal/
-histórica (portaria, decreto-lei, despacho, "em vigor desde"), ano de
-rendimentos (sempre o ano civil anterior, por definição), comparação
-"Em <ano>, ..." com o valor actual, exemplo ilustrativo de cálculo, ou
-aviso explícito de conteúdo pendente ("aguarda", "previsto", "a
-confirmar") cujo prazo anunciado ainda não passou.
+histórica (portaria, decreto-lei, despacho, "em vigor desde", "desde
+<ano>"), exemplo ilustrativo de cálculo, citação dentro de um link (nome
+de outra página), ou aviso explícito de conteúdo pendente ("aguarda",
+"previsto", "confirmar") cujo prazo anunciado ainda não passou.
+
+Frases como "rendimentos de 2025 para prestações de 2026" ou "Em 2025,
+o valor era X" nunca precisam de um marcador de supressão dedicado: não
+têm nome de mês nem formato de data reconhecido por nenhum PADRAO, por
+isso nunca entram no ramo de "ano antigo" a começar.
 """
 
 import glob
@@ -22,31 +26,41 @@ from datetime import datetime
 AUTO_GERADOS = ["index.html", "noticias.html", "404.html"]
 
 JANELA = 220  # caracteres de contexto para cada lado da correspondência
+JANELA_LINK = 300  # caracteres a olhar para trás ao detectar se está dentro de um <a>
 
 MESES = {
     "janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4, "maio": 5, "junho": 6,
     "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12,
 }
 
+REGEX_MES_ANO = (
+    r"\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
+    r"setembro|outubro|novembro|dezembro)\s+de\s+(\d{4})\b"
+)
+
 # Referência legal/histórica permanente — nunca "expira".
+# "\bdesde\s+\d" exige um número logo a seguir (ex.: "desde 2016/2017", "em vigor
+# desde 1 de dezembro") — sem isto, apanhava também "desde que" (conjunção
+# condicional, ex.: "tens direito desde que cumpras as condições"), que não tem
+# nada a ver com uma data histórica e mascarava datas realmente antigas.
 MARCADORES_HISTORICOS = [
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"despacho", r"\bdl\s*n",
     r"lei\s+n\.?º", r"diário da república", r"dre\.pt", r"em vigor desde",
-    r"já\s+benefici", r"\bdesde\b",
+    r"já\s+benefici", r"\bdesde\s+\d",
 ]
-
-# Ano de rendimentos — é sempre o ano civil anterior ao da prestação, por definição.
-MARCADORES_RENDIMENTO = [r"rendiment"]
-
-# "Em 2025, ..." — introduz uma comparação histórica explícita com o valor actual.
-MARCADORES_COMPARACAO = [r"\bem\s+20\d{2}\s*,"]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.
 MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
 
-MARCADORES_SUPRESSAO_DIRETA = (
-    MARCADORES_HISTORICOS + MARCADORES_RENDIMENTO + MARCADORES_COMPARACAO + MARCADORES_EXEMPLO
-)
+# Nota: não há marcadores separados para "ano de rendimentos" ou "comparação
+# histórica" (ex.: "Em 2025, ..."). Essas frases nunca coincidem com nenhum
+# padrão em PADROES (não têm nome de mês nem formato DD/MM/AAAA nem AAAA/AAAA
+# junto ao ano), por isso nunca entram no ramo de "ano antigo" — não precisam
+# de supressão porque nunca geram falso positivo. Confirmado por auditoria:
+# adicionar esses marcadores como substring solta só introduzia risco de
+# mascarar datas antigas genuinamente desactualizadas sem beneficiar nenhum
+# caso real (ver histórico do commit).
+MARCADORES_SUPRESSAO_DIRETA = MARCADORES_HISTORICOS + MARCADORES_EXEMPLO
 
 # Conteúdo que já assume, de forma explícita, que está pendente de confirmação.
 # "confirmar" no infinitivo (pendente) — não "confirmado" (já feito).
@@ -57,8 +71,7 @@ MARCADORES_PENDENTE = [
 
 PADROES = [
     {
-        "regex": r"\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
-                 r"setembro|outubro|novembro|dezembro)\s+de\s+(\d{4})\b",
+        "regex": REGEX_MES_ANO,
         "tipo": "data_mes_ano",
         "descricao": "Data com mês e ano",
         "ano_grupo": 2,
@@ -110,11 +123,7 @@ def _tem_algum(padroes, texto):
 def _proxima_data_esperada(texto):
     """Devolve a data mais distante referida no texto (ex.: 'setembro de 2026')."""
     melhor = None
-    for m in re.finditer(
-        r"\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|"
-        r"outubro|novembro|dezembro)\s+de\s+(\d{4})\b",
-        texto, re.IGNORECASE,
-    ):
+    for m in re.finditer(REGEX_MES_ANO, texto, re.IGNORECASE):
         candidato = datetime(int(m.group(2)), MESES[m.group(1).lower()], 1)
         if melhor is None or candidato > melhor:
             melhor = candidato
@@ -125,7 +134,7 @@ def _dentro_de_link(conteudo, inicio):
     """Um token de data dentro do texto visível de um <a> é uma citação a outra
     página/recurso (ex.: link para outro artigo pelo seu próprio nome), não uma
     afirmação desta página sobre o seu próprio conteúdo."""
-    antes = conteudo[max(0, inicio - 300):inicio]
+    antes = conteudo[max(0, inicio - JANELA_LINK):inicio]
     ultima_abertura = antes.rfind("<a ")
     ultimo_fecho = antes.rfind("</a>")
     return ultima_abertura != -1 and ultima_abertura > ultimo_fecho
@@ -155,11 +164,19 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes):
 
     if tipo == "ano_letivo":
         # Duas passagens: primeiro identifica que pares "antigos" já têm, em
-        # ALGUM ponto da página, uma explicação válida (referência legal,
-        # comparação histórica ou aviso de pendência ainda dentro do prazo).
-        # Uma vez explicado, o mesmo par repetido noutros pontos da página
-        # (ex.: um cabeçalho FAQ e a respectiva resposta) não é sinalizado
-        # em duplicado.
+        # ALGUM ponto da página, uma explicação válida (referência legal ou
+        # aviso de pendência ainda dentro do prazo). Uma vez explicado, o
+        # mesmo par repetido noutros pontos da página (ex.: um cabeçalho FAQ
+        # e a respectiva resposta, ou uma citação em JSON-LD) não é
+        # sinalizado em duplicado.
+        #
+        # Risco aceite: a propagação é à escala da página inteira, não só do
+        # parágrafo. Cada HTML deste site cobre um único apoio/tema, por isso
+        # o mesmo par de anos repetido na mesma página refere-se sempre ao
+        # mesmo ciclo — mas se uma página alguma vez misturar dois assuntos
+        # distintos que citem coincidentemente o mesmo par (ex.: "2025/2026"),
+        # uma afirmação não relacionada e genuinamente desactualizada poderia
+        # ficar mascarada pela explicação da outra. Ver auditoria.
         ocorrencias = list(re.finditer(padrao["regex"], conteudo))
         pares_explicados = {
             m.group(0) for m in ocorrencias
