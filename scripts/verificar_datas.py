@@ -22,6 +22,8 @@ import os
 import re
 from datetime import datetime
 
+from classificar_datas import classificar_data_estruturada
+
 # Ficheiros que o pipeline gera — ignorar
 AUTO_GERADOS = ["index.html", "noticias.html", "404.html"]
 
@@ -211,13 +213,24 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes):
     return False
 
 
+def _contexto_representativo(conteudo, padrao):
+    """Localiza a primeira correspondência do padrão do alerta, para dar à
+    camada de classificação (classificar_datas) um exemplo real do texto e
+    da janela de contexto — sem repetir a procura de supressão já feita
+    por `_pagina_tem_alerta`."""
+    m = re.search(padrao["regex"], conteudo, re.IGNORECASE)
+    if not m:
+        return None, None
+    return m.group(0), _janela_contexto(conteudo, m.start(), m.end())
+
+
 def detectar_alertas(conteudo, nome_pagina, ano, mes):
     """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado."""
     for padrao in PADROES:
         if mes not in REVER_EM[padrao["tipo"]]:
             continue
         if _pagina_tem_alerta(conteudo, padrao, ano, mes):
-            return {
+            alerta = {
                 "pagina": nome_pagina,
                 "tipo": padrao["tipo"],
                 "titulo": f"📅 REVER: {nome_pagina} — {padrao['descricao']}",
@@ -231,6 +244,15 @@ def detectar_alertas(conteudo, nome_pagina, ano, mes):
                     f"Esta Issue foi gerada automaticamente pelo pipeline diário."
                 ),
             }
+            # Camada 2 (classificar_datas): metadado informativo, adicionado
+            # sem influenciar se o alerta é gerado nem os campos que o
+            # pipeline usa para criar a Issue (pagina/titulo/corpo).
+            data_bruta, contexto = _contexto_representativo(conteudo, padrao)
+            if data_bruta is not None:
+                alerta["classificacao"] = classificar_data_estruturada(
+                    contexto, data_bruta, ano_atual=ano
+                )
+            return alerta
     return None
 
 
