@@ -24,6 +24,11 @@ A auto-update engine também NUNCA é chamada a partir de
 por quem a testar/usar, não automaticamente. Isso mantém-se assim até
 uma decisão explícita de activação global.
 
+A partir da Camada 5 (`orquestrador_datas.py`), esta é a ÚNICA chamada
+de produção permitida a `aplicar_auto_update` — nenhum outro módulo o
+deve invocar directamente (ver
+`tests/test_orquestrador_datas.py::test_apenas_orquestrador_chama_auto_update_engine`).
+
 Reutiliza `decisao_datas.AUTO_UPDATE_HABILITADO` como única fonte de
 verdade da feature flag (em vez de manter uma cópia própria) para que
 nunca possa divergir da Camada 3. A verificação é feita através do
