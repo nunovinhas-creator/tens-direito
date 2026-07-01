@@ -9,7 +9,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **30 de junho de 2026**.
+Actualizado automaticamente a partir do repositório em **01 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -17,6 +17,7 @@ Actualizado automaticamente a partir do repositório em **30 de junho de 2026**.
 |---|---|
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
+| [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
@@ -305,6 +306,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 30 de junho de 2026 às 13:54 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 01 de julho de 2026 às 10:44 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
