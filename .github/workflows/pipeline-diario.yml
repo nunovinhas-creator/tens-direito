@@ -176,16 +176,19 @@ jobs:
 
             const hoje = new Date().toISOString().slice(0, 10);
 
+            const existing_datas = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'data-expirada',
+            });
+
             for (const a of alertas) {
-              // Evitar duplicados: verificar se já existe issue com o mesmo título este ano
-              const ano = new Date().getFullYear();
-              const existing = await github.rest.issues.listForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                labels: 'data-expirada',
-              });
-              const duplicate = existing.data.find(i => i.title === a.titulo);
+              // Evitar duplicados: uma página só pode ter UMA issue "REVER" aberta,
+              // independentemente do tipo de padrão que a despoletou (o tipo pode
+              // variar de mês para mês — ex.: "Ano letivo" em junho, "Data com mês
+              // e ano" em julho — mas é sempre a mesma página por rever).
+              const duplicate = existing_datas.data.find(i => i.title.includes(`REVER: ${a.pagina}`));
               if (!duplicate) {
                 await github.rest.issues.create({
                   owner: context.repo.owner,
@@ -593,33 +596,46 @@ jobs:
               mudancas = JSON.parse(fs.readFileSync('data/mudancas.json', 'utf8'));
             } catch(_) {}
 
-            for (const m of mudancas) {
-              const existing = await github.rest.issues.listForRepo({
+            if (mudancas.length > 0) {
+              const existing_mud = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
                 labels: 'fonte-alterada',
               });
-              const duplicate = existing.data.find(i => i.title.includes(m.slug) && i.title.includes(hoje));
-              if (!duplicate) {
-                await github.rest.issues.create({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  title: `🔔 Mudança detectada: ${m.slug} (${hoje})`,
-                  body: [
-                    `## 🔔 Mudança detectada: \`${m.slug}\``,
-                    ``,
-                    `**Data/hora:** ${hoje} ${hora} UTC`,
-                    `**Fonte:** ${m.url}`,
-                    ``,
-                    `### Acção necessária`,
-                    `1. Verificar a fonte manualmente: ${m.url}`,
-                    `2. Se os valores/condições mudaram: actualizar a página HTML correspondente`,
-                    `3. Actualizar a data de verificação na página`,
-                    `4. Fechar esta issue após correcção`,
-                  ].join('\n'),
-                  labels: ['fonte-alterada', 'verificar'],
-                });
+
+              for (const m of mudancas) {
+                // Dedup por slug, sem a data: uma fonte alterada e ainda não corrigida
+                // não deve gerar uma issue nova todos os dias — só um comentário a avisar
+                // que a mudança persiste.
+                const duplicate = existing_mud.data.find(i => i.title.includes(`Mudança detectada: ${m.slug}`));
+                if (!duplicate) {
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `🔔 Mudança detectada: ${m.slug} (${hoje})`,
+                    body: [
+                      `## 🔔 Mudança detectada: \`${m.slug}\``,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte:** ${m.url}`,
+                      ``,
+                      `### Acção necessária`,
+                      `1. Verificar a fonte manualmente: ${m.url}`,
+                      `2. Se os valores/condições mudaram: actualizar a página HTML correspondente`,
+                      `3. Actualizar a data de verificação na página`,
+                      `4. Fechar esta issue após correcção`,
+                    ].join('\n'),
+                    labels: ['fonte-alterada', 'verificar'],
+                  });
+                } else {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: duplicate.number,
+                    body: `🔁 Mudança ainda persiste em \`${m.slug}\` — confirmado novamente em ${hoje} ${hora} UTC.`,
+                  });
+                }
               }
             }
 
@@ -629,42 +645,56 @@ jobs:
               bloqueios = JSON.parse(fs.readFileSync('data/bloqueios.json', 'utf8'));
             } catch(_) {}
 
-            for (const b of bloqueios) {
-              if (b.data && b.data.slice(0, 10) !== hoje) continue; // só bloqueios de hoje
+            const bloqueios_hoje = bloqueios.filter(b => !b.data || b.data.slice(0, 10) === hoje);
+            if (bloqueios_hoje.length > 0) {
               const existing_bl = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
                 labels: 'fonte-bloqueada',
               });
-              const dup_bl = existing_bl.data.find(i => i.title.includes(b.slug) && i.title.includes(hoje));
-              if (!dup_bl) {
-                await github.rest.issues.create({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  title: `⚠️ Scraper BLOQUEADO em ${b.slug} (${hoje})`,
-                  body: [
-                    `## ⚠️ Scraper cego: \`${b.slug}\``,
-                    ``,
-                    `**Data/hora:** ${b.data} UTC`,
-                    `**URL:** ${b.url}`,
-                    ``,
-                    `### Sinais de bloqueio`,
-                    b.motivos.map(m => `- \`${m}\``).join('\n'),
-                    ``,
-                    `**Texto útil recebido:** ${b.chars_uteis} chars`,
-                    ``,
-                    `### ⚠️ Isto NÃO significa que a fonte mudou`,
-                    `O scraper ficou cego a esta fonte. O site mantém o último valor verificado por humano.`,
-                    ``,
-                    `### Ação necessária`,
-                    `1. Confirmar o valor manualmente em ${b.url}`,
-                    `2. Se o valor mudou: actualizar a página HTML e a data de verificação`,
-                    `3. Fechar esta issue após confirmação`,
-                  ].join('\n'),
-                  labels: ['fonte-bloqueada', 'verificar'],
-                });
-                console.log(`Issue fonte-bloqueada criada: ${b.slug}`);
+
+              for (const b of bloqueios_hoje) {
+                // Dedup por slug, sem a data: enquanto o bloqueio (ex.: recaptcha)
+                // persistir, não deve nascer uma issue nova por dia — só um
+                // comentário na issue existente a confirmar que continua bloqueado.
+                const dup_bl = existing_bl.data.find(i => i.title.includes(`Scraper BLOQUEADO em ${b.slug}`));
+                if (!dup_bl) {
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `⚠️ Scraper BLOQUEADO em ${b.slug} (${hoje})`,
+                    body: [
+                      `## ⚠️ Scraper cego: \`${b.slug}\``,
+                      ``,
+                      `**Data/hora:** ${b.data} UTC`,
+                      `**URL:** ${b.url}`,
+                      ``,
+                      `### Sinais de bloqueio`,
+                      b.motivos.map(m => `- \`${m}\``).join('\n'),
+                      ``,
+                      `**Texto útil recebido:** ${b.chars_uteis} chars`,
+                      ``,
+                      `### ⚠️ Isto NÃO significa que a fonte mudou`,
+                      `O scraper ficou cego a esta fonte. O site mantém o último valor verificado por humano.`,
+                      ``,
+                      `### Ação necessária`,
+                      `1. Confirmar o valor manualmente em ${b.url}`,
+                      `2. Se o valor mudou: actualizar a página HTML e a data de verificação`,
+                      `3. Fechar esta issue após confirmação`,
+                    ].join('\n'),
+                    labels: ['fonte-bloqueada', 'verificar'],
+                  });
+                  console.log(`Issue fonte-bloqueada criada: ${b.slug}`);
+                } else {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: dup_bl.number,
+                    body: `🔁 Bloqueio ainda persiste em \`${b.slug}\` — confirmado novamente em ${b.data} UTC.`,
+                  });
+                  console.log(`Issue fonte-bloqueada já existe para ${b.slug}, comentário adicionado.`);
+                }
               }
             }
 
@@ -679,13 +709,31 @@ jobs:
                 `**${d.descricao}** (\`${d.campo}\`)\n- Fonte \`${d.slug_fonte}\`: \`${d.valor_fonte}\`\n- HTML \`${d.html_file}\`: \`${d.valor_publicado}\``
               ).join('\n\n');
 
-              await github.rest.issues.create({
+              // Dedup por título estável (sem data): evita uma issue nova todos
+              // os dias enquanto a divergência não for corrigida manualmente.
+              const existing_div = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: `⚠️ ${divergencias.length} divergência(s) de valores (${hoje})`,
-                body: `Os valores nas fontes oficiais não coincidem com os publicados no site.\n\n${linhas}\n\nActualizar o HTML com o valor correcto e registar nova data de verificação.`,
-                labels: ['fonte-alterada'],
+                state: 'open',
+                labels: 'fonte-alterada',
               });
+              const dup_div = existing_div.data.find(i => i.title.includes('divergência(s) de valores'));
+              if (!dup_div) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `⚠️ ${divergencias.length} divergência(s) de valores (${hoje})`,
+                  body: `Os valores nas fontes oficiais não coincidem com os publicados no site.\n\n${linhas}\n\nActualizar o HTML com o valor correcto e registar nova data de verificação.`,
+                  labels: ['fonte-alterada'],
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: dup_div.number,
+                  body: `🔁 Divergência(s) ainda presente(s) em ${hoje}:\n\n${linhas}`,
+                });
+              }
             }
 
             // Issue específica: datas MEGA 2026/2027 detectadas

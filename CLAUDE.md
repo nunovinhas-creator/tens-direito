@@ -420,11 +420,7 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
-*Última revisão automática: 2026-07-01*
-
----
-
-*Última revisão automática: 2026-07-01*
+*Última revisão: 2026-07-01 — corrigido bug de dedup em `pipeline-diario.yml` que gerava Issues duplicadas (data-expirada, fonte-bloqueada, fonte-alterada, divergências de valores); 8 Issues duplicadas fechadas*
 
 ---
 
