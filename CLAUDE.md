@@ -86,6 +86,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `scripts/gerar_noticias.py` → `noticias.html` |
+| Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 
 ### Workflows (5 — 2 fazem push, âmbitos disjuntos)
 
@@ -145,6 +146,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
 - [ ] `sitemap.xml` actualizado se nova página
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
+- [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão "Partilhar este artigo" só às páginas que ainda não o têm)
 - [ ] Commit e push directamente para `main`
 
 ---
@@ -154,11 +156,15 @@ Antes de qualquer `git commit`, verificar cada ponto:
 ```
 tens-direito/
 ├── *.html                    ← páginas estáticas publicadas (raiz = GitHub Pages)
+├── assets/
+│   ├── js/share.js           ← lógica do botão "Partilhar este artigo" (vanilla JS)
+│   └── css/share.css         ← estilo do botão/mensagens de partilha
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
 │   ├── gerar_noticias.py     ← RSS → noticias.html
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
+│   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
 │   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
 │   ├── decisao_datas.py      ← Camada 3: estado → acção (AUTO_UPDATE_HABILITADO=False)
@@ -490,6 +496,10 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão automática: 2026-07-01*
+
+---
+
+*Última revisão: 2026-07-01 — criado sistema reutilizável de botão "Partilhar este artigo" (`assets/js/share.js`, `assets/css/share.css`, `scripts/inserir_botao_partilhar.py`, idempotente, sem bibliotecas externas); aplicado às 23 páginas de conteúdo manuais (excepto `index.html`/`noticias.html`/`404.html`)*
 
 ---
 
