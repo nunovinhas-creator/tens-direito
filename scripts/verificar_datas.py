@@ -23,6 +23,7 @@ import re
 from datetime import datetime
 
 from classificar_datas import classificar_data_estruturada
+from decisao_datas import decidir_acao_estruturada
 
 # Ficheiros que o pipeline gera — ignorar
 AUTO_GERADOS = ["index.html", "noticias.html", "404.html"]
@@ -244,13 +245,19 @@ def detectar_alertas(conteudo, nome_pagina, ano, mes):
                     f"Esta Issue foi gerada automaticamente pelo pipeline diário."
                 ),
             }
-            # Camada 2 (classificar_datas): metadado informativo, adicionado
-            # sem influenciar se o alerta é gerado nem os campos que o
-            # pipeline usa para criar a Issue (pagina/titulo/corpo).
+            # Camada 2 (classificar_datas) + Camada 3 (decisao_datas):
+            # metadado informativo, adicionado sem influenciar se o alerta
+            # é gerado nem os campos que o pipeline usa para criar a Issue
+            # (pagina/titulo/corpo). decidir_acao_estruturada não executa
+            # nenhum efeito real — devolve só uma string de ação.
             data_bruta, contexto = _contexto_representativo(conteudo, padrao)
             if data_bruta is not None:
-                alerta["classificacao"] = classificar_data_estruturada(
+                classificacao = classificar_data_estruturada(
                     contexto, data_bruta, ano_atual=ano
+                )
+                alerta["classificacao"] = classificacao
+                alerta["decisao"] = decidir_acao_estruturada(
+                    classificacao["estado"], classificacao
                 )
             return alerta
     return None
