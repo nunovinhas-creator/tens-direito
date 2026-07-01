@@ -53,6 +53,8 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
     "dge_manuais": FonteConfig(nome="DGE — Manuais Escolares", min_chars_uteis=300),
     "iefp_desemprego": FonteConfig(nome="IEFP — Subsídio de Desemprego", min_chars_uteis=500),
     "mega_datas": FonteConfig(nome="DGE — MEGA datas", min_chars_uteis=300),
+    # DRE search — min baixo porque a página de resultados pode ter pouco texto extraível
+    "dre_psu": FonteConfig(nome="DRE — Pesquisa PSU decreto-lei", min_chars_uteis=50),
 }
 
 
@@ -139,6 +141,21 @@ FONTES_PLAYWRIGHT = [
             "listas": "ul li, ol li",
         },
         "detectar_ano": "2026/2027",
+    },
+    {
+        "slug": "dre_psu",
+        # Pesquisa DRE por "prestação social única" — detectar publicação do decreto-lei.
+        # A lei de autorização legislativa (Jun 2026) está publicada; queremos o DECRETO-LEI
+        # que regulamenta valores e procedimentos (prazo PRR: 31 ago 2026).
+        "url": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
+        "nota": "DRE — vigiar publicação do decreto-lei da PSU (prazo PRR: 31 ago 2026)",
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "p",
+            "listas": "ul li, ol li, .result-title, .resultado, h2, h3",
+            "links": "a[href]",
+        },
+        "detectar_decreto_lei_psu": True,
     },
 ]
 
@@ -312,6 +329,39 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     elif ano_detectar and ano_detectar in html:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
         log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
+
+    # Detecção do decreto-lei da PSU em DRE
+    if fonte.get("detectar_decreto_lei_psu") and slug == "dre_psu":
+        import re as _re
+        # Juntar todo o texto extraído para pesquisa
+        todo_texto = " ".join([
+            conteudo.get("titulo", ""),
+            *conteudo.get("paragrafos", []),
+            *conteudo.get("itens_lista", []),
+            *[lnk.get("texto", "") for lnk in conteudo.get("links_uteis", [])],
+        ])
+        todo_lower = todo_texto.lower()
+
+        # Detectar DECRETO-LEI (não "Lei" — a lei de autorização já foi publicada)
+        # O decreto-lei terá "decreto-lei n.º" e "prestação social única" no mesmo documento
+        decreto_psu = bool(
+            _re.search(r"decreto.lei\b.*\bpresta", todo_lower) or
+            _re.search(r"presta[çc][aã]o\s+social\s+[uú]nica.*decreto.lei\b", todo_lower)
+        )
+
+        if decreto_psu:
+            excertos = []
+            for item in conteudo.get("paragrafos", []) + conteudo.get("itens_lista", []):
+                if "decreto" in item.lower() and "prest" in item.lower():
+                    excertos.append(item[:300])
+            excertos_txt = "\n".join(f"- {e}" for e in excertos[:5]) or "(ver data/scraped/dre_psu_latest.json)"
+            _registar_aviso(slug, f"dre_psu_decreto_detectado:{excertos_txt[:500]}")
+            log.warning(
+                "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
+                slug, excertos_txt
+            )
+        else:
+            log.info("%s: decreto-lei PSU ainda não publicado em DRE (só lei de autorização)", slug)
 
     return resultado
 

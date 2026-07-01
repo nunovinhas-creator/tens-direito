@@ -57,6 +57,7 @@ jobs:
               'dge_manuais': 'https://www.dge.mec.pt/manuais-escolares',
               'mega_datas': 'https://www.dge.mec.pt/manuais-escolares',
               'iefp_desemprego': 'https://www.iefp.pt/subsidio-desemprego',
+              'dre_psu': 'https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica',
             };
 
             const mudancas = [];
@@ -726,6 +727,55 @@ jobs:
                     ].join('\n'),
                     labels: ['verificar', 'fonte-alterada'],
                   });
+                }
+              }
+
+              // Issue específica: decreto-lei da PSU detectado em DRE
+              if (avisos_txt.includes('dre_psu_decreto_detectado')) {
+                const existing_psu = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'verificar',
+                });
+                const duplicate_psu = existing_psu.data.find(i => i.title.includes('decreto-lei PSU') && i.title.includes('DRE'));
+                if (!duplicate_psu) {
+                  const match_psu = avisos_txt.match(/dre_psu_decreto_detectado:([^\n]*)/);
+                  const excertos_psu = match_psu ? match_psu[1].trim() : '(ver data/scraped/dre_psu_latest.json)';
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `🚨 decreto-lei PSU detectado em DRE — actualizar cluster inteiro`,
+                    body: [
+                      `## 🚨 Decreto-lei da PSU detectado automaticamente em dre.pt`,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte monitorizada:** https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica`,
+                      ``,
+                      `### Excertos detectados`,
+                      `\`\`\``,
+                      excertos_psu,
+                      `\`\`\``,
+                      ``,
+                      `### Acções necessárias (por ordem)`,
+                      `1. Confirmar publicação em https://dre.pt e anotar número e data do decreto-lei`,
+                      `2. Actualizar \`prestacao-social-unica.html\` com valores reais e data de entrada em vigor`,
+                      `3. Actualizar \`psu-quando-entra-em-vigor.html\` — substituir "pendente" por factos confirmados`,
+                      `4. Actualizar \`psu-quem-tem-direito.html\` — acrescentar valores de referência e procedimento`,
+                      `5. Criar \`como-pedir-psu.html\` (gatilho: decreto-lei publicado)`,
+                      `6. Criar \`calendario-pagamentos-psu.html\` (gatilho: valores e datas confirmados)`,
+                      `7. Actualizar avisos em \`rsi.html\`, \`subsidio-desemprego.html\`, \`subsidio-parental.html\``,
+                      `8. Actualizar data de verificação em todas as páginas do cluster PSU`,
+                      `9. Fechar esta issue após actualização completa`,
+                      ``,
+                      `### Contexto`,
+                      `- Prazo PRR para publicação do decreto-lei: **31 ago 2026**`,
+                      `- Páginas em espera: \`como-pedir-psu.html\`, \`calendario-pagamentos-psu.html\``,
+                      `- Ver CLAUDE.md secção "IMPACTO DA PSU — Cluster PSU — páginas em espera"`,
+                    ].join('\n'),
+                    labels: ['verificar', 'fonte-alterada'],
+                  });
+                  console.log('Issue PSU decreto-lei criada.');
                 }
               }
             } catch(_) {}
