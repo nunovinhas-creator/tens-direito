@@ -106,6 +106,7 @@ Isto elimina race conditions entre workflows concorrentes.
 | `p/apoios-escolares.html` | Apoios Escolares em Portugal 2026/2027 — Guia Completo | 30 jun. 2026 |
 | `complemento-solidario-idosos.html` | Complemento Solidário para Idosos (CSI) 2026 | 28 jun. 2026 |
 | `prestacao-social-unica.html` | Prestação Social Única (PSU) 2026 | 28 jun. 2026 |
+| `amim.html` | AMIM — Atestado Médico de Incapacidade Multiuso | 1 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -317,6 +318,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `prestacao-social-unica.html` | Agosto (entrada em vigor?) | Verificação manual/news |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
+| `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 
 ---
 
