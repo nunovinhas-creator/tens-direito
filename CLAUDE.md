@@ -95,7 +95,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Analytics | GA4: `G-XP46PM8H1Q` |
 | Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
-| Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
+| Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`), com `playwright-stealth`, retries com jitter e fallback Wayback (`OK_VIA_ARQUIVO`) — ver secção "SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS" |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
@@ -1133,6 +1133,79 @@ nesta fase, só a confirmação por teste do caso concreto acima.
 Testado em `tests/test_estado_fontes.py` (limiar de 3 dias, reset ao
 recuperar, persistência ida-e-volta, fluxo `main()` isolado em `tmp_path` —
 nunca toca no `data/estado_fontes.json` real).
+
+---
+
+## SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS
+
+Fase 3 do robustecimento do Shadow Mode (2026-07-02). Princípio: **nunca
+disfarçar `BLOQUEADO` como `OK`** — o objectivo é reduzir a frequência real
+de bloqueio e ter um modo degradado honesto, não esconder bloqueios.
+
+1. **Perfil de browser realista** (`scraper_playwright.py`, `main()`):
+   `playwright-stealth` (`Stealth().apply_stealth_sync(context)`) aplicado ao
+   `BrowserContext` antes de abrir a página — mascara `navigator.webdriver` e
+   outros sinais triviais de automação; UA Chrome estável actualizado,
+   `locale="pt-PT"` (já existia) + `timezone_id="Europe/Lisbon"` (novo).
+   Não é suposto contornar nada mais forte do que uma verificação
+   superficial — só reduzir bloqueios triviais nos runners do GitHub.
+2. **Retries com backoff + jitter** (`TENTATIVAS_BLOQUEIO = 3`,
+   `ESPERA_MIN_S`/`ESPERA_MAX_S` = 30–120s): uma fonte só é `BLOQUEADO` no
+   dia se as 3 tentativas — cada uma com a página recebida E classificada
+   pela Camada 1 (`classificador_resposta.classificar_resposta`) — falharem
+   todas. Espera aleatória entre tentativas, nunca fixa. Distinto dos
+   retries já existentes em `_tentar_goto` (falha de rede/timeout, 3
+   tentativas com backoff exponencial curto) — este novo nível trata de
+   conteúdo recebido mas classificado como bloqueado (recaptcha, login
+   page), não de falhas de navegação.
+3. **Hora aleatória**: `pipeline-diario.yml` ganhou o step "Espera aleatória
+   antes do scrape" (`sleep $((RANDOM % 1800))`), só em disparos por cron
+   (`workflow_dispatch` continua imediato, para não atrasar testes) — scraping
+   exactamente às 06:00 UTC todos os dias é um padrão fácil de bloquear.
+4. **Fallback Wayback Machine — modo degradado honesto** (`scripts/wayback_fallback.py`,
+   módulo puro, sem `requests` nem I/O próprios — `fetch_json` é sempre
+   injectado, testado sem rede em `tests/test_scraper_fallback.py`): só
+   chamado depois das 3 tentativas directas falharem. Consulta
+   `https://archive.org/wayback/available`; se existir snapshot com
+   ≤`JANELA_DIAS_SNAPSHOT_VALIDO` (7) dias, `scraper_playwright._tentar_fallback_wayback`
+   obtém o HTML do snapshot, extrai conteúdo com os mesmos selectores da
+   fonte e guarda um resultado com `"status": "ok_via_arquivo"`,
+   `"modo": "arquivo"`, `"data_snapshot"` e `"url_snapshot"` — usado **só**
+   para deteção de mudança por hash, nunca como fonte de factos para
+   conteúdo. Este resultado **nunca** escreve em `data/bloqueios.json` — o
+   dia não conta como bloqueado na máquina de estados de fontes (secção
+   anterior), mas fica registado em `data/scraped/avisos.log`
+   (`modo_arquivo:snapshot=...:dias=...`) para auditoria. Sem snapshot
+   recente, cai no caminho `BLOQUEADO` normal (`_registar_bloqueio`) — nunca
+   finge que a fonte respondeu.
+5. **Fontes estruturadas alternativas — investigação preliminar, não
+   verificada ao vivo nesta sessão** (mesma limitação de rede documentada em
+   "FRESCURA DA HOMEPAGE" — `WebFetch`/`curl` a partir do ambiente de sessão
+   levam bloqueio a domínios `.gov.pt` fora da lista permitida; só é fiável
+   testar isto no runner real do GitHub Actions, via `workflow_dispatch`
+   dedicado, à semelhança do diagnóstico de feeds RSS já registado para a
+   Fase 2 das notícias). Candidatos a explorar nessa investigação futura,
+   por ordem de fonte actualmente bloqueada:
+   - `seg_social_abono` / `seg_social_rsi` — a Segurança Social publica
+     folhetos e guias práticos em PDF (mais estáveis que HTML dinâmico);
+     `dados.gov.pt` pode ter datasets estruturados dos valores de
+     referência (IAS, escalões) — por confirmar.
+   - `iefp_desemprego` — o desafio actual é reCAPTCHA na própria página;
+     `eportugal.gov.pt` (balcão único de serviços públicos) por vezes
+     espelha o mesmo conteúdo informativo sem o mesmo desafio — por
+     confirmar se cobre subsídio de desemprego especificamente.
+   - Em geral: `dados.gov.pt` (portal de dados abertos do Estado) é o
+     candidato mais promissor para valores estruturados (IAS, RSI, abono)
+     em vez de scraping de HTML — mas nenhum destes URLs foi testado com
+     pedidos reais nesta sessão. **Só migrar uma fonte se a alternativa,
+     testada e confirmada no runner real, tiver a mesma informação
+     oficial** (mesma regra de sempre: nunca publicar valor sem fonte
+     primária confirmada).
+
+Testes: `tests/test_scraper_fallback.py` (15 testes, mocks — sem rede real),
+cobre snapshot recente/antigo/inexistente, falha de rede na consulta
+Wayback, e a garantia de que a decisão nunca devolve `"estado": "OK"`
+directamente (só `OK_VIA_ARQUIVO` ou `BLOQUEADO`).
 
 ---
 

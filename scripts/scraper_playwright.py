@@ -16,15 +16,18 @@ import argparse
 import hashlib
 import json
 import logging
+import random
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import requests
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).parent))
 from classificador_resposta import classificar_resposta, FonteConfig  # noqa: E402
+from wayback_fallback import decidir_estado_apos_bloqueio  # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SCRAPED_DIR = BASE_DIR / "data" / "scraped"
@@ -229,13 +232,19 @@ def _tentar_goto(page, url: str) -> bool:
     return False
 
 
-def scrape_playwright(page, fonte: dict) -> dict | None:
-    url = fonte["url"]
-    slug = fonte["slug"]
-    url_fallback = fonte.get("url_fallback")
-    nota = fonte.get("nota", "")
-    log.info("A scrape (Playwright): %s", url)
+# Só se marca BLOQUEADO no dia se estas 3 tentativas (Camada 1: recepção +
+# classificação, não apenas o goto de rede) falharem todas — bloqueios de
+# gov.pt a runners do GitHub são frequentemente transitórios. Espera aleatória
+# entre tentativas para não bater sempre no mesmo padrão temporal.
+TENTATIVAS_BLOQUEIO = 3
+ESPERA_MIN_S = 30
+ESPERA_MAX_S = 120
 
+
+def _obter_html(page, url: str, url_fallback: str | None, slug: str) -> tuple[str, str] | None:
+    """Navega para `url` (com fallback opcional) e devolve `(url_usado,
+    html)`. Devolve None só em falha de navegação (rede/timeout) —
+    distinto de "conteúdo bloqueado", decidido a jusante pela Camada 1."""
     url_usado = url
     ok = _tentar_goto(page, url)
 
@@ -255,18 +264,45 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
         pass
     time.sleep(5)
 
-    html = page.content()
+    return url_usado, page.content()
 
-    # CAMADA 1 — classificar ANTES de calcular hash
+
+def scrape_playwright(page, fonte: dict) -> dict | None:
+    url = fonte["url"]
+    slug = fonte["slug"]
+    url_fallback = fonte.get("url_fallback")
+    nota = fonte.get("nota", "")
+    log.info("A scrape (Playwright): %s", url)
+
     config = _fonte_config(slug)
-    classif = classificar_resposta(
-        status_code=200,
-        corpo=html,
-        url_final=page.url,
-        config=config,
-    )
+    url_usado, html, classif = url, "", None
+
+    for tentativa in range(1, TENTATIVAS_BLOQUEIO + 1):
+        obtido = _obter_html(page, url, url_fallback, slug)
+        if obtido is None:
+            # Falha de navegação (rede/timeout), não de conteúdo bloqueado —
+            # já esgotou as suas próprias 3 tentativas dentro de _tentar_goto,
+            # sem sentido voltar a tentar aqui.
+            return None
+
+        url_usado, html = obtido
+        classif = classificar_resposta(status_code=200, corpo=html, url_final=page.url, config=config)
+
+        if not classif.bloqueado:
+            break
+
+        log.warning("%s: tentativa %d/%d classificada como BLOQUEADO — motivos: %s",
+                    slug, tentativa, TENTATIVAS_BLOQUEIO, classif.motivos)
+        if tentativa < TENTATIVAS_BLOQUEIO:
+            espera = random.uniform(ESPERA_MIN_S, ESPERA_MAX_S)
+            log.info("%s: a aguardar %.0fs antes da próxima tentativa", slug, espera)
+            time.sleep(espera)
+
     if classif.bloqueado:
-        log.warning("%s: BLOQUEADO (Camada 1) — motivos: %s", slug, classif.motivos)
+        log.warning("%s: BLOQUEADO após %d tentativas — motivos: %s", slug, TENTATIVAS_BLOQUEIO, classif.motivos)
+        resultado_arquivo = _tentar_fallback_wayback(slug, url_usado, fonte["seletores"], nota)
+        if resultado_arquivo is not None:
+            return resultado_arquivo
         _registar_bloqueio(slug, url_usado, classif)
         return None
 
@@ -416,6 +452,57 @@ def _registar_bloqueio(slug: str, url: str, classif) -> None:
     log.info("Bloqueio registado: %s → %s", slug, BLOQUEIOS_PATH)
 
 
+def _fetch_json_wayback(url_completo: str) -> dict:
+    resp = requests.get(url_completo, timeout=10)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def _tentar_fallback_wayback(slug: str, url: str, seletores: dict, nota: str) -> dict | None:
+    """Só chamado depois de TENTATIVAS_BLOQUEIO tentativas directas
+    falharem. Devolve um resultado com `status: "ok_via_arquivo"` se
+    existir snapshot Wayback recente (`wayback_fallback.decidir_estado_apos_bloqueio`),
+    ou None se não houver — o chamador trata então como BLOQUEADO normal.
+    Nunca escreve em `data/bloqueios.json`: modo arquivo não é a mesma
+    coisa que bloqueado, e não deve contar como dia bloqueado na máquina
+    de estados de fontes (`gerir_estado_fontes.py`)."""
+    decisao = decidir_estado_apos_bloqueio(url, fetch_json=_fetch_json_wayback)
+    if decisao["estado"] != "OK_VIA_ARQUIVO":
+        return None
+
+    snapshot = decisao["snapshot"]
+    try:
+        resp = requests.get(snapshot["url"], timeout=20)
+        resp.raise_for_status()
+    except Exception as exc:
+        log.warning("%s: snapshot Wayback encontrado mas falhou a obter conteúdo: %s", slug, exc)
+        return None
+
+    conteudo = _extrair_conteudo(resp.text, seletores)
+    hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
+    resultado = {
+        "url": url,
+        "url_original": url,
+        "data_acesso": datetime.now(timezone.utc).isoformat(),
+        "status": "ok_via_arquivo",
+        "modo": "arquivo",
+        "data_snapshot": snapshot["timestamp"],
+        "url_snapshot": snapshot["url"],
+        "conteudo_extraido": conteudo,
+        "hash_conteudo": hashlib.sha256(hash_payload.encode()).hexdigest(),
+    }
+    if nota:
+        resultado["nota"] = nota
+
+    log.warning(
+        "%s: modo degradado OK_VIA_ARQUIVO — snapshot de %s (%s dia(s) atrás)",
+        slug, snapshot["timestamp"], snapshot["dias_desde_snapshot"],
+    )
+    _registar_aviso(slug, f"modo_arquivo:snapshot={snapshot['timestamp']}:dias={snapshot['dias_desde_snapshot']}")
+    _guardar_resultado(slug, resultado)
+    return resultado
+
+
 def _guardar_resultado(slug: str, resultado: dict) -> None:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     daily_path = SCRAPED_DIR / f"{slug}_{today}.json"
@@ -456,6 +543,7 @@ def _guardar_resultado(slug: str, resultado: dict) -> None:
 
 def main(mode: str = "scrape"):
     from playwright.sync_api import sync_playwright
+    from playwright_stealth import Stealth
 
     resultados = {}
 
@@ -475,15 +563,21 @@ def main(mode: str = "scrape"):
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/124.0.0.0 Safari/537.36"
+                "Chrome/131.0.0.0 Safari/537.36"
             ),
             locale="pt-PT",
+            timezone_id="Europe/Lisbon",
             extra_http_headers={
                 "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             },
             viewport={"width": 1280, "height": 900},
         )
+        # Mascara sinais óbvios de automação (navigator.webdriver, plugins,
+        # etc.) -- não é suposto contornar nada mais forte do que uma
+        # verificação superficial, só reduzir a frequência de bloqueios
+        # triviais nos runners do GitHub.
+        Stealth().apply_stealth_sync(context)
 
         page = context.new_page()
 
@@ -494,9 +588,12 @@ def main(mode: str = "scrape"):
             try:
                 r = scrape_playwright(page, fonte)
                 if r:
-                    resultados[fonte["slug"]] = "ok"
+                    resultados[fonte["slug"]] = r.get("status", "ok")
                     c = r.get("conteudo_extraido", {})
-                    print(f"✓ OK — título: {c.get('titulo', '')[:80]}")
+                    if r.get("status") == "ok_via_arquivo":
+                        print(f"⚠ OK_VIA_ARQUIVO — snapshot de {r.get('data_snapshot')}")
+                    else:
+                        print(f"✓ OK — título: {c.get('titulo', '')[:80]}")
                     print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
                 else:
                     resultados[fonte["slug"]] = "falhou"
@@ -527,11 +624,12 @@ def main(mode: str = "scrape"):
     print(f"\n{'='*60}")
     print("RESUMO")
     print("=" * 60)
+    icones = {"ok": "✓", "ok_via_arquivo": "⚠"}
     for slug, estado in resultados.items():
-        icone = "✓" if estado == "ok" else "✗"
+        icone = icones.get(estado, "✗")
         print(f"  {icone} {slug}: {estado}")
 
-    ok = sum(1 for v in resultados.values() if v == "ok")
+    ok = sum(1 for v in resultados.values() if v in ("ok", "ok_via_arquivo"))
     print(f"\n{ok}/{len(resultados)} fontes scraped com sucesso.")
 
 

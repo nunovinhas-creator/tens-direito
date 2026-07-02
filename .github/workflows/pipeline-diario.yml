@@ -29,6 +29,17 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium --with-deps
 
+      # ── Espera aleatória antes do scrape: correr exactamente às 06:00 UTC
+      # todos os dias é um padrão fácil de bloquear. Só no cron -- disparos
+      # manuais (workflow_dispatch) continuam imediatos, para não atrasar
+      # testes/depuração.
+      - name: Espera aleatória antes do scrape
+        if: github.event_name == 'schedule'
+        run: |
+          ESPERA=$((RANDOM % 1800))
+          echo "A aguardar ${ESPERA}s antes do scrape..."
+          sleep "$ESPERA"
+
       # ── Step 1: Scrape fontes ────────────────────────────────────────────────
       - name: Scrape fontes oficiais
         run: python scripts/scraper_playwright.py
