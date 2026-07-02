@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Gera noticias.html a partir de feeds RSS — corre via GitHub Action diária."""
+"""Gera noticias.html a partir de feeds RSS — corre via GitHub Action diária.
+
+Escreve também a mesma notícia escolhida no bloco NOTICIA-HOME de
+index.html, entre marcadores — nunca fora deles (ver SECCOES_PERMITIDAS
+e _verificar_escrita_confinada)."""
 
 import feedparser
 import html
@@ -9,17 +13,62 @@ from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
 
-# Guardrail: único ficheiro HTML que este script pode modificar.
+# Guardrail: ficheiro HTML de escrita livre por este script.
 FICHEIROS_AUTO_GERADOS = ["noticias.html"]
+
+# Guardrail: ficheiros HTML onde este script só pode escrever dentro de uma
+# secção marcada — qualquer diferença fora dela bloqueia a escrita. Mudança
+# de segurança (index.html deixa de estar 100% fora de alcance do script de
+# notícias) — ver tests/test_gerar_noticias_guardrail.py.
+SECCOES_PERMITIDAS = {
+    "index.html": ("NOTICIA-HOME:INICIO", "NOTICIA-HOME:FIM"),
+}
+
+
+def _verificar_escrita_confinada(caminho, conteudo_novo, marcador_inicio, marcador_fim):
+    """Garante que `conteudo_novo` só difere do ficheiro em disco dentro da
+    secção marcada — nunca fora dela. Levanta excepção caso contrário, ou
+    se o marcador nem sequer existir no ficheiro em disco."""
+    with open(caminho, encoding="utf-8") as f:
+        atual = f.read()
+
+    padrao = re.compile(
+        rf"<!-- {re.escape(marcador_inicio)} -->[\s\S]*?<!-- {re.escape(marcador_fim)} -->"
+    )
+    if not padrao.search(atual):
+        raise Exception(
+            f"BLOQUEADO: marcador {marcador_inicio}/{marcador_fim} não encontrado "
+            f"em {os.path.basename(caminho)} — escrita recusada."
+        )
+
+    atual_mascarado = padrao.sub("__SECCAO_PERMITIDA__", atual, count=1)
+    novo_mascarado = padrao.sub("__SECCAO_PERMITIDA__", conteudo_novo, count=1)
+    if atual_mascarado != novo_mascarado:
+        raise Exception(
+            f"BLOQUEADO: escrita em {os.path.basename(caminho)} fora da secção "
+            f"permitida ({marcador_inicio}/{marcador_fim})."
+        )
 
 
 def escrever_ficheiro_seguro(caminho, conteudo):
     nome = os.path.basename(caminho)
-    if nome.endswith(".html") and nome not in FICHEIROS_AUTO_GERADOS:
+
+    if nome in FICHEIROS_AUTO_GERADOS:
+        with open(caminho, "w", encoding="utf-8") as f:
+            f.write(conteudo)
+        return
+
+    if nome.endswith(".html") and nome not in SECCOES_PERMITIDAS:
         raise Exception(
             f"BLOQUEADO: tentativa de escrever em ficheiro protegido: {nome}. "
-            f"Apenas {FICHEIROS_AUTO_GERADOS} podem ser modificados automaticamente."
+            f"Apenas {FICHEIROS_AUTO_GERADOS + list(SECCOES_PERMITIDAS)} podem ser "
+            f"modificados automaticamente."
         )
+
+    if nome.endswith(".html"):
+        marcador_inicio, marcador_fim = SECCOES_PERMITIDAS[nome]
+        _verificar_escrita_confinada(caminho, conteudo, marcador_inicio, marcador_fim)
+
     with open(caminho, "w", encoding="utf-8") as f:
         f.write(conteudo)
 
@@ -229,6 +278,27 @@ def extract_destaque_as_archive(content):
           </article>"""
 
 
+def render_noticia_home(entry):
+    """Card compacto para a homepage — reutiliza as classes CSS já
+    existentes em index.html (noticia-card/badge-hoje/link-ler). Mostra
+    sempre a data real da notícia, nunca "hoje"; liga directamente à
+    fonte externa, nunca a um link interno inventado."""
+    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
+    summary = html.escape(limpar_texto(entry.get("summary", "")))[:220]
+    link = html.escape(entry.get("link", "#"))
+    dt = parse_date(entry)
+    date_str = format_date_pt(dt)
+
+    return (
+        '    <div class="noticia-card">\n'
+        f'      <span class="badge-hoje">{date_str}</span>\n'
+        f'      <h3>{title}</h3>\n'
+        f'      <p>{summary}…</p>\n'
+        f'      <a href="{link}" class="link-ler" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>\n'
+        '    </div>'
+    )
+
+
 def load_template():
     with open("noticias.html", encoding="utf-8") as f:
         return f.read()
@@ -236,6 +306,34 @@ def load_template():
 
 def save(content):
     escrever_ficheiro_seguro("noticias.html", content)
+
+
+def atualizar_index_home(entry, caminho="index.html"):
+    """Injecta a mesma notícia escolhida também no bloco NOTICIA-HOME do
+    index.html — segunda fonte de frescura da homepage, junto de
+    'Atualizado recentemente' (gerado por sincronizar_clusters.py a
+    partir das datas reais dos artigos)."""
+    marcador_inicio, marcador_fim = SECCOES_PERMITIDAS["index.html"]
+    padrao = re.compile(
+        rf"<!-- {re.escape(marcador_inicio)} -->[\s\S]*?<!-- {re.escape(marcador_fim)} -->"
+    )
+
+    with open(caminho, encoding="utf-8") as f:
+        conteudo = f.read()
+
+    if not padrao.search(conteudo):
+        print(f"AVISO: marcadores {marcador_inicio}/{marcador_fim} não encontrados em {caminho} — sem injecção")
+        return
+
+    novo_bloco = f"<!-- {marcador_inicio} -->\n{render_noticia_home(entry)}\n    <!-- {marcador_fim} -->"
+    novo_conteudo = padrao.sub(lambda m: novo_bloco, conteudo, count=1)
+
+    if novo_conteudo == conteudo:
+        print(f"{caminho}: notícia já actualizada — sem alterações")
+        return
+
+    escrever_ficheiro_seguro(caminho, novo_conteudo)
+    print(f"{caminho}: bloco de notícias actualizado")
 
 
 def main():
@@ -271,6 +369,8 @@ def main():
 
     save(content)
     print(f"Notícia publicada: {entry.get('title', '')[:80]}")
+
+    atualizar_index_home(entry)
 
 
 if __name__ == "__main__":

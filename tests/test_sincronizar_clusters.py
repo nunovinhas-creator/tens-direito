@@ -19,6 +19,8 @@ from sincronizar_clusters import (
     render_home_cards,
     artigos_relacionados,
     contagem_str,
+    extrair_verificado_em,
+    render_atualizacoes_home,
 )
 
 _CLUSTERS_TESTE = {
@@ -88,6 +90,10 @@ _HOME_COM_MARCADOR = """<!DOCTYPE html>
     <!-- DESTAQUES:HOME:INICIO -->
     <!-- DESTAQUES:HOME:FIM -->
   </section>
+  <section id="atualizado-recentemente">
+    <!-- ATUALIZACOES:HOME:INICIO -->
+    <!-- ATUALIZACOES:HOME:FIM -->
+  </section>
 </body>
 </html>
 """
@@ -140,7 +146,7 @@ def test_injeta_cartoes_na_home(tmp_path):
     clusters = _clusters(tmp_path)
     caminho = _escrever(tmp_path, "index.html", _HOME_COM_MARCADOR)
 
-    resultado = processar_home(caminho, clusters)
+    resultado = processar_home(caminho, clusters, raiz=tmp_path)
 
     assert resultado.alterado is True
     conteudo = caminho.read_text(encoding="utf-8")
@@ -175,9 +181,9 @@ def test_home_correr_duas_vezes_e_estavel(tmp_path):
     clusters = _clusters(tmp_path)
     caminho = _escrever(tmp_path, "index.html", _HOME_COM_MARCADOR)
 
-    processar_home(caminho, clusters)
+    processar_home(caminho, clusters, raiz=tmp_path)
     conteudo_apos_primeira = caminho.read_text(encoding="utf-8")
-    r2 = processar_home(caminho, clusters)
+    r2 = processar_home(caminho, clusters, raiz=tmp_path)
 
     assert r2.alterado is False
     assert caminho.read_text(encoding="utf-8") == conteudo_apos_primeira
@@ -204,7 +210,7 @@ def test_home_sem_marcador_nao_e_alterada(tmp_path):
     caminho = _escrever(tmp_path, "index.html", "<html><body>sem marcador aqui</body></html>")
     conteudo_antes = caminho.read_text(encoding="utf-8")
 
-    resultado = processar_home(caminho, clusters)
+    resultado = processar_home(caminho, clusters, raiz=tmp_path)
 
     assert resultado.alterado is False
     assert "em falta" in resultado.motivo
@@ -402,3 +408,113 @@ def test_clusters_css_nao_duplica_em_pagina_ja_com_referencia(tmp_path):
 
     conteudo = caminho.read_text(encoding="utf-8")
     assert conteudo.count("/assets/css/clusters.css") == 1
+
+
+# ── "Atualizado recentemente" — extracção de "Verificado a" real ─────────
+
+def test_extrai_data_verificado_formato_barra(tmp_path):
+    caminho = _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 24/06/2026</p>")
+    assert extrair_verificado_em(caminho).isoformat() == "2026-06-24"
+
+
+def test_extrai_data_verificado_formato_extenso_com_de(tmp_path):
+    caminho = _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 1 de julho de 2026</p>")
+    assert extrair_verificado_em(caminho).isoformat() == "2026-07-01"
+
+
+def test_extrai_data_verificado_formato_extenso_sem_de(tmp_path):
+    caminho = _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 24 junho 2026</p>")
+    assert extrair_verificado_em(caminho).isoformat() == "2026-06-24"
+
+
+def test_extrai_ultima_ocorrencia_quando_ha_varias(tmp_path):
+    """A convenção do site é várias notas "Verificado a" por secção — a
+    canónica é sempre a última, perto do bloco de fontes no fim do corpo."""
+    conteudo = (
+        "<p>Verificado a 10/01/2026</p>"
+        "<p>Verificado a 15/03/2026</p>"
+        "<p>Verificado a 1 de julho de 2026</p>"
+    )
+    caminho = _escrever(tmp_path, "artigo-1.html", conteudo)
+    assert extrair_verificado_em(caminho).isoformat() == "2026-07-01"
+
+
+def test_extrai_devolve_none_sem_data_valida(tmp_path):
+    caminho = _escrever(tmp_path, "artigo-1.html", "<p>Sem nenhuma data de verificação aqui.</p>")
+    assert extrair_verificado_em(caminho) is None
+
+
+def test_extrai_devolve_none_para_ficheiro_inexistente(tmp_path):
+    assert extrair_verificado_em(tmp_path / "nao-existe.html") is None
+
+
+def test_render_atualizacoes_home_ordena_por_data_desc(tmp_path):
+    clusters = _clusters(tmp_path)
+    _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 10/01/2026</p>")
+    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
+    _escrever(tmp_path, "artigo-3.html", "<p>Verificado a 15/03/2026</p>")
+
+    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
+
+    pos_2 = html_gerado.index("/artigo-2.html")
+    pos_3 = html_gerado.index("/artigo-3.html")
+    pos_1 = html_gerado.index("/artigo-1.html")
+    assert pos_2 < pos_3 < pos_1
+    assert "Verificado a 1 jul. 2026." in html_gerado
+
+
+def test_render_atualizacoes_home_respeita_limite(tmp_path):
+    clusters = _clusters(tmp_path)
+    _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 10/01/2026</p>")
+    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
+    _escrever(tmp_path, "artigo-3.html", "<p>Verificado a 15/03/2026</p>")
+
+    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=2)
+
+    assert html_gerado.count('class="apoio-card"') == 2
+    assert "/artigo-2.html" in html_gerado
+    assert "/artigo-3.html" in html_gerado
+    assert "/artigo-1.html" not in html_gerado
+
+
+def test_render_atualizacoes_home_ignora_paginas_sem_data(tmp_path):
+    clusters = _clusters(tmp_path)
+    _escrever(tmp_path, "artigo-1.html", "<p>Sem data de verificação.</p>")
+    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
+    # artigo-3.html nem sequer existe em disco
+
+    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
+
+    assert "/artigo-2.html" in html_gerado
+    assert "/artigo-1.html" not in html_gerado
+    assert "/artigo-3.html" not in html_gerado
+
+
+def test_render_atualizacoes_home_so_considera_artigos_nao_ferramentas(tmp_path):
+    """Ferramentas nunca aparecem em 'Atualizado recentemente' — mesma
+    regra de CLUSTER-BADGE/RELACIONADOS (só tipo: "artigo")."""
+    dados = {
+        "clusters": [{
+            "id": "cluster-c",
+            "nome": "Cluster C",
+            "descricao_curta": "Descrição.",
+            "icone": "🅲",
+            "pillar": "/p/cluster-c.html",
+            "paginas": [
+                {"slug": "artigo-4.html", "titulo": "Artigo 4", "tipo": "artigo", "destaque": False},
+                {"slug": "simulador-x.html", "titulo": "Simulador X", "tipo": "ferramenta", "destaque": False},
+            ],
+            "relacionados": [],
+        }]
+    }
+    caminho_json = tmp_path / "clusters.json"
+    caminho_json.write_text(json.dumps(dados, ensure_ascii=False), encoding="utf-8")
+    clusters = carregar_clusters(caminho_json)
+
+    _escrever(tmp_path, "artigo-4.html", "<p>Verificado a 1 de julho de 2026</p>")
+    _escrever(tmp_path, "simulador-x.html", "<p>Verificado a 1 de julho de 2026</p>")
+
+    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
+
+    assert "/artigo-4.html" in html_gerado
+    assert "/simulador-x.html" not in html_gerado

@@ -8,8 +8,11 @@ Ler sempre antes de qualquer tarefa.
 ## REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS
 
 O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
-- `index.html` — actualização da data de verificação
-- `noticias.html` — notícia do dia via RSS
+- `index.html` — só dentro de três zonas marcadas, nunca o resto da página:
+  - data de verificação (`id="ultima-revisao-mes"` + `dateModified` do JSON-LD) — `sed`, Step 6
+  - `<!-- DESTAQUE:INICIO/FIM -->` — banner sazonal/evento, Step 6a
+  - `<!-- NOTICIA-HOME:INICIO/FIM -->` — card "Últimas notícias", Step 3 (`gerar_noticias.py`)
+- `noticias.html` — notícia do dia via RSS (ficheiro inteiro, sem marcadores)
 - `CLAUDE.md` — data de revisão automática
 - `README.md` — estado do repositório
 - `data/scraped/*.json` — dados do scraper
@@ -19,8 +22,15 @@ Esta regra aplica-se a páginas actuais E futuras.
 Qualquer novo HTML criado está automaticamente protegido — não precisa de ser adicionado a listas.
 
 O guardrail está implementado em dois locais:
-1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` bloqueia qualquer escrita em HTML que não seja `noticias.html`
+1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` bloqueia qualquer escrita em HTML que não seja `noticias.html` (escrita livre) ou `index.html` (só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita — ver `tests/test_gerar_noticias_guardrail.py`)
 2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit
+
+Nota: o marcador `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` (bloco "Atualizado
+recentemente") também vive em `index.html`, mas é escrito por
+`scripts/sincronizar_clusters.py` — um script de **sessão manual**, não do
+pipeline automático (mesma categoria que `CLUSTERS:HOME`/`DESTAQUES:HOME` —
+ver secção "SISTEMA DE CLUSTERS"). Não entra nesta lista porque não é o
+pipeline `pipeline-diario.yml` a escrevê-lo.
 
 **Segundo workflow com push, âmbito completamente separado**: `shadow-daily.yml`
 só pode escrever em `shadow_history/*.md` (relatórios do Shadow Mode — ver secção
@@ -85,7 +95,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
-| Notícias | `scripts/gerar_noticias.py` → `noticias.html` |
+| Notícias | `scripts/gerar_noticias.py` → `noticias.html` + card em `index.html` (`NOTICIA-HOME`) |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 
@@ -182,7 +192,7 @@ tens-direito/
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
-│   ├── gerar_noticias.py     ← RSS → noticias.html
+│   ├── gerar_noticias.py     ← RSS → noticias.html + card em index.html (NOTICIA-HOME)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
@@ -367,6 +377,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    não existir numa página que devia tê-lo, reporta e não altera nada:
    - `<!-- CLUSTERS:HOME:INICIO/FIM -->` — cartões de clusters no `index.html`
    - `<!-- DESTAQUES:HOME:INICIO/FIM -->` — um cartão por cluster (o(s) `destaque: true`), no `index.html`
+   - `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` — 3-4 artigos mais recentemente verificados (data real extraída de "Verificado a ..." em cada página, nunca inventada), no `index.html` — ver secção "FRESCURA DA HOMEPAGE"
    - `<!-- CLUSTER-BADGE:INICIO/FIM -->` — breadcrumb visível + "este artigo pertence ao guia X", num artigo
    - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
    - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
@@ -603,6 +614,90 @@ correr ambos.
 
 ---
 
+## FRESCURA DA HOMEPAGE — NOTÍCIAS E ATUALIZAÇÕES
+
+Reformulação de 2026-07-02: o antigo bloco "Notícia do dia" no
+`index.html` era HTML estático desde 25/06 — nenhum script alguma vez
+lhe tocava (confirmado por diagnóstico antes de mexer: `noticias.html`,
+esse sim, já era actualizado diariamente pelo pipeline desde
+2026-06-30, com título/link/data a mudar de facto a cada corrida —
+só a homepage é que nunca reflectia isso). A homepage passou a ter
+**duas fontes de frescura, ambas automáticas e nenhuma inventa datas**:
+
+### A) "Últimas notícias" — `gerar_noticias.py` + `NOTICIA-HOME:INICIO/FIM`
+
+Mesma notícia escolhida por `best_entry()` (a que já vai para
+`noticias.html`) passa também a ser injectada no `index.html`, entre
+`<!-- NOTICIA-HOME:INICIO/FIM -->`, por `render_noticia_home()` +
+`atualizar_index_home()`. Mostra sempre a data real da notícia (nunca
+"hoje") e liga directamente à fonte externa (nunca um link interno
+inventado). Se o RSS não devolver nada relevante nesse dia,
+`main()` termina antes de chamar `atualizar_index_home()` — o bloco
+mantém a última notícia real publicada, nunca um `[VAZIO]` nem uma
+data adivinhada.
+
+**Guardrail estendido** (mudança de segurança): `escrever_ficheiro_seguro()`
+em `gerar_noticias.py` passou de "só `noticias.html`" para "`noticias.html`
+(livre) ou `index.html` (só dentro de `NOTICIA-HOME:INICIO/FIM`)".
+`_verificar_escrita_confinada()` compara o ficheiro em disco com o novo
+conteúdo fora da secção marcada — qualquer diferença aí, ou o marcador
+não existir, bloqueia a escrita com excepção. Coberto por
+`tests/test_gerar_noticias_guardrail.py` (escrita livre em
+`noticias.html`, bloqueio a qualquer outro HTML, escrita permitida
+dentro do marcador, bloqueio fora do marcador, bloqueio se o marcador
+não existir, idempotência de `atualizar_index_home()`).
+
+### B) "Atualizado recentemente" — `sincronizar_clusters.py` + `ATUALIZACOES:HOME:INICIO/FIM`
+
+3-4 artigos com o "Verificado a ..." mais recente (extraído do corpo
+real de cada página `tipo: "artigo"`, nunca do RSS, nunca inventado) —
+sempre verdadeiro por construção, porque reflecte edições reais do
+site. `extrair_verificado_em()` aceita os 3 formatos usados nos
+artigos publicados (`DD/MM/AAAA`, "D de mês de AAAA", "D mês AAAA") e
+usa sempre a **última** ocorrência no ficheiro (a mais próxima do
+bloco de fontes no fim do corpo — as anteriores são notas por secção).
+Ordem determinística: data decrescente, slug como desempate — nunca
+aleatória, para a saída ser idempotente. Escrito por
+`scripts/sincronizar_clusters.py` (script de **sessão manual**, não do
+pipeline automático — ver "REGRA DE OURO").
+
+**Posição na homepage**: logo a seguir a "Guias principais"
+(`DESTAQUES:HOME`) e antes de "Como funciona" — a leitura mais literal
+de "depois dos destaques, antes dos prazos" (⏰ "Datas a não perder" é
+a secção `urgente-banda`, mais abaixo).
+
+### Regra de honestidade
+
+Nenhum dos dois blocos mostra alguma vez "hoje" ou uma data inventada.
+Se uma fonte falhar (RSS sem itens relevantes, ou um artigo sem
+"Verificado a" reconhecível), o bloco correspondente simplesmente não
+é actualizado nessa corrida — mantém o último conteúdo real. Zero
+factos de memória, mesma regra do resto do site.
+
+### Fontes RSS — estado a 2026-07-02
+
+`gerar_noticias.py` usa 4 feeds: 3 pesquisas Google News (`apoios
+sociais portugal`, `segurança social portugal`, `IRS subsidios
+portugal 2026`) e `https://dre.pt/rss/dr1s.rss`. Este último já está
+documentado como inacessível nos runners GitHub (ver "FONTES
+VERIFICADAS", linha DRE) — na prática só as 3 pesquisas Google News
+alimentam a selecção. Não foi possível testar os feeds ao vivo nesta
+sessão (política de rede do ambiente bloqueia `news.google.com` e
+`dre.pt` fora da lista de domínios permitidos); a avaliação de cadência
+baseia-se no histórico real de commits a `noticias.html`: conteúdo
+genuinamente diferente (título/link/data) em cada corrida do pipeline
+desde 2026-06-30, o que indica feeds populados. Ressalva: `best_entry()`
+escolhe por pontuação de palavras-chave, não por recência — a data
+mostrada é a data real do artigo escolhido, que por isso pode
+ocasionalmente recuar face ao dia anterior (Google News reapresenta
+artigos mais antigos nos resultados de pesquisa). É esperado e correcto
+por desenho — nunca é uma data inventada, só nem sempre é a mais
+recente possível. *Registado para o futuro*: decidir se vale a pena
+remover o feed DRE morto e/ou acrescentar fontes com cadência mais
+previsível — não decidido, sem prazo.
+
+---
+
 ## AUTO-ACTUALIZAÇÃO DESTE FICHEIRO
 
 Sempre que houver mudança significativa, actualizar o CLAUDE.md no mesmo commit.
@@ -831,3 +926,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 5 bloco 4 (docs) e fecho do projecto: nova secção "FECHO DO PROJECTO" com o mapa completo da arquitectura (fontes de verdade, scripts sincronizadores, marcadores), resumo fase a fase (0 a 5) e os 3 pontos registados para o futuro sem prazo (densidade da PSU na homepage, variante clara de `clusters.css` para os simuladores, limpeza do CSS morto da nav antiga); clarificada a frase ambígua sobre "os dois achados" na secção "NAVEGAÇÃO PRINCIPAL"; 382 testes a passar, idempotência de `sincronizar_clusters.py` e `sincronizar_nav.py` reconfirmada em todo o repositório — reorganização da arquitectura de informação (Fases 0-5) concluída*
+
+---
+
+*Última revisão: 2026-07-02 — "Notícia do dia" reformulada para "homepage sempre atual": diagnóstico confirmou que `noticias.html` já era actualizado diariamente pelo pipeline desde 2026-06-30, mas o bloco do `index.html` era 100% estático desde 25/06 e nenhum script lhe tocava; nova secção "FRESCURA DA HOMEPAGE — NOTÍCIAS E ATUALIZAÇÕES" documenta as duas fontes de frescura novas, ambas automáticas e sem datas inventadas — A) "Últimas notícias" via `gerar_noticias.py` + marcador `NOTICIA-HOME:INICIO/FIM`, com guardrail estendido (`escrever_ficheiro_seguro()` passa a aceitar `index.html` só dentro do marcador, testado em `tests/test_gerar_noticias_guardrail.py`); B) "Atualizado recentemente" via `sincronizar_clusters.py` + novo marcador `ATUALIZACOES:HOME:INICIO/FIM`, calculado a partir do "Verificado a" real de cada artigo (`extrair_verificado_em()`); actualizada a "REGRA DE OURO" com as três zonas de escrita agora existentes em `index.html`; feed RSS `dre.pt/rss/dr1s.rss` confirmado já documentado como inacessível nos runners GitHub — cadência real assente nas 3 pesquisas Google News; 400 testes a passar, idempotência de `sincronizar_clusters.py` reconfirmada*

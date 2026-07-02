@@ -7,13 +7,17 @@ clusters do site. Este script lê-o e injecta, entre marcadores
 próprios, o HTML estático correspondente (sem JS em runtime — SEO
 preservado):
 
-    <!-- CLUSTERS:HOME:INICIO/FIM -->   cartões de clusters na homepage
-    <!-- CLUSTER-BADGE:INICIO/FIM -->   breadcrumb visível + "este artigo
-                                        pertence ao guia X", num artigo
-    <!-- RELACIONADOS:INICIO/FIM -->    secção final de artigos
-                                        relacionados, num artigo
-    <!-- PILLAR-LISTA:INICIO/FIM -->    lista de artigos do cluster,
-                                        numa pillar page
+    <!-- CLUSTERS:HOME:INICIO/FIM -->     cartões de clusters na homepage
+    <!-- DESTAQUES:HOME:INICIO/FIM -->    um cartão por cluster em destaque, na homepage
+    <!-- ATUALIZACOES:HOME:INICIO/FIM --> 3-4 artigos mais recentemente
+                                          verificados, por "Verificado a"
+                                          real de cada página, na homepage
+    <!-- CLUSTER-BADGE:INICIO/FIM -->     breadcrumb visível + "este artigo
+                                          pertence ao guia X", num artigo
+    <!-- RELACIONADOS:INICIO/FIM -->      secção final de artigos
+                                          relacionados, num artigo
+    <!-- PILLAR-LISTA:INICIO/FIM -->      lista de artigos do cluster,
+                                          numa pillar page
 
 Idempotente: correr duas vezes seguidas produz ficheiros byte a byte
 idênticos. Nunca escreve fora dos marcadores; se uma página deveria ter
@@ -34,6 +38,7 @@ import json
 import re
 import sys
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -48,11 +53,33 @@ EXCLUIDAS = {
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
 MARCADOR_DESTAQUES = ("DESTAQUES:HOME:INICIO", "DESTAQUES:HOME:FIM")
+MARCADOR_ATUALIZACOES = ("ATUALIZACOES:HOME:INICIO", "ATUALIZACOES:HOME:FIM")
 MARCADOR_BADGE = ("CLUSTER-BADGE:INICIO", "CLUSTER-BADGE:FIM")
 MARCADOR_RELACIONADOS = ("RELACIONADOS:INICIO", "RELACIONADOS:FIM")
 MARCADOR_PILLAR_LISTA = ("PILLAR-LISTA:INICIO", "PILLAR-LISTA:FIM")
 
 MAX_RELACIONADOS = 4
+MAX_ATUALIZACOES = 4
+
+MESES_PT = {
+    "janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4, "maio": 5, "junho": 6,
+    "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12,
+}
+MESES_ABREV_PT = [
+    "", "jan", "fev", "mar", "abr", "mai", "jun",
+    "jul", "ago", "set", "out", "nov", "dez",
+]
+
+# Os artigos publicados usam 3 formatos para "Verificado a ...": DD/MM/AAAA,
+# "D de mês de AAAA" e "D mês AAAA" (sem "de" a separar dia e mês).
+_REGEX_VERIFICADO = re.compile(
+    r"Verificado a\s+(?:"
+    r"(?P<d1>\d{1,2})/(?P<m1>\d{1,2})/(?P<y1>\d{4})"
+    r"|(?P<d2>\d{1,2})\s+de\s+(?P<mes2>" + "|".join(MESES_PT) + r")\s+de\s+(?P<y2>\d{4})"
+    r"|(?P<d3>\d{1,2})\s+(?P<mes3>" + "|".join(MESES_PT) + r")\s+(?P<y3>\d{4})"
+    r")",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -173,6 +200,62 @@ def render_destaques_home(clusters: List[Cluster]) -> str:
                 f'        <span class="link-ver">→ Ver guia</span>\n'
                 f'      </a>'
             )
+    return "\n".join(cartoes)
+
+
+def extrair_verificado_em(caminho: Path) -> Optional[date]:
+    """Data da última ocorrência de 'Verificado a ...' no ficheiro — é a
+    que fica mais perto do bloco de fontes no fim do corpo, a canónica
+    da página (as ocorrências anteriores são notas por secção). Devolve
+    None se o ficheiro não existir ou não tiver nenhuma data válida —
+    nunca inventa nem assume "hoje"."""
+    if not caminho.exists():
+        return None
+    conteudo = caminho.read_text(encoding="utf-8")
+    matches = list(_REGEX_VERIFICADO.finditer(conteudo))
+    if not matches:
+        return None
+    g = matches[-1].groupdict()
+    try:
+        if g["d1"]:
+            dia, mes, ano = int(g["d1"]), int(g["m1"]), int(g["y1"])
+        elif g["d2"]:
+            dia, mes, ano = int(g["d2"]), MESES_PT[g["mes2"].lower()], int(g["y2"])
+        else:
+            dia, mes, ano = int(g["d3"]), MESES_PT[g["mes3"].lower()], int(g["y3"])
+        return date(ano, mes, dia)
+    except ValueError:
+        return None
+
+
+def render_atualizacoes_home(clusters: List[Cluster], raiz: Path = RAIZ, limite: int = MAX_ATUALIZACOES) -> str:
+    """3-4 artigos mais recentemente verificados, por data real extraída
+    do corpo de cada página (nunca do RSS, nunca inventada) — reflecte
+    edições reais do site. Ordem determinística: data desc, slug asc
+    como desempate (nunca aleatório, para a saída ser idempotente)."""
+    candidatos: List[Tuple[date, Pagina]] = []
+    for c in clusters:
+        for p in c.paginas:
+            if p.tipo != "artigo":
+                continue
+            data_verificacao = extrair_verificado_em(raiz / p.slug)
+            if data_verificacao is not None:
+                candidatos.append((data_verificacao, p))
+
+    candidatos.sort(key=lambda par: (-par[0].toordinal(), par[1].slug))
+    escolhidos = candidatos[:limite]
+
+    cartoes = []
+    for data_verificacao, p in escolhidos:
+        data_str = f"{data_verificacao.day} {MESES_ABREV_PT[data_verificacao.month]}. {data_verificacao.year}"
+        cartoes.append(
+            f'      <a href="/{p.slug}" class="apoio-card">\n'
+            f'        <div class="emoji">🕓</div>\n'
+            f'        <h3>{p.titulo}</h3>\n'
+            f'        <p class="desc">Verificado a {data_str}.</p>\n'
+            f'        <span class="link-ver">→ Ler guia</span>\n'
+            f'      </a>'
+        )
     return "\n".join(cartoes)
 
 
@@ -357,7 +440,7 @@ def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAI
     return Resultado(nome, True, "sincronizado" if escrever else "sincronizado (dry-run, não escrito)")
 
 
-def processar_home(caminho: Path, clusters: List[Cluster], *, escrever: bool = True) -> Resultado:
+def processar_home(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAIZ, escrever: bool = True) -> Resultado:
     conteudo_original = caminho.read_text(encoding="utf-8")
     conteudo = conteudo_original
     faltam: List[str] = []
@@ -371,6 +454,12 @@ def processar_home(caminho: Path, clusters: List[Cluster], *, escrever: bool = T
     novo = _substituir_bloco(conteudo, MARCADOR_DESTAQUES, render_destaques_home(clusters))
     if novo is None:
         faltam.append("DESTAQUES:HOME")
+    else:
+        conteudo = novo
+
+    novo = _substituir_bloco(conteudo, MARCADOR_ATUALIZACOES, render_atualizacoes_home(clusters, raiz))
+    if novo is None:
+        faltam.append("ATUALIZACOES:HOME")
     else:
         conteudo = novo
 
@@ -398,7 +487,7 @@ def main() -> int:
             print(f"  - {p}")
         print()
 
-    resultados = [processar_home(RAIZ / "index.html", clusters, escrever=escrever)]
+    resultados = [processar_home(RAIZ / "index.html", clusters, raiz=RAIZ, escrever=escrever)]
     resultados += [
         processar_pagina(p, clusters, escrever=escrever)
         for p in encontrar_paginas()
