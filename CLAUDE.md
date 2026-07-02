@@ -107,7 +107,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | `shadow-daily.yml` | cron `0 3 * * *` | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
-| `integridade.yml` | ver ficheiro | Verificações de integridade adicionais | ❌ não |
+| `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) | ❌ não |
 
 **`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`,
 cada um com um âmbito de escrita disjunto e garantido por guardrail próprio**
@@ -207,6 +207,7 @@ tens-direito/
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
+│   ├── verificar_injecao.py  ← guardrail: prompt injection em data/ e shadow_history/ (integridade.yml)
 │   ├── pesquisa.js           ← pesquisa interna (JS puro, sem servidor)
 │   └── logs/                 ← logs do scraper
 ├── tests/                    ← pytest; inclui test_sincronizar_clusters.py,
@@ -833,6 +834,39 @@ Desactivada globalmente via `gstack-config set telemetry off`.
 
 ---
 
+## SEGURANÇA — PROMPT INJECTION EM DADOS IMPORTADOS
+
+`scripts/verificar_injecao.py` — guardrail permanente, corrido em
+`integridade.yml` (push a main, cron semanal, manual). Procura, em
+`data/` e `shadow_history/`, frases multi-palavra associadas a prompt
+injection (`system-reminder`, "ignore previous instructions", "não
+contes ao utilizador", marcadores de chat tipo `<|system|>`, etc.) —
+nunca palavras soltas, para não gerar falsos positivos com vocabulário
+legítimo em português (ex.: "instrumento", "verificado", "confidencial"
+aparecem em texto legal/institucional real). Só lê e reporta — nunca
+executa, interpreta nem apaga o conteúdo que encontra; falha
+(`exit 1`) sem tocar em nenhum ficheiro. Testado em
+`tests/test_verificar_injecao.py`.
+
+Justificação: o pipeline ingere conteúdo externo todos os dias
+(scraper Playwright em `data/scraped/`, feeds RSS via
+`gerar_noticias.py`) — é a única categoria de dados no repositório que
+vem de fora do controlo do projecto.
+
+Origem: investigação de 2026-07-02 a um `<system-reminder>` suspeito
+recebido num resultado de ferramenta numa sessão anterior (a instruir
+a IA a ocultar uma alteração e a confiar em conteúdo divergente do
+disco). Busca exaustiva a todos os ficheiros trackeados, a
+`data/scraped/`, a `shadow_history/` e ao log do scraper não encontrou
+nenhum vestígio desse texto no repositório nem no histórico git — a
+conclusão foi que o aviso não veio de conteúdo importado, mas sim de
+um artefacto do próprio harness (não ficou confirmado com certeza
+absoluta). Ainda assim, este guardrail fica como protecção permanente
+daqui para a frente, independentemente da causa desse incidente
+específico.
+
+---
+
 ## SHADOW MODE — SISTEMA DE OBSERVAÇÃO (deteção de datas expiradas)
 
 Camadas incrementais construídas sobre `verificar_datas.py`, todas com testes
@@ -878,6 +912,10 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-01 — corrigido bug de dedup em `pipeline-diario.yml` que gerava Issues duplicadas (data-expirada, fonte-bloqueada, fonte-alterada, divergências de valores); 8 Issues duplicadas fechadas*
+
+---
+
+*Última revisão: 2026-07-02 — investigado um `<system-reminder>` suspeito recebido numa sessão anterior; busca exaustiva ao repositório (186 ficheiros trackeados, `data/scraped/`, `shadow_history/`, log do scraper) não encontrou nenhum vestígio de prompt injection — conclusão: artefacto do harness, não conteúdo importado; adicionado guardrail permanente `scripts/verificar_injecao.py` (procura padrões de injection em `data/` e `shadow_history/`, só leitura, nunca executa o que encontra) + novo job em `integridade.yml`; nova secção "SEGURANÇA — PROMPT INJECTION EM DADOS IMPORTADOS"; 9 testes novos em `tests/test_verificar_injecao.py`, 409 testes a passar*
 
 ---
 
