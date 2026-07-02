@@ -25,6 +25,11 @@ from typing import Any, Dict, Optional
 
 NIVEIS_RISCO = ("BAIXO", "MÉDIO", "ALTO")
 
+# Acima deste número de páginas HTML analisadas, "0 alertas" deixa de ser
+# lido como silêncio normal e passa a ser marcado como anomalia a confirmar
+# manualmente -- nunca reportado como "sistema estável" sem essa ressalva.
+LIMIAR_ANOMALIA_PAGINAS = 25
+
 _ESTABILIDADE_POR_RISCO = {
     "BAIXO": "estável",
     "MÉDIO": "instável",
@@ -122,7 +127,9 @@ def _erros_por_fonte_texto(erros_por_provider: Dict[str, int]) -> str:
     return ", ".join(partes)
 
 
-def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> str:
+def gerar_relatorio_markdown(
+    analytics: dict, *, data: Optional[str] = None, proveniencia: Optional[Dict[str, Any]] = None
+) -> str:
     """Transforma um dict de métricas (output de
     `shadow_mode_analytics.analisar_shadow_mode`) num relatório em
     Markdown simples, para leitura directa por alguém sem formação
@@ -132,6 +139,13 @@ def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> 
     `data` é opcional e só decorativo (ex.: "2026-07-01"). Sem ele, o
     relatório não inclui nenhuma referência a data/hora — o texto
     depende só do `analytics` recebido, nunca do relógio do sistema.
+
+    `proveniencia` é opcional — `{"paginas_analisadas": int, "hora_execucao_utc": str}`.
+    Quando fornecido, o relatório ganha uma secção própria com esses dados
+    e, se `total_alertas` for 0 com mais de `LIMIAR_ANOMALIA_PAGINAS`
+    páginas analisadas, a avaliação do sistema deixa de dizer "estável"
+    sem mais e passa a marcar isso como anomalia a confirmar — "0
+    alertas" nunca é silenciosamente lido como "está tudo bem".
     """
     try:
         analytics = analytics or {}
@@ -153,6 +167,13 @@ def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> 
         estabilidade = _ESTABILIDADE_POR_RISCO[risco]
         recomendacao = _recomendacao(risco, confianca_media, elegiveis)
 
+        paginas_analisadas = (proveniencia or {}).get("paginas_analisadas")
+        paginas_analisadas = paginas_analisadas if isinstance(paginas_analisadas, (int, float)) and not isinstance(paginas_analisadas, bool) else None
+        hora_execucao = (proveniencia or {}).get("hora_execucao_utc")
+        anomalia_zero_alertas = (
+            total == 0 and paginas_analisadas is not None and paginas_analisadas > LIMIAR_ANOMALIA_PAGINAS
+        )
+
         linhas = [
             "# 📊 Relatório do Sistema — Shadow Mode",
             "",
@@ -168,6 +189,17 @@ def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> 
             "",
             "---",
             "",
+        ]
+
+        if paginas_analisadas is not None or hora_execucao:
+            linhas += ["## Proveniência dos dados"]
+            if paginas_analisadas is not None:
+                linhas.append(f"- Páginas HTML analisadas nesta execução: {int(paginas_analisadas)}")
+            if hora_execucao:
+                linhas.append(f"- Hora de execução (UTC): {hora_execucao}")
+            linhas += ["", "---", ""]
+
+        linhas += [
             "## Distribuição dos alertas",
             f"- OK: {ok}",
             f"- Precisa revisão: {precisa_revisao}",
@@ -183,7 +215,13 @@ def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> 
             "---",
             "",
             "## Avaliação do sistema",
-            f"- O sistema está {estabilidade}",
+            (
+                f"- ⚠️ ANOMALIA: 0 alertas com {int(paginas_analisadas)} páginas analisadas — "
+                f"não interpretar como \"sistema estável\" sem confirmar antes que a deteção "
+                f"está mesmo a correr"
+                if anomalia_zero_alertas
+                else f"- O sistema está {estabilidade}"
+            ),
             f"- Recomendação: {recomendacao}",
             "",
             "---",
@@ -192,6 +230,14 @@ def gerar_relatorio_markdown(analytics: dict, *, data: Optional[str] = None) -> 
             f"- {_principal_risco_texto(erros, fonte_bloqueada, precisa_revisao)}",
             f"- {_principal_limitacao_texto(confianca_media)}",
         ]
+
+        if anomalia_zero_alertas:
+            linhas.append(
+                "- Zero alertas com um número de páginas acima do limiar de anomalia "
+                f"({LIMIAR_ANOMALIA_PAGINAS}) é incomum — confirmar manualmente que "
+                "`scripts/verificar_datas.py` continua a detectar correctamente antes de "
+                "assumir que não há nada a rever."
+            )
 
         if erros:
             linhas.append(f"- Erros por fonte: {_erros_por_fonte_texto(analytics.get('erros_por_provider') or {})}")

@@ -33,6 +33,21 @@ Segurança:
 - a única escrita possível é dentro de `shadow_history/` — o caminho do
   ficheiro é sempre construído a partir dessa pasta, nunca de um
   caminho arbitrário vindo de fora, e é verificado antes de escrever.
+
+Diagnóstico "0 alertas" (2026-07-02): este script já nunca dependeu de
+`data/alertas_datas.json` gerado por outro workflow (só o pipeline
+diário escreve esse ficheiro) — `coletar_alertas_do_dia` sempre correu
+`verificar_datas.detectar_alertas` sobre o próprio checkout, em
+runtime. Confirmado que os relatórios "0 alertas" de 2026-07-01/02
+reflectiam o estado real: o commit `eeefa1c` (correcção de falsos
+positivos em `verificar_datas.py`) tornou zero alertas genuinamente
+verdadeiro para o conteúdo actual — não é um bug de leitura de dados.
+Continua a não haver garantia, só por "0", de que a Camada 1 está de
+facto a correr (poderia estar a falhar silenciosamente) — por isso
+`executar_shadow_daily` passa agora `paginas_analisadas`/
+`hora_execucao_utc` a `shadow_report_md.gerar_relatorio_markdown`, que
+marca 0 alertas com muitas páginas analisadas como anomalia explícita
+em vez de "sistema estável" (ver `LIMIAR_ANOMALIA_PAGINAS`).
 """
 from __future__ import annotations
 
@@ -56,15 +71,23 @@ def calcular_raiz_repo() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
+def _paginas_elegiveis(raiz: Path) -> List[Path]:
+    """Páginas HTML da raiz sujeitas a deteção de datas — as mesmas que
+    `coletar_alertas_do_dia` percorre, sem os ficheiros que o pipeline
+    gera (`AUTO_GERADOS`). Extraída à parte para que o total de páginas
+    analisadas (usado na proveniência do relatório) venha sempre da
+    mesma fonte que a própria deteção, nunca de uma contagem paralela
+    que possa divergir dela."""
+    return [caminho for caminho in sorted(raiz.glob("*.html")) if caminho.name not in AUTO_GERADOS]
+
+
 def coletar_alertas_do_dia(raiz: Path, *, ano: int, mes: int) -> List[dict]:
     """Obtém a lista de alertas de hoje reutilizando
     `verificar_datas.detectar_alertas` (a mesma função já usada e testada
     na Camada 1) sobre cada HTML da raiz do repositório — só leitura,
     nunca chama `verificar_datas.main()` nem escreve nada."""
     alertas: List[dict] = []
-    for caminho in sorted(raiz.glob("*.html")):
-        if caminho.name in AUTO_GERADOS:
-            continue
+    for caminho in _paginas_elegiveis(raiz):
         try:
             conteudo = caminho.read_text(encoding="utf-8")
         except Exception:
@@ -104,10 +127,15 @@ def executar_shadow_daily(
     momento = agora or datetime.now()
     data_str = momento.strftime("%Y-%m-%d")
 
+    paginas_analisadas = len(_paginas_elegiveis(raiz))
     alertas = coletar_alertas_do_dia(raiz, ano=momento.year, mes=momento.month)
     relatorios = executar_shadow_mode(alertas, agora=momento.isoformat())
     analise = analisar_shadow_mode(relatorios)
-    texto_md = gerar_relatorio_markdown(analise, data=data_str)
+    proveniencia = {
+        "paginas_analisadas": paginas_analisadas,
+        "hora_execucao_utc": momento.strftime("%H:%M"),
+    }
+    texto_md = gerar_relatorio_markdown(analise, data=data_str, proveniencia=proveniencia)
 
     pasta = pasta_historico or (raiz / NOME_PASTA_HISTORICO)
     pasta.mkdir(parents=True, exist_ok=True)
@@ -118,6 +146,7 @@ def executar_shadow_daily(
         "relatorio_markdown": texto_md,
         "analytics": analise,
         "total_alertas": len(alertas),
+        "paginas_analisadas": paginas_analisadas,
         "caminho_historico": str(caminho_ficheiro),
     }
 

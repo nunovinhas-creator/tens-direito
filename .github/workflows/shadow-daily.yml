@@ -1,8 +1,20 @@
 name: Shadow Mode Diário
 
+# Trigger preferido: workflow_run, disparado assim que "Pipeline Diário"
+# termina (sucesso ou falha — o Shadow lê o checkout directamente, nunca
+# depende do pipeline ter tido sucesso). Garante que o Shadow analisa
+# sempre o HTML já do dia, nunca antes da corrida das 06:00 UTC.
+# Cron `0 8 * * *` fica como rede de segurança para o caso de o
+# `workflow_run` nunca chegar a disparar (pipeline desactivado, GitHub
+# Actions com incidente); tem guarda anti-duplicado própria (ver step
+# "Verificar se já existe relatório de hoje") para nunca gerar dois
+# relatórios no mesmo dia.
 on:
+  workflow_run:
+    workflows: ["Pipeline Diário"]
+    types: [completed]
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 8 * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,12 +30,29 @@ jobs:
         with:
           fetch-depth: 2
 
+      # ── Guarda anti-duplicado: se o relatório de hoje já existe (ex.:
+      # o workflow_run já correu mais cedo hoje), a corrida do cron de
+      # segurança sai sem gerar nem commitar nada de novo.
+      - name: Verificar se já existe relatório de hoje
+        id: verificar_relatorio
+        run: |
+          HOJE=$(date -u +%Y-%m-%d)
+          CAMINHO="shadow_history/shadow_report_${HOJE}.md"
+          if [ -f "$CAMINHO" ]; then
+            echo "Relatório de hoje (${CAMINHO}) já existe — a sair sem gerar novo nem commitar."
+            echo "ja_existe=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ja_existe=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Python
+        if: steps.verificar_relatorio.outputs.ja_existe != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
+        if: steps.verificar_relatorio.outputs.ja_existe != 'true'
         run: |
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
@@ -36,6 +65,7 @@ jobs:
       # shadow_mode_analytics.py e shadow_report_md.py (nenhum alterado
       # por este workflow).
       - name: Executar Shadow Mode diário
+        if: steps.verificar_relatorio.outputs.ja_existe != 'true'
         run: python scripts/run_shadow_daily.py
         env:
           PYTHONUNBUFFERED: '1'
