@@ -220,13 +220,47 @@ def artigos_relacionados(
 
 
 def render_relacionados(clusters: List[Cluster], cluster: Cluster, slug_atual: str) -> str:
+    """Secção final com dois blocos separados — irmãos do cluster
+    ('Outros artigos deste cluster') e páginas de clusters
+    relacionados[] ('Pode também interessar') — seguindo a mesma
+    ordem/limite de artigos_relacionados(), só reparte a exibição."""
     itens = artigos_relacionados(clusters, cluster, slug_atual)
-    linhas = [
-        f'      <a href="/{p.slug}" class="relacionado-link">{p.titulo}</a>'
-        for p in itens
-    ]
-    linhas.append('      <a href="/noticias.html" class="relacionado-link">Ver todas as atualizações →</a>')
-    return "\n".join(linhas)
+    irmaos = [p for p in itens if p in cluster.paginas]
+    cross = [p for p in itens if p not in cluster.paginas]
+
+    def _lista(paginas: List[Pagina]) -> List[str]:
+        return [f'        <li><a href="/{p.slug}">{p.titulo}</a></li>' for p in paginas]
+
+    blocos = ['    <div class="cluster-relacionados">']
+    if irmaos:
+        blocos.append('      <h2>Outros artigos deste cluster</h2>')
+        blocos.append('      <ul>')
+        blocos += _lista(irmaos)
+        blocos.append('      </ul>')
+    if cross:
+        blocos.append('      <h2>Pode também interessar</h2>')
+        blocos.append('      <ul>')
+        blocos += _lista(cross)
+        blocos.append('      </ul>')
+    blocos.append('      <p class="relacionados-noticias"><a href="/noticias.html">Ver todas as atualizações →</a></p>')
+    blocos.append('    </div>')
+    return "\n".join(blocos)
+
+
+_REGEX_HEAD_FECHO = re.compile(r"</head\s*>", re.IGNORECASE)
+
+
+def _garantir_clusters_css(conteudo: str) -> str:
+    """Acrescenta a referência a /assets/css/clusters.css antes de
+    </head>, a não ser que já lá esteja (idempotente, mesmo padrão do
+    inserir_botao_partilhar.py)."""
+    if "/assets/css/clusters.css" in conteudo:
+        return conteudo
+    match = _REGEX_HEAD_FECHO.search(conteudo)
+    if not match:
+        return conteudo
+    pos = match.start()
+    return conteudo[:pos] + '  <link rel="stylesheet" href="/assets/css/clusters.css">\n' + conteudo[pos:]
 
 
 def encontrar_paginas(raiz: Path = RAIZ) -> List[Path]:
@@ -293,6 +327,9 @@ def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAI
             faltam.append("RELACIONADOS")
         else:
             conteudo = novo
+
+        if not faltam:
+            conteudo = _garantir_clusters_css(conteudo)
 
     if faltam:
         return Resultado(nome, False, f"marcador(es) em falta: {', '.join(faltam)} — sem alterações")

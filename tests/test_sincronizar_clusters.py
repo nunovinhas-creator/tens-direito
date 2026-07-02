@@ -313,3 +313,62 @@ def test_relacionados_nunca_inclui_a_propria_pagina(tmp_path):
     resultado = artigos_relacionados(clusters, cluster_a, "artigo-1.html")
 
     assert "artigo-1.html" not in [p.slug for p in resultado]
+
+
+# ── Secção final: dois blocos separados ─────────────────────────────────
+
+def test_render_relacionados_separa_irmaos_de_cross_cluster(tmp_path):
+    from sincronizar_clusters import render_relacionados
+
+    clusters = _clusters(tmp_path)
+    cluster_a = clusters[0]
+
+    html = render_relacionados(clusters, cluster_a, "artigo-1.html")
+
+    pos_titulo_irmaos = html.index("Outros artigos deste cluster")
+    pos_artigo2 = html.index("Artigo 2")
+    pos_titulo_cross = html.index("Pode também interessar")
+    pos_artigo3 = html.index("Artigo 3")
+    pos_noticias = html.index("/noticias.html")
+
+    assert pos_titulo_irmaos < pos_artigo2 < pos_titulo_cross < pos_artigo3 < pos_noticias
+
+
+def test_render_relacionados_omite_cabecalho_sem_itens(tmp_path):
+    from sincronizar_clusters import render_relacionados
+
+    clusters = _clusters(tmp_path)
+    cluster_b = clusters[1]  # sem irmãos (1 só página) nem relacionados[]
+
+    html = render_relacionados(clusters, cluster_b, "artigo-3.html")
+
+    assert "Outros artigos deste cluster" not in html
+    assert "Pode também interessar" not in html
+    assert "/noticias.html" in html
+
+
+# ── Referência a clusters.css ────────────────────────────────────────────
+
+def test_injeta_referencia_clusters_css_num_artigo_membro(tmp_path):
+    clusters = _clusters(tmp_path)
+    caminho = _escrever(tmp_path, "artigo-1.html", _ARTIGO_COM_MARCADORES)
+
+    processar_pagina(caminho, clusters, raiz=tmp_path)
+
+    conteudo = caminho.read_text(encoding="utf-8")
+    assert conteudo.count("/assets/css/clusters.css") == 1
+    assert conteudo.index("clusters.css") < conteudo.index("</head>")
+
+
+def test_clusters_css_nao_duplica_em_pagina_ja_com_referencia(tmp_path):
+    clusters = _clusters(tmp_path)
+    pagina_com_css = _ARTIGO_COM_MARCADORES.replace(
+        "<head><title>Artigo 1</title></head>",
+        '<head><title>Artigo 1</title><link rel="stylesheet" href="/assets/css/clusters.css"></head>',
+    )
+    caminho = _escrever(tmp_path, "artigo-1.html", pagina_com_css)
+
+    processar_pagina(caminho, clusters, raiz=tmp_path)
+
+    conteudo = caminho.read_text(encoding="utf-8")
+    assert conteudo.count("/assets/css/clusters.css") == 1

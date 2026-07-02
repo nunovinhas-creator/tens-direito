@@ -1,0 +1,86 @@
+/*
+ * assets/css/clusters.css — Tens Direito
+ * Estilos da navegação de clusters injectada por
+ * scripts/sincronizar_clusters.py num artigo: breadcrumb visível,
+ * bloco "pertence ao guia" (ambos sobre o fundo escuro do .hero) e a
+ * secção final de artigos relacionados (sobre o fundo claro do resto
+ * da página). Cores alinhadas com a identidade visual já usada nas
+ * páginas (#0F766E / #0D9488).
+ */
+
+.breadcrumb-visivel {
+  display: block;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.75rem;
+}
+
+.breadcrumb-visivel a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+}
+
+.breadcrumb-visivel a:hover {
+  text-decoration: underline;
+}
+
+.pertence-guia {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.pertence-guia a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.cluster-relacionados {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.cluster-relacionados h2 {
+  color: #0F766E;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.cluster-relacionados h2:first-child {
+  margin-top: 0;
+}
+
+.cluster-relacionados ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cluster-relacionados li::before {
+  content: "→ ";
+  color: #0D9488;
+}
+
+.cluster-relacionados a {
+  color: #0D9488;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.cluster-relacionados a:hover {
+  color: #0F766E;
+  text-decoration: underline;
+}
+
+.relacionados-noticias {
+  margin: 0;
+  font-size: 0.9rem;
+}
