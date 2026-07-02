@@ -121,15 +121,15 @@ def test_injeta_lista_numa_pillar_page(tmp_path):
     clusters = _clusters(tmp_path)
     caminho = _escrever(
         tmp_path, "p/cluster-a.html",
-        "<html><body><!-- PILLAR-LISTA:INICIO -->\n<!-- PILLAR-LISTA:FIM --></body></html>",
+        "<html><body><ul><!-- PILLAR-LISTA:INICIO -->\n<!-- PILLAR-LISTA:FIM --></ul></body></html>",
     )
 
     resultado = processar_pagina(caminho, clusters, raiz=tmp_path)
 
     assert resultado.alterado is True
     conteudo = caminho.read_text(encoding="utf-8")
-    assert "/artigo-1.html" in conteudo
-    assert "/artigo-2.html" in conteudo
+    assert "<li><a href=\"/artigo-1.html\">Artigo 1</a></li>" in conteudo
+    assert "<li><a href=\"/artigo-2.html\">Artigo 2</a></li>" in conteudo
 
 
 def test_injeta_cartoes_na_home(tmp_path):

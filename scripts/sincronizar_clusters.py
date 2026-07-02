@@ -149,10 +149,9 @@ def render_home_cards(clusters: List[Cluster]) -> str:
 
 
 def render_pillar_lista(cluster: Cluster) -> str:
-    itens = [
-        f'      <a href="/{p.slug}" class="apoio-mini-link">{p.titulo}</a>'
-        for p in cluster.paginas
-    ]
+    """Itens de <li> — a página envolve o marcador no seu próprio <ul>
+    (ver p/apoios-escolares.html, prestacao-social-unica.html)."""
+    itens = [f'      <li><a href="/{p.slug}">{p.titulo}</a></li>' for p in cluster.paginas]
     return "\n".join(itens)
 
 

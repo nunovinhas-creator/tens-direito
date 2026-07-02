@@ -82,7 +82,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | HTML | Estático puro — sem Jekyll, sem SSG |
 | Analytics | GA4: `G-XP46PM8H1Q` |
 | Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
-| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 21 páginas indexadas) |
+| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 24 páginas indexadas) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `scripts/gerar_noticias.py` → `noticias.html` |
@@ -131,6 +131,9 @@ Isto elimina race conditions entre workflows concorrentes.
 | `comecar-aqui.html` | Começa Aqui — encontra o teu apoio | jun. 2026 |
 | `simulador-abono.html` | Simulador de Abono de Família 2026 | jun. 2026 |
 | `simulador-ase.html` | Simulador de Ação Social Escolar (ASE) 2026/2027 | jun. 2026 |
+| `p/familia.html` | Apoios para Família e Crianças em Portugal 2026 — Guia Completo | 2 jul. 2026 |
+| `p/idosos-incapacidade-cuidadores.html` | Apoios para Idosos, Incapacidade e Cuidadores em Portugal 2026 — Guia Completo | 2 jul. 2026 |
+| `p/trabalho-rendimento.html` | Apoios de Trabalho e Rendimento em Portugal 2026 — Guia Completo | 2 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -365,27 +368,31 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
 3. **Regras de relevância para "relacionados"** (determinísticas, sem
    aleatoriedade, máx. 4 links): 1.º irmãos do mesmo cluster, 2.º
    páginas dos `relacionados[]` explícitos do cluster.
-4. **Clusters actuais:**
+4. **Clusters actuais — todos os 5 pillars existem:**
 
-   | Cluster | Pillar | Estado |
-   |---|---|---|
-   | Apoios Escolares | `p/apoios-escolares.html` | existe |
-   | Prestação Social Única | `prestacao-social-unica.html` | existe |
-   | Família e Crianças | `p/familia.html` | **por criar** |
-   | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` | **por criar** (inclui `amim.html`) |
-   | Trabalho e Rendimento | `p/trabalho-rendimento.html` | **por criar** |
+   | Cluster | Pillar |
+   |---|---|
+   | Apoios Escolares | `p/apoios-escolares.html` |
+   | Prestação Social Única | `prestacao-social-unica.html` |
+   | Família e Crianças | `p/familia.html` |
+   | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` (inclui `amim.html`) |
+   | Trabalho e Rendimento | `p/trabalho-rendimento.html` |
+
+   Todos os pillars têm a lista de artigos entre `<!-- PILLAR-LISTA:INICIO/FIM -->`,
+   gerada pelo `sincronizar_clusters.py` — nunca editar essa lista à mão.
 
 5. **Testes**: `tests/test_sincronizar_clusters.py` — idempotência,
    marcador em falta, página no JSON sem ficheiro, ficheiro sem entrada
-   no JSON.
+   no JSON, contagem por tipo.
 
-**Estado actual (Fase 1 concluída):** fundação de dados e script prontos
-e testados; nenhuma página tem ainda os marcadores (`--dry-run` reporta
-todas como "marcador em falta" — é o esperado até à Fase 2/3). Próximos
-passos: reorganizar `index.html` (Fase 2), injectar navegação contextual
-nos artigos (Fase 3), criar as 3 pillar pages em falta e um
-`sincronizar_nav.py` para a nav principal (Fase 4), passar UX/SEO final
-(Fase 5).
+**Estado actual (Fase 1 concluída):** fundação de dados pronta e
+testada; os 5 pillars existem e têm a lista de artigos sincronizada.
+Ainda faltam os marcadores `CLUSTER-BADGE`/`RELACIONADOS` nos 20
+artigos-membro e `CLUSTERS:HOME` no `index.html` (`--dry-run` reporta-os
+como "marcador em falta" — esperado até à Fase 2/3). Próximos passos:
+reorganizar `index.html` (Fase 2), injectar navegação contextual nos
+artigos (Fase 3), simplificar a nav principal com um `sincronizar_nav.py`
+(Fase 4), passar UX/SEO final (Fase 5).
 
 ---
 
@@ -578,3 +585,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 0+1 da reorganização de arquitectura de informação: corrigida tabela "PÁGINAS PUBLICADAS" (faltavam 7 páginas) e contagem do `pesquisa.js` (21, não 6); criado `data/clusters.json` (5 clusters: Apoios Escolares, Prestação Social Única, Família e Crianças, Idosos/Incapacidade/Cuidadores, Trabalho e Rendimento — AMIM integrado no cluster de incapacidade) e `scripts/sincronizar_clusters.py` idempotente com `--dry-run`, testado em `tests/test_sincronizar_clusters.py`; nova secção "SISTEMA DE CLUSTERS"; nenhuma página HTML alterada ainda (Fases 2-5 por fazer)*
+
+---
+
+*Última revisão: 2026-07-02 — criadas as 3 pillar pages em falta (`p/familia.html`, `p/idosos-incapacidade-cuidadores.html`, `p/trabalho-rendimento.html`), adiantadas da Fase 4 porque a Fase 2/3 já precisam de linkar para elas; checklist completa (GA4, JSON-LD, disclaimer, "Verificado a", botão partilhar) e conteúdo sourced só de factos já publicados nos artigos-filho; retrofit do marcador `PILLAR-LISTA` em `p/apoios-escolares.html` e `prestacao-social-unica.html`; `sincronizar_clusters.py` corrido com sucesso nos 5 pillars (idempotência confirmada); `sitemap.xml` e `scripts/pesquisa.js` (24 páginas) actualizados
