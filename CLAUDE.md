@@ -82,7 +82,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | HTML | Estático puro — sem Jekyll, sem SSG |
 | Analytics | GA4: `G-XP46PM8H1Q` |
 | Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
-| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 24 páginas indexadas) |
+| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `scripts/gerar_noticias.py` → `noticias.html` |

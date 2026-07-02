@@ -70,7 +70,16 @@ var paginas = [
    keywords: 'trabalho rendimento desemprego rsi subsidio cluster guia'},
   {url: '/noticias.html',
    titulo: 'Notícias',
-   keywords: 'notícias novidades alterações apoios'}
+   keywords: 'notícias novidades alterações apoios'},
+  {url: '/sobre.html',
+   titulo: 'Sobre o Tens Direito',
+   keywords: 'sobre quem somos metodologia independência correções'},
+  {url: '/fontes.html',
+   titulo: 'Fontes Oficiais',
+   keywords: 'fontes oficiais diário república segurança social iefp gov.pt legislação'},
+  {url: '/privacidade.html',
+   titulo: 'Política de Privacidade',
+   keywords: 'privacidade cookies rgpd dados pessoais'}
 ];
 
 function pesquisar(termo) {
