@@ -145,7 +145,7 @@ def render_home_cards(clusters: List[Cluster]) -> str:
             f'        <h3>{c.nome}</h3>\n'
             f'        <p class="desc">{c.descricao_curta}</p>\n'
             f'        <span class="tag-verif">{contagem}</span>\n'
-            f'        <span class="link-ver">→ Ver guia</span>\n'
+            f'        <span class="link-ver">→ Ver guias</span>\n'
             f'      </a>'
         )
     return "\n".join(cartoes)

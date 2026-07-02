@@ -487,7 +487,14 @@ Manter avisos de transição até DR publicado:
 4. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
 5. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
 6. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
-7. Actualizar `descricao_curta` do cluster `prestacao-social-unica` em `data/clusters.json`
+7. Quando o tema arrefecer (algumas semanas depois do decreto-lei):
+   reduzir a densidade da PSU na homepage — hoje aparece 6×
+   (banner `DESTAQUE:INICIO/FIM`, cartão "Comece por aqui", cartão de
+   cluster, cartão de destaque, cartão de prazos, notícia do dia).
+   Candidatos a remover primeiro: o banner do topo e o cartão de
+   prazos — os outros 4 continuam a fazer sentido como navegação
+   permanente do cluster.
+8. Actualizar `descricao_curta` do cluster `prestacao-social-unica` em `data/clusters.json`
    (deixa de dizer "ainda não em vigor — aguarda decreto-lei") e correr
    `python scripts/sincronizar_clusters.py` para propagar a mudança ao cartão da
    homepage e a qualquer bloco "pertence ao guia" já injectado nos artigos do cluster
