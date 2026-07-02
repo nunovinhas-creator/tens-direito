@@ -69,11 +69,66 @@ Adicionar entrada em `sitemap.xml`:
 </url>
 ```
 
-### Passo 6 — Adicionar card no index.html
+### Passo 6 — Actualizar scripts/pesquisa.js
 
-Inserir card na `<main>` do `index.html` com título, resumo de 1 linha e link para a página.
+`pesquisa.js` é uma lista manual (não gerada a partir de `clusters.json` — ver
+CLAUDE.md secção "FECHO DO PROJECTO"). Adicionar uma entrada `{url, titulo,
+keywords}` para `[slug].html`.
 
-### Passo 7 — Actualizar data/scraped/_index.json
+### Passo 7 — Botão de partilha
+
+```bash
+python scripts/inserir_botao_partilhar.py
+```
+
+Idempotente — insere `assets/js/share.js` + `assets/css/share.css` e o botão
+"Partilhar este artigo" só em páginas que ainda não o têm.
+
+### Passo 8 — Registar no cluster e sincronizar
+
+Se `[slug].html` pertence a um dos 5 clusters (ver CLAUDE.md secção "SISTEMA
+DE CLUSTERS" — não é o caso de páginas institucionais como sobre/fontes):
+
+1. Adicionar a entrada em `data/clusters.json`, dentro de `paginas[]` do
+   cluster correspondente: `{"slug": "[slug].html", "titulo": "...",
+   "tipo": "artigo", "destaque": false}` (`destaque: true` só por decisão
+   explícita — ver regra dos cartões da homepage).
+2. Correr:
+
+```bash
+python scripts/sincronizar_clusters.py
+```
+
+Idempotente — injecta `CLUSTER-BADGE`/`RELACIONADOS` na página nova (só
+`tipo: "artigo"`; ferramentas ficam de fora — ver secção "SISTEMA DE
+CLUSTERS", ponto 6), actualiza o `PILLAR-LISTA` do pillar do cluster, e o
+`CLUSTERS:HOME`/`DESTAQUES:HOME` do `index.html` se aplicável.
+Correr sempre primeiro com `--dry-run` para conferir o diff.
+
+### Passo 9 — Sincronizar a navegação principal
+
+```bash
+python scripts/sincronizar_nav.py
+```
+
+Idempotente — a página nova ainda não tem o bloco `NAV:INICIO/FIM`; o script
+faz o bootstrap automático a partir da estrutura `<header><nav>` do template
+`estrutura-pagina`. Correr sempre depois do Passo 8 (a nav lista os 5
+pillars, não páginas individuais, por isso a ordem com o Passo 8 não é
+crítica, mas mantém-se esta para bater certo com a checklist do CLAUDE.md).
+
+### Passo 10 — Testes de coerência
+
+```bash
+python -m pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py tests/test_sincronizar_clusters.py
+```
+
+Estes testes correm sobre as páginas **reais** do repositório (parametrizados),
+por isso a página nova entra automaticamente — não precisa de nenhum caso
+novo escrito à mão. Se algum falhar: corrigir antes de avançar, nunca
+ignorar (nenhum `--no-verify`, nenhum skip).
+
+### Passo 11 — Actualizar data/scraped/_index.json
 
 ```json
 {
@@ -84,7 +139,7 @@ Inserir card na `<main>` do `index.html` com título, resumo de 1 linha e link p
 }
 ```
 
-### Passo 8 — Commit com mensagem padronizada
+### Passo 12 — Commit com mensagem padronizada
 
 ```
 feat: [slug] — [titulo curto]
@@ -94,10 +149,16 @@ fonte: [url] | scraped: [data] | próxima revisão: [data+30d]
 
 ## Checklist antes do commit
 
+- [ ] `git branch` mostra `* main`
 - [ ] JSON do scraper existe e tem status "ok"
 - [ ] Todos os links testados (nenhum com 404)
-- [ ] JSON-LD FAQPage e HowTo presentes
+- [ ] JSON-LD FAQPage + HowTo + BreadcrumbList presentes
 - [ ] Disclaimer de independência presente
-- [ ] Data de verificação visível na página
-- [ ] sitemap.xml actualizado
-- [ ] index.html tem card da nova página
+- [ ] Data de verificação ("Verificado a...") visível na página
+- [ ] `sitemap.xml` actualizado
+- [ ] `scripts/pesquisa.js` actualizado
+- [ ] `python scripts/inserir_botao_partilhar.py` corrido
+- [ ] `data/clusters.json` actualizado (se a página pertence a um cluster) e `python scripts/sincronizar_clusters.py` corrido
+- [ ] `python scripts/sincronizar_nav.py` corrido — página nova tem bloco `NAV:INICIO/FIM`
+- [ ] `test_breadcrumb_coerencia.py` e `test_nav_coerencia.py` a passar
+- [ ] Commit e push directamente para `main`

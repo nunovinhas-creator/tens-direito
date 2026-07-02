@@ -86,20 +86,38 @@ qualquer dúvida: parar, não tocar em nenhum ficheiro.
 6. Escrever `calendario-pagamentos-psu.html` — datas reais
 7. Avisos cruzados em `rsi.html`, `subsidio-desemprego.html`,
    `subsidio-parental.html` (secção "IMPACTO DA PSU" do CLAUDE.md)
-8. `sitemap.xml` — adicionar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`
-9. `scripts/pesquisa.js` — adicionar entradas para as 2 páginas novas
-10. `data/clusters.json` — actualizar `descricao_curta` do cluster
+8. `python scripts/inserir_botao_partilhar.py` — botão "Partilhar este artigo"
+   nas 2 páginas novas (idempotente; as páginas modificadas já o têm)
+9. `sitemap.xml` — adicionar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`
+10. `scripts/pesquisa.js` — adicionar entradas para as 2 páginas novas
+    (lista manual — ver CLAUDE.md secção "FECHO DO PROJECTO")
+11. `data/clusters.json` — actualizar `descricao_curta` do cluster
     `prestacao-social-unica` (deixa de dizer "ainda não em vigor"), acrescentar
-    `como-pedir-psu.html` e `calendario-pagamentos-psu.html` a `paginas[]`, e
-    correr `python scripts/sincronizar_clusters.py` para propagar a mudança
-11. `CLAUDE.md` — mover as 2 páginas da tabela "Cluster PSU — páginas em espera"
+    `como-pedir-psu.html` e `calendario-pagamentos-psu.html` a `paginas[]`
+    (`tipo: "artigo"`), e correr `python scripts/sincronizar_clusters.py`
+    (`--dry-run` primeiro) para propagar a mudança — injecta
+    `CLUSTER-BADGE`/`RELACIONADOS` nas 2 páginas novas e actualiza o
+    `PILLAR-LISTA` de `prestacao-social-unica.html`
+12. `python scripts/sincronizar_nav.py` — as 2 páginas novas ainda não têm o
+    bloco `NAV:INICIO/FIM`; o script faz o bootstrap a partir da estrutura
+    `<header><nav>` do template `estrutura-pagina`
+13. `CLAUDE.md` — mover as 2 páginas da tabela "Cluster PSU — páginas em espera"
     para "PÁGINAS PUBLICADAS"; remover o aviso de incerteza dos prazos na secção
     "IMPACTO DA PSU"
 
 Cada página nova ou modificada usa a skill `estrutura-pagina` para a estrutura
 obrigatória (GA4, CookieYes, OG, JSON-LD).
 
-### Passo 6 — Checklist obrigatória
+### Passo 6 — Testes de coerência
+
+```bash
+python -m pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py tests/test_sincronizar_clusters.py
+```
+
+Correm sobre as páginas reais (parametrizados) — as 2 páginas novas entram
+automaticamente. Se algum falhar: corrigir antes de avançar, nunca ignorar.
+
+### Passo 7 — Checklist obrigatória
 
 Antes do commit, confirmar todos os pontos da checklist do CLAUDE.md:
 
@@ -113,13 +131,15 @@ Antes do commit, confirmar todos os pontos da checklist do CLAUDE.md:
 - [ ] "Verificado a [data]" visível
 - [ ] Aviso de independência presente
 - [ ] `sitemap.xml` e `scripts/pesquisa.js` actualizados
+- [ ] `inserir_botao_partilhar.py`, `sincronizar_clusters.py` e `sincronizar_nav.py` corridos
+- [ ] `test_breadcrumb_coerencia.py` e `test_nav_coerencia.py` a passar
 
-### Passo 7 — Fechar a Issue
+### Passo 8 — Fechar a Issue
 
 Usar `mcp__github__issue_write` para comentar na Issue com a lista de ficheiros
 alterados e o hash do commit, e fechá-la.
 
-### Passo 8 — Commit e push
+### Passo 9 — Commit e push
 
 ```
 feat: cluster PSU actualizado — decreto-lei n.º [X]/2026 confirmado
