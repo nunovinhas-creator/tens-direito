@@ -64,7 +64,7 @@ _HTML_BASE = """<!DOCTYPE html>
   <div class="hero-chips">
     <button type="button" class="chip" onclick="preencherPesquisa(event, 'Abono de Família')">Abono de Família</button>
   </div>
-  <h1>Fora da pesquisa</h1>
+  <h1 style="margin-top:500px;">Fora da pesquisa</h1>
 </body>
 </html>
 """

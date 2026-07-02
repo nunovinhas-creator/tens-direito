@@ -134,7 +134,51 @@
   z-index: 150;
   margin-top: 4px;
   text-align: left;
+  max-height: 60vh;
+  overflow-y: auto;
 }
+
+/* Itens de resultado de pesquisa — partilhado pelos dropdowns da nav
+   (todas as páginas) e pela pesquisa do hero em index.html, já que
+   nav.css é carregado em todas as páginas. */
+.resultado-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.75rem;
+  color: #0F172A;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.resultado-item:last-child { border-bottom: none; }
+.resultado-item:hover, .resultado-item:focus { background: #f8f9fa; }
+
+.resultado-titulo { font-size: 0.9rem; font-weight: 600; line-height: 1.35; }
+.resultado-excerto { font-size: 0.78rem; color: #6B7280; line-height: 1.4; }
+.resultado-titulo mark, .resultado-excerto mark {
+  background: #FEF3C7;
+  color: inherit;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+
+.resultado-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.15rem; }
+.resultado-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #0F766E;
+  background: #F0FDF9;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+}
+.resultado-badge-ferramenta { color: #6B7280; background: #F3F4F6; }
+
+.resultado-vazio { padding: 0.85rem 0.75rem; font-size: 0.85rem; color: #6c757d; }
+.resultado-vazio p { margin: 0 0 0.4rem; }
+.resultado-vazio a { font-weight: 700; color: #0F766E; }
 
 .nav-toggle {
   display: none;

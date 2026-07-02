@@ -93,12 +93,57 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | HTML | Estático puro — sem Jekyll, sem SSG |
 | Analytics | GA4: `G-XP46PM8H1Q` |
 | Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
-| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`) |
+| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
+
+**Ranking e apresentação da pesquisa (`scripts/pesquisa.js`)** — reformulado
+2026-07-02: antes, "sub" devolvia páginas sem o termo no título
+misturadas sem ordem nenhuma com as que tinham, numa lista sem limite
+a ocupar o ecrã inteiro em mobile. Agora:
+
+1. **Dados por página**: `url`, `titulo`, `descricao` (a meta
+   description real, extraída de cada página — nunca inventada),
+   `keywords` (curadas à mão, mais ricas do que `clusters.json`
+   consegue oferecer) e `cluster`/`clusterNome`/`tipo`. Estes três
+   últimos campos **têm de bater certo com `data/clusters.json`**
+   (fonte única) — verificado por `tests/test_pesquisa_indice.py`, que
+   corre sobre o `pesquisa.js` real e falha se divergir (cluster
+   inexistente, nome errado, tipo errado, página de cluster sem
+   `cluster` atribuído, ou vice-versa). Título/descrição/keywords
+   continuam curados à mão — `clusters.json` não guarda essa riqueza.
+2. **Ranking em 3 camadas, nunca misturadas**: 1) termo no título,
+   2) termo na descrição, 3) termo nas keywords. Dentro de cada
+   camada, ordem alfabética (determinística, nunca aleatória).
+   Limitado a 8 resultados visíveis (`MAX_RESULTADOS`).
+3. **Contexto do match**: resultados de camada 1 mostram o título com
+   o termo destacado (`<mark>`) e a descrição como linha secundária;
+   resultados de camada 2/3 mostram um excerto (~30 caracteres de
+   contexto para cada lado, `RAIO_EXCERTO`) à volta da 1.ª ocorrência,
+   com o termo destacado — é como se percebe porquê "Estatuto do
+   Cuidador Informal" aparece a pesquisar "sub" (a palavra "subsídio"
+   na descrição).
+4. **Mínimo de 2 caracteres** (`MIN_CARACTERES`) antes de pesquisar —
+   1 carácter nunca dispara, dropdown fica escondido.
+5. **Badge do cluster** em cada resultado (`clusterNome`, mais
+   "Ferramenta" se `tipo === 'ferramenta'`) e **estado vazio explícito**
+   ("Sem resultados para 'x' — Vê todos os guias →", a apontar para
+   `/#guias-de-apoios`, a secção de clusters da homepage).
+6. **CSS partilhado**: `.resultado-item`/`.resultado-titulo`/
+   `.resultado-excerto`/`.resultado-badge`/`.resultado-vazio` vivem em
+   `assets/css/nav.css` (carregado em todas as páginas) — usados tanto
+   pelos dropdowns da nav como pela pesquisa do hero em `index.html`,
+   que também ganhou `max-height: 60vh` + scroll interno (classe
+   `.hero-search-resultados`, antes estilo inline) — mesmo tratamento
+   já existente em `.nav-search-resultados`.
+
+Testado com Chromium real em `tests/test_pesquisa_ranking.py`
+(ranking, camadas, excertos, badges, limite de 8, mínimo de
+caracteres, estado vazio) — carrega o `pesquisa.js` real, nunca uma
+cópia.
 
 **Pesquisa do hero (`index.html`) — nota de manutenção**: `pesquisa.js`
 tem um listener global (`document.addEventListener('click', ...)`) que
@@ -1082,3 +1127,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — dois bugs pós-Fase 1 corrigidos: 1) `main()` de `gerar_noticias.py` terminava sem regenerar `noticias.html`/`index.html` quando não havia notícia nova no dia — extraída `sincronizar_saidas()` como ponto único de regeneração, chamado sempre no fim (com ou sem vencedor) e também por `migrar_noticias.py` no fim da migração; novo `--sync` para correr manualmente sem tocar no RSS; 2) a lupa da pesquisa do hero (`index.html`) era um `<span>` decorativo sem qualquer interactividade — passou a `<button>` real com `aria-label` e touch target 44px; e descoberto (e corrigido) que tanto os chips como a nova lupa tinham os resultados fechados no mesmo clique que os abria, pelo listener global "fechar ao clicar fora" de `pesquisa.js` — corrigido com `event.stopPropagation()` nos handlers dos botões, documentado como padrão obrigatório para qualquer botão futuro de pesquisa por clique; Enter no campo já funcionava (é `keydown`, não sofre do mesmo bug) mas ganhou um handler explícito por robustez; tudo confirmado com Chromium real via Playwright (viewport mobile); novo `tests/test_pesquisa_hero.py` extrai o JS/CSS reais do `index.html` (não uma cópia), incluindo teste de regressão a confirmar que clicar mesmo fora continua a fechar os resultados; 462 testes a passar*
+
+---
+
+*Última revisão: 2026-07-02 — pesquisa interna reformulada: ranking em 3 camadas nunca misturadas (título → descrição → keywords), ordem alfabética determinística dentro de cada camada, limite de 8 resultados; cada resultado ganhou excerto com o termo destacado (`<mark>`) — mostra o contexto do match quando não está no título — e badge do cluster/"Ferramenta"; mínimo de 2 caracteres antes de pesquisar; estado vazio explícito com link para `/#guias-de-apoios`; dropdown com `max-height: 60vh` + scroll interno (hero e nav); `cluster`/`clusterNome`/`tipo` de cada página em `pesquisa.js` verificados contra `data/clusters.json` por `tests/test_pesquisa_indice.py` (fonte única para essa parte dos dados — título/descrição/keywords continuam curados à mão); `descricao` de cada página extraída das meta descriptions reais, nunca inventada; CSS de resultado partilhado movido para `assets/css/nav.css`; confirmado no browser real (Chromium/Playwright, viewport mobile): "sub" com ranking correcto, "psu" a devolver o cluster inteiro, "xyz" com estado vazio, 1 carácter sem disparar; 557 testes a passar (95 novos), idempotência confirmada, ruff limpo*

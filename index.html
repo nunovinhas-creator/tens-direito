@@ -135,6 +135,7 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .hero-search form { display: flex; align-items: center; background: var(--white); border: 2px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; gap: 0.5rem; box-shadow: var(--shadow); }
 .hero-search input { flex: 1; border: none; background: transparent; font-size: 1rem; color: var(--ink); outline: none; }
 .hero-search input::placeholder { color: var(--muted); }
+.hero-search-resultados { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); z-index: 100; margin-top: 4px; text-align: left; max-height: 60vh; overflow-y: auto; }
 .hero-search-btn { background: none; border: none; cursor: pointer; color: var(--muted); line-height: 1; font-size: 1.15rem; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .hero-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; margin-bottom: 1.5rem; }
 .chip { background: var(--teal-light); color: var(--teal-dark); border: 1px solid var(--teal-mid); border-radius: 20px; padding: 0.35rem 0.85rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; }
@@ -318,7 +319,7 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
           oninput="mostrarResultados(pesquisar(this.value), this.value)"
           onkeydown="if (event.key === 'Enter') { event.preventDefault(); executarPesquisaHero(event); }">
       </form>
-      <div id="resultados-pesquisa" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #cbd5e1;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100;margin-top:4px;text-align:left;"></div>
+      <div id="resultados-pesquisa" class="hero-search-resultados"></div>
     </div>
     <div class="hero-chips" role="group" aria-label="Sugestões de pesquisa">
       <button type="button" class="chip" onclick="preencherPesquisa(event, 'Abono de Família')">Abono de Família</button>
