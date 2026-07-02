@@ -128,7 +128,11 @@ def _erros_por_fonte_texto(erros_por_provider: Dict[str, int]) -> str:
 
 
 def gerar_relatorio_markdown(
-    analytics: dict, *, data: Optional[str] = None, proveniencia: Optional[Dict[str, Any]] = None
+    analytics: dict,
+    *,
+    data: Optional[str] = None,
+    proveniencia: Optional[Dict[str, Any]] = None,
+    carimbos_elegiveis: Optional[list] = None,
 ) -> str:
     """Transforma um dict de métricas (output de
     `shadow_mode_analytics.analisar_shadow_mode`) num relatório em
@@ -146,6 +150,12 @@ def gerar_relatorio_markdown(
     páginas analisadas, a avaliação do sistema deixa de dizer "estável"
     sem mais e passa a marcar isso como anomalia a confirmar — "0
     alertas" nunca é silenciosamente lido como "está tudo bem".
+
+    `carimbos_elegiveis` é opcional — lista de nomes de página (Fase 4,
+    simulação de `run_shadow_daily.calcular_carimbos_elegiveis`). Nunca
+    significa que alguma coisa foi ou será alterada — é sempre reportado
+    como simulação, `decisao_datas.REVALIDACAO_CARIMBO_HABILITADA`
+    continua False independentemente do que aparecer aqui.
     """
     try:
         analytics = analytics or {}
@@ -214,6 +224,26 @@ def gerar_relatorio_markdown(
             "",
             "---",
             "",
+        ]
+
+        if carimbos_elegiveis is not None:
+            paginas_carimbo = [p for p in carimbos_elegiveis if isinstance(p, str)]
+            linhas += ["## Carimbos elegíveis para revalidação (simulado)"]
+            if paginas_carimbo:
+                linhas.append(
+                    f"- {len(paginas_carimbo)} página(s) seriam elegíveis hoje: "
+                    + ", ".join(f"`{p}`" for p in paginas_carimbo)
+                )
+            else:
+                linhas.append("- Nenhuma página elegível hoje")
+            linhas += [
+                "- Simulação apenas — a revalidação automática do carimbo continua desligada",
+                "",
+                "---",
+                "",
+            ]
+
+        linhas += [
             "## Avaliação do sistema",
             (
                 f"- ⚠️ ANOMALIA: 0 alertas com {int(paginas_analisadas)} páginas analisadas — "

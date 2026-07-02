@@ -1209,6 +1209,75 @@ directamente (só `OK_VIA_ARQUIVO` ou `BLOQUEADO`).
 
 ---
 
+## REVALIDAÇÃO DE CARIMBO (proposta com travão, simulada e desligada)
+
+Fase 4 do robustecimento do Shadow Mode (2026-07-02). Responde ao
+objectivo de "actualização automática de datas expiradas" sem violar a
+regra de nunca activar auto-update de valores.
+
+**Distinção crítica:**
+- **Valores** (montantes, escalões, prazos legais) — continuam 100%
+  manuais. `decisao_datas.AUTO_UPDATE_HABILITADO` não é tocado por nada
+  nesta fase.
+- **Carimbo "Verificado a DD de mês de AAAA"** — é a única coisa
+  candidata a refresh automático, e só quando for *honesto*: a fonte
+  oficial de que a página depende foi verificada hoje pelo scraper
+  (`OK`, nunca `OK_VIA_ARQUIVO`) **e** o hash SHA-256 dessa fonte está
+  inalterado. Nesse caso "verificado" é literalmente verdade — o sistema
+  confirmou que nada mudou na fonte.
+
+**Tudo o que existe nesta fase está desligado por omissão:**
+
+1. Nova flag `decisao_datas.REVALIDACAO_CARIMBO_HABILITADA = False` —
+   mesmo aviso da flag `AUTO_UPDATE_HABILITADO` já existente: nunca
+   mudar sem sessão manual dedicada.
+2. `data/pagina_fonte.json` — mapeamento manual página HTML → fonte(s)
+   do scraper de que depende (ex.: `"rsi.html": ["seg_social_rsi"]`).
+   Curado à mão, como `data/clusters.json` — não é escrito pelo
+   pipeline. Sem entrada no mapeamento, a página nunca é elegível.
+3. `auto_update_engine.py` ganhou a operação `aplicar_refresh_carimbo`
+   (continua sandbox, só memória, nunca escreve ficheiros): substitui só
+   a data dentro de "Verificado a ..." + `dateModified` do JSON-LD, nada
+   mais. Confinamento verificado por `_apenas_carimbo_alterado` (mascara
+   as duas zonas regex e compara o resto — mesmo princípio de
+   `gerar_noticias._verificar_escrita_confinada()`, adaptado a zonas por
+   regex em vez de marcadores de comentário); qualquer diff fora delas
+   aborta com `ABORTED_ESCRITA_FORA_DE_ZONA` em vez de aplicar.
+   `elegivel_refresh_carimbo(fonte_estado, hash_inalterado)` é a função
+   pura de elegibilidade, reutilizável sem chamar a operação em si.
+4. **Shadow Mode simula esta decisão diariamente**: `run_shadow_daily.calcular_carimbos_elegiveis`
+   lê `data/pagina_fonte.json` + `data/estado_fontes.json` +
+   `data/scraped/*.json` (todos escritos pelo pipeline, nunca por este
+   script) e devolve as páginas que SERIAM elegíveis hoje — nunca liga a
+   flag, nunca chama `aplicar_refresh_carimbo`, só a verificação pura. O
+   relatório ganha a secção "Carimbos elegíveis para revalidação
+   (simulado)".
+   **Simplificação assumida, a rever no período de observação**: "hash
+   inalterado" compara o scrape de hoje com o de ontem (ambos já
+   existem em `data/scraped/{slug}_AAAA-MM-DD.json`, escritos todos os
+   dias independentemente de mudança) — é uma aproximação de "a fonte
+   não mudou recentemente", não o ideal "desde a última edição manual
+   da própria página". Refinar isso (ex.: guardar o hash no momento em
+   que um humano editou o carimbo) é trabalho para quando a activação
+   estiver a ser considerada a sério, não antes.
+5. **Critério de activação — decisão do Nuno, nunca do Claude Code**: só
+   ligar `REVALIDACAO_CARIMBO_HABILITADA` depois de ≥14 relatórios
+   shadow consecutivos com simulações correctas (zero falsos elegíveis —
+   confirmar manualmente contra as páginas listadas) e com as fontes
+   correspondentes maioritariamente `OK` (a secção "SCRAPER — ROBUSTEZ
+   CONTRA BLOQUEIOS" tem de estar a reduzir bloqueios primeiro, senão
+   quase nada chega a ser elegível).
+
+Testes: `tests/test_auto_update_engine.py` (elegibilidade — só `OK` +
+hash igual; `OK_VIA_ARQUIVO`/`BLOQUEADO` nunca elegíveis; flag desligada
+devolve `SKIPPED_SAFE_MODE` sem tocar no conteúdo; confinamento aborta
+alteração fora de zona; determinismo) e `tests/test_carimbos_elegiveis.py`
+(simulação diária isolada em `tmp_path` — múltiplas fontes por página,
+hash mudado, sem scrape de ontem, página sem mapeamento, ordenação,
+nunca escreve nada).
+
+---
+
 *Última revisão: 2026-06-28 — CSI e PSU publicadas; fact-checking completo; GSTACK adicionado; PSU destaque; datas sazonais; simulador abono (fix múltiplas crianças); simulador ASE completo; plano impacto PSU documentado*
 
 ---

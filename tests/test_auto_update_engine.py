@@ -19,7 +19,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 import decisao_datas
 import auto_update_engine
-from auto_update_engine import AcaoAutoUpdate, aplicar_auto_update, buscar_novo_valor_mock
+from auto_update_engine import (
+    AcaoAutoUpdate,
+    AcaoRefreshCarimbo,
+    aplicar_auto_update,
+    aplicar_refresh_carimbo,
+    buscar_novo_valor_mock,
+    elegivel_refresh_carimbo,
+)
 
 
 def _alerta_ias(novo_valor=None, acao="AUTO_UPDATE"):
@@ -228,6 +235,148 @@ def test_aplicar_auto_update_e_deterministico(monkeypatch):
     alerta = _alerta_ias(novo_valor="537,13 €")
     resultados = [
         aplicar_auto_update(alerta, agora="2026-07-01T00:00:00+00:00")
+        for _ in range(10)
+    ]
+    assert all(r == resultados[0] for r in resultados)
+
+
+# ── refresh_carimbo (Fase 4, simulada/desligada) ────────────────────────────
+
+_PAGINA_EXEMPLO = (
+    "<html><body>"
+    "<p>Verificado a 24 de junho de 2026 · fonte oficial.</p>"
+    '<script type="application/ld+json">{"@type": "Article", "dateModified": "2026-06-24"}</script>'
+    "</body></html>"
+)
+
+
+def test_flag_revalidacao_carimbo_desligada_por_omissao():
+    assert decisao_datas.REVALIDACAO_CARIMBO_HABILITADA is False
+
+
+def test_elegivel_com_fonte_ok_e_hash_inalterado():
+    assert elegivel_refresh_carimbo("OK", True) is True
+
+
+def test_ok_via_arquivo_nunca_elegivel():
+    assert elegivel_refresh_carimbo("OK_VIA_ARQUIVO", True) is False
+
+
+def test_bloqueado_nunca_elegivel():
+    assert elegivel_refresh_carimbo("BLOQUEADO", True) is False
+
+
+def test_hash_alterado_nunca_elegivel():
+    assert elegivel_refresh_carimbo("OK", False) is False
+
+
+def test_hash_desconhecido_nunca_elegivel():
+    assert elegivel_refresh_carimbo("OK", None) is False
+
+
+def test_flag_desligada_devolve_skipped_safe_mode_sem_tocar_no_conteudo():
+    resultado = aplicar_refresh_carimbo(
+        _PAGINA_EXEMPLO,
+        fonte_estado="OK",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.SKIPPED_SAFE_MODE
+    assert resultado["conteudo_novo"] == _PAGINA_EXEMPLO
+
+
+def test_flag_ligada_mas_nao_elegivel_e_skipped(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+    resultado = aplicar_refresh_carimbo(
+        _PAGINA_EXEMPLO,
+        fonte_estado="OK_VIA_ARQUIVO",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.SKIPPED_NAO_ELEGIVEL
+    assert resultado["conteudo_novo"] == _PAGINA_EXEMPLO
+
+
+def test_flag_ligada_e_elegivel_substitui_carimbo_e_date_modified(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+    resultado = aplicar_refresh_carimbo(
+        _PAGINA_EXEMPLO,
+        fonte_estado="OK",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.CARIMBO_REFRESHED
+    assert "Verificado a 2 de julho de 2026" in resultado["conteudo_novo"]
+    assert '"dateModified": "2026-07-02"' in resultado["conteudo_novo"]
+    # Só as duas zonas confinadas mudaram -- resto da página intacto.
+    assert "fonte oficial" in resultado["conteudo_novo"]
+    assert '"@type": "Article"' in resultado["conteudo_novo"]
+
+
+def test_sem_carimbo_reconhecivel_e_skipped(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+    resultado = aplicar_refresh_carimbo(
+        "<html><body>Sem nenhum carimbo aqui.</body></html>",
+        fonte_estado="OK",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.SKIPPED_SEM_CARIMBO
+
+
+def test_alteracao_fora_da_zona_confinada_e_abortada(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+    # Simula um regex que "escapa" e mexe em texto fora das duas zonas
+    # esperadas -- a verificação de confinamento tem de apanhar isto.
+    monkeypatch.setattr(
+        auto_update_engine,
+        "_apenas_carimbo_alterado",
+        lambda antigo, novo: False,
+    )
+    resultado = aplicar_refresh_carimbo(
+        _PAGINA_EXEMPLO,
+        fonte_estado="OK",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.ABORTED_ESCRITA_FORA_DE_ZONA
+    assert resultado["conteudo_novo"] == _PAGINA_EXEMPLO
+
+
+def test_refresh_carimbo_nunca_escreve_ficheiro_real(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+
+    def _bloqueado(*a, **k):
+        raise AssertionError("auto_update_engine tentou fazer I/O real")
+
+    monkeypatch.setattr(builtins, "open", _bloqueado)
+    monkeypatch.setattr(subprocess, "run", _bloqueado)
+
+    resultado = aplicar_refresh_carimbo(
+        _PAGINA_EXEMPLO,
+        fonte_estado="OK",
+        hash_inalterado=True,
+        nova_data_extenso="2 de julho de 2026",
+        nova_data_iso="2026-07-02",
+    )
+    assert resultado["acao"] == AcaoRefreshCarimbo.CARIMBO_REFRESHED
+
+
+def test_refresh_carimbo_e_deterministico(monkeypatch):
+    monkeypatch.setattr(decisao_datas, "REVALIDACAO_CARIMBO_HABILITADA", True)
+    resultados = [
+        aplicar_refresh_carimbo(
+            _PAGINA_EXEMPLO,
+            fonte_estado="OK",
+            hash_inalterado=True,
+            nova_data_extenso="2 de julho de 2026",
+            nova_data_iso="2026-07-02",
+        )
         for _ in range(10)
     ]
     assert all(r == resultados[0] for r in resultados)

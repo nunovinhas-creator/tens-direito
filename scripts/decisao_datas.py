@@ -51,6 +51,15 @@ _MAPEAMENTO_ESTADO_PARA_ACAO = {
 # despromove AUTO_UPDATE para LOG_ONLY.
 AUTO_UPDATE_HABILITADO = False
 
+# Interruptor de segurança SEPARADO -- controla só a revalidação do
+# carimbo "Verificado a DD/MM/AAAA" (nunca valores/montantes/prazos, que
+# continuam 100% cobertos por AUTO_UPDATE_HABILITADO acima e por essa
+# flag só). Mesmo aviso: NÃO ligar sem decisão explícita e sessão manual
+# dedicada -- ver CLAUDE.md secção "REVALIDAÇÃO DE CARIMBO" para o
+# critério de activação (>=14 relatórios shadow consecutivos com
+# simulações correctas, fontes correspondentes maioritariamente OK).
+REVALIDACAO_CARIMBO_HABILITADA = False
+
 
 def decidir_intent(estado: str) -> str:
     """Mapeamento puro estado -> ação, sem a guarda de segurança de

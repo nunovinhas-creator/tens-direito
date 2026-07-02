@@ -203,3 +203,125 @@ def aplicar_auto_update(
             "snapshot": snapshot,
             "conteudo": snapshot,
         }
+
+
+# ── Revalidação de carimbo (Fase 4, simulada/desligada) ─────────────────────
+#
+# Distinção crítica documentada em CLAUDE.md "REVALIDAÇÃO DE CARIMBO":
+# valores (montantes, escalões, prazos legais) continuam 100% cobertos só
+# por `aplicar_auto_update`/`AUTO_UPDATE_HABILITADO` acima -- nada aqui
+# altera isso. Esta secção só sabe mexer no carimbo "Verificado a
+# DD/MM/AAAA" + `dateModified` do JSON-LD, e só quando isso for honesto:
+# a fonte de que a página depende respondeu OK hoje (nunca OK_VIA_ARQUIVO
+# -- ver `wayback_fallback.py`) e o hash dessa fonte está inalterado --
+# nesse caso "verificado" é literalmente verdade, o sistema confirmou que
+# nada mudou. Mesmas garantias estruturais da secção acima: só memória,
+# nunca ficheiros, nunca chamado por `verificar_datas.py` nem pelo
+# pipeline directamente.
+
+_REGEX_VERIFICADO_A = re.compile(
+    r"(Verificado a )(\d{1,2}(?:\s+de\s+[a-zçã]+)?\s+de\s+\d{4})", re.IGNORECASE
+)
+_REGEX_DATE_MODIFIED = re.compile(r'("dateModified"\s*:\s*")([0-9-]+)(")')
+
+_MOTIVO_SAFE_MODE_CARIMBO = "REVALIDACAO_CARIMBO desativada"
+_MOTIVO_NAO_ELEGIVEL = (
+    "Página não elegível -- fonte não está OK hoje ou hash mudou desde a última verificação"
+)
+
+
+class AcaoRefreshCarimbo:
+    SKIPPED_SAFE_MODE = "SKIPPED_SAFE_MODE"
+    SKIPPED_NAO_ELEGIVEL = "SKIPPED_NAO_ELEGIVEL"
+    SKIPPED_SEM_CARIMBO = "SKIPPED_SEM_CARIMBO"
+    ABORTED_ESCRITA_FORA_DE_ZONA = "ABORTED_ESCRITA_FORA_DE_ZONA"
+    CARIMBO_REFRESHED = "CARIMBO_REFRESHED"
+
+
+def elegivel_refresh_carimbo(fonte_estado: Optional[str], hash_inalterado: Optional[bool]) -> bool:
+    """Só elegível quando a fonte de que a página depende respondeu `OK`
+    hoje -- nunca `OK_VIA_ARQUIVO` (modo degradado Wayback) nem
+    `BLOQUEADO` -- e o hash do conteúdo dessa fonte está inalterado. Um
+    valor `None`/inesperado em qualquer um dos dois nunca é elegível
+    (falha segura)."""
+    return fonte_estado == "OK" and hash_inalterado is True
+
+
+def _mascarar_zonas_carimbo(conteudo: str) -> str:
+    """Substitui as duas zonas confinadas por um marcador fixo -- se o
+    resultado for igual entre o conteúdo antigo e o novo, nada mudou fora
+    delas (mesma ideia de `gerar_noticias._verificar_escrita_confinada`,
+    adaptada a zonas por regex em vez de marcadores de comentário)."""
+    conteudo = _REGEX_VERIFICADO_A.sub(r"\1<CARIMBO>", conteudo)
+    conteudo = _REGEX_DATE_MODIFIED.sub(r"\1<DATA>\3", conteudo)
+    return conteudo
+
+
+def _apenas_carimbo_alterado(antigo: str, novo: str) -> bool:
+    return _mascarar_zonas_carimbo(antigo) == _mascarar_zonas_carimbo(novo)
+
+
+def aplicar_refresh_carimbo(
+    conteudo_pagina: str,
+    *,
+    fonte_estado: Optional[str],
+    hash_inalterado: Optional[bool],
+    nova_data_extenso: str,
+    nova_data_iso: str,
+) -> dict:
+    """Simula a substituição do carimbo "Verificado a ..." e do
+    `dateModified` do JSON-LD -- só em memória, nunca em ficheiro.
+    Verifica sempre, antes de devolver como aplicado, que nada mudou fora
+    dessas duas zonas (`_apenas_carimbo_alterado`); qualquer diferença aí
+    aborta a operação em vez de a aplicar.
+
+    Dupla verificação da flag de segurança, tal como `aplicar_auto_update`
+    acima: mesmo que um chamador futuro já tenha filtrado por
+    elegibilidade, esta função nunca confia cegamente nisso -- volta a
+    checar `decisao_datas.REVALIDACAO_CARIMBO_HABILITADA` e
+    `elegivel_refresh_carimbo` a partir do módulo, nunca de um valor
+    importado à parte.
+    """
+    if decisao_datas.REVALIDACAO_CARIMBO_HABILITADA is not True:
+        return {
+            "acao": AcaoRefreshCarimbo.SKIPPED_SAFE_MODE,
+            "motivo": _MOTIVO_SAFE_MODE_CARIMBO,
+            "conteudo_novo": conteudo_pagina,
+        }
+
+    if not elegivel_refresh_carimbo(fonte_estado, hash_inalterado):
+        return {
+            "acao": AcaoRefreshCarimbo.SKIPPED_NAO_ELEGIVEL,
+            "motivo": _MOTIVO_NAO_ELEGIVEL,
+            "conteudo_novo": conteudo_pagina,
+        }
+
+    if not isinstance(conteudo_pagina, str) or not conteudo_pagina:
+        return {
+            "acao": AcaoRefreshCarimbo.SKIPPED_SEM_CARIMBO,
+            "motivo": "Conteúdo vazio",
+            "conteudo_novo": conteudo_pagina,
+        }
+
+    novo_conteudo = _REGEX_VERIFICADO_A.sub(
+        lambda m: m.group(1) + nova_data_extenso, conteudo_pagina, count=1
+    )
+    novo_conteudo = _REGEX_DATE_MODIFIED.sub(
+        lambda m: m.group(1) + nova_data_iso + m.group(3), novo_conteudo, count=1
+    )
+
+    if novo_conteudo == conteudo_pagina:
+        return {
+            "acao": AcaoRefreshCarimbo.SKIPPED_SEM_CARIMBO,
+            "motivo": "Nenhum carimbo reconhecido na página",
+            "conteudo_novo": conteudo_pagina,
+        }
+
+    if not _apenas_carimbo_alterado(conteudo_pagina, novo_conteudo):
+        return {
+            "acao": AcaoRefreshCarimbo.ABORTED_ESCRITA_FORA_DE_ZONA,
+            "motivo": "Alteração detectada fora das zonas confinadas -- abortado",
+            "conteudo_novo": conteudo_pagina,
+        }
+
+    return {"acao": AcaoRefreshCarimbo.CARIMBO_REFRESHED, "conteudo_novo": novo_conteudo}

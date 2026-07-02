@@ -1,0 +1,15 @@
+{
+  "abono-de-familia.html": ["seg_social_abono"],
+  "simulador-abono.html": ["seg_social_abono"],
+  "rsi.html": ["seg_social_rsi"],
+  "subsidio-desemprego.html": ["iefp_desemprego"],
+  "acao-social-escolar.html": ["dge_ase"],
+  "simulador-ase.html": ["dge_ase"],
+  "bolsa-de-merito.html": ["dge_ase"],
+  "manuais-escolares-mega.html": ["dge_manuais", "mega_datas"],
+  "prestacao-social-unica.html": ["dre_psu"],
+  "psu-quando-entra-em-vigor.html": ["dre_psu"],
+  "psu-quem-tem-direito.html": ["dre_psu"],
+  "psu-vs-abono-familia.html": ["dre_psu"],
+  "psu-lista-13-apoios.html": ["dre_psu"]
+}

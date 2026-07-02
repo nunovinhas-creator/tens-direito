@@ -28,8 +28,16 @@ Segurança:
   auto-update simulado dentro do Shadow Mode continua exactamente como
   está configurado hoje;
 - não faz chamadas de rede nem de GitHub (não importa `requests` nem
-  qualquer biblioteca de acesso ao GitHub) — só lê ficheiros HTML locais
-  e escreve um único ficheiro Markdown dentro de `shadow_history/`;
+  qualquer biblioteca de acesso ao GitHub) — só lê ficheiros HTML/JSON
+  locais (`data/pagina_fonte.json`, `data/estado_fontes.json`,
+  `data/scraped/*.json` — todos escritos pelo pipeline diário, nunca por
+  este script) e escreve um único ficheiro Markdown dentro de
+  `shadow_history/`;
+- `calcular_carimbos_elegiveis` (Fase 4) simula quais páginas SERIAM
+  elegíveis para revalidação de carimbo se `decisao_datas.REVALIDACAO_CARIMBO_HABILITADA`
+  estivesse ligada — nunca liga essa flag, nunca chama
+  `auto_update_engine.aplicar_refresh_carimbo`, só a verificação pura de
+  elegibilidade (`elegivel_refresh_carimbo`);
 - a única escrita possível é dentro de `shadow_history/` — o caminho do
   ficheiro é sempre construído a partir dessa pasta, nunca de um
   caminho arbitrário vindo de fora, e é verificado antes de escrever.
@@ -51,13 +59,15 @@ em vez de "sistema estável" (ver `LIMIAR_ANOMALIA_PAGINAS`).
 """
 from __future__ import annotations
 
+import json
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from auto_update_engine import elegivel_refresh_carimbo
 from shadow_mode import executar_shadow_mode
 from shadow_mode_analytics import analisar_shadow_mode
 from shadow_report_md import gerar_relatorio_markdown
@@ -98,6 +108,62 @@ def coletar_alertas_do_dia(raiz: Path, *, ano: int, mes: int) -> List[dict]:
     return alertas
 
 
+def _carregar_json(caminho: Path) -> dict:
+    if not caminho.exists():
+        return {}
+    try:
+        conteudo = json.loads(caminho.read_text(encoding="utf-8"))
+        return conteudo if isinstance(conteudo, dict) else {}
+    except Exception:
+        return {}
+
+
+def _hash_fonte(scraped_dir: Path, slug: str, data_str: str) -> Optional[str]:
+    dados = _carregar_json(scraped_dir / f"{slug}_{data_str}.json")
+    return dados.get("hash_conteudo")
+
+
+def calcular_carimbos_elegiveis(raiz: Path, *, hoje: str, ontem: str) -> List[str]:
+    """Simulação diária (Fase 4 -- `decisao_datas.REVALIDACAO_CARIMBO_HABILITADA`
+    continua sempre False em produção; esta função nunca aplica nada, só
+    reporta quais páginas SERIAM elegíveis hoje se estivesse ligada).
+
+    Para cada página em `data/pagina_fonte.json`, todas as fontes de que
+    depende têm de estar `OK` hoje em `data/estado_fontes.json` (nunca
+    `OK_VIA_ARQUIVO`/`BLOQUEADO`) e o hash de cada fonte tem de estar
+    inalterado face ao scrape do dia anterior -- aproximação de "a fonte
+    não mudou recentemente" (não é o mesmo que "desde a última edição
+    manual da página"; ver CLAUDE.md "REVALIDAÇÃO DE CARIMBO" para a
+    ressalva sobre esta simplificação). Só leitura -- nunca chama
+    `auto_update_engine.aplicar_refresh_carimbo`, só a verificação de
+    elegibilidade."""
+    pagina_fonte = _carregar_json(raiz / "data" / "pagina_fonte.json")
+    estado_fontes = _carregar_json(raiz / "data" / "estado_fontes.json")
+    scraped_dir = raiz / "data" / "scraped"
+
+    elegiveis: List[str] = []
+    for pagina, fontes in pagina_fonte.items():
+        if not isinstance(fontes, list) or not fontes:
+            continue
+
+        todas_ok = all((estado_fontes.get(slug) or {}).get("estado") == "OK" for slug in fontes)
+        if not todas_ok:
+            continue
+
+        hashes_inalterados = True
+        for slug in fontes:
+            hash_hoje = _hash_fonte(scraped_dir, slug, hoje)
+            hash_ontem = _hash_fonte(scraped_dir, slug, ontem)
+            if hash_hoje is None or hash_hoje != hash_ontem:
+                hashes_inalterados = False
+                break
+
+        if elegivel_refresh_carimbo("OK", hashes_inalterados):
+            elegiveis.append(pagina)
+
+    return sorted(elegiveis)
+
+
 def _caminho_historico(pasta_historico: Path, data_str: str) -> Path:
     caminho = pasta_historico / f"shadow_report_{data_str}.md"
     # Garantia estrutural: o ficheiro a escrever tem mesmo de estar
@@ -135,7 +201,11 @@ def executar_shadow_daily(
         "paginas_analisadas": paginas_analisadas,
         "hora_execucao_utc": momento.strftime("%H:%M"),
     }
-    texto_md = gerar_relatorio_markdown(analise, data=data_str, proveniencia=proveniencia)
+    ontem_str = (momento - timedelta(days=1)).strftime("%Y-%m-%d")
+    carimbos_elegiveis = calcular_carimbos_elegiveis(raiz, hoje=data_str, ontem=ontem_str)
+    texto_md = gerar_relatorio_markdown(
+        analise, data=data_str, proveniencia=proveniencia, carimbos_elegiveis=carimbos_elegiveis
+    )
 
     pasta = pasta_historico or (raiz / NOME_PASTA_HISTORICO)
     pasta.mkdir(parents=True, exist_ok=True)
@@ -147,6 +217,7 @@ def executar_shadow_daily(
         "analytics": analise,
         "total_alertas": len(alertas),
         "paginas_analisadas": paginas_analisadas,
+        "carimbos_elegiveis": carimbos_elegiveis,
         "caminho_historico": str(caminho_ficheiro),
     }
 
