@@ -96,22 +96,30 @@
     }
 
     header {
+      background: #FFFFFF;
+      border-bottom: 2px solid #0F766E;
+      padding: 0.75rem 1rem;
+      text-align: center;
+    }
+
+    header nav a {
+      color: #0F766E;
+      text-decoration: none;
+      margin: 0 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .hero {
       background: #0F766E;
       color: #FFF;
-      padding: 1rem;
+      padding: 1.5rem 1rem;
       text-align: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    header h1 { font-size: 1.8rem; margin: 0.5rem 0; }
-    header nav { margin-top: 0.5rem; }
-    header nav a {
-      color: #FFF;
-      text-decoration: none;
-      margin: 0 0.75rem;
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
+    .hero h1 { font-size: 1.8rem; margin: 0.5rem 0; }
+    .hero-sub { opacity: 0.9; font-size: 0.95rem; margin: 0; }
     header nav a:hover { opacity: 1; text-decoration: underline; }
 
     main {
@@ -452,6 +460,13 @@
 </head>
 <body>
   <header>
+    <nav>
+      <a href="/">Voltar</a>
+      <a href="/acao-social-escolar.html">Guia ASE</a>
+    </nav>
+  </header>
+
+  <section class="hero">
     <h1>🎓 Simulador ASE</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
@@ -459,12 +474,8 @@
 </div>
 <!-- partilhar:fim -->
 
-    <p>Ação Social Escolar 2026/2027</p>
-    <nav>
-      <a href="/">Voltar</a>
-      <a href="/acao-social-escolar.html">Guia ASE</a>
-    </nav>
-  </header>
+    <p class="hero-sub">Ação Social Escolar 2026/2027</p>
+  </section>
 
   <main>
     <div class="urgencia-badge">
