@@ -16,7 +16,6 @@ from sincronizar_clusters import (
     processar_pagina,
     processar_home,
     validar_consistencia,
-    render_home_cards,
     artigos_relacionados,
     contagem_str,
     extrair_verificado_em,
