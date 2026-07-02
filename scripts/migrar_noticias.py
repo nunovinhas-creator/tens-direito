@@ -32,6 +32,7 @@ from gerar_noticias import (  # noqa: E402
     encontrar_duplicado,
     guardar_itens,
     separar_titulo_e_fonte,
+    sincronizar_saidas,
 )
 
 NOTICIAS_HTML = RAIZ / "noticias.html"
@@ -202,6 +203,9 @@ def main() -> int:
 
     guardar_itens(mantidos)
     print(f"\nEscrito {NOTICIAS_JSON}")
+
+    sincronizar_saidas(mantidos)
+    print("noticias.html e index.html sincronizados com o JSON migrado.")
     return 0
 
 

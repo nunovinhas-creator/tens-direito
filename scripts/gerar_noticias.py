@@ -9,7 +9,13 @@ data real desc) e o bloco NOTICIA-HOME de index.html (2-3 mais recentes) a
 partir do JSON — nunca por patch incremental do HTML anterior.
 
 "Nenhuma notícia hoje" é um resultado aceitável — nunca forçar um candidato
-fraco ou duplicado só para ter alguma coisa a publicar.
+fraco ou duplicado só para ter alguma coisa a publicar. Mesmo nesse caso,
+`main()` chama sempre `sincronizar_saidas()` no fim — nunca deixa
+noticias.html/index.html atrasados face a data/noticias.json, mesmo que a
+alteração ao JSON tenha vindo de outra via (ex.: migração manual).
+
+    python scripts/gerar_noticias.py          # corrida normal (fetch + selecção + sync)
+    python scripts/gerar_noticias.py --sync   # só resincroniza as saídas com o JSON actual, sem fetch
 
 Escreve em index.html só dentro do bloco NOTICIA-HOME, entre marcadores —
 nunca fora deles (ver SECCOES_PERMITIDAS e _verificar_escrita_confinada)."""
@@ -22,6 +28,7 @@ import html
 import json
 import os
 import re
+import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -595,7 +602,31 @@ def atualizar_index_home(itens: List[ItemNoticia], caminho: str = "index.html", 
     return True
 
 
+def sincronizar_saidas(
+    itens: Optional[List[ItemNoticia]] = None,
+    noticias_caminho: Path = RAIZ / "noticias.html",
+    index_caminho: str = "index.html",
+) -> None:
+    """Regenera noticias.html e o bloco NOTICIA-HOME de index.html a
+    partir de data/noticias.json — idempotente (sem alterações se já
+    estiverem em sincronia) e independente de qualquer corrida de RSS.
+
+    Único ponto de saída partilhado por `main()` (corrida diária) e por
+    `scripts/migrar_noticias.py` (migração única) — nunca duplicar esta
+    lógica noutro sítio. Utilizável também como passo manual isolado:
+    `python scripts/gerar_noticias.py --sync`."""
+    if itens is None:
+        itens = carregar_itens(NOTICIAS_JSON)
+    itens_ordenados = ordenar_itens(itens)
+    regenerar_noticias_html(itens_ordenados, caminho=noticias_caminho)
+    atualizar_index_home(itens_ordenados, caminho=index_caminho)
+
+
 def main() -> None:
+    if "--sync" in sys.argv:
+        sincronizar_saidas()
+        return
+
     itens_existentes = carregar_itens()
     entries = fetch_entries()
     resultado = selecionar_vencedor(entries, itens_existentes)
@@ -603,16 +634,18 @@ def main() -> None:
 
     if resultado.vencedor is None:
         print("Nenhuma notícia relevante encontrada hoje.")
-        return
+    else:
+        novo_item = construir_item_de_entry(resultado.vencedor.entry)
+        itens_existentes = itens_existentes + [novo_item]
+        guardar_itens(itens_existentes)
+        print(f"Notícia publicada: {novo_item.titulo[:80]}")
 
-    novo_item = construir_item_de_entry(resultado.vencedor.entry)
-    itens_atualizados = itens_existentes + [novo_item]
-    guardar_itens(itens_atualizados)
-    print(f"Notícia publicada: {novo_item.titulo[:80]}")
-
-    itens_ordenados = ordenar_itens(itens_atualizados)
-    regenerar_noticias_html(itens_ordenados)
-    atualizar_index_home(itens_ordenados)
+    # Sincroniza sempre as saídas com o estado actual do JSON — mesmo
+    # sem vencedor novo hoje, garante que noticias.html/index.html nunca
+    # ficam atrás de uma alteração feita por outra via (ex.: migração,
+    # edição manual). Idempotente: sem alterações se já estiver tudo
+    # sincronizado.
+    sincronizar_saidas(itens_existentes)
 
 
 if __name__ == "__main__":

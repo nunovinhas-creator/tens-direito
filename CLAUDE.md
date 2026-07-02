@@ -100,6 +100,21 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 
+**Pesquisa do hero (`index.html`) — nota de manutenção**: `pesquisa.js`
+tem um listener global (`document.addEventListener('click', ...)`) que
+fecha `#resultados-pesquisa` sempre que o clique não é no campo nem no
+próprio dropdown — inclui **qualquer botão que abra a pesquisa por
+clique** (chips, botão de lupa). Sem `event.stopPropagation()` no
+handler desse botão, o clique que abre os resultados também os fecha
+no mesmo evento (bug real corrigido nesta sessão — `preencherPesquisa()`
+e `executarPesquisaHero()`, ambas em `index.html`, chamam
+`e.stopPropagation()` antes de mais nada). **Qualquer botão novo que
+dispare pesquisa por clique tem de seguir o mesmo padrão.** A tecla
+Enter não sofre disto (é `keydown`, não `click`). Testado com
+Chromium real (não é possível apanhar isto só por inspecção de texto)
+em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
+`index.html` real em vez de manter uma cópia à parte.
+
 ### Workflows (5 — 2 fazem push, âmbitos disjuntos)
 
 | Ficheiro | Trigger | Função | `git push`? |
@@ -678,8 +693,25 @@ visibilidade sobre quantos candidatos existiam nem porque um venceu.
 
 Mostra sempre a data real da notícia (nunca "hoje") e liga directamente
 à fonte externa (nunca um link interno inventado). Se não houver
-vencedor, `main()` termina sem tocar em `data/noticias.json`,
-`noticias.html` nem `index.html` — mantêm o último conteúdo real.
+vencedor, `data/noticias.json` não é tocado.
+
+**`sincronizar_saidas()`** — ponto único que regenera `noticias.html` e
+o bloco `NOTICIA-HOME` a partir do JSON actual em disco; idempotente
+(zero alterações se já estiverem sincronizados) e independente de
+qualquer corrida de RSS. `main()` chama-o **sempre no fim, com ou sem
+vencedor novo no dia** — corrigido um bug real desta sessão: antes,
+`main()` terminava a corrida assim que não havia vencedor, sem nunca
+regenerar as saídas; se o JSON tivesse mudado por outra via (ex.:
+`migrar_noticias.py`, edição manual), `noticias.html`/`index.html`
+ficavam presos ao conteúdo antigo indefinidamente, só se resincronizando
+por coincidência no dia em que a corrida também encontrasse notícia
+nova. Utilizável como passo manual isolado, sem tocar no RSS:
+`python scripts/gerar_noticias.py --sync`. `migrar_noticias.py` chama-o
+automaticamente no fim da migração — nunca mais é preciso um passo
+manual à parte para sincronizar depois de migrar. Testado em
+`tests/test_gerar_noticias.py` (idempotência + carrega do JSON em
+disco quando não recebe itens explícitos + o item mais recente do
+JSON tem sempre de aparecer no bloco NOTICIA-HOME após a chamada).
 
 **Guardrail estendido** (mudança de segurança, reforçada na Fase 1):
 `escrever_ficheiro_seguro()` em `gerar_noticias.py` é agora uma
@@ -1046,3 +1078,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 1 do sistema de notícias: `data/noticias.json` passa a ser a fonte de verdade (antes era o próprio `noticias.html`); migração única (`scripts/migrar_noticias.py`) dos 15 registos legados — 1 descartado (placeholder vazio, resíduo de bug antigo), 4 duplicados removidos (mantida sempre a data mais antiga), 10 itens finais; `gerar_noticias.py` reescrito com dedup (`encontrar_duplicado()` — título normalizado + URL específico, nunca homepage genérica sozinha), observabilidade completa no log (candidatos por feed, top 3, rejeições, vencedor) e "nenhuma notícia hoje" como resultado aceitável; `noticias.html` passa a ser gerado do JSON (destaque + arquivo por mês, ordem por data real desc) em vez de patch incremental; `index.html` (`NOTICIA-HOME`) mostra 2-3 itens em vez de 1; corrigidos 3 bugs pré-existentes de correspondência de classes em `noticias.html` (JS de paginação apontava a `.noticia-card` em vez de `.arquivo-card`, `.arquivo-card` não tinha CSS nenhum, `.cat-badge.apoios` nunca correspondia a `cat-apoios` real, `#destaque-wrap` não existia) — confirmado no browser via Playwright (contagens e paginação a verem os 9/9 itens reais, badges com cor, destaque a esconder/mostrar ao filtrar); guardrail de `escrever_ficheiro_seguro()` endurecido para allow-list estrita nos dois sentidos; `verificar_injecao.py` confirmado a cobrir `data/noticias.json` sem alterações (já estava dentro de `data/`); 453 testes a passar (49 novos); idempotência de `regenerar_noticias_html()`/`atualizar_index_home()` confirmada nos ficheiros reais; passo de diagnóstico de feeds candidatos registado para a Fase 2, não feito ainda*
+
+---
+
+*Última revisão: 2026-07-02 — dois bugs pós-Fase 1 corrigidos: 1) `main()` de `gerar_noticias.py` terminava sem regenerar `noticias.html`/`index.html` quando não havia notícia nova no dia — extraída `sincronizar_saidas()` como ponto único de regeneração, chamado sempre no fim (com ou sem vencedor) e também por `migrar_noticias.py` no fim da migração; novo `--sync` para correr manualmente sem tocar no RSS; 2) a lupa da pesquisa do hero (`index.html`) era um `<span>` decorativo sem qualquer interactividade — passou a `<button>` real com `aria-label` e touch target 44px; e descoberto (e corrigido) que tanto os chips como a nova lupa tinham os resultados fechados no mesmo clique que os abria, pelo listener global "fechar ao clicar fora" de `pesquisa.js` — corrigido com `event.stopPropagation()` nos handlers dos botões, documentado como padrão obrigatório para qualquer botão futuro de pesquisa por clique; Enter no campo já funcionava (é `keydown`, não sofre do mesmo bug) mas ganhou um handler explícito por robustez; tudo confirmado com Chromium real via Playwright (viewport mobile); novo `tests/test_pesquisa_hero.py` extrai o JS/CSS reais do `index.html` (não uma cópia), incluindo teste de regressão a confirmar que clicar mesmo fora continua a fechar os resultados; 462 testes a passar*

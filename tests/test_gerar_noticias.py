@@ -29,6 +29,7 @@ from gerar_noticias import (
     score_entry,
     selecionar_vencedor,
     separar_titulo_e_fonte,
+    sincronizar_saidas,
     titulos_semelhantes,
 )
 
@@ -303,3 +304,90 @@ def test_regenerar_noticias_html_idempotente(tmp_path):
     assert conteudo1 == conteudo2
     assert "Notícia A" in conteudo1  # destaque = mais recente
     assert "Notícia B" in conteudo1  # arquivo = resto
+
+
+# ── sincronizar_saidas — resync de index.html + noticias.html a partir ────
+# ── do JSON, independente de haver ou não notícia nova no dia (Bug 1) ────
+
+_INDEX_HOME_BASE = """<!DOCTYPE html>
+<html>
+<body>
+  <section class="noticia-section">
+    <div class="noticia-grid">
+    <!-- NOTICIA-HOME:INICIO -->
+    <div class="noticia-card">
+      <span class="badge-hoje">25 jun. 2026</span>
+      <h3>Notícia antiga presa no marcador</h3>
+      <p>Resumo antigo.</p>
+      <a href="https://exemplo.pt/antiga" class="link-ler">Ler notícia completa →</a>
+    </div>
+    <!-- NOTICIA-HOME:FIM -->
+    </div>
+  </section>
+</body>
+</html>
+"""
+
+
+def test_sincronizar_saidas_atualiza_index_para_o_item_mais_recente(tmp_path):
+    """Regressão do Bug 1: o bloco NOTICIA-HOME não pode ficar preso ao
+    conteúdo antigo do marcador quando o JSON já tem itens mais
+    recentes — falha se a homepage ficar atrás do JSON."""
+    noticias_caminho = tmp_path / "noticias.html"
+    noticias_caminho.write_text(_NOTICIAS_HTML_BASE, encoding="utf-8")
+    index_caminho = tmp_path / "index.html"
+    index_caminho.write_text(_INDEX_HOME_BASE, encoding="utf-8")
+
+    itens = [_item("2026-06-20", "Antiga"), _item("2026-06-29", "A mais recente do JSON")]
+
+    sincronizar_saidas(itens, noticias_caminho=noticias_caminho, index_caminho=str(index_caminho))
+
+    conteudo_index = index_caminho.read_text(encoding="utf-8")
+    assert "A mais recente do JSON" in conteudo_index
+    assert "Notícia antiga presa no marcador" not in conteudo_index
+
+    conteudo_noticias = noticias_caminho.read_text(encoding="utf-8")
+    assert "A mais recente do JSON" in conteudo_noticias
+
+
+def test_sincronizar_saidas_e_idempotente(tmp_path):
+    noticias_caminho = tmp_path / "noticias.html"
+    noticias_caminho.write_text(_NOTICIAS_HTML_BASE, encoding="utf-8")
+    index_caminho = tmp_path / "index.html"
+    index_caminho.write_text(_INDEX_HOME_BASE, encoding="utf-8")
+
+    itens = [_item("2026-06-29", "Item único")]
+
+    sincronizar_saidas(itens, noticias_caminho=noticias_caminho, index_caminho=str(index_caminho))
+    conteudo1_index = index_caminho.read_text(encoding="utf-8")
+    conteudo1_noticias = noticias_caminho.read_text(encoding="utf-8")
+
+    sincronizar_saidas(itens, noticias_caminho=noticias_caminho, index_caminho=str(index_caminho))
+    conteudo2_index = index_caminho.read_text(encoding="utf-8")
+    conteudo2_noticias = noticias_caminho.read_text(encoding="utf-8")
+
+    assert conteudo1_index == conteudo2_index
+    assert conteudo1_noticias == conteudo2_noticias
+
+
+def test_sincronizar_saidas_carrega_do_json_quando_itens_nao_dados(tmp_path, monkeypatch):
+    """`sincronizar_saidas()` sem argumentos tem de ler o JSON do disco —
+    é o que torna possível correr `--sync` como passo manual isolado."""
+    import gerar_noticias
+
+    noticias_json = tmp_path / "noticias.json"
+    noticias_json.write_text(
+        '{"itens": [{"data_iso": "2026-06-29", "titulo": "Do JSON em disco", '
+        '"fonte_nome": "X", "url": "https://x.pt", "resumo": "r", "categoria": "apoios", "cluster_id": null}]}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(gerar_noticias, "NOTICIAS_JSON", noticias_json)
+
+    noticias_caminho = tmp_path / "noticias.html"
+    noticias_caminho.write_text(_NOTICIAS_HTML_BASE, encoding="utf-8")
+    index_caminho = tmp_path / "index.html"
+    index_caminho.write_text(_INDEX_HOME_BASE, encoding="utf-8")
+
+    sincronizar_saidas(noticias_caminho=noticias_caminho, index_caminho=str(index_caminho))
+
+    assert "Do JSON em disco" in index_caminho.read_text(encoding="utf-8")
