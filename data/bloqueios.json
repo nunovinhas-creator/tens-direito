@@ -56,5 +56,34 @@
       "desafio:recaptcha"
     ],
     "chars_uteis": 7603
+  },
+  {
+    "slug": "seg_social_abono",
+    "url": "https://www.seg-social.pt/abono-de-familia",
+    "data": "2026-07-02T08:55:12.896568+00:00",
+    "motivos": [
+      "titulo_login:seguranca social direta",
+      "texto_util=173<min=500"
+    ],
+    "chars_uteis": 173
+  },
+  {
+    "slug": "seg_social_rsi",
+    "url": "https://www.seg-social.pt/rendimento-social-de-insercao",
+    "data": "2026-07-02T08:55:25.372304+00:00",
+    "motivos": [
+      "titulo_login:seguranca social direta",
+      "texto_util=173<min=500"
+    ],
+    "chars_uteis": 173
+  },
+  {
+    "slug": "iefp_desemprego",
+    "url": "https://www.iefp.pt/subsidio-desemprego",
+    "data": "2026-07-02T08:56:22.033652+00:00",
+    "motivos": [
+      "desafio:recaptcha"
+    ],
+    "chars_uteis": 7691
   }
 ]

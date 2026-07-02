@@ -9,7 +9,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **01 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **02 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -188,6 +188,7 @@ tens-direito/
 │   └── workflows/
 │       ├── integridade.yml
 │       ├── pipeline-diario.yml
+│       ├── shadow-daily.yml
 │       ├── validar-conteudo.yml
 │       ├── verificar-links.yml
 ├── .claude/
@@ -201,13 +202,25 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── atualizar_branding_nvlabs.py
 │   ├── atualizar_claude_md.py
+│   ├── auto_update_engine.py
 │   ├── classificador_resposta.py
+│   ├── classificar_datas.py
+│   ├── decisao_datas.py
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
+│   ├── inserir_botao_partilhar.py
+│   ├── orquestrador_datas.py
+│   ├── run_shadow_daily.py
 │   ├── scraper_fontes.py
 │   ├── scraper_playwright.py
+│   ├── shadow_mode.py
+│   ├── shadow_mode_analytics.py
+│   ├── shadow_report_md.py
+│   ├── sincronizar_clusters.py
+│   ├── source_adapter.py
 │   ├── verificar_datas.py
 └── *.html                  ← páginas estáticas publicadas
 ```
@@ -257,6 +270,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 |---|---|---|
 | `integridade.yml` | — | integridade |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
+| `shadow-daily.yml` | — | shadow-daily |
 | `validar-conteudo.yml` | push para main (`**.html`) | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator |
 | `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 |
 
@@ -313,6 +327,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 01 de julho de 2026 às 16:05 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 02 de julho de 2026 às 09:56 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

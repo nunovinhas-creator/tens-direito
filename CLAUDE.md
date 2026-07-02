@@ -601,7 +601,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 
 ---
 
-*Última revisão automática: 2026-07-01*
+*Última revisão automática: 2026-07-02*
 
 ---
 
