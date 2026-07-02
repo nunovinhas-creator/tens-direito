@@ -479,15 +479,27 @@ todas as páginas).
   `.nav-mobile-sim-label`, etc.) continuam nos `<style>` de cada
   página — inofensivas (nada as usa) mas não foram removidas, para
   manter o diff desta fase pequeno.
-- `simulador-ase.html` tinha, antes e depois da Fase 4, um bloco
-  JSON-LD inválido (dois objectos JSON concatenados no mesmo
-  `<script>`, sem `[...]`) — bug pré-existente, não introduzido nem
-  corrigido nesta fase.
-- `404.html`, `sobre.html`, `fontes.html`, `privacidade.html`,
-  `comecar-aqui.html` não têm OG tags/JSON-LD/"Verificado a"
-  completos — já assim estava antes da Fase 4 e estas páginas estão
-  fora do âmbito de `validar-conteudo.yml`, excepto `comecar-aqui.html`
-  (que o workflow valida mas nunca bloqueou por não ter `exit` de erro).
+
+**Os dois achados acima foram corrigidos na Fase 5** — ver secção
+"PÁGINAS INSTITUCIONAIS" e o commit de correcções da Fase 5.
+
+---
+
+## PÁGINAS INSTITUCIONAIS — OG tags e disclaimer
+
+Decisão tomada página a página na Fase 5, sem alterar nenhum facto:
+
+| Página | OG tags | Disclaimer "Aviso de independência" | Justificação |
+|---|---|---|---|
+| `404.html` | ✅ adicionado | ❌ dispensado, deliberado | Página de erro, `robots: noindex`, sem conteúdo editorial — nada a desmentir |
+| `sobre.html` | ✅ adicionado | ✅ adicionado | Página institucional com afirmações sobre o projecto |
+| `fontes.html` | ✅ adicionado | ✅ adicionado | Lista fontes oficiais — disclaimer reforça que a lista é informativa |
+| `privacidade.html` | ✅ adicionado | ✅ adicionado | Consistência com as restantes páginas institucionais |
+| `comecar-aqui.html` | já existia | ✅ adicionado | O teste sugere apoios com base nas respostas — é orientação, precisa do aviso |
+
+`simulador-ase.html`: corrigido o JSON-LD inválido (dois objectos JSON
+no mesmo `<script>`, sem `[...]`) — passou a dois `<script>` separados,
+mesmo padrão usado noutras páginas com múltiplos tipos JSON-LD.
 
 ---
 
