@@ -405,22 +405,32 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    claro (fundo branco), incompatível com o texto branco do
    `clusters.css` (pensado para o hero escuro `#0F766E` dos artigos).
    Decisão: só páginas `tipo: "artigo"` ganham navegação contextual.
+   Ficam sinalizadas no `PILLAR-LISTA` com um badge discreto
+   ("Ferramenta", classe `.badge` já existente em todas as pillar
+   pages) para se distinguirem visualmente dos guias — ver secção
+   "NAVEGAÇÃO PRINCIPAL" / distinção Guias-Ferramentas da Fase 5.
+   *Registado para o futuro*: se um dia se quiser dar navegação
+   contextual também às ferramentas, a via é criar uma variante clara
+   de `clusters.css` (texto escuro) em vez de forçar o hero escuro
+   nos simuladores — não decidido, sem prazo.
 
-**Estado actual (Fases 1, 2 e 3 concluídas):** fundação de dados
-pronta, os 5 pillars existem com a lista de artigos sincronizada, a
-`index.html` está reorganizada por clusters, e os 15 artigos (todos os
-`tipo: "artigo"` de `clusters.json`) têm breadcrumb visível + "pertence
-ao guia" + secção de relacionados, sincronizados com o `BreadcrumbList`
-de cada um (`tests/test_breadcrumb_coerencia.py` confirma consistência
-nos 15). Ao aplicar, foram removidos blocos manuais antigos de
-"artigos relacionados" (classe `.cluster-escolar`) em 14 desses
-artigos — vários já apontavam para o cluster errado (ex.: `amim.html`
-ainda linkava para `prestacao-social-unica.html`; `cuidador-informal.html`
-e `complemento-solidario-idosos.html` linkavam-se um ao outro apesar de
-estarem hoje em clusters diferentes). Ver o commit da Fase 3 Etapa B
-para a lista completa por ficheiro.
-
-Próximo passo: passar UX/SEO final (Fase 5).
+**Estado actual (Fases 1 a 5 concluídas):** fundação de dados pronta,
+os 5 pillars existem com a lista de artigos sincronizada (com badge
+"Ferramenta" nas páginas `tipo: "ferramenta"`), a `index.html` está
+reorganizada por clusters, e os 15 artigos (todos os `tipo: "artigo"`
+de `clusters.json`) têm breadcrumb visível + "pertence ao guia" +
+secção de relacionados, sincronizados com o `BreadcrumbList` de cada
+um (`tests/test_breadcrumb_coerencia.py` confirma consistência nos
+15). Ao aplicar, foram removidos blocos manuais antigos de "artigos
+relacionados" (classe `.cluster-escolar`) em 14 desses artigos —
+vários já apontavam para o cluster errado (ex.: `amim.html` ainda
+linkava para `prestacao-social-unica.html`; `cuidador-informal.html`
+e `complemento-solidario-idosos.html` linkavam-se um ao outro apesar
+de estarem hoje em clusters diferentes). Ver o commit da Fase 3
+Etapa B para a lista completa por ficheiro. Fase 5 fechou o projecto
+com UX (espaçamento, distinção Guias/Ferramentas, touch targets) e
+SEO/integridade (JSON-LD, links, sitemap, pesquisa) — ver secção
+"FECHO DO PROJECTO" para o resumo completo.
 
 ---
 
@@ -474,14 +484,18 @@ todas as páginas).
    dropdown "Apoios" + pesquisa (desktop e mobile) + "Começa aqui"
    presentes dentro do bloco.
 
-**Dívida técnica conhecida (fora do âmbito da Fase 4):**
+**Dívida técnica conhecida (fora do âmbito da Fase 4, ainda por resolver):**
 - CSS morto: as regras da nav antiga (`.mobile-menu`, `.hamburger`,
   `.nav-mobile-sim-label`, etc.) continuam nos `<style>` de cada
   página — inofensivas (nada as usa) mas não foram removidas, para
-  manter o diff desta fase pequeno.
+  manter o diff desta fase pequeno. *Registado para o futuro*: limpeza
+  cosmética, sem prazo, sem risco.
 
-**Os dois achados acima foram corrigidos na Fase 5** — ver secção
-"PÁGINAS INSTITUCIONAIS" e o commit de correcções da Fase 5.
+Dois achados sinalizados no fecho da Fase 4 (não relacionados com o
+ponto acima) — JSON-LD inválido em `simulador-ase.html` e OG
+tags/disclaimer em falta nas páginas institucionais — **foram
+corrigidos na Fase 5** — ver secção "PÁGINAS INSTITUCIONAIS" e o
+commit de correcções da Fase 5.
 
 ---
 
@@ -500,6 +514,91 @@ Decisão tomada página a página na Fase 5, sem alterar nenhum facto:
 `simulador-ase.html`: corrigido o JSON-LD inválido (dois objectos JSON
 no mesmo `<script>`, sem `[...]`) — passou a dois `<script>` separados,
 mesmo padrão usado noutras páginas com múltiplos tipos JSON-LD.
+
+---
+
+## FECHO DO PROJECTO — REORGANIZAÇÃO DA ARQUITECTURA DE INFORMAÇÃO (Fases 0-5)
+
+Projecto concluído a 2026-07-02. Visão geral consolidada — as secções
+"SISTEMA DE CLUSTERS", "NAVEGAÇÃO PRINCIPAL" e "PÁGINAS INSTITUCIONAIS"
+acima têm o detalhe; esta secção é o mapa completo e o resumo de fecho.
+
+### Arquitectura final, num relance
+
+Duas fontes de verdade em `data/`, dois scripts idempotentes que
+injectam HTML estático entre marcadores — nunca fetch de JSON no
+browser, nunca SSG, mesmo princípio do `inserir_botao_partilhar.py`:
+
+| Fonte de verdade | Script sincronizador | Marcadores que possui |
+|---|---|---|
+| `data/clusters.json` | `scripts/sincronizar_clusters.py` | `CLUSTERS:HOME`, `DESTAQUES:HOME`, `CLUSTER-BADGE`, `RELACIONADOS`, `PILLAR-LISTA` |
+| `data/clusters.json` (reaproveitado) | `scripts/sincronizar_nav.py` | `NAV:INICIO`/`NAV:FIM` |
+
+Ambos: `--dry-run` disponível, correm sobre as páginas reais (não
+fixtures), 2.ª corrida = zero alterações (idempotência confirmada em
+todo o repositório nesta sessão de fecho), e recusam-se a alterar uma
+página se o marcador esperado não existir — nunca inventam estrutura.
+
+CSS/JS partilhados que resultaram deste projecto:
+`assets/css/clusters.css` (breadcrumb/pertence/relacionados),
+`assets/css/nav.css` + `assets/js/nav.js` (nav principal única).
+
+Checklist de publicação (secção "CHECKLIST OBRIGATÓRIA") já inclui os
+passos dos dois scripts — nenhuma página nova deve ser publicada sem
+correr ambos.
+
+### O que mudou, fase a fase
+
+- **Fase 0** — inventário do estado existente (29 páginas, 7 estruturas
+  de nav distintas, nenhuma arquitectura de clusters) antes de tocar
+  em qualquer ficheiro.
+- **Fase 1 (+ 1b)** — fundação de dados: `data/clusters.json` (5
+  clusters) e `scripts/sincronizar_clusters.py`; criadas as 3 pillar
+  pages em falta (`p/familia.html`, `p/idosos-incapacidade-cuidadores.html`,
+  `p/trabalho-rendimento.html`), adiantadas porque as fases seguintes
+  já precisavam de linkar para elas.
+- **Fase 2** — homepage reorganizada por clusters: hero com pesquisa,
+  "Comece por aqui", cartões de cluster, guias principais em destaque,
+  como funciona, prazos, notícia do dia.
+- **Fase 3** — navegação contextual nos 15 artigos (breadcrumb visível
+  + "pertence ao guia" + relacionados), com limpeza de 14 blocos
+  manuais desactualizados que já apontavam para clusters errados.
+- **Fase 4** — nav principal única nas 29 páginas via
+  `sincronizar_nav.py`, com `simulador-ase.html` restruturado à parte
+  (único `<h1>` dentro de `<header>` do repositório).
+- **Fase 5** — fecho: correcção dos 2 achados pendentes da Fase 4
+  (JSON-LD de `simulador-ase.html`, OG/disclaimer institucionais); UX
+  (espaçamento entre secções, badge "Ferramenta" nas pillar lists,
+  touch targets ≥44px em chips/dropdown/menu); SEO/integridade
+  verificados nas 29 páginas sem amostragem (JSON-LD válido, zero
+  links internos partidos, sitemap completo, `pesquisa.js` com
+  cobertura de 27/27 páginas elegíveis); esta secção de fecho.
+
+### Decisões tomadas que vale a pena lembrar
+
+- Ferramentas (simuladores) ficam de fora da navegação contextual
+  (`CLUSTER-BADGE`/`RELACIONADOS`) por incompatibilidade de hero
+  claro/escuro — recebem apenas um badge "Ferramenta" no `PILLAR-LISTA`.
+- `404.html` tem nav completa (decisão deliberada) mas não tem
+  disclaimer (também deliberado — página de erro sem conteúdo
+  editorial).
+- `pesquisa.js` mantém-se lista manual, não gerada a partir de
+  `clusters.json` — o ficheiro cobre pillars e páginas institucionais
+  que não estão no JSON de clusters; gerar automaticamente exigiria
+  primeiro unificar as duas fontes, fora do âmbito desta reorganização.
+
+### Registado para o futuro (sem prazo, sem decisão tomada)
+
+1. **Densidade da PSU na homepage** — reduzir dos 6 pontos actuais
+   quando o tema arrefecer após o decreto-lei (ver secção "IMPACTO DA
+   PSU", plano de acção, ponto 7 — candidatos: banner do topo e
+   cartão de prazos).
+2. **Variante clara de `clusters.css`** — se um dia se quiser dar
+   breadcrumb/relacionados também aos simuladores, criar uma variante
+   de texto escuro em vez de forçar hero escuro nas ferramentas (ver
+   secção "SISTEMA DE CLUSTERS", ponto 6).
+3. **CSS morto da nav antiga** — limpeza cosmética nos `<style>`
+   de cada página (ver secção "NAVEGAÇÃO PRINCIPAL", dívida técnica).
 
 ---
 
@@ -715,3 +814,19 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 4 completa (nav principal única): nova secção "NAVEGAÇÃO PRINCIPAL"; `scripts/sincronizar_nav.py` (bootstrap com 2 heurísticas + sincronização idempotente), `assets/css/nav.css` e `assets/js/nav.js` partilhados por todas as páginas; `pesquisa.js` ganhou 3.º parâmetro opcional em `mostrarResultados()` para a pesquisa coexistir na nav e no hero do `index.html`; `simulador-ase.html` restruturado em commit à parte (único `<header>` com `<h1>` do repositório — passou para `<section class="hero">` própria); aplicado às 29 páginas (`rsi.html`+`index.html` na Etapa A, as outras 27 na Etapa B); `404.html` passa a ter nav completa por decisão deliberada; as 7 páginas com "Por onde começar?" mantêm o mesmo destino via "Começa aqui"; novo `tests/test_nav_coerencia.py` (116 casos) confirma 1 bloco NAV por página e zero resíduos da nav antiga; idempotência confirmada em todo o repositório; 382 testes a passar; flagged (não corrigido, fora do âmbito): JSON-LD inválido pré-existente em `simulador-ase.html`, e OG/JSON-LD/"Verificado a" em falta em `404.html`/`sobre.html`/`fontes.html`/`privacidade.html`/`comecar-aqui.html` (gaps anteriores à Fase 4)
+
+---
+
+*Última revisão: 2026-07-02 — Fase 5 bloco 1 (correcções): corrigido o JSON-LD inválido de `simulador-ase.html` (dois objectos no mesmo `<script>` sem `[...]` — passou a dois `<script>` separados); adicionadas OG tags a `404.html`/`sobre.html`/`fontes.html`/`privacidade.html`; adicionado disclaimer "Aviso de independência" a `sobre.html`/`fontes.html`/`privacidade.html`/`comecar-aqui.html` (não a `404.html`, decisão deliberada — página de erro sem conteúdo editorial, ver secção "PÁGINAS INSTITUCIONAIS"); corrigido `</main>` em falta em `fontes.html`
+
+---
+
+*Última revisão: 2026-07-02 — Fase 5 bloco 2 (UX): espaçamento entre secções da homepage (`<hr class="divider">` entre clusters/destaques e antes da notícia do dia); distinção visual Guias/Ferramentas via badge "Ferramenta" no `PILLAR-LISTA`, gerado por `render_pillar_lista()` em `sincronizar_clusters.py` (reaproveita a classe `.badge` já existente nas pillar pages — nada à mão); touch targets ≥44px em `.chip` (homepage), `.nav-dropdown-btn`/`.nav-dropdown-menu a`/`.nav-toggle`/`.nav-mobile-menu a` (`assets/css/nav.css`)
+
+---
+
+*Última revisão: 2026-07-02 — Fase 5 bloco 3 (SEO/integridade): verificado sem amostragem nas 29 páginas — JSON-LD válido em todas (3 institucionais sem JSON-LD por decisão, as restantes 26 válidas), zero links internos partidos, `sitemap.xml` completo (28 entradas, os 3 pillars novos confirmados, `404.html` correctamente excluído); `scripts/pesquisa.js` ganhou as 3 entradas em falta (`sobre.html`/`fontes.html`/`privacidade.html`), cobertura 24→27 de 27 páginas elegíveis (todas excepto `index.html`/`404.html`); mantida decisão de `pesquisa.js` como lista manual (cobre pillars e institucionais fora de `clusters.json`)
+
+---
+
+*Última revisão: 2026-07-02 — Fase 5 bloco 4 (docs) e fecho do projecto: nova secção "FECHO DO PROJECTO" com o mapa completo da arquitectura (fontes de verdade, scripts sincronizadores, marcadores), resumo fase a fase (0 a 5) e os 3 pontos registados para o futuro sem prazo (densidade da PSU na homepage, variante clara de `clusters.css` para os simuladores, limpeza do CSS morto da nav antiga); clarificada a frase ambígua sobre "os dois achados" na secção "NAVEGAÇÃO PRINCIPAL"; 382 testes a passar, idempotência de `sincronizar_clusters.py` e `sincronizar_nav.py` reconfirmada em todo o repositório — reorganização da arquitectura de informação (Fases 0-5) concluída*
