@@ -82,11 +82,12 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | HTML | Estático puro — sem Jekyll, sem SSG |
 | Analytics | GA4: `G-XP46PM8H1Q` |
 | Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
-| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 6 páginas indexadas) |
+| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 21 páginas indexadas) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
 | Notícias | `scripts/gerar_noticias.py` → `noticias.html` |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
+| Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 
 ### Workflows (5 — 2 fazem push, âmbitos disjuntos)
 
@@ -123,11 +124,21 @@ Isto elimina race conditions entre workflows concorrentes.
 | `psu-quem-tem-direito.html` | Quem tem direito à PSU — condições de acesso aprovadas | 1 jul. 2026 |
 | `psu-vs-abono-familia.html` | PSU e Abono de Família: são apoios diferentes | 1 jul. 2026 |
 | `psu-lista-13-apoios.html` | As 13 prestações que a PSU vai substituir (lista completa 2026) | 1 jul. 2026 |
+| `rsi.html` | RSI 2026 — Rendimento Social de Inserção | jun. 2026 |
+| `subsidio-desemprego.html` | Subsídio de Desemprego 2026 | jun. 2026 |
+| `subsidio-parental.html` | Licença Parental 2026 | jun. 2026 |
+| `cuidador-informal.html` | Estatuto do Cuidador Informal 2026 | jun. 2026 |
+| `comecar-aqui.html` | Começa Aqui — encontra o teu apoio | jun. 2026 |
+| `simulador-abono.html` | Simulador de Abono de Família 2026 | jun. 2026 |
+| `simulador-ase.html` | Simulador de Ação Social Escolar (ASE) 2026/2027 | jun. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
 | `privacidade.html` | Política de Privacidade | jun. 2026 |
 | `404.html` | Página não encontrada | jun. 2026 |
+
+*Tabela corrigida a 2026-07-02 — faltavam 7 páginas já publicadas (rsi, subsidio-desemprego,
+subsidio-parental, cuidador-informal, comecar-aqui, simulador-abono, simulador-ase).*
 
 ---
 
@@ -147,6 +158,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `sitemap.xml` actualizado se nova página
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão "Partilhar este artigo" só às páginas que ainda não o têm)
+- [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
 - [ ] Commit e push directamente para `main`
 
 ---
@@ -175,9 +187,11 @@ tens-direito/
 │   ├── shadow_mode_analytics.py ← agrega relatórios do Shadow Mode em métricas
 │   ├── shadow_report_md.py   ← métricas → relatório Markdown legível
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
+│   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta nav entre marcadores (idempotente)
 │   ├── pesquisa.js           ← pesquisa interna (JS puro, sem servidor)
 │   └── logs/                 ← logs do scraper
 ├── data/
+│   ├── clusters.json         ← fonte única de verdade da arquitectura de clusters
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
 │   ├── mudancas.json         ← mudanças detectadas pelo pipeline
 │   └── divergencias.json     ← valores scraped vs publicado
@@ -316,10 +330,62 @@ Conteúdo obrigatório no `<body>`:
 - `/publicar-pagina` — pipeline completo: scrape → validar → gerar HTML → auditar links → commit
 - `/verificar-fontes` — audita todos os links de todas as páginas publicadas
 - `/nova-noticia` — lê RSS, selecciona notícia relevante, actualiza noticias.html
+- `/atualizar-cluster-psu` — executa o plano de acção da Issue do decreto-lei PSU, com confirmação obrigatória dos valores antes de tocar em ficheiros
 
 **Skills** (`.claude/skills/`) — usadas internamente:
 - `estrutura-pagina` — template HTML com as secções obrigatórias e JSON-LD pronto a preencher
 - `verificar-url` — testa se um URL existe e devolve acção correcta (200/403/404/timeout)
+
+---
+
+## SISTEMA DE CLUSTERS — ARQUITECTURA DE INFORMAÇÃO
+
+Reorganização da navegação do site por clusters temáticos, em curso desde
+2026-07-02. Mesmo princípio do botão de partilha: **"automático" = script
+Python idempotente, corrido em sessão manual, que injecta HTML estático
+entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
+
+1. **`data/clusters.json`** — fonte única de verdade: cada cluster tem
+   `id`, `nome`, `descricao_curta`, `icone`, `pillar` (URL da página
+   agregadora), `paginas[]` (`slug`/`titulo`/`tipo`/`destaque`) e
+   `relacionados[]` (ids de outros clusters, usados como 2.º nível nas
+   sugestões de "relacionados").
+2. **`scripts/sincronizar_clusters.py`** — idempotente, `--dry-run`
+   disponível. Injecta HTML só entre estes marcadores; se um marcador
+   não existir numa página que devia tê-lo, reporta e não altera nada:
+   - `<!-- CLUSTERS:HOME:INICIO/FIM -->` — cartões de clusters no `index.html`
+   - `<!-- CLUSTER-BADGE:INICIO/FIM -->` — breadcrumb visível + "este artigo pertence ao guia X", num artigo
+   - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
+   - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
+   Também corre `validar_consistencia()`: reporta páginas do JSON sem
+   ficheiro, pillars por criar, e ficheiros HTML sem entrada no JSON
+   (fora da lista `EXCLUIDAS`: `index.html`, `noticias.html`,
+   `comecar-aqui.html`, `sobre.html`, `fontes.html`, `privacidade.html`,
+   `404.html`).
+3. **Regras de relevância para "relacionados"** (determinísticas, sem
+   aleatoriedade, máx. 4 links): 1.º irmãos do mesmo cluster, 2.º
+   páginas dos `relacionados[]` explícitos do cluster.
+4. **Clusters actuais:**
+
+   | Cluster | Pillar | Estado |
+   |---|---|---|
+   | Apoios Escolares | `p/apoios-escolares.html` | existe |
+   | Prestação Social Única | `prestacao-social-unica.html` | existe |
+   | Família e Crianças | `p/familia.html` | **por criar** |
+   | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` | **por criar** (inclui `amim.html`) |
+   | Trabalho e Rendimento | `p/trabalho-rendimento.html` | **por criar** |
+
+5. **Testes**: `tests/test_sincronizar_clusters.py` — idempotência,
+   marcador em falta, página no JSON sem ficheiro, ficheiro sem entrada
+   no JSON.
+
+**Estado actual (Fase 1 concluída):** fundação de dados e script prontos
+e testados; nenhuma página tem ainda os marcadores (`--dry-run` reporta
+todas como "marcador em falta" — é o esperado até à Fase 2/3). Próximos
+passos: reorganizar `index.html` (Fase 2), injectar navegação contextual
+nos artigos (Fase 3), criar as 3 pillar pages em falta e um
+`sincronizar_nav.py` para a nav principal (Fase 4), passar UX/SEO final
+(Fase 5).
 
 ---
 
@@ -504,3 +570,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-01 — criado `shadow-daily.yml` (cron `0 3 * * *`, push restrito a `shadow_history/*.md`, guardrail próprio); documentado o subsistema Shadow Mode completo (Camadas 2-8: classificação, decisão, auto-update engine sandbox, orquestrador, source adapter, Shadow Mode + analytics + relatório Markdown, execução diária); actualizada tabela de workflows (5, 2 com push, âmbitos disjuntos)*
+
+---
+
+*Última revisão: 2026-07-02 — Fase 0+1 da reorganização de arquitectura de informação: corrigida tabela "PÁGINAS PUBLICADAS" (faltavam 7 páginas) e contagem do `pesquisa.js` (21, não 6); criado `data/clusters.json` (5 clusters: Apoios Escolares, Prestação Social Única, Família e Crianças, Idosos/Incapacidade/Cuidadores, Trabalho e Rendimento — AMIM integrado no cluster de incapacidade) e `scripts/sincronizar_clusters.py` idempotente com `--dry-run`, testado em `tests/test_sincronizar_clusters.py`; nova secção "SISTEMA DE CLUSTERS"; nenhuma página HTML alterada ainda (Fases 2-5 por fazer)*
