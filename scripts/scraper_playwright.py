@@ -468,6 +468,9 @@ def _tentar_fallback_wayback(slug: str, url: str, seletores: dict, nota: str) ->
     de estados de fontes (`gerir_estado_fontes.py`)."""
     decisao = decidir_estado_apos_bloqueio(url, fetch_json=_fetch_json_wayback)
     if decisao["estado"] != "OK_VIA_ARQUIVO":
+        # Sem isto, "sem snapshot recente" e "consulta ao Wayback nunca
+        # sequer tentada" ficam indistinguíveis no log.
+        log.info("%s: sem snapshot Wayback recente disponível — a manter BLOQUEADO", slug)
         return None
 
     snapshot = decisao["snapshot"]
