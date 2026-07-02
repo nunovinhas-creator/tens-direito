@@ -1191,34 +1191,63 @@ de bloqueio e ter um modo degradado honesto, não esconder bloqueios.
    (`modo_arquivo:snapshot=...:dias=...`) para auditoria. Sem snapshot
    recente, cai no caminho `BLOQUEADO` normal (`_registar_bloqueio`) — nunca
    finge que a fonte respondeu.
-5. **Fontes estruturadas alternativas — investigação preliminar, não
-   verificada ao vivo nesta sessão** (mesma limitação de rede documentada em
-   "FRESCURA DA HOMEPAGE" — `WebFetch`/`curl` a partir do ambiente de sessão
-   levam bloqueio a domínios `.gov.pt` fora da lista permitida; só é fiável
-   testar isto no runner real do GitHub Actions, via `workflow_dispatch`
-   dedicado, à semelhança do diagnóstico de feeds RSS já registado para a
-   Fase 2 das notícias). Candidatos a explorar nessa investigação futura,
-   por ordem de fonte actualmente bloqueada:
-   - `seg_social_abono` / `seg_social_rsi` — a Segurança Social publica
-     folhetos e guias práticos em PDF (mais estáveis que HTML dinâmico);
-     `dados.gov.pt` pode ter datasets estruturados dos valores de
-     referência (IAS, escalões) — por confirmar.
-   - `iefp_desemprego` — o desafio actual é reCAPTCHA na própria página;
-     `eportugal.gov.pt` (balcão único de serviços públicos) por vezes
-     espelha o mesmo conteúdo informativo sem o mesmo desafio — por
-     confirmar se cobre subsídio de desemprego especificamente.
-   - Em geral: `dados.gov.pt` (portal de dados abertos do Estado) é o
-     candidato mais promissor para valores estruturados (IAS, RSI, abono)
-     em vez de scraping de HTML — mas nenhum destes URLs foi testado com
-     pedidos reais nesta sessão. **Só migrar uma fonte se a alternativa,
-     testada e confirmada no runner real, tiver a mesma informação
-     oficial** (mesma regra de sempre: nunca publicar valor sem fonte
-     primária confirmada).
+5. **Fontes estruturadas alternativas — investigação concluída em
+   2026-07-02, testada ao vivo num runner real** (`workflow_dispatch`
+   dedicado e temporário, apagado depois de recolher os resultados) —
+   ver secção "FONTES — ALTERNATIVAS POR FONTE" para a tabela completa e
+   o veredicto por fonte. Resumo: nenhuma das 3 fontes migrou — para
+   `seg_social_abono`/`seg_social_rsi` não foi encontrado candidato
+   equivalente acessível; `iefp_desemprego` revelou-se um falso positivo
+   do próprio classificador (ver essa secção), não uma fonte bloqueada.
 
 Testes: `tests/test_scraper_fallback.py` (15 testes, mocks — sem rede real),
 cobre snapshot recente/antigo/inexistente, falha de rede na consulta
 Wayback, e a garantia de que a decisão nunca devolve `"estado": "OK"`
 directamente (só `OK_VIA_ARQUIVO` ou `BLOQUEADO`).
+
+---
+
+## FONTES — ALTERNATIVAS POR FONTE
+
+Investigação de 2026-07-02, feita num `workflow_dispatch` temporário
+(`diagnostico-fontes-temp.yml`, apagado no fim — nunca ficou como
+workflow permanente) porque `WebFetch`/`curl` a partir do ambiente de
+sessão levam bloqueio a domínios `.gov.pt` fora da lista permitida; só
+é fiável testar isto a partir de um runner real do GitHub Actions.
+
+| Fonte | Candidato testado | Acessível do runner? | Equivalência | Decisão |
+|---|---|---|---|---|
+| `seg_social_abono` | `eportugal.gov.pt` (sitemap) | Sitemap devolve só 3 sub-sitemaps Liferay (`www2.gov.pt/sitemap.xml?...`) sem URLs directos — SPA Next.js, provavelmente exige JS | Não avaliável sem mais investigação | Não migrado |
+| `seg_social_abono` / `seg_social_rsi` | `seg-social.pt/guias-praticos` (PDFs) | Página responde 200 mas 0 links `.pdf` encontrados no HTML estático — lista de guias é provavelmente carregada via JS/AJAX | Nenhuma (sem PDFs visíveis a um pedido simples) | Não migrado |
+| `seg_social_abono` / `seg_social_rsi` | `dados.gov.pt` (API CKAN `package_search`) | 404 — endpoint testado não existe nesta instância (portal não é CKAN "de raiz" nesse caminho, ou a API vive noutro caminho) | Não avaliável | Não migrado |
+| `seg_social_abono` / `seg_social_rsi` | **A própria URL original**, mas via `urllib` simples (sem Playwright) | Sim, HTTP 200 — mas o servidor redirecciona sempre para `seg-social.pt/ptss/pssd/home?r=...` ("Segurança Social Direta", portal de autenticação, 241 chars úteis) | Nenhuma — mesmo comportamento com ou sem Playwright/stealth | Confirma que **não é bloqueio a IP/fingerprint de bot**: é o próprio servidor a redireccionar pedidos sem sessão válida para o gateway de autenticação, para qualquer cliente. Sem solução simples do lado do cliente. |
+| `iefp_desemprego` | **A própria URL original**, via `urllib` simples | Sim, HTTP 200, 89 515 chars, título real "Subsídio de Desemprego - IEFP, I.P.", conteúdo real confirmado (17× "subsídio de desemprego", 15× "IAS", 3× "prazo") | **Total** — é a página real, completa | **Não é uma fonte bloqueada.** `classificador_resposta._MARCADORES_DESAFIO` apanha a substring `"recaptcha"` em qualquer ponto do HTML; a única ocorrência na página é um `<script src="https://www.google.com/recaptcha/api.js?...">` passivo (provavelmente de um widget de contacto no template do site, nada a ver com bloqueio de conteúdo) — zero ocorrências de `g-recaptcha`, `grecaptcha.execute`, `challenge`, `captcha-container` ou qualquer outro sinal real de desafio. **Falso positivo confirmado no classificador, não uma fonte inacessível.** |
+
+**Porque não houve Fase de migração (piloto) nesta sessão**: o plano de
+migração do robustecimento (secção "SCRAPER — ROBUSTEZ CONTRA
+BLOQUEIOS") pressupõe encontrar uma **fonte alternativa** com
+equivalência total. Isso não aconteceu para nenhuma das 3 — para
+`seg_social_abono`/`seg_social_rsi` porque nenhum candidato testado
+devolveu conteúdo utilizável, e para `iefp_desemprego` porque o
+problema real não é a fonte (que está perfeitamente acessível) mas sim
+uma falha do nosso próprio classificador. Migrar `iefp_desemprego`
+"para si própria" não faz sentido — o que falta é uma correcção
+cirúrgica e testada a `classificador_resposta._MARCADORES_DESAFIO`
+(distinguir um `<script src="recaptcha/api.js">` passivo de um desafio
+real, ex.: só marcar bloqueio se houver também `g-recaptcha`,
+`grecaptcha.execute` ou o resto do conteúdo for insuficiente). **Ainda
+não corrigido** — é uma mudança de comportamento à parte, com o seu
+próprio raciocínio e testes, deliberadamente fora do âmbito desta
+investigação (que era sobre migrar para fontes alternativas, não sobre
+rever a lógica do classificador). Registado para sessão dedicada.
+
+*Registado para o futuro*: confirmar se `eportugal.gov.pt`/
+`seg-social.pt/guias-praticos` têm conteúdo relevante por trás de
+JavaScript (precisaria de Playwright em vez de `urllib` simples para
+confirmar) antes de descartar definitivamente como candidatos para
+`seg_social_abono`/`seg_social_rsi`; encontrar o caminho correcto da
+API de `dados.gov.pt` (o testado, `/api/3/action/package_search`,
+devolve 404 nesta instância).
 
 ---
 
@@ -1376,3 +1405,7 @@ nunca escreve nada).
 Fase 5 — verificação em produção (`workflow_dispatch` real em `main`, não simulado): `shadow-daily.yml` correu e correctamente saltou a geração (relatório de hoje já existia — guarda anti-duplicado confirmada); `pipeline-diario.yml` correu o scrape completo — as 3 fontes historicamente bloqueadas (`seg_social_abono`, `seg_social_rsi`, `iefp_desemprego`) fizeram as 3 tentativas com esperas aleatórias 30-120s cada (confirmado nos logs), continuaram `BLOQUEADO` (sem snapshot Wayback recente disponível — ninguém tentou `dominios.gov.pt` no wayback ainda, esperado), e ficaram registadas em `data/estado_fontes.json` como dia 1 (primeira execução real do script, contador começa do zero); as Issues #37/#45 (`data-expirada`) fecharam-se sozinhas nesse run; #47/#48/#49 (`fonte-bloqueada`) mantiveram-se abertas sem duplicar nem comentar (dia 1 < limiar de 3); guardrail "Verificar ficheiros protegidos" passou, só `data/`, `README.md` e `noticias.html` foram tocados. Encontrado e corrigido um gap de observabilidade real nesse run: `_tentar_fallback_wayback` não deixava nenhum rasto no log quando não havia snapshot recente — corrigido com uma linha de log, sem alterar o comportamento de segurança. Também documentada uma limitação pré-existente (não desta fase): `LIMIAR_ANOMALIA_PAGINAS=25` nunca dispara com o estado actual do repositório porque `_paginas_elegiveis()` só conta as 22 páginas da raiz (não recursivo, mesma limitação de `verificar_datas.py`) — as pillar pages em `p/*.html` nunca entram na contagem; registado para o futuro, não corrigido nesta sessão.
 
 Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0syf`, exigida pelo ambiente remoto) e foi depois integrada em `main` por fast-forward (histórico linear, sem merge commit) a pedido explícito do Nuno, para respeitar a REGRA ABSOLUTA — GIT deste ficheiro; a branch remota não pôde ser apagada por falta de permissão da sessão (fica órfã mas inofensiva, totalmente contida em `main`). 92 testes novos (`test_run_shadow_daily_fonte_propria.py`, `test_estado_fontes.py`, `test_scraper_fallback.py`, `test_carimbos_elegiveis.py` + extensões a `test_auto_update_engine.py`/`test_verificar_datas.py`), 572 testes a passar, ruff limpo.*
+
+---
+
+*Última revisão: 2026-07-02 — duas tarefas de seguimento à sessão anterior. 1) Verificação pedida sobre #37/#45: confirmado com as funções reais (não de memória) que NÃO é regressão — é o efeito do commit `eeefa1c`, que corrigiu um "scan solto" da página inteira (`tem_ano_antigo`) para uma verificação ancorada à própria correspondência regex; `amim.html` nunca teve um match real de padrão de data (só substrings de "2025" em citações legais), `manuais-escolares-mega.html` tem um match real (`ano_letivo`, "2025/2026") correctamente suprimido por `MARCADORES_PENDENTE` enquanto o prazo anunciado não passar. 2) Investigação de fontes alternativas para `seg_social_abono`/`seg_social_rsi`/`iefp_desemprego` (secção "FONTES — ALTERNATIVAS POR FONTE", nova) via `workflow_dispatch` temporário e real: nenhum candidato equivalente encontrado para as duas fontes da Segurança Social (redireccionam sempre para o portal de autenticação, com ou sem Playwright — não é bloqueio de IP/fingerprint); descoberta principal — `iefp_desemprego` **não está bloqueada**, é um falso positivo do próprio `classificador_resposta.py` (a substring "recaptcha" aparece só num `<script>` passivo, sem nenhum sinal real de desafio) — corrigir isso é uma mudança cirúrgica à parte, registada mas não feita nesta sessão. Branch órfã `claude/shadow-mode-issues-scraper-5u0syf` continua sem poder ser apagada (403 na API, sem `gh` CLI nem ferramenta MCP equivalente disponível) — fica para apagar manualmente. Sessão continuou directamente em `main`, sem branches novas.*
