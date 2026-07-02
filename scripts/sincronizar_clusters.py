@@ -42,6 +42,7 @@ EXCLUIDAS = {
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
+MARCADOR_DESTAQUES = ("DESTAQUES:HOME:INICIO", "DESTAQUES:HOME:FIM")
 MARCADOR_BADGE = ("CLUSTER-BADGE:INICIO", "CLUSTER-BADGE:FIM")
 MARCADOR_RELACIONADOS = ("RELACIONADOS:INICIO", "RELACIONADOS:FIM")
 MARCADOR_PILLAR_LISTA = ("PILLAR-LISTA:INICIO", "PILLAR-LISTA:FIM")
@@ -55,6 +56,8 @@ class Pagina:
     titulo: str
     tipo: str
     destaque: bool
+    emoji: str = ""
+    desc: str = ""
 
 
 @dataclass(frozen=True)
@@ -145,6 +148,26 @@ def render_home_cards(clusters: List[Cluster]) -> str:
             f'        <span class="link-ver">→ Ver guia</span>\n'
             f'      </a>'
         )
+    return "\n".join(cartoes)
+
+
+def render_destaques_home(clusters: List[Cluster]) -> str:
+    """Um cartão por cluster (o(s) `destaque: true` do JSON) — substitui
+    a antiga grelha de 14 cartões hardcoded; ver secção "Guias principais"
+    do plano de reorganização."""
+    cartoes = []
+    for c in clusters:
+        for p in c.paginas:
+            if not p.destaque:
+                continue
+            cartoes.append(
+                f'      <a href="/{p.slug}" class="apoio-card">\n'
+                f'        <div class="emoji">{p.emoji}</div>\n'
+                f'        <h3>{p.titulo}</h3>\n'
+                f'        <p class="desc">{p.desc}</p>\n'
+                f'        <span class="link-ver">→ Ver guia</span>\n'
+                f'      </a>'
+            )
     return "\n".join(cartoes)
 
 
@@ -284,13 +307,27 @@ def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAI
 
 def processar_home(caminho: Path, clusters: List[Cluster], *, escrever: bool = True) -> Resultado:
     conteudo_original = caminho.read_text(encoding="utf-8")
-    novo = _substituir_bloco(conteudo_original, MARCADOR_HOME, render_home_cards(clusters))
+    conteudo = conteudo_original
+    faltam: List[str] = []
+
+    novo = _substituir_bloco(conteudo, MARCADOR_HOME, render_home_cards(clusters))
     if novo is None:
-        return Resultado(caminho.name, False, "marcador CLUSTERS:HOME em falta — sem alterações")
-    if novo == conteudo_original:
+        faltam.append("CLUSTERS:HOME")
+    else:
+        conteudo = novo
+
+    novo = _substituir_bloco(conteudo, MARCADOR_DESTAQUES, render_destaques_home(clusters))
+    if novo is None:
+        faltam.append("DESTAQUES:HOME")
+    else:
+        conteudo = novo
+
+    if faltam:
+        return Resultado(caminho.name, False, f"marcador(es) em falta: {', '.join(faltam)} — sem alterações")
+    if conteudo == conteudo_original:
         return Resultado(caminho.name, False, "já sincronizado — sem alterações")
     if escrever:
-        caminho.write_text(novo, encoding="utf-8")
+        caminho.write_text(conteudo, encoding="utf-8")
     return Resultado(caminho.name, True, "sincronizado" if escrever else "sincronizado (dry-run, não escrito)")
 
 

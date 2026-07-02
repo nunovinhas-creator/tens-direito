@@ -357,6 +357,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    disponível. Injecta HTML só entre estes marcadores; se um marcador
    não existir numa página que devia tê-lo, reporta e não altera nada:
    - `<!-- CLUSTERS:HOME:INICIO/FIM -->` — cartões de clusters no `index.html`
+   - `<!-- DESTAQUES:HOME:INICIO/FIM -->` — um cartão por cluster (o(s) `destaque: true`), no `index.html`
    - `<!-- CLUSTER-BADGE:INICIO/FIM -->` — breadcrumb visível + "este artigo pertence ao guia X", num artigo
    - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
    - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
@@ -385,14 +386,22 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    marcador em falta, página no JSON sem ficheiro, ficheiro sem entrada
    no JSON, contagem por tipo.
 
-**Estado actual (Fase 1 concluída):** fundação de dados pronta e
-testada; os 5 pillars existem e têm a lista de artigos sincronizada.
+**Estado actual (Fases 1 e 2 concluídas):** fundação de dados pronta,
+os 5 pillars existem com a lista de artigos sincronizada, e a
+`index.html` foi reorganizada pela ordem hero (com pesquisa) → "Comece
+por aqui" → clusters → guias principais → como funciona → prazos →
+notícia do dia. A pesquisa (`#campo-pesquisa`) foi movida da nav para o
+hero, com chips de sugestão (`preencherPesquisa()`); a antiga grelha de
+14 cartões foi substituída pelos 5 cartões de cluster (`CLUSTERS:HOME`)
+mais 5 cartões de destaque, um por cluster (`DESTAQUES:HOME`); o
+`id="guias-de-apoios"` manteve-se na secção de clusters para não
+partir o link `/#guias-de-apoios` já usado noutras páginas.
+
 Ainda faltam os marcadores `CLUSTER-BADGE`/`RELACIONADOS` nos 20
-artigos-membro e `CLUSTERS:HOME` no `index.html` (`--dry-run` reporta-os
-como "marcador em falta" — esperado até à Fase 2/3). Próximos passos:
-reorganizar `index.html` (Fase 2), injectar navegação contextual nos
-artigos (Fase 3), simplificar a nav principal com um `sincronizar_nav.py`
-(Fase 4), passar UX/SEO final (Fase 5).
+artigos-membro (`--dry-run` reporta-os como "marcador em falta" —
+esperado até à Fase 3). Próximos passos: injectar navegação contextual
+nos artigos (Fase 3), simplificar a nav principal com um
+`sincronizar_nav.py` (Fase 4), passar UX/SEO final (Fase 5).
 
 ---
 
@@ -589,3 +598,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — criadas as 3 pillar pages em falta (`p/familia.html`, `p/idosos-incapacidade-cuidadores.html`, `p/trabalho-rendimento.html`), adiantadas da Fase 4 porque a Fase 2/3 já precisam de linkar para elas; checklist completa (GA4, JSON-LD, disclaimer, "Verificado a", botão partilhar) e conteúdo sourced só de factos já publicados nos artigos-filho; retrofit do marcador `PILLAR-LISTA` em `p/apoios-escolares.html` e `prestacao-social-unica.html`; `sincronizar_clusters.py` corrido com sucesso nos 5 pillars (idempotência confirmada); `sitemap.xml` e `scripts/pesquisa.js` (24 páginas) actualizados
+
+---
+
+*Última revisão: 2026-07-02 — Fase 2 (homepage): `index.html` reorganizada — hero com pesquisa (`#campo-pesquisa` movido da nav, chips de sugestão) → "Comece por aqui" (5 cartões por necessidade) → clusters (`CLUSTERS:HOME`) → guias principais (novo marcador `DESTAQUES:HOME`, um destaque por cluster) → como funciona → prazos → notícia do dia; `data/clusters.json` ganhou campos opcionais `emoji`/`desc` por página (só nas 5 páginas `destaque: true`, sourced dos cartões antigos/meta description já publicados); testado no browser (desktop + mobile, Playwright) sem erros de consola; idempotência confirmada

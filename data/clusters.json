@@ -7,7 +7,7 @@
       "icone": "🎒",
       "pillar": "/p/apoios-escolares.html",
       "paginas": [
-        {"slug": "acao-social-escolar.html", "titulo": "Ação Social Escolar", "tipo": "artigo", "destaque": true},
+        {"slug": "acao-social-escolar.html", "titulo": "Ação Social Escolar", "tipo": "artigo", "destaque": true, "emoji": "🎒", "desc": "Refeições, transportes e material escolar grátis ou com desconto."},
         {"slug": "bolsa-de-merito.html", "titulo": "Bolsa de mérito", "tipo": "artigo", "destaque": false},
         {"slug": "manuais-escolares-mega.html", "titulo": "Manuais escolares gratuitos (MEGA)", "tipo": "artigo", "destaque": false},
         {"slug": "passe-sub23.html", "titulo": "Passe sub-23 gratuito", "tipo": "artigo", "destaque": false},
@@ -22,7 +22,7 @@
       "icone": "🔄",
       "pillar": "/prestacao-social-unica.html",
       "paginas": [
-        {"slug": "psu-quando-entra-em-vigor.html", "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir", "tipo": "artigo", "destaque": true},
+        {"slug": "psu-quando-entra-em-vigor.html", "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir", "tipo": "artigo", "destaque": true, "emoji": "🔄", "desc": "Timeline da PSU: lei aprovada, decreto-lei pendente, entrada em vigor prevista."},
         {"slug": "psu-quem-tem-direito.html", "titulo": "Quem tem direito à PSU", "tipo": "artigo", "destaque": false},
         {"slug": "psu-vs-abono-familia.html", "titulo": "PSU e Abono de Família: são apoios diferentes", "tipo": "artigo", "destaque": false},
         {"slug": "psu-lista-13-apoios.html", "titulo": "As 13 prestações que a PSU vai substituir", "tipo": "artigo", "destaque": false}
@@ -36,7 +36,7 @@
       "icone": "👶",
       "pillar": "/p/familia.html",
       "paginas": [
-        {"slug": "abono-de-familia.html", "titulo": "Abono de família", "tipo": "artigo", "destaque": true},
+        {"slug": "abono-de-familia.html", "titulo": "Abono de família", "tipo": "artigo", "destaque": true, "emoji": "👶", "desc": "Prestação mensal para crianças e jovens. Escalões e valores 2026."},
         {"slug": "subsidio-parental.html", "titulo": "Licença parental", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-abono.html", "titulo": "Simulador de Abono de Família", "tipo": "ferramenta", "destaque": false}
       ],
@@ -49,7 +49,7 @@
       "icone": "🤝",
       "pillar": "/p/idosos-incapacidade-cuidadores.html",
       "paginas": [
-        {"slug": "complemento-solidario-idosos.html", "titulo": "Complemento Solidário para Idosos", "tipo": "artigo", "destaque": true},
+        {"slug": "complemento-solidario-idosos.html", "titulo": "Complemento Solidário para Idosos", "tipo": "artigo", "destaque": true, "emoji": "👴", "desc": "CSI 2026: quem tem direito, cálculo do valor, BAS automático e filhos não contam."},
         {"slug": "cuidador-informal.html", "titulo": "Cuidador Informal", "tipo": "artigo", "destaque": false},
         {"slug": "amim.html", "titulo": "AMIM — Atestado Médico de Incapacidade Multiuso", "tipo": "artigo", "destaque": false}
       ],
@@ -62,7 +62,7 @@
       "icone": "💶",
       "pillar": "/p/trabalho-rendimento.html",
       "paginas": [
-        {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true},
+        {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true, "emoji": "📋", "desc": "Como pedir ao IEFP, processo passo a passo e situações especiais na UE."},
         {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["prestacao-social-unica"]

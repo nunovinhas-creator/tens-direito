@@ -84,6 +84,10 @@ _HOME_COM_MARCADOR = """<!DOCTYPE html>
     <!-- CLUSTERS:HOME:INICIO -->
     <!-- CLUSTERS:HOME:FIM -->
   </section>
+  <section id="guias-principais">
+    <!-- DESTAQUES:HOME:INICIO -->
+    <!-- DESTAQUES:HOME:FIM -->
+  </section>
 </body>
 </html>
 """
@@ -144,6 +148,9 @@ def test_injeta_cartoes_na_home(tmp_path):
     assert "Cluster B" in conteudo
     assert "2 guias" in conteudo  # cluster-a tem 2 artigos
     assert "1 guia<" in conteudo  # cluster-b tem 1 artigo (singular, não "1 guias")
+    assert "/artigo-1.html" in conteudo  # destaque do cluster-a
+    assert "/artigo-3.html" in conteudo  # destaque do cluster-b
+    assert "/artigo-2.html" not in conteudo  # não é destaque — não aparece nos "guias principais"
 
 
 # ── Idempotência (obrigatória) ───────────────────────────────────────────
