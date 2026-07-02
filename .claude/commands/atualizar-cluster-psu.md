@@ -88,7 +88,11 @@ qualquer dúvida: parar, não tocar em nenhum ficheiro.
    `subsidio-parental.html` (secção "IMPACTO DA PSU" do CLAUDE.md)
 8. `sitemap.xml` — adicionar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`
 9. `scripts/pesquisa.js` — adicionar entradas para as 2 páginas novas
-10. `CLAUDE.md` — mover as 2 páginas da tabela "Cluster PSU — páginas em espera"
+10. `data/clusters.json` — actualizar `descricao_curta` do cluster
+    `prestacao-social-unica` (deixa de dizer "ainda não em vigor"), acrescentar
+    `como-pedir-psu.html` e `calendario-pagamentos-psu.html` a `paginas[]`, e
+    correr `python scripts/sincronizar_clusters.py` para propagar a mudança
+11. `CLAUDE.md` — mover as 2 páginas da tabela "Cluster PSU — páginas em espera"
     para "PÁGINAS PUBLICADAS"; remover o aviso de incerteza dos prazos na secção
     "IMPACTO DA PSU"
 

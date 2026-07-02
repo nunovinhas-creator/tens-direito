@@ -118,11 +118,24 @@ def _substituir_bloco(conteudo: str, marca: Tuple[str, str], novo_interior: str)
     )
 
 
+def contagem_str(cluster: Cluster) -> str:
+    """'4 guias · 1 simulador' — conta por tipo para não contradizer
+    descrições que falam de um número fixo de guias (ex.: "os quatro
+    apoios escolares" quando o cluster também tem um simulador)."""
+    guias = sum(1 for p in cluster.paginas if p.tipo == "artigo")
+    ferramentas = sum(1 for p in cluster.paginas if p.tipo == "ferramenta")
+    partes = []
+    if guias:
+        partes.append(f"{guias} guia" + ("" if guias == 1 else "s"))
+    if ferramentas:
+        partes.append(f"{ferramentas} simulador" + ("" if ferramentas == 1 else "es"))
+    return " · ".join(partes) if partes else "0 guias"
+
+
 def render_home_cards(clusters: List[Cluster]) -> str:
     cartoes = []
     for c in clusters:
-        n = len(c.paginas)
-        contagem = "1 artigo" if n == 1 else f"{n} artigos"
+        contagem = contagem_str(c)
         cartoes.append(
             f'      <a href="{c.pillar}" class="apoio-card">\n'
             f'        <div class="emoji">{c.icone}</div>\n'

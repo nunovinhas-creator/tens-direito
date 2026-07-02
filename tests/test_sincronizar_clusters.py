@@ -18,6 +18,7 @@ from sincronizar_clusters import (
     validar_consistencia,
     render_home_cards,
     artigos_relacionados,
+    contagem_str,
 )
 
 _CLUSTERS_TESTE = {
@@ -141,8 +142,8 @@ def test_injeta_cartoes_na_home(tmp_path):
     conteudo = caminho.read_text(encoding="utf-8")
     assert "Cluster A" in conteudo
     assert "Cluster B" in conteudo
-    assert "2 artigos" in conteudo  # cluster-a tem 2 páginas
-    assert "1 artigo" in conteudo  # cluster-b tem 1 página
+    assert "2 guias" in conteudo  # cluster-a tem 2 artigos
+    assert "1 guia<" in conteudo  # cluster-b tem 1 artigo (singular, não "1 guias")
 
 
 # ── Idempotência (obrigatória) ───────────────────────────────────────────
@@ -257,6 +258,33 @@ def test_pagina_excluida_nao_e_reportada_como_orfa(tmp_path):
     problemas = validar_consistencia(clusters, raiz=tmp_path)
 
     assert problemas == []
+
+
+# ── Contagem por tipo (guias vs simuladores) ────────────────────────────
+
+def test_contagem_separa_guias_de_simuladores(tmp_path):
+    clusters = _clusters(tmp_path)
+    cluster_a = clusters[0]  # 2 artigos, sem ferramentas
+
+    assert contagem_str(cluster_a) == "2 guias"
+
+
+def test_contagem_com_um_artigo_e_uma_ferramenta():
+    from sincronizar_clusters import Cluster, Pagina
+
+    cluster = Cluster(
+        id="x", nome="X", descricao_curta="", icone="🔧", pillar="/p/x.html",
+        paginas=[
+            Pagina(slug="a.html", titulo="A", tipo="artigo", destaque=True),
+            Pagina(slug="b.html", titulo="B", tipo="artigo", destaque=False),
+            Pagina(slug="c.html", titulo="C", tipo="artigo", destaque=False),
+            Pagina(slug="d.html", titulo="D", tipo="artigo", destaque=False),
+            Pagina(slug="e.html", titulo="E", tipo="ferramenta", destaque=False),
+        ],
+        relacionados=[],
+    )
+
+    assert contagem_str(cluster) == "4 guias · 1 simulador"
 
 
 # ── Regras de relevância de "relacionados" ──────────────────────────────
