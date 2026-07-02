@@ -82,8 +82,8 @@ function pesquisar(termo) {
   });
 }
 
-function mostrarResultados(resultados, termo) {
-  var div = document.getElementById('resultados-pesquisa');
+function mostrarResultados(resultados, termo, idResultados) {
+  var div = document.getElementById(idResultados || 'resultados-pesquisa');
   if (!div) return;
   if (!termo.trim()) {
     div.style.display = 'none';

@@ -1,0 +1,211 @@
+/*
+ * assets/css/nav.css — Tens Direito
+ * Navegação principal única, injectada por scripts/sincronizar_nav.py
+ * entre os marcadores <!-- NAV:INICIO/FIM -->. Cores em valores
+ * literais (não var(--...)) de propósito: este ficheiro é carregado em
+ * todas as páginas, incluindo as que não declaram essas variáveis no
+ * seu próprio <style>.
+ */
+
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.nav-wrap nav {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.nav-wrap .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.nav-wrap .logo-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.nav-wrap .logo-text .tens { color: #111827; }
+.nav-wrap .logo-text .direito { color: #0F766E; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-left: auto;
+}
+
+.nav-links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6B7280;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.nav-links a:hover { color: #0F766E; }
+
+.nav-dropdown { position: relative; }
+
+.nav-dropdown-btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6B7280;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: inherit;
+}
+
+.nav-dropdown-btn:hover { color: #0F766E; }
+.nav-dropdown-btn::after { content: '▾'; font-size: 0.7rem; }
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 260px;
+  z-index: 200;
+  padding: 0.25rem 0;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0F172A;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu a:hover { background: #f8f9fa; color: #0F766E; }
+.nav-dropdown.aberto .nav-dropdown-menu { display: block; }
+
+.nav-search { position: relative; }
+
+.nav-search input {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  width: 190px;
+  font-family: inherit;
+}
+
+.nav-search-resultados {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 260px;
+  z-index: 150;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.nav-toggle {
+  display: none;
+  flex-shrink: 0;
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #111827;
+  padding: 0.25rem;
+}
+
+.nav-mobile-menu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border-bottom: 2px solid #0F766E;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  padding: 1rem 1.5rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.nav-mobile-menu.aberto { display: flex; }
+
+.nav-mobile-menu a {
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0F172A;
+  text-decoration: none;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.nav-mobile-menu a:last-child { border-bottom: none; }
+.nav-mobile-menu a:hover { color: #0D9488; }
+
+.nav-mobile-label {
+  display: block;
+  padding: 0.75rem 0 0.1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-mobile-sub {
+  padding-left: 1.25rem !important;
+  font-size: 0.95rem !important;
+}
+
+.nav-search-movel input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+}
+
+.nav-search-movel .nav-search-resultados {
+  position: static;
+  box-shadow: none;
+  border: none;
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  /* ".nav-search" sozinho apanharia também a pesquisa do menu móvel
+     (".nav-search-movel" partilha a classe base) — "nav > .nav-search"
+     só atinge a pesquisa do topo, fora do <nav>, escondida pelo hamburger. */
+  .nav-links, .nav-wrap > nav > .nav-search { display: none; }
+  .nav-toggle { display: flex; }
+}

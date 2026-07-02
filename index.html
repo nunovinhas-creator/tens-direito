@@ -208,6 +208,9 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
   }
   </script>
   <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
 
@@ -223,7 +226,8 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
   <!-- DESTAQUE:FIM -->
 
   <!-- NAV -->
-  <div class="nav-wrap">
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
     <nav>
       <a href="/" class="logo" aria-label="Tens Direito — página inicial">
         <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -250,22 +254,27 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       <!-- NVLABS:HEADER:FIM -->
 
       <div class="nav-links">
-        <a href="/comecar-aqui.html">Começa aqui</a>
-        <a href="/p/apoios-escolares.html">Apoios Escolares</a>
-        <a href="/#guias-de-apoios">Guias</a>
-        <div class="nav-dropdown" id="navSimDropdown">
-          <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleSimDropdown(this)">Simuladores</button>
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
           <div class="nav-dropdown-menu" role="menu">
-            <a href="/simulador-abono.html" role="menuitem">Simulador de Abono</a>
-            <a href="/simulador-ase.html" role="menuitem">Simulador de ASE</a>
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
           </div>
         </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
         <a href="/noticias.html">Notícias</a>
-        <a href="/sobre.html">Sobre</a>
       </div>
 
-      <!-- Hamburger mobile -->
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" onclick="toggleMenu(this)">
+      <div class="nav-search" role="search">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -274,23 +283,23 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       </button>
     </nav>
 
-    <!-- Menu mobile dropdown -->
-    <div class="nav-mobile-menu" id="mobileMenu" role="navigation">
-      <form action="https://www.google.com/search" method="get" target="_blank">
-        <input type="hidden" name="sitesearch" value="tensdireito.com">
-        <input type="text" name="q" placeholder="Pesquisar no site…" aria-label="Pesquisar">
-        <button type="submit" aria-label="Pesquisar">🔍</button>
-      </form>
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
       <a href="/comecar-aqui.html">Começa aqui</a>
-      <a href="/p/apoios-escolares.html">🎒 Apoios Escolares</a>
-      <a href="/#guias-de-apoios">Guias</a>
-      <span class="nav-mobile-sim-label">Simuladores</span>
-      <a href="/simulador-abono.html" class="nav-mobile-sim-link">› Simulador de Abono</a>
-      <a href="/simulador-ase.html" class="nav-mobile-sim-link">› Simulador de ASE</a>
       <a href="/noticias.html">Notícias</a>
-      <a href="/sobre.html">Sobre</a>
     </div>
   </div>
+<!-- NAV:FIM -->
 
   <!-- HERO -->
   <section class="hero">
