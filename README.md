@@ -9,7 +9,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **02 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **03 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -211,7 +211,9 @@ tens-direito/
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
+│   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
+│   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
 │   ├── run_shadow_daily.py
 │   ├── scraper_fontes.py
@@ -220,8 +222,11 @@ tens-direito/
 │   ├── shadow_mode_analytics.py
 │   ├── shadow_report_md.py
 │   ├── sincronizar_clusters.py
+│   ├── sincronizar_nav.py
 │   ├── source_adapter.py
 │   ├── verificar_datas.py
+│   ├── verificar_injecao.py
+│   ├── wayback_fallback.py
 └── *.html                  ← páginas estáticas publicadas
 ```
 
@@ -327,6 +332,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 02 de julho de 2026 às 09:56 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 03 de julho de 2026 às 00:01 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

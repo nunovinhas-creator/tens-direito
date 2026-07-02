@@ -89,6 +89,15 @@
       "resumo": "Alunos do ensino secundário com escalão A ou B da ASE e aprovação em todas as disciplinas podem candidatar-se à bolsa de mérito. O valor estimado para 2026/2027 é de 1.342,83 € pagos em 3 prestações.",
       "categoria": "educacao",
       "cluster_id": "apoios-escolares"
+    },
+    {
+      "data_iso": "2026-06-12",
+      "titulo": "Governo quer unir 13 apoios num só: como vai funcionar a nova Prestação Social Única?",
+      "fonte_nome": "Euronews",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQVnMwY0VVd2xXU2VRRE9uUERHMk5pSVlVU2Q4RzgyTUtjbGt3NlVfR3R3QlEzd3Nzc1dfNlBDakloQmxJVFRSWlB3bU92SmJVLU1fb3JYVVpGekEyZGNZMEU1NTlmVnZJT3oxRFEtYnRzYUpxNy1TWDVzb09hME8yVDRNQU9Mb2NVWDlCR0I4dVRzM0xWVWtPYmczNS0xUV9TU3lzU1dJc09QR0ZaWGJGalRsdjhhcGlQaGJaa0g2NmJKU2tqU2RZ?oc=5",
+      "resumo": "Governo quer unir 13 apoios num só: como vai funcionar a nova Prestação Social Única? Euronews",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
     }
   ]
 }
