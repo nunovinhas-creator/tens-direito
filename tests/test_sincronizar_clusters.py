@@ -360,6 +360,36 @@ def test_injeta_referencia_clusters_css_num_artigo_membro(tmp_path):
     assert conteudo.index("clusters.css") < conteudo.index("</head>")
 
 
+def test_ferramenta_nao_precisa_de_badge_nem_relacionados(tmp_path):
+    """Simuladores (tipo: ferramenta) são páginas-membro mas não recebem
+    navegação contextual — o hero claro que usam é incompatível com o
+    texto branco de clusters.css. Ver decisão documentada no CLAUDE.md."""
+    clusters_dados = {
+        "clusters": [{
+            "id": "cluster-a", "nome": "Cluster A", "descricao_curta": "",
+            "icone": "🅰️", "pillar": "/p/cluster-a.html",
+            "paginas": [
+                {"slug": "artigo-1.html", "titulo": "Artigo 1", "tipo": "artigo", "destaque": True},
+                {"slug": "sim-1.html", "titulo": "Simulador 1", "tipo": "ferramenta", "destaque": False},
+            ],
+            "relacionados": [],
+        }]
+    }
+    caminho_json = tmp_path / "clusters.json"
+    caminho_json.write_text(json.dumps(clusters_dados, ensure_ascii=False), encoding="utf-8")
+    clusters = carregar_clusters(caminho_json)
+
+    pagina_sim = _escrever(tmp_path, "sim-1.html", "<html><head><title>Sim</title></head><body><main><h1>Simulador 1</h1></main></body></html>")
+    conteudo_antes = pagina_sim.read_text(encoding="utf-8")
+
+    resultado = processar_pagina(pagina_sim, clusters, raiz=tmp_path)
+
+    assert resultado.alterado is False
+    assert "sem entrada" not in resultado.motivo  # é membro do cluster...
+    assert "falta" not in resultado.motivo  # ...mas não exige marcadores
+    assert pagina_sim.read_text(encoding="utf-8") == conteudo_antes
+
+
 def test_clusters_css_nao_duplica_em_pagina_ja_com_referencia(tmp_path):
     clusters = _clusters(tmp_path)
     pagina_com_css = _ARTIGO_COM_MARCADORES.replace(

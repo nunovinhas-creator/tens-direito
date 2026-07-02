@@ -173,7 +173,8 @@ tens-direito/
 ├── *.html                    ← páginas estáticas publicadas (raiz = GitHub Pages)
 ├── assets/
 │   ├── js/share.js           ← lógica do botão "Partilhar este artigo" (vanilla JS)
-│   └── css/share.css         ← estilo do botão/mensagens de partilha
+│   ├── css/share.css         ← estilo do botão/mensagens de partilha
+│   └── css/clusters.css      ← estilo do breadcrumb/pertence/relacionados injectados nos artigos
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
@@ -384,23 +385,35 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
 
 5. **Testes**: `tests/test_sincronizar_clusters.py` — idempotência,
    marcador em falta, página no JSON sem ficheiro, ficheiro sem entrada
-   no JSON, contagem por tipo.
+   no JSON, contagem por tipo. `tests/test_breadcrumb_coerencia.py` —
+   corre sobre os artigos **reais** do repositório (não fixtures) e
+   compara o breadcrumb visível com o JSON-LD `BreadcrumbList` de cada
+   um: falha se o nome/URL do cluster ou a página final divergirem.
+   Necessário porque o `BreadcrumbList` é editado à mão (formato varia
+   por artigo) — é a rede de segurança contra esse trabalho manual.
+6. **Ferramentas (simuladores) não recebem `CLUSTER-BADGE`/`RELACIONADOS`.**
+   `simulador-abono.html` e `simulador-ase.html` são páginas-membro do
+   respectivo cluster (aparecem no `PILLAR-LISTA` e contam para
+   "guias · simuladores" nos cartões da homepage) mas usam um hero
+   claro (fundo branco), incompatível com o texto branco do
+   `clusters.css` (pensado para o hero escuro `#0F766E` dos artigos).
+   Decisão: só páginas `tipo: "artigo"` ganham navegação contextual.
 
-**Estado actual (Fases 1 e 2 concluídas):** fundação de dados pronta,
-os 5 pillars existem com a lista de artigos sincronizada, e a
-`index.html` foi reorganizada pela ordem hero (com pesquisa) → "Comece
-por aqui" → clusters → guias principais → como funciona → prazos →
-notícia do dia. A pesquisa (`#campo-pesquisa`) foi movida da nav para o
-hero, com chips de sugestão (`preencherPesquisa()`); a antiga grelha de
-14 cartões foi substituída pelos 5 cartões de cluster (`CLUSTERS:HOME`)
-mais 5 cartões de destaque, um por cluster (`DESTAQUES:HOME`); o
-`id="guias-de-apoios"` manteve-se na secção de clusters para não
-partir o link `/#guias-de-apoios` já usado noutras páginas.
+**Estado actual (Fases 1, 2 e 3 concluídas):** fundação de dados
+pronta, os 5 pillars existem com a lista de artigos sincronizada, a
+`index.html` está reorganizada por clusters, e os 15 artigos (todos os
+`tipo: "artigo"` de `clusters.json`) têm breadcrumb visível + "pertence
+ao guia" + secção de relacionados, sincronizados com o `BreadcrumbList`
+de cada um (`tests/test_breadcrumb_coerencia.py` confirma consistência
+nos 15). Ao aplicar, foram removidos blocos manuais antigos de
+"artigos relacionados" (classe `.cluster-escolar`) em 14 desses
+artigos — vários já apontavam para o cluster errado (ex.: `amim.html`
+ainda linkava para `prestacao-social-unica.html`; `cuidador-informal.html`
+e `complemento-solidario-idosos.html` linkavam-se um ao outro apesar de
+estarem hoje em clusters diferentes). Ver o commit da Fase 3 Etapa B
+para a lista completa por ficheiro.
 
-Ainda faltam os marcadores `CLUSTER-BADGE`/`RELACIONADOS` nos 20
-artigos-membro (`--dry-run` reporta-os como "marcador em falta" —
-esperado até à Fase 3). Próximos passos: injectar navegação contextual
-nos artigos (Fase 3), simplificar a nav principal com um
+Próximos passos: simplificar a nav principal com um
 `sincronizar_nav.py` (Fase 4), passar UX/SEO final (Fase 5).
 
 ---
@@ -609,3 +622,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 2 (homepage): `index.html` reorganizada — hero com pesquisa (`#campo-pesquisa` movido da nav, chips de sugestão) → "Comece por aqui" (5 cartões por necessidade) → clusters (`CLUSTERS:HOME`) → guias principais (novo marcador `DESTAQUES:HOME`, um destaque por cluster) → como funciona → prazos → notícia do dia; `data/clusters.json` ganhou campos opcionais `emoji`/`desc` por página (só nas 5 páginas `destaque: true`, sourced dos cartões antigos/meta description já publicados); testado no browser (desktop + mobile, Playwright) sem erros de consola; idempotência confirmada
+
+---
+
+*Última revisão: 2026-07-02 — Fase 3 completa (navegação contextual nos artigos): novo `assets/css/clusters.css`; `sincronizar_clusters.py` ganhou `render_relacionados()` com dois blocos ("Outros artigos deste cluster" / "Pode também interessar"), `_garantir_clusters_css()` idempotente, e a regra de que só `tipo: "artigo"` recebe `CLUSTER-BADGE`/`RELACIONADOS` (ferramentas ficam de fora — hero incompatível); aplicado aos 15 artigos (`abono-de-familia.html` na Etapa A, os outros 14 na Etapa B); removidos 14 blocos manuais `.cluster-escolar` desactualizados (vários apontavam para clusters errados); `BreadcrumbList` de cada artigo actualizado à mão para 3 níveis (as 4 páginas do cluster PSU já estavam correctas); novo `tests/test_breadcrumb_coerencia.py` corre sobre os artigos reais e confirma consistência breadcrumb-visível ↔ JSON-LD nos 15; idempotência confirmada (2ª corrida = zero diff); 266 testes a passar

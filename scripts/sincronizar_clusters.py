@@ -20,6 +20,11 @@ idênticos. Nunca escreve fora dos marcadores; se uma página deveria ter
 um marcador (por estar referenciada em `clusters.json`) e ele não
 existir, a página é reportada e não é tocada.
 
+CLUSTER-BADGE e RELACIONADOS só se aplicam a páginas `tipo: "artigo"`.
+As ferramentas (simuladores) são membros do cluster mas usam um hero
+claro incompatível com o texto branco do clusters.css — ficam de fora
+da navegação contextual (decisão documentada no CLAUDE.md).
+
     python scripts/sincronizar_clusters.py [--dry-run]
 """
 from __future__ import annotations
@@ -313,10 +318,15 @@ def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAI
         else:
             conteudo = novo
 
+    pagina_atual = None
     if membro:
-        titulo_pagina = next(p.titulo for p in membro.paginas if p.slug == caminho.name)
+        pagina_atual = next(p for p in membro.paginas if p.slug == caminho.name)
 
-        novo = _substituir_bloco(conteudo, MARCADOR_BADGE, render_badge(membro, titulo_pagina))
+    # Só artigos ganham navegação contextual (breadcrumb/pertence/relacionados).
+    # Ferramentas (simuladores) usam um hero claro incompatível com o CSS de
+    # clusters.css (texto branco sobre fundo escuro) — ver CLAUDE.md.
+    if membro and pagina_atual.tipo == "artigo":
+        novo = _substituir_bloco(conteudo, MARCADOR_BADGE, render_badge(membro, pagina_atual.titulo))
         if novo is None:
             faltam.append("CLUSTER-BADGE")
         else:
