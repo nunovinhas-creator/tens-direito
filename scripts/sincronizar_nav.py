@@ -188,7 +188,7 @@ def bootstrap_nav(conteudo: str) -> Tuple[Optional[str], str]:
 
 
 def processar_pagina(caminho: Path, clusters: List[Cluster], *, escrever: bool = True) -> Resultado:
-    nome = caminho.name
+    nome = str(caminho.relative_to(RAIZ))
     conteudo_original = caminho.read_text(encoding="utf-8")
 
     conteudo, motivo_bootstrap = bootstrap_nav(conteudo_original)

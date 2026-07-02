@@ -162,6 +162,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão "Partilhar este artigo" só às páginas que ainda não o têm)
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
+- [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Commit e push directamente para `main`
 
 ---
@@ -173,8 +174,10 @@ tens-direito/
 ├── *.html                    ← páginas estáticas publicadas (raiz = GitHub Pages)
 ├── assets/
 │   ├── js/share.js           ← lógica do botão "Partilhar este artigo" (vanilla JS)
+│   ├── js/nav.js             ← interacção da nav principal (dropdown, hamburger) — partilhado
 │   ├── css/share.css         ← estilo do botão/mensagens de partilha
-│   └── css/clusters.css      ← estilo do breadcrumb/pertence/relacionados injectados nos artigos
+│   ├── css/clusters.css      ← estilo do breadcrumb/pertence/relacionados injectados nos artigos
+│   └── css/nav.css           ← estilo da nav principal única (todas as páginas)
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
@@ -191,9 +194,13 @@ tens-direito/
 │   ├── shadow_mode_analytics.py ← agrega relatórios do Shadow Mode em métricas
 │   ├── shadow_report_md.py   ← métricas → relatório Markdown legível
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
-│   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta nav entre marcadores (idempotente)
+│   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
+│   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
 │   ├── pesquisa.js           ← pesquisa interna (JS puro, sem servidor)
 │   └── logs/                 ← logs do scraper
+├── tests/                    ← pytest; inclui test_sincronizar_clusters.py,
+│                                test_breadcrumb_coerencia.py e test_nav_coerencia.py
+│                                (estes dois últimos correm sobre as páginas reais, não fixtures)
 ├── data/
 │   ├── clusters.json         ← fonte única de verdade da arquitectura de clusters
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
@@ -413,8 +420,74 @@ e `complemento-solidario-idosos.html` linkavam-se um ao outro apesar de
 estarem hoje em clusters diferentes). Ver o commit da Fase 3 Etapa B
 para a lista completa por ficheiro.
 
-Próximos passos: simplificar a nav principal com um
-`sincronizar_nav.py` (Fase 4), passar UX/SEO final (Fase 5).
+Próximo passo: passar UX/SEO final (Fase 5).
+
+---
+
+## NAVEGAÇÃO PRINCIPAL (Fase 4)
+
+Nav única em todas as 29 páginas, gerada a partir de `data/clusters.json`
+e injectada entre `<!-- NAV:INICIO -->` / `<!-- NAV:FIM -->` por
+`scripts/sincronizar_nav.py`. Estrutura: **Logo | Apoios ▾ (5 clusters,
+pelos pillars) | Começa aqui | Notícias | Pesquisa**. "Guias" saiu
+(redundante com "Apoios ▾"), os simuladores saíram da nav (vivem nos
+clusters e na homepage), "Sobre" ficou só no footer (já estava em
+todas as páginas).
+
+1. **`scripts/sincronizar_nav.py`** — duas fases:
+   - *Bootstrap* (uma vez por página): detecta a nav antiga com 2
+     heurísticas — `<div class="nav-wrap">...</div>` autocontido, ou
+     `<header>...</header>` + `<div class="mobile-menu">...</div>`
+     opcional a seguir. **Recusa sempre** tocar num `<header>` que
+     contenha um `<h1>` (estrutura atípica — arriscaria apagar
+     conteúdo do artigo); nesse caso a página fica para intervenção
+     manual antes de voltar a correr o script.
+   - *Sincronização* (idempotente): com os marcadores já presentes,
+     regenera só o interior.
+2. **`assets/css/nav.css`** + **`assets/js/nav.js`** — nav e
+   interacção (dropdown "Apoios", hamburger, fecho ao clicar fora)
+   partilhados por todas as páginas; elimina o JS inline duplicado
+   (e ligeiramente diferente) que existia página a página.
+3. **`scripts/pesquisa.js`** — `mostrarResultados()` recebe um 3.º
+   parâmetro opcional (id do contentor de resultados), o que permite
+   pesquisa na nav e no hero do `index.html` em simultâneo, com ids
+   distintos (`campo-pesquisa-nav`/`resultados-pesquisa-nav` na nav;
+   `campo-pesquisa`/`resultados-pesquisa` reservados ao hero do
+   `index.html`).
+4. **`404.html` tem a nav completa (dropdown + pesquisa) — decisão
+   deliberada**, não descuido: é exactamente onde um utilizador
+   perdido mais precisa de saídas para continuar a navegar.
+5. **Nenhuma página perdeu pontos de entrada.** As 7 páginas que
+   antes tinham "Por onde começar?" no fim do menu (em vez de "Começa
+   aqui") apontavam todas para o mesmo `/comecar-aqui.html` — a nova
+   nav cobre esse caminho com "Começa aqui", mesmo destino.
+6. **`simulador-ase.html` foi restruturado antes do bootstrap**
+   (commit à parte): era a única página do repositório com o `<h1>`
+   dentro do `<header>` — o título, o botão de partilha e o subtítulo
+   passaram para uma `<section class="hero">` própria, como em
+   `simulador-abono.html`. O estilo teal saiu de `header{}` e entrou
+   em `.hero{}`.
+7. **Testes**: `tests/test_nav_coerencia.py` corre sobre as 29
+   páginas reais e confirma: exactamente 1 bloco `NAV` por página,
+   zero resíduos da nav antiga (classes/ids/handlers antigos),
+   referências a `nav.css`/`nav.js`/`pesquisa.js` presentes, e o
+   dropdown "Apoios" + pesquisa (desktop e mobile) + "Começa aqui"
+   presentes dentro do bloco.
+
+**Dívida técnica conhecida (fora do âmbito da Fase 4):**
+- CSS morto: as regras da nav antiga (`.mobile-menu`, `.hamburger`,
+  `.nav-mobile-sim-label`, etc.) continuam nos `<style>` de cada
+  página — inofensivas (nada as usa) mas não foram removidas, para
+  manter o diff desta fase pequeno.
+- `simulador-ase.html` tinha, antes e depois da Fase 4, um bloco
+  JSON-LD inválido (dois objectos JSON concatenados no mesmo
+  `<script>`, sem `[...]`) — bug pré-existente, não introduzido nem
+  corrigido nesta fase.
+- `404.html`, `sobre.html`, `fontes.html`, `privacidade.html`,
+  `comecar-aqui.html` não têm OG tags/JSON-LD/"Verificado a"
+  completos — já assim estava antes da Fase 4 e estas páginas estão
+  fora do âmbito de `validar-conteudo.yml`, excepto `comecar-aqui.html`
+  (que o workflow valida mas nunca bloqueou por não ter `exit` de erro).
 
 ---
 
@@ -626,3 +699,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — Fase 3 completa (navegação contextual nos artigos): novo `assets/css/clusters.css`; `sincronizar_clusters.py` ganhou `render_relacionados()` com dois blocos ("Outros artigos deste cluster" / "Pode também interessar"), `_garantir_clusters_css()` idempotente, e a regra de que só `tipo: "artigo"` recebe `CLUSTER-BADGE`/`RELACIONADOS` (ferramentas ficam de fora — hero incompatível); aplicado aos 15 artigos (`abono-de-familia.html` na Etapa A, os outros 14 na Etapa B); removidos 14 blocos manuais `.cluster-escolar` desactualizados (vários apontavam para clusters errados); `BreadcrumbList` de cada artigo actualizado à mão para 3 níveis (as 4 páginas do cluster PSU já estavam correctas); novo `tests/test_breadcrumb_coerencia.py` corre sobre os artigos reais e confirma consistência breadcrumb-visível ↔ JSON-LD nos 15; idempotência confirmada (2ª corrida = zero diff); 266 testes a passar
+
+---
+
+*Última revisão: 2026-07-02 — Fase 4 completa (nav principal única): nova secção "NAVEGAÇÃO PRINCIPAL"; `scripts/sincronizar_nav.py` (bootstrap com 2 heurísticas + sincronização idempotente), `assets/css/nav.css` e `assets/js/nav.js` partilhados por todas as páginas; `pesquisa.js` ganhou 3.º parâmetro opcional em `mostrarResultados()` para a pesquisa coexistir na nav e no hero do `index.html`; `simulador-ase.html` restruturado em commit à parte (único `<header>` com `<h1>` do repositório — passou para `<section class="hero">` própria); aplicado às 29 páginas (`rsi.html`+`index.html` na Etapa A, as outras 27 na Etapa B); `404.html` passa a ter nav completa por decisão deliberada; as 7 páginas com "Por onde começar?" mantêm o mesmo destino via "Começa aqui"; novo `tests/test_nav_coerencia.py` (116 casos) confirma 1 bloco NAV por página e zero resíduos da nav antiga; idempotência confirmada em todo o repositório; 382 testes a passar; flagged (não corrigido, fora do âmbito): JSON-LD inválido pré-existente em `simulador-ase.html`, e OG/JSON-LD/"Verificado a" em falta em `404.html`/`sobre.html`/`fontes.html`/`privacidade.html`/`comecar-aqui.html` (gaps anteriores à Fase 4)

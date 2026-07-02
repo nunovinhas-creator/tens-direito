@@ -65,12 +65,16 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
   <link rel="stylesheet" href="/assets/css/share.css">
   <script src="/assets/js/share.js" defer></script>
   <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
-  <header>
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
     <nav>
-      <a href="/" class="logo">
-        <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect width="36" height="36" rx="9" fill="#0F766E"/>
           <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -93,14 +97,28 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
       </div>
       <!-- NVLABS:HEADER:FIM -->
 
-      <a href="/" class="nav-link">Início</a>
-      <a href="/comecar-aqui.html" class="nav-link">Começa aqui</a>
-      <a href="/#guias-de-apoios" class="nav-link">Guias</a>
-      <a href="/simulador-abono.html" class="nav-link">Sim. Abono</a>
-      <a href="/simulador-ase.html" class="nav-link">Sim. ASE</a>
-      <a href="/noticias.html" class="nav-link">Notícias</a>
-      <a href="/sobre.html" class="nav-link">Sobre</a>
-      <button class="hamburger" aria-label="Abrir menu" aria-expanded="false" onclick="toggleMobileMenu(this)">
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -108,15 +126,24 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
         </svg>
       </button>
     </nav>
-  </header>
-  <div class="mobile-menu" id="menuMobile" role="navigation" aria-label="Menu mobile">
-    <a href="/comecar-aqui.html">Começa aqui</a>
-    <a href="/#guias-de-apoios">Guias</a>
-    <a href="/simulador-abono.html">🧮 Simulador Abono</a>
-    <a href="/simulador-ase.html">🧮 Simulador ASE</a>
-    <a href="/noticias.html">Notícias</a>
-    <a href="/sobre.html">Sobre</a>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+      <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/noticias.html">Notícias</a>
+    </div>
   </div>
+<!-- NAV:FIM -->
   <section class="hero">
     <h1>Fontes Oficiais</h1>
 <!-- partilhar:inicio -->
