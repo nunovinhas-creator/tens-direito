@@ -17,6 +17,7 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
 - `CLAUDE.md` — data de revisão automática
 - `README.md` — estado do repositório
 - `data/scraped/*.json` — dados do scraper
+- `data/estado_fontes.json` — máquina de estados de fontes bloqueadas (ver secção "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
 
 **TODOS os outros HTML são manuais e protegidos.**
 Esta regra aplica-se a páginas actuais E futuras.
@@ -1023,6 +1024,8 @@ uma Issue é criada ou um valor é alterado:
 1. **Deteção** (`verificar_datas.py`) — encontra datas/valores potencialmente
    expirados em cada HTML; continua a ser a única coisa que gera
    `data/alertas_datas.json` e as Issues `data-expirada` do `pipeline-diario.yml`.
+   O Shadow Mode (ponto 8) **nunca lê esse ficheiro** — corre
+   `detectar_alertas` outra vez, em runtime, sobre o próprio checkout.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
@@ -1039,11 +1042,37 @@ uma Issue é criada ou um valor é alterado:
 7. **Shadow Mode** (`shadow_mode.py` + `shadow_mode_analytics.py` +
    `shadow_report_md.py`) — corre a cadeia inteira em modo observação pura e
    produz um relatório humano em Markdown, sem qualquer efeito real.
-8. **Execução diária** (`run_shadow_daily.py` + `.github/workflows/shadow-daily.yml`,
-   cron `0 3 * * *`) — liga os três módulos da Camada 7 e guarda 1 relatório/dia
+8. **Execução diária** (`run_shadow_daily.py` + `.github/workflows/shadow-daily.yml`)
+   — liga os três módulos da Camada 7 e guarda 1 relatório/dia
    em `shadow_history/shadow_report_AAAA-MM-DD.md`. Guardrail próprio no
    workflow recusa (sem commitar) qualquer alteração fora de `shadow_history/`
    ou qualquer ficheiro de histórico apagado.
+   Trigger: `workflow_run` assim que "Pipeline Diário" termina (sucesso ou
+   falha — o Shadow lê o checkout directamente, nunca depende do pipeline
+   ter tido sucesso), com `cron '0 8 * * *'` como rede de segurança caso o
+   `workflow_run` nunca chegue a disparar. Guarda anti-duplicado própria (step
+   "Verificar se já existe relatório de hoje"): se `shadow_report_<hoje>.md`
+   já existir, sai sem gerar nem commitar de novo.
+   `executar_shadow_daily` passa `paginas_analisadas`/`hora_execucao_utc` a
+   `shadow_report_md.gerar_relatorio_markdown`, que marca "0 alertas" com
+   mais de `LIMIAR_ANOMALIA_PAGINAS` (25) páginas analisadas como **anomalia
+   explícita** em vez de "sistema estável" — "0" nunca é lido em silêncio
+   como "está tudo bem" (ver `tests/test_run_shadow_daily_fonte_propria.py`).
+
+**Diagnóstico "0 alertas" (2026-07-02)**: os relatórios `shadow_report_2026-07-01/02.md`
+mostravam "Alertas analisados: 0" ao mesmo tempo que o pipeline tinha
+Issues `data-expirada` (#37, #45) abertas. Investigação confirmou que
+`run_shadow_daily.py` **já** corria a Camada 1 em runtime sobre o checkout
+(nunca dependeu de `data/alertas_datas.json` gerado por outro workflow) — não
+era um bug de leitura de dados. A causa real: o commit `eeefa1c` (correcção
+de falsos positivos em `verificar_datas.py`, datado depois da criação de
+#37/#45) tornou "0 alertas" genuinamente verdadeiro para o conteúdo actual
+das páginas — confirmado correndo `detectar_alertas` localmente sobre o
+repositório real. As Issues #37/#45 ficaram órfãs desse mesmo fix (fechadas
+automaticamente pela máquina de estados — ver secção seguinte). `fonte-bloqueada`
+(#47-#49) é um domínio totalmente à parte do Shadow Mode: vem de
+`data/bloqueios.json`, escrito pela Camada 1 do scraper
+(`scraper_playwright.py`), nunca passa por `verificar_datas.py`.
 
 **Estado actual: sistema 100% observacional.** Nenhuma camada activa
 auto-update real, nenhuma cria/fecha Issues por si própria, nenhuma escreve
@@ -1051,6 +1080,59 @@ HTML. Antes de alguma vez pôr `AUTO_UPDATE_HABILITADO = True`: rever
 `shadow_history/` com dados reais acumulados, confirmar que os providers do
 `source_adapter` já devolvem valores reais (não só placeholders) e fazer essa
 mudança numa sessão manual dedicada, nunca de ânimo leve.
+
+---
+
+## MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS
+
+Higiene de Issues automáticas (Fase 2 do robustecimento do Shadow Mode,
+2026-07-02) — tudo vive em `pipeline-diario.yml` e nos scripts que chama; o
+`shadow-daily.yml` continua sem tocar em Issues.
+
+### `fonte-bloqueada`
+
+`scripts/gerir_estado_fontes.py` (Step 1b do pipeline, logo a seguir ao
+scrape) lê `data/bloqueios.json` (bloqueios de hoje) e o `data/estado_fontes.json`
+anterior, e recalcula, por fonte monitorizada (as mesmas 7 slugs do step
+"Detectar mudanças" — `SLUGS_MONITORIZADOS`): `{estado, dias_consecutivos_bloqueado,
+ultima_ok}`. Uma fonte que não aparece nos bloqueios de hoje é tratada como
+recuperada — reinicia o contador, mesmo vindo de `BLOQUEADO`. Puramente
+funcional, não cria/fecha nenhuma Issue — só calcula e persiste o estado.
+
+O Step 8 (Issues) lê `data/estado_fontes.json` já actualizado:
+- só cria Issue `fonte-bloqueada` ao **3.º dia consecutivo** de bloqueio
+  (`LIMIAR_DIAS_PARA_ISSUE`) — dias 1-2 ficam só no JSON, sem ruído no GitHub;
+- enquanto o bloqueio persistir, comenta na Issue existente em vez de
+  duplicar (dedup por slug no título, já existia);
+- **fecho automático**: qualquer Issue `fonte-bloqueada` aberta cujo slug
+  esteja `OK` no estado actual é fechada com um comentário
+  ("Fonte recuperou a AAAA-MM-DD — fechado pelo pipeline"), independentemente
+  de quantos dias esteve bloqueada.
+
+### `data-expirada`
+
+Sem ficheiro de estado dedicado — usa directamente `data/alertas_datas.json`
+de hoje (já gerado pela Camada 1). Dedup por página no título já existia
+(`REVER: <página>`, independente do tipo de padrão). Novo nesta fase: **fecho
+automático** — qualquer Issue `data-expirada` aberta cuja página não apareça
+nos alertas de hoje (porque foi corrigida manualmente, ou porque a própria
+deteção melhorou, como em `eeefa1c`) é fechada com um comentário. Foi assim
+que #37 (`amim.html`) e #45 (`manuais-escolares-mega.html`) — órfãs desde o
+diagnóstico acima — fecharam sozinhas na primeira corrida seguinte do
+pipeline. Regressão trancada por `tests/test_amim_real_nao_gera_alerta_issue_37`
+e `test_manuais_escolares_mega_real_nao_gera_alerta_issue_45` em
+`tests/test_verificar_datas.py` — carregam o HTML real das duas páginas, não
+uma amostra sintética.
+
+As correspondências que `classificar_datas.py` já marca como
+`STATIC_REFERENCE` nunca chegam a gerar alerta — a supressão acontece antes,
+na própria Camada 1 (`verificar_datas._esta_suprimido`, cujos marcadores
+`classificar_datas.py` espelha deliberadamente); não há um passo adicional
+nesta fase, só a confirmação por teste do caso concreto acima.
+
+Testado em `tests/test_estado_fontes.py` (limiar de 3 dias, reset ao
+recuperar, persistência ida-e-volta, fluxo `main()` isolado em `tmp_path` —
+nunca toca no `data/estado_fontes.json` real).
 
 ---
 

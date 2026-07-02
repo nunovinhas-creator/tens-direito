@@ -306,3 +306,27 @@ def test_par_de_ano_letivo_distante_e_nao_relacionado_ainda_gera_alerta():
     )
     alerta = detectar_alertas(html, "pagina.html", ANO, MES)
     assert alerta is not None
+
+
+# ── Regressão concreta: Issues #37/#45 (Fase 2 do robustecimento do Shadow
+# Mode) — ficaram órfãs porque o padrão que as gerou em 07-01 já não existe
+# desde eeefa1c (correcção de falsos positivos), mas nada as fechou. Este
+# teste carrega o HTML REAL das duas páginas (não uma amostra sintética) e
+# tranca esse resultado — se algum dia voltar a dar alerta, é uma regressão
+# real, não um problema de leitura da Camada 1.
+
+RAIZ_REPO = Path(__file__).parent.parent
+
+
+def _ler_pagina_real(nome: str) -> str:
+    return (RAIZ_REPO / nome).read_text(encoding="utf-8")
+
+
+def test_amim_real_nao_gera_alerta_issue_37():
+    html = _ler_pagina_real("amim.html")
+    assert detectar_alertas(html, "amim.html", ANO, MES) is None
+
+
+def test_manuais_escolares_mega_real_nao_gera_alerta_issue_45():
+    html = _ler_pagina_real("manuais-escolares-mega.html")
+    assert detectar_alertas(html, "manuais-escolares-mega.html", ANO, MES) is None

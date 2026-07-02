@@ -35,6 +35,16 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
 
+      # ── Step 1b: Máquina de estados de fontes bloqueadas ─────────────────────
+      # Actualiza data/estado_fontes.json a partir de data/bloqueios.json (Camada
+      # 1 do scraper, Step 1 acima) — não decide Issues, só calcula
+      # {estado, dias_consecutivos_bloqueado, ultima_ok} por fonte monitorizada.
+      # Consumido pelo Step 7b/8 abaixo.
+      - name: Actualizar estado das fontes
+        run: python3 scripts/gerir_estado_fontes.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
       # ── Step 2: Detectar mudanças ────────────────────────────────────────────
       - name: Detectar mudanças e registar
         uses: actions/github-script@v7
@@ -200,6 +210,32 @@ jobs:
                 console.log(`Issue criada: ${a.titulo}`);
               } else {
                 console.log(`Issue já existe: ${a.titulo}`);
+              }
+            }
+
+            // Fecho automático: uma Issue "REVER: <página>" aberta cuja página já
+            // não aparece em alertas.json de hoje significa que o padrão que a
+            // gerou deixou de existir (página corrigida manualmente, ou a própria
+            // deteção da Camada 1 melhorou) — fechar sozinha, nunca ficar órfã.
+            const paginas_com_alerta_hoje = new Set(alertas.map(a => a.pagina));
+            for (const issue of existing_datas.data) {
+              const m = issue.title.match(/REVER: ([^\s—]+)/);
+              const pagina = m ? m[1] : null;
+              if (pagina && !paginas_com_alerta_hoje.has(pagina)) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `✅ \`${pagina}\` já não apresenta o padrão detectado — fechado automaticamente pelo pipeline em ${hoje}.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+                console.log(`Issue fechada automaticamente: ${issue.title}`);
               }
             }
             console.log(`${alertas.length} alerta(s) processado(s)`);
@@ -617,62 +653,97 @@ jobs:
               }
             }
 
-            // Issues de fontes bloqueadas (Camada 1)
+            // Issues de fontes bloqueadas — máquina de estados (Fase 2)
+            // data/estado_fontes.json já foi actualizado pelo Step 1b
+            // (scripts/gerir_estado_fontes.py) a partir de data/bloqueios.json de
+            // hoje. Só se abre Issue ao 3.º dia consecutivo de bloqueio — dias 1-2
+            // ficam só no JSON, sem ruído no GitHub. Fecho automático quando a
+            // fonte volta a OK, independentemente de quantos dias esteve bloqueada.
+            let estado_fontes = {};
+            try {
+              estado_fontes = JSON.parse(fs.readFileSync('data/estado_fontes.json', 'utf8'));
+            } catch(_) {}
+
             let bloqueios = [];
             try {
               bloqueios = JSON.parse(fs.readFileSync('data/bloqueios.json', 'utf8'));
             } catch(_) {}
+            const bloqueio_por_slug_hoje = {};
+            for (const b of bloqueios) {
+              if (b.data && b.data.slice(0, 10) === hoje) bloqueio_por_slug_hoje[b.slug] = b;
+            }
 
-            const bloqueios_hoje = bloqueios.filter(b => !b.data || b.data.slice(0, 10) === hoje);
-            if (bloqueios_hoje.length > 0) {
-              const existing_bl = await github.rest.issues.listForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                labels: 'fonte-bloqueada',
-              });
+            const LIMIAR_DIAS_PARA_ISSUE = 3;
+            const existing_bl = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'fonte-bloqueada',
+            });
 
-              for (const b of bloqueios_hoje) {
-                // Dedup por slug, sem a data: enquanto o bloqueio (ex.: recaptcha)
-                // persistir, não deve nascer uma issue nova por dia — só um
-                // comentário na issue existente a confirmar que continua bloqueado.
-                const dup_bl = existing_bl.data.find(i => i.title.includes(`Scraper BLOQUEADO em ${b.slug}`));
-                if (!dup_bl) {
-                  await github.rest.issues.create({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    title: `⚠️ Scraper BLOQUEADO em ${b.slug} (${hoje})`,
-                    body: [
-                      `## ⚠️ Scraper cego: \`${b.slug}\``,
-                      ``,
-                      `**Data/hora:** ${b.data} UTC`,
-                      `**URL:** ${b.url}`,
-                      ``,
-                      `### Sinais de bloqueio`,
-                      b.motivos.map(m => `- \`${m}\``).join('\n'),
-                      ``,
-                      `**Texto útil recebido:** ${b.chars_uteis} chars`,
-                      ``,
-                      `### ⚠️ Isto NÃO significa que a fonte mudou`,
-                      `O scraper ficou cego a esta fonte. O site mantém o último valor verificado por humano.`,
-                      ``,
-                      `### Ação necessária`,
-                      `1. Confirmar o valor manualmente em ${b.url}`,
-                      `2. Se o valor mudou: actualizar a página HTML e a data de verificação`,
-                      `3. Fechar esta issue após confirmação`,
-                    ].join('\n'),
-                    labels: ['fonte-bloqueada', 'verificar'],
-                  });
-                  console.log(`Issue fonte-bloqueada criada: ${b.slug}`);
-                } else {
-                  await github.rest.issues.createComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: dup_bl.number,
-                    body: `🔁 Bloqueio ainda persiste em \`${b.slug}\` — confirmado novamente em ${b.data} UTC.`,
-                  });
-                  console.log(`Issue fonte-bloqueada já existe para ${b.slug}, comentário adicionado.`);
-                }
+            for (const [slug, info] of Object.entries(estado_fontes)) {
+              if (info.estado !== 'BLOQUEADO' || info.dias_consecutivos_bloqueado < LIMIAR_DIAS_PARA_ISSUE) continue;
+              const b = bloqueio_por_slug_hoje[slug];
+              const dup_bl = existing_bl.data.find(i => i.title.includes(`Scraper BLOQUEADO em ${slug}`));
+              if (!dup_bl) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `⚠️ Scraper BLOQUEADO em ${slug} (${hoje})`,
+                  body: [
+                    `## ⚠️ Scraper cego: \`${slug}\``,
+                    ``,
+                    `**Bloqueado há:** ${info.dias_consecutivos_bloqueado} dia(s) consecutivos`,
+                    `**Data/hora:** ${b ? b.data : hoje} UTC`,
+                    `**URL:** ${b ? b.url : '—'}`,
+                    ``,
+                    `### Sinais de bloqueio`,
+                    b ? b.motivos.map(m => `- \`${m}\``).join('\n') : '(ver data/estado_fontes.json)',
+                    ``,
+                    `**Texto útil recebido:** ${b ? b.chars_uteis : '—'} chars`,
+                    ``,
+                    `### ⚠️ Isto NÃO significa que a fonte mudou`,
+                    `O scraper ficou cego a esta fonte durante ${info.dias_consecutivos_bloqueado} dias seguidos. O site mantém o último valor verificado por humano.`,
+                    ``,
+                    `### Ação necessária`,
+                    `1. Confirmar o valor manualmente em ${b ? b.url : '(ver fonte na config do scraper)'}`,
+                    `2. Se o valor mudou: actualizar a página HTML e a data de verificação`,
+                    `3. Esta issue fecha-se sozinha quando o pipeline voltar a conseguir aceder à fonte`,
+                  ].join('\n'),
+                  labels: ['fonte-bloqueada', 'verificar'],
+                });
+                console.log(`Issue fonte-bloqueada criada: ${slug} (${info.dias_consecutivos_bloqueado} dias)`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: dup_bl.number,
+                  body: `🔁 Bloqueio ainda persiste em \`${slug}\` — ${info.dias_consecutivos_bloqueado} dia(s) consecutivos, confirmado em ${hoje}.`,
+                });
+                console.log(`Issue fonte-bloqueada já existe para ${slug}, comentário adicionado.`);
+              }
+            }
+
+            // Fecho automático: qualquer Issue "fonte-bloqueada" aberta cujo slug
+            // já esteja OK no estado actual.
+            for (const issue of existing_bl.data) {
+              const m = issue.title.match(/Scraper BLOQUEADO em ([a-z0-9_]+)/);
+              const slug = m ? m[1] : null;
+              if (slug && estado_fontes[slug] && estado_fontes[slug].estado === 'OK') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `✅ Fonte \`${slug}\` recuperou a ${hoje} — fechado pelo pipeline.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+                console.log(`Issue fonte-bloqueada fechada automaticamente: ${slug}`);
               }
             }
 
