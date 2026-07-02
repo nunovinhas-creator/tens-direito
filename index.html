@@ -137,7 +137,7 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .hero-search input::placeholder { color: var(--muted); }
 .hero-search button { background: none; border: none; cursor: pointer; color: var(--muted); padding: 0; line-height: 1; font-size: 1.15rem; }
 .hero-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; margin-bottom: 1.5rem; }
-.chip { background: var(--teal-light); color: var(--teal-dark); border: 1px solid var(--teal-mid); border-radius: 20px; padding: 0.35rem 0.85rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.chip { background: var(--teal-light); color: var(--teal-dark); border: 1px solid var(--teal-mid); border-radius: 20px; padding: 0.35rem 0.85rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; }
 .chip:hover { background: var(--teal-mid); }
 .comece-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem 1rem; }
 .necessidade-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
@@ -421,6 +421,8 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     </div>
   </section>
 
+  <hr class="divider">
+
   <!-- GUIAS PRINCIPAIS -->
   <section class="apoios-section" id="guias-principais" aria-labelledby="destaques-titulo">
     <div class="section-header">
@@ -557,6 +559,8 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       </div>
     </div>
   </div>
+
+  <hr class="divider">
 
   <!-- NOTÍCIA DO DIA -->
   <section class="noticia-section" aria-labelledby="noticia-titulo">

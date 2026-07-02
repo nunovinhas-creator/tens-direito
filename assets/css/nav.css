@@ -70,6 +70,7 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -94,13 +95,16 @@
 }
 
 .nav-dropdown-menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
   font-weight: 500;
   color: #0F172A;
   text-decoration: none;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .nav-dropdown-menu a:hover { background: #f8f9fa; color: #0F766E; }
@@ -140,7 +144,10 @@
   border: none;
   cursor: pointer;
   color: #111827;
-  padding: 0.25rem;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-mobile-menu {
@@ -163,7 +170,10 @@
 .nav-mobile-menu.aberto { display: flex; }
 
 .nav-mobile-menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
   padding: 0.75rem 0;
   font-size: 1rem;
   font-weight: 600;

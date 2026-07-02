@@ -178,8 +178,13 @@ def render_destaques_home(clusters: List[Cluster]) -> str:
 
 def render_pillar_lista(cluster: Cluster) -> str:
     """Itens de <li> — a página envolve o marcador no seu próprio <ul>
-    (ver p/apoios-escolares.html, prestacao-social-unica.html)."""
-    itens = [f'      <li><a href="/{p.slug}">{p.titulo}</a></li>' for p in cluster.paginas]
+    (ver p/apoios-escolares.html, prestacao-social-unica.html).
+    Ferramentas ganham um badge discreto (classe .badge, já existente em
+    todas as pillar pages) para se distinguirem dos guias na mesma lista."""
+    itens = []
+    for p in cluster.paginas:
+        badge = ' <span class="badge">Ferramenta</span>' if p.tipo == "ferramenta" else ""
+        itens.append(f'      <li><a href="/{p.slug}">{p.titulo}</a>{badge}</li>')
     return "\n".join(itens)
 
 
