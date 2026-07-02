@@ -19,9 +19,9 @@
  <meta name="robots" content="index, follow">
  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
  <title>Atualidades — Tens Direito</title>
- <meta name="description" content="O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada. Arquivo com histórico por categoria.">
+ <meta name="description" content="O que mudou nos apoios, direitos e burocracia em Portugal — notícias relevantes, com fonte verificada. Arquivo com histórico por categoria.">
  <meta property="og:title" content="Atualidades — Tens Direito">
- <meta property="og:description" content="O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada.">
+ <meta property="og:description" content="O que mudou nos apoios, direitos e burocracia em Portugal — notícias relevantes, com fonte verificada.">
  <meta property="og:url" content="https://tensdireito.com/noticias.html">
  <meta property="og:type" content="website">
  <meta property="og:locale" content="pt_PT">
@@ -33,7 +33,7 @@
  "@type": "CollectionPage",
  "name": "Atualidades — Tens Direito",
  "url": "https://tensdireito.com/noticias.html",
- "description": "O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada.",
+ "description": "O que mudou nos apoios, direitos e burocracia em Portugal — notícias relevantes, com fonte verificada.",
  "inLanguage": "pt-PT",
  "isPartOf": {"@type": "WebSite", "url": "https://tensdireito.com"}
  }
@@ -66,48 +66,37 @@ main{max-width:900px;margin:2rem auto;padding:0 1rem}
 /* Destaque */
 .destaque-wrap{margin-bottom:2rem}
 .destaque-card{background:#fff;border-radius:var(--radius);padding:1.75rem;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:5px solid var(--teal)}
-.destaque-card .top-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap}
+.destaque-meta{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap}
 .badge-hoje{background:var(--teal);color:#fff;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.25rem .6rem;border-radius:20px}
-.cat-badge{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:20px;color:#fff}
-.cat-badge.apoios{background:var(--cat-apoios)}
-.cat-badge.educacao{background:var(--cat-educacao)}
-.cat-badge.emprego{background:var(--cat-emprego)}
-.cat-badge.habitacao{background:var(--cat-habitacao)}
-.cat-badge.fiscal{background:var(--cat-fiscal)}
-.cat-badge.legislacao{background:var(--cat-legislacao)}
-.data-str{font-size:.82rem;color:var(--muted)}
-.destaque-card h2{font-size:1.25rem;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:.75rem}
-.destaque-card .resumo{font-size:.95rem;color:#374151;line-height:1.7;margin-bottom:1rem}
-.destaque-card .fonte-link{font-size:.88rem;font-weight:700;color:var(--teal)}
-.destaque-card .fonte-link:hover{color:var(--teal-dark)}
-.disclaimer-not{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
-/* Arquivo */
+.cat-badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:20px;color:#fff}
+.cat-badge .cat-dot{width:6px;height:6px;border-radius:50%;background:#fff;flex-shrink:0}
+.cat-badge.cat-apoios{background:var(--cat-apoios)}
+.cat-badge.cat-educacao{background:var(--cat-educacao)}
+.cat-badge.cat-emprego{background:var(--cat-emprego)}
+.cat-badge.cat-habitacao{background:var(--cat-habitacao)}
+.cat-badge.cat-fiscal{background:var(--cat-fiscal)}
+.cat-badge.cat-legislacao{background:var(--cat-legislacao)}
+.destaque-meta time{font-size:.82rem;color:var(--muted)}
+.destaque-titulo{font-size:1.25rem;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:.75rem}
+.destaque-resumo{font-size:.95rem;color:#374151;line-height:1.7;margin-bottom:1rem}
+.destaque-link{font-size:.88rem;font-weight:700;color:var(--teal)}
+.destaque-link:hover{color:var(--teal-dark)}
+.disclaimer-noticia{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
+/* Arquivo — uma só classe de card para itens manuais e gerados */
 .arquivo-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
 .arquivo-header h2{font-size:1rem;font-weight:800;color:var(--ink)}
 .contador-str{font-size:.82rem;color:var(--muted)}
 .cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
-.noticia-card{background:#fff;border-radius:var(--radius);padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:.4rem;transition:box-shadow .15s}
-.noticia-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.1)}
-.noticia-card .card-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.noticia-card .cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.cat-dot.apoios{background:var(--cat-apoios)}
-.cat-dot.educacao{background:var(--cat-educacao)}
-.cat-dot.emprego{background:var(--cat-emprego)}
-.cat-dot.habitacao{background:var(--cat-habitacao)}
-.cat-dot.fiscal{background:var(--cat-fiscal)}
-.cat-dot.legislacao{background:var(--cat-legislacao)}
-.noticia-card .cat-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.cat-label.apoios{color:var(--cat-apoios)}
-.cat-label.educacao{color:var(--cat-educacao)}
-.cat-label.emprego{color:var(--cat-emprego)}
-.cat-label.habitacao{color:var(--cat-habitacao)}
-.cat-label.fiscal{color:var(--cat-fiscal)}
-.cat-label.legislacao{color:var(--cat-legislacao)}
-.noticia-card .card-data{font-size:.75rem;color:var(--muted);margin-left:auto}
-.noticia-card h3{font-size:.95rem;font-weight:800;color:var(--ink);line-height:1.4}
-.noticia-card .card-resumo{font-size:.85rem;color:#4B5563;line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.noticia-card .card-fonte{font-size:.8rem;font-weight:700;color:var(--teal);margin-top:.25rem}
-.noticia-card .card-fonte:hover{color:var(--teal-dark)}
+.mes-header{grid-column:1/-1;font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:.5rem 0 -.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+.mes-header:first-of-type{padding-top:0;border-top:none;margin-top:0}
+.arquivo-card{background:#fff;border-radius:var(--radius);padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:.4rem;transition:box-shadow .15s}
+.arquivo-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.1)}
+.arquivo-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.arquivo-meta time{font-size:.75rem;color:var(--muted);margin-left:auto}
+.arquivo-titulo{font-size:.95rem;font-weight:800;color:var(--ink);line-height:1.4}
+.arquivo-resumo{font-size:.85rem;color:#4B5563;line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.arquivo-link{font-size:.8rem;font-weight:700;color:var(--teal);margin-top:.25rem}
+.arquivo-link:hover{color:var(--teal-dark)}
 /* Paginação */
 .paginacao{display:flex;align-items:center;justify-content:space-between;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
 .pag-info{font-size:.83rem;color:var(--muted)}
@@ -230,7 +219,7 @@ footer a{color:var(--muted)}
 
  <section class="hero">
  <h1>Atualidades</h1>
- <p>O que mudou nos apoios, direitos e burocracia em Portugal — uma notícia por dia, com fonte verificada</p>
+ <p>O que mudou nos apoios, direitos e burocracia em Portugal — notícias relevantes, com fonte verificada</p>
  </section>
 
  <main>
@@ -246,18 +235,20 @@ footer a{color:var(--muted)}
  </div>
 
  <!-- Notícia em destaque -->
+ <div id="destaque-wrap" class="destaque-wrap">
  <!-- DESTAQUE-INICIO -->
- <article class="destaque-card" data-cat="apoios">
- <div class="destaque-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-25">25 jun. 2026</time>
+          <article class="destaque-card" data-cat="apoios">
+            <div class="destaque-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-29">29 jun. 2026</time>
+            </div>
+            <h2 class="destaque-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h2>
+            <p class="destaque-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
+            <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
+            <p class="disclaimer-noticia">Resumo informativo. Lê a notícia completa na fonte antes de tomar decisões.</p>
+          </article>
+        <!-- DESTAQUE-FIM -->
  </div>
- <h2 class="destaque-titulo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros - Jornal de Notícias</h2>
- <p class="destaque-resumo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros Jornal de Notícias…</p>
- <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNbnJYc01qT0FfbHdScDEyTzNBVENSdWM2b0xOdmVuTTd0UnNTbkFIcjJsY2FnOW1XOGpTZlZsWlZzemduQUNJd2kwUXpYRC1nSWtLS1oycWs5UDJvN2VGQm9yRHB6N0haRkpJclVZT3ljTHlrNGRFN2hMd0JZOTNLb1BwZERTYzczaHp1QVJ4SFlsNS1IbUpYbnA2M091UFpNYVQ1bVRodXpvek1KZVB5T2RfVDhOUmt1RW4tV3lFRlJnQQ?oc=5" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
- <p class="disclaimer-noticia">Resumo informativo. Lê a notícia completa na fonte antes de tomar decisões.</p>
- </article>
- <!-- DESTAQUE-FIM -->
 
  <!-- Arquivo de notícias -->
  <div id="arquivo" style="scroll-margin-top:1rem">
@@ -269,138 +260,89 @@ footer a{color:var(--muted)}
  <div class="cards-grid" id="cards-grid">
 
  <!-- ARQUIVO-INICIO -->
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-25">25 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais - Ekonomista</h3>
- <p class="arquivo-resumo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais Ekonomista…</p>
- <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPSF9QMWk5eGVUSmIwMWdNWTc1b2ZIaThSTzJMSWt4ZjVRMGRpMHd5UXZPczNRYVNuLWpzSlBsbDBtTmF1T2lxRFN1elBfNUNCazVycm9jRVEtbEVXbXpkQ1A0V3VSYmZR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-29">29 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h3>
- <p class="arquivo-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
- <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-29">29 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h3>
- <p class="arquivo-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
- <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-29">29 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h3>
- <p class="arquivo-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
- <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-29">29 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h3>
- <p class="arquivo-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
- <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-24">24 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Os 13 apoios que se juntam na prestação social única - Observador</h3>
- <p class="arquivo-resumo">Os 13 apoios que se juntam na prestação social única Observador…</p>
- <a href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxOa1FETEZnamM2UE02OUFIRkZyN2V2T21WN2dzUHFrSWZuS0FMMGFXRDlaTFBBdndadFN5YjBLM0dpRWZnTFB4c2ctTF9uNk52bEpXWFhzdlExT2R5REJsX0NMUWhSdS16XzFTbzBxZVhXZU92cG9zaWhaQ3pzMUF4bk15YjBUQW15ck5kMzJvU2VQYk8tZ210MWl3UkZyOVBQeUR6RjBjQkpEZ0tRd0lJTWNBTGoxMUZuY2QzVkZWb09VczZwTHl4dU1XVDlqbkU1QTFHWFZYdWF1RUZHQW9BOENsYkRrZHJUQ0RvTmstUHJzbTlyZWwtNg?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-25">25 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros - Jornal de Notícias</h3>
- <p class="arquivo-resumo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros Jornal de Notícias…</p>
- <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNbnJYc01qT0FfbHdScDEyTzNBVENSdWM2b0xOdmVuTTd0UnNTbkFIcjJsY2FnOW1XOGpTZlZsWlZzemduQUNJd2kwUXpYRC1nSWtLS1oycWs5UDJvN2VGQm9yRHB6N0haRkpJclVZT3ljTHlrNGRFN2hMd0JZOTNLb1BwZERTYzczaHp1QVJ4SFlsNS1IbUpYbnA2M091UFpNYVQ1bVRodXpvek1KZVB5T2RfVDhOUmt1RW4tV3lFRlJnQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="legislacao">
- <div class="arquivo-meta">
- <span class="cat-badge cat-legislacao"><span class="cat-dot"></span><span class="cat-label">Legislação</span></span>
- <time datetime="2026-06-25">25 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">PSU aprovada no Parlamento: 13 apoios sociais passam a um só</h3>
- <p class="arquivo-resumo">O Parlamento aprovou a 25 de junho a lei que autoriza o Governo a criar a Prestação Social Única, que unifica 13 apoios sociais não contributivos. A medida aguarda publicação em Diário da República e </p>
- <a href="/prestacao-social-unica.html" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-25">25 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Prestação social única: o que vai mudar nos apoios sociais? - DECO PROteste</h3>
- <p class="arquivo-resumo">Prestação social única: o que vai mudar nos apoios sociais? DECO PROteste…</p>
- <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPeXpqcFY4cGtkQXc3SE16Z2RHMmNzRGlFbUZ2dDU1eHNRX0dXVzJzQUVYOWVQbC1YX0JvUWxwWnJXR21aNDJ5c2xFRy1YSjR6YlU1UFNqVl9ZUFc4NUIzeHJhdGc5R1JOZm9remItOGlteThuT2I0NUZZMnBocjFMN3c2RFR6ellFS2tKUlJzc011ZEJ2c3ZWTWlkd3E5cEF2UmM3cHRMU2lmcldVVDc4MA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime="2026-06-22">22 jun. 2026</time>
- </div>
- <h3 class="arquivo-titulo">Em tempo de férias, eis as datas de pagamento das pensões e apoios da Segurança Social - diariOnline Região Sul</h3>
- <p class="arquivo-resumo">Em tempo de férias, eis as datas de pagamento das pensões e apoios da Segurança Social diariOnline Região Sul…</p>
- <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNM0VmajFFQlNCVmEwZjlzVzFpUjNneW9fQl9sUG5wNE1oRHRXZWNaSHNNYUJHSGJYaG9PNkVrZ2Q1Nk1xdE1aU1VmLWlndVh2dTF3enV4UHdvcDRLRXJoM25maWd1LTJCMHVQRWJZSEVGeGJSMi03V1Y2WXA5dWhSRnR0V280dFJSSE94cnRHeTVMUmJnWmxwWHVBaks5VS1wb1hZWXlSS041bndmZTdVMXIxSS1rcWpuVzZJOFFOaTJMQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="arquivo-card" data-cat="apoios">
- <div class="arquivo-meta">
- <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
- <time datetime=""></time>
- </div>
- <h3 class="arquivo-titulo">Notícia anterior</h3>
- <p class="arquivo-resumo"></p>
- <a href="#" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
- </article>
- <article class="noticia-card" data-cat="educacao">
- <div class="card-meta">
- <span class="cat-dot educacao"></span>
- <span class="cat-label educacao">Educação</span>
- <span class="card-data">23 Jun 2026</span>
- </div>
- <h3>Candidaturas à ASE 2026/2027 abrem em setembro — prazo até 30 de setembro</h3>
- <p class="card-resumo">As candidaturas à Ação Social Escolar para o ano letivo 2026/2027 abrem com o início das aulas. O prazo termina a 30 de setembro. Famílias com escalão do abono atribuído podem candidatar-se nos serviços da escola.</p>
- <a href="https://www.dge.mec.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: dge.mec.pt</a>
- </article>
-
- <article class="noticia-card" data-cat="apoios">
- <div class="card-meta">
- <span class="cat-dot apoios"></span>
- <span class="cat-label apoios">Apoios Sociais</span>
- <span class="card-data">20 Jun 2026</span>
- </div>
- <h3>IAS sobe para 537,13 € em 2026 — escalões de apoios actualizados</h3>
- <p class="card-resumo">O Indexante dos Apoios Sociais foi fixado em 537,13 € para 2026, afectando os limites de elegibilidade e os valores de apoios como o abono de família, o RSI e o subsídio de desemprego.</p>
- <a href="https://www.seg-social.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: seg-social.pt</a>
- </article>
-
- <article class="noticia-card" data-cat="educacao">
- <div class="card-meta">
- <span class="cat-dot educacao"></span>
- <span class="cat-label educacao">Educação</span>
- <span class="card-data">18 Jun 2026</span>
- </div>
- <h3>Bolsas de mérito 2026: candidaturas abertas até 30 de setembro nas escolas</h3>
- <p class="card-resumo">Alunos do ensino secundário com escalão A ou B da ASE e aprovação em todas as disciplinas podem candidatar-se à bolsa de mérito. O valor estimado para 2026/2027 é de 1.342,83 € pagos em 3 prestações.</p>
- <a href="https://www.dge.mec.pt" class="card-fonte" target="_blank" rel="noopener">→ Fonte: dge.mec.pt</a>
- </article>
- <!-- ARQUIVO-FIM -->
+          <h3 class="mes-header" data-mes="2026-06">Junho 2026</h3>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-25">25 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Prestação social única: o que vai mudar nos apoios sociais? - DECO PROteste</h3>
+            <p class="arquivo-resumo">Prestação social única: o que vai mudar nos apoios sociais? DECO PROteste…</p>
+            <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPeXpqcFY4cGtkQXc3SE16Z2RHMmNzRGlFbUZ2dDU1eHNRX0dXVzJzQUVYOWVQbC1YX0JvUWxwWnJXR21aNDJ5c2xFRy1YSjR6YlU1UFNqVl9ZUFc4NUIzeHJhdGc5R1JOZm9remItOGlteThuT2I0NUZZMnBocjFMN3c2RFR6ellFS2tKUlJzc011ZEJ2c3ZWTWlkd3E5cEF2UmM3cHRMU2lmcldVVDc4MA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-25">25 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais - Ekonomista</h3>
+            <p class="arquivo-resumo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais Ekonomista…</p>
+            <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPSF9QMWk5eGVUSmIwMWdNWTc1b2ZIaThSTzJMSWt4ZjVRMGRpMHd5UXZPczNRYVNuLWpzSlBsbDBtTmF1T2lxRFN1elBfNUNCazVycm9jRVEtbEVXbXpkQ1A0V3VSYmZR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="legislacao" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-legislacao"><span class="cat-dot"></span><span class="cat-label">Legislação</span></span>
+              <time datetime="2026-06-25">25 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">PSU aprovada no Parlamento: 13 apoios sociais passam a um só - Tens Direito</h3>
+            <p class="arquivo-resumo">O Parlamento aprovou a 25 de junho a lei que autoriza o Governo a criar a Prestação Social Única, que unifica 13 apoios sociais não contributivos. A medida aguarda publicação em Diário da República e…</p>
+            <a href="/prestacao-social-unica.html" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-25">25 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros - Jornal de Notícias</h3>
+            <p class="arquivo-resumo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros Jornal de Notícias…</p>
+            <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNbnJYc01qT0FfbHdScDEyTzNBVENSdWM2b0xOdmVuTTd0UnNTbkFIcjJsY2FnOW1XOGpTZlZsWlZzemduQUNJd2kwUXpYRC1nSWtLS1oycWs5UDJvN2VGQm9yRHB6N0haRkpJclVZT3ljTHlrNGRFN2hMd0JZOTNLb1BwZERTYzczaHp1QVJ4SFlsNS1IbUpYbnA2M091UFpNYVQ1bVRodXpvek1KZVB5T2RfVDhOUmt1RW4tV3lFRlJnQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-24">24 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Os 13 apoios que se juntam na prestação social única - Observador</h3>
+            <p class="arquivo-resumo">Os 13 apoios que se juntam na prestação social única Observador…</p>
+            <a href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxOa1FETEZnamM2UE02OUFIRkZyN2V2T21WN2dzUHFrSWZuS0FMMGFXRDlaTFBBdndadFN5YjBLM0dpRWZnTFB4c2ctTF9uNk52bEpXWFhzdlExT2R5REJsX0NMUWhSdS16XzFTbzBxZVhXZU92cG9zaWhaQ3pzMUF4bk15YjBUQW15ck5kMzJvU2VQYk8tZ210MWl3UkZyOVBQeUR6RjBjQkpEZ0tRd0lJTWNBTGoxMUZuY2QzVkZWb09VczZwTHl4dU1XVDlqbkU1QTFHWFZYdWF1RUZHQW9BOENsYkRrZHJUQ0RvTmstUHJzbTlyZWwtNg?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="educacao" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-educacao"><span class="cat-dot"></span><span class="cat-label">Educação</span></span>
+              <time datetime="2026-06-23">23 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Candidaturas à ASE 2026/2027 abrem em setembro — prazo até 30 de setembro - dge.mec.pt</h3>
+            <p class="arquivo-resumo">As candidaturas à Ação Social Escolar para o ano letivo 2026/2027 abrem com o início das aulas. O prazo termina a 30 de setembro. Famílias com escalão do abono atribuído podem candidatar-se nos serviços da escola.…</p>
+            <a href="https://www.dge.mec.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-22">22 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Em tempo de férias, eis as datas de pagamento das pensões e apoios da Segurança Social - diariOnline Região Sul</h3>
+            <p class="arquivo-resumo">Em tempo de férias, eis as datas de pagamento das pensões e apoios da Segurança Social diariOnline Região Sul…</p>
+            <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNM0VmajFFQlNCVmEwZjlzVzFpUjNneW9fQl9sUG5wNE1oRHRXZWNaSHNNYUJHSGJYaG9PNkVrZ2Q1Nk1xdE1aU1VmLWlndVh2dTF3enV4UHdvcDRLRXJoM25maWd1LTJCMHVQRWJZSEVGeGJSMi03V1Y2WXA5dWhSRnR0V280dFJSSE94cnRHeTVMUmJnWmxwWHVBaks5VS1wb1hZWXlSS041bndmZTdVMXIxSS1rcWpuVzZJOFFOaTJMQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+              <time datetime="2026-06-20">20 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">IAS sobe para 537,13 € em 2026 — escalões de apoios actualizados - seg-social.pt</h3>
+            <p class="arquivo-resumo">O Indexante dos Apoios Sociais foi fixado em 537,13 € para 2026, afectando os limites de elegibilidade e os valores de apoios como o abono de família, o RSI e o subsídio de desemprego.…</p>
+            <a href="https://www.seg-social.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+          <article class="arquivo-card" data-cat="educacao" data-mes="2026-06">
+            <div class="arquivo-meta">
+              <span class="cat-badge cat-educacao"><span class="cat-dot"></span><span class="cat-label">Educação</span></span>
+              <time datetime="2026-06-18">18 jun. 2026</time>
+            </div>
+            <h3 class="arquivo-titulo">Bolsas de mérito 2026: candidaturas abertas até 30 de setembro nas escolas - dge.mec.pt</h3>
+            <p class="arquivo-resumo">Alunos do ensino secundário com escalão A ou B da ASE e aprovação em todas as disciplinas podem candidatar-se à bolsa de mérito. O valor estimado para 2026/2027 é de 1.342,83 € pagos em 3 prestações.…</p>
+            <a href="https://www.dge.mec.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+          </article>
+        <!-- ARQUIVO-FIM -->
 
  </div><!-- /cards-grid -->
 
@@ -441,7 +383,16 @@ footer a{color:var(--muted)}
  var POR_PAGINA = 6;
 
  function todosCards() {
- return Array.from(document.querySelectorAll('#cards-grid .noticia-card'));
+ return Array.from(document.querySelectorAll('#cards-grid .arquivo-card'));
+ }
+
+ function atualizarCabecalhosDeMes() {
+ document.querySelectorAll('#cards-grid .mes-header').forEach(function(header) {
+ var mes = header.dataset.mes;
+ var algumVisivel = Array.from(document.querySelectorAll('#cards-grid .arquivo-card[data-mes="' + mes + '"]'))
+ .some(function(c) { return c.style.display !== 'none'; });
+ header.style.display = algumVisivel ? 'block' : 'none';
+ });
  }
 
  function cardsFiltrados() {
@@ -491,6 +442,8 @@ footer a{color:var(--muted)}
 
  document.getElementById('btn-ant').disabled = paginaAtual === 0;
  document.getElementById('btn-prox').disabled = fim >= total;
+
+ atualizarCabecalhosDeMes();
 
  /* destaque: mostrar/ocultar conforme filtro */
  var destaque = document.querySelector('#destaque-wrap .destaque-card');

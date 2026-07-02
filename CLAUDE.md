@@ -12,7 +12,8 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
   - data de verificação (`id="ultima-revisao-mes"` + `dateModified` do JSON-LD) — `sed`, Step 6
   - `<!-- DESTAQUE:INICIO/FIM -->` — banner sazonal/evento, Step 6a
   - `<!-- NOTICIA-HOME:INICIO/FIM -->` — card "Últimas notícias", Step 3 (`gerar_noticias.py`)
-- `noticias.html` — notícia do dia via RSS (ficheiro inteiro, sem marcadores)
+- `noticias.html` — arquivo de notícias, gerado a partir de `data/noticias.json` (ficheiro inteiro, sem marcadores)
+- `data/noticias.json` — fonte de verdade das notícias (ver secção "FRESCURA DA HOMEPAGE")
 - `CLAUDE.md` — data de revisão automática
 - `README.md` — estado do repositório
 - `data/scraped/*.json` — dados do scraper
@@ -22,7 +23,7 @@ Esta regra aplica-se a páginas actuais E futuras.
 Qualquer novo HTML criado está automaticamente protegido — não precisa de ser adicionado a listas.
 
 O guardrail está implementado em dois locais:
-1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` bloqueia qualquer escrita em HTML que não seja `noticias.html` (escrita livre) ou `index.html` (só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita — ver `tests/test_gerar_noticias_guardrail.py`)
+1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` é uma allow-list estrita: `FICHEIROS_AUTO_GERADOS` (`noticias.html`, `noticias.json` — escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`, só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita). Qualquer nome fora das duas listas é **sempre bloqueado**, nunca escrito por omissão (corrigido na Fase 1 do sistema de notícias — antes havia um "fallthrough" que escrevia livremente qualquer ficheiro não-HTML não listado). Ver `tests/test_gerar_noticias_guardrail.py`.
 2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit
 
 Nota: o marcador `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` (bloco "Atualizado
@@ -95,7 +96,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`) |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
-| Notícias | `scripts/gerar_noticias.py` → `noticias.html` + card em `index.html` (`NOTICIA-HOME`) |
+| Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 
@@ -193,7 +194,8 @@ tens-direito/
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
-│   ├── gerar_noticias.py     ← RSS → noticias.html + card em index.html (NOTICIA-HOME)
+│   ├── gerar_noticias.py     ← RSS + data/noticias.json → noticias.html + cards em index.html (NOTICIA-HOME)
+│   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
@@ -216,6 +218,7 @@ tens-direito/
 │                                (estes dois últimos correm sobre as páginas reais, não fixtures)
 ├── data/
 │   ├── clusters.json         ← fonte única de verdade da arquitectura de clusters
+│   ├── noticias.json         ← fonte de verdade das notícias (ver "FRESCURA DA HOMEPAGE")
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
 │   ├── mudancas.json         ← mudanças detectadas pelo pipeline
 │   └── divergencias.json     ← valores scraped vs publicado
@@ -626,28 +629,84 @@ esse sim, já era actualizado diariamente pelo pipeline desde
 só a homepage é que nunca reflectia isso). A homepage passou a ter
 **duas fontes de frescura, ambas automáticas e nenhuma inventa datas**:
 
-### A) "Últimas notícias" — `gerar_noticias.py` + `NOTICIA-HOME:INICIO/FIM`
+### A) "Últimas notícias" — `data/noticias.json` + `gerar_noticias.py` + `NOTICIA-HOME:INICIO/FIM`
 
-Mesma notícia escolhida por `best_entry()` (a que já vai para
-`noticias.html`) passa também a ser injectada no `index.html`, entre
-`<!-- NOTICIA-HOME:INICIO/FIM -->`, por `render_noticia_home()` +
-`atualizar_index_home()`. Mostra sempre a data real da notícia (nunca
-"hoje") e liga directamente à fonte externa (nunca um link interno
-inventado). Se o RSS não devolver nada relevante nesse dia,
-`main()` termina antes de chamar `atualizar_index_home()` — o bloco
-mantém a última notícia real publicada, nunca um `[VAZIO]` nem uma
-data adivinhada.
+**Fase 1 (2026-07-02)**: `data/noticias.json` passou a ser a fonte de
+verdade — `noticias.html` deixou de ser a própria base de dados (patch
+incremental do HTML anterior) e passa a ser **gerado do JSON** a cada
+corrida (destaque + arquivo agrupado por mês, ordenado por data real
+desc — nunca por ordem de inserção). `index.html` mostra os 2-3 itens
+mais recentes (antes era só 1).
 
-**Guardrail estendido** (mudança de segurança): `escrever_ficheiro_seguro()`
-em `gerar_noticias.py` passou de "só `noticias.html`" para "`noticias.html`
-(livre) ou `index.html` (só dentro de `NOTICIA-HOME:INICIO/FIM`)".
-`_verificar_escrita_confinada()` compara o ficheiro em disco com o novo
-conteúdo fora da secção marcada — qualquer diferença aí, ou o marcador
-não existir, bloqueia a escrita com excepção. Coberto por
-`tests/test_gerar_noticias_guardrail.py` (escrita livre em
-`noticias.html`, bloqueio a qualquer outro HTML, escrita permitida
-dentro do marcador, bloqueio fora do marcador, bloqueio se o marcador
-não existir, idempotência de `atualizar_index_home()`).
+Cada item: `data_iso`, `titulo` (sem o sufixo "- Fonte" do Google
+News), `fonte_nome`, `url`, `resumo`, `categoria` (para os filtros do
+`noticias.html`) e `cluster_id` (classificação best-effort por
+palavra-chave — `CLUSTER_KEYWORDS` — preparada para a Fase 3 ligar
+cada notícia ao guia do cluster; ainda não renderizada em lado nenhum).
+
+**Migração** (`scripts/migrar_noticias.py`, corre uma única vez, nunca
+no pipeline): parseou o `noticias.html` legado nos dois formatos de
+card que coexistiam (`arquivo-card`, do script; `noticia-card`,
+manuscrito antes do script existir), descartou 1 registo vazio/
+corrompido (placeholder `"Notícia anterior"` com `href="#"`, resíduo
+de um bug antigo do extractor do destaque) e deduplicou os restantes
+14 — 4 eram duplicados reais (mesma notícia publicada em dias
+diferentes, sem dedup nenhum a proteger) — mantendo sempre a
+ocorrência de **data mais antiga** (primeira publicação real). Resultado:
+**10 itens únicos**. Ver `tests/test_migrar_noticias.py`.
+
+**Dedup no pipeline** (`encontrar_duplicado()` — o bug mais grave
+encontrado no diagnóstico da Fase 0: a mesma notícia chegou a ser
+"republicada" 4× em dias diferentes): compara o candidato vencedor
+contra `data/noticias.json` por **título normalizado** (minúsculas,
+sem pontuação, `difflib` com limiar de 0.90 de semelhança — sempre
+válido) e por **URL canónico exacto**, mas só quando o URL não é a
+homepage genérica de um domínio (`_url_e_especifica()`) — descoberto
+durante a migração: dois artigos manuscritos genuinamente diferentes
+citavam ambos `dge.mec.pt` como fonte e o URL sozinho dava-os como
+duplicados um do outro. Se o vencedor inicial for duplicado,
+`selecionar_vencedor()` passa ao candidato seguinte com score
+positivo; se todos forem duplicados ou não houver nenhum com score
+positivo, o resultado é `None` — **"nenhuma notícia hoje" é aceitável,
+nunca se força um candidato fraco ou repetido**.
+
+**Observabilidade**: cada corrida regista no log (`imprimir_relatorio()`)
+o nº de candidatos por feed, os 3 melhores com o respectivo score, cada
+rejeição por dedup com o motivo (`"duplicado de AAAA-MM-DD"`) e o
+vencedor final com o motivo. Antes da Fase 1 não havia nenhuma
+visibilidade sobre quantos candidatos existiam nem porque um venceu.
+
+Mostra sempre a data real da notícia (nunca "hoje") e liga directamente
+à fonte externa (nunca um link interno inventado). Se não houver
+vencedor, `main()` termina sem tocar em `data/noticias.json`,
+`noticias.html` nem `index.html` — mantêm o último conteúdo real.
+
+**Guardrail estendido** (mudança de segurança, reforçada na Fase 1):
+`escrever_ficheiro_seguro()` em `gerar_noticias.py` é agora uma
+allow-list estrita — `FICHEIROS_AUTO_GERADOS` (`noticias.html`,
+`noticias.json`, escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`,
+só dentro de `NOTICIA-HOME:INICIO/FIM`, via `_verificar_escrita_confinada()`).
+Qualquer nome fora das duas listas é **sempre bloqueado** — corrigido
+um "fallthrough" que antes escrevia livremente qualquer ficheiro não-
+HTML não listado (nunca chegou a ser explorado na prática, porque o
+próprio script nunca chamava a função com outro nome, mas era uma
+allow-list incompleta). Coberto por `tests/test_gerar_noticias_guardrail.py`.
+
+**Bugs de correspondência de classes encontrados e corrigidos em
+`noticias.html`** (nenhum introduzido pela Fase 1 — todos pré-existentes,
+descobertos ao regenerar o ficheiro a partir do JSON): o JS de
+paginação/filtros seleccionava `.noticia-card`, mas o script gerava
+`.arquivo-card` — a contagem por categoria e a paginação só "viam" os
+3 cards manuscritos antigos, nunca os gerados automaticamente; o CSS
+não tinha nenhuma regra para `.arquivo-card` (cards sem estilo nenhum);
+`.cat-badge.apoios` (CSS) nunca correspondia a `class="cat-badge
+cat-apoios"` (HTML real) — os badges de categoria nunca mostravam cor;
+`#destaque-wrap` era referenciado no JS mas não existia no HTML — o
+destaque nunca era escondido ao filtrar por categoria. Unificada a
+classe (`arquivo-card`, uma só, para itens manuscritos e gerados),
+corrigidos os 3 selectores, confirmado no browser (Playwright): 9/9
+cards visíveis pela contagem e pela paginação, badge com cor correcta,
+destaque a esconder/mostrar correctamente ao filtrar.
 
 ### B) "Atualizado recentemente" — `sincronizar_clusters.py` + `ATUALIZACOES:HOME:INICIO/FIM`
 
@@ -697,6 +756,16 @@ por desenho — nunca é uma data inventada, só nem sempre é a mais
 recente possível. *Registado para o futuro*: decidir se vale a pena
 remover o feed DRE morto e/ou acrescentar fontes com cadência mais
 previsível — não decidido, sem prazo.
+
+*Registado para a Fase 2 (não feito ainda)*: um passo de diagnóstico
+de feeds candidatos (RSS directo de seg-social.pt/gov.pt/eportugal,
+queries por cluster, reaproveitar o scraper Playwright do `dre_psu`
+como fonte de notícias) via `workflow_dispatch` dedicado, corrido no
+runner real do GitHub Actions — é o único sítio onde testar a
+acessibilidade destes feeds é fiável (confirmado no diagnóstico da
+Fase 0: tanto `curl` como `WebFetch` a partir de ambientes de sessão
+levam 403 do Google mesmo a feeds que funcionam todos os dias em
+produção — bloqueio ao user-agent/IP da sessão, não ao runner real).
 
 ---
 
@@ -973,3 +1042,7 @@ mudança numa sessão manual dedicada, nunca de ânimo leve.
 ---
 
 *Última revisão: 2026-07-02 — corrigido `F401` em `tests/test_sincronizar_clusters.py` (import `render_home_cards` não usado, pré-existente desde a Fase 4 — passava despercebido porque o job "Qualidade Python (Ruff)" do `integridade.yml` estava a falhar desde o commit `06d62726` sem ninguém ter reparado); checklist obrigatória ganhou o bullet `ruff check scripts/ --select E,F,W --ignore E501 .` (mesmo comando do CI, incluindo a nota de que a `ruff-action` também varre `tests/` apesar do `scripts/` explícito) — é essa lacuna na checklist que explica o lint ter escapado a vários commits seguidos*
+
+---
+
+*Última revisão: 2026-07-02 — Fase 1 do sistema de notícias: `data/noticias.json` passa a ser a fonte de verdade (antes era o próprio `noticias.html`); migração única (`scripts/migrar_noticias.py`) dos 15 registos legados — 1 descartado (placeholder vazio, resíduo de bug antigo), 4 duplicados removidos (mantida sempre a data mais antiga), 10 itens finais; `gerar_noticias.py` reescrito com dedup (`encontrar_duplicado()` — título normalizado + URL específico, nunca homepage genérica sozinha), observabilidade completa no log (candidatos por feed, top 3, rejeições, vencedor) e "nenhuma notícia hoje" como resultado aceitável; `noticias.html` passa a ser gerado do JSON (destaque + arquivo por mês, ordem por data real desc) em vez de patch incremental; `index.html` (`NOTICIA-HOME`) mostra 2-3 itens em vez de 1; corrigidos 3 bugs pré-existentes de correspondência de classes em `noticias.html` (JS de paginação apontava a `.noticia-card` em vez de `.arquivo-card`, `.arquivo-card` não tinha CSS nenhum, `.cat-badge.apoios` nunca correspondia a `cat-apoios` real, `#destaque-wrap` não existia) — confirmado no browser via Playwright (contagens e paginação a verem os 9/9 itens reais, badges com cor, destaque a esconder/mostrar ao filtrar); guardrail de `escrever_ficheiro_seguro()` endurecido para allow-list estrita nos dois sentidos; `verificar_injecao.py` confirmado a cobrir `data/noticias.json` sem alterações (já estava dentro de `data/`); 453 testes a passar (49 novos); idempotência de `regenerar_noticias_html()`/`atualizar_index_home()` confirmada nos ficheiros reais; passo de diagnóstico de feeds candidatos registado para a Fase 2, não feito ainda*

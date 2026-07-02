@@ -1,25 +1,44 @@
 #!/usr/bin/env python3
 """Gera noticias.html a partir de feeds RSS — corre via GitHub Action diária.
 
-Escreve também a mesma notícia escolhida no bloco NOTICIA-HOME de
-index.html, entre marcadores — nunca fora deles (ver SECCOES_PERMITIDAS
-e _verificar_escrita_confinada)."""
+`data/noticias.json` é a fonte de verdade (Fase 1, 2026-07-02): cada corrida
+escolhe no máximo 1 vencedor entre os candidatos com score positivo que ainda
+não estejam no JSON (por URL ou por título semelhante), acrescenta-o, e
+regenera noticias.html (destaque + arquivo agrupado por mês, ordenado por
+data real desc) e o bloco NOTICIA-HOME de index.html (2-3 mais recentes) a
+partir do JSON — nunca por patch incremental do HTML anterior.
 
+"Nenhuma notícia hoje" é um resultado aceitável — nunca forçar um candidato
+fraco ou duplicado só para ter alguma coisa a publicar.
+
+Escreve em index.html só dentro do bloco NOTICIA-HOME, entre marcadores —
+nunca fora deles (ver SECCOES_PERMITIDAS e _verificar_escrita_confinada)."""
+
+from __future__ import annotations
+
+import difflib
 import feedparser
 import html
+import json
 import os
 import re
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
-# Guardrail: ficheiro HTML de escrita livre por este script.
-FICHEIROS_AUTO_GERADOS = ["noticias.html"]
+RAIZ = Path(__file__).resolve().parent.parent
+NOTICIAS_JSON = RAIZ / "data" / "noticias.json"
+
+# Guardrail: ficheiros de escrita livre por este script (allow-list — um
+# ficheiro que não conste aqui nem em SECCOES_PERMITIDAS é sempre bloqueado,
+# nunca escrito "por omissão").
+FICHEIROS_AUTO_GERADOS = ["noticias.html", "noticias.json"]
 
 # Guardrail: ficheiros HTML onde este script só pode escrever dentro de uma
-# secção marcada — qualquer diferença fora dela bloqueia a escrita. Mudança
-# de segurança (index.html deixa de estar 100% fora de alcance do script de
-# notícias) — ver tests/test_gerar_noticias_guardrail.py.
+# secção marcada — qualquer diferença fora dela bloqueia a escrita.
 SECCOES_PERMITIDAS = {
     "index.html": ("NOTICIA-HOME:INICIO", "NOTICIA-HOME:FIM"),
 }
@@ -51,6 +70,10 @@ def _verificar_escrita_confinada(caminho, conteudo_novo, marcador_inicio, marcad
 
 
 def escrever_ficheiro_seguro(caminho, conteudo):
+    """Allow-list estrita: só `FICHEIROS_AUTO_GERADOS` (escrita livre) e
+    `SECCOES_PERMITIDAS` (escrita confinada a um marcador) podem ser
+    escritos por este script — qualquer outro nome é sempre bloqueado,
+    nunca escrito por omissão."""
     nome = os.path.basename(caminho)
 
     if nome in FICHEIROS_AUTO_GERADOS:
@@ -58,19 +81,19 @@ def escrever_ficheiro_seguro(caminho, conteudo):
             f.write(conteudo)
         return
 
-    if nome.endswith(".html") and nome not in SECCOES_PERMITIDAS:
-        raise Exception(
-            f"BLOQUEADO: tentativa de escrever em ficheiro protegido: {nome}. "
-            f"Apenas {FICHEIROS_AUTO_GERADOS + list(SECCOES_PERMITIDAS)} podem ser "
-            f"modificados automaticamente."
-        )
-
-    if nome.endswith(".html"):
+    if nome in SECCOES_PERMITIDAS:
         marcador_inicio, marcador_fim = SECCOES_PERMITIDAS[nome]
         _verificar_escrita_confinada(caminho, conteudo, marcador_inicio, marcador_fim)
+        with open(caminho, "w", encoding="utf-8") as f:
+            f.write(conteudo)
+        return
 
-    with open(caminho, "w", encoding="utf-8") as f:
-        f.write(conteudo)
+    raise Exception(
+        f"BLOQUEADO: tentativa de escrever em ficheiro protegido: {nome}. "
+        f"Apenas {FICHEIROS_AUTO_GERADOS + list(SECCOES_PERMITIDAS)} podem ser "
+        f"modificados automaticamente."
+    )
+
 
 FEEDS = [
     "https://news.google.com/rss/search?q=apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
@@ -97,84 +120,6 @@ CAT_KEYWORDS = {
     "legislacao": ["decreto-lei", "portaria", "lei n.º", "dre", "diário da república", "legislação"],
 }
 
-
-def score_entry(entry):
-    text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
-    if any(s in text for s in STOPWORDS):
-        return -1
-    return sum(1 for kw in KEYWORDS if kw in text)
-
-
-def detect_category(entry):
-    text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
-    for cat, kws in CAT_KEYWORDS.items():
-        if any(kw in text for kw in kws):
-            return cat
-    return "apoios"
-
-
-def fetch_entries():
-    entries = []
-    for url in FEEDS:
-        feed = feedparser.parse(url)
-        for e in feed.entries[:10]:
-            e["_feed_url"] = url
-            entries.append(e)
-    return entries
-
-
-def best_entry(entries):
-    scored = [(score_entry(e), e) for e in entries]
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return scored[0][1] if scored and scored[0][0] > 0 else None
-
-
-def parse_date(entry):
-    try:
-        dt = parsedate_to_datetime(entry.get("published", ""))
-        return dt.astimezone(timezone.utc)
-    except Exception:
-        return datetime.now(timezone.utc)
-
-
-def format_date_pt(dt):
-    months = [
-        "", "jan", "fev", "mar", "abr", "mai", "jun",
-        "jul", "ago", "set", "out", "nov", "dez"
-    ]
-    return f"{dt.day} {months[dt.month]}. {dt.year}"
-
-
-def format_date_iso(dt):
-    return dt.strftime("%Y-%m-%d")
-
-
-def strip_tags(text):
-    return re.sub(r"<[^>]+>", "", text or "").strip()
-
-
-def limpar_texto(texto):
-    """Limpa entidades HTML e espaços múltiplos do texto."""
-    if not texto:
-        return ""
-    # Limpar non-breaking spaces em todas as formas possíveis
-    texto = texto.replace('\xa0', ' ')
-    texto = texto.replace('&amp;nbsp;', ' ')   # duplamente codificado
-    texto = texto.replace('&nbsp;&nbsp;', ' ')
-    texto = texto.replace('&nbsp;', ' ')
-    texto = texto.replace('&#160;', ' ')
-    # Converter entidades HTML restantes
-    texto = unescape(texto)
-    # Segunda passagem após unescape (apanha &amp;nbsp; → &nbsp; → espaço)
-    texto = texto.replace('&nbsp;', ' ')
-    texto = texto.replace('&#160;', ' ')
-    # Remover tags HTML residuais
-    texto = re.sub(r'<[^>]+>', '', texto)
-    # Limpar espaços múltiplos
-    texto = re.sub(r'\s+', ' ', texto).strip()
-    return texto
-
-
 CAT_LABELS = {
     "apoios": "Apoios Sociais",
     "educacao": "Educação",
@@ -184,135 +129,447 @@ CAT_LABELS = {
     "legislacao": "Legislação",
 }
 
+# Classificação best-effort para ligação futura ao guia do cluster
+# (Fase 3 — "Relacionado: o nosso guia sobre X"). Não é garantidamente
+# precisa; apenas a melhor correspondência por palavra-chave.
+CLUSTER_KEYWORDS = {
+    "prestacao-social-unica": ["psu", "prestação social única"],
+    "apoios-escolares": ["ase", "ação social escolar", "bolsa de mérito", "manuais escolares", "manuais gratuitos", "passe sub-23", "passe sub23"],
+    "familia": ["abono de família", "abono", "licença parental", "subsídio parental"],
+    "idosos-incapacidade-cuidadores": ["csi", "complemento solidário", "cuidador informal", "amim", "incapacidade multiuso"],
+    "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção"],
+}
 
-def render_destaque(entry):
-    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
-    summary = html.escape(limpar_texto(entry.get("summary", "")))[:400]
-    link = html.escape(entry.get("link", "#"))
+MESES_PT = [
+    "", "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+    "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+]
+MESES_ABREV_PT = [
+    "", "jan", "fev", "mar", "abr", "mai", "jun",
+    "jul", "ago", "set", "out", "nov", "dez",
+]
+
+LIMIAR_SEMELHANCA_TITULO = 0.90
+
+
+@dataclass
+class ItemNoticia:
+    data_iso: str
+    titulo: str
+    fonte_nome: str
+    url: str
+    resumo: str
+    categoria: str
+    cluster_id: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        return {
+            "data_iso": self.data_iso,
+            "titulo": self.titulo,
+            "fonte_nome": self.fonte_nome,
+            "url": self.url,
+            "resumo": self.resumo,
+            "categoria": self.categoria,
+            "cluster_id": self.cluster_id,
+        }
+
+    @staticmethod
+    def from_dict(d: dict) -> "ItemNoticia":
+        return ItemNoticia(
+            data_iso=d["data_iso"],
+            titulo=d["titulo"],
+            fonte_nome=d.get("fonte_nome", ""),
+            url=d["url"],
+            resumo=d.get("resumo", ""),
+            categoria=d.get("categoria", "apoios"),
+            cluster_id=d.get("cluster_id"),
+        )
+
+
+@dataclass
+class Candidato:
+    entry: dict
+    score: int
+    titulo: str
+    url: str
+    data_iso: str
+    feed_url: str
+
+
+@dataclass
+class Rejeicao:
+    titulo: str
+    motivo: str
+
+
+@dataclass
+class ResultadoSelecao:
+    candidatos_por_feed: Dict[str, int] = field(default_factory=dict)
+    top_candidatos: List[Candidato] = field(default_factory=list)
+    rejeitados: List[Rejeicao] = field(default_factory=list)
+    vencedor: Optional[Candidato] = None
+    motivo_vencedor: str = ""
+
+
+# ── Normalização e dedup ──────────────────────────────────────────────────
+
+def normalizar_titulo(titulo: str) -> str:
+    """minúsculas, sem pontuação, espaços colapsados — para comparar
+    títulos vindos de fontes/formatações diferentes."""
+    t = titulo.lower()
+    t = re.sub(r"[^\w\s]", " ", t, flags=re.UNICODE)
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
+
+
+def normalizar_url(url: str) -> str:
+    """Só remove espaços em volta e o fragmento (#...) — mantém a query
+    string, porque em geral é significativa (só o link opaco do Google
+    News é que repete o mesmo valor em dias diferentes, e nesse caso a
+    comparação exacta já chega, confirmado no diagnóstico da Fase 0)."""
+    return url.strip().split("#", 1)[0]
+
+
+_REGEX_URL_GENERICA = re.compile(r"^https?://[^/]+/?$")
+
+
+def _url_e_especifica(url: str) -> bool:
+    """False para URLs que são só a homepage de um domínio (ex.: usadas
+    em itens antigos manuscritos como 'fonte: seg-social.pt', sem
+    apontar a um artigo concreto) — duas notícias diferentes podem
+    legitimamente citar a mesma homepage como fonte, por isso um URL
+    genérico nunca chega, sozinho, para as considerar duplicadas."""
+    return not _REGEX_URL_GENERICA.match(url.strip())
+
+
+def titulos_semelhantes(a: str, b: str) -> bool:
+    if a == b:
+        return True
+    return difflib.SequenceMatcher(None, a, b).ratio() >= LIMIAR_SEMELHANCA_TITULO
+
+
+def encontrar_duplicado(
+    titulo: str, url: str, itens_existentes: List[ItemNoticia]
+) -> Optional[ItemNoticia]:
+    """Duplicado se o título (normalizado) for igual/semelhante — sinal
+    sempre válido — ou se o URL canónico for exactamente igual E for um
+    URL específico (não a homepage genérica de um domínio, partilhável
+    por notícias diferentes sem serem a mesma)."""
+    url_norm = normalizar_url(url)
+    titulo_norm = normalizar_titulo(titulo)
+    url_especifica = _url_e_especifica(url_norm)
+    for item in itens_existentes:
+        if titulos_semelhantes(titulo_norm, normalizar_titulo(item.titulo)):
+            return item
+        if url_especifica and normalizar_url(item.url) == url_norm:
+            return item
+    return None
+
+
+# ── Scoring e classificação ────────────────────────────────────────────────
+
+def score_entry(entry) -> int:
+    text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
+    if any(s in text for s in STOPWORDS):
+        return -1
+    return sum(1 for kw in KEYWORDS if kw in text)
+
+
+def detect_category(entry) -> str:
+    text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
+    for cat, kws in CAT_KEYWORDS.items():
+        if any(kw in text for kw in kws):
+            return cat
+    return "apoios"
+
+
+def detectar_cluster(titulo: str, resumo: str) -> Optional[str]:
+    text = (titulo + " " + resumo).lower()
+    for cluster_id, kws in CLUSTER_KEYWORDS.items():
+        if any(kw in text for kw in kws):
+            return cluster_id
+    return None
+
+
+def fetch_entries() -> List[dict]:
+    entries = []
+    for url in FEEDS:
+        feed = feedparser.parse(url)
+        for e in feed.entries[:10]:
+            e["_feed_url"] = url
+            entries.append(e)
+    return entries
+
+
+def parse_date(entry) -> datetime:
+    try:
+        dt = parsedate_to_datetime(entry.get("published", ""))
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        return datetime.now(timezone.utc)
+
+
+def format_date_pt(dt: datetime) -> str:
+    return f"{dt.day} {MESES_ABREV_PT[dt.month]}. {dt.year}"
+
+
+def format_date_iso(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%d")
+
+
+def limpar_texto(texto: Optional[str]) -> str:
+    """Limpa entidades HTML e espaços múltiplos do texto."""
+    if not texto:
+        return ""
+    texto = texto.replace('\xa0', ' ')
+    texto = texto.replace('&amp;nbsp;', ' ')
+    texto = texto.replace('&nbsp;&nbsp;', ' ')
+    texto = texto.replace('&nbsp;', ' ')
+    texto = texto.replace('&#160;', ' ')
+    texto = unescape(texto)
+    texto = texto.replace('&nbsp;', ' ')
+    texto = texto.replace('&#160;', ' ')
+    texto = re.sub(r'<[^>]+>', '', texto)
+    texto = re.sub(r'\s+', ' ', texto).strip()
+    return texto
+
+
+_REGEX_SEPARADOR_FONTE = re.compile(r"^(.*)\s+-\s+([^-]+)$")
+
+
+def separar_titulo_e_fonte(titulo_bruto: str) -> Tuple[str, str]:
+    """Os títulos do Google News vêm no formato 'Título - Fonte'. Separa
+    os dois — evita mostrar a fonte duas vezes (uma no título, outra no
+    campo dedicado) e permite comparar títulos sem ruído do agregador."""
+    m = _REGEX_SEPARADOR_FONTE.match(titulo_bruto)
+    if m:
+        return m.group(1).strip(), m.group(2).strip()
+    return titulo_bruto.strip(), ""
+
+
+def construir_item_de_entry(entry: dict) -> ItemNoticia:
+    titulo_bruto = limpar_texto(entry.get("title", "Sem título"))
+    titulo, fonte_nome = separar_titulo_e_fonte(titulo_bruto)
+    resumo = limpar_texto(entry.get("summary", ""))[:220]
+    url = entry.get("link", "#")
     dt = parse_date(entry)
-    date_str = format_date_pt(dt)
-    date_iso = format_date_iso(dt)
-    cat = detect_category(entry)
-    cat_label = CAT_LABELS.get(cat, "Apoios Sociais")
+    categoria = detect_category(entry)
+    cluster_id = detectar_cluster(titulo, resumo)
+    return ItemNoticia(
+        data_iso=format_date_iso(dt),
+        titulo=titulo,
+        fonte_nome=fonte_nome,
+        url=url,
+        resumo=resumo,
+        categoria=categoria,
+        cluster_id=cluster_id,
+    )
 
+
+# ── Selecção com dedup e observabilidade ───────────────────────────────────
+
+def selecionar_vencedor(entries: List[dict], itens_existentes: List[ItemNoticia]) -> ResultadoSelecao:
+    resultado = ResultadoSelecao()
+
+    for e in entries:
+        feed_url = e.get("_feed_url", "?")
+        resultado.candidatos_por_feed[feed_url] = resultado.candidatos_por_feed.get(feed_url, 0) + 1
+
+    candidatos = [
+        Candidato(
+            entry=e,
+            score=score_entry(e),
+            titulo=limpar_texto(e.get("title", "Sem título")),
+            url=e.get("link", "#"),
+            data_iso=format_date_iso(parse_date(e)),
+            feed_url=e.get("_feed_url", "?"),
+        )
+        for e in entries
+    ]
+    candidatos.sort(key=lambda c: c.score, reverse=True)
+    resultado.top_candidatos = candidatos[:3]
+
+    for c in candidatos:
+        if c.score <= 0:
+            break  # candidatos já ordenados por score desc — nenhum a seguir serve
+        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes)
+        if duplicado is not None:
+            resultado.rejeitados.append(
+                Rejeicao(titulo=c.titulo, motivo=f"duplicado de {duplicado.data_iso}")
+            )
+            continue
+        resultado.vencedor = c
+        resultado.motivo_vencedor = f"score={c.score}"
+        break
+
+    return resultado
+
+
+def imprimir_relatorio(resultado: ResultadoSelecao) -> None:
+    print("=== Selecção de notícias ===")
+    for feed_url, n in resultado.candidatos_por_feed.items():
+        print(f"  candidatos em {feed_url}: {n}")
+    print("  top 3 candidatos:")
+    for c in resultado.top_candidatos:
+        print(f"    score={c.score} | {c.titulo[:80]}")
+    for r in resultado.rejeitados:
+        print(f"  rejeitado (dedup): {r.titulo[:80]} — {r.motivo}")
+    if resultado.vencedor:
+        print(f"  vencedor: {resultado.vencedor.titulo[:80]} ({resultado.motivo_vencedor})")
+    else:
+        print("  vencedor: nenhum — sem candidato novo com score positivo hoje")
+
+
+# ── Persistência data/noticias.json ────────────────────────────────────────
+
+def carregar_itens(caminho: Path = NOTICIAS_JSON) -> List[ItemNoticia]:
+    if not caminho.exists():
+        return []
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
+    return [ItemNoticia.from_dict(d) for d in dados.get("itens", [])]
+
+
+def guardar_itens(itens: List[ItemNoticia], caminho: Path = NOTICIAS_JSON) -> None:
+    itens_ordenados = ordenar_itens(itens)
+    conteudo = json.dumps(
+        {"itens": [i.to_dict() for i in itens_ordenados]},
+        ensure_ascii=False, indent=2,
+    ) + "\n"
+    escrever_ficheiro_seguro(str(caminho), conteudo)
+
+
+def ordenar_itens(itens: List[ItemNoticia]) -> List[ItemNoticia]:
+    """Data desc; título como desempate — determinístico, nunca aleatório."""
+    return sorted(itens, key=lambda i: (i.data_iso, i.titulo), reverse=True)
+
+
+def agrupar_por_mes(itens: List[ItemNoticia]) -> List[Tuple[str, List[ItemNoticia]]]:
+    """Itens já ordenados por data desc — agrupa mantendo essa ordem."""
+    grupos: List[Tuple[str, List[ItemNoticia]]] = []
+    for item in itens:
+        ano, mes, _ = item.data_iso.split("-")
+        chave = f"{ano}-{mes}"
+        if grupos and grupos[-1][0] == chave:
+            grupos[-1][1].append(item)
+        else:
+            grupos.append((chave, [item]))
+    return grupos
+
+
+def label_mes(chave: str) -> str:
+    ano, mes = chave.split("-")
+    return f"{MESES_PT[int(mes)].capitalize()} {ano}"
+
+
+# ── Renderização HTML a partir do JSON ─────────────────────────────────────
+
+def render_destaque(item: ItemNoticia) -> str:
+    cat_label = CAT_LABELS.get(item.categoria, "Apoios Sociais")
+    data_str = _iso_para_pt(item.data_iso)
+    titulo_completo = f"{item.titulo} - {item.fonte_nome}" if item.fonte_nome else item.titulo
     return f"""<!-- DESTAQUE-INICIO -->
-          <article class="destaque-card" data-cat="{cat}">
+          <article class="destaque-card" data-cat="{item.categoria}">
             <div class="destaque-meta">
-              <span class="cat-badge cat-{cat}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
-              <time datetime="{date_iso}">{date_str}</time>
+              <span class="cat-badge cat-{item.categoria}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
+              <time datetime="{item.data_iso}">{data_str}</time>
             </div>
-            <h2 class="destaque-titulo">{title}</h2>
-            <p class="destaque-resumo">{summary}…</p>
-            <a href="{link}" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
+            <h2 class="destaque-titulo">{html.escape(titulo_completo)}</h2>
+            <p class="destaque-resumo">{html.escape(item.resumo)}…</p>
+            <a href="{html.escape(item.url)}" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
             <p class="disclaimer-noticia">Resumo informativo. Lê a notícia completa na fonte antes de tomar decisões.</p>
           </article>
         <!-- DESTAQUE-FIM -->"""
 
 
-def render_archive_card(entry):
-    """Render a card for the archive grid (from a destaque entry dict or feedparser entry)."""
-    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
-    summary = html.escape(limpar_texto(entry.get("summary", "")))[:200]
-    link = html.escape(entry.get("link", "#"))
-    dt = parse_date(entry)
-    date_str = format_date_pt(dt)
-    date_iso = format_date_iso(dt)
-    cat = detect_category(entry) if "title" in entry else entry.get("cat", "apoios")
-    cat_label = CAT_LABELS.get(cat, "Apoios Sociais")
-
-    return f"""          <article class="arquivo-card" data-cat="{cat}">
+def render_arquivo_card(item: ItemNoticia) -> str:
+    cat_label = CAT_LABELS.get(item.categoria, "Apoios Sociais")
+    data_str = _iso_para_pt(item.data_iso)
+    titulo_completo = f"{item.titulo} - {item.fonte_nome}" if item.fonte_nome else item.titulo
+    ano, mes, _ = item.data_iso.split("-")
+    return f"""          <article class="arquivo-card" data-cat="{item.categoria}" data-mes="{ano}-{mes}">
             <div class="arquivo-meta">
-              <span class="cat-badge cat-{cat}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
-              <time datetime="{date_iso}">{date_str}</time>
+              <span class="cat-badge cat-{item.categoria}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
+              <time datetime="{item.data_iso}">{data_str}</time>
             </div>
-            <h3 class="arquivo-titulo">{title}</h3>
-            <p class="arquivo-resumo">{summary}…</p>
-            <a href="{link}" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+            <h3 class="arquivo-titulo">{html.escape(titulo_completo)}</h3>
+            <p class="arquivo-resumo">{html.escape(item.resumo)}…</p>
+            <a href="{html.escape(item.url)}" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>"""
 
 
-def extract_destaque_as_archive(content):
-    """Extract current destaque block and convert to archive card HTML."""
-    m = re.search(
-        r"<!-- DESTAQUE-INICIO -->(.*?)<!-- DESTAQUE-FIM -->",
-        content, re.DOTALL
-    )
-    if not m:
-        return None
-    block = m.group(1)
-
-    title_m = re.search(r'class="destaque-titulo">(.*?)</h2>', block)
-    summary_m = re.search(r'class="destaque-resumo">(.*?)</p>', block, re.DOTALL)
-    link_m = re.search(r'class="destaque-link"[^>]*href="([^"]*)"', block)
-    if not link_m:
-        link_m = re.search(r'href="([^"]*)"[^>]*class="destaque-link"', block)
-    date_m = re.search(r'datetime="([^"]*)"', block)
-    cat_m = re.search(r'data-cat="([^"]*)"', block)
-    cat_label_m = re.search(r'class="cat-label">([^<]*)</span>', block)
-
-    title = limpar_texto(title_m.group(1)) if title_m else "Notícia anterior"
-    summary = (limpar_texto(summary_m.group(1)) if summary_m else "")[:200]
-    link = link_m.group(1) if link_m else "#"
-    date_iso = date_m.group(1) if date_m else ""
-    cat = cat_m.group(1) if cat_m else "apoios"
-    cat_label = cat_label_m.group(1) if cat_label_m else CAT_LABELS.get(cat, "Apoios Sociais")
-    date_str = date_iso  # fallback; ideally reformat
-
-    # Reformat date_iso to PT format
-    try:
-        dt = datetime.strptime(date_iso, "%Y-%m-%d")
-        months = ["", "jan", "fev", "mar", "abr", "mai", "jun",
-                  "jul", "ago", "set", "out", "nov", "dez"]
-        date_str = f"{dt.day} {months[dt.month]}. {dt.year}"
-    except Exception:
-        date_str = date_iso
-
-    return f"""          <article class="arquivo-card" data-cat="{cat}">
-            <div class="arquivo-meta">
-              <span class="cat-badge cat-{cat}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
-              <time datetime="{date_iso}">{date_str}</time>
-            </div>
-            <h3 class="arquivo-titulo">{title}</h3>
-            <p class="arquivo-resumo">{summary}</p>
-            <a href="{link}" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
-          </article>"""
+def _iso_para_pt(data_iso: str) -> str:
+    dt = datetime.strptime(data_iso, "%Y-%m-%d")
+    return f"{dt.day} {MESES_ABREV_PT[dt.month]}. {dt.year}"
 
 
-def render_noticia_home(entry):
-    """Card compacto para a homepage — reutiliza as classes CSS já
-    existentes em index.html (noticia-card/badge-hoje/link-ler). Mostra
-    sempre a data real da notícia, nunca "hoje"; liga directamente à
-    fonte externa, nunca a um link interno inventado."""
-    title = html.escape(limpar_texto(entry.get("title", "Sem título")))
-    summary = html.escape(limpar_texto(entry.get("summary", "")))[:220]
-    link = html.escape(entry.get("link", "#"))
-    dt = parse_date(entry)
-    date_str = format_date_pt(dt)
+def render_arquivo(itens: List[ItemNoticia]) -> str:
+    """Todos os itens excepto o mais recente (esse vai para o destaque),
+    ordenados por data desc e agrupados por mês com um cabeçalho por
+    grupo (marcador data-mes já presente em cada card — os cabeçalhos
+    aqui são só a versão estática/sem-JS; ver assets de noticias.html
+    para a versão dinâmica usada durante a paginação)."""
+    if not itens:
+        return ""
+    resto = itens[1:]
+    blocos = []
+    for chave, grupo in agrupar_por_mes(resto):
+        blocos.append(f'          <h3 class="mes-header" data-mes="{chave}">{label_mes(chave)}</h3>')
+        blocos.extend(render_arquivo_card(i) for i in grupo)
+    return "\n".join(blocos)
 
-    return (
-        '    <div class="noticia-card">\n'
-        f'      <span class="badge-hoje">{date_str}</span>\n'
-        f'      <h3>{title}</h3>\n'
-        f'      <p>{summary}…</p>\n'
-        f'      <a href="{link}" class="link-ler" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>\n'
-        '    </div>'
+
+def render_noticia_home(itens: List[ItemNoticia], limite: int = 3) -> str:
+    """Bloco NOTICIA-HOME do index.html — os `limite` itens mais recentes,
+    cada um com a sua data real (nunca "hoje") e link directo à fonte
+    externa (nunca um link interno inventado)."""
+    cartoes = []
+    for item in itens[:limite]:
+        data_str = _iso_para_pt(item.data_iso)
+        titulo_completo = f"{item.titulo} - {item.fonte_nome}" if item.fonte_nome else item.titulo
+        cartoes.append(
+            '    <div class="noticia-card">\n'
+            f'      <span class="badge-hoje">{data_str}</span>\n'
+            f'      <h3>{html.escape(titulo_completo)}</h3>\n'
+            f'      <p>{html.escape(item.resumo)}…</p>\n'
+            f'      <a href="{html.escape(item.url)}" class="link-ler" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>\n'
+            '    </div>'
+        )
+    return "\n".join(cartoes)
+
+
+def regenerar_noticias_html(itens: List[ItemNoticia], caminho: Path = RAIZ / "noticias.html") -> bool:
+    """Substitui só os blocos DESTAQUE e ARQUIVO — nunca a nav, o hero, os
+    filtros ou o rodapé, que ficam fora do alcance deste script. Devolve
+    True se o conteúdo mudou."""
+    itens_ordenados = ordenar_itens(itens)
+    conteudo = caminho.read_text(encoding="utf-8")
+    original = conteudo
+
+    if itens_ordenados:
+        novo_destaque = render_destaque(itens_ordenados[0])
+        conteudo = re.sub(
+            r"<!-- DESTAQUE-INICIO -->[\s\S]*?<!-- DESTAQUE-FIM -->",
+            lambda m: novo_destaque,
+            conteudo,
+        )
+
+    novo_arquivo = render_arquivo(itens_ordenados)
+    conteudo = re.sub(
+        r"(<!-- ARQUIVO-INICIO -->)[\s\S]*?(<!-- ARQUIVO-FIM -->)",
+        lambda m: f"{m.group(1)}\n{novo_arquivo}\n        {m.group(2)}",
+        conteudo,
     )
 
-
-def load_template():
-    with open("noticias.html", encoding="utf-8") as f:
-        return f.read()
-
-
-def save(content):
-    escrever_ficheiro_seguro("noticias.html", content)
+    if conteudo == original:
+        return False
+    escrever_ficheiro_seguro(str(caminho), conteudo)
+    return True
 
 
-def atualizar_index_home(entry, caminho="index.html"):
-    """Injecta a mesma notícia escolhida também no bloco NOTICIA-HOME do
+def atualizar_index_home(itens: List[ItemNoticia], caminho: str = "index.html", limite: int = 3) -> bool:
+    """Injecta os `limite` itens mais recentes no bloco NOTICIA-HOME do
     index.html — segunda fonte de frescura da homepage, junto de
-    'Atualizado recentemente' (gerado por sincronizar_clusters.py a
-    partir das datas reais dos artigos)."""
+    'Atualizado recentemente' (gerado por sincronizar_clusters.py)."""
     marcador_inicio, marcador_fim = SECCOES_PERMITIDAS["index.html"]
     padrao = re.compile(
         rf"<!-- {re.escape(marcador_inicio)} -->[\s\S]*?<!-- {re.escape(marcador_fim)} -->"
@@ -323,54 +580,39 @@ def atualizar_index_home(entry, caminho="index.html"):
 
     if not padrao.search(conteudo):
         print(f"AVISO: marcadores {marcador_inicio}/{marcador_fim} não encontrados em {caminho} — sem injecção")
-        return
+        return False
 
-    novo_bloco = f"<!-- {marcador_inicio} -->\n{render_noticia_home(entry)}\n    <!-- {marcador_fim} -->"
+    itens_ordenados = ordenar_itens(itens)
+    novo_bloco = f"<!-- {marcador_inicio} -->\n{render_noticia_home(itens_ordenados, limite)}\n    <!-- {marcador_fim} -->"
     novo_conteudo = padrao.sub(lambda m: novo_bloco, conteudo, count=1)
 
     if novo_conteudo == conteudo:
         print(f"{caminho}: notícia já actualizada — sem alterações")
-        return
+        return False
 
     escrever_ficheiro_seguro(caminho, novo_conteudo)
-    print(f"{caminho}: bloco de notícias actualizado")
+    print(f"{caminho}: bloco de notícias actualizado ({min(limite, len(itens_ordenados))} itens)")
+    return True
 
 
-def main():
+def main() -> None:
+    itens_existentes = carregar_itens()
     entries = fetch_entries()
-    entry = best_entry(entries)
-    if not entry:
+    resultado = selecionar_vencedor(entries, itens_existentes)
+    imprimir_relatorio(resultado)
+
+    if resultado.vencedor is None:
         print("Nenhuma notícia relevante encontrada hoje.")
         return
 
-    content = load_template()
+    novo_item = construir_item_de_entry(resultado.vencedor.entry)
+    itens_atualizados = itens_existentes + [novo_item]
+    guardar_itens(itens_atualizados)
+    print(f"Notícia publicada: {novo_item.titulo[:80]}")
 
-    # 1. Extract current destaque and convert to archive card
-    old_destaque_card = extract_destaque_as_archive(content)
-
-    # 2. Build new destaque block
-    new_destaque = render_destaque(entry)
-
-    # 3. Replace destaque block
-    content = re.sub(
-        r"<!-- DESTAQUE-INICIO -->.*?<!-- DESTAQUE-FIM -->",
-        new_destaque,
-        content,
-        flags=re.DOTALL,
-    )
-
-    # 4. Prepend old destaque as archive card (after ARQUIVO-INICIO marker)
-    if old_destaque_card:
-        content = re.sub(
-            r"(<!-- ARQUIVO-INICIO -->)",
-            r"\1\n" + old_destaque_card,
-            content,
-        )
-
-    save(content)
-    print(f"Notícia publicada: {entry.get('title', '')[:80]}")
-
-    atualizar_index_home(entry)
+    itens_ordenados = ordenar_itens(itens_atualizados)
+    regenerar_noticias_html(itens_ordenados)
+    atualizar_index_home(itens_ordenados)
 
 
 if __name__ == "__main__":
