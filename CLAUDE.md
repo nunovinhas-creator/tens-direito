@@ -166,7 +166,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
 | `pipeline-diario.yml` | cron `0 6 * * *` | Scrape → detectar mudanças → notícias → validar valores → README → push único | ✅ sim (`data/`, `index.html`, `noticias.html`, `README.md`, `CLAUDE.md`) |
-| `shadow-daily.yml` | cron `0 3 * * *` | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
+| `shadow-daily.yml` | `workflow_run` após "Pipeline Diário" + cron `0 8 * * *` (rede de segurança) | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) | ❌ não |
@@ -272,6 +272,8 @@ tens-direito/
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
 │   ├── verificar_injecao.py  ← guardrail: prompt injection em data/ e shadow_history/ (integridade.yml)
+│   ├── gerir_estado_fontes.py ← máquina de estados de fontes bloqueadas (Step 1b do pipeline)
+│   ├── wayback_fallback.py   ← fallback Wayback Machine, puro, sem I/O próprio (fetch_json injectado)
 │   ├── pesquisa.js           ← pesquisa interna (JS puro, sem servidor)
 │   └── logs/                 ← logs do scraper
 ├── tests/                    ← pytest; inclui test_sincronizar_clusters.py,
@@ -282,7 +284,10 @@ tens-direito/
 │   ├── noticias.json         ← fonte de verdade das notícias (ver "FRESCURA DA HOMEPAGE")
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
 │   ├── mudancas.json         ← mudanças detectadas pelo pipeline
-│   └── divergencias.json     ← valores scraped vs publicado
+│   ├── divergencias.json     ← valores scraped vs publicado
+│   ├── bloqueios.json        ← bloqueios do dia (Camada 1 do scraper), consumido por gerir_estado_fontes.py
+│   ├── estado_fontes.json    ← máquina de estados por fonte (ver "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
+│   └── pagina_fonte.json     ← mapeamento manual página → fonte(s) (ver "REVALIDAÇÃO DE CARIMBO")
 ├── shadow_history/
 │   └── shadow_report_AAAA-MM-DD.md ← 1 relatório/dia, gerado por shadow-daily.yml
 ├── .github/workflows/
@@ -1058,6 +1063,14 @@ uma Issue é criada ou um valor é alterado:
    mais de `LIMIAR_ANOMALIA_PAGINAS` (25) páginas analisadas como **anomalia
    explícita** em vez de "sistema estável" — "0" nunca é lido em silêncio
    como "está tudo bem" (ver `tests/test_run_shadow_daily_fonte_propria.py`).
+   **Limitação conhecida, descoberta ao correr o pipeline real na Fase 5**:
+   `_paginas_elegiveis()` usa `raiz.glob("*.html")` (não recursivo) — as 22
+   páginas contadas são só as da raiz; as pillar pages em `p/*.html` nunca
+   entram nesta contagem (mesma limitação pré-existente em
+   `verificar_datas.py main()`, não introduzida por esta fase). Com 22 < 25,
+   o limiar de anomalia nunca dispara no estado actual do repositório —
+   registado para o futuro: baixar o limiar ou tornar `_paginas_elegiveis()`
+   recursivo (`**/*.html`), não decidido, sem prazo.
 
 **Diagnóstico "0 alertas" (2026-07-02)**: os relatórios `shadow_report_2026-07-01/02.md`
 mostravam "Alertas analisados: 0" ao mesmo tempo que o pipeline tinha
@@ -1355,3 +1368,11 @@ nunca escreve nada).
 ---
 
 *Última revisão: 2026-07-02 — pesquisa interna reformulada: ranking em 3 camadas nunca misturadas (título → descrição → keywords), ordem alfabética determinística dentro de cada camada, limite de 8 resultados; cada resultado ganhou excerto com o termo destacado (`<mark>`) — mostra o contexto do match quando não está no título — e badge do cluster/"Ferramenta"; mínimo de 2 caracteres antes de pesquisar; estado vazio explícito com link para `/#guias-de-apoios`; dropdown com `max-height: 60vh` + scroll interno (hero e nav); `cluster`/`clusterNome`/`tipo` de cada página em `pesquisa.js` verificados contra `data/clusters.json` por `tests/test_pesquisa_indice.py` (fonte única para essa parte dos dados — título/descrição/keywords continuam curados à mão); `descricao` de cada página extraída das meta descriptions reais, nunca inventada; CSS de resultado partilhado movido para `assets/css/nav.css`; confirmado no browser real (Chromium/Playwright, viewport mobile): "sub" com ranking correcto, "psu" a devolver o cluster inteiro, "xyz" com estado vazio, 1 carácter sem disparar; 557 testes a passar (95 novos), idempotência confirmada, ruff limpo*
+
+---
+
+*Última revisão: 2026-07-02 — robustecimento do Shadow Mode e higiene de Issues (Fases 0-5), disparado por "0 alertas" nos relatórios shadow enquanto o pipeline tinha Issues `data-expirada` abertas. Fase 0: diagnóstico confirmou que `run_shadow_daily.py` já corria a Camada 1 em runtime (não dependia de `data/alertas_datas.json` doutro workflow) e que "0" era genuinamente correcto — o commit `eeefa1c` tinha corrigido os falsos positivos que geraram #37/#45, que ficaram órfãs. Fase 1: relatório ganhou secção de proveniência (páginas analisadas + hora) e marca 0 alertas com >25 páginas como anomalia explícita; `shadow-daily.yml` passa a `workflow_run` após "Pipeline Diário" + cron `0 8 * * *` de segurança com guarda anti-duplicado. Fase 2: nova máquina de estados `scripts/gerir_estado_fontes.py` + `data/estado_fontes.json` — `fonte-bloqueada` só abre Issue ao 3.º dia consecutivo, fecho automático ao recuperar; `data-expirada` ganha fecho automático quando a página deixa de ter o padrão (fechou #37/#45 num run real). Fase 3: `scraper_playwright.py` ganha `playwright-stealth`, retries com jitter (3 tentativas, 30-120s) e fallback Wayback Machine (`OK_VIA_ARQUIVO`, novo `scripts/wayback_fallback.py`, puro/sem I/O) — nunca disfarça BLOQUEADO de OK; hora aleatória antes do scrape só em disparos por cron. Fase 4: `REVALIDACAO_CARIMBO_HABILITADA=False` (separada de `AUTO_UPDATE_HABILITADO`, nunca tocada), `data/pagina_fonte.json`, `auto_update_engine.aplicar_refresh_carimbo`/`elegivel_refresh_carimbo` (sandbox, confinamento verificado) e `run_shadow_daily.calcular_carimbos_elegiveis` simulam diariamente sem nunca aplicar nada — critério de activação (≥14 relatórios correctos, decisão do Nuno) documentado.
+
+Fase 5 — verificação em produção (`workflow_dispatch` real em `main`, não simulado): `shadow-daily.yml` correu e correctamente saltou a geração (relatório de hoje já existia — guarda anti-duplicado confirmada); `pipeline-diario.yml` correu o scrape completo — as 3 fontes historicamente bloqueadas (`seg_social_abono`, `seg_social_rsi`, `iefp_desemprego`) fizeram as 3 tentativas com esperas aleatórias 30-120s cada (confirmado nos logs), continuaram `BLOQUEADO` (sem snapshot Wayback recente disponível — ninguém tentou `dominios.gov.pt` no wayback ainda, esperado), e ficaram registadas em `data/estado_fontes.json` como dia 1 (primeira execução real do script, contador começa do zero); as Issues #37/#45 (`data-expirada`) fecharam-se sozinhas nesse run; #47/#48/#49 (`fonte-bloqueada`) mantiveram-se abertas sem duplicar nem comentar (dia 1 < limiar de 3); guardrail "Verificar ficheiros protegidos" passou, só `data/`, `README.md` e `noticias.html` foram tocados. Encontrado e corrigido um gap de observabilidade real nesse run: `_tentar_fallback_wayback` não deixava nenhum rasto no log quando não havia snapshot recente — corrigido com uma linha de log, sem alterar o comportamento de segurança. Também documentada uma limitação pré-existente (não desta fase): `LIMIAR_ANOMALIA_PAGINAS=25` nunca dispara com o estado actual do repositório porque `_paginas_elegiveis()` só conta as 22 páginas da raiz (não recursivo, mesma limitação de `verificar_datas.py`) — as pillar pages em `p/*.html` nunca entram na contagem; registado para o futuro, não corrigido nesta sessão.
+
+Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0syf`, exigida pelo ambiente remoto) e foi depois integrada em `main` por fast-forward (histórico linear, sem merge commit) a pedido explícito do Nuno, para respeitar a REGRA ABSOLUTA — GIT deste ficheiro; a branch remota não pôde ser apagada por falta de permissão da sessão (fica órfã mas inofensiva, totalmente contida em `main`). 92 testes novos (`test_run_shadow_daily_fonte_propria.py`, `test_estado_fontes.py`, `test_scraper_fallback.py`, `test_carimbos_elegiveis.py` + extensões a `test_auto_update_engine.py`/`test_verificar_datas.py`), 572 testes a passar, ruff limpo.*
