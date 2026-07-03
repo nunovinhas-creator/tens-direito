@@ -396,6 +396,7 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     if classif.estado != Estado.OK:
         return _tratar_nao_ok(slug, url_usado, fonte["seletores"], nota, classif)
 
+    _limpar_bloqueio_hoje(slug)
     conteudo = _extrair_conteudo(html, fonte["seletores"])
 
     if fonte.get("titulo_js"):
@@ -540,6 +541,29 @@ def _registar_bloqueio(slug: str, url: str, classif) -> None:
     BLOQUEIOS_PATH.parent.mkdir(parents=True, exist_ok=True)
     BLOQUEIOS_PATH.write_text(json.dumps(bloqueios, ensure_ascii=False, indent=2), encoding="utf-8")
     log.info("Bloqueio registado: %s → %s", slug, BLOQUEIOS_PATH)
+
+
+def _limpar_bloqueio_hoje(slug: str) -> None:
+    """Remove qualquer entrada de hoje desta fonte em data/bloqueios.json
+    quando ela recupera (OK). Sem isto, uma fonte bloqueada numa corrida
+    e recuperada numa corrida seguinte no mesmo dia (ex.: workflow_dispatch
+    manual repetido) ficava presa em BLOQUEADO na máquina de estados de
+    gerir_estado_fontes.py até ao dia seguinte -- _registar_bloqueio já
+    substituía a entrada de hoje ao registar um NOVO bloqueio, mas nada
+    a removia quando a fonte simplesmente recuperava. Descoberto e
+    corrigido em 2026-07-03 (ver CLAUDE.md "SEG-SOCIAL — ESTRATÉGIA DE
+    FETCH")."""
+    if not BLOQUEIOS_PATH.exists():
+        return
+    try:
+        bloqueios = json.loads(BLOQUEIOS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return
+    hoje = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    novo = [b for b in bloqueios if not (b.get("slug") == slug and b.get("data", "")[:10] == hoje)]
+    if len(novo) != len(bloqueios):
+        BLOQUEIOS_PATH.write_text(json.dumps(novo, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info("%s: bloqueio de hoje removido (fonte recuperou)", slug)
 
 
 def _registar_mudanca_estrutural(slug: str, url: str, classif) -> None:
@@ -716,6 +740,7 @@ def scrape_http(fonte: dict) -> dict | None:
     if classif.estado != Estado.OK:
         return _tratar_nao_ok(slug, url, fonte["seletores"], nota, classif)
 
+    _limpar_bloqueio_hoje(slug)
     conteudo = _extrair_conteudo(resp.text, fonte["seletores"])
     resultado = {
         "url": url,
