@@ -1241,6 +1241,11 @@ próprio raciocínio e testes, deliberadamente fora do âmbito desta
 investigação (que era sobre migrar para fontes alternativas, não sobre
 rever a lógica do classificador). Registado para sessão dedicada.
 
+**Corrigido na sessão seguinte (2026-07-03)** — ver secção
+"CLASSIFICADOR — VERIFICAÇÃO POSITIVA" logo abaixo: em vez de só
+ajustar `_MARCADORES_DESAFIO_FORTE`, o classificador passou a verificar
+o conteúdo esperado primeiro.
+
 *Registado para o futuro*: confirmar se `eportugal.gov.pt`/
 `seg-social.pt/guias-praticos` têm conteúdo relevante por trás de
 JavaScript (precisaria de Playwright em vez de `urllib` simples para
@@ -1248,6 +1253,104 @@ confirmar) antes de descartar definitivamente como candidatos para
 `seg_social_abono`/`seg_social_rsi`; encontrar o caminho correcto da
 API de `dados.gov.pt` (o testado, `/api/3/action/package_search`,
 devolve 404 nesta instância).
+
+---
+
+## CLASSIFICADOR — VERIFICAÇÃO POSITIVA
+
+`scripts/classificador_resposta.py` reescrito (2026-07-03): em vez de só
+detectar sinais de bloqueio, verifica primeiro se o conteúdo esperado
+está presente — é essa verificação positiva que resolve o falso
+positivo do IEFP documentado na secção anterior.
+
+- `FonteConfig` ganhou `ancora_conteudo` (tuple de 2-3 frases que uma
+  página legítima da fonte tem sempre — ex. `iefp_desemprego`:
+  `"subsídio de desemprego"`) e `metodo` (`"http"` ou `"playwright"` —
+  ver secção seguinte). Ambos vazios/`"playwright"` por omissão: fontes
+  não migradas para este sistema mantêm o comportamento anterior a
+  esta secção sem qualquer alteração.
+- Nova ordem de decisão em `classificar_resposta()`:
+  1. Status HTTP de bloqueio (401/403/407/429/503) — sempre BLOQUEADO,
+     nem as âncoras o sobrepõem (um WAF pode devolver texto coincidente).
+  2. Âncoras todas presentes + `texto_util >= min_chars_uteis` → **OK**
+     de imediato, independentemente de qualquer marcador tipo
+     `recaptcha` aparecer noutro ponto da página (script incluído,
+     não desafio activo).
+  3. Sem confirmação positiva: só BLOQUEADO com um sinal real — texto
+     útil insuficiente, redirect/título de login, ou um marcador de
+     desafio forte (`_MARCADORES_DESAFIO_FORTE`) numa página
+     `< 15KB` (`LIMIAR_TAMANHO_PEQUENO`) ou já com título de login.
+  4. Sem nenhum sinal real e a fonte tem `ancora_conteudo` configuradas
+     mas não encontradas → **MUDOU** — a fonte respondeu, mas o
+     conteúdo esperado desapareceu (revisão manual), nunca disfarçado
+     de BLOQUEADO.
+  5. Fontes sem `ancora_conteudo` (`()`, omissão): comportamento
+     idêntico ao anterior a esta secção — nunca ficam `MUDOU` por esta
+     via, só OK/BLOQUEADO como antes.
+
+Testado com os 5 HTML reais obtidos num runner via `workflow_dispatch`
+temporário (nunca reescritos à mão, `tests/fixtures/*.html`): a página
+real do IEFP (87KB, "subsídio de desemprego" 17×, script recaptcha
+passivo) classifica OK de imediato; a shell de login do portal
+seg-social (13KB, ~241 chars úteis, sem as âncoras) nunca classifica
+OK; o conteúdo real dos deep-links do portal novo (ver secção
+seguinte) classifica OK. `tests/test_classificador_resposta.py` — 19
+testes (12 pré-existentes inalterados + 7 novos), incluindo a garantia
+de que uma fonte sem âncoras configuradas nunca fica MUDOU.
+
+## SEG-SOCIAL — ESTRATÉGIA DE FETCH
+
+Contexto: seg-social.pt está em migração — o portal antigo (URLs
+planas) coexiste com o novo `/ptss/pssd/` (SPA com sessão `dswid`).
+Confirmado num runner real (`workflow_dispatch` temporário, apagado no
+fim, mesmo padrão desta secção):
+
+| Fonte | URL testada | Resultado |
+|---|---|---|
+| `seg_social_abono`/`seg_social_rsi` | URLs planas (`abono-de-familia-para-criancas-e-jovens`, `rendimento-social-de-insercao`), via `urllib` simples e via Playwright+stealth | **Sempre** redirecciona para `seg-social.pt/ptss/pssd/home?r=...` (gateway de autenticação) — confirma que não é bloqueio a IP/fingerprint: é o próprio servidor a negar sessão anónima nessas rotas, com qualquer cliente |
+| `seg_social_abono`/`seg_social_rsi` | deep-links do portal novo (`/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens`, `/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao`), via Playwright com espera explícita pela âncora (`page.wait_for_function`, não só `networkidle`) | Conteúdo real servido sem sessão — "abono de família" 19×, "rendimento social de inserção" 11× |
+| `iefp_desemprego` | URL original, via `urllib` simples | Página real e completa (já confirmado na secção anterior) |
+
+Aplicado a `scripts/scraper_playwright.py`:
+
+- `iefp_desemprego`: `metodo="http"` — nova `scrape_http()` (requests +
+  headers realistas, mesmo padrão de retries/jitter de
+  `scrape_playwright`), corre **antes** de o browser Chromium sequer
+  abrir, sem depender dele. `main()` separa `FONTES_PLAYWRIGHT` em
+  `fontes_http`/`fontes_pw` por `FonteConfig.metodo`.
+- `seg_social_abono`/`seg_social_rsi`: `metodo="playwright"`
+  (inalterado), mas a `url` em `FONTES_PLAYWRIGHT` passou a ser o
+  deep-link do portal novo — nunca mais a URL plana, que nunca vinga.
+  `_obter_html()` ganhou o parâmetro `ancora`: quando a fonte tem
+  `ancora_conteudo`, espera explicitamente que a frase apareça no DOM
+  (`page.wait_for_function`) em vez do `time.sleep(5)` fixo anterior —
+  necessário porque a SPA reporta "carregada" (`networkidle`) antes do
+  conteúdo real renderizar.
+- `dominios_login` das 2 fontes ganhou `"seg-social.pt/ptss/pssd/home"`
+  — apanha só o gateway de autenticação, deliberadamente restrito para
+  nunca apanhar os deep-links `/ptss/pssd/menu/...` usados como alvo.
+
+**MUDOU vs BLOQUEADO — nunca disfarçados um do outro**: nova
+`_tratar_nao_ok()` (chamada por `scrape_playwright` e `scrape_http`
+depois de esgotar `TENTATIVAS_BLOQUEIO`) bifurca por estado — BLOQUEADO
+segue o caminho já existente (fallback Wayback, depois
+`data/bloqueios.json`); MUDOU nunca tenta Wayback (a fonte respondeu,
+só o conteúdo mudou) e nunca escreve em `bloqueios.json` — não conta
+como dia bloqueado na máquina de estados de `gerir_estado_fontes.py` —
+só regista em `avisos.log` via nova `_registar_mudanca_estrutural()`.
+
+**Gap conhecido, não fechado nesta sessão**: MUDOU não cria nenhuma
+Issue — só o log em `avisos.log`. A máquina de estados de
+`fonte-bloqueada` só entende BLOQUEADO/OK; não existe hoje um tipo de
+Issue "conteúdo mudou de forma inesperada" nem um consumidor de
+`avisos.log` para o padrão `mudanca_estrutural:`. Registado para o
+futuro, sem prazo.
+
+**Aviso de migração viva**: as URLs planas antigas podem deixar de
+responder de todo, sem aviso, a qualquer momento — o classificador
+nunca as disfarça de BLOQUEADO nesse caso: sem âncoras encontradas e
+sem sinal real de bloqueio, o resultado é sempre MUDOU (ver secção
+anterior).
 
 ---
 
@@ -1487,3 +1590,7 @@ Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0sy
 ---
 
 *Última revisão: 2026-07-03 — duas tarefas de limpeza de branches. 1) Badge NV Labs removido do header por decisão do Nuno: o cherry-pick directo do commit pendente em `claude/nv-labs-branding-update-xq4kb4` entrou em conflito em quase todas as páginas (a nav foi reescrita pela unificação da Fase 4 depois desse commit existir); resolvido na fonte — o badge estava embutido no próprio template de `scripts/sincronizar_nav.py` (`render_nav()`), removido ali e corrido o sincronizador nas 29 páginas (idempotência reconfirmada); CSS exclusivo do badge removido de `assets/css/branding.css`, atribuição do footer mantida; zero vestígios confirmados por grep ao repositório inteiro. 2) `claude/cool-cannon-zn5nfy` (branch antiga, divergida ~19 790 linhas de `main`) analisada sem cherry-pick — nova secção "IDEIAS RECUPERADAS — cascata de fontes (cool-cannon)" resume os 2 commits reais (`cascata_fontes.py` + `rubricas_config.py`, nunca mergeados) e regista o veredicto: conceito sólido mas não vale a pena reimplementar agora — o único fallback configurado (`seg-social.pt/abono-de-familia`) está confirmado morto pela investigação desta mesma sessão, e `source_adapter.py` continua sem consumidor real. `claude/nv-labs-branding-update-xq4kb4` e `claude/cool-cannon-zn5nfy` continuam sem poder ser apagadas pela sessão (403 na API, mesma limitação já registada) — ficam para apagar manualmente; `claude/phase-2-rollback-cleanup-adtecx` e `claude/resolve-open-issues-u1cooz` (já mergeadas, sem commits próprios) entretanto desapareceram do remoto por si (apagadas fora desta sessão, confirmado por `git fetch --prune`). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 572 testes a passar, ruff limpo.*
+
+---
+
+*Última revisão: 2026-07-03 — corrigido o falso positivo do IEFP e definida a estratégia de fetch da Segurança Social (novas secções "CLASSIFICADOR — VERIFICAÇÃO POSITIVA" e "SEG-SOCIAL — ESTRATÉGIA DE FETCH"). `classificador_resposta.py` reescrito: `FonteConfig` ganhou `ancora_conteudo` (frases que uma página legítima tem sempre) e `metodo` ("http"/"playwright"); nova ordem de decisão — âncoras presentes + tamanho suficiente é sempre OK (mesmo com `recaptcha` passivo no resto da página); sem âncoras só há BLOQUEADO com um sinal real (status, redirect/título de login, desafio forte em página pequena); sem âncoras e sem sinal real é MUDOU, nunca BLOQUEADO por engano. Testado com 5 HTML reais obtidos num runner via `workflow_dispatch` temporário (apagado no fim, `tests/fixtures/*.html`): página real do IEFP (87KB, recaptcha passivo) → OK; shell de login do portal seg-social → nunca OK; conteúdo real dos deep-links do portal novo → OK — 19/19 testes em `tests/test_classificador_resposta.py` (12 pré-existentes inalterados + 7 novos). Confirmado num segundo runner que as URLs planas da Segurança Social (antigas e novas) redireccionam sempre para o gateway de autenticação, com ou sem Playwright, mas os deep-links do portal novo servem conteúdo real via Playwright com espera explícita pela âncora (`page.wait_for_function`, não só `networkidle`) — `scraper_playwright.py` actualizado: `iefp_desemprego` passa a `metodo="http"` (nova `scrape_http()`, corre sem abrir o Chromium); `seg_social_abono`/`seg_social_rsi` mantêm `metodo="playwright"` mas apontam aos deep-links, com `_obter_html()` a esperar pela âncora em vez de um `time.sleep(5)` fixo; novo `_tratar_nao_ok()` bifurca BLOQUEADO (fallback Wayback, depois `bloqueios.json`, como antes) de MUDOU (só `avisos.log` via nova `_registar_mudanca_estrutural()`, nunca conta como dia bloqueado na máquina de estados). Gap registado para o futuro: MUDOU ainda não cria Issue, só fica em log. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 579 testes a passar (7 novos), ruff limpo; workflow de diagnóstico temporário apagado no fim.*

@@ -26,7 +26,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).parent))
-from classificador_resposta import classificar_resposta, FonteConfig  # noqa: E402
+from classificador_resposta import classificar_resposta, Estado, FonteConfig  # noqa: E402
 from wayback_fallback import decidir_estado_apos_bloqueio  # noqa: E402
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,19 +42,34 @@ BLOQUEIOS_PATH = BASE_DIR / "data" / "bloqueios.json"
 # seg_social reais esperados >>500 chars; login page = 23 chars (título apenas)
 # dge/mega reais: 1731–2534 chars; iefp real: 4280 chars
 _FONTE_CONFIGS: dict[str, FonteConfig] = {
+    # As URLs planas (antigas e novas) redireccionam sempre para o portal
+    # de autenticação /ptss/pssd/home — confirmado num runner real, com e
+    # sem Playwright. "app.seg-social.pt" continua para compatibilidade
+    # com dados antigos; "seg-social.pt/ptss/pssd/home" apanha o gateway
+    # sem apanhar os deep-links /ptss/pssd/menu/... usados abaixo (ver
+    # CLAUDE.md "SEG-SOCIAL — ESTRATÉGIA DE FETCH").
     "seg_social_abono": FonteConfig(
         nome="Segurança Social — Abono de Família",
         min_chars_uteis=500,
-        dominios_login=("app.seg-social.pt",),
+        dominios_login=("app.seg-social.pt", "seg-social.pt/ptss/pssd/home"),
+        ancora_conteudo=("abono de família",),
+        metodo="playwright",
     ),
     "seg_social_rsi": FonteConfig(
         nome="Segurança Social — RSI",
         min_chars_uteis=500,
-        dominios_login=("app.seg-social.pt",),
+        dominios_login=("app.seg-social.pt", "seg-social.pt/ptss/pssd/home"),
+        ancora_conteudo=("rendimento social de inserção",),
+        metodo="playwright",
     ),
     "dge_ase": FonteConfig(nome="DGE — ASE", min_chars_uteis=300),
     "dge_manuais": FonteConfig(nome="DGE — Manuais Escolares", min_chars_uteis=300),
-    "iefp_desemprego": FonteConfig(nome="IEFP — Subsídio de Desemprego", min_chars_uteis=500),
+    "iefp_desemprego": FonteConfig(
+        nome="IEFP — Subsídio de Desemprego",
+        min_chars_uteis=500,
+        ancora_conteudo=("subsídio de desemprego",),
+        metodo="http",
+    ),
     "mega_datas": FonteConfig(nome="DGE — MEGA datas", min_chars_uteis=300),
     # DRE search — min baixo porque a página de resultados pode ter pouco texto extraível
     "dre_psu": FonteConfig(nome="DRE — Pesquisa PSU decreto-lei", min_chars_uteis=50),
@@ -77,8 +92,12 @@ log = logging.getLogger(__name__)
 # ── Fontes Playwright ──────────────────────────────────────────────────────────
 FONTES_PLAYWRIGHT = [
     {
+        # URL plana redirecciona sempre para o gateway de autenticação
+        # (confirmado num runner real, com e sem Playwright) — usa-se o
+        # deep-link do portal novo, que serve o conteúdo real sem sessão
+        # desde que se espere pela âncora renderizada (ver _obter_html).
         "slug": "seg_social_abono",
-        "url": "https://www.seg-social.pt/abono-de-familia",
+        "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
         "titulo_js": True,
         "seletores": {
             "titulo": "h1",
@@ -89,7 +108,7 @@ FONTES_PLAYWRIGHT = [
     },
     {
         "slug": "seg_social_rsi",
-        "url": "https://www.seg-social.pt/rendimento-social-de-insercao",
+        "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
         "titulo_js": True,
         "seletores": {
             "titulo": "h1",
@@ -122,12 +141,13 @@ FONTES_PLAYWRIGHT = [
     },
     # IEFP só recebe o pedido; decisão e pagamento são da Seg. Social.
     # URL correcto: /subsidio-desemprego (sem /en/ e sem hífen duplo).
-    # Fallback: seg-social.pt que é a entidade pagadora.
+    # metodo="http" (ver _FONTE_CONFIGS) — página real acessível via
+    # pedido simples, confirmado num runner real; sem url_fallback porque
+    # scrape_http() não tem lógica de fallback própria.
     {
         "slug": "iefp_desemprego",
         "url": "https://www.iefp.pt/subsidio-desemprego",
-        "url_fallback": "https://www.seg-social.pt/subsidio-de-desemprego",
-        "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social — fallback para seg-social.pt",
+        "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -241,10 +261,17 @@ ESPERA_MIN_S = 30
 ESPERA_MAX_S = 120
 
 
-def _obter_html(page, url: str, url_fallback: str | None, slug: str) -> tuple[str, str] | None:
+def _obter_html(page, url: str, url_fallback: str | None, slug: str,
+                 ancora: str | None = None) -> tuple[str, str] | None:
     """Navega para `url` (com fallback opcional) e devolve `(url_usado,
     html)`. Devolve None só em falha de navegação (rede/timeout) —
-    distinto de "conteúdo bloqueado", decidido a jusante pela Camada 1."""
+    distinto de "conteúdo bloqueado", decidido a jusante pela Camada 1.
+
+    Com `ancora` (fonte com verificação positiva configurada — ver
+    ancora_conteudo em FonteConfig): espera explicitamente que a frase
+    apareça no DOM em vez de confiar em `networkidle` + sleep fixo — o
+    portal novo seg-social.pt/ptss/pssd é uma SPA que reporta "carregada"
+    antes do conteúdo real renderizar."""
     url_usado = url
     ok = _tentar_goto(page, url)
 
@@ -262,7 +289,18 @@ def _obter_html(page, url: str, url_fallback: str | None, slug: str) -> tuple[st
         page.wait_for_load_state("networkidle", timeout=10_000)
     except Exception:
         pass
-    time.sleep(5)
+
+    if ancora:
+        try:
+            page.wait_for_function(
+                "text => document.body && document.body.innerText.toLowerCase().includes(text)",
+                arg=ancora.lower(),
+                timeout=15_000,
+            )
+        except Exception as exc:
+            log.warning("%s: âncora %r não apareceu no DOM em 15s: %s", slug, ancora, exc)
+    else:
+        time.sleep(5)
 
     return url_usado, page.content()
 
@@ -275,10 +313,11 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     log.info("A scrape (Playwright): %s", url)
 
     config = _fonte_config(slug)
+    ancora = config.ancora_conteudo[0] if config.ancora_conteudo else None
     url_usado, html, classif = url, "", None
 
     for tentativa in range(1, TENTATIVAS_BLOQUEIO + 1):
-        obtido = _obter_html(page, url, url_fallback, slug)
+        obtido = _obter_html(page, url, url_fallback, slug, ancora=ancora)
         if obtido is None:
             # Falha de navegação (rede/timeout), não de conteúdo bloqueado —
             # já esgotou as suas próprias 3 tentativas dentro de _tentar_goto,
@@ -288,23 +327,18 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
         url_usado, html = obtido
         classif = classificar_resposta(status_code=200, corpo=html, url_final=page.url, config=config)
 
-        if not classif.bloqueado:
+        if classif.estado == Estado.OK:
             break
 
-        log.warning("%s: tentativa %d/%d classificada como BLOQUEADO — motivos: %s",
-                    slug, tentativa, TENTATIVAS_BLOQUEIO, classif.motivos)
+        log.warning("%s: tentativa %d/%d classificada como %s — motivos: %s",
+                    slug, tentativa, TENTATIVAS_BLOQUEIO, classif.estado.value, classif.motivos)
         if tentativa < TENTATIVAS_BLOQUEIO:
             espera = random.uniform(ESPERA_MIN_S, ESPERA_MAX_S)
             log.info("%s: a aguardar %.0fs antes da próxima tentativa", slug, espera)
             time.sleep(espera)
 
-    if classif.bloqueado:
-        log.warning("%s: BLOQUEADO após %d tentativas — motivos: %s", slug, TENTATIVAS_BLOQUEIO, classif.motivos)
-        resultado_arquivo = _tentar_fallback_wayback(slug, url_usado, fonte["seletores"], nota)
-        if resultado_arquivo is not None:
-            return resultado_arquivo
-        _registar_bloqueio(slug, url_usado, classif)
-        return None
+    if classif.estado != Estado.OK:
+        return _tratar_nao_ok(slug, url_usado, fonte["seletores"], nota, classif)
 
     conteudo = _extrair_conteudo(html, fonte["seletores"])
 
@@ -452,6 +486,35 @@ def _registar_bloqueio(slug: str, url: str, classif) -> None:
     log.info("Bloqueio registado: %s → %s", slug, BLOQUEIOS_PATH)
 
 
+def _registar_mudanca_estrutural(slug: str, url: str, classif) -> None:
+    """MUDOU: a fonte respondeu (sem sinais reais de bloqueio) mas o
+    conteúdo esperado (ancora_conteudo) desapareceu — revisão manual,
+    nunca disfarçado de BLOQUEADO. Nunca escreve em data/bloqueios.json:
+    não é o mesmo que um dia bloqueado na máquina de estados de
+    gerir_estado_fontes.py. Criação de Issue dedicada para este caso
+    ainda não implementada — ver CLAUDE.md "SEG-SOCIAL — ESTRATÉGIA DE
+    FETCH" (registado para o futuro)."""
+    _registar_aviso(slug, f"mudanca_estrutural:motivos={classif.motivos}:chars_uteis={classif.chars_uteis}")
+
+
+def _tratar_nao_ok(slug: str, url_usado: str, seletores: dict, nota: str, classif) -> dict | None:
+    """Ponto único chamado depois de esgotar TENTATIVAS_BLOQUEIO sem OK.
+    MUDOU nunca tenta o fallback Wayback (a fonte respondeu — só o
+    conteúdo esperado desapareceu) nem conta como bloqueio; BLOQUEADO
+    segue o caminho já existente (Wayback, depois bloqueios.json)."""
+    if classif.estado == Estado.MUDOU:
+        log.warning("%s: MUDOU após %d tentativas — motivos: %s", slug, TENTATIVAS_BLOQUEIO, classif.motivos)
+        _registar_mudanca_estrutural(slug, url_usado, classif)
+        return None
+
+    log.warning("%s: BLOQUEADO após %d tentativas — motivos: %s", slug, TENTATIVAS_BLOQUEIO, classif.motivos)
+    resultado_arquivo = _tentar_fallback_wayback(slug, url_usado, seletores, nota)
+    if resultado_arquivo is not None:
+        return resultado_arquivo
+    _registar_bloqueio(slug, url_usado, classif)
+    return None
+
+
 def _fetch_json_wayback(url_completo: str) -> dict:
     resp = requests.get(url_completo, timeout=10)
     resp.raise_for_status()
@@ -542,13 +605,116 @@ def _guardar_resultado(slug: str, resultado: dict) -> None:
     log.info("Atualizado latest: %s", latest_path)
 
 
+# ── Fontes via HTTP simples (sem browser) ───────────────────────────────────────
+# Para fontes cuja página real é acessível com um pedido simples (ver
+# CLAUDE.md "SEG-SOCIAL — ESTRATÉGIA DE FETCH": confirmado num runner real
+# para iefp_desemprego) — mais rápido e sem depender do Chromium.
+_HEADERS_HTTP = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/131.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+}
+
+
+def scrape_http(fonte: dict) -> dict | None:
+    url = fonte["url"]
+    slug = fonte["slug"]
+    nota = fonte.get("nota", "")
+    log.info("A scrape (http): %s", url)
+
+    config = _fonte_config(slug)
+    classif = None
+    resp = None
+
+    for tentativa in range(1, TENTATIVAS_BLOQUEIO + 1):
+        try:
+            resp = requests.get(url, headers=_HEADERS_HTTP, timeout=30)
+        except Exception as exc:
+            log.warning("%s: erro de rede na tentativa %d/%d: %s", slug, tentativa, TENTATIVAS_BLOQUEIO, exc)
+            classif = None
+            if tentativa < TENTATIVAS_BLOQUEIO:
+                time.sleep(random.uniform(ESPERA_MIN_S, ESPERA_MAX_S))
+            continue
+
+        classif = classificar_resposta(
+            status_code=resp.status_code, corpo=resp.text, url_final=str(resp.url), config=config,
+        )
+        if classif.estado == Estado.OK:
+            break
+
+        log.warning("%s: tentativa %d/%d classificada como %s — motivos: %s",
+                    slug, tentativa, TENTATIVAS_BLOQUEIO, classif.estado.value, classif.motivos)
+        if tentativa < TENTATIVAS_BLOQUEIO:
+            espera = random.uniform(ESPERA_MIN_S, ESPERA_MAX_S)
+            log.info("%s: a aguardar %.0fs antes da próxima tentativa", slug, espera)
+            time.sleep(espera)
+
+    if classif is None:
+        log.error("%s: falhou todas as %d tentativas por erro de rede", slug, TENTATIVAS_BLOQUEIO)
+        return None
+
+    if classif.estado != Estado.OK:
+        return _tratar_nao_ok(slug, url, fonte["seletores"], nota, classif)
+
+    conteudo = _extrair_conteudo(resp.text, fonte["seletores"])
+    resultado = {
+        "url": url,
+        "url_original": url,
+        "data_acesso": datetime.now(timezone.utc).isoformat(),
+        "status": "ok",
+        "conteudo_extraido": conteudo,
+    }
+    if nota:
+        resultado["nota"] = nota
+
+    hash_payload = json.dumps(conteudo, sort_keys=True, ensure_ascii=False)
+    resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
+
+    _guardar_resultado(slug, resultado)
+    return resultado
+
+
 # ── Main ───────────────────────────────────────────────────────────────────────
+
+def _reportar_resultado(resultados: dict, slug: str, r: dict | None) -> None:
+    if r:
+        resultados[slug] = r.get("status", "ok")
+        c = r.get("conteudo_extraido", {})
+        if r.get("status") == "ok_via_arquivo":
+            print(f"⚠ OK_VIA_ARQUIVO — snapshot de {r.get('data_snapshot')}")
+        else:
+            print(f"✓ OK — título: {c.get('titulo', '')[:80]}")
+        print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
+    else:
+        resultados[slug] = "falhou"
+        print("✗ Falhou")
+
 
 def main(mode: str = "scrape"):
     from playwright.sync_api import sync_playwright
     from playwright_stealth import Stealth
 
     resultados = {}
+
+    fontes_http = [f for f in FONTES_PLAYWRIGHT if _fonte_config(f["slug"]).metodo == "http"]
+    fontes_pw = [f for f in FONTES_PLAYWRIGHT if _fonte_config(f["slug"]).metodo != "http"]
+
+    # ── HTTP simples (sem browser) ───────────────────────────────────────────
+    for fonte in fontes_http:
+        print(f"\n{'='*60}")
+        print(f"[HTTP] {fonte['slug']} — {fonte['url']}")
+        print("=" * 60)
+        try:
+            r = scrape_http(fonte)
+            _reportar_resultado(resultados, fonte["slug"], r)
+        except Exception as exc:
+            resultados[fonte["slug"]] = f"erro: {exc}"
+            log.exception("Erro inesperado em %s", fonte["slug"])
+            print(f"✗ Erro: {exc}")
 
     # ── Playwright ────────────────────────────────────────────────────────────
     with sync_playwright() as p:
@@ -584,23 +750,13 @@ def main(mode: str = "scrape"):
 
         page = context.new_page()
 
-        for fonte in FONTES_PLAYWRIGHT:
+        for fonte in fontes_pw:
             print(f"\n{'='*60}")
             print(f"[Playwright] {fonte['slug']} — {fonte['url']}")
             print("=" * 60)
             try:
                 r = scrape_playwright(page, fonte)
-                if r:
-                    resultados[fonte["slug"]] = r.get("status", "ok")
-                    c = r.get("conteudo_extraido", {})
-                    if r.get("status") == "ok_via_arquivo":
-                        print(f"⚠ OK_VIA_ARQUIVO — snapshot de {r.get('data_snapshot')}")
-                    else:
-                        print(f"✓ OK — título: {c.get('titulo', '')[:80]}")
-                    print(f"  hash: {r.get('hash_conteudo', '')[:16]}…")
-                else:
-                    resultados[fonte["slug"]] = "falhou"
-                    print("✗ Falhou")
+                _reportar_resultado(resultados, fonte["slug"], r)
             except Exception as exc:
                 resultados[fonte["slug"]] = f"erro: {exc}"
                 log.exception("Erro inesperado em %s", fonte["slug"])
