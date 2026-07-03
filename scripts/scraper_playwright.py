@@ -19,6 +19,7 @@ import logging
 import random
 import sys
 import time
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -78,6 +79,51 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
 
 def _fonte_config(slug: str) -> FonteConfig:
     return _FONTE_CONFIGS.get(slug, FonteConfig(nome=slug))
+
+
+# Perfil de browser por fonte — omissão = comportamento de produção
+# inalterado (stealth + headers custom + viewport fixo, como sempre foi).
+# Só fontes com uma entrada em _PERFIL_POR_SLUG abrem um browser context
+# à parte, com um perfil diferente — usado para isolar qual componente
+# do contexto Playwright está a despoletar um redirect/bloqueio numa
+# fonte específica (ver CLAUDE.md "SEG-SOCIAL — ESTRATÉGIA DE FETCH").
+@dataclass(frozen=True)
+class PerfilBrowser:
+    stealth: bool = True
+    headers_custom: bool = True
+    viewport_fixo: bool = True
+
+
+_PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {}
+
+
+def _perfil_fonte(slug: str) -> PerfilBrowser:
+    return _PERFIL_POR_SLUG.get(slug, PerfilBrowser())
+
+
+def _criar_context(browser, perfil: PerfilBrowser):
+    kwargs = dict(
+        user_agent=(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        locale="pt-PT",
+        timezone_id="Europe/Lisbon",
+    )
+    if perfil.headers_custom:
+        kwargs["extra_http_headers"] = {
+            "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        }
+    if perfil.viewport_fixo:
+        kwargs["viewport"] = {"width": 1280, "height": 900}
+
+    context = browser.new_context(**kwargs)
+    if perfil.stealth:
+        from playwright_stealth import Stealth
+        Stealth().apply_stealth_sync(context)
+    return context
 
 logging.basicConfig(
     level=logging.INFO,
@@ -696,7 +742,6 @@ def _reportar_resultado(resultados: dict, slug: str, r: dict | None) -> None:
 
 def main(mode: str = "scrape"):
     from playwright.sync_api import sync_playwright
-    from playwright_stealth import Stealth
 
     resultados = {}
 
@@ -717,6 +762,15 @@ def main(mode: str = "scrape"):
             print(f"✗ Erro: {exc}")
 
     # ── Playwright ────────────────────────────────────────────────────────────
+    # Agrupadas por perfil de browser (_perfil_fonte) — por omissão todas
+    # partilham o mesmo perfil de sempre (um único context, como antes
+    # desta secção); só uma fonte com entrada em _PERFIL_POR_SLUG abre um
+    # context à parte, com um perfil diferente.
+    grupos: dict[PerfilBrowser, list[dict]] = {}
+    for fonte in fontes_pw:
+        perfil = _perfil_fonte(fonte["slug"])
+        grupos.setdefault(perfil, []).append(fonte)
+
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=True,
@@ -728,42 +782,25 @@ def main(mode: str = "scrape"):
             ],
         )
 
-        context = browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36"
-            ),
-            locale="pt-PT",
-            timezone_id="Europe/Lisbon",
-            extra_http_headers={
-                "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            },
-            viewport={"width": 1280, "height": 900},
-        )
-        # Mascara sinais óbvios de automação (navigator.webdriver, plugins,
-        # etc.) -- não é suposto contornar nada mais forte do que uma
-        # verificação superficial, só reduzir a frequência de bloqueios
-        # triviais nos runners do GitHub.
-        Stealth().apply_stealth_sync(context)
+        for perfil, fontes_grupo in grupos.items():
+            context = _criar_context(browser, perfil)
+            page = context.new_page()
 
-        page = context.new_page()
+            for fonte in fontes_grupo:
+                print(f"\n{'='*60}")
+                print(f"[Playwright] {fonte['slug']} — {fonte['url']} (perfil={perfil})")
+                print("=" * 60)
+                try:
+                    r = scrape_playwright(page, fonte)
+                    _reportar_resultado(resultados, fonte["slug"], r)
+                except Exception as exc:
+                    resultados[fonte["slug"]] = f"erro: {exc}"
+                    log.exception("Erro inesperado em %s", fonte["slug"])
+                    print(f"✗ Erro: {exc}")
 
-        for fonte in fontes_pw:
-            print(f"\n{'='*60}")
-            print(f"[Playwright] {fonte['slug']} — {fonte['url']}")
-            print("=" * 60)
-            try:
-                r = scrape_playwright(page, fonte)
-                _reportar_resultado(resultados, fonte["slug"], r)
-            except Exception as exc:
-                resultados[fonte["slug"]] = f"erro: {exc}"
-                log.exception("Erro inesperado em %s", fonte["slug"])
-                print(f"✗ Erro: {exc}")
+            page.close()
+            context.close()
 
-        page.close()
-        context.close()
         browser.close()
 
     # ── DRE — estado manual ───────────────────────────────────────────────────
