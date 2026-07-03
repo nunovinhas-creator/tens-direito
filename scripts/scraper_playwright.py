@@ -94,7 +94,17 @@ class PerfilBrowser:
     viewport_fixo: bool = True
 
 
-_PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {}
+# seg_social_abono/rsi: diagnóstico num runner real (2026-07-03, 4 perfis
+# x 2 deep-links) isolou extra_http_headers como o único componente que
+# faz o deep-link cair — não num simples redirect de login, mas num erro
+# 500 real do backend (/ptss/fraw/errors/500?dswid=...). stealth e
+# viewport fixo passaram isoladamente sem problema, tal como "nu" — só
+# headers_custom=True falhou nos 2 alvos. Ver CLAUDE.md "SEG-SOCIAL —
+# ESTRATÉGIA DE FETCH".
+_PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
+    "seg_social_abono": PerfilBrowser(headers_custom=False),
+    "seg_social_rsi": PerfilBrowser(headers_custom=False),
+}
 
 
 def _perfil_fonte(slug: str) -> PerfilBrowser:
