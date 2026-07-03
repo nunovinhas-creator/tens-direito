@@ -292,6 +292,20 @@ class ResultadoSelecao:
     motivo_vencedor: str = ""
 
 
+@dataclass
+class DecisaoCandidato:
+    """Um item por candidato dentro da janela de recência, para o log de
+    auditoria completo (`data/noticias_candidatos.json`) — ao contrário de
+    `ResultadoSelecao.rejeitados`, cobre TODOS os candidatos elegíveis por
+    data, não só os avaliados até se encontrar um vencedor."""
+    titulo: str
+    feed_nome: str
+    data_iso: str
+    score: int
+    decisao: str  # "vencedor" | "rejeitado_score" | "rejeitado_duplicado" | "nao_escolhido"
+    motivo: str = ""
+
+
 # ── Normalização e dedup ──────────────────────────────────────────────────
 
 def normalizar_titulo(titulo: str) -> str:
@@ -491,7 +505,7 @@ def selecionar_vencedor(
             url=e.get("link", "#"),
             data_iso=format_date_iso(parse_date(e)),
             feed_url=e.get("_feed_url", "?"),
-            feed_nome=e.get("_feed_nome", "?"),
+            feed_nome=e.get("_feed_nome", e.get("_feed_url", "?")),
         )
         for e in entries
     ]
@@ -517,6 +531,69 @@ def selecionar_vencedor(
         break
 
     return resultado
+
+
+def analisar_candidatos_na_janela(
+    entries: List[dict],
+    itens_existentes: List[ItemNoticia],
+    *,
+    hoje: Optional[datetime] = None,
+    janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
+) -> Tuple[List[DecisaoCandidato], Dict[str, int]]:
+    """Classifica TODOS os candidatos dentro da janela de recência — não só
+    os avaliados até `selecionar_vencedor()` encontrar um vencedor — para
+    que o log de auditoria (`data/noticias_candidatos.json`) responda
+    sempre "o sistema viu a notícia X, e porque não venceu?". Os
+    candidatos fora da janela só entram como contagem por feed (2.º valor
+    devolvido) — o próprio título deles já não interessa para auditoria,
+    visto que nunca poderiam vencer.
+
+    Reimplementa (deliberadamente, não reutiliza) a mesma lógica de
+    `selecionar_vencedor()` — aqui sem early-exit, porque o objectivo é
+    classificar todos os itens, não só escolher o primeiro vencedor."""
+    hoje = hoje or datetime.now(timezone.utc)
+    limite_recencia = (hoje - timedelta(days=janela_recencia_dias)).date()
+
+    candidatos = [
+        Candidato(
+            entry=e,
+            score=score_entry(e),
+            titulo=limpar_texto(e.get("title", "Sem título")),
+            url=e.get("link", "#"),
+            data_iso=format_date_iso(parse_date(e)),
+            feed_url=e.get("_feed_url", "?"),
+            feed_nome=e.get("_feed_nome", e.get("_feed_url", "?")),
+        )
+        for e in entries
+    ]
+
+    fora_da_janela_por_feed: Dict[str, int] = {}
+    dentro_da_janela = []
+    for c in candidatos:
+        if _data_iso_para_date(c.data_iso) < limite_recencia:
+            fora_da_janela_por_feed[c.feed_nome] = fora_da_janela_por_feed.get(c.feed_nome, 0) + 1
+        else:
+            dentro_da_janela.append(c)
+
+    dentro_da_janela.sort(key=lambda c: c.score, reverse=True)
+
+    decisoes: List[DecisaoCandidato] = []
+    vencedor_escolhido = False
+    for c in dentro_da_janela:
+        if c.score <= 0:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "rejeitado_score", "score <= 0"))
+            continue
+        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes)
+        if duplicado is not None:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "rejeitado_duplicado", f"duplicado de {duplicado.data_iso}"))
+            continue
+        if not vencedor_escolhido:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "vencedor", f"score={c.score}"))
+            vencedor_escolhido = True
+        else:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "nao_escolhido", "já havia vencedor com score maior ou igual"))
+
+    return decisoes, fora_da_janela_por_feed
 
 
 def imprimir_relatorio(resultado: ResultadoSelecao) -> None:
@@ -746,24 +823,42 @@ def registar_saude_feeds_hoje(
     escrever_ficheiro_seguro(str(caminho), json.dumps(dados, ensure_ascii=False, indent=2) + "\n")
 
 
-LIMITE_HISTORICO_CANDIDATOS = 60
+HISTORICO_DIAS_CANDIDATOS = 14
 
 
 def registar_candidatos_log(
-    resultado: ResultadoSelecao,
+    entries: List[dict],
+    itens_existentes: List[ItemNoticia],
     saude: List[SaudeFeed],
     *,
     caminho: Path = NOTICIAS_CANDIDATOS_JSON,
-    hoje: Optional[str] = None,
-    limite_historico: int = LIMITE_HISTORICO_CANDIDATOS,
+    hoje: Optional[datetime] = None,
+    janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
+    historico_dias: int = HISTORICO_DIAS_CANDIDATOS,
 ) -> None:
-    """Acrescenta um registo por corrida — candidatos por feed, top 3,
-    rejeitados com motivo, vencedor (ou nenhum) — para que "nenhuma notícia
-    hoje" seja sempre auditável a posteriori, nunca um resultado silencioso
-    e indistinguível de uma avaria. Histórico limitado às últimas
-    `limite_historico` corridas (≈2 meses a 1 corrida/dia) para não crescer
-    sem limite."""
-    hoje = hoje or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    """Acrescenta um registo de auditoria completo por corrida: TODOS os
+    candidatos dentro da janela de recência (título, feed, data, score,
+    decisão/motivo — via `analisar_candidatos_na_janela()`), contagem por
+    feed dos que ficaram fora da janela, saúde dos feeds e o vencedor (ou
+    `null`). "Nenhuma notícia hoje" tem sempre resposta a "o sistema viu a
+    notícia X?" — nunca um resultado silencioso, indistinguível de uma
+    avaria. Histórico limitado aos últimos `historico_dias` dias (não
+    corridas — 2 corridas no mesmo dia, ex.: `workflow_dispatch` manual,
+    não expulsam entradas mais antigas fora de tempo) para não crescer sem
+    limite."""
+    hoje = hoje or datetime.now(timezone.utc)
+    hoje_str = hoje.strftime("%Y-%m-%d")
+
+    candidatos_por_feed: Dict[str, int] = {}
+    for e in entries:
+        nome = e.get("_feed_nome", e.get("_feed_url", "?"))
+        candidatos_por_feed[nome] = candidatos_por_feed.get(nome, 0) + 1
+
+    decisoes, fora_da_janela_por_feed = analisar_candidatos_na_janela(
+        entries, itens_existentes, hoje=hoje, janela_recencia_dias=janela_recencia_dias
+    )
+    vencedor = next((d for d in decisoes if d.decisao == "vencedor"), None)
+
     historico = []
     if caminho.exists():
         try:
@@ -772,21 +867,24 @@ def registar_candidatos_log(
             historico = []
 
     registo = {
-        "data": hoje,
+        "data": hoje_str,
         "saude_feeds": {s.nome: s.estado for s in saude},
-        "candidatos_por_feed": resultado.candidatos_por_feed,
-        "top_candidatos": [
-            {"titulo": c.titulo, "score": c.score, "data_iso": c.data_iso, "feed_nome": c.feed_nome}
-            for c in resultado.top_candidatos
+        "candidatos_por_feed": candidatos_por_feed,
+        "fora_da_janela_por_feed": fora_da_janela_por_feed,
+        "candidatos": [
+            {"titulo": d.titulo, "feed_nome": d.feed_nome, "data_iso": d.data_iso, "score": d.score, "decisao": d.decisao, "motivo": d.motivo}
+            for d in decisoes
         ],
-        "rejeitados": [{"titulo": r.titulo, "motivo": r.motivo} for r in resultado.rejeitados],
         "vencedor": (
-            {"titulo": resultado.vencedor.titulo, "score": resultado.vencedor.score, "motivo": resultado.motivo_vencedor}
-            if resultado.vencedor else None
+            {"titulo": vencedor.titulo, "feed_nome": vencedor.feed_nome, "score": vencedor.score}
+            if vencedor else None
         ),
     }
     historico.append(registo)
-    historico = historico[-limite_historico:]
+
+    limite_data = (hoje - timedelta(days=historico_dias)).strftime("%Y-%m-%d")
+    historico = [r for r in historico if isinstance(r, dict) and r.get("data", "") >= limite_data]
+
     escrever_ficheiro_seguro(str(caminho), json.dumps(historico, ensure_ascii=False, indent=2) + "\n")
 
 
@@ -801,7 +899,7 @@ def main() -> None:
     imprimir_relatorio(resultado)
 
     registar_saude_feeds_hoje(saude)
-    registar_candidatos_log(resultado, saude)
+    registar_candidatos_log(entries, itens_existentes, saude)
 
     if resultado.vencedor is None:
         print("Nenhuma notícia relevante encontrada hoje.")

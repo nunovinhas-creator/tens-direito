@@ -20,7 +20,7 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
 - `data/estado_fontes.json` — máquina de estados de fontes bloqueadas (ver secção "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
 - `data/feeds_saude_hoje.json` — snapshot diário da saúde de cada feed de notícias (Fase 3, ver secção "FRESCURA DA HOMEPAGE")
 - `data/estado_feeds.json` — máquina de estados de feeds mortos, escrito por `gerir_estado_feeds.py` (mesmo padrão de `estado_fontes.json`)
-- `data/noticias_candidatos.json` — log auditável de candidatos/decisões de cada corrida de notícias (últimas 60 corridas)
+- `data/noticias_candidatos.json` — log auditável de candidatos/decisões de cada corrida de notícias (últimos 14 dias)
 
 **TODOS os outros HTML são manuais e protegidos.**
 Esta regra aplica-se a páginas actuais E futuras.
@@ -298,7 +298,7 @@ tens-direito/
 │   ├── estado_fontes.json    ← máquina de estados por fonte (ver "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
 │   ├── feeds_saude_hoje.json ← snapshot diário da saúde de cada feed de notícias, consumido por gerir_estado_feeds.py
 │   ├── estado_feeds.json     ← máquina de estados por feed de notícias (ver "FRESCURA DA HOMEPAGE")
-│   ├── noticias_candidatos.json ← log auditável de candidatos/decisões, últimas 60 corridas (ver "FRESCURA DA HOMEPAGE")
+│   ├── noticias_candidatos.json ← log auditável de candidatos/decisões, últimos 14 dias (ver "FRESCURA DA HOMEPAGE")
 │   └── pagina_fonte.json     ← mapeamento manual página → fonte(s) (ver "REVALIDAÇÃO DE CARIMBO")
 ├── shadow_history/
 │   └── shadow_report_AAAA-MM-DD.md ← 1 relatório/dia, gerado por shadow-daily.yml
@@ -895,15 +895,28 @@ runner real é fiável para isto):
   consecutivo, fecho automático ao recuperar. Sem dados de saúde da
   corrida (ex.: `gerar_noticias.py` falhou antes de escrever), mantém o
   último estado conhecido — nunca inventa "tudo OK" nem "tudo morto".
-- `data/noticias_candidatos.json` — log auditável das últimas 60
-  corridas (candidatos por feed, top 3, rejeitados com motivo,
-  vencedor ou `null`) — "nenhuma notícia hoje" deixa de ser
-  indistinguível de uma avaria; é sempre possível confirmar a
-  posteriori que a selecção correu e porque não escolheu nada.
+- `data/noticias_candidatos.json` — log auditável dos últimos 14 dias
+  (retenção por dias corridos, não por n.º de corridas — 2 corridas no
+  mesmo dia, ex.: `workflow_dispatch` manual, nunca expulsam uma
+  entrada de um dia mais antigo fora de tempo). **Revisto em
+  2026-07-04** para auditoria completa: em vez de só top 3 + rejeitados
+  parciais (o `selecionar_vencedor()` original pára assim que encontra
+  um vencedor, por isso nunca classificava os candidatos a seguir),
+  `analisar_candidatos_na_janela()` classifica **todos** os candidatos
+  dentro da janela de recência (título, feed, data, score, decisão —
+  `vencedor`/`rejeitado_score`/`rejeitado_duplicado`/`nao_escolhido`),
+  para que "o sistema viu a notícia X?" tenha sempre resposta. Os
+  candidatos fora da janela ficam só como contagem por feed
+  (`fora_da_janela_por_feed`) — o título deles já não interessa para
+  auditoria, nunca poderiam vencer. `analisar_candidatos_na_janela()`
+  reimplementa deliberadamente a mesma lógica de `selecionar_vencedor()`
+  em vez de a reutilizar — o objectivo é classificar tudo, não só
+  encontrar o primeiro vencedor (early-exit deixaria de fazer sentido).
 
 Testado em `tests/test_gerar_noticias.py` (corte de recência, saúde de
-feed, logs), `tests/test_estado_feeds.py` (máquina de estados, mesmos
-casos de `test_estado_fontes.py`) e `tests/test_gerar_noticias_guardrail.py`
+feed, classificação completa de candidatos, retenção por dias),
+`tests/test_estado_feeds.py` (máquina de estados, mesmos casos de
+`test_estado_fontes.py`) e `tests/test_gerar_noticias_guardrail.py`
 (allow-list dos 2 novos ficheiros).
 
 **Verificado no pipeline real** (`workflow_dispatch` de
@@ -1262,8 +1275,17 @@ Tentativa de apagar a branch remota `claude/new-session-2oea8g`:
 **403 na API** (mesma limitação já registada nas revisões anteriores
 deste ficheiro para `claude/nv-labs-branding-update-xq4kb4` e
 `claude/cool-cannon-zn5nfy` — sem `gh` CLI nem ferramenta MCP com
-permissão para apagar branches neste ambiente). Fica também para
+permissão para apagar branches neste ambiente). Ficou registada para
 apagar manualmente.
+
+**Actualização (2026-07-04)**: confirmado via `list_branches` da API
+(não só `git fetch --prune` local) que o repositório remoto tem hoje
+**apenas `main`** — `claude/new-session-2oea8g` já não existe (apagada
+manualmente ou pela limpeza automática do GitHub entretanto, fora desta
+sessão), e o mesmo se aplica às restantes órfãs documentadas nesta
+secção e nas revisões anteriores (`claude/nv-labs-branding-update-xq4kb4`,
+`claude/cool-cannon-zn5nfy`, `claude/shadow-mode-issues-scraper-5u0syf`).
+Nenhuma branch por apagar manualmente neste momento.
 
 ---
 
@@ -2060,3 +2082,7 @@ Nota de manutenção sazonal registada em "PÁGINAS COM DATAS SAZONAIS": as refe
 Correcção em `scripts/gerar_noticias.py`: `FEEDS` passa a 7 feeds por tema (todos testados com fetch real antes de entrar no código), DRE removido sem substituto; corte de recência de 7 dias (`JANELA_RECENCIA_DIAS`) rejeita candidatos antigos mesmo com score alto; limite por feed sobe de 10 para 15. Observabilidade permanente (Fase 3, mesmo padrão de `gerir_estado_fontes.py`): novo `scripts/gerir_estado_feeds.py` + `data/estado_feeds.json` (Issue `feed-morto` ao 3.º dia consecutivo morto, fecho automático), `data/feeds_saude_hoje.json` (snapshot diário, XML malformado com HTTP 200 conta sempre como `MORTO`) e `data/noticias_candidatos.json` (log auditável das últimas 60 corridas) — os 2 últimos na allow-list de `escrever_ficheiro_seguro()`; `estado_feeds.json` escrito directamente pelo seu próprio script, fora dessa allow-list, mesmo padrão de `estado_fontes.json`. `pipeline-diario.yml` ganhou o Step 3a (actualizar estado dos feeds), Step 7c (label `feed-morto`) e o bloco de Issues correspondente no Step 8. 35 testes novos com fixtures reais capturadas no diagnóstico (título/data/score exactos), incluindo o caso do artigo de PSU de maio rejeitado pelo corte de recência.
 
 **Verificado no pipeline real** (`workflow_dispatch` de `pipeline-diario.yml`, run 28684312236, commit `404f760`, sucesso): vencedor da selecção foi "Prestação social única: reforma altera 13 apoios do Estado" datado **2026-06-26** — exactamente na borda dos 7 dias a partir de 3 jul, não um artigo de há meses; o log confirma a rejeição real de um candidato de 2026-06-25 (1 dia antes da borda) com o motivo `"antigo (antes de 2026-06-26, janela de 7 dias)"`, provando o corte a funcionar com precisão de dia. Não foi a notícia de abono especificamente a vencer neste run — dentro da janela de 7 dias elegíveis, um candidato de PSU pontuou mais alto (score=5) — comportamento correcto e esperado do desenho (o corte elimina o histórico de meses, não impõe "mais recente vence sempre dentro da janela"). Guardrail "Verificar ficheiros protegidos" confirmou "13 ficheiro(s) modificado(s), nenhum protegido afectado"; a lista real de ficheiros do commit `404f760` confirma exactamente os 3 ficheiros novos como `added` (`data/estado_feeds.json`, `data/feeds_saude_hoje.json`, `data/noticias_candidatos.json`) mais `data/noticias.json`/`index.html`/`noticias.html` como `modified` — nenhum HTML manual tocado. Estado dos feeds: as 7 fontes ficaram `OK` logo no dia 1 (nenhuma Issue `feed-morto` criada, correctamente — dia 1 < limiar de 3); sem entrada nenhuma para DRE (removido do código, não apenas marcado morto). Workflow e script de diagnóstico temporários apagados. 799 testes a passar, ruff limpo, `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
+
+---
+
+*Última revisão: 2026-07-04 — duas tarefas de seguimento. 1) `data/noticias_candidatos.json` completado: o formato anterior só registava top 3 + rejeitados parciais porque `selecionar_vencedor()` pára assim que encontra um vencedor (early-exit) — "o sistema viu a notícia X?" não tinha resposta garantida. Nova `analisar_candidatos_na_janela()` classifica **todos** os candidatos dentro da janela de recência (título, feed, data, score, decisão — `vencedor`/`rejeitado_score`/`rejeitado_duplicado`/`nao_escolhido`), reimplementando deliberadamente a lógica de `selecionar_vencedor()` sem early-exit (reutilizá-la não fazia sentido — o objectivo é classificar tudo). Candidatos fora da janela ficam só como contagem por feed (`fora_da_janela_por_feed`), sem detalhe, para não inchar o log. Retenção mudou de "últimas 60 corridas" para **últimos 14 dias corridos** — 2 corridas no mesmo dia (`workflow_dispatch` manual) já não conseguiam expulsar uma entrada mais antiga fora de tempo com o critério antigo. 2) Branches remotas: confirmado via `list_branches` da API (não só `git fetch --prune` local) que o repositório tem hoje **apenas `main`** — `claude/new-session-2oea8g` e todas as órfãs documentadas em revisões anteriores já não existem; nenhuma branch por apagar manualmente neste momento (secção "Fast-forward para `main` e limpeza de branch" actualizada). 12 testes novos (classificação completa, retenção por dias, borda exacta dos 14 dias). 805 testes a passar, ruff limpo, `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.

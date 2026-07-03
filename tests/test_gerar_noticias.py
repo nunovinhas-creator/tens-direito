@@ -16,6 +16,7 @@ from gerar_noticias import (
     ItemNoticia,
     SaudeFeed,
     agrupar_por_mes,
+    analisar_candidatos_na_janela,
     carregar_itens,
     construir_item_de_entry,
     detect_category,
@@ -491,27 +492,119 @@ def test_registar_saude_feeds_hoje_grava_snapshot(tmp_path):
     assert all(d["data"] == "2026-07-04" for d in dados)
 
 
-def test_registar_candidatos_log_acrescenta_e_limita_historico(tmp_path):
+# ── analisar_candidatos_na_janela — auditoria completa (não só o vencedor) ──
+
+def test_analisar_candidatos_classifica_vencedor_score_e_duplicado():
+    hoje = datetime(2026, 7, 2, tzinfo=timezone.utc)
+    existentes = [_item("2026-06-25", "Já publicada antes", url="https://exemplo.pt/ja-existe")]
+    entries = [
+        _entry("Abono de família sobe", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="abono_familia"),
+        _entry("Notícia irrelevante", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="rsi"),
+        _entry("Já publicada antes", resumo="apoio subsídio", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="psu_pensoes"),
+    ]
+    decisoes, fora = analisar_candidatos_na_janela(entries, existentes, hoje=hoje)
+
+    por_titulo = {d.titulo: d for d in decisoes}
+    assert por_titulo["Abono de família sobe"].decisao == "vencedor"
+    assert por_titulo["Notícia irrelevante"].decisao == "rejeitado_score"
+    assert por_titulo["Já publicada antes"].decisao == "rejeitado_duplicado"
+    assert "2026-06-25" in por_titulo["Já publicada antes"].motivo
+    assert fora == {}
+
+
+def test_analisar_candidatos_marca_nao_escolhido_quando_ja_ha_vencedor():
+    """Ao contrário de selecionar_vencedor() (early-exit), esta função
+    classifica TODOS os candidatos elegíveis — um segundo candidato válido
+    não pode ficar sem classificação só porque já houve vencedor."""
+    hoje = datetime(2026, 7, 2, tzinfo=timezone.utc)
+    entries = [
+        _entry("Abono de família sobe muito", resumo="abono subsídio apoio", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="abono_familia"),
+        _entry("RSI muda também", resumo="rsi apoio", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="rsi"),
+    ]
+    decisoes, _ = analisar_candidatos_na_janela(entries, [], hoje=hoje)
+    decisoes_ordenadas = sorted(decisoes, key=lambda d: d.score, reverse=True)
+    assert decisoes_ordenadas[0].decisao == "vencedor"
+    assert decisoes_ordenadas[1].decisao == "nao_escolhido"
+
+
+def test_analisar_candidatos_conta_fora_da_janela_por_feed_sem_detalhe():
+    hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
+    entries = [
+        _entry("Antigo demais A", published="Fri, 29 May 2026 10:00:00 GMT", feed="psu_pensoes"),
+        _entry("Antigo demais B", published="Sat, 30 May 2026 10:00:00 GMT", feed="psu_pensoes"),
+        _entry("Antigo demais C", published="Sun, 31 May 2026 10:00:00 GMT", feed="rsi"),
+    ]
+    decisoes, fora = analisar_candidatos_na_janela(entries, [], hoje=hoje)
+    assert decisoes == []  # nenhum candidato dentro da janela
+    assert fora == {"psu_pensoes": 2, "rsi": 1}
+
+
+# ── registar_candidatos_log — log auditável completo, retenção por dias ────
+
+def test_registar_candidatos_log_regista_todos_os_candidatos_da_janela(tmp_path):
     caminho = tmp_path / "noticias_candidatos.json"
-    resultado = selecionar_vencedor(
-        [_entry("Abono de família sobe", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="abono_familia")],
-        [], hoje=datetime(2026, 7, 2, tzinfo=timezone.utc),
-    )
+    hoje = datetime(2026, 7, 2, tzinfo=timezone.utc)
+    entries = [
+        _entry("Abono de família sobe", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="abono_familia"),
+        _entry("Notícia irrelevante", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="rsi"),
+    ]
     saude = [SaudeFeed(nome="abono_familia", url="https://x", bozo=False, n_entradas=1)]
 
-    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-01", limite_historico=2)
-    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-02", limite_historico=2)
-    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-03", limite_historico=2)
+    registar_candidatos_log(entries, [], saude, caminho=caminho, hoje=hoje)
 
     historico = json.loads(caminho.read_text(encoding="utf-8"))
-    assert len(historico) == 2  # limitado, o mais antigo (07-01) caiu fora
-    assert [r["data"] for r in historico] == ["2026-07-02", "2026-07-03"]
-    assert historico[-1]["vencedor"]["titulo"] == "Abono de família sobe"
+    assert len(historico) == 1
+    registo = historico[0]
+    assert registo["data"] == "2026-07-02"
+    assert registo["vencedor"]["titulo"] == "Abono de família sobe"
+    titulos_registados = {c["titulo"] for c in registo["candidatos"]}
+    assert titulos_registados == {"Abono de família sobe", "Notícia irrelevante"}
+    assert registo["saude_feeds"] == {"abono_familia": "OK"}
+    assert registo["candidatos_por_feed"] == {"abono_familia": 1, "rsi": 1}
 
 
 def test_registar_candidatos_log_regista_nenhum_vencedor(tmp_path):
     caminho = tmp_path / "noticias_candidatos.json"
-    resultado = selecionar_vencedor([_entry("Notícia irrelevante sobre futebol")], [], hoje=HOJE_TESTE)
-    registar_candidatos_log(resultado, [], caminho=caminho, hoje="2026-07-02")
+    registar_candidatos_log([_entry("Notícia irrelevante sobre futebol")], [], [], caminho=caminho, hoje=HOJE_TESTE)
     historico = json.loads(caminho.read_text(encoding="utf-8"))
     assert historico[0]["vencedor"] is None
+
+
+def test_registar_candidatos_log_retem_por_dias_nao_por_corridas(tmp_path):
+    """2 corridas no mesmo dia (ex.: workflow_dispatch manual) não podem
+    expulsar uma entrada de um dia mais antigo mas ainda dentro da janela
+    de retenção — a retenção é por dias corridos, não por contagem de
+    registos."""
+    caminho = tmp_path / "noticias_candidatos.json"
+    entries = [_entry("Notícia irrelevante")]
+
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 7, 1, tzinfo=timezone.utc), historico_dias=14)
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 7, 1, 8, tzinfo=timezone.utc), historico_dias=14)
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 7, 1, 16, tzinfo=timezone.utc), historico_dias=14)
+
+    historico = json.loads(caminho.read_text(encoding="utf-8"))
+    assert len(historico) == 3
+    assert all(r["data"] == "2026-07-01" for r in historico)
+
+
+def test_registar_candidatos_log_expulsa_entradas_mais_antigas_que_janela_de_dias(tmp_path):
+    caminho = tmp_path / "noticias_candidatos.json"
+    entries = [_entry("Notícia irrelevante")]
+
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 6, 1, tzinfo=timezone.utc), historico_dias=14)
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 7, 4, tzinfo=timezone.utc), historico_dias=14)
+
+    historico = json.loads(caminho.read_text(encoding="utf-8"))
+    assert [r["data"] for r in historico] == ["2026-07-04"]  # 1 jun caiu fora (>14 dias antes de 4 jul)
+
+
+def test_registar_candidatos_log_mantem_entrada_exatamente_na_borda_dos_dias(tmp_path):
+    caminho = tmp_path / "noticias_candidatos.json"
+    entries = [_entry("Notícia irrelevante")]
+
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 6, 20, tzinfo=timezone.utc), historico_dias=14)
+    registar_candidatos_log(entries, [], [], caminho=caminho, hoje=datetime(2026, 7, 4, tzinfo=timezone.utc), historico_dias=14)
+
+    historico = json.loads(caminho.read_text(encoding="utf-8"))
+    # 20 jun está exactamente a 14 dias de 4 jul -> mantido (limite inclusivo)
+    assert [r["data"] for r in historico] == ["2026-06-20", "2026-07-04"]
