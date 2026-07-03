@@ -1368,20 +1368,56 @@ disfarçou o bloqueio real de OK). `data/estado_fontes.json` confirma:
 (2 dias consecutivos, `ultima_ok: null` — nunca chegaram a OK com este
 sistema).
 
-Hipótese não confirmada para a discrepância runner-de-diagnóstico vs.
-pipeline real: o contexto Playwright de produção
-(`scraper_playwright.py main()`) aplica `Stealth().apply_stealth_sync()`
-+ `extra_http_headers` (`Accept-Language`/`Accept`) + `viewport` fixo —
-nenhum destes três estava presente no contexto do
-`diagnostico-fontes-temp.yml`, que só tinha `user_agent`/`locale`/
-`timezone_id` e obteve o conteúdo real sem redirect. Um destes (mais
-provável: a própria patch de stealth, ou a combinação com os headers)
-pode estar a ser detectado pelo WAF do portal novo como sinal de
-automação e a despoletar o redirect para o gateway — não confirmado,
-não investigado nesta sessão. **Registado para o futuro, sem prazo**:
-repetir o deep-link num runner com um contexto Playwright mais próximo
-do de produção (stealth + headers + viewport, um de cada vez) para
-isolar qual componente causa o redirect antes de tentar outra correcção.
+**Culpado isolado e corrigido (2026-07-03, sessão seguinte)**: a
+hipótese acima (stealth) estava errada. Novo `PerfilBrowser`
+(`stealth`/`headers_custom`/`viewport_fixo`, todos `True` por omissão —
+comportamento de produção inalterado para qualquer fonte sem entrada em
+`_PERFIL_POR_SLUG`) + `_criar_context()` em `scraper_playwright.py`
+tornam o perfil de browser configurável por fonte; `main()` agrupa
+`fontes_pw` por perfil e abre um `browser.new_context()` à parte por
+grupo. Workflow de diagnóstico temporário (`workflow_dispatch`, apagado
+no fim) testou os 2 deep-links seg-social × 4 perfis isolados (nu,
+só stealth, só headers, só viewport) num runner real:
+
+| Perfil | `seg_social_abono` | `seg_social_rsi` |
+|---|---|---|
+| nu | ✓ passou (85142 chars, âncora 19×) | ✓ passou (80173 chars, âncora 11×) |
+| só stealth | ✓ passou | ✓ passou |
+| **só headers** | **✗ erro 500 real do backend** (`/ptss/fraw/errors/500?dswid=...`) | **✗ idêntico** |
+| só viewport | ✓ passou | ✓ passou |
+
+O culpado é `extra_http_headers` (`Accept-Language`/`Accept` customizados)
+— não o `Stealth()`, como se suspeitava. Não é sequer um redirect de
+login: o backend do portal novo devolve genuinamente um erro 500 quando
+recebe esses headers nesta rota. `stealth` e `viewport` fixo passaram
+isoladamente sem qualquer problema. `_PERFIL_POR_SLUG` fixa
+`headers_custom=False` só para `seg_social_abono`/`seg_social_rsi`
+(mantêm `stealth=True`/`viewport_fixo=True`, tal como as restantes
+fontes); nenhuma outra fonte foi tocada.
+
+**Confirmado no pipeline real**: `seg_social_abono`/`seg_social_rsi`
+ficaram OK de imediato (sem retries, ~4-7s cada, âncora e título
+correctos via JS) — Issues #47/#48 fecharam-se sozinhas pela máquina de
+estados. `data/estado_fontes.json` confirma as 7 fontes monitorizadas
+em `OK`.
+
+**Bug lateral descoberto e corrigido durante esta verificação**: a
+1.ª tentativa de confirmação (mesmo dia, pipeline disparado 2× por
+`workflow_dispatch` manual — uma vez antes da correcção, outra depois)
+mostrou o scrape genuinamente OK mas as Issues #47/#48 não fecharam.
+Causa: `data/bloqueios.json` ainda tinha entradas de **hoje** da
+corrida anterior (antes da correcção) — `_registar_bloqueio` só
+substituía a entrada do dia ao registar um **novo** bloqueio, nunca a
+removia quando a fonte simplesmente recuperava; `gerir_estado_fontes.py`
+compara só por data (`YYYY-MM-DD`), por isso via a entrada antiga como
+"bloqueado hoje" apesar do scrape actual ter tido sucesso. Nova
+`_limpar_bloqueio_hoje(slug)`, chamada no caminho OK de
+`scrape_playwright()`/`scrape_http()`: remove qualquer entrada de hoje
+dessa fonte em `bloqueios.json` quando recupera. Só se manifesta em
+corridas múltiplas no mesmo dia (`workflow_dispatch` manual repetido)
+— o pipeline automático corre uma vez/dia via cron, onde este bug nunca
+se manifestava na prática. Testado (579 testes a passar) e confirmado
+no pipeline real seguinte: #47/#48 fecharam correctamente.
 
 ---
 
@@ -1629,3 +1665,7 @@ Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0sy
 ---
 
 *Última revisão: 2026-07-03 — verificação no pipeline real (`workflow_dispatch` de `pipeline-diario.yml`, commit `ef686b9`): resultado misto, reportado com honestidade em vez de assumido. `iefp_desemprego` confirmou-se OK (`metodo="http"`) — Issue #49 fechou-se sozinha pela máquina de estados. `seg_social_abono`/`seg_social_rsi` continuaram BLOQUEADO no pipeline real (redirect para o gateway de login em todas as tentativas), ao contrário do runner de diagnóstico isolado que tinha validado o mesmo deep-link — Issues #47/#48 continuam abertas, correctamente: o classificador nunca disfarçou este bloqueio real de OK. Hipótese registada (não confirmada) na secção "SEG-SOCIAL — ESTRATÉGIA DE FETCH": a diferença pode estar no contexto Playwright de produção (`Stealth()` + `extra_http_headers` + `viewport`, ausentes no runner de diagnóstico) a despoletar o mesmo redirect que a versão "nua" evitou — por investigar numa sessão dedicada, isolando cada componente do contexto. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False` neste run.*
+
+---
+
+*Última revisão: 2026-07-03 — sessão de seguimento: isolado e corrigido o culpado real do bloqueio seg-social, registado como hipótese por confirmar na entrada anterior. Novo `PerfilBrowser` (`stealth`/`headers_custom`/`viewport_fixo`) + `_PERFIL_POR_SLUG` em `scraper_playwright.py` tornam o perfil de browser configurável por fonte, sem alterar o comportamento das restantes; `main()` agrupa fontes Playwright por perfil, um `browser.new_context()` por grupo. Workflow de diagnóstico temporário (apagado no fim) testou os 2 deep-links seg-social × 4 perfis isolados (nu/stealth/headers/viewport) num runner real: `extra_http_headers` é o único culpado — devolve um **erro 500 real do backend** (não um simples redirect de login) nos 2 alvos; `stealth` e `viewport` fixo passam isoladamente sem problema, tal como "nu". `_PERFIL_POR_SLUG` fixa `headers_custom=False` só para `seg_social_abono`/`seg_social_rsi`. Confirmado no pipeline real: as 2 fontes ficaram OK de imediato (sem retries). Durante a verificação, descoberto e corrigido um bug lateral: `gerir_estado_fontes.py` compara bloqueios só por data, e `data/bloqueios.json` nunca limpava a entrada do dia quando uma fonte recuperava dentro do mesmo dia (só substituía ao registar um *novo* bloqueio) — só se manifesta com corridas múltiplas no mesmo dia via `workflow_dispatch` manual, nunca no cron diário; corrigido com nova `_limpar_bloqueio_hoje()`, chamada no caminho OK do scraper. Resultado final confirmado: Issues #47/#48 fechadas automaticamente pela máquina de estados, `data/estado_fontes.json` com as 7 fontes monitorizadas em `OK`. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 579 testes a passar, ruff limpo; workflow de diagnóstico apagado no fim.*
