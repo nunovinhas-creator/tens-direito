@@ -1352,6 +1352,37 @@ nunca as disfarça de BLOQUEADO nesse caso: sem âncoras encontradas e
 sem sinal real de bloqueio, o resultado é sempre MUDOU (ver secção
 anterior).
 
+**Verificação no pipeline real (2026-07-03) — resultado misto, honesto**:
+disparado `pipeline-diario.yml` em `main` depois de aplicar esta secção
+(commit `ef686b9`). `iefp_desemprego` confirmou-se OK de imediato
+(`metodo="http"`, âncora encontrada) — Issue #49 (`fonte-bloqueada`)
+fechou-se sozinha pela máquina de estados, exactamente como esperado.
+`seg_social_abono`/`seg_social_rsi` **continuaram BLOQUEADO** no
+pipeline real, ao contrário do runner de diagnóstico: as 3 tentativas
+de cada uma navegaram para o mesmo deep-link, mas caíram sempre no
+gateway de login (`titulo_login:seguranca social direta`,
+`texto_util=173<min=500`, âncora nunca apareceu no DOM em 15s) — Issues
+#47/#48 continuam abertas, correctamente (o classificador nunca
+disfarçou o bloqueio real de OK). `data/estado_fontes.json` confirma:
+`iefp_desemprego` → `OK`, `seg_social_abono`/`seg_social_rsi` → `BLOQUEADO`
+(2 dias consecutivos, `ultima_ok: null` — nunca chegaram a OK com este
+sistema).
+
+Hipótese não confirmada para a discrepância runner-de-diagnóstico vs.
+pipeline real: o contexto Playwright de produção
+(`scraper_playwright.py main()`) aplica `Stealth().apply_stealth_sync()`
++ `extra_http_headers` (`Accept-Language`/`Accept`) + `viewport` fixo —
+nenhum destes três estava presente no contexto do
+`diagnostico-fontes-temp.yml`, que só tinha `user_agent`/`locale`/
+`timezone_id` e obteve o conteúdo real sem redirect. Um destes (mais
+provável: a própria patch de stealth, ou a combinação com os headers)
+pode estar a ser detectado pelo WAF do portal novo como sinal de
+automação e a despoletar o redirect para o gateway — não confirmado,
+não investigado nesta sessão. **Registado para o futuro, sem prazo**:
+repetir o deep-link num runner com um contexto Playwright mais próximo
+do de produção (stealth + headers + viewport, um de cada vez) para
+isolar qual componente causa o redirect antes de tentar outra correcção.
+
 ---
 
 ## IDEIAS RECUPERADAS — cascata de fontes (cool-cannon)
@@ -1594,3 +1625,7 @@ Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0sy
 ---
 
 *Última revisão: 2026-07-03 — corrigido o falso positivo do IEFP e definida a estratégia de fetch da Segurança Social (novas secções "CLASSIFICADOR — VERIFICAÇÃO POSITIVA" e "SEG-SOCIAL — ESTRATÉGIA DE FETCH"). `classificador_resposta.py` reescrito: `FonteConfig` ganhou `ancora_conteudo` (frases que uma página legítima tem sempre) e `metodo` ("http"/"playwright"); nova ordem de decisão — âncoras presentes + tamanho suficiente é sempre OK (mesmo com `recaptcha` passivo no resto da página); sem âncoras só há BLOQUEADO com um sinal real (status, redirect/título de login, desafio forte em página pequena); sem âncoras e sem sinal real é MUDOU, nunca BLOQUEADO por engano. Testado com 5 HTML reais obtidos num runner via `workflow_dispatch` temporário (apagado no fim, `tests/fixtures/*.html`): página real do IEFP (87KB, recaptcha passivo) → OK; shell de login do portal seg-social → nunca OK; conteúdo real dos deep-links do portal novo → OK — 19/19 testes em `tests/test_classificador_resposta.py` (12 pré-existentes inalterados + 7 novos). Confirmado num segundo runner que as URLs planas da Segurança Social (antigas e novas) redireccionam sempre para o gateway de autenticação, com ou sem Playwright, mas os deep-links do portal novo servem conteúdo real via Playwright com espera explícita pela âncora (`page.wait_for_function`, não só `networkidle`) — `scraper_playwright.py` actualizado: `iefp_desemprego` passa a `metodo="http"` (nova `scrape_http()`, corre sem abrir o Chromium); `seg_social_abono`/`seg_social_rsi` mantêm `metodo="playwright"` mas apontam aos deep-links, com `_obter_html()` a esperar pela âncora em vez de um `time.sleep(5)` fixo; novo `_tratar_nao_ok()` bifurca BLOQUEADO (fallback Wayback, depois `bloqueios.json`, como antes) de MUDOU (só `avisos.log` via nova `_registar_mudanca_estrutural()`, nunca conta como dia bloqueado na máquina de estados). Gap registado para o futuro: MUDOU ainda não cria Issue, só fica em log. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 579 testes a passar (7 novos), ruff limpo; workflow de diagnóstico temporário apagado no fim.*
+
+---
+
+*Última revisão: 2026-07-03 — verificação no pipeline real (`workflow_dispatch` de `pipeline-diario.yml`, commit `ef686b9`): resultado misto, reportado com honestidade em vez de assumido. `iefp_desemprego` confirmou-se OK (`metodo="http"`) — Issue #49 fechou-se sozinha pela máquina de estados. `seg_social_abono`/`seg_social_rsi` continuaram BLOQUEADO no pipeline real (redirect para o gateway de login em todas as tentativas), ao contrário do runner de diagnóstico isolado que tinha validado o mesmo deep-link — Issues #47/#48 continuam abertas, correctamente: o classificador nunca disfarçou este bloqueio real de OK. Hipótese registada (não confirmada) na secção "SEG-SOCIAL — ESTRATÉGIA DE FETCH": a diferença pode estar no contexto Playwright de produção (`Stealth()` + `extra_http_headers` + `viewport`, ausentes no runner de diagnóstico) a despoletar o mesmo redirect que a versão "nua" evitou — por investigar numa sessão dedicada, isolando cada componente do contexto. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False` neste run.*
