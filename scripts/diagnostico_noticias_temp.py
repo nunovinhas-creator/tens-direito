@@ -26,22 +26,46 @@ import gerar_noticias as gn  # noqa: E402
 
 # Candidatos a feed novo/substituto — testados aqui antes de qualquer decisão
 # (nenhum feed é adicionado ao gerar_noticias.py sem fetch real confirmado).
-CANDIDATOS = [
-    "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "https://news.google.com/rss/search?q=seg-social.pt+quando%3A7d&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "https://observador.pt/rss",
-    "https://eco.sapo.pt/feed/",
-    "https://www.jornaldenegocios.pt/rss/economia",
-    "https://www.dinheirovivo.pt/rss",
-]
+#
+# Grupo A — pesquisa Google News por TEMA específico (um por tema do site),
+# em vez do feed genérico onde estes temas ficam enterrados na posição 78+.
+CANDIDATOS_TEMA = {
+    "abono_familia": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "subsidio_desemprego": "https://news.google.com/rss/search?q=subs%C3%ADdio+de+desemprego+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "rsi": "https://news.google.com/rss/search?q=RSI+rendimento+social+de+inser%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "psu_pensoes": "https://news.google.com/rss/search?q=presta%C3%A7%C3%A3o+social+%C3%BAnica+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "acao_social_escolar": "https://news.google.com/rss/search?q=a%C3%A7%C3%A3o+social+escolar+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "cuidador_informal": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "porta65_arrendamento": "https://news.google.com/rss/search?q=Porta+65+arrendamento+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+}
+
+# Grupo B — fontes oficiais (Segurança Social/gov.pt) e substitutos para o
+# DRE morto — todos palpites a confirmar por fetch real, nunca assumidos vivos.
+CANDIDATOS_OFICIAIS = {
+    "seg_social_rss": "https://www.seg-social.pt/rss",
+    "gov_pt_comunicacao": "https://www.portugal.gov.pt/pt/gc25/comunicacao/rss",
+    "dre_serie1_alt": "https://dre.pt/rss/serie1s.rss",
+    "dre_rss_alt2": "https://diariodarepublica.pt/dr/rss",
+}
+
+# Grupo C — media generalista com RSS tipicamente estável (feed de publicação
+# cronológica, não pesquisa por relevância — reduz o risco de "banco de
+# artigos antigos" que afecta as pesquisas Google News).
+CANDIDATOS_MEDIA = {
+    "observador": "https://observador.pt/rss",
+    "eco_sapo": "https://eco.sapo.pt/feed/",
+}
+
+CANDIDATOS = {**CANDIDATOS_TEMA, **CANDIDATOS_OFICIAIS, **CANDIDATOS_MEDIA}
 
 
 def testar_candidatos():
     print("\n" + "=" * 70)
     print("CANDIDATOS A FEED NOVO/SUBSTITUTO — teste real")
     print("=" * 70)
-    for url in CANDIDATOS:
-        print(f"\n--- CANDIDATO: {url} ---")
+    resumo = []
+    for nome, url in CANDIDATOS.items():
+        print(f"\n--- CANDIDATO [{nome}]: {url} ---")
         try:
             resp = requests.get(
                 url,
@@ -51,16 +75,40 @@ def testar_candidatos():
             print(f"HTTP status: {resp.status_code}, bytes: {len(resp.content)}")
         except Exception as e:
             print(f"ERRO HTTP: {e}")
+            resumo.append((nome, "ERRO_HTTP", 0, None))
             continue
 
         feed = feedparser.parse(url)
         print(f"bozo={feed.bozo} bozo_exception={getattr(feed, 'bozo_exception', None)}")
         print(f"n.º entradas: {len(feed.entries)}")
+
+        if feed.bozo or not feed.entries:
+            resumo.append((nome, f"MORTO (bozo={feed.bozo}, entradas={len(feed.entries)})", len(feed.entries), None))
+            continue
+
+        tem_abono = False
+        mais_recente = None
+        for e in feed.entries:
+            texto = (e.get("title", "") + " " + e.get("summary", "")).lower()
+            if "abono" in texto:
+                tem_abono = True
+            dt = gn.parse_date(e)
+            if mais_recente is None or dt > mais_recente:
+                mais_recente = dt
+
         for e in feed.entries[:8]:
             e["_feed_url"] = url
             item = gn.construir_item_de_entry(e)
             score = gn.score_entry(e)
             print(f"  [{item.data_iso}] score={score:2d} | {item.titulo[:90]}")
+
+        resumo.append((nome, "VIVO", len(feed.entries), mais_recente, tem_abono))
+
+    print("\n" + "=" * 70)
+    print("RESUMO DOS CANDIDATOS")
+    print("=" * 70)
+    for linha in resumo:
+        print(" ", linha)
 
 
 def main():
