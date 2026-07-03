@@ -1059,6 +1059,117 @@ Quando (e se) links de afiliados forem introduzidos:
 
 ---
 
+## E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL
+
+Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
+mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
+**NV Labs** — estúdio independente português, responsável editorial do
+Tens Direito — passa a ser **resolvível**: antes, "An NV Labs project"
+no footer não linkava para lado nenhum; agora tem secção própria em
+`sobre.html#nvlabs`, JSON-LD `Organization` e um `sameAs` real (o
+próprio repositório GitHub, único link "NV Labs" que existe de facto —
+nunca um perfil inventado).
+
+### `sobre.html` — 5 blocos + excepção à regra de JSON-LD
+
+Reescrito com: 1) o que é o site; 2) quem está por trás — NV Labs
+(`id="nvlabs"`, link para o repositório); 3) método de verificação
+(`id="metodo"`, bloco central — fontes exclusivamente oficiais, scraper
+diário + revisão humana antes de qualquer actualização, carimbo
+"Verificado a", redação assistida por IA com verificação humana de
+factos, o que o site não faz); 4) correcções (GitHub Issues + marcador
+`CONTACTO-EMAIL`); 5) contacto (só GitHub Issues). Nenhuma pessoa,
+credencial ou e-mail inventados.
+
+`sobre.html` ganha JSON-LD — única página institucional a fazê-lo,
+excepção deliberada à regra "institucionais sem JSON-LD" (ver secção
+"PÁGINAS INSTITUCIONAIS"): `AboutPage` (mainEntity → Organization),
+`Organization` (`@id=".../sobre.html#nvlabs"`, `sameAs` só com o
+repositório real) e `WebSite` (publisher → Organization). Válido
+porque `FAQPage`/`WebPage` herdam `author`/`publisher` de
+`CreativeWork` — confirmado por `tests/test_sobre_jsonld.py`, que
+carrega e valida os 3 blocos como JSON real, nunca uma cópia.
+
+### Marcador `CONTACTO-EMAIL` — preparado, não activo
+
+`sobre.html` tem `<!-- CONTACTO-EMAIL:INICIO --><!-- quando existir:
+contacto@tens-direito.com --><!-- CONTACTO-EMAIL:FIM -->` — o endereço
+só existe dentro do comentário, nunca como `mailto:` real (verificado
+por teste). **Activação futura**: quando o e-mail existir, preencher
+este marcador em `sobre.html` com o link real e rever a frase "GitHub
+Issues é o único canal de contacto". Até lá, a regra "Não inventar
+e-mails — usar GitHub Issues" mantém-se inalterada.
+
+### Footer — "An NV Labs project" passa a link
+
+`scripts/atualizar_branding_nvlabs.py` deixou de ser só bootstrap
+(insere uma vez, nunca mais toca) e passou a **sincronizador
+idempotente nos dois sentidos**: página sem marcadores → bootstrap;
+página já com marcadores → substitui o conteúdo entre
+`NVLABS:HEADER`/`NVLABS:FOOTER` pelo bloco canónico actual, no-op se já
+estiver igual (novo `--apenas-sincronizar` impede bootstrap acidental
+em páginas que nunca tiveram o bloco — usado para excluir `404.html`,
+que não tem `</footer>` nem badge NV Labs por não ter sido processada
+antes, fora do âmbito desta sessão). O bloco footer (`<div>` → `<a
+href="/sobre.html#nvlabs">`) envolve agora o SVG existente — o texto
+"An NV Labs project" mantém-se exactamente igual (decisão do Nuno),
+só passou a ser clicável. Corrido com `--apenas-sincronizar --write`
+nas 34 páginas que já tinham o bloco; idempotência confirmada.
+`assets/css/branding.css` ajustado (`.footer-nvlabs` de `<div>` para
+`<a>`, com `:focus-visible`).
+
+### Autoria nos artigos — `scripts/adicionar_autoria_artigos.py`
+
+Novo script, âmbito automático (todas as páginas com `"@type":
+"FAQPage"` em `*.html`/`p/*.html` — 27 no total, `simulador-psu.html`
+fica fora por não ter JSON-LD nenhum, deliberadamente não publicado):
+
+1. Injecta `"author"`/`"publisher"` (`{"@id": ".../sobre.html#nvlabs"}`)
+   no bloco `FAQPage` — válido em Schema.org (`FAQPage` < `WebPage` <
+   `CreativeWork`, que já define ambas as propriedades).
+2. Acrescenta atribuição à **última** ocorrência de "Verificado a
+   [data]" de cada página (a canónica — mesmo critério de
+   `sincronizar_clusters.extrair_verificado_em()`, nunca uma nota de
+   secção `.fonte-inline`): `Verificado a [data] pela redação do
+   <a href="/sobre.html#metodo">Tens Direito</a>`.
+
+**Desvio deliberado da ordem proposta no brief original** ("Verificado
+pela redação do Tens Direito a [data]", atribuição antes da data): essa
+ordem quebra a contiguidade literal "Verificado a" + data de que
+dependem 3 sítios — `sincronizar_clusters._REGEX_VERIFICADO`,
+`auto_update_engine._REGEX_VERIFICADO_A` e o aviso (não bloqueante) de
+`validar-conteudo.yml`. Colocando a atribuição **depois** da data, a
+substring "Verificado a [data]" mantém-se 100% intacta e nenhuma das 3
+regexes precisou de ser alterada — confirmado por
+`tests/test_adicionar_autoria_artigos.py`, que reimporta as 2 regexes
+reais e a função `extrair_verificado_em()` e verifica que continuam a
+reconhecer o carimbo depois de alterado. Zero mudança de comportamento
+fora do texto visível.
+
+Páginas sem "Verificado a" próprio (`simulador-abono.html`,
+`simulador-ase.html`, pillar pages como `p/apoios-escolares.html`) só
+recebem o `author`/`publisher` no JSON-LD — não há carimbo nenhum para
+atribuir.
+
+Bug corrigido durante esta sessão (nunca chegou a `main`): a primeira
+versão do script inseria `"publisher": {...}` sem vírgula a seguir,
+partindo o JSON de 27 páginas — apanhado por validação local de JSON
+antes do commit, corrigido no próprio script (vírgula em falta) e
+reaplicado; `tests/test_adicionar_autoria_artigos.py` valida
+explicitamente que o JSON continua parseável depois da inserção.
+
+### Testes desta sessão
+
+`tests/test_sobre_jsonld.py` (JSON-LD de `sobre.html`, secções
+`#nvlabs`/`#metodo`, marcador `CONTACTO-EMAIL`, footer com link nas
+páginas reais), `tests/test_atualizar_branding_nvlabs.py` (bootstrap +
+sincronização idempotentes, isolado em memória) e
+`tests/test_adicionar_autoria_artigos.py` (unidade + rede de segurança
+sobre os artigos reais + compatibilidade das 2 regexes dependentes).
+704 testes a passar (69 novos), ruff limpo.
+
+---
+
 ## GSTACK
 
 Skills disponíveis via gstack instalado globalmente.
@@ -1798,3 +1909,7 @@ Nova secção "MONETIZAÇÃO — POLÍTICA DE AFILIADOS (futuro)" — puramente 
 Integração completa: adicionada a `data/clusters.json` (cluster `apoios-escolares`, `descricao_curta` actualizada) e sincronizada com `sincronizar_clusters.py`/`sincronizar_nav.py` (breadcrumb, "pertence ao guia", relacionados, nav — idempotência confirmada); cartão "URGENTE" novo (reaproveita `.badge-novo`) como primeiro item de "Datas a não perder" no `index.html`; cross-link automático a partir de `acao-social-escolar.html` (sibling do mesmo cluster, via `RELACIONADOS` gerado) e cross-link manual novo em `abono-de-familia.html` (`zona-cinzenta`, página noutro cluster — fora do alcance do sync automático); `scripts/pesquisa.js` e `sitemap.xml` actualizados. Avaliado e conscientemente não forçado: "notícia do dia" via `gerar_noticias.py` — o pipeline selecciona por pontuação de palavras-chave sobre feeds RSS reais, não é um mecanismo para inserir manualmente a publicação de uma página; "nenhuma notícia hoje" continua a ser o resultado correcto quando não há candidato genuíno, mesma regra já documentada em "FRESCURA DA HOMEPAGE".
 
 Nota de manutenção sazonal registada em "PÁGINAS COM DATAS SAZONAIS": as referências ao ano lectivo ("2026/2027") e ao prazo ("31 de julho de 2026") têm de ser revistas todos os anos em junho — confirmado contra a lógica real de `verificar_datas.py` (padrão `ano_letivo`, `REVER_EM=[6,7]`) que "2026/2027" só seria assinalado como desactualizado a partir de 2027, nunca antes. 635 testes a passar (8 novos), ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`.
+
+---
+
+*Última revisão: 2026-07-03 — E-E-A-T: NV Labs passa a entidade resolvível. `sobre.html` reescrito em 5 blocos (o que é o site; NV Labs com `id="nvlabs"` e link para o repositório GitHub real; método de verificação em `id="metodo"`; correcções via GitHub Issues + marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` preparado mas não activo; contacto) e ganha JSON-LD (`AboutPage`/`Organization`/`WebSite`) — única página institucional a fazê-lo, excepção deliberada à regra existente, válida porque `FAQPage`/`WebPage` herdam `author`/`publisher` de `CreativeWork`. `scripts/atualizar_branding_nvlabs.py` deixou de só fazer bootstrap e passou a sincronizador idempotente nos dois sentidos (novo `--apenas-sincronizar`); o footer "An NV Labs project" (texto inalterado, decisão do Nuno) passa a link real para `sobre.html#nvlabs` nas 34 páginas que já tinham o bloco (404.html fica de fora, gap pré-existente sem relação com esta sessão). Novo `scripts/adicionar_autoria_artigos.py`: injecta `author`/`publisher` no JSON-LD `FAQPage` das 27 páginas que o têm, e acrescenta " pela redação do Tens Direito" (link para `#metodo`) à última ocorrência (a canónica) de "Verificado a" em cada uma — **ordem invertida face ao brief original** para preservar a contiguidade literal "Verificado a [data]" de que dependem `sincronizar_clusters._REGEX_VERIFICADO`, `auto_update_engine._REGEX_VERIFICADO_A` e o aviso não-bloqueante de `validar-conteudo.yml`; as 3 continuam a reconhecer o carimbo sem qualquer alteração de código, confirmado por teste dedicado. Nova secção "E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL" documenta tudo em detalhe. 704 testes a passar (69 novos: `test_sobre_jsonld.py`, `test_atualizar_branding_nvlabs.py`, `test_adicionar_autoria_artigos.py`), ruff limpo. Nenhuma pessoa, credencial ou e-mail inventados; regra "usar GitHub Issues" mantém-se até o e-mail existir.

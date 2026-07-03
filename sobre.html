@@ -25,6 +25,35 @@
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "url": "https://tensdireito.com/sobre.html",
+    "mainEntity": { "@id": "https://tensdireito.com/sobre.html#nvlabs" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://tensdireito.com/sobre.html#nvlabs",
+    "name": "NV Labs",
+    "url": "https://tensdireito.com/sobre.html",
+    "description": "Estúdio independente português de projetos de informação verificada e ferramentas de dados.",
+    "sameAs": ["https://github.com/nunovinhas-creator/tens-direito"],
+    "knowsAbout": ["apoios sociais em Portugal", "prestações da Segurança Social", "verificação de fontes oficiais"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Tens Direito",
+    "url": "https://tensdireito.com/",
+    "publisher": { "@id": "https://tensdireito.com/sobre.html#nvlabs" }
+  }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; }
@@ -148,39 +177,47 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
   </section>
   <main>
     <div class="card">
-      <h2>Quem somos</h2>
-      <p>O <strong>Tens Direito</strong> é um site informativo independente, sem qualquer relação com o Estado português ou com entidades públicas. Não representamos o Governo, a Segurança Social, a AT nem qualquer outro organismo oficial.</p>
-      <p>O nosso objetivo é reunir, num só lugar, informação clara e verificada sobre apoios sociais, direitos dos cidadãos e processos burocráticos em Portugal — sempre com ligação à fonte oficial e data de verificação.</p>
+      <h2>O que é o Tens Direito</h2>
+      <p>O <strong>Tens Direito</strong> reúne, num só lugar, informação sobre apoios sociais em Portugal — verificada contra fontes oficiais e escrita em linguagem simples, sem juridiquês e sem promessas sobre o teu caso concreto.</p>
     </div>
-    <div class="card">
-      <h2>Metodologia — as nossas 10 regras de credibilidade</h2>
-      <ol>
-        <li>Só usamos fontes primárias: Diário da República, gov.pt, seg-social.pt, iefp.pt.</li>
-        <li>Nunca reproduzimos texto de jornais, bancos ou agregadores — reescrevemos sempre.</li>
-        <li>Cada facto tem data de verificação e link para a fonte oficial.</li>
-        <li>Escrevemos em condicional quando há dúvida sobre o caso pessoal do leitor.</li>
-        <li>Nunca damos veredictos pessoais ("tens direito a X").</li>
-        <li>Todas as páginas têm disclaimer de não-vinculação.</li>
-        <li>Usamos JSON-LD (Schema.org) em todas as páginas de conteúdo.</li>
-        <li>Declaramos independência do Estado de forma explícita.</li>
-        <li>Corrigimos erros em 24 horas após notificação.</li>
-        <li>Conteúdo em Português de Portugal (nunca PT-BR).</li>
-      </ol>
+
+    <div class="card" id="nvlabs">
+      <h2>Quem está por trás — NV Labs</h2>
+      <p>O Tens Direito é editado e revisto pela <strong>NV Labs</strong>, um estúdio independente português que constrói projetos de informação verificada e ferramentas de dados. A NV Labs não tem qualquer filiação com o Estado, com partidos políticos ou com empresas do sector dos apoios sociais — ver o <a href="#aviso-independencia">Aviso de independência</a> abaixo.</p>
+      <p>O código e o histórico completo de alterações ao site são públicos: <a href="https://github.com/nunovinhas-creator/tens-direito" target="_blank" rel="noopener">github.com/nunovinhas-creator/tens-direito</a>. Qualquer pessoa pode consultar exactamente o que mudou, quando e porquê — é a nossa forma de prova de transparência, sem depender de uma credencial pessoal.</p>
     </div>
+
+    <div class="card" id="metodo">
+      <h2>Como verificamos — o método</h2>
+      <p>Todos os valores, prazos e regras publicados vêm <strong>exclusivamente</strong> de fontes oficiais — Diário da República, Segurança Social, Autoridade Tributária, IEFP, gov.pt. Nada é escrito de memória; a lista completa está em <a href="/fontes.html">Fontes Oficiais</a>.</p>
+      <p>Um sistema automático verifica <strong>diariamente</strong> se as páginas oficiais de que dependemos mudaram. Quando uma fonte muda, a página correspondente é revista <strong>manualmente</strong> antes de qualquer atualização — nenhum valor é alterado de forma automática. É uma decisão deliberada: preferimos ser lentos a arriscar publicar um valor errado sem revisão humana.</p>
+      <p>Cada artigo mostra a data <strong>"Verificado a [data]"</strong>, com ligação à fonte usada nessa verificação.</p>
+      <p>A redação é assistida por ferramentas de inteligência artificial, mas todos os factos são verificados por uma pessoa contra as fontes oficiais antes de publicar — a automação ajuda a escrever mais depressa, nunca decide sozinha o que é verdade.</p>
+      <p><strong>O que o Tens Direito não faz:</strong> não dá aconselhamento individual, não decide por ti, e não substitui os serviços oficiais. Cada caso pessoal deve ser sempre confirmado junto da entidade competente.</p>
+    </div>
+
     <div class="card">
-      <h2>Política de correções</h2>
-      <p>Encontraste um erro ou uma informação desatualizada? Envia-nos um e-mail com a página, o erro concreto e, se possível, a fonte correta:</p>
+      <h2>Correções</h2>
+      <p>Encontraste um erro ou uma informação desatualizada? A forma mais rápida de nos contactar é através do GitHub Issues, indicando a página, o erro concreto e, se possível, a fonte correta:</p>
       <p><a href="https://github.com/nunovinhas-creator/tens-direito/issues/new?title=Contacto&body=A+tua+mensagem+aqui" target="_blank" rel="noopener">Reportar erro ou enviar mensagem</a></p>
-      <p>Comprometemo-nos a analisar e corrigir em 24 horas úteis.</p>
+      <p>Comprometemo-nos a analisar e corrigir em prazo razoável — e, porque o projeto é de código aberto, a correção fica registada publicamente no histórico do repositório.</p>
+      <!-- CONTACTO-EMAIL:INICIO --><!-- quando existir: contacto@tens-direito.com --><!-- CONTACTO-EMAIL:FIM -->
     </div>
-    <div class="disclaimer">
-      <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. A informação aqui publicada tem fins informativos e não substitui a consulta dos portais oficiais nem o atendimento nos serviços públicos.
+
+    <div class="card">
+      <h2>Contacto</h2>
+      <p>Por agora, o GitHub Issues é o único canal de contacto — e não há vergonha nenhuma nisso: o projeto é de código aberto, e é também a forma mais rápida de chegar até nós.</p>
+      <p><a href="https://github.com/nunovinhas-creator/tens-direito/issues/new?title=Contacto&body=A+tua+mensagem+aqui" target="_blank" rel="noopener">Abrir uma Issue no GitHub</a></p>
+    </div>
+
+    <div class="disclaimer" id="aviso-independencia">
+      <strong>Aviso de independência:</strong> O Tens Direito é um site independente, editado pela NV Labs, sem afiliação ao Estado, a partidos políticos ou a qualquer entidade pública. A informação aqui publicada tem fins informativos e não substitui a consulta dos portais oficiais nem o atendimento nos serviços públicos.
     </div>
   </main>
   <footer>
     <p>tensdireito.com — Informação verificada para cidadãos portugueses</p>
       <!-- NVLABS:FOOTER:INICIO -->
-    <div class="footer-nvlabs">
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
   <rect width="100%" height="100%" fill="#ffffff"/>
   <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
@@ -188,7 +225,7 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
     An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
   </text>
 </svg>
-    </div>
+    </a>
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
   <script>

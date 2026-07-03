@@ -1,7 +1,9 @@
-/* NV Labs — atribuição no footer. */
+/* NV Labs — atribuição no footer, agora link para sobre.html#nvlabs. */
 
-.footer-nvlabs {
+a.footer-nvlabs {
+  display: block;
   margin-top: 0.75rem;
+  text-decoration: none;
 }
 
 .footer-nvlabs svg {
@@ -9,4 +11,10 @@
   margin: 0 auto;
   max-width: 220px;
   height: auto;
+}
+
+a.footer-nvlabs:focus-visible {
+  outline: 2px solid #1ea3b2;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
