@@ -25,13 +25,13 @@
     "ultima_ok": "2026-07-03"
   },
   "seg_social_abono": {
-    "dias_consecutivos_bloqueado": 3,
-    "estado": "BLOQUEADO",
-    "ultima_ok": null
+    "dias_consecutivos_bloqueado": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
   },
   "seg_social_rsi": {
-    "dias_consecutivos_bloqueado": 3,
-    "estado": "BLOQUEADO",
-    "ultima_ok": null
+    "dias_consecutivos_bloqueado": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
   }
 }
