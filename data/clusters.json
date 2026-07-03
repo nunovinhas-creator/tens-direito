@@ -25,7 +25,8 @@
         {"slug": "psu-quando-entra-em-vigor.html", "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir", "tipo": "artigo", "destaque": true, "emoji": "🔄", "desc": "Timeline da PSU: lei aprovada, decreto-lei pendente, entrada em vigor prevista."},
         {"slug": "psu-quem-tem-direito.html", "titulo": "Quem tem direito à PSU", "tipo": "artigo", "destaque": false},
         {"slug": "psu-vs-abono-familia.html", "titulo": "PSU e Abono de Família: são apoios diferentes", "tipo": "artigo", "destaque": false},
-        {"slug": "psu-lista-13-apoios.html", "titulo": "As 13 prestações que a PSU vai substituir", "tipo": "artigo", "destaque": false}
+        {"slug": "psu-lista-13-apoios.html", "titulo": "As 13 prestações que a PSU vai substituir", "tipo": "artigo", "destaque": false},
+        {"slug": "psu-trabalho-social.html", "titulo": "Trabalho social na PSU: aprovado vs. por definir", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["familia", "trabalho-rendimento"]
     },
@@ -66,6 +67,18 @@
         {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["prestacao-social-unica"]
+    },
+    {
+      "id": "habitacao",
+      "nome": "Habitação",
+      "descricao_curta": "Porta 65 Jovem e apoio à renda — os apoios ao arrendamento em vigor em 2026.",
+      "icone": "🏠",
+      "pillar": "/p/habitacao.html",
+      "paginas": [
+        {"slug": "porta-65.html", "titulo": "Porta 65 Jovem e Porta 65+", "tipo": "artigo", "destaque": true, "emoji": "🏠", "desc": "Apoio ao arrendamento para jovens até 35 anos. Candidaturas contínuas, sem prazo."},
+        {"slug": "apoio-extraordinario-renda.html", "titulo": "Apoio Extraordinário à Renda: o que aconteceu e alternativas", "tipo": "artigo", "destaque": false}
+      ],
+      "relacionados": ["trabalho-rendimento"]
     }
   ]
 }

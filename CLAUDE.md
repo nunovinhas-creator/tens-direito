@@ -206,6 +206,10 @@ Isto elimina race conditions entre workflows concorrentes.
 | `p/familia.html` | Apoios para Família e Crianças em Portugal 2026 — Guia Completo | 2 jul. 2026 |
 | `p/idosos-incapacidade-cuidadores.html` | Apoios para Idosos, Incapacidade e Cuidadores em Portugal 2026 — Guia Completo | 2 jul. 2026 |
 | `p/trabalho-rendimento.html` | Apoios de Trabalho e Rendimento em Portugal 2026 — Guia Completo | 2 jul. 2026 |
+| `psu-trabalho-social.html` | Trabalho social na PSU: aprovado vs. por definir | 3 jul. 2026 |
+| `p/habitacao.html` | Apoios à Habitação em Portugal 2026 — Guia Completo | 3 jul. 2026 |
+| `porta-65.html` | Porta 65 Jovem e Porta 65+ 2026 | 3 jul. 2026 |
+| `apoio-extraordinario-renda.html` | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas | 3 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -460,7 +464,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
 3. **Regras de relevância para "relacionados"** (determinísticas, sem
    aleatoriedade, máx. 4 links): 1.º irmãos do mesmo cluster, 2.º
    páginas dos `relacionados[]` explícitos do cluster.
-4. **Clusters actuais — todos os 5 pillars existem:**
+4. **Clusters actuais — todos os 6 pillars existem:**
 
    | Cluster | Pillar |
    |---|---|
@@ -469,6 +473,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    | Família e Crianças | `p/familia.html` |
    | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` (inclui `amim.html`) |
    | Trabalho e Rendimento | `p/trabalho-rendimento.html` |
+   | Habitação | `p/habitacao.html` (criado 3 jul 2026 — Porta 65 Jovem/+ e Apoio Extraordinário à Renda) |
 
    Todos os pillars têm a lista de artigos entre `<!-- PILLAR-LISTA:INICIO/FIM -->`,
    gerada pelo `sincronizar_clusters.py` — nunca editar essa lista à mão.
@@ -894,7 +899,8 @@ Estado: aprovada parlamento 25/06/2026.
 Aguarda: decreto-lei com valores + publicação DR.
 Prazo PRR decreto-lei: 31 ago 2026.
 Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado pelo decreto-lei).
-Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas).
+Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
+(5.ª página filha — ver "PÁGINAS PUBLICADAS").
 
 ### Páginas NÃO afectadas pela PSU
 
@@ -926,11 +932,22 @@ Manter avisos de transição até DR publicado:
 | `como-pedir-psu.html` | Decreto-lei da PSU publicado em dre.pt com procedimento definido |
 | `calendario-pagamentos-psu.html` | Decreto-lei da PSU publicado em dre.pt com valores e datas |
 
+**`simulador-psu.html` já existe** (desde 3 jul 2026), pronto e testado
+(`tests/test_simulador_psu_calculo.py`), mas deliberadamente **não publicado**
+— fora de `sitemap.xml`, `scripts/pesquisa.js` e `data/clusters.json`, com
+`<meta name="robots" content="noindex, nofollow">` e `ESTADO_SIMULADOR =
+'AGUARDA_DECRETO'`. Publicar (não criar) é o gatilho: decreto-lei da PSU
+publicado em dre.pt com Valor de Referência, valor máximo e coeficiente CIT
+confirmados — ver o Passo 5a de `.claude/commands/atualizar-cluster-psu.md`.
+
 ### Plano de acção (quando DR for publicado)
 
 1. Actualizar `prestacao-social-unica.html` com valores reais do decreto-lei
-2. Actualizar `psu-quando-entra-em-vigor.html` e `psu-quem-tem-direito.html` com valores confirmados
-3. Criar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`
+2. Actualizar `psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html` e
+   `psu-trabalho-social.html` (secção "Por definir" — obrigatoriedade do
+   trabalho social) com valores/factos confirmados
+3. Criar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`; publicar
+   `simulador-psu.html` (Passo 5a do comando `atualizar-cluster-psu`)
 4. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
 5. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
 6. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
@@ -945,6 +962,84 @@ Manter avisos de transição até DR publicado:
    (deixa de dizer "ainda não em vigor — aguarda decreto-lei") e correr
    `python scripts/sincronizar_clusters.py` para propagar a mudança ao cartão da
    homepage e a qualquer bloco "pertence ao guia" já injectado nos artigos do cluster
+
+---
+
+## CLUSTER HABITAÇÃO
+
+Criado a 3 jul 2026 — pillar `p/habitacao.html` + 2 artigos-filho
+(`porta-65.html`, `apoio-extraordinario-renda.html`), sexto cluster do
+site. Fact-check prévio obrigatório (bloqueante, ver "REGRAS DE
+CONTEÚDO") feito via `WebSearch` nesta sessão — `WebFetch` está
+completamente bloqueado neste ambiente de sessão (403 em qualquer URL,
+incluindo domínios fora de `.gov.pt`, ex.: `en.wikipedia.org` — não é
+um bloqueio específico a portais oficiais, é o próprio `WebFetch` que
+não funciona nesta sessão). As páginas citam sempre a URL oficial como
+fonte, mesmo sem acesso directo — mesmo padrão já usado no site para
+fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E APROVADAS").
+
+### Estado real verificado (jul 2026)
+
+- **Porta 65 Jovem / Porta 65+**: candidaturas contínuas, sem prazo,
+  desde junho de 2023; avaliação mensal desde setembro de 2024. Porta
+  65 Jovem = 18-35 anos; Porta 65+ = sem limite de idade, para quebra
+  de rendimentos >20% ou monoparentalidade (desde OE2026, também
+  vítimas de violência doméstica com estatuto reconhecido). A Renda
+  Máxima de Referência do concelho deixou de excluir candidaturas —
+  só serve para calcular o apoio. Fontes secundárias consultadas
+  divergiam no limite de idade exacto do 2.º elemento de um casal
+  (36 vs. 37 anos) — a página não fixa esse número, remete para o
+  Portal da Habitação em vez de arriscar um valor errado.
+- **Apoio Extraordinário à Renda (PAER)**: confirmado **fechado a
+  novos beneficiários** — só contratos de arrendamento celebrados até
+  15/03/2023. Mantém-se em vigor a pagar quem já foi aprovado
+  (pagamentos até 31/12/2028; ~4.700 beneficiários pagos, situação de
+  jul 2026). Provedoria de Justiça denunciou irregularidades graves em
+  ago 2025 (~mil queixas); Governo anunciou em fev 2026 a intenção de
+  revogar e substituir por novo programa — **ainda não publicado em DR
+  à data de verificação (3 jul 2026)**. Por isso `apoio-extraordinario-renda.html`
+  não é um guia de candidatura — é uma página "estado actual +
+  alternativas", apontando para o Porta 65.
+
+### Backlog — outros apoios de habitação vivos em 2026 (sem página ainda)
+
+Registados por pedido explícito da sessão — **não criar páginas agora**,
+só quando houver prioridade dedicada:
+
+| Apoio | Estado confirmado (jul 2026) | Nota |
+|---|---|---|
+| Garantia pública para crédito habitação jovem | Vivo — contratos até final de 2026, cobre até 15% do valor da transacção | Permite financiamento a 100% em vez do limite geral de 90% |
+| Isenção de IMT/Imposto do Selo para jovens (até 35 anos) | Vivo — limites actualizados no OE2026 (+2%); isenção total até 330.539€, parcial até 660.982€ (2026) | Acumulável com a garantia pública |
+| Regime Simplificado de Arrendamento Acessível (RSAA) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Benefício fiscal para **senhorios** que praticam rendas moderadas (IRS reduzido a 10%, ou isenção total abaixo de 20% da mediana do concelho) — não é apoio directo ao inquilino, ângulo de página diferente dos outros dois artigos deste cluster |
+| 1.º Direito — Programa de Apoio ao Acesso à Habitação | Vivo — programa PRR, gerido pelos municípios (Estratégia Local de Habitação), alterado por DL n.º 44/2025 (mar 2025) | Não é candidatura directa do cidadão ao IHRU — passa pela câmara municipal; ângulo de página diferente (processo institucional, não formulário pessoal) |
+
+---
+
+## MONETIZAÇÃO — POLÍTICA DE AFILIADOS (futuro)
+
+Registado a pedido explícito da sessão de 3 jul 2026 — **nenhum link de
+afiliado existe hoje no site; nada foi adicionado nesta sessão.**
+Puramente documental, para quando essa decisão for tomada.
+
+Quando (e se) links de afiliados forem introduzidos:
+
+1. **Divulgação explícita** junto de cada bloco de conteúdo afiliado
+   (ex.: "contém links de parceiros") — nunca escondida em letras
+   pequenas ou só no rodapé.
+2. **Separação visual** clara do conteúdo editorial — nunca um link de
+   afiliado misturado, sem aviso, no meio de uma lista de fontes
+   oficiais ou de um passo-a-passo de candidatura.
+3. **Âmbito restrito a produtos alinhados** com o tema do site (ex.:
+   seguros de habitação, comparadores de tarifas) — **nunca** em
+   páginas de prestações sociais, simuladores, ou `comecar-aqui.html`.
+   Estas páginas existem para ajudar alguém a aceder a um direito, não
+   para gerar receita a partir dessa necessidade.
+4. O "Aviso de independência", já presente em todas as páginas de
+   conteúdo, passa a explicitar também a política de afiliados quando
+   esta existir — não é um texto novo, é uma extensão do já existente.
+5. **Qualquer implementação é decisão manual do Nuno**, tomada numa
+   sessão dedicada — nunca introduzida incidentalmente como parte de
+   outra tarefa.
 
 ---
 
@@ -1669,3 +1764,13 @@ Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0sy
 ---
 
 *Última revisão: 2026-07-03 — sessão de seguimento: isolado e corrigido o culpado real do bloqueio seg-social, registado como hipótese por confirmar na entrada anterior. Novo `PerfilBrowser` (`stealth`/`headers_custom`/`viewport_fixo`) + `_PERFIL_POR_SLUG` em `scraper_playwright.py` tornam o perfil de browser configurável por fonte, sem alterar o comportamento das restantes; `main()` agrupa fontes Playwright por perfil, um `browser.new_context()` por grupo. Workflow de diagnóstico temporário (apagado no fim) testou os 2 deep-links seg-social × 4 perfis isolados (nu/stealth/headers/viewport) num runner real: `extra_http_headers` é o único culpado — devolve um **erro 500 real do backend** (não um simples redirect de login) nos 2 alvos; `stealth` e `viewport` fixo passam isoladamente sem problema, tal como "nu". `_PERFIL_POR_SLUG` fixa `headers_custom=False` só para `seg_social_abono`/`seg_social_rsi`. Confirmado no pipeline real: as 2 fontes ficaram OK de imediato (sem retries). Durante a verificação, descoberto e corrigido um bug lateral: `gerir_estado_fontes.py` compara bloqueios só por data, e `data/bloqueios.json` nunca limpava a entrada do dia quando uma fonte recuperava dentro do mesmo dia (só substituía ao registar um *novo* bloqueio) — só se manifesta com corridas múltiplas no mesmo dia via `workflow_dispatch` manual, nunca no cron diário; corrigido com nova `_limpar_bloqueio_hoje()`, chamada no caminho OK do scraper. Resultado final confirmado: Issues #47/#48 fechadas automaticamente pela máquina de estados, `data/estado_fontes.json` com as 7 fontes monitorizadas em `OK`. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 579 testes a passar, ruff limpo; workflow de diagnóstico apagado no fim.*
+
+---
+
+*Última revisão: 2026-07-03 — pacote PSU (decreto iminente) + novo cluster Habitação. Parte A: fact-check via `WebSearch` (`WebFetch` está completamente bloqueado nesta sessão — 403 em qualquer URL, mesmo fora de `.gov.pt`, ex. `en.wikipedia.org`) confirmou o estado real do trabalho social na PSU — até 15h/semana, isenções (crianças, idosos, pensionistas, estudantes, cuidadores informais, incapacidade ≥80%), a controvérsia real da Associação Portuguesa de Deficientes sobre o limiar de 60-79%, e a disputa pública PS ("facultativo") vs. PSD ("obrigatório") ainda por resolver no decreto-lei; publicado `psu-trabalho-social.html` (5.ª página do cluster PSU) com essa honestidade "aprovado vs. por definir", incluindo o fact-check do Polígrafo a uma alegação falsa que circulava. Construído `simulador-psu.html` — `PARAMETROS_PSU` centralizado (fonte + verificado_em por parâmetro, todos `null` por desenho), `ESTADO_SIMULADOR = 'AGUARDA_DECRETO'`, mecânica de cálculo (`calcularPSU`/`calcularCIT` com redução gradual até 50%) testada com 13 casos fictícios em `tests/test_simulador_psu_calculo.py` (Playwright real, mesmo padrão de `test_pesquisa_hero.py`) — deliberadamente **não publicado**: `noindex`, fora de `sitemap.xml`/`pesquisa.js`/`clusters.json`, com entrada própria em `EXCLUIDAS` (`sincronizar_clusters.py`) e `NAO_INDEXADAS` (`test_pesquisa_indice.py`). `.claude/commands/atualizar-cluster-psu.md` ganhou o Passo 5a (publicar o simulador no dia do decreto) e referências a `psu-trabalho-social.html`/`test_simulador_psu_calculo.py` nos passos existentes.
+
+Parte B: fact-check bloqueante confirmou Porta 65 Jovem/Porta 65+ com candidaturas contínuas desde 2023 (sem prazo) e, mais importante, que o Apoio Extraordinário à Renda está **fechado a novos beneficiários** desde 15/03/2023, com revogação anunciada em fev 2026 mas ainda não publicada em DR — por isso `apoio-extraordinario-renda.html` foi escrito como página "estado actual + alternativas", nunca como guia de candidatura para um apoio fechado (decisão condicional do brief, aplicada correctamente após o fact-check confirmar o cenário). Novo cluster `habitacao` (6.º cluster) em `data/clusters.json`, pillar `p/habitacao.html`, mais `porta-65.html`; nav com 6 clusters confirmada visualmente (Playwright, desktop + mobile) sem overflow. Backlog registado (não implementado): garantia pública crédito jovem, isenção IMT jovem, Regime Simplificado de Arrendamento Acessível (DL 97/2026), 1.º Direito — nova secção "CLUSTER HABITAÇÃO".
+
+Nova secção "MONETIZAÇÃO — POLÍTICA DE AFILIADOS (futuro)" — puramente documental, zero links/infraestrutura de afiliados nesta sessão.
+
+`sincronizar_clusters.py` e `sincronizar_nav.py` corridos com sucesso (idempotência reconfirmada — 2.ª corrida sempre zero alterações); `inserir_botao_partilhar.py` confirmado sem alterações (páginas novas já escritas com o botão). 627 testes a passar (48 novos: 13 do simulador + 35 nas 4 páginas novas via testes parametrizados existentes), ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False` (inalterados por esta sessão — não é scraper).

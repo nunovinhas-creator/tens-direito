@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XP46PM8H1Q');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Página ainda não publicada — fora do sitemap/pesquisa.js/clusters.json
+       até ao decreto-lei da PSU. noindex deliberado, não é um esquecimento. -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador da Prestação Social Única (PSU) — em preparação</title>
+  <meta name="description" content="Simulador da PSU 2026: aguarda a publicação do decreto-lei com os valores oficiais. A estrutura da fórmula já está pronta.">
+  <meta property="og:title" content="Simulador da Prestação Social Única (PSU) — em preparação">
+  <meta property="og:description" content="Aguarda a publicação do decreto-lei com os valores oficiais da PSU. A estrutura da fórmula já está pronta.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-psu.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --amber: #92400E;
+      --amber-bg: #FEF3C7;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .aguarda-box { background: var(--amber-bg); border-left: 4px solid #F59E0B; border-radius: 0 var(--radius) var(--radius) 0; padding: 1.5rem; margin-bottom: 2rem; color: var(--amber); }
+    .aguarda-box strong { display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .aguarda-box p { margin-bottom: 0.5rem; }
+    .aguarda-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; opacity: 0.6; }
+    .calc-card fieldset { border: none; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; background: #F9FAFB; }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: not-allowed; border: 2px solid transparent; white-space: nowrap; }
+    .btn-primary { background: #9CA3AF; color: var(--white); }
+    .resultado { display: none; }
+    .resultado.show { display: block; }
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
+    .formula-box table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .formula-box th, .formula-box td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
+    .formula-box th { color: var(--teal); font-weight: 700; }
+    .formula-box .pendente { color: #B45309; font-weight: 600; }
+    .formula-box .confirmado { color: #15803d; font-weight: 600; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+
+<!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <section class="hero">
+    <h1>Simulador da Prestação Social Única (PSU)</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">A estrutura de cálculo já está pronta — falta o decreto-lei do Governo com os valores oficiais para a activar.</p>
+  </section>
+
+  <main>
+    <div class="aguarda-box">
+      <strong>⏳ Simulação ainda indisponível</strong>
+      <p>Esta calculadora só pode dar um valor real depois de o Governo publicar o decreto-lei da PSU com o Valor de Referência, o valor máximo e o coeficiente da Componente de Incentivo ao Trabalho (CIT). Prazo PRR: 31 de agosto de 2026.</p>
+      <p>Até lá, este simulador mostra a estrutura da fórmula aprovada — sem nenhum número inventado. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a> para o calendário completo.</p>
+    </div>
+
+    <div class="calc-card" aria-disabled="true">
+      <fieldset disabled>
+        <form id="formPSU" onsubmit="return false;">
+          <div class="form-group">
+            <label for="numAdultos">Número de adultos no agregado</label>
+            <input type="number" id="numAdultos" min="1" step="1" value="1">
+          </div>
+          <div class="form-group">
+            <label for="numMenores">Menores de 25 anos no agregado</label>
+            <input type="number" id="numMenores" min="0" step="1" value="0">
+          </div>
+          <div class="form-group">
+            <label for="rendimento">Rendimento mensal do agregado (€)</label>
+            <input type="number" id="rendimento" min="0" step="10">
+          </div>
+          <div class="form-group">
+            <label for="situacaoLaboral">Situação laboral</label>
+            <select id="situacaoLaboral">
+              <option value="desempregado_apto">Desempregado, apto para trabalhar</option>
+              <option value="outra">Outra situação</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="temFilhos">Tem filhos a cargo?</label>
+            <select id="temFilhos">
+              <option value="nao">Não</option>
+              <option value="sim">Sim</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" disabled>🧮 Simulação indisponível</button>
+        </form>
+      </fieldset>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+    <div class="formula-box">
+      <h2>Estrutura da fórmula aprovada</h2>
+      <code>PSU = Valor de Referência × Adultos Equivalentes + CIT + Majoração Parentalidade − Rendimentos do Agregado</code>
+      <table>
+        <thead><tr><th>Parâmetro</th><th>Estado</th><th>Fonte</th></tr></thead>
+        <tbody id="tabelaParametros"></tbody>
+      </table>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Porque é que não me dá um valor?</summary>
+        <div class="faq-resposta">
+          Porque o decreto-lei do Governo, que define o Valor de Referência da PSU, o valor máximo e o coeficiente da Componente de Incentivo ao Trabalho, ainda não foi publicado. Sem estes números, qualquer valor mostrado seria inventado — e isso vai contra o princípio deste site.
+        </div>
+      </details>
+
+      <details>
+        <summary>Quando é que esta calculadora vai funcionar?</summary>
+        <div class="faq-resposta">
+          Assim que o decreto-lei for publicado em Diário da República (prazo PRR: 31 de agosto de 2026) e os valores forem confirmados manualmente. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a> para acompanhar.
+        </div>
+      </details>
+
+      <details>
+        <summary>Os "Adultos Equivalentes" e o limite de patrimônio já estão confirmados?</summary>
+        <div class="faq-resposta">
+          Sim — esses dois parâmetros já constam da lei de autorização aprovada a 25 de junho de 2026, por isso já estão preenchidos na tabela acima. O que falta são os valores em euros (Valor de Referência, valor máximo) e o coeficiente exacto da CIT.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa em preparação, desenvolvida de forma independente. Não está publicado nem indexado — só é acessível por URL directo. Nenhum valor é mostrado antes da confirmação oficial dos parâmetros pelo decreto-lei do Governo.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <div class="footer-nvlabs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </div>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ── PARAMETROS_PSU — fonte única de verdade da fórmula ──────────────────
+    // Estado do simulador: 'AGUARDA_DECRETO' até ao decreto-lei do Governo
+    // ser publicado e os valores confirmados manualmente numa sessão
+    // dedicada (ver .claude/commands/atualizar-cluster-psu.md). NUNCA mudar
+    // para 'ATIVO' sem essa confirmação — cada parâmetro tem "fonte" e
+    // "verificado_em" próprios, nunca um número solto no meio da lógica.
+    const ESTADO_SIMULADOR = 'AGUARDA_DECRETO';
+
+    const PARAMETROS_PSU = {
+      valorReferencia: {
+        valor: null,
+        fonte: 'decreto-lei do Governo (ainda não publicado)',
+        verificado_em: null,
+      },
+      valorMaximo: {
+        valor: null,
+        fonte: 'decreto-lei do Governo (ainda não publicado)',
+        verificado_em: null,
+      },
+      coeficienteCIT: {
+        valor: null,
+        min: 0.5,
+        max: 1,
+        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026 (intervalo 0,5–1); valor exacto por portaria (ainda não publicada)',
+        verificado_em: '2026-07-03',
+      },
+      majoracaoParentalidade: {
+        valor: null,
+        fonte: 'decreto-lei do Governo (ainda não publicado)',
+        verificado_em: null,
+      },
+      adultosEquivalentes: {
+        requerente: 1,
+        outroAdulto: 0.5,
+        menorAte25: 0.5,
+        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026',
+        verificado_em: '2026-07-03',
+      },
+      limitePatrimonio: {
+        multiplicadorIAS: 60,
+        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026 (acordo PS-PSD de 24 jun)',
+        verificado_em: '2026-07-03',
+      },
+    };
+
+    // ── Mecânica de cálculo ──────────────────────────────────────────────────
+    // Testada com parâmetros FICTÍCIOS em tests/test_simulador_psu_calculo.py
+    // — nunca com os valores de produção acima (todos null por desenho).
+
+    function calcularAdultosEquivalentes(parametros, numAdultos, numMenoresAte25) {
+      const outrosAdultos = Math.max(0, (numAdultos || 1) - 1);
+      return parametros.adultosEquivalentes.requerente
+        + outrosAdultos * parametros.adultosEquivalentes.outroAdulto
+        + (numMenoresAte25 || 0) * parametros.adultosEquivalentes.menorAte25;
+    }
+
+    // Redução gradual da CIT com o rendimento próprio, nunca abaixo de 50%
+    // do valor base — mecânica provisória enquanto o decreto-lei não define
+    // a fórmula exacta de redução do incentivo ao trabalho.
+    function calcularCIT(parametros, rendimentoProprioMensal, limiarReducaoTotal) {
+      if (parametros.coeficienteCIT.valor === null || parametros.valorReferencia.valor === null) return 0;
+      const citBase = parametros.valorReferencia.valor * parametros.coeficienteCIT.valor;
+      if (!rendimentoProprioMensal || rendimentoProprioMensal <= 0) return citBase;
+      const fracaoRestante = Math.max(0.5, 1 - (rendimentoProprioMensal / limiarReducaoTotal));
+      return citBase * fracaoRestante;
+    }
+
+    function calcularPSU(parametros, input) {
+      if (parametros.valorReferencia.valor === null) {
+        return { estado: 'AGUARDA_DECRETO' };
+      }
+      const adultosEquivalentes = calcularAdultosEquivalentes(parametros, input.numAdultos, input.numMenoresAte25);
+      const base = parametros.valorReferencia.valor * adultosEquivalentes;
+      const cit = input.situacaoLaboral === 'desempregado_apto'
+        ? calcularCIT(parametros, input.rendimentoProprioMensal || 0, input.limiarReducaoCIT || 1)
+        : 0;
+      const majoracao = input.temFilhos ? (parametros.majoracaoParentalidade.valor || 0) : 0;
+      let valor = base + cit + majoracao - (input.rendimentoAgregadoMensal || 0);
+      valor = Math.max(0, valor);
+      if (parametros.valorMaximo.valor !== null) {
+        valor = Math.min(valor, parametros.valorMaximo.valor);
+      }
+      return { estado: 'ATIVO', valor, adultosEquivalentes, cit, majoracao };
+    }
+
+    // ── Renderização da tabela de parâmetros (sempre corre, mesmo em AGUARDA_DECRETO) ──
+    function renderTabelaParametros() {
+      const linhas = [
+        ['Valor de Referência', PARAMETROS_PSU.valorReferencia],
+        ['Valor máximo', PARAMETROS_PSU.valorMaximo],
+        ['Coeficiente CIT', PARAMETROS_PSU.coeficienteCIT],
+        ['Majoração parentalidade', PARAMETROS_PSU.majoracaoParentalidade],
+        ['Adultos equivalentes', PARAMETROS_PSU.adultosEquivalentes],
+        ['Limite de patrimônio', PARAMETROS_PSU.limitePatrimonio],
+      ];
+      const corpo = document.getElementById('tabelaParametros');
+      if (!corpo) return;
+      corpo.innerHTML = linhas.map(([nome, p]) => {
+        const confirmado = p.valor !== undefined ? p.valor !== null : true;
+        const estadoHtml = confirmado
+          ? '<span class="confirmado">✓ confirmado</span>'
+          : '<span class="pendente">⏳ pendente</span>';
+        return `<tr><td>${nome}</td><td>${estadoHtml}</td><td>${p.fonte}</td></tr>`;
+      }).join('');
+    }
+
+    renderTabelaParametros();
+  </script>
+
+</body>
+</html>

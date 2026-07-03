@@ -49,6 +49,11 @@ CLUSTERS_JSON = RAIZ / "data" / "clusters.json"
 EXCLUIDAS = {
     "index.html", "noticias.html", "comecar-aqui.html",
     "sobre.html", "fontes.html", "privacidade.html", "404.html",
+    # Ferramenta pronta mas deliberadamente não publicada — aguarda o
+    # decreto-lei da PSU (ver PARAMETROS_PSU no próprio ficheiro e
+    # CLAUDE.md "IMPACTO DA PSU"). Fica fora de clusters.json até ao dia
+    # do decreto (ver .claude/commands/atualizar-cluster-psu.md).
+    "simulador-psu.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
