@@ -30,7 +30,8 @@ def main():
     print("DIAGNÓSTICO DE FEEDS — sistema de notícias")
     print("=" * 70)
 
-    todas_entradas = []
+    todas_entradas = []       # espelha fetch_entries() real (top 10/feed) — usado na simulação
+    todas_entradas_completas = []  # TODAS as entradas devolvidas por cada feed (até 100) — só para a busca por "abono"
 
     for url in gn.FEEDS:
         print(f"\n--- FEED: {url} ---")
@@ -47,10 +48,14 @@ def main():
 
         feed = feedparser.parse(url)
         print(f"bozo={feed.bozo} bozo_exception={getattr(feed, 'bozo_exception', None)}")
-        print(f"n.º entradas: {len(feed.entries)}")
+        print(f"n.º entradas TOTAL devolvidas pelo feed: {len(feed.entries)}")
 
-        for e in feed.entries[:15]:
+        for e in feed.entries:
             e["_feed_url"] = url
+            todas_entradas_completas.append(e)
+
+        print(f"  (mostrando as primeiras 15 de {len(feed.entries)} — fetch_entries() real só usa as 10 primeiras)")
+        for e in feed.entries[:15]:
             todas_entradas.append(e)
             item = gn.construir_item_de_entry(e)
             score = gn.score_entry(e)
@@ -60,19 +65,24 @@ def main():
             )
 
     print("\n" + "=" * 70)
-    print("BUSCA POR 'ABONO' EM TODOS OS FEEDS")
+    print(f"BUSCA POR 'ABONO' — em TODAS as {len(todas_entradas_completas)} entradas devolvidas pelos feeds (não só o top 10/15)")
     print("=" * 70)
     encontrados = [
-        e for e in todas_entradas
+        e for e in todas_entradas_completas
         if "abono" in (e.get("title", "") + " " + e.get("summary", "")).lower()
     ]
     if not encontrados:
-        print("NENHUMA entrada com 'abono' encontrada em nenhum feed configurado.")
+        print("NENHUMA entrada com 'abono' encontrada em NENHUM feed configurado, mesmo olhando a todas as entradas devolvidas.")
     else:
         for e in encontrados:
             item = gn.construir_item_de_entry(e)
             score = gn.score_entry(e)
-            print(f"  [{item.data_iso}] score={score} feed={e['_feed_url']}")
+            # posição real dentro do feed de origem (0-based) — para saber se
+            # fetch_entries() real (só top 10) alguma vez a veria
+            feed_url = e["_feed_url"]
+            posicao = [x for x in todas_entradas_completas if x["_feed_url"] == feed_url].index(e)
+            print(f"  [{item.data_iso}] score={score} feed={feed_url}")
+            print(f"    posição no feed: {posicao} (fetch_entries() real só vê posições 0-9)")
             print(f"    título: {item.titulo}")
             print(f"    resumo: {item.resumo[:150]}")
             print(f"    link: {item.url}")
