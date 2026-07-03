@@ -174,6 +174,65 @@ def test_rendimento_generico_nao_mascara_valor_desatualizado():
     assert alerta is not None
 
 
+# ── Regressões da verificação pós-merge E-E-A-T (Issues #51/#52, 2026-07-03) ──
+
+def test_desde_mes_de_ano_antigo_nao_gera_alerta():
+    # "\bdesde\s+\d" só reconhecia "desde <ano>" cru — "Desde junho de 2023"
+    # (nome de mês entre "desde" e o ano) escapava ao marcador e gerava
+    # alerta (issue #52, porta-65.html).
+    html = _html(
+        "Desde junho de 2023 as candidaturas funcionam em contínuo, sem "
+        "janelas temporais."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "porta-65.html", ANO, MES) is None
+
+
+def test_contrato_posterior_a_data_limite_nao_gera_alerta():
+    # Elegibilidade fixa por data-limite de contrato — nunca muda com o
+    # tempo (issue #51, apoio-extraordinario-renda.html).
+    html = _html(
+        "Não, se o teu contrato de arrendamento for posterior a 15 de "
+        "março de 2023, este apoio já não aceita novos beneficiários."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "apoio-extraordinario-renda.html", ANO, MES) is None
+
+
+def test_contratos_celebrados_ate_data_limite_nao_gera_alerta():
+    html = _html(
+        "Destina-se exclusivamente a contratos de arrendamento celebrados "
+        "até 15 de março de 2023."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "apoio-extraordinario-renda.html", ANO, MES) is None
+
+
+def test_posterior_ate_sem_data_nao_e_mascarado_por_engano():
+    # "posterior até" (ressarcimento posterior até X€, sem data-limite) não
+    # pode ser confundido com "posterior a <data>" — o marcador usa \b para
+    # não apanhar "posterior até" por sobreposição de substring. Este teste
+    # confirma que uma data antiga genuína, próxima da frase "posterior
+    # até", continua a gerar alerta normalmente.
+    html = _html(
+        "Visitas de estudo: ressarcimento posterior até 20€/ano letivo. "
+        "Última actualização: 12 de março de 2024."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "acao-social-escolar.html", ANO, MES) is not None
+
+
+def test_revisao_urgente_e_citacao_historica_nao_gera_alerta():
+    # Citação datada de um facto histórico específico (queixa/pedido já
+    # ocorrido), não um valor ou prazo corrente (issue #51).
+    html = _html(
+        "A Provedoria de Justiça pediu formalmente uma revisão urgente em "
+        "agosto de 2025."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "apoio-extraordinario-renda.html", ANO, MES) is None
+
+
 # ── Casos que devem continuar a ser detectados ─────────────────────────────────
 
 def test_pagina_escolar_realmente_desatualizada_gera_alerta():
@@ -330,3 +389,26 @@ def test_amim_real_nao_gera_alerta_issue_37():
 def test_manuais_escolares_mega_real_nao_gera_alerta_issue_45():
     html = _ler_pagina_real("manuais-escolares-mega.html")
     assert detectar_alertas(html, "manuais-escolares-mega.html", ANO, MES) is None
+
+
+# ── Regressão concreta: Issues #51/#52 (2026-07-03) — geradas pelo
+# workflow_dispatch de verificação pós-merge E-E-A-T. Nos dois casos o match
+# real é uma citação factual permanente, nunca uma data desactualizada:
+# apoio-extraordinario-renda.html cita a elegibilidade fixa do PAER
+# ("contrato ... posterior a 15 de março de 2023", "celebrados até 15 de
+# março de 2023") e o pedido de revisão à Provedoria ("revisão urgente em
+# agosto de 2025"); porta-65.html cita "Desde junho de 2023"/"Desde setembro
+# de 2024" — o marcador "desde" só reconhecia "desde <ano>" cru, não "desde
+# <mês> de <ano>". `scripts/verificar_datas.py` ganhou 3 marcadores novos em
+# `MARCADORES_HISTORICOS` para cobrir os dois casos (ver comentários no
+# próprio ficheiro). Mesmo padrão de `test_amim_real_nao_gera_alerta_issue_37`
+# — carrega o HTML real, nunca uma amostra sintética.
+
+def test_apoio_extraordinario_renda_real_nao_gera_alerta_issue_51():
+    html = _ler_pagina_real("apoio-extraordinario-renda.html")
+    assert detectar_alertas(html, "apoio-extraordinario-renda.html", ANO, MES) is None
+
+
+def test_porta_65_real_nao_gera_alerta_issue_52():
+    html = _ler_pagina_real("porta-65.html")
+    assert detectar_alertas(html, "porta-65.html", ANO, MES) is None

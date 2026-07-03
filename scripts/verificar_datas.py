@@ -42,14 +42,30 @@ REGEX_MES_ANO = (
 )
 
 # Referência legal/histórica permanente — nunca "expira".
-# "\bdesde\s+\d" exige um número logo a seguir (ex.: "desde 2016/2017", "em vigor
-# desde 1 de dezembro") — sem isto, apanhava também "desde que" (conjunção
-# condicional, ex.: "tens direito desde que cumpras as condições"), que não tem
-# nada a ver com uma data histórica e mascarava datas realmente antigas.
+# "\bdesde\s+(?:\d|<mês>\s+de\s+\d)" exige um número logo a seguir, directamente
+# ou depois de um nome de mês (ex.: "desde 2016/2017", "em vigor desde 1 de
+# dezembro", "Desde junho de 2023" — issue #52, porta-65.html: sem o ramo do
+# nome de mês, "desde junho de 2023" não batia certo com o marcador, que só
+# reconhecia "desde <ano>" cru) — sem isto, apanhava também "desde que"
+# (conjunção condicional, ex.: "tens direito desde que cumpras as condições"),
+# que não tem nada a ver com uma data histórica e mascarava datas realmente
+# antigas.
 MARCADORES_HISTORICOS = [
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"despacho", r"\bdl\s*n",
     r"lei\s+n\.?º", r"diário da república", r"dre\.pt", r"em vigor desde",
-    r"já\s+benefici", r"\bdesde\s+\d",
+    r"já\s+benefici",
+    r"\bdesde\s+(?:\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|"
+    r"agosto|setembro|outubro|novembro|dezembro)\s+de\s+\d)",
+    # Elegibilidade fixa por data-limite de contrato — nunca muda com o tempo,
+    # é a própria definição do critério (issue #51, apoio-extraordinario-renda.html:
+    # "contrato ... posterior a 15 de março de 2023", "celebrados até 15 de
+    # março de 2023"). "\b...a\b" (não "\bposterior at[ée]") para não apanhar
+    # "posterior até" (ressarcimento posterior até X€, sem data-limite nenhuma).
+    r"\bposterior a\b", r"celebrados?\s+at[ée]\b",
+    # Citação datada de um facto histórico específico (queixa/pedido/anúncio já
+    # ocorrido), não um valor ou prazo corrente (issue #51: "pediu ... uma
+    # revisão urgente em agosto de 2025").
+    r"revisão urgente",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.
