@@ -1,0 +1,129 @@
+name: Diagnóstico Perfil Browser Seg-Social (temporário)
+
+# Workflow TEMPORÁRIO — isola qual componente do contexto Playwright de
+# produção (stealth / extra_http_headers / viewport fixo) está a fazer o
+# deep-link novo do seg-social cair no gateway de login, quando o mesmo
+# deep-link tinha passado num runner "nu" (sem nenhum dos três). Testa 4
+# perfis × 2 alvos = 8 combinações. Só lê/imprime, não escreve nada no
+# repositório — apagado no fim da investigação.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar Playwright
+        run: |
+          pip install playwright==1.60.0 playwright-stealth==2.0.3
+          playwright install chromium --with-deps
+
+      - name: Testar 4 perfis × 2 deep-links seg-social
+        run: |
+          python3 << 'PYEOF'
+          import re
+          from playwright.sync_api import sync_playwright
+
+          UA = (
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/131.0.0.0 Safari/537.36"
+          )
+
+          ALVOS = {
+              "abono": {
+                  "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
+                  "ancora": "abono de família",
+              },
+              "rsi": {
+                  "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
+                  "ancora": "rendimento social de inserção",
+              },
+          }
+
+          PERFIS = {
+              "nu":       {"stealth": False, "headers": False, "viewport": False},
+              "stealth":  {"stealth": True,  "headers": False, "viewport": False},
+              "headers":  {"stealth": False, "headers": True,  "viewport": False},
+              "viewport": {"stealth": False, "headers": False, "viewport": True},
+          }
+
+          resultados = []
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+
+              for nome_perfil, cfg in PERFIS.items():
+                  for nome_alvo, alvo in ALVOS.items():
+                      kwargs = dict(user_agent=UA, locale="pt-PT", timezone_id="Europe/Lisbon")
+                      if cfg["headers"]:
+                          kwargs["extra_http_headers"] = {
+                              "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
+                              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                          }
+                      if cfg["viewport"]:
+                          kwargs["viewport"] = {"width": 1280, "height": 900}
+
+                      context = browser.new_context(**kwargs)
+                      if cfg["stealth"]:
+                          from playwright_stealth import Stealth
+                          Stealth().apply_stealth_sync(context)
+                      page = context.new_page()
+
+                      url, ancora = alvo["url"], alvo["ancora"]
+                      linha = {"perfil": nome_perfil, "alvo": nome_alvo}
+                      print(f"\n{'='*70}\n=== perfil={nome_perfil} alvo={nome_alvo}\nURL: {url}")
+                      try:
+                          resp = page.goto(url, timeout=30_000, wait_until="networkidle")
+                          linha["status"] = resp.status if resp else None
+                          linha["url_final"] = page.url
+                          print(f"status: {linha['status']} | URL final: {linha['url_final']}")
+
+                          try:
+                              page.wait_for_function(
+                                  "text => document.body && document.body.innerText.toLowerCase().includes(text)",
+                                  arg=ancora.lower(),
+                                  timeout=15_000,
+                              )
+                              linha["ancora_apareceu"] = True
+                          except Exception:
+                              linha["ancora_apareceu"] = False
+
+                          html = page.content()
+                          linha["chars"] = len(html)
+                          linha["titulo"] = page.title()
+                          linha["n_ancora"] = len(re.findall(re.escape(ancora), html, re.I))
+                          print(
+                              f"ancora_apareceu={linha['ancora_apareceu']} "
+                              f"chars={linha['chars']} titulo={linha['titulo']!r} "
+                              f"n_ancora={linha['n_ancora']}"
+                          )
+                      except Exception as e:
+                          linha["erro"] = f"{type(e).__name__}: {e}"
+                          print(f"ERRO: {linha['erro']}")
+
+                      resultados.append(linha)
+                      page.close()
+                      context.close()
+
+              browser.close()
+
+          print(f"\n{'='*70}\nRESUMO\n{'='*70}")
+          for r in resultados:
+              passou = r.get("ancora_apareceu") and r.get("n_ancora", 0) > 0
+              icone = "✓ PASSOU" if passou else "✗ bloqueado/gateway"
+              print(f"  {icone} — perfil={r['perfil']:9s} alvo={r['alvo']:6s} "
+                    f"chars={r.get('chars','?')} titulo={r.get('titulo','?')!r}")
+          PYEOF
