@@ -1402,11 +1402,43 @@ e `test_manuais_escolares_mega_real_nao_gera_alerta_issue_45` em
 `tests/test_verificar_datas.py` — carregam o HTML real das duas páginas, não
 uma amostra sintética.
 
-As correspondências que `classificar_datas.py` já marca como
-`STATIC_REFERENCE` nunca chegam a gerar alerta — a supressão acontece antes,
-na própria Camada 1 (`verificar_datas._esta_suprimido`, cujos marcadores
-`classificar_datas.py` espelha deliberadamente); não há um passo adicional
-nesta fase, só a confirmação por teste do caso concreto acima.
+**Correcção adicional (#51/#52, 2026-07-03)**: `classificacao`/`decisao`
+(Camadas 2-3) são metadados informativos anexados ao alerta — **não
+influenciam se a Issue é criada**, só a Camada 1 (`_esta_suprimido`) decide
+isso (confirmado ao investigar #51: o alerta tinha `"decisao": {"acao":
+"IGNORAR"}` gravado no próprio `alertas_datas.json` e ainda assim gerou
+Issue — não é um bug de leitura, é o desenho deliberado descrito no próprio
+`verificar_datas.detectar_alertas()`). As Issues #51
+(`apoio-extraordinario-renda.html`) e #52 (`porta-65.html`), abertas pelo
+`workflow_dispatch` de verificação da sessão anterior, eram os dois casos
+reais: citações permanentes ("posterior a 15 de março de 2023"/"celebrados
+até 15 de março de 2023" — elegibilidade fixa do PAER; "revisão urgente em
+agosto de 2025" — queixa à Provedoria; "Desde junho de 2023"/"Desde setembro
+de 2024" — início das candidaturas contínuas ao Porta 65) que os marcadores
+existentes não cobriam (`\bdesde\s+\d` exigia dígito logo a seguir a
+"desde", sem aceitar um nome de mês pelo meio). `MARCADORES_HISTORICOS`
+ganhou 3 padrões novos, ancorados aos matches reais — nunca supressão
+global — e o `\bposterior a\b` novo foi desenhado com `\b` para não apanhar
+"posterior até" (ressarcimento, sem data-limite) por sobreposição de
+substring. 7 testes novos (incluindo regressão sobre o HTML real das duas
+páginas e guarda contra sobre-supressão) em `tests/test_verificar_datas.py`.
+
+**Correcção a uma frase anterior desta secção** (falsificada pela
+investigação de #51 acima): não é verdade que uma correspondência marcada
+como `STATIC_REFERENCE` por `classificar_datas.py` "nunca chega a gerar
+alerta" — só é assim quando é a **mesma ocorrência** que a Camada 1 também
+suprime. `_contexto_representativo()` usa `re.search()` (primeira
+ocorrência da página) só para dar um exemplo à Camada 2, independente de
+qual ocorrência fez `_pagina_tem_alerta()` devolver `True`; por isso um
+alerta pode ter `"decisao": {"acao": "IGNORAR"}` gravado no seu próprio
+`alertas_datas.json` e mesmo assim ter gerado Issue (foi o caso de #51,
+confirmado nesta sessão) — a classificação descrevia a 1.ª ocorrência da
+página (`"julho de 2026"`, correctamente inofensiva), não a ocorrência que
+realmente disparou o alerta (`"março de 2023"`/`"agosto de 2025"`, ambas
+sem marcador de supressão até esta correcção). `classificacao`/`decisao`
+continuam a ser só metadados informativos, nunca gate de nada — a única
+coisa que decide se uma Issue é criada é `verificar_datas._esta_suprimido`,
+aplicado individualmente a cada ocorrência.
 
 Testado em `tests/test_estado_fontes.py` (limiar de 3 dias, reset ao
 recuperar, persistência ida-e-volta, fluxo `main()` isolado em `tmp_path` —
@@ -1962,3 +1994,7 @@ Nota de manutenção sazonal registada em "PÁGINAS COM DATAS SAZONAIS": as refe
 *Última revisão: 2026-07-03 — fecho da sessão E-E-A-T: fast-forward de `claude/new-session-2oea8g` para `main` (sem PR, a pedido explícito) — 403 confirmado ao tentar apagar a branch remota, registada acima para apagar manualmente, mesma limitação já vista com `claude/nv-labs-branding-update-xq4kb4`/`claude/cool-cannon-zn5nfy`. Varrimento real das 27 páginas de conteúdo confirmou que `author`/`publisher` NV Labs vive só dentro de `FAQPage` — sem `Article`/`WebPage` próprio nenhum — registado acima como melhoria futura, não implementado.
 
 **Verificação real em produção** (`workflow_dispatch` de `pipeline-diario.yml`, run [28673015810](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28673015810), commit `da55ef9`, concluído com sucesso): Step 6 (`sed` do carimbo de `index.html`) correu sem erro — log confirma `"Revisão atualizada: julho 2026 (dateModified: 2026-07-03)"` — o novo texto "Verificado a [data] pela redação do Tens Direito" nos artigos não interfere com este `sed`, que nunca tocou nesse texto (opera só em `id="ultima-revisao-mes"` e `dateModified` de `index.html`, sempre foi assim). O guardrail "Verificar ficheiros protegidos" passou — log confirma `"Guardrail OK — 13 ficheiro(s) modificado(s), nenhum protegido afectado"`; a lista real dos 13 ficheiros do commit `auto: pipeline diário 2026-07-03` (`c70925e`) confirma que **nenhum HTML manual foi tocado**: só `README.md`, `noticias.html` e `data/*.json` (scraped, `alertas_datas.json`, `avisos.log`, `noticias.json`) — `index.html` e `CLAUDE.md` nem sequer entraram no commit porque o conteúdo já estava idêntico (sem alterações a aplicar). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False` em `scripts/decisao_datas.py` após o merge. Sessão E-E-A-T encerrada com o footer, a autoria e o pipeline todos verificados em produção, não assumidos.
+
+---
+
+*Última revisão: 2026-07-03 — duas tarefas de diagnóstico em `main` após o merge E-E-A-T. 1) O commit `6301240` mostrava 7/8 checks — identificado via API o job real: **"pages build and deployment" → "Deploy to GitHub Pages"**, `##[error]Deployment failed, try again later.` — erro genérico e transitório da infra-estrutura do GitHub Pages, sem qualquer relação com o conteúdo do merge (sobre.html/JSON-LD/footer/carimbo). Confirmado por `rerun_workflow_run`: 2.ª tentativa (`run_attempt: 2`) terminou `success` sem qualquer alteração de código — reportado com honestidade antes de mexer, como pedido, e resolvido só com o retry (nenhum "commit de correcção" de conteúdo era necessário nem teria feito sentido para uma falha de infra-estrutura). 2) Issues #51 (`apoio-extraordinario-renda.html`) e #52 (`porta-65.html`) — mesmo padrão de #37/#45: matches reais eram citações factuais permanentes (elegibilidade fixa do PAER, queixa à Provedoria, início das candidaturas contínuas ao Porta 65), não datas desactualizadas. `MARCADORES_HISTORICOS` em `scripts/verificar_datas.py` ganhou 3 padrões novos ancorados aos matches reais (nunca supressão global) — ver nova secção em "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS", que também corrige uma frase imprecisa da revisão anterior sobre `classificacao`/`decisao` nunca gerarem alerta quando `STATIC_REFERENCE` (falsificada pela própria investigação de #51: a classificação anexada ao alerta descreve a 1.ª ocorrência da página, não necessariamente a ocorrência que disparou o alerta). Issues #51/#52 fechadas manualmente com justificação, commit `cc71f5f` (7 testes novos, incluindo regressão sobre o HTML real das duas páginas e guarda contra sobre-supressão). 711 testes a passar, ruff limpo, `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
