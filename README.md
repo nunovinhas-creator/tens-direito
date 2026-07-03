@@ -191,6 +191,7 @@ tens-direito/
 │       └── _fontes_config.json
 ├── .github/
 │   └── workflows/
+│       ├── diagnostico-noticias-temp.yml
 │       ├── integridade.yml
 │       ├── pipeline-diario.yml
 │       ├── shadow-daily.yml
@@ -214,9 +215,11 @@ tens-direito/
 │   ├── classificador_resposta.py
 │   ├── classificar_datas.py
 │   ├── decisao_datas.py
+│   ├── diagnostico_noticias_temp.py
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
+│   ├── gerir_estado_feeds.py
 │   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
 │   ├── migrar_noticias.py
@@ -279,6 +282,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
+| `diagnostico-noticias-temp.yml` | — | diagnostico-noticias-temp |
 | `integridade.yml` | — | integridade |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
 | `shadow-daily.yml` | — | shadow-daily |
@@ -338,6 +342,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 03 de julho de 2026 às 17:38 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 03 de julho de 2026 às 22:35 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

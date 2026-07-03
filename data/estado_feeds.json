@@ -1,0 +1,37 @@
+{
+  "abono_familia": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "acao_social_escolar": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "cuidador_informal": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "porta65_arrendamento": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "psu_pensoes": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "rsi": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  },
+  "subsidio_desemprego": {
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-03"
+  }
+}
