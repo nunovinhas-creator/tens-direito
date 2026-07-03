@@ -36,13 +36,14 @@ def test_sobre_tem_aboutpage_organization_website():
     assert {"AboutPage", "Organization", "WebSite"} <= tipos
 
 
-def test_sobre_organization_e_a_nv_labs_com_sameas_real():
+def test_sobre_organization_e_a_nv_labs_sem_sameas_github():
     blocos = _jsonld_blocks(RAIZ / "sobre.html")
     org = next(b for b in blocos if b["@type"] == "Organization")
     assert org["@id"] == ID_NVLABS
     assert org["name"] == "NV Labs"
-    # sameAs só com URLs reais existentes (nunca um perfil inventado)
-    assert org["sameAs"] == ["https://github.com/nunovinhas-creator/tens-direito"]
+    # sameAs removido — apontava só para o repositório GitHub, agora sem
+    # menção pública a GitHub (decisão do Nuno, 2026-07-03)
+    assert "sameAs" not in org
 
 
 def test_sobre_aboutpage_referencia_a_organization():
@@ -63,18 +64,27 @@ def test_sobre_tem_seccoes_ancoradas_nvlabs_e_metodo():
     assert 'id="metodo"' in html
 
 
-def test_sobre_liga_para_o_repositorio_github_real():
-    html = (RAIZ / "sobre.html").read_text(encoding="utf-8")
-    assert 'href="https://github.com/nunovinhas-creator/tens-direito"' in html
-
-
-def test_sobre_tem_marcador_contacto_email_preparado_mas_nao_activo():
+def test_sobre_tem_marcador_contacto_email_preenchido_e_activo():
     html = (RAIZ / "sobre.html").read_text(encoding="utf-8")
     assert "<!-- CONTACTO-EMAIL:INICIO -->" in html
     assert "<!-- CONTACTO-EMAIL:FIM -->" in html
-    # o endereço vive só dentro do comentário — nunca activo como mailto: real
-    assert "mailto:" not in html
-    assert "contacto@tens-direito.com" in html
+    # o endereço nunca é literal — nem em texto, nem dentro do comentário
+    assert "contacto@tensdireito.com" not in html
+    # activo: montado por JS a partir de data-user/data-dominio, sem "@" no fonte
+    assert 'data-user="contacto"' in html
+    assert 'data-dominio="tensdireito.com"' in html
+    assert "mailto:" in html  # só dentro do <script>, concatenado em runtime
+
+
+PAGINAS_PUBLICAS = sorted(RAIZ.glob("*.html")) + sorted((RAIZ / "p").glob("*.html"))
+_IDS_PUBLICAS = [str(p.relative_to(RAIZ)) for p in PAGINAS_PUBLICAS]
+
+
+@pytest.mark.parametrize("caminho", PAGINAS_PUBLICAS, ids=_IDS_PUBLICAS)
+def test_nenhuma_pagina_publica_tem_email_literal_ou_menciona_github(caminho):
+    html = caminho.read_text(encoding="utf-8")
+    assert "contacto@tensdireito.com" not in html
+    assert "github" not in html.lower()
 
 
 def test_sobre_nao_inventa_pessoa_nem_credencial():

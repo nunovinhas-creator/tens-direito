@@ -407,8 +407,9 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 - Não apagar `CNAME` nem `.nojekyll`
 - Não publicar sem fonte datada
 - Não dar veredictos pessoais ("tu tens direito a X")
-- Não inventar emails — usar link GitHub Issues para contacto
+- Contacto oficial = **contacto@tensdireito.com** (forwarding ImprovMX → caixa pessoal, activo desde 2026-07-03), sempre ofuscado via JavaScript (`.email-ofuscado`, `sobre.html`), nunca literal em HTML público
 - Não usar subpaths de portais sem confirmar que devolvem 200
+- **Páginas públicas nunca mencionam GitHub, repositório, código aberto, IA/inteligência artificial ou automação de redação** (decisão do Nuno, 2026-07-03) — vocabulário público é "a redação", "monitorização diária", "verificação contra fontes oficiais"; menções a GitHub/infra continuam permitidas em `scripts/`, workflows, `CLAUDE.md` e docs internos
 
 ---
 
@@ -1139,33 +1140,49 @@ nunca um perfil inventado).
 
 ### `sobre.html` — 5 blocos + excepção à regra de JSON-LD
 
-Reescrito com: 1) o que é o site; 2) quem está por trás — NV Labs
-(`id="nvlabs"`, link para o repositório); 3) método de verificação
-(`id="metodo"`, bloco central — fontes exclusivamente oficiais, scraper
-diário + revisão humana antes de qualquer actualização, carimbo
-"Verificado a", redação assistida por IA com verificação humana de
-factos, o que o site não faz); 4) correcções (GitHub Issues + marcador
-`CONTACTO-EMAIL`); 5) contacto (só GitHub Issues). Nenhuma pessoa,
+**Reescrito em 2026-07-03 (2.ª vez, tarde) por decisão do Nuno**: zero
+menções a GitHub/repositório/código aberto e zero menções a
+inteligência artificial/automação de redação em qualquer página
+pública — regra permanente registada em "REGRAS DE CONTEÚDO" → "Não
+fazer". Estrutura de 5 blocos mantida: 1) o que é o
+site; 2) quem está por trás — NV Labs (`id="nvlabs"`, sem link
+GitHub); 3) método de verificação (`id="metodo"`, bloco central —
+fontes exclusivamente oficiais, "a redação monitoriza diariamente"
+(nunca "sistema automático"), carimbo "Verificado a", o que o site não
+faz); 4) correcções (email ofuscado + marcador `CONTACTO-EMAIL`);
+5) contacto (`id="contacto"`, só o email ofuscado). Nenhuma pessoa,
 credencial ou e-mail inventados.
 
-`sobre.html` ganha JSON-LD — única página institucional a fazê-lo,
+`sobre.html` mantém JSON-LD — única página institucional a fazê-lo,
 excepção deliberada à regra "institucionais sem JSON-LD" (ver secção
 "PÁGINAS INSTITUCIONAIS"): `AboutPage` (mainEntity → Organization),
-`Organization` (`@id=".../sobre.html#nvlabs"`, `sameAs` só com o
-repositório real) e `WebSite` (publisher → Organization). Válido
-porque `FAQPage`/`WebPage` herdam `author`/`publisher` de
-`CreativeWork` — confirmado por `tests/test_sobre_jsonld.py`, que
-carrega e valida os 3 blocos como JSON real, nunca uma cópia.
+`Organization` (`@id=".../sobre.html#nvlabs"`, sem `sameAs` — o único
+que existia apontava para o repositório GitHub, removido nesta
+revisão) e `WebSite` (publisher → Organization). Válido porque
+`FAQPage`/`WebPage` herdam `author`/`publisher` de `CreativeWork` —
+confirmado por `tests/test_sobre_jsonld.py`, que carrega e valida os 3
+blocos como JSON real, nunca uma cópia.
 
-### Marcador `CONTACTO-EMAIL` — preparado, não activo
+### Marcador `CONTACTO-EMAIL` — preenchido e activo
 
-`sobre.html` tem `<!-- CONTACTO-EMAIL:INICIO --><!-- quando existir:
-contacto@tens-direito.com --><!-- CONTACTO-EMAIL:FIM -->` — o endereço
-só existe dentro do comentário, nunca como `mailto:` real (verificado
-por teste). **Activação futura**: quando o e-mail existir, preencher
-este marcador em `sobre.html` com o link real e rever a frase "GitHub
-Issues é o único canal de contacto". Até lá, a regra "Não inventar
-e-mails — usar GitHub Issues" mantém-se inalterada.
+O email oficial **contacto@tensdireito.com** (forwarding ImprovMX →
+caixa pessoal, testado e activo desde 2026-07-03) é o único canal de
+contacto do site. Nunca aparece literal no HTML fonte de nenhuma
+página pública — `sobre.html` tem `<span class="email-ofuscado"
+data-user="contacto" data-dominio="tensdireito.com">`, preenchido em
+runtime por um `<script>` inline no fim do `<body>` (concatena
+`data-user + '@' + data-dominio`, monta o `mailto:` e o texto visível,
+substitui o `<span>` por um `<a>` real), com fallback `<noscript>`
+("contacto (arroba) tensdireito (ponto) com"). Sem dependências
+externas. O marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` mantém-se
+nos blocos "Correcções"/"Contacto" como âncora documental — nunca com
+o endereço literal dentro do comentário (um comentário HTML continua a
+ser texto simples no fonte, por isso quebraria a mesma regra).
+Qualquer outra página que precise de referenciar contacto liga para
+`/sobre.html#contacto` — nunca duplica o email nem o script de
+desofuscação. `tests/test_sobre_jsonld.py` confirma: literal
+`contacto@tensdireito.com` ausente de todo o HTML público, `mailto:`
+presente só dentro do `<script>` de desofuscação, marcador presente.
 
 ### Footer — "An NV Labs project" passa a link
 
@@ -2086,3 +2103,13 @@ Correcção em `scripts/gerar_noticias.py`: `FEEDS` passa a 7 feeds por tema (to
 ---
 
 *Última revisão: 2026-07-04 — duas tarefas de seguimento. 1) `data/noticias_candidatos.json` completado: o formato anterior só registava top 3 + rejeitados parciais porque `selecionar_vencedor()` pára assim que encontra um vencedor (early-exit) — "o sistema viu a notícia X?" não tinha resposta garantida. Nova `analisar_candidatos_na_janela()` classifica **todos** os candidatos dentro da janela de recência (título, feed, data, score, decisão — `vencedor`/`rejeitado_score`/`rejeitado_duplicado`/`nao_escolhido`), reimplementando deliberadamente a lógica de `selecionar_vencedor()` sem early-exit (reutilizá-la não fazia sentido — o objectivo é classificar tudo). Candidatos fora da janela ficam só como contagem por feed (`fora_da_janela_por_feed`), sem detalhe, para não inchar o log. Retenção mudou de "últimas 60 corridas" para **últimos 14 dias corridos** — 2 corridas no mesmo dia (`workflow_dispatch` manual) já não conseguiam expulsar uma entrada mais antiga fora de tempo com o critério antigo. 2) Branches remotas: confirmado via `list_branches` da API (não só `git fetch --prune` local) que o repositório tem hoje **apenas `main`** — `claude/new-session-2oea8g` e todas as órfãs documentadas em revisões anteriores já não existem; nenhuma branch por apagar manualmente neste momento (secção "Fast-forward para `main` e limpeza de branch" actualizada). 12 testes novos (classificação completa, retenção por dias, borda exacta dos 14 dias). 805 testes a passar, ruff limpo, `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
+
+---
+
+*Última revisão: 2026-07-03 — limpeza site-wide por decisão do Nuno: zero menções a GitHub/repositório/código aberto e zero menções a inteligência artificial/automação de redação em qualquer página pública; email oficial **contacto@tensdireito.com** (forwarding ImprovMX, testado e activo) passa a único canal de contacto, sempre ofuscado. Levantamento (`grep -ri`) confirmou 8 páginas afectadas: `sobre.html` (JSON-LD `sameAs` GitHub, blocos "NV Labs"/"Método"/"Correções"/"Contacto"), `privacidade.html`, `index.html` (footer), e as 5 pillar pages (`p/*.html`, link "Reportar erro"). `sobre.html` reescrito: bloco NV Labs perde o parágrafo sobre código/histórico público; bloco Método troca "um sistema automático verifica" por "a redação monitoriza" e perde inteiramente o parágrafo sobre redação assistida por IA; blocos Correções/Contacto perdem GitHub Issues e ganham o email ofuscado; `id="contacto"` novo no bloco Contacto para as outras páginas linkarem. JSON-LD `Organization` perde `sameAs` (apontava só para o repositório, sem substituto — não inventar um perfil). `privacidade.html`/`index.html`/5 pillar pages: link GitHub Issues substituído por `/sobre.html#contacto`.
+
+**Ofuscação do email** (`sobre.html`, único ponto que o expõe): `<span class="email-ofuscado" data-user="contacto" data-dominio="tensdireito.com">`, sem "@" no HTML fonte, preenchido por um `<script>` inline no fim do `<body>` (`data-user + '@' + data-dominio` → `mailto:` + texto visível, substitui o `<span>` por um `<a>` real), com fallback `<noscript>` ("contacto (arroba) tensdireito (ponto) com"). Sem dependências externas, sem duplicar a lógica — as outras páginas linkam para `/sobre.html#contacto` em vez de repetir o email/script. Marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` mantido como âncora documental nos blocos Correções/Contacto, mas sem o endereço literal dentro do próprio comentário (um comentário HTML é texto simples no fonte — colocá-lo lá quebraria a mesma regra).
+
+Nova secção em "REGRAS DE CONTEÚDO" → "Não fazer": contacto oficial e regra permanente de vocabulário público (GitHub/IA/automação só em `scripts/`/workflows/`CLAUDE.md`/docs internos, nunca em página pública). Secção "E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL" actualizada (`sobre.html` — 5 blocos, marcador `CONTACTO-EMAIL`) para reflectir o estado actual em vez do estado de quando o email ainda não existia; entradas de revisão anteriores a esta (histórico de 2026-07-03 mais cedo) mantidas tal como estavam escritas nessa altura, sem reescrever o passado.
+
+Testes: `tests/test_sobre_jsonld.py` actualizado — `sameAs` GitHub removido da asserção (agora confirma a sua ausência), teste do marcador CONTACTO-EMAIL reescrito para confirmar activação (email nunca literal, `data-user`/`data-dominio` presentes, `mailto:` só dentro do script), novo teste parametrizado sobre as 35 páginas públicas reais (raiz + `p/*.html`) que falha se o literal `contacto@tensdireito.com` ou a palavra "github" aparecerem em qualquer uma. `grep -rliE` final ao repositório confirma zero ocorrências de `github`/`inteligência artificial`/`\bIA\b`/`issues`/`código aberto`/`repositório`/`assistida por`/`automação` em HTML público, e zero ocorrências do email literal. 786 testes a passar nesta sessão (768 + 18 skipped, incluindo os 78 de `test_sobre_jsonld.py`) — 3 ficheiros de notícias (`test_gerar_noticias.py`/`test_gerar_noticias_guardrail.py`/`test_migrar_noticias.py`) não recolhidos por falta do módulo `feedparser` neste sandbox (limitação do ambiente local, não desta mudança — inalterados por esta sessão), ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`.

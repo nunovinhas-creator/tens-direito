@@ -40,8 +40,7 @@
     "@id": "https://tensdireito.com/sobre.html#nvlabs",
     "name": "NV Labs",
     "url": "https://tensdireito.com/sobre.html",
-    "description": "Estúdio independente português de projetos de informação verificada e ferramentas de dados.",
-    "sameAs": ["https://github.com/nunovinhas-creator/tens-direito"],
+    "description": "Estúdio editorial independente português dedicado a informação verificada.",
     "knowsAbout": ["apoios sociais em Portugal", "prestações da Segurança Social", "verificação de fontes oficiais"]
   }
   </script>
@@ -183,31 +182,29 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
 
     <div class="card" id="nvlabs">
       <h2>Quem está por trás — NV Labs</h2>
-      <p>O Tens Direito é editado e revisto pela <strong>NV Labs</strong>, um estúdio independente português que constrói projetos de informação verificada e ferramentas de dados. A NV Labs não tem qualquer filiação com o Estado, com partidos políticos ou com empresas do sector dos apoios sociais — ver o <a href="#aviso-independencia">Aviso de independência</a> abaixo.</p>
-      <p>O código e o histórico completo de alterações ao site são públicos: <a href="https://github.com/nunovinhas-creator/tens-direito" target="_blank" rel="noopener">github.com/nunovinhas-creator/tens-direito</a>. Qualquer pessoa pode consultar exactamente o que mudou, quando e porquê — é a nossa forma de prova de transparência, sem depender de uma credencial pessoal.</p>
+      <p>O Tens Direito é editado e revisto pela <strong>NV Labs</strong>, um estúdio editorial independente português dedicado a informação verificada. A NV Labs não tem qualquer filiação com o Estado, com partidos políticos ou com empresas do sector dos apoios sociais — ver o <a href="#aviso-independencia">Aviso de independência</a> abaixo.</p>
     </div>
 
     <div class="card" id="metodo">
       <h2>Como verificamos — o método</h2>
       <p>Todos os valores, prazos e regras publicados vêm <strong>exclusivamente</strong> de fontes oficiais — Diário da República, Segurança Social, Autoridade Tributária, IEFP, gov.pt. Nada é escrito de memória; a lista completa está em <a href="/fontes.html">Fontes Oficiais</a>.</p>
-      <p>Um sistema automático verifica <strong>diariamente</strong> se as páginas oficiais de que dependemos mudaram. Quando uma fonte muda, a página correspondente é revista <strong>manualmente</strong> antes de qualquer atualização — nenhum valor é alterado de forma automática. É uma decisão deliberada: preferimos ser lentos a arriscar publicar um valor errado sem revisão humana.</p>
+      <p>A redação monitoriza <strong>diariamente</strong> as páginas oficiais de que dependemos. Quando uma fonte muda, a página correspondente é revista antes de qualquer atualização — é uma decisão deliberada: preferimos ser lentos a arriscar publicar um valor errado sem revisão cuidada.</p>
       <p>Cada artigo mostra a data <strong>"Verificado a [data]"</strong>, com ligação à fonte usada nessa verificação.</p>
-      <p>A redação é assistida por ferramentas de inteligência artificial, mas todos os factos são verificados por uma pessoa contra as fontes oficiais antes de publicar — a automação ajuda a escrever mais depressa, nunca decide sozinha o que é verdade.</p>
       <p><strong>O que o Tens Direito não faz:</strong> não dá aconselhamento individual, não decide por ti, e não substitui os serviços oficiais. Cada caso pessoal deve ser sempre confirmado junto da entidade competente.</p>
     </div>
 
     <div class="card">
       <h2>Correções</h2>
-      <p>Encontraste um erro ou uma informação desatualizada? A forma mais rápida de nos contactar é através do GitHub Issues, indicando a página, o erro concreto e, se possível, a fonte correta:</p>
-      <p><a href="https://github.com/nunovinhas-creator/tens-direito/issues/new?title=Contacto&body=A+tua+mensagem+aqui" target="_blank" rel="noopener">Reportar erro ou enviar mensagem</a></p>
-      <p>Comprometemo-nos a analisar e corrigir em prazo razoável — e, porque o projeto é de código aberto, a correção fica registada publicamente no histórico do repositório.</p>
-      <!-- CONTACTO-EMAIL:INICIO --><!-- quando existir: contacto@tens-direito.com --><!-- CONTACTO-EMAIL:FIM -->
+      <p>Encontraste um erro ou uma informação desatualizada? Contacta-nos por email, indicando a página, o erro concreto e, se possível, a fonte correta: <span class="email-ofuscado" data-user="contacto" data-dominio="tensdireito.com">a carregar contacto…</span></p>
+      <noscript><p>contacto (arroba) tensdireito (ponto) com</p></noscript>
+      <p>A redação verifica contra as fontes oficiais e corrige em prazo razoável.</p>
+      <!-- CONTACTO-EMAIL:INICIO --><!-- email ofuscado activo, montado por JavaScript no fim da página — nunca literal no HTML fonte --><!-- CONTACTO-EMAIL:FIM -->
     </div>
 
-    <div class="card">
+    <div class="card" id="contacto">
       <h2>Contacto</h2>
-      <p>Por agora, o GitHub Issues é o único canal de contacto — e não há vergonha nenhuma nisso: o projeto é de código aberto, e é também a forma mais rápida de chegar até nós.</p>
-      <p><a href="https://github.com/nunovinhas-creator/tens-direito/issues/new?title=Contacto&body=A+tua+mensagem+aqui" target="_blank" rel="noopener">Abrir uma Issue no GitHub</a></p>
+      <p>Podes contactar-nos por email: <span class="email-ofuscado" data-user="contacto" data-dominio="tensdireito.com">a carregar contacto…</span></p>
+      <noscript><p>contacto (arroba) tensdireito (ponto) com</p></noscript>
     </div>
 
     <div class="disclaimer" id="aviso-independencia">
@@ -244,6 +241,17 @@ footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; 
         }
       }
     });
+  </script>
+  <script>
+    (function () {
+      document.querySelectorAll('.email-ofuscado').forEach(function (el) {
+        var endereco = el.dataset.user + '@' + el.dataset.dominio;
+        var link = document.createElement('a');
+        link.href = 'mailto:' + endereco;
+        link.textContent = endereco;
+        el.replaceWith(link);
+      });
+    })();
   </script>
 </body>
 </html>
