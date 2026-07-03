@@ -1251,6 +1251,80 @@ devolve 404 nesta instância).
 
 ---
 
+## IDEIAS RECUPERADAS — cascata de fontes (cool-cannon)
+
+Análise de 2026-07-03 de uma branch órfã antiga (`claude/cool-cannon-zn5nfy`),
+divergida de `main` desde antes de toda a reorganização de arquitectura de
+informação (~19 790 linhas de diferença — remergear directamente apagaria
+trabalho posterior). Cherry-pick **proibido nesta sessão**: o código foi
+escrito contra um estado anterior do `source_adapter`/classificador e
+aplicar-se-ia limpo sem necessariamente estar certo hoje. Em vez disso, os 2
+commits reais da branch (`c765017`, `29b6133` — o resto já estava mergeado
+ou é ruído de diagnóstico) foram lidos e resumidos aqui; qualquer
+reimplementação parte deste resumo, escrita de raiz sobre o código actual,
+numa sessão dedicada.
+
+### O que a cascata fazia
+
+`scripts/cascata_fontes.py` (nunca chegou a `main`): para cada **rubrica**
+(um valor publicado, ex.: `ias_2026`), definia uma lista ORDENADA de passos
+por robustez decrescente — `RubricaConfig.cascata`:
+
+1. **LEGISLATIVA** — fonte primária (portaria/DRE), a mais estável.
+2. **SERVICO** — página-serviço (seg-social.pt, iefp.pt), confirmação.
+3. **CONGELADO** — fallback final: `ValorCongelado` com o último valor
+   verificado por humano + data dessa verificação.
+
+`resolver_rubrica()` percorria a cascata por ordem: para cada passo, chamava
+um `fetcher` injectado + **a mesma** `classificador_resposta.classificar_resposta()`
+(Camada 1, inalterada até hoje) — só aceitava um valor de uma fonte `OK`;
+`BLOQUEADO` (ou o extractor não encontrar o valor esperado numa página
+genuinamente `OK`) fazia cair para o passo seguinte, nunca produzia um
+valor. Se a cascata inteira falhasse, devolvia sempre o congelado — nunca
+`SEM_VALOR` havendo um congelado definido. `resolucao.publicavel` só era
+`False` no caso limite de não haver cascata nem congelado (não devia
+acontecer na prática).
+
+`scripts/rubricas_config.py` tinha a única rubrica configurada, `ias_2026`:
+- **LEGISLATIVA**: `diariodarepublica.pt/dr/detalhe/portaria/480-a-2025-993056222`
+  (o permalink da própria portaria, não uma página de pesquisa) — testado
+  via Playwright num runner real em 2026-06-30: 200, 3943 chars, "537,13"
+  presente no texto renderizado.
+- **SERVICO**: `seg-social.pt/abono-de-familia` (fallback).
+- **CONGELADO**: `"537,13"`, verificado por humano a 2026-06-28.
+
+`tests/test_cascata_fontes.py` tinha 11/11 testes a passar (não trazidos,
+ficaram só na branch).
+
+### Comparação com o estado actual
+
+| Peça da cascata | Equivalente hoje | Cobre o mesmo? |
+|---|---|---|
+| Classificação OK/BLOQUEADO por passo | `classificador_resposta.py` (Camada 1, inalterado) | Sim — compatibilidade total, é a mesma função |
+| Fallback quando uma fonte falha | `wayback_fallback.py` (Fase 3 desta sessão) | **Não** — mecanismo diferente: Wayback é "snapshot arquivado da mesma URL", nunca fonte de factos (`OK_VIA_ARQUIVO` só serve deteção de mudança); a cascata é "outra fonte OFICIAL diferente para o mesmo valor". Complementares, não sobrepostos. |
+| "Qual é o valor oficial?" por alerta | `source_adapter.py` (Camada 6) | Só na intenção — `source_adapter` continua com providers 100% placeholder (`encontrado=False` sempre), nunca ligado ao orquestrador; a cascata era a implementação real que faltava, mas com uma arquitectura diferente (config expĺicita por rubrica vs. dispatch por palavra-chave do alerta) |
+| Fallback SERVICO da rubrica IAS (`seg-social.pt/abono-de-familia`) | Secção "FONTES — ALTERNATIVAS POR FONTE" (esta sessão) | **Confirmado morto**: esta sessão provou, com `urllib` simples e com Playwright+stealth, que este URL redirecciona sempre para o portal de autenticação — o passo SERVICO desta rubrica nunca resolveria, teria de ser reconfigurado ou removido antes de qualquer reimplementação |
+
+### Veredicto
+
+O **conceito** (cascata ordenada de fontes oficiais com fallback seguro
+para um valor congelado, nunca aceitando um valor de fonte não-`OK`) é
+sólido e preenche uma lacuna real — é a peça que falta para `source_adapter.py`
+deixar de ser só placeholders. **Não vale a pena reimplementar agora**: o
+único fallback SERVICO configurado está confirmado morto por esta sessão,
+o `source_adapter.py` continua sem nenhum consumidor real (nunca ligado ao
+orquestrador — mesma lacuna que já tinha), e o objectivo actual do projecto
+é consolidar a camada de observação (Shadow Mode, máquina de estados,
+simulação de carimbo) antes de investir em infra-estrutura de resolução de
+valores para um `AUTO_UPDATE_HABILITADO` que continua — e deve continuar —
+`False`. Registado para quando essa prioridade mudar: reimplementar de
+raiz, reutilizando `classificador_resposta.py` tal como está, tornando o
+resolver ciente de `OK_VIA_ARQUIVO` (tratar como não-resolutivo, igual a
+`BLOQUEADO`, nunca como fonte de valor), e revalidando cada URL de fonte
+antes de a configurar.
+
+---
+
 ## REVALIDAÇÃO DE CARIMBO (proposta com travão, simulada e desligada)
 
 Fase 4 do robustecimento do Shadow Mode (2026-07-02). Responde ao
@@ -1409,3 +1483,7 @@ Sessão correu numa branch de trabalho (`claude/shadow-mode-issues-scraper-5u0sy
 ---
 
 *Última revisão: 2026-07-02 — duas tarefas de seguimento à sessão anterior. 1) Verificação pedida sobre #37/#45: confirmado com as funções reais (não de memória) que NÃO é regressão — é o efeito do commit `eeefa1c`, que corrigiu um "scan solto" da página inteira (`tem_ano_antigo`) para uma verificação ancorada à própria correspondência regex; `amim.html` nunca teve um match real de padrão de data (só substrings de "2025" em citações legais), `manuais-escolares-mega.html` tem um match real (`ano_letivo`, "2025/2026") correctamente suprimido por `MARCADORES_PENDENTE` enquanto o prazo anunciado não passar. 2) Investigação de fontes alternativas para `seg_social_abono`/`seg_social_rsi`/`iefp_desemprego` (secção "FONTES — ALTERNATIVAS POR FONTE", nova) via `workflow_dispatch` temporário e real: nenhum candidato equivalente encontrado para as duas fontes da Segurança Social (redireccionam sempre para o portal de autenticação, com ou sem Playwright — não é bloqueio de IP/fingerprint); descoberta principal — `iefp_desemprego` **não está bloqueada**, é um falso positivo do próprio `classificador_resposta.py` (a substring "recaptcha" aparece só num `<script>` passivo, sem nenhum sinal real de desafio) — corrigir isso é uma mudança cirúrgica à parte, registada mas não feita nesta sessão. Branch órfã `claude/shadow-mode-issues-scraper-5u0syf` continua sem poder ser apagada (403 na API, sem `gh` CLI nem ferramenta MCP equivalente disponível) — fica para apagar manualmente. Sessão continuou directamente em `main`, sem branches novas.*
+
+---
+
+*Última revisão: 2026-07-03 — duas tarefas de limpeza de branches. 1) Badge NV Labs removido do header por decisão do Nuno: o cherry-pick directo do commit pendente em `claude/nv-labs-branding-update-xq4kb4` entrou em conflito em quase todas as páginas (a nav foi reescrita pela unificação da Fase 4 depois desse commit existir); resolvido na fonte — o badge estava embutido no próprio template de `scripts/sincronizar_nav.py` (`render_nav()`), removido ali e corrido o sincronizador nas 29 páginas (idempotência reconfirmada); CSS exclusivo do badge removido de `assets/css/branding.css`, atribuição do footer mantida; zero vestígios confirmados por grep ao repositório inteiro. 2) `claude/cool-cannon-zn5nfy` (branch antiga, divergida ~19 790 linhas de `main`) analisada sem cherry-pick — nova secção "IDEIAS RECUPERADAS — cascata de fontes (cool-cannon)" resume os 2 commits reais (`cascata_fontes.py` + `rubricas_config.py`, nunca mergeados) e regista o veredicto: conceito sólido mas não vale a pena reimplementar agora — o único fallback configurado (`seg-social.pt/abono-de-familia`) está confirmado morto pela investigação desta mesma sessão, e `source_adapter.py` continua sem consumidor real. `claude/nv-labs-branding-update-xq4kb4` e `claude/cool-cannon-zn5nfy` continuam sem poder ser apagadas pela sessão (403 na API, mesma limitação já registada) — ficam para apagar manualmente; `claude/phase-2-rollback-cleanup-adtecx` e `claude/resolve-open-issues-u1cooz` (já mergeadas, sem commits próprios) entretanto desapareceram do remoto por si (apagadas fora desta sessão, confirmado por `git fetch --prune`). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`; 572 testes a passar, ruff limpo.*
