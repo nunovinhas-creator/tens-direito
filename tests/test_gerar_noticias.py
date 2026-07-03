@@ -5,13 +5,16 @@ ordenação/agrupamento por mês e renderização a partir de data/noticias.json
 Todos os testes isolam o sistema de ficheiros com `tmp_path` — nunca tocam
 nos dados reais do repositório.
 """
+import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from gerar_noticias import (
     ItemNoticia,
+    SaudeFeed,
     agrupar_por_mes,
     carregar_itens,
     construir_item_de_entry,
@@ -23,6 +26,8 @@ from gerar_noticias import (
     normalizar_titulo,
     normalizar_url,
     ordenar_itens,
+    registar_candidatos_log,
+    registar_saude_feeds_hoje,
     regenerar_noticias_html,
     render_arquivo,
     render_destaque,
@@ -32,6 +37,13 @@ from gerar_noticias import (
     sincronizar_saidas,
     titulos_semelhantes,
 )
+
+# Data de referência fixa para selecionar_vencedor() nestes testes — nunca
+# datetime.now() real, que tornaria os testes dependentes de quando correm
+# (as entradas fixture estão datadas "01 Jul 2026"; sem isto, o corte de
+# recência rejeitá-las-ia silenciosamente passados 7 dias reais). Mesmo
+# padrão de ANO/MES fixos em tests/test_verificar_datas.py.
+HOJE_TESTE = datetime(2026, 7, 2, tzinfo=timezone.utc)
 
 
 def _item(data_iso, titulo, url="https://exemplo.pt/a", **kw):
@@ -152,14 +164,14 @@ def test_selecionar_vencedor_escolhe_melhor_score():
         _entry("Notícia sem relevância nenhuma"),
         _entry("Abono de família e subsídio de desemprego sobem"),
     ]
-    resultado = selecionar_vencedor(entries, [])
+    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
     assert resultado.vencedor is not None
     assert "Abono" in resultado.vencedor.titulo
 
 
 def test_selecionar_vencedor_nenhum_candidato_relevante():
     entries = [_entry("Notícia qualquer sobre futebol")]
-    resultado = selecionar_vencedor(entries, [])
+    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
     assert resultado.vencedor is None
 
 
@@ -175,7 +187,7 @@ def test_selecionar_vencedor_rejeita_duplicado_e_escolhe_seguinte():
         ),
         _entry("Subsídio de desemprego: novas regras do IEFP", link="https://exemplo.pt/novo"),
     ]
-    resultado = selecionar_vencedor(entries, existentes)
+    resultado = selecionar_vencedor(entries, existentes, hoje=HOJE_TESTE)
     assert resultado.vencedor is not None
     assert "Subsídio de desemprego" in resultado.vencedor.titulo
     assert len(resultado.rejeitados) == 1
@@ -185,14 +197,14 @@ def test_selecionar_vencedor_rejeita_duplicado_e_escolhe_seguinte():
 def test_selecionar_vencedor_todos_duplicados_resulta_em_nenhum():
     existentes = [_item("2026-06-20", "Abono de família sobe em 2026", url="https://exemplo.pt/ja-existe")]
     entries = [_entry("Abono de família sobe em 2026", link="https://exemplo.pt/outro-link")]
-    resultado = selecionar_vencedor(entries, existentes)
+    resultado = selecionar_vencedor(entries, existentes, hoje=HOJE_TESTE)
     assert resultado.vencedor is None
     assert len(resultado.rejeitados) == 1
 
 
 def test_selecionar_vencedor_regista_candidatos_por_feed():
     entries = [_entry("Abono de família sobe", feed="feedA"), _entry("RSI muda em 2026", feed="feedB")]
-    resultado = selecionar_vencedor(entries, [])
+    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
     assert resultado.candidatos_por_feed == {"feedA": 1, "feedB": 1}
 
 
@@ -202,7 +214,7 @@ def test_selecionar_vencedor_top3_ordenado_por_score():
         _entry("apoio subsídio abono rsi desemprego"),  # score alto
         _entry("apoio subsídio"),  # score médio
     ]
-    resultado = selecionar_vencedor(entries, [])
+    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
     scores = [c.score for c in resultado.top_candidatos]
     assert scores == sorted(scores, reverse=True)
 
@@ -391,3 +403,115 @@ def test_sincronizar_saidas_carrega_do_json_quando_itens_nao_dados(tmp_path, mon
     sincronizar_saidas(noticias_caminho=noticias_caminho, index_caminho=str(index_caminho))
 
     assert "Do JSON em disco" in index_caminho.read_text(encoding="utf-8")
+
+
+# ── Corte de recência (Fase 2, diagnóstico 2026-07-04) ────────────────────
+# Casos reais capturados no workflow_dispatch de diagnóstico: um artigo de
+# PSU de maio (score alto) tinha estado a vencer todos os dias em vez de
+# notícias mais recentes e específicas (ex.: abono de família), porque a
+# selecção não olhava a data — só ao score. Estes testes usam os títulos e
+# datas reais encontrados nesse diagnóstico como fixtures.
+
+def test_recencia_rejeita_artigo_antigo_mesmo_com_score_alto():
+    hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
+    entries = [
+        _entry(
+            "Governo aprova prestação social única. Quais são os 13 apoios agregados?",
+            resumo="Prestação social única, apoio, apoios, subsídio, IAS.",
+            published="Fri, 29 May 2026 10:00:00 GMT",
+            feed="psu_pensoes",
+        ),
+        _entry(
+            "Governo está a rever abono e alarga pagamento automático a mais famílias",
+            published="Wed, 01 Jul 2026 14:55:00 GMT",
+            feed="abono_familia",
+        ),
+    ]
+    resultado = selecionar_vencedor(entries, [], hoje=hoje)
+    assert resultado.vencedor is not None
+    assert "abono" in resultado.vencedor.titulo.lower()
+    assert any("antigo" in r.motivo for r in resultado.rejeitados)
+
+
+def test_recencia_aceita_candidato_na_borda_da_janela():
+    # janela de 7 dias a partir de 2026-07-04 -> limite é 2026-06-27 (incluído)
+    hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
+    entries = [_entry("Abono de família sobe este mês", published="Sat, 27 Jun 2026 10:00:00 GMT")]
+    resultado = selecionar_vencedor(entries, [], hoje=hoje)
+    assert resultado.vencedor is not None
+
+
+def test_recencia_rejeita_um_dia_antes_da_borda():
+    hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
+    entries = [_entry("Abono de família notícia antiga", published="Fri, 26 Jun 2026 10:00:00 GMT")]
+    resultado = selecionar_vencedor(entries, [], hoje=hoje)
+    assert resultado.vencedor is None
+    assert "antigo" in resultado.rejeitados[0].motivo
+
+
+def test_recencia_janela_e_configuravel():
+    hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
+    entries = [_entry("Abono de família notícia de há 10 dias", published="Mon, 24 Jun 2026 10:00:00 GMT")]
+    # com janela maior, o mesmo candidato passa a ser aceite
+    resultado = selecionar_vencedor(entries, [], hoje=hoje, janela_recencia_dias=15)
+    assert resultado.vencedor is not None
+
+
+# ── Saúde dos feeds e log de candidatos (Fase 3) ──────────────────────────
+
+def test_saude_feed_ok_quando_sem_bozo_e_com_entradas():
+    s = SaudeFeed(nome="abono_familia", url="https://x", bozo=False, n_entradas=10)
+    assert s.estado == "OK"
+    assert s.motivo == ""
+
+
+def test_saude_feed_morto_por_bozo_mesmo_com_entradas():
+    """Caso real do DRE: HTTP 200 mas XML malformado — bozo=True. Nunca
+    pode contar como OK só porque o HTTP respondeu."""
+    s = SaudeFeed(nome="dre", url="https://x", bozo=True, n_entradas=0)
+    assert s.estado == "MORTO"
+    assert s.motivo == "erro_parsing_xml"
+
+
+def test_saude_feed_morto_por_zero_entradas_sem_bozo():
+    s = SaudeFeed(nome="x", url="https://x", bozo=False, n_entradas=0)
+    assert s.estado == "MORTO"
+    assert s.motivo == "sem_entradas"
+
+
+def test_registar_saude_feeds_hoje_grava_snapshot(tmp_path):
+    caminho = tmp_path / "feeds_saude_hoje.json"
+    saude = [
+        SaudeFeed(nome="abono_familia", url="https://x", bozo=False, n_entradas=10),
+        SaudeFeed(nome="dre", url="https://y", bozo=True, n_entradas=0),
+    ]
+    registar_saude_feeds_hoje(saude, caminho=caminho, hoje="2026-07-04")
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
+    assert {d["nome"]: d["estado"] for d in dados} == {"abono_familia": "OK", "dre": "MORTO"}
+    assert all(d["data"] == "2026-07-04" for d in dados)
+
+
+def test_registar_candidatos_log_acrescenta_e_limita_historico(tmp_path):
+    caminho = tmp_path / "noticias_candidatos.json"
+    resultado = selecionar_vencedor(
+        [_entry("Abono de família sobe", published="Wed, 01 Jul 2026 10:00:00 GMT", feed="abono_familia")],
+        [], hoje=datetime(2026, 7, 2, tzinfo=timezone.utc),
+    )
+    saude = [SaudeFeed(nome="abono_familia", url="https://x", bozo=False, n_entradas=1)]
+
+    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-01", limite_historico=2)
+    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-02", limite_historico=2)
+    registar_candidatos_log(resultado, saude, caminho=caminho, hoje="2026-07-03", limite_historico=2)
+
+    historico = json.loads(caminho.read_text(encoding="utf-8"))
+    assert len(historico) == 2  # limitado, o mais antigo (07-01) caiu fora
+    assert [r["data"] for r in historico] == ["2026-07-02", "2026-07-03"]
+    assert historico[-1]["vencedor"]["titulo"] == "Abono de família sobe"
+
+
+def test_registar_candidatos_log_regista_nenhum_vencedor(tmp_path):
+    caminho = tmp_path / "noticias_candidatos.json"
+    resultado = selecionar_vencedor([_entry("Notícia irrelevante sobre futebol")], [], hoje=HOJE_TESTE)
+    registar_candidatos_log(resultado, [], caminho=caminho, hoje="2026-07-02")
+    historico = json.loads(caminho.read_text(encoding="utf-8"))
+    assert historico[0]["vencedor"] is None

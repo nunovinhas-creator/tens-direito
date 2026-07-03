@@ -150,6 +150,16 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
 
+      # ── Step 3a: Máquina de estados de saúde dos feeds de notícias ──────────
+      # Actualiza data/estado_feeds.json a partir de data/feeds_saude_hoje.json
+      # (escrito pelo Step 3 acima) — mesmo padrão do Step 1b para fontes
+      # bloqueadas. Não decide Issues, só calcula {estado,
+      # dias_consecutivos_morto, ultima_ok} por feed. Consumido pelo Step 8.
+      - name: Actualizar estado dos feeds de notícias
+        run: python3 scripts/gerir_estado_feeds.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
       # ── Step 3b: Sanitizar noticias.html ─────────────────────────────────────
       - name: Sanitizar noticias.html
         run: |
@@ -605,6 +615,26 @@ jobs:
               console.log('Label fonte-bloqueada criada.');
             }
 
+      # ── Step 7c: Garantir label feed-morto ───────────────────────────────────
+      - name: Criar label feed-morto se não existir
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'feed-morto',
+              });
+            } catch(_) {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'feed-morto',
+                color: '5319E7',
+                description: 'Feed de notícias sem itens ou com erro de parsing por 3+ dias seguidos',
+              });
+              console.log('Label feed-morto criada.');
+            }
+
       # ── Step 8: Abrir Issues se mudanças ou divergências ────────────────────
       - name: Abrir Issues se mudanças detectadas
         uses: actions/github-script@v7
@@ -755,6 +785,89 @@ jobs:
                   state_reason: 'completed',
                 });
                 console.log(`Issue fonte-bloqueada fechada automaticamente: ${slug}`);
+              }
+            }
+
+            // Issues de feeds de notícias mortos — máquina de estados (Fase 3)
+            // data/estado_feeds.json já foi actualizado pelo Step 3a
+            // (scripts/gerir_estado_feeds.py) a partir de data/feeds_saude_hoje.json
+            // de hoje. Só se abre Issue ao 3.º dia consecutivo sem itens/com erro
+            // de parsing — dias 1-2 ficam só no JSON. Fecho automático quando o
+            // feed volta a OK.
+            let estado_feeds = {};
+            try {
+              estado_feeds = JSON.parse(fs.readFileSync('data/estado_feeds.json', 'utf8'));
+            } catch(_) {}
+
+            let feeds_saude_hoje = [];
+            try {
+              feeds_saude_hoje = JSON.parse(fs.readFileSync('data/feeds_saude_hoje.json', 'utf8'));
+            } catch(_) {}
+            const saude_por_nome_hoje = {};
+            for (const s of feeds_saude_hoje) {
+              if (s.data && s.data.slice(0, 10) === hoje) saude_por_nome_hoje[s.nome] = s;
+            }
+
+            const existing_feed = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'feed-morto',
+            });
+
+            for (const [nome, info] of Object.entries(estado_feeds)) {
+              if (info.estado !== 'MORTO' || info.dias_consecutivos_morto < LIMIAR_DIAS_PARA_ISSUE) continue;
+              const s = saude_por_nome_hoje[nome];
+              const dup_feed = existing_feed.data.find(i => i.title.includes(`Feed morto: ${nome}`));
+              if (!dup_feed) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `📡 Feed morto: ${nome} (${hoje})`,
+                  body: [
+                    `## 📡 Feed de notícias sem itens: \`${nome}\``,
+                    ``,
+                    `**Morto há:** ${info.dias_consecutivos_morto} dia(s) consecutivos`,
+                    `**URL:** ${s ? s.url : '—'}`,
+                    `**Motivo:** ${s ? s.motivo : '(ver data/estado_feeds.json)'}`,
+                    ``,
+                    `### Ação necessária`,
+                    `1. Confirmar manualmente se o feed ainda responde: ${s ? s.url : '(ver scripts/gerar_noticias.py)'}`,
+                    `2. Se estiver definitivamente morto, substituir por um equivalente vivo em \`scripts/gerar_noticias.py\` (\`FEEDS\`) — nunca sem confirmar por fetch real primeiro`,
+                    `3. Esta issue fecha-se sozinha quando o feed voltar a devolver itens`,
+                  ].join('\n'),
+                  labels: ['feed-morto', 'verificar'],
+                });
+                console.log(`Issue feed-morto criada: ${nome} (${info.dias_consecutivos_morto} dias)`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: dup_feed.number,
+                  body: `🔁 Feed \`${nome}\` continua morto — ${info.dias_consecutivos_morto} dia(s) consecutivos, confirmado em ${hoje}.`,
+                });
+                console.log(`Issue feed-morto já existe para ${nome}, comentário adicionado.`);
+              }
+            }
+
+            for (const issue of existing_feed.data) {
+              const m = issue.title.match(/Feed morto: ([a-z0-9_]+)/);
+              const nome = m ? m[1] : null;
+              if (nome && estado_feeds[nome] && estado_feeds[nome].estado === 'OK') {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `✅ Feed \`${nome}\` recuperou a ${hoje} — fechado pelo pipeline.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+                console.log(`Issue feed-morto fechada automaticamente: ${nome}`);
               }
             }
 

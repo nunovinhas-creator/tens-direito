@@ -18,14 +18,17 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
 - `README.md` — estado do repositório
 - `data/scraped/*.json` — dados do scraper
 - `data/estado_fontes.json` — máquina de estados de fontes bloqueadas (ver secção "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
+- `data/feeds_saude_hoje.json` — snapshot diário da saúde de cada feed de notícias (Fase 3, ver secção "FRESCURA DA HOMEPAGE")
+- `data/estado_feeds.json` — máquina de estados de feeds mortos, escrito por `gerir_estado_feeds.py` (mesmo padrão de `estado_fontes.json`)
+- `data/noticias_candidatos.json` — log auditável de candidatos/decisões de cada corrida de notícias (últimas 60 corridas)
 
 **TODOS os outros HTML são manuais e protegidos.**
 Esta regra aplica-se a páginas actuais E futuras.
 Qualquer novo HTML criado está automaticamente protegido — não precisa de ser adicionado a listas.
 
 O guardrail está implementado em dois locais:
-1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` é uma allow-list estrita: `FICHEIROS_AUTO_GERADOS` (`noticias.html`, `noticias.json` — escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`, só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita). Qualquer nome fora das duas listas é **sempre bloqueado**, nunca escrito por omissão (corrigido na Fase 1 do sistema de notícias — antes havia um "fallthrough" que escrevia livremente qualquer ficheiro não-HTML não listado). Ver `tests/test_gerar_noticias_guardrail.py`.
-2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit
+1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` é uma allow-list estrita: `FICHEIROS_AUTO_GERADOS` (`noticias.html`, `noticias.json`, `feeds_saude_hoje.json`, `noticias_candidatos.json` — escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`, só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita). Qualquer nome fora das listas é **sempre bloqueado**, nunca escrito por omissão (corrigido na Fase 1 do sistema de notícias — antes havia um "fallthrough" que escrevia livremente qualquer ficheiro não-HTML não listado). Ver `tests/test_gerar_noticias_guardrail.py`. `data/estado_feeds.json` fica fora desta allow-list de propósito — é escrito directamente por `gerir_estado_feeds.py`, script dedicado e de confiança por construção, mesmo padrão de `estado_fontes.json`/`gerir_estado_fontes.py`.
+2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit (ficheiros `.json` em `data/` nunca passam por este guardrail — só HTML é protegido)
 
 Nota: o marcador `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` (bloco "Atualizado
 recentemente") também vive em `index.html`, mas é escrito por
@@ -97,7 +100,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`), com `playwright-stealth`, retries com jitter e fallback Wayback (`OK_VIA_ARQUIVO`) — ver secção "SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS" |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
-| Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
+| Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` (7 feeds RSS por tema + corte de recência de 7 dias) → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 
@@ -260,7 +263,8 @@ tens-direito/
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
-│   ├── gerar_noticias.py     ← RSS + data/noticias.json → noticias.html + cards em index.html (NOTICIA-HOME)
+│   ├── gerar_noticias.py     ← RSS por tema + data/noticias.json → noticias.html + cards em index.html (NOTICIA-HOME)
+│   ├── gerir_estado_feeds.py ← máquina de estados de feeds de notícias mortos (Step 3a do pipeline)
 │   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
@@ -292,6 +296,9 @@ tens-direito/
 │   ├── divergencias.json     ← valores scraped vs publicado
 │   ├── bloqueios.json        ← bloqueios do dia (Camada 1 do scraper), consumido por gerir_estado_fontes.py
 │   ├── estado_fontes.json    ← máquina de estados por fonte (ver "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS")
+│   ├── feeds_saude_hoje.json ← snapshot diário da saúde de cada feed de notícias, consumido por gerir_estado_feeds.py
+│   ├── estado_feeds.json     ← máquina de estados por feed de notícias (ver "FRESCURA DA HOMEPAGE")
+│   ├── noticias_candidatos.json ← log auditável de candidatos/decisões, últimas 60 corridas (ver "FRESCURA DA HOMEPAGE")
 │   └── pagina_fonte.json     ← mapeamento manual página → fonte(s) (ver "REVALIDAÇÃO DE CARIMBO")
 ├── shadow_history/
 │   └── shadow_report_AAAA-MM-DD.md ← 1 relatório/dia, gerado por shadow-daily.yml
@@ -824,37 +831,84 @@ Se uma fonte falhar (RSS sem itens relevantes, ou um artigo sem
 é actualizado nessa corrida — mantém o último conteúdo real. Zero
 factos de memória, mesma regra do resto do site.
 
-### Fontes RSS — estado a 2026-07-02
+### Fontes RSS — diagnóstico e correcção de 2026-07-04
 
-`gerar_noticias.py` usa 4 feeds: 3 pesquisas Google News (`apoios
-sociais portugal`, `segurança social portugal`, `IRS subsidios
-portugal 2026`) e `https://dre.pt/rss/dr1s.rss`. Este último já está
-documentado como inacessível nos runners GitHub (ver "FONTES
-VERIFICADAS", linha DRE) — na prática só as 3 pesquisas Google News
-alimentam a selecção. Não foi possível testar os feeds ao vivo nesta
-sessão (política de rede do ambiente bloqueia `news.google.com` e
-`dre.pt` fora da lista de domínios permitidos); a avaliação de cadência
-baseia-se no histórico real de commits a `noticias.html`: conteúdo
-genuinamente diferente (título/link/data) em cada corrida do pipeline
-desde 2026-06-30, o que indica feeds populados. Ressalva: `best_entry()`
-escolhe por pontuação de palavras-chave, não por recência — a data
-mostrada é a data real do artigo escolhido, que por isso pode
-ocasionalmente recuar face ao dia anterior (Google News reapresenta
-artigos mais antigos nos resultados de pesquisa). É esperado e correcto
-por desenho — nunca é uma data inventada, só nem sempre é a mais
-recente possível. *Registado para o futuro*: decidir se vale a pena
-remover o feed DRE morto e/ou acrescentar fontes com cadência mais
-previsível — não decidido, sem prazo.
+Sintoma reportado pelo Nuno: uma notícia real sobre abono de família (2
+jul) nunca foi apanhada pelo pipeline, apesar de correr diariamente com
+sucesso. Diagnóstico feito com fetch real num `workflow_dispatch`
+temporário (política de rede da sessão de desenvolvimento bloqueia
+`news.google.com`/`dre.pt` — mesma limitação já documentada, só o
+runner real é fiável para isto):
 
-*Registado para a Fase 2 (não feito ainda)*: um passo de diagnóstico
-de feeds candidatos (RSS directo de seg-social.pt/gov.pt/eportugal,
-queries por cluster, reaproveitar o scraper Playwright do `dre_psu`
-como fonte de notícias) via `workflow_dispatch` dedicado, corrido no
-runner real do GitHub Actions — é o único sítio onde testar a
-acessibilidade destes feeds é fiável (confirmado no diagnóstico da
-Fase 0: tanto `curl` como `WebFetch` a partir de ambientes de sessão
-levam 403 do Google mesmo a feeds que funcionam todos os dias em
-produção — bloqueio ao user-agent/IP da sessão, não ao runner real).
+1. **`data/noticias.json` confirmado a actualizar diariamente**, mas
+   sempre com artigos cada vez mais antigos sobre a PSU (8 jun a 29
+   jun, um por dia) — nunca conteúdo genuinamente novo.
+2. **Causa raiz, com evidência real**: os 3 feeds genéricos antigos
+   (`apoios sociais portugal`, `segurança social portugal`, `IRS
+   subsidios portugal 2026`) devolviam a notícia de abono real (quando
+   existia) na posição 78+ de 100 — muito além de qualquer limite
+   realista (`fetch_entries()` só examinava as primeiras 10). Um feed
+   dedicado por tema (`abono de família portugal`) encontrou a mesma
+   notícia (ou uma da mesma janela temporal, 1 jul) **na 1.ª posição**
+   — confirma que a especificidade da query, não o limite por feed, é
+   o factor decisivo.
+3. **Factor agravante confirmado**: a selecção nunca considerava a
+   data — só o score de keywords — por isso um artigo de PSU de há 2
+   meses (muitas keywords: "prestação", "apoio", "psu", etc.) continua
+   a vencer todos os dias em vez de notícias mais recentes e mais
+   específicas com score mais baixo.
+4. **DRE confirmado morto em 3 investigações diferentes** (XML
+   malformado, `not well-formed (invalid token)`, sempre no mesmo
+   ponto) — testados também 2 URLs alternativos do DRE, ambos com o
+   mesmo erro. Candidatos a fonte oficial testados e mortos:
+   `seg-social.pt/rss` (entidade XML indefinida), `portugal.gov.pt/.../rss`
+   (404). **Não existe hoje um substituto oficial vivo** — não é falta
+   de tentativa, é confirmado por fetch real.
+
+**Correcção aplicada** (`scripts/gerar_noticias.py`):
+- `FEEDS` passa de 3 pesquisas genéricas + DRE para **7 feeds, um por
+  tema do site** (`abono_familia`, `subsidio_desemprego`, `rsi`,
+  `psu_pensoes`, `acao_social_escolar`, `cuidador_informal`,
+  `porta65_arrendamento`) — todos testados com fetch real antes de
+  entrar no código. DRE removido sem substituto (documentado, não um
+  placeholder morto).
+- **Corte de recência** (`JANELA_RECENCIA_DIAS = 7`): candidatos mais
+  antigos que 7 dias são rejeitados mesmo com score alto — elimina o
+  "banco" de artigos antigos da PSU. Motivo registado no log
+  (`"antigo (antes de AAAA-MM-DD, janela de 7 dias)"`).
+- `LIMITE_ENTRADAS_POR_FEED` sobe de 10 para 15 (margem de segurança
+  barata — o diagnóstico mostrou que a query específica, não este
+  limite, era o que importava).
+- Testado com os títulos e datas **reais** capturados no diagnóstico
+  como fixtures (`tests/test_gerar_noticias.py`) — o artigo de PSU de
+  maio é rejeitado pelo corte de recência mesmo com score mais alto do
+  que o artigo de abono de julho, que vence.
+
+**Observabilidade permanente** (Fase 3, mesmo padrão de
+`gerir_estado_fontes.py`):
+- `data/feeds_saude_hoje.json` — snapshot diário por feed (`OK`/`MORTO`,
+  motivo, n.º de entradas) — um feed com `bozo=True` (erro de parsing
+  XML, o caso do DRE) conta sempre como `MORTO`, **mesmo com HTTP 200**.
+- `scripts/gerir_estado_feeds.py` (Step 3a do pipeline) — máquina de
+  estados pura (`data/estado_feeds.json`), mesma lógica de
+  `gerir_estado_fontes.py`: só cria Issue `feed-morto` ao 3.º dia
+  consecutivo, fecho automático ao recuperar. Sem dados de saúde da
+  corrida (ex.: `gerar_noticias.py` falhou antes de escrever), mantém o
+  último estado conhecido — nunca inventa "tudo OK" nem "tudo morto".
+- `data/noticias_candidatos.json` — log auditável das últimas 60
+  corridas (candidatos por feed, top 3, rejeitados com motivo,
+  vencedor ou `null`) — "nenhuma notícia hoje" deixa de ser
+  indistinguível de uma avaria; é sempre possível confirmar a
+  posteriori que a selecção correu e porque não escolheu nada.
+
+Testado em `tests/test_gerar_noticias.py` (corte de recência, saúde de
+feed, logs), `tests/test_estado_feeds.py` (máquina de estados, mesmos
+casos de `test_estado_fontes.py`) e `tests/test_gerar_noticias_guardrail.py`
+(allow-list dos 2 novos ficheiros).
+
+**Verificado no pipeline real** (`workflow_dispatch` de
+`pipeline-diario.yml`, não só no runner de diagnóstico): ver entrada de
+revisão no fim deste ficheiro para o resultado real, não assumido.
 
 ---
 

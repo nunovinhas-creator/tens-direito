@@ -2,10 +2,12 @@
 Testes para o guardrail de scripts/gerar_noticias.py — allow-list estrita
 em `escrever_ficheiro_seguro()`.
 
-`noticias.html` e `noticias.json` têm escrita livre; `index.html` só pode
-ser escrito dentro do marcador `NOTICIA-HOME:INICIO/FIM`; qualquer outro
-nome é sempre bloqueado, mesmo que nunca tenha sido pensado explicitamente
-(a função rejeita por omissão, nunca escreve por omissão).
+`noticias.html`, `noticias.json`, `feeds_saude_hoje.json` e
+`noticias_candidatos.json` (os 2 últimos, Fase 3 do robustecimento de
+2026-07-04) têm escrita livre; `index.html` só pode ser escrito dentro do
+marcador `NOTICIA-HOME:INICIO/FIM`; qualquer outro nome é sempre bloqueado,
+mesmo que nunca tenha sido pensado explicitamente (a função rejeita por
+omissão, nunca escreve por omissão).
 
 Todos os testes isolam o sistema de ficheiros com `tmp_path` — nunca
 tocam nas páginas HTML reais do repositório.
@@ -82,6 +84,18 @@ def test_escreve_livremente_em_noticias_json(tmp_path):
     caminho = _escrever(tmp_path, "noticias.json", '{"itens": []}')
     escrever_ficheiro_seguro(caminho, '{"itens": [{"titulo": "x"}]}')
     assert "titulo" in caminho.read_text(encoding="utf-8")
+
+
+def test_escreve_livremente_em_feeds_saude_hoje_json(tmp_path):
+    caminho = _escrever(tmp_path, "feeds_saude_hoje.json", "[]")
+    escrever_ficheiro_seguro(caminho, '[{"nome": "abono_familia", "estado": "OK"}]')
+    assert "abono_familia" in caminho.read_text(encoding="utf-8")
+
+
+def test_escreve_livremente_em_noticias_candidatos_json(tmp_path):
+    caminho = _escrever(tmp_path, "noticias_candidatos.json", "[]")
+    escrever_ficheiro_seguro(caminho, '[{"data": "2026-07-04", "vencedor": null}]')
+    assert "2026-07-04" in caminho.read_text(encoding="utf-8")
 
 
 # ── qualquer outro ficheiro fora da allow-list — sempre bloqueado ─────────

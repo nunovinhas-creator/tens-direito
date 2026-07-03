@@ -2,17 +2,28 @@
 """Gera noticias.html a partir de feeds RSS — corre via GitHub Action diária.
 
 `data/noticias.json` é a fonte de verdade (Fase 1, 2026-07-02): cada corrida
-escolhe no máximo 1 vencedor entre os candidatos com score positivo que ainda
-não estejam no JSON (por URL ou por título semelhante), acrescenta-o, e
-regenera noticias.html (destaque + arquivo agrupado por mês, ordenado por
-data real desc) e o bloco NOTICIA-HOME de index.html (2-3 mais recentes) a
-partir do JSON — nunca por patch incremental do HTML anterior.
+escolhe no máximo 1 vencedor entre os candidatos com score positivo, dentro
+da janela de recência (`JANELA_RECENCIA_DIAS`), que ainda não estejam no
+JSON (por URL ou por título semelhante), acrescenta-o, e regenera
+noticias.html (destaque + arquivo agrupado por mês, ordenado por data real
+desc) e o bloco NOTICIA-HOME de index.html (2-3 mais recentes) a partir do
+JSON — nunca por patch incremental do HTML anterior.
 
 "Nenhuma notícia hoje" é um resultado aceitável — nunca forçar um candidato
-fraco ou duplicado só para ter alguma coisa a publicar. Mesmo nesse caso,
-`main()` chama sempre `sincronizar_saidas()` no fim — nunca deixa
+fraco, duplicado ou antigo de mais só para ter alguma coisa a publicar. Mesmo
+nesse caso, `main()` chama sempre `sincronizar_saidas()` no fim — nunca deixa
 noticias.html/index.html atrasados face a data/noticias.json, mesmo que a
 alteração ao JSON tenha vindo de outra via (ex.: migração manual).
+
+Fase 2 do diagnóstico de 2026-07-04 (issue reportada pelo Nuno: notícia real
+de abono de família não apanhada): os feeds passaram a ser um por TEMA do
+site (`FEEDS`) em vez de pesquisas genéricas, e a selecção ganhou um corte
+de recência (`JANELA_RECENCIA_DIAS`) — ver comentários junto a essas
+constantes para o raciocínio completo. Fase 3: cada corrida regista a saúde
+de cada feed (`data/feeds_saude_hoje.json`, consumido por
+`gerir_estado_feeds.py`) e um log auditável de candidatos/decisões
+(`data/noticias_candidatos.json`) — para que "nenhuma notícia hoje" seja
+sempre distinguível de uma avaria, nunca um resultado silencioso.
 
     python scripts/gerar_noticias.py          # corrida normal (fetch + selecção + sync)
     python scripts/gerar_noticias.py --sync   # só resincroniza as saídas com o JSON actual, sem fetch
@@ -30,7 +41,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
 from pathlib import Path
@@ -38,11 +49,16 @@ from typing import Dict, List, Optional, Tuple
 
 RAIZ = Path(__file__).resolve().parent.parent
 NOTICIAS_JSON = RAIZ / "data" / "noticias.json"
+FEEDS_SAUDE_HOJE_JSON = RAIZ / "data" / "feeds_saude_hoje.json"
+NOTICIAS_CANDIDATOS_JSON = RAIZ / "data" / "noticias_candidatos.json"
 
 # Guardrail: ficheiros de escrita livre por este script (allow-list — um
 # ficheiro que não conste aqui nem em SECCOES_PERMITIDAS é sempre bloqueado,
 # nunca escrito "por omissão").
-FICHEIROS_AUTO_GERADOS = ["noticias.html", "noticias.json"]
+FICHEIROS_AUTO_GERADOS = [
+    "noticias.html", "noticias.json",
+    "feeds_saude_hoje.json", "noticias_candidatos.json",
+]
 
 # Guardrail: ficheiros HTML onde este script só pode escrever dentro de uma
 # secção marcada — qualquer diferença fora dela bloqueia a escrita.
@@ -102,12 +118,49 @@ def escrever_ficheiro_seguro(caminho, conteudo):
     )
 
 
-FEEDS = [
-    "https://news.google.com/rss/search?q=apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "https://news.google.com/rss/search?q=segurança+social+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "https://news.google.com/rss/search?q=IRS+subsidios+portugal+2026&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "https://dre.pt/rss/dr1s.rss",
-]
+# Um feed de pesquisa Google News por TEMA do site, em vez de 3 pesquisas
+# genéricas ("apoios sociais portugal" etc.) — diagnóstico de 2026-07-04
+# (issue reportada pelo Nuno: notícia de abono de família de 2 jul nunca
+# apanhada) confirmou que os feeds genéricos ficam dominados pelo tema mais
+# "linkado" do momento (PSU) e enterram temas mais específicos a partir da
+# posição ~78 — muito além do que qualquer pipeline realista examina. Cada
+# feed por tema foi testado com fetch real num workflow_dispatch temporário
+# antes de entrar aqui (nenhum feed sem essa confirmação).
+#
+# `dre.pt/rss/dr1s.rss` (e as 2 variantes testadas, `serie1s.rss` e
+# `diariodarepublica.pt/dr/rss`) foram removidos — XML malformado
+# (`not well-formed (invalid token)`) confirmado em 3 sessões de
+# investigação diferentes, nunca contribuiu um único artigo. Candidatos a
+# fonte oficial testados e também mortos: `seg-social.pt/rss` (entidade XML
+# indefinida), `portugal.gov.pt/pt/gc25/comunicacao/rss` (404) — não existe
+# hoje um substituto oficial vivo; ver CLAUDE.md secção "FRESCURA DA
+# HOMEPAGE" para o registo completo.
+FEEDS = {
+    "abono_familia": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "subsidio_desemprego": "https://news.google.com/rss/search?q=subs%C3%ADdio+de+desemprego+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "rsi": "https://news.google.com/rss/search?q=RSI+rendimento+social+de+inser%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "psu_pensoes": "https://news.google.com/rss/search?q=presta%C3%A7%C3%A3o+social+%C3%BAnica+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "acao_social_escolar": "https://news.google.com/rss/search?q=a%C3%A7%C3%A3o+social+escolar+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "cuidador_informal": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "porta65_arrendamento": "https://news.google.com/rss/search?q=Porta+65+arrendamento+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+}
+
+# Quantos itens de cada feed são examinados por corrida. Antes eram 10 — o
+# diagnóstico mostrou que o factor decisivo foi a especificidade da query
+# (o item de abono de 1 jul apareceu em 1.º lugar no feed dedicado), não
+# este limite; sobe-se ligeiramente para 15 por margem de segurança, a
+# custo desprezável (15 × 7 feeds = 105 entradas/corrida).
+LIMITE_ENTRADAS_POR_FEED = 15
+
+# Corte de recência: só candidatos publicados nos últimos N dias podem
+# vencer — elimina o "banco" de artigos antigos (ex.: PSU de há 2 meses)
+# que, por pontuarem alto em keywords, escondiam notícias mais recentes e
+# mais específicas. N=7 porque: cobre uma semana inteira mesmo que o
+# pipeline falhe uma corrida; todo o conteúdo genuinamente fresco
+# encontrado no diagnóstico de 2026-07-04 estava dentro de 0-3 dias: uma
+# janela de 7 dias é folgada sem ressuscitar o histórico antigo da PSU
+# (que já teria mais de 3-4 semanas a essa data).
+JANELA_RECENCIA_DIAS = 7
 
 KEYWORDS = [
     "apoio", "apoios", "prestação", "prestações", "subsídio", "subsídios",
@@ -201,12 +254,33 @@ class Candidato:
     url: str
     data_iso: str
     feed_url: str
+    feed_nome: str = "?"
 
 
 @dataclass
 class Rejeicao:
     titulo: str
     motivo: str
+
+
+@dataclass
+class SaudeFeed:
+    nome: str
+    url: str
+    bozo: bool
+    n_entradas: int
+
+    @property
+    def estado(self) -> str:
+        return "OK" if (not self.bozo and self.n_entradas > 0) else "MORTO"
+
+    @property
+    def motivo(self) -> str:
+        if self.bozo:
+            return "erro_parsing_xml"
+        if self.n_entradas == 0:
+            return "sem_entradas"
+        return ""
 
 
 @dataclass
@@ -298,14 +372,23 @@ def detectar_cluster(titulo: str, resumo: str) -> Optional[str]:
     return None
 
 
-def fetch_entries() -> List[dict]:
+def fetch_entries() -> Tuple[List[dict], List[SaudeFeed]]:
+    """Vai a cada feed uma única vez — devolve as entradas (para pontuação/
+    selecção) e a saúde de cada feed (para `data/feeds_saude_hoje.json`,
+    consumido por `gerir_estado_feeds.py`). Um feed com erro de parsing XML
+    (`bozo`) ou 0 entradas está MORTO nesta corrida, independentemente de o
+    HTTP ter respondido 200 — foi exactamente o caso do DRE (200 com XML
+    malformado)."""
     entries = []
-    for url in FEEDS:
+    saude = []
+    for nome, url in FEEDS.items():
         feed = feedparser.parse(url)
-        for e in feed.entries[:10]:
+        saude.append(SaudeFeed(nome=nome, url=url, bozo=bool(feed.bozo), n_entradas=len(feed.entries)))
+        for e in feed.entries[:LIMITE_ENTRADAS_POR_FEED]:
             e["_feed_url"] = url
+            e["_feed_nome"] = nome
             entries.append(e)
-    return entries
+    return entries, saude
 
 
 def parse_date(entry) -> datetime:
@@ -373,14 +456,32 @@ def construir_item_de_entry(entry: dict) -> ItemNoticia:
     )
 
 
-# ── Selecção com dedup e observabilidade ───────────────────────────────────
+# ── Selecção com dedup, corte de recência e observabilidade ───────────────
 
-def selecionar_vencedor(entries: List[dict], itens_existentes: List[ItemNoticia]) -> ResultadoSelecao:
+def _data_iso_para_date(data_iso: str):
+    return datetime.strptime(data_iso, "%Y-%m-%d").date()
+
+
+def selecionar_vencedor(
+    entries: List[dict],
+    itens_existentes: List[ItemNoticia],
+    *,
+    hoje: Optional[datetime] = None,
+    janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
+) -> ResultadoSelecao:
+    """Escolhe no máximo 1 vencedor: score positivo, dentro da janela de
+    recência, e não duplicado de um item já existente. Candidatos antigos
+    de mais são rejeitados mesmo com score alto — é o que impede um artigo
+    de há 2 meses (ex.: PSU) de continuar a vencer todos os dias só por
+    pontuar mais em keywords do que uma notícia genuína mas mais recente e
+    mais específica (diagnóstico de 2026-07-04)."""
     resultado = ResultadoSelecao()
+    hoje = hoje or datetime.now(timezone.utc)
+    limite_recencia = (hoje - timedelta(days=janela_recencia_dias)).date()
 
     for e in entries:
-        feed_url = e.get("_feed_url", "?")
-        resultado.candidatos_por_feed[feed_url] = resultado.candidatos_por_feed.get(feed_url, 0) + 1
+        feed_nome = e.get("_feed_nome", e.get("_feed_url", "?"))
+        resultado.candidatos_por_feed[feed_nome] = resultado.candidatos_por_feed.get(feed_nome, 0) + 1
 
     candidatos = [
         Candidato(
@@ -390,6 +491,7 @@ def selecionar_vencedor(entries: List[dict], itens_existentes: List[ItemNoticia]
             url=e.get("link", "#"),
             data_iso=format_date_iso(parse_date(e)),
             feed_url=e.get("_feed_url", "?"),
+            feed_nome=e.get("_feed_nome", "?"),
         )
         for e in entries
     ]
@@ -399,6 +501,11 @@ def selecionar_vencedor(entries: List[dict], itens_existentes: List[ItemNoticia]
     for c in candidatos:
         if c.score <= 0:
             break  # candidatos já ordenados por score desc — nenhum a seguir serve
+        if _data_iso_para_date(c.data_iso) < limite_recencia:
+            resultado.rejeitados.append(
+                Rejeicao(titulo=c.titulo, motivo=f"antigo (antes de {limite_recencia.isoformat()}, janela de {janela_recencia_dias} dias)")
+            )
+            continue
         duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes)
         if duplicado is not None:
             resultado.rejeitados.append(
@@ -414,17 +521,17 @@ def selecionar_vencedor(entries: List[dict], itens_existentes: List[ItemNoticia]
 
 def imprimir_relatorio(resultado: ResultadoSelecao) -> None:
     print("=== Selecção de notícias ===")
-    for feed_url, n in resultado.candidatos_por_feed.items():
-        print(f"  candidatos em {feed_url}: {n}")
+    for feed_nome, n in resultado.candidatos_por_feed.items():
+        print(f"  candidatos em {feed_nome}: {n}")
     print("  top 3 candidatos:")
     for c in resultado.top_candidatos:
-        print(f"    score={c.score} | {c.titulo[:80]}")
+        print(f"    score={c.score} [{c.data_iso}] | {c.titulo[:80]}")
     for r in resultado.rejeitados:
-        print(f"  rejeitado (dedup): {r.titulo[:80]} — {r.motivo}")
+        print(f"  rejeitado: {r.titulo[:80]} — {r.motivo}")
     if resultado.vencedor:
         print(f"  vencedor: {resultado.vencedor.titulo[:80]} ({resultado.motivo_vencedor})")
     else:
-        print("  vencedor: nenhum — sem candidato novo com score positivo hoje")
+        print("  vencedor: nenhum — sem candidato novo, recente e não-duplicado hoje")
 
 
 # ── Persistência data/noticias.json ────────────────────────────────────────
@@ -622,15 +729,79 @@ def sincronizar_saidas(
     atualizar_index_home(itens_ordenados, caminho=index_caminho)
 
 
+# ── Observabilidade permanente (Fase 3, 2026-07-04) ───────────────────────
+
+def registar_saude_feeds_hoje(
+    saude: List[SaudeFeed], *, caminho: Path = FEEDS_SAUDE_HOJE_JSON, hoje: Optional[str] = None
+) -> None:
+    """Snapshot da saúde de cada feed HOJE — espelha `data/bloqueios.json`
+    do scraper. Consumido por `gerir_estado_feeds.py` (máquina de estados,
+    Issue `feed-morto` ao 3.º dia consecutivo) — este ficheiro nunca decide
+    nada sozinho, só regista o facto bruto desta corrida."""
+    hoje = hoje or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    dados = [
+        {"nome": s.nome, "url": s.url, "estado": s.estado, "motivo": s.motivo, "n_entradas": s.n_entradas, "data": hoje}
+        for s in saude
+    ]
+    escrever_ficheiro_seguro(str(caminho), json.dumps(dados, ensure_ascii=False, indent=2) + "\n")
+
+
+LIMITE_HISTORICO_CANDIDATOS = 60
+
+
+def registar_candidatos_log(
+    resultado: ResultadoSelecao,
+    saude: List[SaudeFeed],
+    *,
+    caminho: Path = NOTICIAS_CANDIDATOS_JSON,
+    hoje: Optional[str] = None,
+    limite_historico: int = LIMITE_HISTORICO_CANDIDATOS,
+) -> None:
+    """Acrescenta um registo por corrida — candidatos por feed, top 3,
+    rejeitados com motivo, vencedor (ou nenhum) — para que "nenhuma notícia
+    hoje" seja sempre auditável a posteriori, nunca um resultado silencioso
+    e indistinguível de uma avaria. Histórico limitado às últimas
+    `limite_historico` corridas (≈2 meses a 1 corrida/dia) para não crescer
+    sem limite."""
+    hoje = hoje or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    historico = []
+    if caminho.exists():
+        try:
+            historico = json.loads(caminho.read_text(encoding="utf-8"))
+        except Exception:
+            historico = []
+
+    registo = {
+        "data": hoje,
+        "saude_feeds": {s.nome: s.estado for s in saude},
+        "candidatos_por_feed": resultado.candidatos_por_feed,
+        "top_candidatos": [
+            {"titulo": c.titulo, "score": c.score, "data_iso": c.data_iso, "feed_nome": c.feed_nome}
+            for c in resultado.top_candidatos
+        ],
+        "rejeitados": [{"titulo": r.titulo, "motivo": r.motivo} for r in resultado.rejeitados],
+        "vencedor": (
+            {"titulo": resultado.vencedor.titulo, "score": resultado.vencedor.score, "motivo": resultado.motivo_vencedor}
+            if resultado.vencedor else None
+        ),
+    }
+    historico.append(registo)
+    historico = historico[-limite_historico:]
+    escrever_ficheiro_seguro(str(caminho), json.dumps(historico, ensure_ascii=False, indent=2) + "\n")
+
+
 def main() -> None:
     if "--sync" in sys.argv:
         sincronizar_saidas()
         return
 
     itens_existentes = carregar_itens()
-    entries = fetch_entries()
+    entries, saude = fetch_entries()
     resultado = selecionar_vencedor(entries, itens_existentes)
     imprimir_relatorio(resultado)
+
+    registar_saude_feeds_hoje(saude)
+    registar_candidatos_log(resultado, saude)
 
     if resultado.vencedor is None:
         print("Nenhuma notícia relevante encontrada hoje.")
