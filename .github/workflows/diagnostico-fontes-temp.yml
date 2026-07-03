@@ -1,9 +1,10 @@
 name: Diagnóstico Fontes Alternativas (temporário)
 
-# Workflow TEMPORÁRIO — busca fixtures reais para testes do classificador
-# e testa acessibilidade das URLs planas seg-social via http simples a
-# partir do runner real. Só lê e escreve em tests/fixtures/, apagado no
-# fim da investigação. Nunca cria Issues, nunca toca em data/.
+# Workflow TEMPORÁRIO — testa as URLs profundas do novo portal
+# seg-social.pt/ptss/pssd via Playwright (as URLs planas, mesmo via http
+# simples, redireccionam sempre para o gateway de autenticação -- ver
+# runs anteriores deste workflow). Só lê e escreve em tests/fixtures/,
+# apagado no fim da investigação.
 
 on:
   workflow_dispatch:
@@ -18,64 +19,87 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Buscar fixtures reais + testar URLs seg-social
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar Playwright
+        run: |
+          pip install playwright==1.60.0
+          playwright install chromium --with-deps
+
+      - name: Testar URLs profundas do portal novo
         run: |
           python3 << 'PYEOF'
           import re
-          import urllib.request
-          import urllib.error
           from pathlib import Path
-
-          HEADERS = {
-              "User-Agent": (
-                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/131.0.0.0 Safari/537.36"
-              ),
-              "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          }
+          from playwright.sync_api import sync_playwright
 
           FIXTURES_DIR = Path("tests/fixtures")
           FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
 
-          def buscar(url, timeout=20):
-              req = urllib.request.Request(url, headers=HEADERS)
-              try:
-                  with urllib.request.urlopen(req, timeout=timeout) as resp:
-                      return resp.status, resp.geturl(), resp.read().decode("utf-8", errors="replace")
-              except urllib.error.HTTPError as e:
-                  corpo = e.read().decode("utf-8", errors="replace")
-                  return e.code, url, corpo
-              except Exception as e:
-                  print(f"ERRO: {type(e).__name__}: {e}")
-                  return None, url, ""
-
-          alvos = {
-              "iefp_desemprego_real.html": "https://www.iefp.pt/subsidio-desemprego",
-              "seg_social_abono_real.html": "https://www.seg-social.pt/abono-de-familia-para-criancas-e-jovens",
-              "seg_social_rsi_real.html": "https://www.seg-social.pt/rendimento-social-de-insercao",
+          ALVOS = {
+              "seg_social_abono_portal.html": {
+                  "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
+                  "ancora": "abono de família",
+              },
+              "seg_social_rsi_portal.html": {
+                  "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
+                  "ancora": "rendimento social de inserção",
+              },
           }
 
-          for nome_fixture, url in alvos.items():
-              print(f"\n{'='*70}\n=== {nome_fixture}\nURL: {url}")
-              status, url_final, corpo = buscar(url)
-              print(f"status: {status}")
-              print(f"URL final: {url_final}")
-              print(f"tamanho: {len(corpo)} chars")
-              titulo_m = re.search(r"<title[^>]*>(.*?)</title>", corpo, re.I | re.S)
-              print(f"<title>: {titulo_m.group(1).strip() if titulo_m else '(nenhum)'}")
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+              context = browser.new_context(
+                  user_agent=(
+                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/131.0.0.0 Safari/537.36"
+                  ),
+                  locale="pt-PT",
+                  timezone_id="Europe/Lisbon",
+              )
+              page = context.new_page()
 
-              if corpo:
-                  caminho = FIXTURES_DIR / nome_fixture
-                  caminho.write_text(corpo, encoding="utf-8")
-                  print(f"guardado em {caminho} ({len(corpo)} chars)")
+              for nome_fixture, alvo in ALVOS.items():
+                  url, ancora = alvo["url"], alvo["ancora"]
+                  print(f"\n{'='*70}\n=== {nome_fixture}\nURL: {url}")
+                  try:
+                      resp = page.goto(url, timeout=30_000, wait_until="networkidle")
+                      print(f"status: {resp.status if resp else 'N/A'}")
+                      print(f"URL final: {page.url}")
 
-              # sinal rápido de conteúdo real vs. portal de autenticação
-              for termo in ["abono de família", "rendimento social de inserção", "subsídio de desemprego", "segurança social direta"]:
-                  n = len(re.findall(re.escape(termo), corpo, re.I))
-                  if n:
-                      print(f"  contém {termo!r}: {n}x")
+                      # espera explícita pela âncora de conteúdo, não só pelo load
+                      try:
+                          page.wait_for_function(
+                              "text => document.body && document.body.innerText.toLowerCase().includes(text)",
+                              arg=ancora.lower(),
+                              timeout=15_000,
+                          )
+                          print(f"âncora {ancora!r} apareceu no DOM")
+                      except Exception as e:
+                          print(f"âncora {ancora!r} NÃO apareceu em 15s: {e}")
+
+                      html = page.content()
+                      print(f"tamanho: {len(html)} chars")
+                      titulo = page.title()
+                      print(f"<title>: {titulo}")
+
+                      n_ancora = len(re.findall(re.escape(ancora), html, re.I))
+                      n_login = len(re.findall(re.escape("segurança social direta"), html, re.I))
+                      print(f"contém âncora {ancora!r}: {n_ancora}x")
+                      print(f"contém 'segurança social direta': {n_login}x")
+
+                      (FIXTURES_DIR / nome_fixture).write_text(html, encoding="utf-8")
+                      print(f"guardado em {FIXTURES_DIR / nome_fixture}")
+                  except Exception as e:
+                      print(f"ERRO ao navegar: {type(e).__name__}: {e}")
+
+              page.close()
+              context.close()
+              browser.close()
           PYEOF
 
       - name: Commit fixtures (se houver alterações)
@@ -86,7 +110,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "Sem alterações em tests/fixtures/ — nada para commitar."
           else
-            git commit -m "chore: fixtures reais para testes do classificador (diagnostico temp)"
+            git commit -m "chore: fixtures do portal novo seg-social (diagnostico temp)"
             git pull --rebase origin main
             git push
           fi
