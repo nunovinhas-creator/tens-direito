@@ -1168,6 +1168,49 @@ sincronização idempotentes, isolado em memória) e
 sobre os artigos reais + compatibilidade das 2 regexes dependentes).
 704 testes a passar (69 novos), ruff limpo.
 
+### Verificação pós-merge (2026-07-03) — tipos de JSON-LD nas 27 páginas
+
+Confirmado por varrimento real das 27 páginas de conteúdo: os únicos
+tipos JSON-LD presentes são `FAQPage`, `HowTo`, `HowToStep`,
+`BreadcrumbList`, `ListItem`, `Question`, `Answer` — **nenhuma tem um
+objecto `Article` ou `WebPage` próprio**. O `author`/`publisher` da NV
+Labs injectado por `adicionar_autoria_artigos.py` vive hoje só dentro do
+`FAQPage` (schema.org-válido, `FAQPage` < `WebPage` < `CreativeWork`,
+mas a Google Search Central documenta que a Pesquisa Google **não
+consome autoria a partir de `FAQPage`** — só de tipos como `Article`/
+`NewsArticle`/`BlogPosting` ou `WebPage`).
+
+*Registado para o futuro, não implementado nesta sessão*: acrescentar
+um objecto `Article` (ou `WebPage`) próprio por página de conteúdo, com
+`author`/`publisher` → `.../sobre.html#nvlabs` e `datePublished`/
+`dateModified` (a extrair do "Verificado a" real de cada página, nunca
+inventada — mesma fonte que `sincronizar_clusters.extrair_verificado_em()`
+já usa). Só faz sentido como sessão dedicada: exige decidir se
+`datePublished` vem da tabela "PÁGINAS PUBLICADAS" deste ficheiro (nem
+sempre com dia exacto, só mês) ou de outro sítio, e validar com o
+Rich Results Test que o novo tipo não colide com o `FAQPage` existente
+na mesma página.
+
+### Fast-forward para `main` e limpeza de branch (2026-07-03)
+
+`claude/new-session-2oea8g` (1 commit à frente de `origin/main` no
+momento do merge) foi integrada em `main` por fast-forward puro, sem
+PR, a pedido explícito do Nuno — mesmo padrão já usado noutras sessões
+para respeitar a "REGRA ABSOLUTA — GIT". Nota técnica: o `main` local
+desta sessão estava **desactualizado e com histórico não relacionado**
+(`git merge-base` não encontrou ancestral comum com `origin/main` —
+provavelmente um ref local nunca sincronizado desde uma reescrita de
+histórico anterior); resolvido com `git checkout -B main origin/main`
+antes do fast-forward — sem perda de trabalho, o `origin/main` remoto
+já continha tudo o que havia de real.
+
+Tentativa de apagar a branch remota `claude/new-session-2oea8g`:
+**403 na API** (mesma limitação já registada nas revisões anteriores
+deste ficheiro para `claude/nv-labs-branding-update-xq4kb4` e
+`claude/cool-cannon-zn5nfy` — sem `gh` CLI nem ferramenta MCP com
+permissão para apagar branches neste ambiente). Fica também para
+apagar manualmente.
+
 ---
 
 ## GSTACK
