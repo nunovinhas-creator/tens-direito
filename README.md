@@ -18,6 +18,7 @@ Actualizado automaticamente a partir do repositório em **03 de julho de 2026**.
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
+| [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
@@ -27,15 +28,19 @@ Actualizado automaticamente a partir do repositório em **03 de julho de 2026**.
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
+| [`porta-65.html`](porta-65.html) | Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
+| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
 | [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: o que já foi aprovado e o que ainda falta decidir |
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU — condições de acesso aprovadas pela Assembleia da República |
+| [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU: aprovado vs. por definir |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU e Abono de Família: são apoios diferentes — não se confundem |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
+| [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
@@ -202,6 +207,7 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── adicionar_autoria_artigos.py
 │   ├── atualizar_branding_nvlabs.py
 │   ├── atualizar_claude_md.py
 │   ├── auto_update_engine.py
@@ -332,6 +338,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 03 de julho de 2026 às 10:20 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 03 de julho de 2026 às 17:38 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

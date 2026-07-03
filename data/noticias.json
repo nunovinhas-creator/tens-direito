@@ -134,6 +134,15 @@
       "resumo": "Portugal é o país da União Europeia onde os apoios sociais têm menos impacto na redução da pobreza Expresso",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-06-08",
+      "titulo": "Chega admite viabilizar Prestação Social Única se PSD limitar apoios sociais a imigrantes",
+      "fonte_nome": "Jornal SOL",
+      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQZHhENXB0WUxiNFRHUEZxWm02T1o3TGFMNzBUMnVOenBTV3pDcWpHcV9vcWFYV2ZIU2twSkR2UXJnUVRpeWFPUXBhcjlDWHFfQ1lLbjhHcTNwTmxjQ0JlQ29RQm1fUHRFdndFT1F1eFZPcFRyZXJGbEdWM2xDb2V3S1h5bEVSUlczaDhsZnhQTXZfWmNsX3pTeEdKVVdkT1NfLW83LU9DTkFaaWZMNzNQb1FiVV9BQW5OWW5paGhPenE5VHhIb2tUQVhGbkNfRl9FTTNFalBmbDFkZEozdG1DcXdTNWUzeVh2RnNSbFlFVlA0Zw?oc=5",
+      "resumo": "Chega admite viabilizar Prestação Social Única se PSD limitar apoios sociais a imigrantes Jornal SOL",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
     }
   ]
 }

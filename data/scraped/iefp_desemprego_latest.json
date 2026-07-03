@@ -1,13 +1,12 @@
 {
   "url": "https://www.iefp.pt/subsidio-desemprego",
   "url_original": "https://www.iefp.pt/subsidio-desemprego",
-  "data_acesso": "2026-07-03T06:27:47.728503+00:00",
+  "data_acesso": "2026-07-03T16:37:38.931646+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "Subsídio de desemprego",
     "paragrafos": [
-      "O subsídio de desemprego é um apoio para quem perdeu o emprego de forma involuntária (contra a sua vontade).",
-      "Para ter este apoio é necessário estar inscrito como desempregado no IEFP.",
+      "O subsídio de desemprego é um apoio para quem perdeu o emprego de forma involuntária (contra a sua vontade). Para ter este apoio é necessário estar inscrito como desempregado no IEFP.",
       "Pode fazer no iefponline ou presencialmente num Serviço de Emprego.",
       "Pode consultar as condições de acesso ao Subsídio de Desemprego na Segurança Social Direta .",
       "Posso pedir o subsídio de desemprego online?",
@@ -20,7 +19,8 @@
       "Posso procurar emprego em Portugal e continuar a receber o subsídio de desemprego do estrangeiro?",
       "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein, Andorra ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho em Portugal.",
       "Posso pedir o subsídio de desemprego em Portugal após ficar desempregado no estrangeiro?",
-      "Sim. Se é cidadão da União Europeia, Islândia, Noruega, Liechtenstein, Andorra ou Suíça, e manteve a sua residência em Portugal enquanto trabalhou num desses países."
+      "Sim. Se é cidadão da União Europeia, Islândia, Noruega, Liechtenstein, Andorra ou Suíça, e manteve a sua residência em Portugal enquanto trabalhou num desses países.",
+      "Página escrita de acordo com os princípios da Linguagem Clara"
     ],
     "itens_lista": [
       "O IEFP Quem Somos Instituição História Recursos Humanos Planeamento e Gestão Instrumentos de Gestão Informações Estatísticas Estatísticas Rede de Serviços Rede de Serviços Comunicação Destaques / Notícias Canal Externo de Denúncias Mediateca Revista Dirigir&Formar Media Regulamento Geral Proteção de Dados RGPD Política de Privacidade de Dados Pessoais Lado a Lado Lado a Lado – Sistema de Gestão da Conciliação entre a vida profissional, familiar e pessoal no IEFP, I.P.",
@@ -56,5 +56,5 @@
     ]
   },
   "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
-  "hash_conteudo": "f4b3037f631c7df51c98247d048f81c1b4d5832db5166b4e9b7f6e3b4c55e5e5"
+  "hash_conteudo": "760aff5f5c268fb058d6eeccd9bbc7005ad8e3d0259b0078a93f4fc1bd52618f"
 }
