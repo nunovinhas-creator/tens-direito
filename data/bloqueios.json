@@ -85,5 +85,25 @@
       "desafio:recaptcha"
     ],
     "chars_uteis": 8120
+  },
+  {
+    "slug": "seg_social_abono",
+    "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
+    "data": "2026-07-03T06:31:19.002899+00:00",
+    "motivos": [
+      "titulo_login:seguranca social direta",
+      "texto_util=173<min=500"
+    ],
+    "chars_uteis": 173
+  },
+  {
+    "slug": "seg_social_rsi",
+    "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
+    "data": "2026-07-03T06:35:24.763922+00:00",
+    "motivos": [
+      "titulo_login:seguranca social direta",
+      "texto_util=173<min=500"
+    ],
+    "chars_uteis": 173
   }
 ]

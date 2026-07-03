@@ -1509,7 +1509,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-07-02*
+*Última revisão automática: 2026-07-03*
 
 ---
 
