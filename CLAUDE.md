@@ -210,6 +210,7 @@ Isto elimina race conditions entre workflows concorrentes.
 | `p/habitacao.html` | Apoios à Habitação em Portugal 2026 — Guia Completo | 3 jul. 2026 |
 | `porta-65.html` | Porta 65 Jovem e Porta 65+ 2026 | 3 jul. 2026 |
 | `apoio-extraordinario-renda.html` | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas | 3 jul. 2026 |
+| `prova-escolar.html` | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como | 3 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -890,6 +891,21 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
+| `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
+
+**`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
+ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb
+JSON-LD, fonte-bloco) e a data "31 de julho de 2026" (H1, título,
+`prazo-topo`, resposta directa) — ambos têm de ser revistos **todos os
+anos em junho**, antes do próximo prazo de 31 de julho, para o ano
+letivo seguinte. O conteúdo normativo (quem tem de fazer, tabela de
+prazos/consequências, passo a passo na SSD) não muda todos os anos —
+só as referências ao ano concreto. Candidata natural para
+`verificar_datas.py`: o padrão "2026/2027" nesta página deve expirar em
+**junho de 2027**, não antes — se `MARCADORES_PENDENTE`/supressões
+gerarem um alerta prematuro (por exemplo, logo em 2026), é um falso
+positivo a corrigir na Camada 1, não um sinal de que a página está
+desactualizada.
 
 ---
 
@@ -1774,3 +1790,11 @@ Parte B: fact-check bloqueante confirmou Porta 65 Jovem/Porta 65+ com candidatur
 Nova secção "MONETIZAÇÃO — POLÍTICA DE AFILIADOS (futuro)" — puramente documental, zero links/infraestrutura de afiliados nesta sessão.
 
 `sincronizar_clusters.py` e `sincronizar_nav.py` corridos com sucesso (idempotência reconfirmada — 2.ª corrida sempre zero alterações); `inserir_botao_partilhar.py` confirmado sem alterações (páginas novas já escritas com o botão). 627 testes a passar (48 novos: 13 do simulador + 35 nas 4 páginas novas via testes parametrizados existentes), ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False` (inalterados por esta sessão — não é scraper).
+
+---
+
+*Última revisão: 2026-07-03 — nova página `prova-escolar.html` no cluster `apoios-escolares`, urgente (prazo 31 de julho). Fact-check via `WebSearch` (`WebFetch` continua completamente bloqueado nesta sessão) cruzando gov.pt (serviço "Fazer a prova escolar"), seg-social.pt/prova-escolar e o Guia Prático — Prova Escolar do ISS, I.P.: confirmado o passo omitido pelos portais oficiais — verificar primeiro em "Provas registadas" na Segurança Social Direta antes de assumir que é preciso agir, já que a prova é frequentemente dada oficiosamente pelo próprio estabelecimento de ensino; confirmados os 3 grupos que têm mesmo de a fazer (14+ com abono no secundário, por efeito na Bolsa de Estudo; 16+ com abono; 18+ com pensão de sobrevivência) e a tabela de prazos/consequências (até 31 jul = OK; 1 ago-31 dez = suspensão em setembro com retroativos ao regularizar; a partir de 1 jan sem justificação = perda definitiva das prestações suspensas; excepção até 31 dez para o ensino superior). Página inclui passo a passo na SSD (com o registo de representação legal para menores e a repetição por cada jovem), casos especiais (deficiência <24 anos, formação profissional com equivalência, acumulação abono+pensão numa única prova) e a clarificação Bolsa de Estudo (automática/oficiosa) vs. Bolsa de Mérito (candidatura à parte, já coberta por `bolsa-de-merito.html`) — primeira página do site a documentar essa distinção. FAQ JSON-LD com as 4 perguntas do brief.
+
+Integração completa: adicionada a `data/clusters.json` (cluster `apoios-escolares`, `descricao_curta` actualizada) e sincronizada com `sincronizar_clusters.py`/`sincronizar_nav.py` (breadcrumb, "pertence ao guia", relacionados, nav — idempotência confirmada); cartão "URGENTE" novo (reaproveita `.badge-novo`) como primeiro item de "Datas a não perder" no `index.html`; cross-link automático a partir de `acao-social-escolar.html` (sibling do mesmo cluster, via `RELACIONADOS` gerado) e cross-link manual novo em `abono-de-familia.html` (`zona-cinzenta`, página noutro cluster — fora do alcance do sync automático); `scripts/pesquisa.js` e `sitemap.xml` actualizados. Avaliado e conscientemente não forçado: "notícia do dia" via `gerar_noticias.py` — o pipeline selecciona por pontuação de palavras-chave sobre feeds RSS reais, não é um mecanismo para inserir manualmente a publicação de uma página; "nenhuma notícia hoje" continua a ser o resultado correcto quando não há candidato genuíno, mesma regra já documentada em "FRESCURA DA HOMEPAGE".
+
+Nota de manutenção sazonal registada em "PÁGINAS COM DATAS SAZONAIS": as referências ao ano lectivo ("2026/2027") e ao prazo ("31 de julho de 2026") têm de ser revistas todos os anos em junho — confirmado contra a lógica real de `verificar_datas.py` (padrão `ano_letivo`, `REVER_EM=[6,7]`) que "2026/2027" só seria assinalado como desactualizado a partir de 2027, nunca antes. 635 testes a passar (8 novos), ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados `False`.
