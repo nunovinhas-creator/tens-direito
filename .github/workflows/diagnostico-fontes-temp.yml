@@ -1,0 +1,92 @@
+name: Diagnóstico Fontes Alternativas (temporário)
+
+# Workflow TEMPORÁRIO — busca fixtures reais para testes do classificador
+# e testa acessibilidade das URLs planas seg-social via http simples a
+# partir do runner real. Só lê e escreve em tests/fixtures/, apagado no
+# fim da investigação. Nunca cria Issues, nunca toca em data/.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Buscar fixtures reais + testar URLs seg-social
+        run: |
+          python3 << 'PYEOF'
+          import re
+          import urllib.request
+          import urllib.error
+          from pathlib import Path
+
+          HEADERS = {
+              "User-Agent": (
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/131.0.0.0 Safari/537.36"
+              ),
+              "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          }
+
+          FIXTURES_DIR = Path("tests/fixtures")
+          FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
+
+          def buscar(url, timeout=20):
+              req = urllib.request.Request(url, headers=HEADERS)
+              try:
+                  with urllib.request.urlopen(req, timeout=timeout) as resp:
+                      return resp.status, resp.geturl(), resp.read().decode("utf-8", errors="replace")
+              except urllib.error.HTTPError as e:
+                  corpo = e.read().decode("utf-8", errors="replace")
+                  return e.code, url, corpo
+              except Exception as e:
+                  print(f"ERRO: {type(e).__name__}: {e}")
+                  return None, url, ""
+
+          alvos = {
+              "iefp_desemprego_real.html": "https://www.iefp.pt/subsidio-desemprego",
+              "seg_social_abono_real.html": "https://www.seg-social.pt/abono-de-familia-para-criancas-e-jovens",
+              "seg_social_rsi_real.html": "https://www.seg-social.pt/rendimento-social-de-insercao",
+          }
+
+          for nome_fixture, url in alvos.items():
+              print(f"\n{'='*70}\n=== {nome_fixture}\nURL: {url}")
+              status, url_final, corpo = buscar(url)
+              print(f"status: {status}")
+              print(f"URL final: {url_final}")
+              print(f"tamanho: {len(corpo)} chars")
+              titulo_m = re.search(r"<title[^>]*>(.*?)</title>", corpo, re.I | re.S)
+              print(f"<title>: {titulo_m.group(1).strip() if titulo_m else '(nenhum)'}")
+
+              if corpo:
+                  caminho = FIXTURES_DIR / nome_fixture
+                  caminho.write_text(corpo, encoding="utf-8")
+                  print(f"guardado em {caminho} ({len(corpo)} chars)")
+
+              # sinal rápido de conteúdo real vs. portal de autenticação
+              for termo in ["abono de família", "rendimento social de inserção", "subsídio de desemprego", "segurança social direta"]:
+                  n = len(re.findall(re.escape(termo), corpo, re.I))
+                  if n:
+                      print(f"  contém {termo!r}: {n}x")
+          PYEOF
+
+      - name: Commit fixtures (se houver alterações)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/fixtures/
+          if git diff --staged --quiet; then
+            echo "Sem alterações em tests/fixtures/ — nada para commitar."
+          else
+            git commit -m "chore: fixtures reais para testes do classificador (diagnostico temp)"
+            git pull --rebase origin main
+            git push
+          fi
