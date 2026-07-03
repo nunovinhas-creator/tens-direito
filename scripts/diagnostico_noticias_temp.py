@@ -24,6 +24,44 @@ import requests  # noqa: E402
 
 import gerar_noticias as gn  # noqa: E402
 
+# Candidatos a feed novo/substituto — testados aqui antes de qualquer decisão
+# (nenhum feed é adicionado ao gerar_noticias.py sem fetch real confirmado).
+CANDIDATOS = [
+    "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "https://news.google.com/rss/search?q=seg-social.pt+quando%3A7d&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "https://observador.pt/rss",
+    "https://eco.sapo.pt/feed/",
+    "https://www.jornaldenegocios.pt/rss/economia",
+    "https://www.dinheirovivo.pt/rss",
+]
+
+
+def testar_candidatos():
+    print("\n" + "=" * 70)
+    print("CANDIDATOS A FEED NOVO/SUBSTITUTO — teste real")
+    print("=" * 70)
+    for url in CANDIDATOS:
+        print(f"\n--- CANDIDATO: {url} ---")
+        try:
+            resp = requests.get(
+                url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; TensDireitoBot/1.0)"},
+                timeout=20,
+            )
+            print(f"HTTP status: {resp.status_code}, bytes: {len(resp.content)}")
+        except Exception as e:
+            print(f"ERRO HTTP: {e}")
+            continue
+
+        feed = feedparser.parse(url)
+        print(f"bozo={feed.bozo} bozo_exception={getattr(feed, 'bozo_exception', None)}")
+        print(f"n.º entradas: {len(feed.entries)}")
+        for e in feed.entries[:8]:
+            e["_feed_url"] = url
+            item = gn.construir_item_de_entry(e)
+            score = gn.score_entry(e)
+            print(f"  [{item.data_iso}] score={score:2d} | {item.titulo[:90]}")
+
 
 def main():
     print("=" * 70)
@@ -111,3 +149,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    testar_candidatos()
