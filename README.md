@@ -1,5 +1,7 @@
 # Tens Direito
 
+© 2026 NV Labs — Todos os direitos reservados. O conteúdo e o código deste repositório não estão licenciados para reutilização, reprodução ou modificação.
+
 📋 Documentação interna e índice de portfólio mantidos em repositório privado.
 
 > **Os teus direitos, com data e fonte.**
