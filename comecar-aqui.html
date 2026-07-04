@@ -37,22 +37,22 @@ nav{display:flex;align-items:center;gap:1.5rem;max-width:900px;margin:0 auto}
 .logo-text span.tens{color:#0F172A}
 .logo-text span.direito{color:#0D9488}
 nav a.nav-link{color:#0F172A;text-decoration:none;font-size:0.95rem}
-nav a.nav-link:hover{color:#0D9488}
-nav a.nav-link.active{color:#0D9488;font-weight:700}
+nav a.nav-link:hover{color:#0F766E}
+nav a.nav-link.active{color:#0F766E;font-weight:700}
 .hero{background:#0F766E;color:white;padding:2.5rem 1.5rem;text-align:center}
 .hero h1{font-size:1.8rem;margin-bottom:0.5rem}
 .hero p{opacity:.9;font-size:1.05rem;max-width:540px;margin:0 auto}
 main{max-width:740px;margin:2.5rem auto;padding:0 1rem}
 .wizard-step{display:none}
 .wizard-step.active{display:block}
-.step-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D9488;margin-bottom:0.5rem}
+.step-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0F766E;margin-bottom:0.5rem}
 .step-question{font-size:1.3rem;font-weight:800;color:#0F172A;margin-bottom:1.75rem;line-height:1.3}
 .opcoes{display:flex;flex-direction:column;gap:0.75rem}
 .opcao{background:#fff;border:2px solid #dee2e6;border-radius:10px;padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:0.9rem;font-size:1rem;font-weight:500;color:#0F172A;transition:border-color .15s,background .15s;text-align:left;width:100%}
 .opcao:hover{border-color:#0D9488;background:#f0fdf9}
 .opcao .opcao-icon{font-size:1.6rem;flex-shrink:0}
 .opcao .opcao-texto strong{display:block;font-size:0.98rem}
-.opcao .opcao-texto span{font-size:0.83rem;color:#6c757d}
+.opcao .opcao-texto span{font-size:0.83rem;color:#5C6770}
 .resultados{display:none}
 .resultados.active{display:block}
 .resultados-titulo{font-size:1.2rem;font-weight:800;color:#0F172A;margin-bottom:1.25rem}
@@ -67,13 +67,13 @@ main{max-width:740px;margin:2.5rem auto;padding:0 1rem}
 .tag-res.vermelho{background:#FEE2E2;color:#991B1B}
 .tag-res.verde{background:#D1FAE5;color:#065F46}
 .tag-res.azul{background:#DBEAFE;color:#1E40AF}
-.reiniciar{background:none;border:none;color:#0D9488;font-size:0.9rem;cursor:pointer;padding:0;margin-top:1.5rem;text-decoration:underline}
+.reiniciar{background:none;border:none;color:#0F766E;font-size:0.9rem;cursor:pointer;padding:0;margin-top:1.5rem;text-decoration:underline}
 .progress-bar{height:4px;background:#e9ecef;border-radius:4px;margin-bottom:2rem;overflow:hidden}
 .progress-fill{height:100%;background:#0D9488;border-radius:4px;transition:width .3s ease}
 .nenhum{background:#fff3cd;border-left:4px solid #ffc107;padding:1rem 1.25rem;border-radius:4px;font-size:0.9rem;color:#664d03;margin-bottom:1rem}
-footer{text-align:center;padding:2rem;color:#6c757d;font-size:0.85rem}
+footer{text-align:center;padding:2rem;color:#5C6770;font-size:0.85rem}
 .disclaimer{background:#fff3cd;border-left:4px solid #ffc107;padding:1rem 1.25rem;border-radius:4px;font-size:0.9rem;line-height:1.6;margin:2rem 0;color:#664d03}
-footer a{color:#6c757d}
+footer a{color:#5C6770}
 @media(max-width:600px){.hero h1{font-size:1.5rem}.step-question{font-size:1.1rem}}
   
 .hamburger { display: none; flex-shrink: 0; margin-left: auto; background: none; border: none; cursor: pointer; color: #0F172A; padding: 0.25rem; }
@@ -92,7 +92,7 @@ footer a{color:#6c757d}
 .mobile-menu.aberto { display: block; }
 .mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
 .mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0D9488; }
+.mobile-menu a:hover { color: #0F766E; }
 @media (max-width: 700px) {
   nav a.nav-link { display: none; }
   .hamburger { display: flex; }
@@ -297,7 +297,7 @@ footer a{color:#6c757d}
     <div class="resultados" id="resultados">
       <div class="resultados-titulo" id="resultados-titulo">Com base nas tuas respostas, estes apoios podem aplicar-se ao teu caso:</div>
       <div class="resultado-cards" id="resultado-cards"></div>
-      <p style="font-size:0.82rem;color:#6c757d;margin-top:1.25rem;line-height:1.5;">Esta ferramenta é orientativa. Confirma sempre os requisitos exactos nas fontes oficiais antes de submeter qualquer pedido.</p>
+      <p style="font-size:0.82rem;color:#5C6770;margin-top:1.25rem;line-height:1.5;">Esta ferramenta é orientativa. Confirma sempre os requisitos exactos nas fontes oficiais antes de submeter qualquer pedido.</p>
       <button class="reiniciar" onclick="reiniciar()">↩ Recomeçar</button>
     </div>
 

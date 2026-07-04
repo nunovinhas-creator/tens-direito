@@ -5,7 +5,41 @@
  * literais (não var(--...)) de propósito: este ficheiro é carregado em
  * todas as páginas, incluindo as que não declaram essas variáveis no
  * seu próprio <style>.
+ *
+ * :root abaixo é a excepção deliberada — define os tokens de cor da
+ * marca para as 36 páginas (carregadas via este ficheiro), corrigindo
+ * a auditoria WCAG de 2026-07-04: #0D9488 (--cor-marca) só tem 3.74:1
+ * sobre branco, insuficiente para texto/links (AA exige 4.5:1); usar
+ * sempre --cor-texto-marca (#0F766E, 5.47:1) para texto e links sobre
+ * fundos claros. --cor-marca mantém-se para logo, fundos, bordas e
+ * elementos grandes (só precisam de 3:1).
  */
+
+:root {
+  --cor-marca: #0D9488;
+  --cor-texto-marca: #0F766E;
+  --cor-texto-muted: #5C6770;
+}
+
+/*
+ * Sublinhado para links dentro de texto corrido (WCAG 1.4.1 — não
+ * depender só da cor). Âmbito deliberadamente restrito a parágrafos e
+ * blocos de citação/aviso dentro de <main> — nunca cards, listas de
+ * navegação (relacionados, pillar-lista, "Comece por aqui") ou a nav,
+ * que continuam sem sublinhado por serem elementos de navegação, não
+ * texto corrido.
+ */
+main p a,
+.fonte-bloco a,
+.fonte-inline a,
+.aviso-info a,
+.nota-tabela a,
+.destaque-verde a,
+.zona-cinzenta a,
+.resumo-rapido a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 .nav-wrap {
   position: sticky;
