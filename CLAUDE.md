@@ -268,6 +268,8 @@ tens-direito/
 │   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
+│   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas 35 páginas (idempotente)
+│   ├── adicionar_article_jsonld.py ← insere JSON-LD Article (author/publisher/datas) nas 27 páginas de conteúdo (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
 │   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
 │   ├── decisao_datas.py      ← Camada 3: estado → acção (AUTO_UPDATE_HABILITADO=False)
@@ -1264,16 +1266,12 @@ mas a Google Search Central documenta que a Pesquisa Google **não
 consome autoria a partir de `FAQPage`** — só de tipos como `Article`/
 `NewsArticle`/`BlogPosting` ou `WebPage`).
 
-*Registado para o futuro, não implementado nesta sessão*: acrescentar
-um objecto `Article` (ou `WebPage`) próprio por página de conteúdo, com
-`author`/`publisher` → `.../sobre.html#nvlabs` e `datePublished`/
-`dateModified` (a extrair do "Verificado a" real de cada página, nunca
-inventada — mesma fonte que `sincronizar_clusters.extrair_verificado_em()`
-já usa). Só faz sentido como sessão dedicada: exige decidir se
-`datePublished` vem da tabela "PÁGINAS PUBLICADAS" deste ficheiro (nem
-sempre com dia exacto, só mês) ou de outro sítio, e validar com o
-Rich Results Test que o novo tipo não colide com o `FAQPage` existente
-na mesma página.
+**Implementado em 2026-07-04** (ver secção "AUDITORIA DE INDEXAÇÃO E
+HIGIENE SEO TÉCNICA" mais abaixo) — `scripts/adicionar_article_jsonld.py`
+acrescenta o objecto `Article` a cada uma das 27 páginas de conteúdo,
+`datePublished` extraído da tabela "PÁGINAS PUBLICADAS" deste ficheiro
+(ISO 8601 parcial, `AAAA-MM`, quando só o mês é conhecido) e
+`dateModified` de `extrair_verificado_em()`.
 
 ### Fast-forward para `main` e limpeza de branch (2026-07-03)
 
@@ -1303,6 +1301,131 @@ sessão), e o mesmo se aplica às restantes órfãs documentadas nesta
 secção e nas revisões anteriores (`claude/nv-labs-branding-update-xq4kb4`,
 `claude/cool-cannon-zn5nfy`, `claude/shadow-mode-issues-scraper-5u0syf`).
 Nenhuma branch por apagar manualmente neste momento.
+
+---
+
+## AUDITORIA DE INDEXAÇÃO E HIGIENE SEO TÉCNICA (2026-07-04)
+
+Disparada pelo export do GSC de 30/06 (18 indexadas, 11 não — 3 "página
+com redirecionamento", 1 "duplicada sem canónica selecionada", 5
+"rastreada não indexada", 2 "detetada não indexada"). Objectivo:
+eliminar qualquer causa técnica do nosso lado; as "rastreadas/detetadas"
+são discrição do Google num domínio novo — não inventado nenhum fix
+para essas duas categorias.
+
+### Passo 1 — sitemap.xml
+
+Auditoria programática (comparação directa sitemap × ficheiros reais,
+não amostragem): as 35 páginas HTML do repositório menos as 2 exclusões
+deliberadas (`404.html` — erro, `robots: noindex`; `simulador-psu.html`
+— ferramenta pronta mas por publicar, `robots: noindex,nofollow`) dão
+33 páginas indexáveis — **exactamente as 33 entradas já presentes no
+sitemap**, sem nenhum ficheiro em falta e sem nenhuma entrada fantasma.
+Zero `www.`, zero `http://` (fora do `xmlns` do schema), zero
+`/index.html` explícito. `lastmod` coerente com o carimbo "Verificado
+a" real em todas as 14 páginas que o têm (verificado com
+`extrair_verificado_em()`, a mesma função que `sincronizar_clusters.py`
+já usa — nunca recalculado à parte). **O sitemap já estava correcto
+antes desta sessão** — não houve nada para corrigir neste passo.
+
+### Passo 2 — canónicas (a causa técnica real encontrada)
+
+Achado principal desta auditoria: **nenhuma das 35 páginas tinha
+`<link rel="canonical">`** — confirmado por grep ao repositório inteiro
+antes de escrever qualquer código. Investigado também se havia alguma
+duplicação de conteúdo real entre páginas semelhantes (candidato óbvio:
+os pares do cluster PSU, mencionados no brief) — `difflib.SequenceMatcher`
+sobre o texto de `<main>` das 6 páginas do cluster PSU deu uma
+similaridade máxima de 14% entre qualquer par; **não há duplicação de
+conteúdo real**. A causa mais provável (e a única evidência técnica
+encontrada) para "duplicada, o Google escolheu outra canónica" é
+exactamente a ausência do sinal: sem canónica explícita, o Google
+decide por conta própria.
+
+Corrigido por `scripts/adicionar_canonicas.py` (idempotente, `--write`):
+insere `<link rel="canonical" href="https://tensdireito.com/...">`
+auto-referente logo a seguir à tag `og:url` já existente e já correcta
+em todas as páginas (reaproveitada como fonte do valor, nunca
+recalculada a partir do caminho do ficheiro) — aplicado às 35 páginas,
+incluindo `404.html`/`simulador-psu.html` (uma canónica não faz mal a
+uma página `noindex`, e evita qualquer ambiguidade se algum dia for
+indexada por engano).
+
+### Passo 3 — redireccionamentos
+
+Confirmado via `CNAME` (`tensdireito.com`, domínio apex, sem entrada
+`www` no repositório): `www→apex` e `http→https` são geridos
+inteiramente pela infra-estrutura do GitHub Pages (enforce HTTPS é uma
+definição da plataforma, não fica no repositório) — nada para
+configurar ou corrigir aqui. Confirmado que nenhum URL do sitemap
+aponta para uma variante `www`/`http`. As 3 páginas "com
+redirecionamento" do GSC são, com toda a probabilidade, exactamente
+estas variantes automáticas — comportamento correcto, nada a corrigir.
+
+### Passo 4a — páginas órfãs
+
+Grafo de alcançabilidade construído a partir dos `href`s internos reais
+de cada página (BFS a partir de `index.html`, mesmo HTML estático que o
+Google rastreia — não depende de JS em runtime): as 33 páginas públicas
+indexáveis estão todas alcançáveis em ≤2 cliques a partir de
+`index.html`. As únicas 2 páginas inalcançáveis são exactamente as 2
+exclusões deliberadas do Passo 1 (`404.html`, `simulador-psu.html`) —
+nenhuma órfã por acidente.
+
+### Passo 4b — Article JSON-LD
+
+Implementa a melhoria já registada na sessão E-E-A-T anterior (ver
+secção "E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL" → "Verificação
+pós-merge"): as 27 páginas de conteúdo (as que têm `FAQPage`) só tinham
+`author`/`publisher` dentro do próprio `FAQPage`, que a Google Search
+Central documenta não consumir para autoria.
+
+`scripts/adicionar_article_jsonld.py` (idempotente, `--write`) insere
+um novo bloco `<script type="application/ld+json">` (`Article` — nunca
+misturado no mesmo objecto que o `FAQPage`) com:
+- `headline` — de `og:title` (já correcto e específico por página);
+- `author`/`publisher` — `{"@id": ".../sobre.html#nvlabs"}`, mesmo
+  padrão de `adicionar_autoria_artigos.py`;
+- `datePublished` — de `DATAS_PUBLICACAO`, um dicionário sourced
+  directamente da tabela "PÁGINAS PUBLICADAS" deste ficheiro; onde só o
+  mês é conhecido (não o dia), usa-se ISO 8601 parcial (`AAAA-MM`) —
+  decisão registada como pendente na sessão anterior, resolvida agora
+  em vez de inventar um dia;
+- `dateModified` — de `extrair_verificado_em()`; páginas sem "Verificado
+  a" próprio (2 simuladores, 4 pillar pages sem carimbo) usam
+  `datePublished` como `dateModified` — nunca uma data mais recente
+  inventada;
+- `mainEntityOfPage` — de `og:url`.
+
+Validado: as 0 blocos JSON-LD malformados em nenhuma das 27 páginas
+(`json.loads()` sobre todos os blocos `ld+json` do repositório).
+`validator.schema.org` continua bloqueado nesta sessão (mesma
+limitação de rede já documentada nas sessões anteriores — `WebFetch`
+devolve 403 para qualquer domínio) — validação feita por leitura
+estrutural directa contra o schema Article (propriedades obrigatórias
+presentes, tipos correctos, `@id` de autor/editor consistente com o
+`Organization` já definido em `sobre.html`).
+
+### Passo 5 — testes permanentes
+
+Novo `tests/test_higiene_indexacao.py` (167 casos, parametrizado sobre
+as páginas reais — mesmo padrão de `test_nav_coerencia.py`): falha se
+um URL do sitemap não tiver ficheiro correspondente, se uma página
+pública não estiver no sitemap sem constar de `EXCLUSOES_SITEMAP`
+(justificada por página, nunca "esquecimento"), se uma canónica
+estiver ausente/não-auto-referente/com `www`/`index.html`, se uma
+página de conteúdo não tiver o `Article` JSON-LD válido, ou se uma
+página pública for órfã (sem estar em `EXCLUSOES_ORFAS`). Corre no job
+"Suite de Testes (pytest)" do `integridade.yml`, a cada push a `main`,
+como toda a suite.
+
+### Resultado
+
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados
+`False`. Idempotência de `adicionar_canonicas.py` e
+`adicionar_article_jsonld.py` confirmada (2.ª corrida de cada = zero
+alterações). `ruff check scripts/ --select E,F,W --ignore E501 .`
+limpo. Zero regressões na suite existente.
 
 ---
 
@@ -2123,3 +2246,7 @@ Ao pedir confirmação de que a suite completa (incluindo os 3 ficheiros de not�
 Verificação da página live (`tensdireito.com/sobre.html`): `WebFetch` e `curl` directo confirmaram **403 da política de rede da sessão** para este domínio (`recentRelayFailures` da proxy: "gateway answered 403 to CONNECT (policy denial)") — o próprio README da proxy é explícito em não contornar e reportar o host bloqueado, por isso não foi tentada nenhuma alternativa técnica. **O Nuno reportou externamente à sessão** (fora desta conversa, no browser dele) que a página live tem os 5 blocos correctos, zero termos proibidos no HTML servido, ofuscação do email a funcionar com fallback `<noscript>` visível a clientes sem JS, e o footer com link funcional para `#nvlabs` — registado aqui como relato do Nuno, não como verificação feita por esta sessão (distinção deliberada, mesma disciplina que o site aplica a factos publicados: nunca afirmar "confirmado" quando não foi esta sessão a confirmar). O que esta sessão confirmou directamente: o commit `2a0e256` (o mesmo revisto e testado localmente) foi o que o "pages build and deployment" publicou com sucesso — logo o HTML servido é, por construção, o mesmo já validado localmente e em CI.
 
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` em `scripts/decisao_datas.py` no final desta sessão.
+
+---
+
+*Última revisão: 2026-07-04 — auditoria de indexação e higiene SEO técnica, disparada pelo export do GSC de 30/06 (18 indexadas, 11 não). Nova secção "AUDITORIA DE INDEXAÇÃO E HIGIENE SEO TÉCNICA (2026-07-04)" com o detalhe completo. Resumo: (1) `sitemap.xml` já estava correcto — 33 entradas para as 33 páginas indexáveis (35 páginas reais menos `404.html`/`simulador-psu.html`, exclusões deliberadas), `lastmod` coerente com o carimbo real, nada a corrigir; (2) achado principal — nenhuma das 35 páginas tinha `<link rel="canonical">`, causa técnica mais provável do "duplicada, o Google escolheu outra canónica" do GSC (confirmado que não há duplicação de conteúdo real entre as páginas do cluster PSU, similaridade máxima 14%); corrigido por novo `scripts/adicionar_canonicas.py` (idempotente), canónica auto-referente nas 35 páginas; (3) `www→apex`/`http→https` confirmados geridos pela infra-estrutura do GitHub Pages via `CNAME`, nada a configurar no repositório — as 3 páginas "com redirecionamento" do GSC são essas variantes automáticas, comportamento correcto; (4) confirmado que nenhuma das 33 páginas públicas é órfã (alcançáveis em ≤2 cliques a partir de `index.html` por BFS sobre os `href`s reais); implementada a melhoria já registada na sessão E-E-A-T anterior — novo `scripts/adicionar_article_jsonld.py` (idempotente) acrescenta `Article` JSON-LD (author/publisher/datePublished/dateModified) às 27 páginas de conteúdo, `datePublished` sourced da tabela "PÁGINAS PUBLICADAS" deste ficheiro; (5) novo `tests/test_higiene_indexacao.py` (167 casos parametrizados sobre as páginas reais) no job "Suite de Testes (pytest)" do CI. `validator.schema.org` continua bloqueado nesta sessão (mesma limitação de rede documentada nas sessões anteriores) — validação feita por leitura estrutural directa. 935 testes a passar localmente + 50 skipped (3 ficheiros de notícias não recolhidos por falta de `feedparser` neste sandbox, mesma limitação documentada nas sessões anteriores — corre completo no CI), ruff limpo, idempotência de ambos os scripts novos confirmada (2.ª corrida = zero alterações), `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
