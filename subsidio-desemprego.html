@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
   <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
@@ -269,6 +269,7 @@ footer a{color:#5C6770}
   <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
   <!-- NAV:INICIO -->
 <div class="nav-wrap">
     <nav>
@@ -282,8 +283,8 @@ footer a{color:#5C6770}
 
       <div class="nav-links">
         <div class="nav-dropdown" id="navApoiosDropdown">
-          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
-          <div class="nav-dropdown-menu" role="menu">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
             <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
             <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
             <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
@@ -296,13 +297,13 @@ footer a{color:#5C6770}
         <a href="/noticias.html">Notícias</a>
       </div>
 
-      <div class="nav-search" role="search">
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
         <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
         <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
       </div>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -312,7 +313,7 @@ footer a{color:#5C6770}
     </nav>
 
     <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
-      <div class="nav-search nav-search-movel" role="search">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
         <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
         <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
@@ -330,12 +331,12 @@ footer a{color:#5C6770}
   </div>
 <!-- NAV:FIM -->
 
-  <div class="aviso-transicao-psu">
+  <div class="aviso-transicao-psu" role="region" aria-label="Aviso de alteração legislativa">
     ⚠️ AVISO — SUBSÍDIO SOCIAL DE DESEMPREGO<br>
     O Subsídio SOCIAL de Desemprego (não contributivo) será absorvido pela Prestação Social Única (PSU), aprovada pelo Parlamento a 25 de junho de 2026. O Subsídio de Desemprego CONTRIBUTIVO (para quem descontou 360 dias) NÃO é afectado e mantém-se com as regras actuais. Esta página cobre ambas as modalidades. → <a href="/prestacao-social-unica.html" style="color:#92400E;font-weight:600;text-decoration:underline">Saber mais sobre a PSU</a>
   </div>
 
-  <section class="hero">
+  <header class="hero">
     <div class="hero-inner">
       <!-- CLUSTER-BADGE:INICIO -->
     <nav class="breadcrumb-visivel" aria-label="Breadcrumb"><a href="/">Início</a> › <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a> › <span>Subsídio de desemprego</span></nav>
@@ -352,9 +353,9 @@ footer a{color:#5C6770}
         Apoio mensal para quem perdeu o emprego de forma involuntária. Prazo de garantia: 360 dias de contribuições nos últimos 24 meses. Valor: 65% da remuneração de referência, entre 537,13 € e 1.342,83 €/mês em 2026.
       </div>
     </div>
-  </section>
+  </header>
 
-  <main>
+  <main id="main-content">
     <div class="resumo-rapido" role="note" aria-label="Resumo rápido">
       <ul>
         <li>✅ <strong>Quem tem direito:</strong> Poderás ter direito SE ficaste desempregado de forma involuntária e tens 360 dias de remunerações registadas nos últimos 24 meses (prazo de garantia).</li>
@@ -573,7 +574,7 @@ footer a{color:#5C6770}
   </main>
 
   <footer>
-    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
     <p style="margin-top:.5rem">tensdireito.com — Informação verificada para cidadãos portugueses</p>
       <!-- NVLABS:FOOTER:INICIO -->
     <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">

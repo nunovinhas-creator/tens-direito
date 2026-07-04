@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
   <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
@@ -78,6 +78,7 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
   <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
   <!-- NAV:INICIO -->
 <div class="nav-wrap">
     <nav>
@@ -91,8 +92,8 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
 
       <div class="nav-links">
         <div class="nav-dropdown" id="navApoiosDropdown">
-          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
-          <div class="nav-dropdown-menu" role="menu">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
             <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
             <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
             <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
@@ -105,13 +106,13 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
         <a href="/noticias.html">Notícias</a>
       </div>
 
-      <div class="nav-search" role="search">
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
         <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
         <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
       </div>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -121,7 +122,7 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
     </nav>
 
     <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
-      <div class="nav-search nav-search-movel" role="search">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
         <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
         <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
@@ -138,7 +139,7 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
     </div>
   </div>
 <!-- NAV:FIM -->
-  <section class="hero">
+  <header class="hero">
     <h1>Fontes Oficiais</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
@@ -146,8 +147,8 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
 </div>
 <!-- partilhar:fim -->
 
-  </section>
-  <main>
+  </header>
+  <main id="main-content">
     <div class="card">
       <span class="tag">Legislação</span>
       <h2>Diário da República</h2>

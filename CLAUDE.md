@@ -219,6 +219,7 @@ Isto elimina race conditions entre workflows concorrentes.
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
 | `privacidade.html` | Política de Privacidade | jun. 2026 |
+| `acessibilidade.html` | Acessibilidade | 4 jul. 2026 |
 | `404.html` | Página não encontrada | jun. 2026 |
 
 *Tabela corrigida a 2026-07-02 — faltavam 7 páginas já publicadas (rsi, subsidio-desemprego,
@@ -245,6 +246,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
+- [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
 - [ ] Commit e push directamente para `main`
 
@@ -1438,6 +1440,181 @@ limpo. Zero regressões na suite existente.
 
 ---
 
+## ACESSIBILIDADE — WCAG 2.1 AA (2026-07-04)
+
+Auditoria e correcção completas, nas 36 páginas reais do repositório.
+Metodologia: axe-core **4.12.1** vendorizado em
+`tests/vendor/axe-core/axe.min.js` (MPL-2.0, sem CDN em runtime, mesmo
+princípio de zero dependências externas nas páginas), corrido via
+Playwright contra um `http.server` local enraizado na raiz do
+repositório — **nunca `file://`**: a 1.ª tentativa desta sessão usou
+`file://` e reportou 34/36 páginas com `color-contrast` — quase tudo
+falso positivo, porque `<link>`/`<script>` de caminho absoluto (ex.
+`/assets/css/nav.css`) nunca carregam sob `file://` (resolvem contra a
+raiz do filesystem, não do repo). Corrigido antes de qualquer análise
+válida. Complementado com auditoria manual de código para o que o axe
+não cobre bem (skip-link, foco visível, Escape no menu).
+
+### Achado lateral, não planeado: corrupção de pseudo-selectores CSS em 9 páginas
+
+Ao investigar porque a badge "URGENTE"/"NOVO" de `index.html` tinha
+texto preto sobre fundo vermelho (4.34:1, abaixo do mínimo), descoberto
+que **todas** as variáveis CSS (`--teal`, `--white`, `--muted`, etc.)
+de `index.html` resolviam para string vazia — `": root"` (espaço a
+mais depois do `:`) invalida o token da pseudo-classe e o browser
+descarta a regra inteira. O mesmo padrão (espaço a mais depois de `:`
+antes de `hover`/`last-child`/`before`/`after`/etc.) existia em mais 8
+páginas (`404.html`, `acao-social-escolar.html`, `bolsa-de-merito.html`,
+`fontes.html`, `manuais-escolares-mega.html`, `passe-sub23.html`,
+`privacidade.html`, `sobre.html`) — provavelmente resíduo de algum
+processamento de texto anterior à sessão, nunca investigado até à
+raiz. Corrigido com uma correcção cirúrgica (regex restrito a dentro de
+`<style>`, só actua quando o nome a seguir ao `:` é um pseudo-selector
+CSS conhecido — nunca um valor como `cursor: not-allowed`, apanhado e
+corrigido como falso positivo antes de aplicar). Confirmado visualmente
+(Chromium real, antes/depois): contadores de passos, checkmarks de
+checklist, scrollbar customizada e vários `:hover` estavam
+silenciosamente inertes — nada disto tinha sido tocado por esta sessão,
+achado ao investigar a causa raiz em vez de aplicar um remendo
+superficial só na badge.
+
+### Fase 1 — auditoria (relatório completo antes de qualquer correcção)
+
+Zero violações `critical`. Achados por regra (impacto axe):
+`color-contrast` (serious, 34/36 páginas, 586 ocorrências — 19
+combinações de cor distintas, a maior: `#0D9488` como texto sobre
+branco, 3.74:1, insuficiente para 4.5:1 exigido); `link-in-text-block`
+(serious, 17/36 — breadcrumbs sem sublinhado nem contraste suficiente
+face ao texto vizinho); `region`/`landmark-one-main`/`landmark-unique`/
+`aria-allowed-role`/`empty-table-header` (moderate/minor, best-practice
+— não são critérios WCAG formais, mas 100% das páginas tinham o hero
+fora de qualquer landmark). Manual: sem skip-link em nenhuma página
+(2.4.1), foco totalmente invisível nos 3 campos de pesquisa de
+`index.html` (`outline:none` sem substituto, 2.4.7), sem Escape a
+fechar dropdown/hambúrguer, `aria-controls` em falta, `lang="pt-PT"`
+inconsistente com `lang="pt"` em 34 páginas.
+
+### Fase 2 — correcção
+
+**Cores**: `#0D9488` (marca) mantém-se em logo/fundos/bordas/elementos
+grandes (só precisam de 3:1); todo o texto e links sobre fundos claros
+passam a `#0F766E` (5.47:1). Cinzento muted `#6C757D` → `#5C6770`
+(5.49:1). Fundos translúcidos sobre o hero (`.resposta-direta`,
+`.valor-destaque`, breadcrumb) tornados sólidos. ~15 combinações
+pontuais (timeline, filtros de `noticias.html`, footer-note,
+exemplo-box do RSI) ajustadas dentro da mesma família de cor —
+escurecido até ≥4.5:1, nunca inventada cor nova fora da paleta. Novos
+tokens `--cor-marca`/`--cor-texto-marca`/`--cor-texto-muted` em
+`assets/css/nav.css` (carregado em todas as páginas) para não voltar a
+divergir.
+
+**Links**: sublinhado (`text-decoration: underline` +
+`text-underline-offset`) em breadcrumbs (articles e pillar pages) e em
+links dentro de texto corrido (parágrafos, `.fonte-bloco`,
+`.fonte-inline`, `.aviso-info`, `.nota-tabela`, `.destaque-verde`,
+`.zona-cinzenta`, `.resumo-rapido` — regra partilhada em `nav.css`).
+Cards, listas de navegação (relacionados, pillar-lista, "Comece por
+aqui") e a nav mantêm-se sem sublinhado, por não serem texto corrido.
+
+**Skip-link**: `<a href="#main-content" class="skip-link">Saltar para
+o conteúdo</a>` como primeiro elemento focável de cada página (36/36),
+visível só ao receber foco (`.skip-link:focus { top: 0 }`, em
+`nav.css`). Todas as páginas ganharam `id="main-content"` no `<main>`
+— `404.html` e `index.html` não tinham nenhum `<main>` (`landmark-one-main`),
+corrigido a envolver o conteúdo existente.
+
+**Landmarks/`region`**: `.hero` (secção ou div, conforme a página)
+passou a `<header class="hero">` nas 35 páginas que o têm — dá um
+landmark "banner" real ao H1/breadcrumb/badge/resposta-direta que
+antes ficavam fora de qualquer landmark. Confirmado por script que
+localiza o `</section>`/`</div>` correcto (sem nesting de `<section>`
+dentro do hero em nenhuma página, verificado antes de aplicar; para
+`<div>` usado tracking de profundidade). `#destaque-sazonal` (banner
+sazonal, escrito pelo pipeline entre `<!-- DESTAQUE:INICIO/FIM -->`) e
+`.aviso-transicao-psu` (aviso estático em `rsi.html`/
+`subsidio-desemprego.html`/`subsidio-parental.html`) ganharam
+`role="region"` — para o banner sazonal, o wrapper `role="region"`
+fica **fora** dos marcadores `DESTAQUE:INICIO/FIM` deliberadamente,
+para nunca ser apagado pela próxima escrita do pipeline (que só troca
+o conteúdo entre os marcadores, nunca o que está à volta).
+
+**`landmark-unique`**: os 3 `role="search"` de `index.html`
+(nav desktop, nav mobile, hero) ganharam `aria-label` distintos
+("Pesquisa da navegação", "Pesquisa do menu móvel", "Pesquisa
+principal").
+
+**Foco visível**: `.nav-search form`/`.nav-mobile-menu form`/
+`.hero-search form` de `index.html` ganharam `:focus-within` com
+`border-color: #0F766E` + `box-shadow` — mesmo padrão já usado (e
+confirmado correcto por cálculo de contraste, 5.47:1) nos simuladores.
+
+**Escape + fecho ao perder o foco**: `assets/js/nav.js` reescrito —
+Escape fecha o dropdown "Apoios" e o menu móvel (com foco a voltar
+para o botão que os abriu) e ambos fecham também em `focusout` quando
+o foco sai do menu, seguindo o padrão "disclosure" do WAI-ARIA
+Authoring Practices. `aria-controls` adicionado a `.nav-toggle`
+(→ `navMobileMenu`) e `.nav-dropdown-btn` (→ novo id
+`navApoiosDropdownMenu`) em `scripts/sincronizar_nav.py`, propagado às
+36 páginas por `sincronizar_nav.py` (idempotente).
+
+**`aria-allowed-role`**: `role="listitem"` não é permitido em `<a
+href>` (implícito `link`) — a secção "Comece por aqui" de `index.html`
+passou de `<a role="listitem">` para `<ul><li><a>` semântico real, com
+`.necessidade-grid li { display: contents }` para os `<li>` não
+interferirem no `display:grid` (o `<a>` continua a ser o grid item
+visual).
+
+**`empty-table-header`**: `<th></th>` vazio (célula de canto da tabela
+comparativa Porta 65 Jovem vs 65+) ganhou texto "Critério".
+
+**`lang`**: as 34 páginas com `lang="pt"` passaram a `lang="pt-PT"`
+(as 2 que já tinham, `amim.html`/`prestacao-social-para-a-inclusao.html`,
+ficaram como estavam) — site é explicitamente PT-PT, ajuda leitores de
+ecrã a escolher a voz europeia. Confirmado que nenhum teste asserta
+`lang="pt"` sobre conteúdo real (só fixtures sintéticas de teste, sem
+relação com as páginas reais).
+
+Resultado confirmado por re-auditoria axe completa: **0 violações em
+36/36 páginas**, todas as categorias (`color-contrast`,
+`link-in-text-block`, `region`, `landmark-one-main`, `landmark-unique`,
+`aria-allowed-role`, `empty-table-header`).
+
+### Fase 3 — blindagem permanente
+
+`tests/test_acessibilidade.py` — axe-core real (mesmo `axe.min.js`
+vendorizado) sobre as 36 páginas, servidas por um `http.server` local
+próprio do teste (porta livre escolhida em runtime, nunca fixa).
+Threshold documentado no próprio ficheiro (mesmo espírito do guardrail
+de skips): zero tolerância a `critical`/`serious`; `moderate`/`minor`
+têm um limiar explícito (`LIMIAR_MODERADO_MINOR = 0`, confirmado por
+esta auditoria) — subir este número exige decisão consciente, nunca
+uma regressão silenciosa. Corre no job "Suite de Testes (pytest)" do
+CI, mesmo padrão de `test_higiene_indexacao.py`. Checklist da secção
+"CHECKLIST OBRIGATÓRIA" ganhou o item "página nova nasce a passar
+`test_acessibilidade.py`".
+
+Nova página `acessibilidade.html` — compromisso WCAG 2.1 AA, lista do
+que está implementado, e como reportar barreiras (aponta para
+`/sobre.html#contacto`, mesmo canal de contacto único do site,
+ofuscado). Segue o padrão das páginas institucionais (OG tags,
+disclaimer de independência, sem JSON-LD FAQPage/HowTo). Adicionada a
+`sitemap.xml`, `scripts/pesquisa.js`, `EXCLUIDAS` de
+`scripts/sincronizar_clusters.py` (institucional, não pertence a
+nenhum cluster) e ligada no rodapé de ~34 páginas (index.html,
+articles, pillar pages, simuladores) — não fica órfã.
+
+### Verificação final
+
+Suite completa + `test_acessibilidade.py`: **1135 passed, 6 skipped**
+localmente (mesmos 6 skips documentados, sem relação com este
+trabalho). `ruff check scripts/ --select E,F,W --ignore E501 .` limpo.
+Idempotência de `sincronizar_nav.py` confirmada (2.ª corrida sem
+alterações no bloco NAV). Zero regressões na suite pré-existente.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` confirmados
+`False` (inalterados por esta sessão).
+
+---
+
 ## GSTACK
 
 Skills disponíveis via gstack instalado globalmente.
@@ -2303,3 +2480,13 @@ Achado adicional ao escrever os testes do multi-vencedor: `KEYWORDS` (a lista ge
 **Checklist do gatilho PSU**: novo item 9 no plano de acção da secção "IMPACTO DA PSU" — revalidar a secção "PSI e a Prestação Social Única" de `prestacao-social-para-a-inclusao.html` contra a lista definitiva dos 13 apoios no decreto-lei publicado, actualizando `psu-lista-13-apoios.html` e o cluster no mesmo commit.
 
 Suite completa local (com `feedparser` e Playwright ambos disponíveis, depois da correcção): **1085 passed, 6 skipped** — idêntico ao CI real, confirmando que a suite está agora totalmente reconciliada entre ambientes. `ruff check scripts/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Nenhuma branch nova criada — trabalho directo em `main`, 3 commits (`3ed2974`, `aeeb22b`, e este de documentação).
+
+---
+
+*Última revisão: 2026-07-04 — auditoria e correcção completas de acessibilidade WCAG 2.1 AA nas 36 páginas reais, com axe-core 4.12.1 vendorizado (`tests/vendor/axe-core/`) e auditoria manual complementar — ver secção "ACESSIBILIDADE — WCAG 2.1 AA" para o detalhe completo. Fase 1 (auditoria): zero `critical`, `color-contrast` em 34/36 páginas (586 ocorrências) e `link-in-text-block` em 17/36 eram os únicos critérios WCAG formais falhados; o resto (`region`, `landmark-one-main`, `landmark-unique`, `aria-allowed-role`, `empty-table-header`) é best-practice do axe, não critério formal. Manual: sem skip-link, foco invisível nos 3 campos de pesquisa de `index.html`, sem Escape no menu, `lang` inconsistente. Achado lateral não planeado: corrupção de pseudo-selectores CSS (`": root"`/`": hover"` com espaço a mais, inválido) em 9 páginas, incluindo `index.html` — nenhuma variável CSS de `index.html` resolvia, causando (entre outras coisas) o próprio `color-contrast` da badge urgente; corrigido na raiz, não com um remendo local.
+
+Fase 2 (correcção): `#0D9488` (marca) mantém-se em logo/fundos/bordas/elementos grandes; texto e links passam a `#0F766E` (5.47:1); `#6C757D` → `#5C6770`; fundos translúcidos sobre o hero tornados sólidos; ~15 casos pontuais ajustados dentro da mesma paleta — nunca inventada cor nova. Novos tokens `--cor-marca`/`--cor-texto-marca`/`--cor-texto-muted` em `nav.css`. Sublinhado em breadcrumbs e links de texto corrido (cards/listas de navegação mantêm-se sem). Skip-link + `id="main-content"` nas 36 páginas (`404.html`/`index.html` ganharam `<main>`, não tinham nenhum). `.hero` → `<header class="hero">` em 35 páginas (landmark banner real). `aria-label` distintos nos 3 `role="search"` de `index.html`. Foco visível (`:focus-within`) nos 3 campos de pesquisa de `index.html`, mesmo padrão dos simuladores. `nav.js` ganhou Escape + fecho ao perder o foco (padrão APG); `aria-controls` adicionado ao template de `sincronizar_nav.py`, propagado às 36 páginas. `role="listitem"` inválido em `<a>` (index.html) corrigido para `<ul><li><a>` semântico real. `<th>` vazio de `porta-65.html` ganhou texto. As 34 páginas com `lang="pt"` passaram a `lang="pt-PT"`.
+
+Fase 3 (blindagem): `tests/test_acessibilidade.py` — axe-core real sobre as 36 páginas, zero tolerância a critical/serious, limiar documentado (0) para moderate/minor; novo item na checklist de publicação; nova página `acessibilidade.html` (compromisso WCAG AA, como reportar barreiras), ligada no rodapé de ~34 páginas, em `sitemap.xml` e `scripts/pesquisa.js`.
+
+Resultado confirmado por re-auditoria completa: **0 violações em 36/36 páginas** (todas as categorias). Suite completa + a nova: **1135 passed, 6 skipped** localmente (mesmos 6 skips já documentados). `ruff check scripts/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.

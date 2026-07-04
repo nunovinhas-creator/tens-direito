@@ -41,6 +41,28 @@ main p a,
   text-underline-offset: 2px;
 }
 
+/*
+ * Link "Saltar para o conteúdo" (WCAG 2.4.1 Bypass Blocks) — primeiro
+ * elemento focável de cada página, invisível até receber foco por
+ * teclado. Aponta sempre para #main-content.
+ */
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: 0;
+  background: #0F766E;
+  color: #FFFFFF;
+  padding: 0.75rem 1.25rem;
+  z-index: 1000;
+  text-decoration: underline;
+  border-radius: 0 0 6px 0;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 .nav-wrap {
   position: sticky;
   top: 0;

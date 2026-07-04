@@ -86,8 +86,8 @@ def render_nav(clusters: List[Cluster]) -> str:
 
       <div class="nav-links">
         <div class="nav-dropdown" id="navApoiosDropdown">
-          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
-          <div class="nav-dropdown-menu" role="menu">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
 {render_dropdown_apoios(clusters)}
           </div>
         </div>
@@ -95,13 +95,13 @@ def render_nav(clusters: List[Cluster]) -> str:
         <a href="/noticias.html">Notícias</a>
       </div>
 
-      <div class="nav-search" role="search">
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
         <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
         <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
       </div>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -111,7 +111,7 @@ def render_nav(clusters: List[Cluster]) -> str:
     </nav>
 
     <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
-      <div class="nav-search nav-search-movel" role="search">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
         <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
         <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>

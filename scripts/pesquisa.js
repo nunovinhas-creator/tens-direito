@@ -168,6 +168,11 @@ var paginas = [
    titulo: 'Política de Privacidade',
    descricao: 'Política de privacidade e uso de cookies do Tens Direito. RGPD.',
    keywords: 'privacidade cookies rgpd dados pessoais',
+   cluster: null, clusterNome: null, tipo: null},
+  {url: '/acessibilidade.html',
+   titulo: 'Acessibilidade',
+   descricao: 'Compromisso de acessibilidade do Tens Direito — WCAG 2.1 AA, como reportar barreiras.',
+   keywords: 'acessibilidade wcag leitor de ecrã teclado contraste barreiras',
    cluster: null, clusterNome: null, tipo: null}
 ];
 

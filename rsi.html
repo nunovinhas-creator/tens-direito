@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
   <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
@@ -261,6 +261,7 @@ footer a{color:#5C6770}
   <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
   <!-- NAV:INICIO -->
 <div class="nav-wrap">
     <nav>
@@ -274,8 +275,8 @@ footer a{color:#5C6770}
 
       <div class="nav-links">
         <div class="nav-dropdown" id="navApoiosDropdown">
-          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">Apoios</button>
-          <div class="nav-dropdown-menu" role="menu">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
             <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
             <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
             <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
@@ -288,13 +289,13 @@ footer a{color:#5C6770}
         <a href="/noticias.html">Notícias</a>
       </div>
 
-      <div class="nav-search" role="search">
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
         <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
         <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
       </div>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/>
           <line x1="3" y1="12" x2="21" y2="12"/>
@@ -304,7 +305,7 @@ footer a{color:#5C6770}
     </nav>
 
     <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
-      <div class="nav-search nav-search-movel" role="search">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
         <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
         <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
@@ -322,12 +323,12 @@ footer a{color:#5C6770}
   </div>
 <!-- NAV:FIM -->
 
-  <div class="aviso-transicao-psu">
+  <div class="aviso-transicao-psu" role="region" aria-label="Aviso de alteração legislativa">
     <strong>⚠️ AVISO DE ALTERAÇÃO LEGISLATIVA</strong><br>
     A Prestação Social Única (PSU) foi aprovada pelo Parlamento a 25 de junho de 2026 e prevê absorver o RSI numa prestação única. O RSI continua em vigor até a PSU entrar em vigor (previsto para agosto de 2026). Quem já recebe RSI mantém as condições actuais durante o período de transição. <a href="/prestacao-social-unica.html" style="color:#92400E;font-weight:700">→ Saber mais sobre a PSU</a>
   </div>
 
-  <section class="hero">
+  <header class="hero">
     <div class="hero-inner">
       <!-- CLUSTER-BADGE:INICIO -->
     <nav class="breadcrumb-visivel" aria-label="Breadcrumb"><a href="/">Início</a> › <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a> › <span>RSI — Rendimento Social de Inserção</span></nav>
@@ -344,9 +345,9 @@ footer a{color:#5C6770}
         Prestação mensal para pessoas e famílias em situação de pobreza extrema. O valor não é fixo — é calculado com base na diferença entre o rendimento máximo do teu agregado e o que já recebes.
       </div>
     </div>
-  </section>
+  </header>
 
-  <main>
+  <main id="main-content">
     <div class="resumo-rapido" role="note" aria-label="Resumo rápido">
       <ul>
         <li>✅ <strong>Quem tem direito:</strong> Poderás ter direito SE estás em situação de pobreza extrema, resides legalmente em Portugal e aceitas um contrato de inserção obrigatório. Desemprego voluntário: só podes pedir 1 ano após a saída.</li>
@@ -578,7 +579,7 @@ footer a{color:#5C6770}
   </main>
 
   <footer>
-    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a></p>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
     <p style="margin-top:.5rem">tensdireito.com — Informação verificada para cidadãos portugueses</p>
       <!-- NVLABS:FOOTER:INICIO -->
     <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">

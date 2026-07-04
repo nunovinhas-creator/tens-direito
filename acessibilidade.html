@@ -16,12 +16,12 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Política de Privacidade — Tens Direito</title>
-  <meta name="description" content="Política de privacidade e uso de cookies do Tens Direito. RGPD.">
-  <meta property="og:title" content="Política de Privacidade — Tens Direito">
-  <meta property="og:description" content="Política de privacidade e uso de cookies do Tens Direito. RGPD.">
-  <meta property="og:url" content="https://tensdireito.com/privacidade.html">
-  <link rel="canonical" href="https://tensdireito.com/privacidade.html">
+  <title>Acessibilidade — Tens Direito</title>
+  <meta name="description" content="Compromisso de acessibilidade do Tens Direito — WCAG 2.1 AA, como reportar barreiras.">
+  <meta property="og:title" content="Acessibilidade — Tens Direito">
+  <meta property="og:description" content="Compromisso de acessibilidade do Tens Direito — WCAG 2.1 AA, como reportar barreiras.">
+  <meta property="og:url" content="https://tensdireito.com/acessibilidade.html">
+  <link rel="canonical" href="https://tensdireito.com/acessibilidade.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
@@ -44,32 +44,10 @@ main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
 .card h2 { color: #0F766E; margin-bottom: 0.75rem; }
 .card p, .card li { line-height: 1.7; color: #495057; margin-bottom: 0.5rem; }
 .card ul { padding-left: 1.25rem; }
-.card a { color: #0F766E; }
+.card a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
 .updated { font-size: 0.85rem; color: #5C6770; margin-bottom: 1rem; }
 footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; }
 .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: #664d03; }
-
-.hamburger { display: none; flex-shrink: 0; margin-left: auto; background: none; border: none; cursor: pointer; color: #0F172A; padding: 0.25rem; }
-.mobile-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #FFFFFF;
-  border-bottom: 2px solid #0F766E;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  z-index: 999;
-  padding: 1rem 1.5rem;
-  display: none;
-}
-.mobile-menu.aberto { display: block; }
-.mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
-.mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0F766E; }
-@media (max-width: 700px) {
-  nav a.nav-link { display: none; }
-  .hamburger { display: flex; }
-}
 </style>
   <link rel="stylesheet" href="/assets/css/share.css">
   <script src="/assets/js/share.js" defer></script>
@@ -141,7 +119,7 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
   </div>
 <!-- NAV:FIM -->
   <header class="hero">
-    <h1>Política de Privacidade</h1>
+    <h1>Acessibilidade</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
   <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
@@ -151,32 +129,29 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
   </header>
   <main id="main-content">
     <div class="card">
-      <p class="updated">Última atualização: 24 de junho de 2026</p>
-      <h2>Recolha de dados pessoais</h2>
-      <p>O Tens Direito <strong>não recolhe, armazena nem processa dados pessoais</strong> dos seus visitantes. Não existem formulários de registo, contas de utilizador nem qualquer mecanismo de identificação pessoal neste site.</p>
+      <p class="updated">Última atualização: 4 de julho de 2026</p>
+      <h2>O nosso compromisso</h2>
+      <p>O Tens Direito compromete-se a que este site seja acessível ao maior número possível de pessoas, incluindo quem usa leitores de ecrã, navegação por teclado, ou tem baixa visão. Seguimos as <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">Web Content Accessibility Guidelines (WCAG) 2.1</a>, nível AA, como referência.</p>
     </div>
     <div class="card">
-      <h2>Cookies e análise de tráfego</h2>
-      <p>Este site pode utilizar os seguintes serviços de terceiros que colocam cookies no teu dispositivo:</p>
+      <h2>O que já está implementado</h2>
       <ul>
-        <li><strong>Google Analytics 4</strong> — análise de tráfego anónima (páginas visitadas, origem do tráfego, tempo de permanência). Os dados são anonimizados e não permitem identificar utilizadores individuais.</li>
-        <li><strong>Google AdSense</strong> (futuro) — publicidade contextual. Se ativado, poderá usar cookies para personalização de anúncios, mediante consentimento explícito.</li>
+        <li>Link "Saltar para o conteúdo" no início de cada página, visível ao navegar por teclado</li>
+        <li>Contraste de cor verificado (mínimo 4.5:1 em texto corrido) em todas as páginas</li>
+        <li>Navegação completa por teclado, incluindo o menu principal e o menu móvel (tecla Escape fecha ambos)</li>
+        <li>Estrutura semântica de cabeçalhos (um único H1 por página, sem saltos de nível) e de landmarks (cabeçalho, conteúdo principal, rodapé)</li>
+        <li>Links dentro de texto corrido sublinhados — nunca dependem só da cor</li>
+        <li>Alvos de toque com pelo menos 44×44 pixels no menu e nos elementos interativos principais</li>
+        <li>Idioma da página identificado (<code>lang="pt-PT"</code>) para leitores de ecrã escolherem a voz correta</li>
       </ul>
-      <p>Podes desativar cookies no teu browser ou usar extensões como uBlock Origin.</p>
     </div>
     <div class="card">
-      <h2>Direitos ao abrigo do RGPD</h2>
-      <p>Ao abrigo do Regulamento Geral de Proteção de Dados (RGPD / GDPR), tens direito a:</p>
-      <ul>
-        <li>Aceder a qualquer dado pessoal que possamos ter sobre ti</li>
-        <li>Solicitar a correção ou eliminação dos teus dados</li>
-        <li>Opor-te ao tratamento dos teus dados</li>
-      </ul>
-      <p>Como não recolhemos dados pessoais, estes direitos são aplicáveis apenas aos dados de terceiros (Google Analytics). Para exercê-los relativamente à Google, consulta a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">política de privacidade da Google</a>.</p>
+      <h2>Verificação técnica</h2>
+      <p>Corremos auditorias automáticas (axe-core) e verificação manual de código sobre todas as páginas publicadas, com testes que impedem regressões futuras — qualquer página nova só é publicada depois de passar essa verificação.</p>
     </div>
     <div class="card">
-      <h2>Contacto</h2>
-      <p>Para questões de privacidade ou para exercer os teus direitos ao abrigo do RGPD, contacta-nos por email — ver a secção <a href="/sobre.html#contacto">Contacto</a> em Sobre.</p>
+      <h2>Encontraste uma barreira?</h2>
+      <p>Se encontraste algum problema de acessibilidade neste site — um elemento que não funciona por teclado, um contraste insuficiente, ou qualquer outra barreira — contacta-nos. Ver a secção <a href="/sobre.html#contacto">Contacto</a> em Sobre.</p>
     </div>
     <div class="disclaimer">
       <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública.
@@ -196,22 +171,5 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
     </a>
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
-  <script>
-    function toggleMobileMenu(btn) {
-      const menu = document.getElementById('menuMobile');
-      const open = menu.classList.toggle('aberto');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.querySelector('.mobile-menu');
-      const hamburger = document.querySelector('.hamburger');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('aberto');
-          if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-  </script>
 </body>
 </html>
