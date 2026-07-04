@@ -2,18 +2,22 @@
 """Gera noticias.html a partir de feeds RSS — corre via GitHub Action diária.
 
 `data/noticias.json` é a fonte de verdade (Fase 1, 2026-07-02): cada corrida
-escolhe no máximo 1 vencedor entre os candidatos com score positivo, dentro
-da janela de recência (`JANELA_RECENCIA_DIAS`), que ainda não estejam no
-JSON (por URL ou por título semelhante), acrescenta-o, e regenera
-noticias.html (destaque + arquivo agrupado por mês, ordenado por data real
-desc) e o bloco NOTICIA-HOME de index.html (2-3 mais recentes) a partir do
-JSON — nunca por patch incremental do HTML anterior.
+escolhe até `MAX_VENCEDORES_POR_DIA` vencedores (Fase 4, 2026-07-04 — no
+máximo 1 por categoria, nunca 2 do mesmo tema no mesmo dia) entre os
+candidatos com score positivo, dentro da janela de recência
+(`JANELA_RECENCIA_DIAS`), que ainda não estejam no JSON (por URL ou por
+título semelhante), acrescenta-os, e regenera noticias.html (destaque +
+arquivo agrupado por mês, ordenado por data real desc) e o bloco
+NOTICIA-HOME de index.html (2-3 mais recentes) a partir do JSON — nunca por
+patch incremental do HTML anterior.
 
 "Nenhuma notícia hoje" é um resultado aceitável — nunca forçar um candidato
-fraco, duplicado ou antigo de mais só para ter alguma coisa a publicar. Mesmo
-nesse caso, `main()` chama sempre `sincronizar_saidas()` no fim — nunca deixa
-noticias.html/index.html atrasados face a data/noticias.json, mesmo que a
-alteração ao JSON tenha vindo de outra via (ex.: migração manual).
+fraco, duplicado ou antigo de mais só para ter alguma coisa a publicar; o
+mesmo vale por categoria, sempre oportunista e nunca quota (ver
+`selecionar_vencedores()`). Mesmo sem nenhum vencedor, `main()` chama
+sempre `sincronizar_saidas()` no fim — nunca deixa noticias.html/index.html
+atrasados face a data/noticias.json, mesmo que a alteração ao JSON tenha
+vindo de outra via (ex.: migração manual).
 
 Fase 2 do diagnóstico de 2026-07-04 (issue reportada pelo Nuno: notícia real
 de abono de família não apanhada): os feeds passaram a ser um por TEMA do
@@ -181,11 +185,20 @@ LIMITE_ENTRADAS_POR_FEED = 15
 # (que já teria mais de 3-4 semanas a essa data).
 JANELA_RECENCIA_DIAS = 7
 
+# "salário mínimo"/"retribuição mínima" e "complemento solidário"
+# acrescentados 2026-07-04, ao ligar os feeds salario_minimo/csi_idosos:
+# confirmado contra os títulos reais do diagnóstico que, sem estas frases,
+# 5/5 manchetes reais de salário mínimo e 4/5 de CSI pontuavam 0 (nenhum
+# outro termo desta lista aparece nelas) — nunca passariam do corte de
+# score > 0, tornando os dois feeds inúteis para a selecção por muito que
+# a categoria tivesse slot disponível. Frases completas (não palavras
+# soltas) para não repetir o risco de ambiguidade já corrigido para "ias".
 KEYWORDS = [
     "apoio", "apoios", "prestação", "prestações", "subsídio", "subsídios",
     "rsi", "abono", "desemprego", "pensão", "pensões", "ias", "rmg",
     "segurança social", "iefp", "irs", "at ", "finanças", "habitação",
     "renda", "arrendamento", "psu", "prestação social única",
+    "salário mínimo", "retribuição mínima", "complemento solidário",
 ]
 
 STOPWORDS = ["publicidade", "patrocinado", "sponsored", "advertisement"]
@@ -296,6 +309,7 @@ class Candidato:
     data_iso: str
     feed_url: str
     feed_nome: str = "?"
+    categoria: str = "apoios"
 
 
 @dataclass
@@ -326,11 +340,15 @@ class SaudeFeed:
 
 @dataclass
 class ResultadoSelecao:
+    """`vencedores`: até `MAX_VENCEDORES_POR_DIA` candidatos, no máximo 1 por
+    categoria (Fase 4, 2026-07-04) — oportunista, nunca quota: uma categoria
+    sem candidato válido (score positivo, dentro da janela, não duplicado)
+    simplesmente não preenche o slot; nunca se baixa a fasquia de qualidade
+    para forçar diversidade (decisão explícita do Nuno)."""
     candidatos_por_feed: Dict[str, int] = field(default_factory=dict)
     top_candidatos: List[Candidato] = field(default_factory=list)
     rejeitados: List[Rejeicao] = field(default_factory=list)
-    vencedor: Optional[Candidato] = None
-    motivo_vencedor: str = ""
+    vencedores: List[Candidato] = field(default_factory=list)
 
 
 @dataclass
@@ -517,28 +535,22 @@ def _data_iso_para_date(data_iso: str):
     return datetime.strptime(data_iso, "%Y-%m-%d").date()
 
 
-def selecionar_vencedor(
-    entries: List[dict],
-    itens_existentes: List[ItemNoticia],
-    *,
-    hoje: Optional[datetime] = None,
-    janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
-) -> ResultadoSelecao:
-    """Escolhe no máximo 1 vencedor: score positivo, dentro da janela de
-    recência, e não duplicado de um item já existente. Candidatos antigos
-    de mais são rejeitados mesmo com score alto — é o que impede um artigo
-    de há 2 meses (ex.: PSU) de continuar a vencer todos os dias só por
-    pontuar mais em keywords do que uma notícia genuína mas mais recente e
-    mais específica (diagnóstico de 2026-07-04)."""
-    resultado = ResultadoSelecao()
-    hoje = hoje or datetime.now(timezone.utc)
-    limite_recencia = (hoje - timedelta(days=janela_recencia_dias)).date()
+# Fase 4 (2026-07-04, pedido do Nuno): de "1 vencedor/dia" para "até
+# MAX_VENCEDORES_POR_DIA/dia, no máximo 1 por categoria" — sem isto, um dia
+# com candidatos válidos de Fiscalidade E de Habitação só publicava o que
+# tivesse mais keywords de "apoios"/PSU (a maioria das KEYWORDS genéricas é
+# desse tema), mesmo depois de existirem feeds dedicados para as outras
+# categorias (ver diagnóstico real: 14/17 itens publicados eram "apoios",
+# 0 "fiscal", 0 "habitacao", 0 "emprego"). Oportunista, nunca quota: uma
+# categoria sem candidato com score positivo, dentro da janela e não
+# duplicado simplesmente não preenche o slot — o corte de qualidade
+# (score > 0, recência, dedup) aplica-se sempre antes da diversidade,
+# nunca ao contrário.
+MAX_VENCEDORES_POR_DIA = 3
 
-    for e in entries:
-        feed_nome = e.get("_feed_nome", e.get("_feed_url", "?"))
-        resultado.candidatos_por_feed[feed_nome] = resultado.candidatos_por_feed.get(feed_nome, 0) + 1
 
-    candidatos = [
+def _construir_candidatos(entries: List[dict]) -> List[Candidato]:
+    return [
         Candidato(
             entry=e,
             score=score_entry(e),
@@ -547,30 +559,66 @@ def selecionar_vencedor(
             data_iso=format_date_iso(parse_date(e)),
             feed_url=e.get("_feed_url", "?"),
             feed_nome=e.get("_feed_nome", e.get("_feed_url", "?")),
+            categoria=detect_category(e),
         )
         for e in entries
     ]
+
+
+def selecionar_vencedores(
+    entries: List[dict],
+    itens_existentes: List[ItemNoticia],
+    *,
+    hoje: Optional[datetime] = None,
+    janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
+    max_vencedores: int = MAX_VENCEDORES_POR_DIA,
+) -> ResultadoSelecao:
+    """Escolhe até `max_vencedores` candidatos por corrida, no máximo 1 por
+    categoria: score positivo, dentro da janela de recência, e não
+    duplicado de um item já existente NEM de um vencedor já escolhido nesta
+    mesma corrida (ex.: 2 feeds diferentes a apanhar a mesma notícia sob
+    categorias diferentes). Candidatos antigos de mais são rejeitados
+    mesmo com score alto — é o que impede um artigo de há 2 meses (ex.:
+    PSU) de continuar a vencer todos os dias só por pontuar mais em
+    keywords do que uma notícia genuína mas mais recente e mais específica
+    (diagnóstico de 2026-07-04)."""
+    resultado = ResultadoSelecao()
+    hoje = hoje or datetime.now(timezone.utc)
+    limite_recencia = (hoje - timedelta(days=janela_recencia_dias)).date()
+
+    for e in entries:
+        feed_nome = e.get("_feed_nome", e.get("_feed_url", "?"))
+        resultado.candidatos_por_feed[feed_nome] = resultado.candidatos_por_feed.get(feed_nome, 0) + 1
+
+    candidatos = _construir_candidatos(entries)
     candidatos.sort(key=lambda c: c.score, reverse=True)
     resultado.top_candidatos = candidatos[:3]
+
+    vencedores_por_categoria: Dict[str, Candidato] = {}
+    itens_escolhidos: List[ItemNoticia] = []
 
     for c in candidatos:
         if c.score <= 0:
             break  # candidatos já ordenados por score desc — nenhum a seguir serve
+        if len(vencedores_por_categoria) >= max_vencedores:
+            break  # slots do dia esgotados — resto irrelevante para a selecção
+        if c.categoria in vencedores_por_categoria:
+            continue  # categoria já tem vencedor hoje — próximo candidato
         if _data_iso_para_date(c.data_iso) < limite_recencia:
             resultado.rejeitados.append(
                 Rejeicao(titulo=c.titulo, motivo=f"antigo (antes de {limite_recencia.isoformat()}, janela de {janela_recencia_dias} dias)")
             )
             continue
-        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes)
+        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes + itens_escolhidos)
         if duplicado is not None:
             resultado.rejeitados.append(
                 Rejeicao(titulo=c.titulo, motivo=f"duplicado de {duplicado.data_iso}")
             )
             continue
-        resultado.vencedor = c
-        resultado.motivo_vencedor = f"score={c.score}"
-        break
+        vencedores_por_categoria[c.categoria] = c
+        itens_escolhidos.append(construir_item_de_entry(c.entry))
 
+    resultado.vencedores = sorted(vencedores_por_categoria.values(), key=lambda c: c.score, reverse=True)
     return resultado
 
 
@@ -580,33 +628,27 @@ def analisar_candidatos_na_janela(
     *,
     hoje: Optional[datetime] = None,
     janela_recencia_dias: int = JANELA_RECENCIA_DIAS,
+    max_vencedores: int = MAX_VENCEDORES_POR_DIA,
 ) -> Tuple[List[DecisaoCandidato], Dict[str, int]]:
     """Classifica TODOS os candidatos dentro da janela de recência — não só
-    os avaliados até `selecionar_vencedor()` encontrar um vencedor — para
-    que o log de auditoria (`data/noticias_candidatos.json`) responda
+    os avaliados até `selecionar_vencedores()` esgotar os slots do dia —
+    para que o log de auditoria (`data/noticias_candidatos.json`) responda
     sempre "o sistema viu a notícia X, e porque não venceu?". Os
     candidatos fora da janela só entram como contagem por feed (2.º valor
     devolvido) — o próprio título deles já não interessa para auditoria,
     visto que nunca poderiam vencer.
 
     Reimplementa (deliberadamente, não reutiliza) a mesma lógica de
-    `selecionar_vencedor()` — aqui sem early-exit, porque o objectivo é
-    classificar todos os itens, não só escolher o primeiro vencedor."""
+    `selecionar_vencedores()` — aqui sem early-exit por score/categoria,
+    porque o objectivo é classificar todos os itens, não só escolher os
+    vencedores. "nao_escolhido" cobre as duas razões de não-selecção que
+    não são score nem duplicado — categoria já preenchida hoje, ou slots
+    do dia já esgotados — sem inventar mais rótulos: nenhum consumidor do
+    log distingue as duas."""
     hoje = hoje or datetime.now(timezone.utc)
     limite_recencia = (hoje - timedelta(days=janela_recencia_dias)).date()
 
-    candidatos = [
-        Candidato(
-            entry=e,
-            score=score_entry(e),
-            titulo=limpar_texto(e.get("title", "Sem título")),
-            url=e.get("link", "#"),
-            data_iso=format_date_iso(parse_date(e)),
-            feed_url=e.get("_feed_url", "?"),
-            feed_nome=e.get("_feed_nome", e.get("_feed_url", "?")),
-        )
-        for e in entries
-    ]
+    candidatos = _construir_candidatos(entries)
 
     fora_da_janela_por_feed: Dict[str, int] = {}
     dentro_da_janela = []
@@ -619,20 +661,25 @@ def analisar_candidatos_na_janela(
     dentro_da_janela.sort(key=lambda c: c.score, reverse=True)
 
     decisoes: List[DecisaoCandidato] = []
-    vencedor_escolhido = False
+    vencedores_por_categoria: Dict[str, Candidato] = {}
+    itens_escolhidos: List[ItemNoticia] = []
     for c in dentro_da_janela:
         if c.score <= 0:
             decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "rejeitado_score", "score <= 0"))
             continue
-        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes)
+        if len(vencedores_por_categoria) >= max_vencedores:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "nao_escolhido", f"limite de {max_vencedores} vencedores/dia já atingido"))
+            continue
+        if c.categoria in vencedores_por_categoria:
+            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "nao_escolhido", f"categoria '{c.categoria}' já tem vencedor hoje"))
+            continue
+        duplicado = encontrar_duplicado(c.titulo, c.url, itens_existentes + itens_escolhidos)
         if duplicado is not None:
             decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "rejeitado_duplicado", f"duplicado de {duplicado.data_iso}"))
             continue
-        if not vencedor_escolhido:
-            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "vencedor", f"score={c.score}"))
-            vencedor_escolhido = True
-        else:
-            decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "nao_escolhido", "já havia vencedor com score maior ou igual"))
+        decisoes.append(DecisaoCandidato(c.titulo, c.feed_nome, c.data_iso, c.score, "vencedor", f"score={c.score}, categoria={c.categoria}"))
+        vencedores_por_categoria[c.categoria] = c
+        itens_escolhidos.append(construir_item_de_entry(c.entry))
 
     return decisoes, fora_da_janela_por_feed
 
@@ -646,10 +693,11 @@ def imprimir_relatorio(resultado: ResultadoSelecao) -> None:
         print(f"    score={c.score} [{c.data_iso}] | {c.titulo[:80]}")
     for r in resultado.rejeitados:
         print(f"  rejeitado: {r.titulo[:80]} — {r.motivo}")
-    if resultado.vencedor:
-        print(f"  vencedor: {resultado.vencedor.titulo[:80]} ({resultado.motivo_vencedor})")
+    if resultado.vencedores:
+        for v in resultado.vencedores:
+            print(f"  vencedor [{v.categoria}]: {v.titulo[:80]} (score={v.score})")
     else:
-        print("  vencedor: nenhum — sem candidato novo, recente e não-duplicado hoje")
+        print("  vencedores: nenhum — sem candidato novo, recente e não-duplicado hoje")
 
 
 # ── Persistência data/noticias.json ────────────────────────────────────────
@@ -880,13 +928,19 @@ def registar_candidatos_log(
     """Acrescenta um registo de auditoria completo por corrida: TODOS os
     candidatos dentro da janela de recência (título, feed, data, score,
     decisão/motivo — via `analisar_candidatos_na_janela()`), contagem por
-    feed dos que ficaram fora da janela, saúde dos feeds e o vencedor (ou
-    `null`). "Nenhuma notícia hoje" tem sempre resposta a "o sistema viu a
-    notícia X?" — nunca um resultado silencioso, indistinguível de uma
-    avaria. Histórico limitado aos últimos `historico_dias` dias (não
-    corridas — 2 corridas no mesmo dia, ex.: `workflow_dispatch` manual,
-    não expulsam entradas mais antigas fora de tempo) para não crescer sem
-    limite."""
+    feed dos que ficaram fora da janela, saúde dos feeds e os vencedores
+    (lista, possivelmente vazia — Fase 4, 2026-07-04: até
+    `MAX_VENCEDORES_POR_DIA`, no máximo 1 por categoria). "Nenhuma notícia
+    hoje" tem sempre resposta a "o sistema viu a notícia X?" — nunca um
+    resultado silencioso, indistinguível de uma avaria. Histórico limitado
+    aos últimos `historico_dias` dias (não corridas — 2 corridas no mesmo
+    dia, ex.: `workflow_dispatch` manual, não expulsam entradas mais
+    antigas fora de tempo) para não crescer sem limite.
+
+    Nota de schema: entradas do histórico anteriores a esta fase têm
+    `"vencedor"` (singular, dict ou null) em vez de `"vencedores"` (lista)
+    — inofensivo, nada lê de volta o conteúdo de entradas antigas do
+    histórico, só a chave `"data"` para a retenção."""
     hoje = hoje or datetime.now(timezone.utc)
     hoje_str = hoje.strftime("%Y-%m-%d")
 
@@ -898,7 +952,7 @@ def registar_candidatos_log(
     decisoes, fora_da_janela_por_feed = analisar_candidatos_na_janela(
         entries, itens_existentes, hoje=hoje, janela_recencia_dias=janela_recencia_dias
     )
-    vencedor = next((d for d in decisoes if d.decisao == "vencedor"), None)
+    vencedores = [d for d in decisoes if d.decisao == "vencedor"]
 
     historico = []
     if caminho.exists():
@@ -916,10 +970,10 @@ def registar_candidatos_log(
             {"titulo": d.titulo, "feed_nome": d.feed_nome, "data_iso": d.data_iso, "score": d.score, "decisao": d.decisao, "motivo": d.motivo}
             for d in decisoes
         ],
-        "vencedor": (
-            {"titulo": vencedor.titulo, "feed_nome": vencedor.feed_nome, "score": vencedor.score}
-            if vencedor else None
-        ),
+        "vencedores": [
+            {"titulo": v.titulo, "feed_nome": v.feed_nome, "score": v.score}
+            for v in vencedores
+        ],
     }
     historico.append(registo)
 
@@ -936,22 +990,23 @@ def main() -> None:
 
     itens_existentes = carregar_itens()
     entries, saude = fetch_entries()
-    resultado = selecionar_vencedor(entries, itens_existentes)
+    resultado = selecionar_vencedores(entries, itens_existentes)
     imprimir_relatorio(resultado)
 
     registar_saude_feeds_hoje(saude)
     registar_candidatos_log(entries, itens_existentes, saude)
 
-    if resultado.vencedor is None:
+    if not resultado.vencedores:
         print("Nenhuma notícia relevante encontrada hoje.")
     else:
-        novo_item = construir_item_de_entry(resultado.vencedor.entry)
-        itens_existentes = itens_existentes + [novo_item]
+        novos_itens = [construir_item_de_entry(v.entry) for v in resultado.vencedores]
+        itens_existentes = itens_existentes + novos_itens
         guardar_itens(itens_existentes)
-        print(f"Notícia publicada: {novo_item.titulo[:80]}")
+        for item in novos_itens:
+            print(f"Notícia publicada [{item.categoria}]: {item.titulo[:80]}")
 
     # Sincroniza sempre as saídas com o estado actual do JSON — mesmo
-    # sem vencedor novo hoje, garante que noticias.html/index.html nunca
+    # sem vencedores novos hoje, garante que noticias.html/index.html nunca
     # ficam atrás de uma alteração feita por outra via (ex.: migração,
     # edição manual). Idempotente: sem alterações se já estiver tudo
     # sincronizado.

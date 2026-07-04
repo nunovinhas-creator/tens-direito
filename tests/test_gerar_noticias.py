@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from gerar_noticias import (
     CLUSTER_KEYWORDS,
     FEEDS,
+    MAX_VENCEDORES_POR_DIA,
     ItemNoticia,
     SaudeFeed,
     agrupar_por_mes,
@@ -35,7 +36,7 @@ from gerar_noticias import (
     render_arquivo,
     render_destaque,
     score_entry,
-    selecionar_vencedor,
+    selecionar_vencedores,
     separar_titulo_e_fonte,
     sincronizar_saidas,
     titulos_semelhantes,
@@ -43,7 +44,7 @@ from gerar_noticias import (
 
 RAIZ = Path(__file__).parent.parent
 
-# Data de referência fixa para selecionar_vencedor() nestes testes — nunca
+# Data de referência fixa para selecionar_vencedores() nestes testes — nunca
 # datetime.now() real, que tornaria os testes dependentes de quando correm
 # (as entradas fixture estão datadas "01 Jul 2026"; sem isto, o corte de
 # recência rejeitá-las-ia silenciosamente passados 7 dias reais). Mesmo
@@ -150,6 +151,27 @@ def test_score_entry_stopword_da_score_negativo():
     assert score_entry(e) == -1
 
 
+# Gap encontrado 2026-07-04 ao ligar os feeds salario_minimo/csi_idosos:
+# sem "salário mínimo"/"complemento solidário" em KEYWORDS, manchetes reais
+# destes temas (capturadas no diagnóstico) pontuavam 0 e nunca passariam do
+# corte de qualidade — corrigido antes de a selecção multi-vencedor depender
+# disto.
+
+def test_score_entry_reconhece_salario_minimo_com_titulo_real_do_diagnostico():
+    e = _entry("Governo aumenta salário mínimo para 920 euros em 2026")
+    assert score_entry(e) > 0
+
+
+def test_score_entry_reconhece_retribuicao_minima_com_titulo_real_do_diagnostico():
+    e = _entry("Retribuição mínima mensal garantida para 2026")
+    assert score_entry(e) > 0
+
+
+def test_score_entry_reconhece_complemento_solidario_com_titulo_real_do_diagnostico():
+    e = _entry("Complemento Solidário para Idosos sobe em janeiro: confira os valores")
+    assert score_entry(e) > 0
+
+
 def test_detect_category_educacao():
     assert detect_category(_entry("Bolsas de mérito e manuais escolares 2026")) == "educacao"
 
@@ -240,23 +262,23 @@ def test_cluster_keywords_cobre_todos_os_clusters_do_site():
 
 # ── Selecção com dedup e observabilidade ──────────────────────────────────
 
-def test_selecionar_vencedor_escolhe_melhor_score():
+def test_selecionar_vencedores_escolhe_melhor_score():
     entries = [
         _entry("Notícia sem relevância nenhuma"),
         _entry("Abono de família e subsídio de desemprego sobem"),
     ]
-    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
-    assert resultado.vencedor is not None
-    assert "Abono" in resultado.vencedor.titulo
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
+    assert len(resultado.vencedores) == 1
+    assert "Abono" in resultado.vencedores[0].titulo
 
 
-def test_selecionar_vencedor_nenhum_candidato_relevante():
+def test_selecionar_vencedores_nenhum_candidato_relevante():
     entries = [_entry("Notícia qualquer sobre futebol")]
-    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
-    assert resultado.vencedor is None
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
+    assert resultado.vencedores == []
 
 
-def test_selecionar_vencedor_rejeita_duplicado_e_escolhe_seguinte():
+def test_selecionar_vencedores_rejeita_duplicado_e_escolhe_seguinte():
     existentes = [_item("2026-06-20", "Abono de família sobe em 2026", url="https://exemplo.pt/ja-existe")]
     entries = [
         # duplicado (mesmo título) mas com score mais alto que a alternativa,
@@ -268,36 +290,93 @@ def test_selecionar_vencedor_rejeita_duplicado_e_escolhe_seguinte():
         ),
         _entry("Subsídio de desemprego: novas regras do IEFP", link="https://exemplo.pt/novo"),
     ]
-    resultado = selecionar_vencedor(entries, existentes, hoje=HOJE_TESTE)
-    assert resultado.vencedor is not None
-    assert "Subsídio de desemprego" in resultado.vencedor.titulo
+    resultado = selecionar_vencedores(entries, existentes, hoje=HOJE_TESTE)
+    assert len(resultado.vencedores) == 1
+    assert "Subsídio de desemprego" in resultado.vencedores[0].titulo
     assert len(resultado.rejeitados) == 1
     assert "duplicado de 2026-06-20" in resultado.rejeitados[0].motivo
 
 
-def test_selecionar_vencedor_todos_duplicados_resulta_em_nenhum():
+def test_selecionar_vencedores_todos_duplicados_resulta_em_nenhum():
     existentes = [_item("2026-06-20", "Abono de família sobe em 2026", url="https://exemplo.pt/ja-existe")]
     entries = [_entry("Abono de família sobe em 2026", link="https://exemplo.pt/outro-link")]
-    resultado = selecionar_vencedor(entries, existentes, hoje=HOJE_TESTE)
-    assert resultado.vencedor is None
+    resultado = selecionar_vencedores(entries, existentes, hoje=HOJE_TESTE)
+    assert resultado.vencedores == []
     assert len(resultado.rejeitados) == 1
 
 
-def test_selecionar_vencedor_regista_candidatos_por_feed():
+def test_selecionar_vencedores_regista_candidatos_por_feed():
     entries = [_entry("Abono de família sobe", feed="feedA"), _entry("RSI muda em 2026", feed="feedB")]
-    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
     assert resultado.candidatos_por_feed == {"feedA": 1, "feedB": 1}
 
 
-def test_selecionar_vencedor_top3_ordenado_por_score():
+def test_selecionar_vencedores_top3_ordenado_por_score():
     entries = [
         _entry("apoio"),  # score baixo
         _entry("apoio subsídio abono rsi desemprego"),  # score alto
         _entry("apoio subsídio"),  # score médio
     ]
-    resultado = selecionar_vencedor(entries, [], hoje=HOJE_TESTE)
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
     scores = [c.score for c in resultado.top_candidatos]
     assert scores == sorted(scores, reverse=True)
+
+
+# ── Multi-vencedor por categoria (Fase 4, 2026-07-04) ─────────────────────
+# Pedido do Nuno: preencher categorias Fiscalidade/Habitação que ficavam a
+# zero porque a selecção era global e o score genérico favorece sempre
+# "apoios". Oportunista, nunca quota — condição explícita do Nuno: um slot
+# sem candidato válido fica vazio, nunca se publica um artigo fraco só para
+# preencher diversidade.
+
+def test_selecionar_vencedores_ate_tres_categorias_diferentes_no_mesmo_dia():
+    entries = [
+        _entry("Abono de família sobe este mês", resumo="abono apoio subsídio", link="https://exemplo.pt/1", feed="abono_familia"),
+        _entry("Prazo do IRS termina esta semana", resumo="irs at finanças declaração", link="https://exemplo.pt/2", feed="irs_fiscalidade"),
+        _entry("Apoio ao arrendamento reforçado", resumo="habitação renda arrendamento apoio", link="https://exemplo.pt/3", feed="habitacao_arrendamento"),
+    ]
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
+    categorias = {v.categoria for v in resultado.vencedores}
+    assert categorias == {"apoios", "fiscal", "habitacao"}
+    assert len(resultado.vencedores) == 3
+
+
+def test_selecionar_vencedores_nunca_dois_da_mesma_categoria_no_mesmo_dia():
+    entries = [
+        _entry("Abono de família sobe muito", resumo="abono apoio subsídio prestação", link="https://exemplo.pt/1", feed="abono_familia"),
+        _entry("RSI também muda este mês", resumo="rsi apoio prestação", link="https://exemplo.pt/2", feed="rsi"),
+    ]
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
+    assert len(resultado.vencedores) == 1  # ambos são categoria "apoios" — só o de maior score vence
+    assert "Abono" in resultado.vencedores[0].titulo
+
+
+def test_selecionar_vencedores_categoria_sem_candidato_valido_fica_vazia():
+    """Oportunista, nunca quota: só há candidato válido para "apoios" —
+    "fiscal"/"habitacao" não têm nenhum candidato com score positivo hoje,
+    e o resultado tem de reflectir isso (1 vencedor, não 3 forçados)."""
+    entries = [
+        _entry("Abono de família sobe", resumo="abono apoio subsídio", link="https://exemplo.pt/1", feed="abono_familia"),
+        _entry("Notícia qualquer sobre desporto", link="https://exemplo.pt/2", feed="irs_fiscalidade"),
+    ]
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE)
+    assert len(resultado.vencedores) == 1
+    assert resultado.vencedores[0].categoria == "apoios"
+
+
+def test_selecionar_vencedores_respeita_limite_maximo_por_dia():
+    entries = [
+        _entry("Abono de família sobe", resumo="abono apoio", link="https://exemplo.pt/1", feed="abono_familia"),
+        _entry("IRS: prazo termina", resumo="irs at finanças", link="https://exemplo.pt/2", feed="irs_fiscalidade"),
+        _entry("Arrendamento tem novo apoio", resumo="habitação renda arrendamento", link="https://exemplo.pt/3", feed="habitacao_arrendamento"),
+        _entry("Salário mínimo sobe em 2027", resumo="salário trabalho emprego contrato", link="https://exemplo.pt/4", feed="salario_minimo"),
+    ]
+    resultado = selecionar_vencedores(entries, [], hoje=HOJE_TESTE, max_vencedores=2)
+    assert len(resultado.vencedores) == 2
+
+
+def test_max_vencedores_por_dia_e_tres():
+    assert MAX_VENCEDORES_POR_DIA == 3
 
 
 def test_construir_item_de_entry_usa_data_real_e_separa_fonte():
@@ -508,9 +587,9 @@ def test_recencia_rejeita_artigo_antigo_mesmo_com_score_alto():
             feed="abono_familia",
         ),
     ]
-    resultado = selecionar_vencedor(entries, [], hoje=hoje)
-    assert resultado.vencedor is not None
-    assert "abono" in resultado.vencedor.titulo.lower()
+    resultado = selecionar_vencedores(entries, [], hoje=hoje)
+    assert len(resultado.vencedores) == 1
+    assert "abono" in resultado.vencedores[0].titulo.lower()
     assert any("antigo" in r.motivo for r in resultado.rejeitados)
 
 
@@ -518,15 +597,15 @@ def test_recencia_aceita_candidato_na_borda_da_janela():
     # janela de 7 dias a partir de 2026-07-04 -> limite é 2026-06-27 (incluído)
     hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
     entries = [_entry("Abono de família sobe este mês", published="Sat, 27 Jun 2026 10:00:00 GMT")]
-    resultado = selecionar_vencedor(entries, [], hoje=hoje)
-    assert resultado.vencedor is not None
+    resultado = selecionar_vencedores(entries, [], hoje=hoje)
+    assert len(resultado.vencedores) == 1
 
 
 def test_recencia_rejeita_um_dia_antes_da_borda():
     hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
     entries = [_entry("Abono de família notícia antiga", published="Fri, 26 Jun 2026 10:00:00 GMT")]
-    resultado = selecionar_vencedor(entries, [], hoje=hoje)
-    assert resultado.vencedor is None
+    resultado = selecionar_vencedores(entries, [], hoje=hoje)
+    assert resultado.vencedores == []
     assert "antigo" in resultado.rejeitados[0].motivo
 
 
@@ -534,8 +613,8 @@ def test_recencia_janela_e_configuravel():
     hoje = datetime(2026, 7, 4, tzinfo=timezone.utc)
     entries = [_entry("Abono de família notícia de há 10 dias", published="Mon, 24 Jun 2026 10:00:00 GMT")]
     # com janela maior, o mesmo candidato passa a ser aceite
-    resultado = selecionar_vencedor(entries, [], hoje=hoje, janela_recencia_dias=15)
-    assert resultado.vencedor is not None
+    resultado = selecionar_vencedores(entries, [], hoje=hoje, janela_recencia_dias=15)
+    assert len(resultado.vencedores) == 1
 
 
 # ── Saúde dos feeds e log de candidatos (Fase 3) ──────────────────────────
@@ -593,7 +672,7 @@ def test_analisar_candidatos_classifica_vencedor_score_e_duplicado():
 
 
 def test_analisar_candidatos_marca_nao_escolhido_quando_ja_ha_vencedor():
-    """Ao contrário de selecionar_vencedor() (early-exit), esta função
+    """Ao contrário de selecionar_vencedores() (early-exit), esta função
     classifica TODOS os candidatos elegíveis — um segundo candidato válido
     não pode ficar sem classificação só porque já houve vencedor."""
     hoje = datetime(2026, 7, 2, tzinfo=timezone.utc)
@@ -636,7 +715,8 @@ def test_registar_candidatos_log_regista_todos_os_candidatos_da_janela(tmp_path)
     assert len(historico) == 1
     registo = historico[0]
     assert registo["data"] == "2026-07-02"
-    assert registo["vencedor"]["titulo"] == "Abono de família sobe"
+    assert len(registo["vencedores"]) == 1
+    assert registo["vencedores"][0]["titulo"] == "Abono de família sobe"
     titulos_registados = {c["titulo"] for c in registo["candidatos"]}
     assert titulos_registados == {"Abono de família sobe", "Notícia irrelevante"}
     assert registo["saude_feeds"] == {"abono_familia": "OK"}
@@ -647,7 +727,7 @@ def test_registar_candidatos_log_regista_nenhum_vencedor(tmp_path):
     caminho = tmp_path / "noticias_candidatos.json"
     registar_candidatos_log([_entry("Notícia irrelevante sobre futebol")], [], [], caminho=caminho, hoje=HOJE_TESTE)
     historico = json.loads(caminho.read_text(encoding="utf-8"))
-    assert historico[0]["vencedor"] is None
+    assert historico[0]["vencedores"] == []
 
 
 def test_registar_candidatos_log_retem_por_dias_nao_por_corridas(tmp_path):
