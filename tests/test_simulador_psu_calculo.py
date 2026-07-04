@@ -47,9 +47,21 @@ PARAMS_FIXTURE_TESTE = {
 
 
 def _localizar_chromium():
-    caminho_env = os.environ.get("PLAYWRIGHT_BROWSERS_PATH", "/opt/pw-browsers")
-    candidatos = sorted(glob.glob(os.path.join(caminho_env, "chromium-*", "chrome-linux", "chrome")))
-    return candidatos[-1] if candidatos else None
+    """Procura o binário do Chromium em todas as localizações plausíveis —
+    nunca assumir uma única convenção. `/opt/pw-browsers` é específico do
+    sandbox do Claude Code; o CI (GitHub Actions) nunca define
+    `PLAYWRIGHT_BROWSERS_PATH` e `playwright install` instala no cache
+    por omissão (`~/.cache/ms-playwright`) — sem este segundo candidato,
+    os testes ficavam sempre skipped no CI (achado real, 2026-07-05)."""
+    bases = [os.environ.get("PLAYWRIGHT_BROWSERS_PATH")]
+    bases += ["/opt/pw-browsers", os.path.expanduser("~/.cache/ms-playwright")]
+    for base in bases:
+        if not base:
+            continue
+        candidatos = sorted(glob.glob(os.path.join(base, "chromium-*", "chrome-linux", "chrome")))
+        if candidatos:
+            return candidatos[-1]
+    return None
 
 
 try:

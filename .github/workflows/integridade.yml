@@ -83,4 +83,26 @@ jobs:
           pip install pytest
           playwright install chromium --with-deps
       - name: Correr suite completa
-        run: pytest tests/ -q
+        run: |
+          set -o pipefail
+          pytest tests/ -q | tee /tmp/pytest-output.txt
+      - name: Guardrail — limiar de testes skipped
+        # Achado real de 2026-07-05: 44 testes Playwright (test_pesquisa_hero.py,
+        # test_pesquisa_ranking.py, test_share_js.py, test_simulador_psu_calculo.py)
+        # ficaram sempre "skipped" no CI, silenciosamente, desde a criação deste
+        # job — o helper _localizar_chromium() só procurava em /opt/pw-browsers
+        # (convenção do sandbox do Claude Code), que não existe nos runners do
+        # GitHub Actions. Corrigido com fallback para ~/.cache/ms-playwright.
+        # Este passo garante que uma regressão do mesmo tipo (binário/dependência
+        # em falta a fazer skip de testes que deviam correr) nunca mais passa
+        # despercebida: só os 6 skips documentados (páginas fora do índice de
+        # pesquisa, páginas sem "Verificado a") são aceites. Subir este número
+        # exige decisão consciente, nunca um acidente de ambiente.
+        run: |
+          LIMIAR_SKIPPED=6
+          SKIPPED=$(grep -oE '[0-9]+ skipped' /tmp/pytest-output.txt | grep -oE '[0-9]+' || echo 0)
+          echo "Testes skipped: $SKIPPED (limiar: $LIMIAR_SKIPPED)"
+          if [ "$SKIPPED" -gt "$LIMIAR_SKIPPED" ]; then
+            echo "::error::$SKIPPED testes skipped, acima do limiar documentado de $LIMIAR_SKIPPED. Pode ser uma regressão silenciosa (dependência/binário em falta a impedir testes de correr) — investigar antes de subir este limiar."
+            exit 1
+          fi

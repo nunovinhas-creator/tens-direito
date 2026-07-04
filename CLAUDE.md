@@ -1050,6 +1050,13 @@ confirmados — ver o Passo 5a de `.claude/commands/atualizar-cluster-psu.md`.
    (deixa de dizer "ainda não em vigor — aguarda decreto-lei") e correr
    `python scripts/sincronizar_clusters.py` para propagar a mudança ao cartão da
    homepage e a qualquer bloco "pertence ao guia" já injectado nos artigos do cluster
+9. Revalidar a secção "PSI e a Prestação Social Única" de
+   `prestacao-social-para-a-inclusao.html` contra a lista definitiva dos
+   13 apoios no diploma publicado, e actualizar `psu-lista-13-apoios.html`
+   e o cluster completo no mesmo commit — a página da PSI (publicada
+   4 jul 2026) regista hoje que a PSI **não consta** dessa lista, com a
+   ressalva explícita de que o decreto-lei ainda não tinha sido
+   publicado; essa afirmação só é definitiva depois deste passo
 
 ---
 
