@@ -28,6 +28,21 @@
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
 
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador de Ação Social Escolar (ASE) 2026/2027",
+    "url": "https://tensdireito.com/simulador-ase.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,7 +63,7 @@
         "name": "Qual é a diferença entre escalão A e B?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Escalão A: refeições gratuitas, €16/ano material, até €20/ano visitas. Escalão B: refeições com valor reduzido, €8/ano material, até €10/ano visitas. Ambos têm transportes gratuitos (onde aplicável)."
+          "text": "Escalão A: refeições gratuitas, €16/ano material, até €20/ano visitas, transporte gratuito. Escalão B: refeições com desconto de 50%, €8/ano material, até €10/ano visitas, transporte com desconto (não gratuito)."
         }
       },
       {
@@ -559,13 +574,15 @@
       ⏰ Candidatura até 30 de Setembro de 2026
     </div>
 
+    <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 1.5rem;">💡 <strong>Despacho n.º 8452-A/2015 e 5296/2017</strong> · IAS 2026: 537,13€ · <strong>Verificado a 24/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a></p>
+
     <div class="calc-card">
       <h2 style="color: #0F766E; margin-bottom: 1.5rem;">Descobre o teu escalão ASE</h2>
 
       <form id="formASE" onsubmit="calcularASE(event)">
         <div class="form-group">
           <label for="rendimento">Rendimento anual bruto do agregado (€)</label>
-          <input type="number" id="rendimento" placeholder="24000" min="0" step="100" required>
+          <input type="number" id="rendimento" inputmode="numeric" placeholder="24000" min="0" step="100" required>
           <small>Soma de todos os rendimentos do agregado (12 meses) — rendimentos 2025</small>
         </div>
 
@@ -602,7 +619,7 @@
       </form>
     </div>
 
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado" class="resultado" aria-live="polite"></div>
 
     <section class="faq-section">
       <h2>Perguntas frequentes</h2>
@@ -617,8 +634,8 @@
       <details>
         <summary>Qual é a diferença entre escalão A e B?</summary>
         <div class="faq-resposta">
-          <strong>Escalão A:</strong> refeições gratuitas, 16€/ano material escolar, até 20€/ano visitas de estudo, transportes gratuitos.
-          <br><strong>Escalão B:</strong> refeições com valor reduzido (varia por escola), 8€/ano material, até 10€/ano visitas, transportes gratuitos.
+          <strong>Escalão A:</strong> refeições gratuitas, 16€/ano material escolar, até 20€/ano visitas de estudo, transporte gratuito.
+          <br><strong>Escalão B:</strong> refeições com desconto de 50%, 8€/ano material, até 10€/ano visitas, transporte com desconto (não gratuito).
         </div>
       </details>
 
@@ -652,7 +669,7 @@
     </section>
 
     <div class="disclaimer">
-      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. A ASE é regulada por Despacho 8452-A/2015 (e Despacho 5296/2017), mas os procedimentos podem variar por escola. <strong>A declaração da Segurança Social deve reflectir rendimentos de 2025 para a ASE 2026/2027.</strong> Em caso de <strong>guarda partilhada</strong>, consulta a secretaria da tua escola. Para informações oficiais, consulta <a href="/acao-social-escolar.html" target="_blank" rel="noopener">o guia completo de ASE</a>.
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. A ASE é regulada por Despacho 8452-A/2015 (e Despacho 5296/2017), mas os procedimentos podem variar por escola. <strong>A declaração da Segurança Social deve reflectir rendimentos de 2025 para a ASE 2026/2027.</strong> Em caso de <strong>guarda partilhada</strong>, consulta a secretaria da tua escola. Para informações oficiais, consulta <a href="/acao-social-escolar.html" target="_blank" rel="noopener">o guia completo de ASE</a>. Simulação indicativa. O valor final é determinado pela secretaria da escola/agrupamento.
     </div>
   </main>
 
@@ -673,25 +690,51 @@
   </footer>
 
   <script>
-    const IAS_2026 = 537.13;
-    const LIMITE_A = 268.57;
-    const LIMITE_B = 537.13;
-
-    const cobertura = {
-      a: {
-        refeicoes: { valor: 'Gratuitas', descricao: 'Todas as refeições' },
-        material: { valor: '16€/ano', descricao: 'Lápis, cadernos, etc' },
-        visitas: { valor: 'Até 20€/ano', descricao: 'Ressarcimento' },
-        transportes: { valor: 'Gratuitos', descricao: 'Onde aplicável' }
+    // ── CONFIG — fonte única de verdade da fórmula ───────────────────────────
+    // Cada valor tem a fonte (diploma) citada em comentário — nunca um número
+    // solto no meio da lógica. Valores fact-checked e publicados em
+    // acao-social-escolar.html (verificado 24/06/2026).
+    const CONFIG = {
+      verificado: '2026-06-24',
+      ias2026: 537.13, // Portaria n.º 480-A/2025/1, de 30 dez 2025 — https://dre.pt
+      limiteEscalaoA: 268.57, // Despacho n.º 8452-A/2015 — 50% do IAS 2026
+      limiteEscalaoB: 537.13, // Despacho n.º 8452-A/2015 — 100% do IAS 2026
+      cobertura: {
+        a: {
+          refeicoes: { valor: 'Gratuitas', descricao: 'Todas as refeições' }, // Despacho n.º 8452-A/2015
+          material: { valor: '16€/ano', descricao: 'Lápis, cadernos, etc' }, // Despacho n.º 8452-A/2015
+          visitas: { valor: 'Até 20€/ano', descricao: 'Ressarcimento' }, // Despacho n.º 8452-A/2015
+          transportes: { valor: 'Gratuito', descricao: 'Onde aplicável' }, // Despacho n.º 8452-A/2015
+        },
+        b: {
+          refeicoes: { valor: 'Desconto de 50%', descricao: 'Valor fixo, Despacho n.º 5296/2017' },
+          material: { valor: '8€/ano', descricao: 'Lápis, cadernos, etc' }, // Despacho n.º 8452-A/2015
+          visitas: { valor: 'Até 10€/ano', descricao: 'Ressarcimento' }, // Despacho n.º 8452-A/2015
+          // Corrigido — o escalão B tem desconto no transporte, NUNCA gratuito
+          // (só o escalão A é gratuito); confirmado em acao-social-escolar.html.
+          transportes: { valor: 'Com desconto', descricao: 'Não gratuito, ao contrário do escalão A' },
+        },
       },
-      b: {
-        refeicoes: { valor: 'Valor reduzido', descricao: 'Varia por escola' },
-        material: { valor: '8€/ano', descricao: 'Lápis, cadernos, etc' },
-        visitas: { valor: 'Até 10€/ano', descricao: 'Ressarcimento' },
-        transportes: { valor: 'Gratuitos', descricao: 'Onde aplicável' }
-      }
     };
 
+    // ── Mecânica de cálculo ──────────────────────────────────────────────────
+    // Função pura, testada em tests/test_simulador_ase_calculo.py.
+    function calcularASEValor(config, input) {
+      const { rendimentoAnual, numPessoas, tipoEscola } = input;
+
+      if (tipoEscola === 'privada') {
+        return { escalao: 'privada' };
+      }
+
+      const rpc = rendimentoAnual / numPessoas / 12;
+      let escalao = 'nao';
+      if (rpc <= config.limiteEscalaoA) escalao = 'a';
+      else if (rpc <= config.limiteEscalaoB) escalao = 'b';
+
+      return { escalao, rpc };
+    }
+
+    // ── Ligação ao formulário (não testada directamente — só calcularASEValor) ──
     function calcularASE(e) {
       e.preventDefault();
 
@@ -699,17 +742,15 @@
       const numPessoas = parseInt(document.getElementById('numPessoas').value);
       const tipoEscola = document.getElementById('tipoEscola').value;
 
-      if (tipoEscola === 'privada') {
+      const r = calcularASEValor(CONFIG, { rendimentoAnual: rendimento, numPessoas, tipoEscola });
+
+      if (r.escalao === 'privada') {
         mostrarResultadoPrivada();
         return;
       }
 
-      const rpc = rendimento / numPessoas / 12;
-      let escalao = 'nao';
-
-      if (rpc <= LIMITE_A) escalao = 'a';
-      else if (rpc <= LIMITE_B) escalao = 'b';
-
+      const escalao = r.escalao;
+      const rpc = r.rpc;
       const resultDiv = document.getElementById('resultado');
       let html = '';
 
@@ -720,13 +761,14 @@
             <div class="resultado-valor">Sem direito</div>
             <div class="resultado-detalhe">
               <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
-              <p>O rendimento do agregado ultrapassa o limite para ASE (€${LIMITE_B.toFixed(2)}/mês).</p>
+              <p>O rendimento do agregado ultrapassa o limite para ASE (€${CONFIG.limiteEscalaoB.toFixed(2)}/mês).</p>
             </div>
           </div>
         `;
       } else {
         const nomeEscalao = escalao === 'a' ? 'Escalão A' : 'Escalão B';
         const corClass = escalao === 'a' ? 'escalao-a' : 'escalao-b';
+        const cobertura = CONFIG.cobertura;
 
         html = `
           <div class="resultado-card ${corClass}">
@@ -734,7 +776,7 @@
             <div class="resultado-valor">${nomeEscalao}</div>
             <div class="resultado-detalhe">
               <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
-              <p>Limite do escalão: até €${escalao === 'a' ? LIMITE_A : LIMITE_B}/mês</p>
+              <p>Limite do escalão: até €${escalao === 'a' ? CONFIG.limiteEscalaoA : CONFIG.limiteEscalaoB}/mês</p>
             </div>
           </div>
 
@@ -787,6 +829,10 @@
       resultDiv.innerHTML = html;
       resultDiv.classList.add('show');
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'ase' });
+      }
     }
 
     function mostrarResultadoPrivada() {
@@ -805,6 +851,10 @@
       resultDiv.innerHTML = html;
       resultDiv.classList.add('show');
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'ase' });
+      }
     }
   </script>
 

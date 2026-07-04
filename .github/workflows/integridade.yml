@@ -77,6 +77,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+      - name: Cache dos browsers do Playwright
+        # Cache separado da cache de pip (acima) — evita descarregar de novo o
+        # binário do Chromium (~113 MiB) a cada push quando requirements.txt
+        # não muda. playwright install detecta o binário já presente e salta
+        # o download; --with-deps continua a correr (dependências apt do SO,
+        # rápido) mesmo com cache-hit, nunca escondendo uma alteração real de
+        # versão do Playwright.
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
       - name: Instalar dependências
         run: |
           pip install -r requirements.txt
@@ -93,16 +106,23 @@ jobs:
         # job — o helper _localizar_chromium() só procurava em /opt/pw-browsers
         # (convenção do sandbox do Claude Code), que não existe nos runners do
         # GitHub Actions. Corrigido com fallback para ~/.cache/ms-playwright.
-        # Este passo garante que uma regressão do mesmo tipo (binário/dependência
-        # em falta a fazer skip de testes que deviam correr) nunca mais passa
-        # despercebida: só os 6 skips documentados (páginas fora do índice de
-        # pesquisa, páginas sem "Verificado a") são aceites. Subir este número
-        # exige decisão consciente, nunca um acidente de ambiente.
+        #
+        # Limiar revisto de 6 para 4 em 2026-07-05 (sessão de correcções pós-CSI):
+        # o commit do simulador-csi.html tinha subido o total real para 7 sem que
+        # o limiar documentado (6) fosse actualizado — a causa não era um binário
+        # em falta, mas sim as 3 novas páginas de simuladores (abono/ase/csi)
+        # ficarem sem o carimbo "Verificado a" + atribuição exigidos por
+        # test_adicionar_autoria_artigos.py, cada uma a contar como um skip
+        # legítimo mas não documentado. Corrigido o carimbo nas 3 páginas
+        # (em vez de simplesmente subir o limiar) — os 4 skips finais são
+        # p/apoios-escolares.html (pillar sem carimbo), 404.html/index.html/
+        # simulador-psu.html (fora do índice de pesquisa, deliberado). Subir
+        # este número exige decisão consciente, nunca um acidente de ambiente.
         run: |
-          LIMIAR_SKIPPED=6
+          LIMIAR_SKIPPED=4
           SKIPPED=$(grep -oE '[0-9]+ skipped' /tmp/pytest-output.txt | grep -oE '[0-9]+' || echo 0)
           echo "Testes skipped: $SKIPPED (limiar: $LIMIAR_SKIPPED)"
           if [ "$SKIPPED" -gt "$LIMIAR_SKIPPED" ]; then
-            echo "::error::$SKIPPED testes skipped, acima do limiar documentado de $LIMIAR_SKIPPED. Pode ser uma regressão silenciosa (dependência/binário em falta a impedir testes de correr) — investigar antes de subir este limiar."
+            echo "::error::$SKIPPED testes skipped, acima do limiar documentado de $LIMIAR_SKIPPED. Pode ser uma regressão silenciosa (dependência/binário em falta a impedir testes de correr, ou página nova sem carimbo/atribuição) — investigar antes de subir este limiar."
             exit 1
           fi

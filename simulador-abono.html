@@ -28,6 +28,21 @@
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
 
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador de Abono de Família 2026",
+    "url": "https://tensdireito.com/simulador-abono.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -268,14 +283,14 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026 · IAS: 537,13€
+      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026 · IAS: 537,13€ · <strong>Verificado a 24/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
     </div>
 
     <div class="calc-card">
       <form id="formAbono" onsubmit="calcularAbono(event)">
         <div class="form-group">
           <label for="rendimento">Rendimento anual bruto do agregado (€)</label>
-          <input type="number" id="rendimento" placeholder="36000" min="0" step="100" required>
+          <input type="number" id="rendimento" inputmode="numeric" placeholder="36000" min="0" step="100" required>
           <small>Soma de todos os rendimentos do agregado familiar (12 meses)</small>
         </div>
 
@@ -307,7 +322,7 @@
       </form>
     </div>
 
-    <div id="resultado" class="resultado"></div>
+    <div id="resultado" class="resultado" aria-live="polite"></div>
 
     <section class="faq-section">
       <h2>Perguntas frequentes</h2>
@@ -349,7 +364,7 @@
     </section>
 
     <div class="disclaimer">
-      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Portaria n.º 60/2026/1), mas podem conter erros ou omissões. Confirma sempre a tua situação no <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; font-weight: 600;">simulador oficial da Segurança Social</a>.
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Portaria n.º 60/2026/1), mas podem conter erros ou omissões. Confirma sempre a tua situação no <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; font-weight: 600;">simulador oficial da Segurança Social</a>. Simulação indicativa. O valor final é determinado pela Segurança Social.
     </div>
   </main>
 
@@ -370,16 +385,23 @@
   </footer>
 
   <script>
-    const escaloes = {
-      1: { limite: 3657.50, valores: { a36: 190.98, a72: 75.13, mais72: 75.13 }, cor: 'escalo-1', nome: '1.º escalão' },
-      2: { limite: 7315.00, valores: { a36: 161.65, a72: 75.13, mais72: 75.13 }, cor: 'escalo-2', nome: '2.º escalão' },
-      3: { limite: 12435.50, valores: { a36: 132.07, a72: 59.33, mais72: 54.35 }, cor: 'escalo-3', nome: '3.º escalão' },
-      4: { limite: 18287.50, valores: { a36: 88.43, a72: 44.77, mais72: 0 }, cor: 'escalo-4', nome: '4.º escalão' },
-      5: { limite: Infinity, valores: { a36: 0, a72: 0, mais72: 0 }, cor: 'escalo-5', nome: 'Sem direito' }
+    // ── CONFIG — fonte única de verdade da fórmula ───────────────────────────
+    // Cada valor tem a fonte (diploma) citada em comentário — nunca um número
+    // solto no meio da lógica. Valores fact-checked e publicados em
+    // abono-de-familia.html (verificado 24/06/2026).
+    const CONFIG = {
+      verificado: '2026-06-24',
+      ias2026: 537.13, // Portaria n.º 480-A/2025/1, de 30 dez 2025 — https://dre.pt
+      garantiaInfancia: 127.33, // Portaria n.º 60/2026/1 — mínimo garantido no 1.º escalão
+      limiteGarantia: 2631.94, // Portaria n.º 60/2026/1 — 0,35 × IAS × 14, limite de RR anual
+      escaloes: [
+        { id: 1, limite: 3657.50, valores: { a36: 190.98, a72: 75.13, mais72: 75.13 }, cor: 'escalo-1', nome: '1.º escalão' }, // Portaria n.º 60/2026/1
+        { id: 2, limite: 7315.00, valores: { a36: 161.65, a72: 75.13, mais72: 75.13 }, cor: 'escalo-2', nome: '2.º escalão' }, // Portaria n.º 60/2026/1
+        { id: 3, limite: 12435.50, valores: { a36: 132.07, a72: 59.33, mais72: 54.35 }, cor: 'escalo-3', nome: '3.º escalão' }, // Portaria n.º 60/2026/1
+        { id: 4, limite: 18287.50, valores: { a36: 88.43, a72: 44.77, mais72: 0 }, cor: 'escalo-4', nome: '4.º escalão' }, // Portaria n.º 60/2026/1 — >72 meses sem direito
+        { id: 5, limite: Infinity, valores: { a36: 0, a72: 0, mais72: 0 }, cor: 'escalo-5', nome: 'Sem direito' }, // acima do limite do 4.º escalão
+      ],
     };
-
-    const GARANTIA_INFANCIA = 127.33;
-    const LIMITE_GARANTIA = 2631.94;
 
     function atualizarCriancas() {
       const num = parseInt(document.getElementById('numCriancas').value);
@@ -391,33 +413,58 @@
             <div class="crianca-titulo">Criança ${i}</div>
             <div class="form-group">
               <label for="idade${i}">Idade em meses</label>
-              <input type="number" id="idade${i}" placeholder="24" min="0" max="216" step="1" required>
+              <input type="number" id="idade${i}" inputmode="numeric" placeholder="24" min="0" max="216" step="1" required>
             </div>
           </div>
         `;
       }
     }
 
-    function getValorPorIdade(escalao, idadesMeses) {
-      const obj = escaloes[escalao];
-      if (!obj || escalao === 5) return 0;
+    // ── Mecânica de cálculo ──────────────────────────────────────────────────
+    // Funções puras, testadas em tests/test_simulador_abono_calculo.py.
+    function getEscalao(config, rr) {
+      for (const escalao of config.escaloes) {
+        if (rr <= escalao.limite) return escalao;
+      }
+      return config.escaloes[config.escaloes.length - 1];
+    }
 
+    function getValorPorIdade(escalaoObj, idadesMeses) {
+      if (escalaoObj.id === 5) return 0;
       let valor = 0;
       idadesMeses.forEach(idade => {
-        if (idade <= 36) valor += obj.valores.a36;
-        else if (idade <= 72) valor += obj.valores.a72;
-        else valor += obj.valores.mais72;
+        if (idade <= 36) valor += escalaoObj.valores.a36;
+        else if (idade <= 72) valor += escalaoObj.valores.a72;
+        else valor += escalaoObj.valores.mais72;
       });
       return valor;
     }
 
-    function getEscalao(rr) {
-      for (let i = 1; i <= 5; i++) {
-        if (rr <= escaloes[i].limite) return i;
+    function calcularAbonoValor(config, input) {
+      const { rendimentoAnual, numCriancas, idadesMeses, monoparental } = input;
+      const rr = rendimentoAnual / (numCriancas + 1);
+      const escalaoObj = getEscalao(config, rr);
+      let valorBase = getValorPorIdade(escalaoObj, idadesMeses);
+
+      let garantiaAplicada = false;
+      if (escalaoObj.id === 1 && rr < config.limiteGarantia) {
+        const minimo = config.garantiaInfancia * numCriancas;
+        if (minimo > valorBase) {
+          valorBase = minimo;
+          garantiaAplicada = true;
+        }
       }
-      return 5;
+
+      const majoracao = monoparental ? valorBase * 0.5 : 0;
+      const valorTotal = valorBase + majoracao;
+
+      return {
+        rr, escalao: escalaoObj.id, nomeEscalao: escalaoObj.nome, cor: escalaoObj.cor,
+        valorBase, majoracao, valorTotal, garantiaAplicada,
+      };
     }
 
+    // ── Ligação ao formulário (não testada directamente — só calcularAbonoValor) ──
     function calcularAbono(e) {
       e.preventDefault();
 
@@ -425,45 +472,33 @@
       const numCriancas = parseInt(document.getElementById('numCriancas').value);
       const monoparental = document.getElementById('monoparental').value === 'sim';
 
-      const idades = [];
+      const idadesMeses = [];
       for (let i = 1; i <= numCriancas; i++) {
-        idades.push(parseInt(document.getElementById(`idade${i}`).value));
+        idadesMeses.push(parseInt(document.getElementById(`idade${i}`).value));
       }
 
-      const rr = rendimento / (numCriancas + 1);
-      const escalao = getEscalao(rr);
-      let valorTotal = getValorPorIdade(escalao, idades);
-
-      if (escalao === 1 && rr < LIMITE_GARANTIA) {
-        valorTotal = Math.max(valorTotal, GARANTIA_INFANCIA * numCriancas);
-      }
-
-      const majoracao = monoparental ? valorTotal * 0.5 : 0;
-      valorTotal += majoracao;
-
-      const escaloObj = escaloes[escalao];
+      const r = calcularAbonoValor(CONFIG, { rendimentoAnual: rendimento, numCriancas, idadesMeses, monoparental });
       const resultDiv = document.getElementById('resultado');
 
-      let html = `<div class="resultado-card ${escaloObj.cor}">`;
+      let html = `<div class="resultado-card ${r.cor}">`;
       html += `<div class="resultado-titulo">Resultado da simulação</div>`;
 
-      if (escalao === 5) {
+      if (r.escalao === 5) {
         html += `<div class="resultado-valor">Sem direito</div>`;
-        html += `<div class="resultado-detalhe"><p>Rendimento de Referência: <strong>€${rr.toFixed(2)}</strong></p>`;
+        html += `<div class="resultado-detalhe"><p>Rendimento de Referência: <strong>€${r.rr.toFixed(2)}</strong></p>`;
         html += `<p>O agregado ultrapassa o limite máximo do 4.º escalão (€18.287,50).</p></div>`;
       } else {
-        html += `<div class="resultado-valor">€${valorTotal.toFixed(2)}/mês</div>`;
+        html += `<div class="resultado-valor">€${r.valorTotal.toFixed(2)}/mês</div>`;
         html += `<div class="resultado-detalhe">`;
-        html += `<p><strong>${escaloObj.nome}</strong></p>`;
-        html += `<p>Rendimento de Referência: €${rr.toFixed(2)}</p>`;
-        const valorSemMajoracao = monoparental ? valorTotal / 1.5 : valorTotal;
+        html += `<p><strong>${r.nomeEscalao}</strong></p>`;
+        html += `<p>Rendimento de Referência: €${r.rr.toFixed(2)}</p>`;
         if (numCriancas === 1) {
-          html += `<p>Valor mensal: €${valorSemMajoracao.toFixed(2)}</p>`;
+          html += `<p>Valor mensal: €${r.valorBase.toFixed(2)}</p>`;
         } else {
-          html += `<p>Valor base (${numCriancas} crianças): €${valorSemMajoracao.toFixed(2)}</p>`;
+          html += `<p>Valor base (${numCriancas} crianças): €${r.valorBase.toFixed(2)}</p>`;
         }
-        if (majoracao > 0) html += `<p>Majoração monoparental (+50%): €${majoracao.toFixed(2)}</p>`;
-        if (escalao === 1 && rr < LIMITE_GARANTIA) html += `<p>✓ Aplicada Garantia para a Infância (mín. €127,33/criança)</p>`;
+        if (r.majoracao > 0) html += `<p>Majoração monoparental (+50%): €${r.majoracao.toFixed(2)}</p>`;
+        if (r.garantiaAplicada) html += `<p>✓ Aplicada Garantia para a Infância (mín. €127,33/criança)</p>`;
         html += `</div>`;
       }
 
@@ -473,6 +508,10 @@
       resultDiv.innerHTML = html;
       resultDiv.classList.add('show');
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'abono' });
+      }
     }
 
     atualizarCriancas();
