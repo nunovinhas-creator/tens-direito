@@ -38,7 +38,7 @@ nav { display: flex; align-items: center; gap: 1.5rem; max-width: 900px; margin:
 .logo-text span.tens { color: #0F172A; }
 .logo-text span.direito { color: #0D9488; }
 nav a.nav-link { color: #0F172A; text-decoration: none; font-size: 0.95rem; }
-nav a.nav-link: hover { color: #0D9488; }
+nav a.nav-link:hover { color: #0D9488; }
 .hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; }
 .hero-inner { max-width: 900px; margin: 0 auto; }
 .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
@@ -54,13 +54,13 @@ h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25
 table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 thead tr { background: #0F766E; color: white; }
 thead th { padding: 0.7rem 0.9rem; text-align: left; font-weight: 600; }
-tbody tr: nth-child(even) { background: #f1faf9; }
+tbody tr:nth-child(even) { background: #f1faf9; }
 tbody td { padding: 0.65rem 0.9rem; color: #212529; border-bottom: 1px solid #e9ecef; }
-tbody tr: last-child td { border-bottom: none; }
+tbody tr:last-child td { border-bottom: none; }
 .nota-tabela { font-size: 0.82rem; color: #6c757d; margin-top: 0.6rem; }
 .passos ol { padding-left: 0; list-style: none; counter-reset: passos; }
 .passos li { counter-increment: passos; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
-.passos li: : before { content: counter(passos); background: #0F766E; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+.passos li::before { content: counter(passos); background: #0F766E; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
 .passos li span { color: #495057; padding-top: 0.2rem; }
 .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
 .fonte-bloco a { color: #0F766E; font-weight: 600; }
@@ -73,16 +73,16 @@ tbody tr: last-child td { border-bottom: none; }
 .badge { display: inline-block; background: #e6f4f1; color: #0F766E; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
 .checklist { list-style: none; padding-left: 0; }
 .checklist li { padding: 0.4rem 0 0.4rem 1.75rem; position: relative; color: #495057; }
-.checklist li: : before { content: "✓"; position: absolute; left: 0; color: #0F766E; font-weight: 700; }
-.checklist li.nao: : before { content: "✗"; color: #e11d48; }
+.checklist li::before { content: "✓"; position: absolute; left: 0; color: #0F766E; font-weight: 700; }
+.checklist li.nao::before { content: "✗"; color: #e11d48; }
 footer { text-align: center; padding: 2rem; color: #6c757d; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
 footer a { color: #6c757d; }
 .zona-cinzenta { background: #F8FAFC; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; }
 .zona-cinzenta h2 { color: #0F766E; margin-bottom: 1rem; }
 details { border-bottom: 1px solid #E5E7EB; padding: 0.75rem 0; }
-details: last-child { border-bottom: none; }
+details:last-child { border-bottom: none; }
 summary { cursor: pointer; list-style: none; font-weight: 600; color: #0F172A; }
-summary: : -webkit-details-marker { display: none; }
+summary::-webkit-details-marker { display: none; }
 summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
 .resposta { padding: 0.75rem 0 0.25rem; color: #475569; line-height: 1.7; }
 .resposta p { margin-bottom: 0.5rem; }
