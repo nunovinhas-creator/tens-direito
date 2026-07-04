@@ -164,7 +164,7 @@ Chromium real (não é possível apanhar isto só por inspecção de texto)
 em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 `index.html` real em vez de manter uma cópia à parte.
 
-### Workflows (5 — 2 fazem push, âmbitos disjuntos)
+### Workflows (6 — 2 fazem push, âmbitos disjuntos)
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
@@ -173,11 +173,80 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
+| `smoke-producao.yml` | `workflow_run` após "pages build and deployment" + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
 
 **`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`,
 cada um com um âmbito de escrita disjunto e garantido por guardrail próprio**
 (ficheiros de conteúdo/dados vs. só `shadow_history/*.md`). Os restantes só lêem.
 Isto elimina race conditions entre workflows concorrentes.
+
+---
+
+## SMOKE TEST DE PRODUÇÃO
+
+Rede de segurança final, depois de todos os workflows de conteúdo/CI:
+confirma que a produção real (`tensdireito.com`, não o checkout) está
+de facto a servir o que se espera. Motivo directo: o deploy do GitHub
+Pages já falhou silenciosamente **duas vezes** nesta fase do projecto
+(`##[error]Deployment failed, try again later.` em
+`actions/deploy-pages@v5`) — sem qualquer sinal de erro no resto do
+pipeline, nenhum job vermelho, nenhuma Issue. Nas duas vezes só foi
+descoberto ao visitar a página manualmente e encontrar 404. Nenhum dos
+outros 5 workflows verifica a produção real — todos correm sobre o
+checkout local do repositório.
+
+1. **`.github/workflows/smoke-producao.yml`** — três triggers:
+   - `workflow_run` sobre "pages build and deployment" (`types:
+     [completed]`) — o sinal mais rápido, corre logo a seguir a
+     qualquer deploy do Pages, com sucesso ou falha.
+   - `schedule` `30 6 * * *` — rede de segurança, depois do
+     `pipeline-diario.yml` (06:00 UTC); garante que uma falha de deploy
+     nunca fica por detectar até alguém reparar manualmente, mesmo se o
+     `workflow_run` nunca chegar a disparar (mesmo padrão de
+     `shadow-daily.yml` para o `workflow_run` de "Pipeline Diário").
+   - `workflow_dispatch` — para testar manualmente (usado nesta sessão
+     para confirmar o falso-404 antes de publicar).
+2. **`scripts/smoke_producao.sh`** — lê `scripts/urls_criticas.txt`
+   (único sítio a editar — nunca hardcoded no script nem no workflow),
+   faz `curl` a cada página com `User-Agent` identificado
+   (`TensDireito-SmokeTest/1.0`), 3 tentativas com 30s de espera entre
+   elas (absorve flutuações momentâneas do CDN, sem mascarar uma falha
+   real). Para as páginas de simulador (`SIMULADORES` no topo do
+   script — `simulador-abono.html`, `simulador-ase.html`,
+   `simulador-csi.html`), confirma também que o corpo da resposta
+   contém literalmente `"Verificado a"` — apanha o caso de a página
+   responder 200 mas servir conteúdo errado ou desactualizado (cache
+   do CDN com uma versão antiga), não só o 404. Essa verificação de
+   conteúdo nunca tem retry — se o 200 já chegou, o conteúdo não muda
+   entre tentativas, por isso falha de imediato em vez de esperar 90s
+   para nada.
+3. **`scripts/urls_criticas.txt`** — uma página por linha, caminho
+   relativo ao domínio; linhas vazias ou a começar por `#` são
+   ignoradas. Cobre: homepage, o hub `/simuladores.html`, os 3
+   simuladores, `/sitemap.xml` e 3 páginas evergreen de topo (abono,
+   RSI, subsídio de desemprego). Adicionar uma página nova importante
+   é só acrescentar uma linha aqui.
+4. **Falha = vermelho no Actions, sem mais nada** — decisão deliberada
+   desta sessão: sem notificações externas, sem referências públicas.
+   Suficiente como alerta por agora; se o volume de falsos alarmes
+   justificar mais no futuro, é uma decisão à parte.
+
+**Verificado com um falso-404 real** (não simulado): acrescentada
+temporariamente a `scripts/urls_criticas.txt` a linha
+`/pagina-inventada-para-teste-smoke-nao-deve-existir.html`, commit,
+push, e `workflow_dispatch` manual contra a produção real (run
+[28721561322](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28721561322)).
+Resultado exactamente como esperado: as 9 páginas reais responderam
+200 em ~2,5s no total (confirmando de caminho que `/simuladores.html`
+e os 3 simuladores estão mesmo em produção — resolve a dúvida em
+aberto da sessão anterior sobre o deploy do commit `121686b`); o URL
+inventado falhou 404 nas 3 tentativas, com exactamente 30s entre cada
+uma (`22:24:11` → `22:24:41` → `22:25:11`), e o job terminou vermelho
+(`conclusion: failure`) ao fim de ~63s. Linha de teste removida no
+commit seguinte. Lógica de sucesso/404/conteúdo-em-falta também
+confirmada localmente com um `http.server` a fazer de produção (via
+override `DOMINIO=http://localhost:PORTA`), sem tocar em produção real
+para esses três casos.
 
 ---
 
@@ -2510,3 +2579,7 @@ Resultado confirmado por re-auditoria completa: **0 violações em 36/36 página
 ---
 
 *Última revisão: 2026-07-04 — visibilidade dos 3 simuladores (abono, ASE, CSI) na navegação do site. Nova página `simuladores.html` (hub, template igual às restantes páginas — hero teal, cards, disclaimer, footer) com JSON-LD `CollectionPage` (`hasPart` com os 3 `WebApplication`) + `BreadcrumbList`; excluída do sistema de clusters (`EXCLUIDAS` em `sincronizar_clusters.py`, mesma categoria de `comecar-aqui.html` — agrega ferramentas de 3 clusters diferentes, não pertence a nenhum único). Link "🧮 Simuladores" acrescentado à **fonte** da nav (`render_nav()` em `scripts/sincronizar_nav.py`, desktop + mobile) e propagado às 39 páginas reais correndo o script — nunca editado página a página. Homepage ganhou secção "Simuladores e Calculadoras" (3 `apoio-card`, reaproveitando a classe já existente da secção "Todos os guias") logo a seguir ao herói, antes de "Comece por aqui". Os 3 simuladores ganharam `BreadcrumbList` JSON-LD de 3 níveis (Início > Simuladores > [nome], a apontar para `/simuladores.html`) e um breadcrumb visível no hero (cores adaptadas ao hero de cada página — texto escuro no hero claro de abono/CSI, `#EDF6F5`/branco sólido no hero teal da ASE, nunca `rgba` translúcido sobre cor — resultado do achado da auditoria WCAG anterior sobre fundos translúcidos). Corrigido de caminho um gap pré-existente: `comecar-aqui.html` só linkava abono/ASE na secção "Ferramentas & Calculadoras", nunca tinha sido actualizado com o CSI — acrescentado, mais um link para o hub novo. `data/clusters.json` inalterado (o hub não pertence a nenhum cluster). Adicionado a `sitemap.xml` e `scripts/pesquisa.js` (cluster/tipo `null`, mesmo padrão de `comecar-aqui.html`). Novo teste `test_nav_tem_link_simuladores` em `tests/test_nav_coerencia.py` (parametrizado sobre as páginas reais, confirma o link em ambos os menus desktop/mobile do bloco NAV). Achado durante a auditoria de acessibilidade da página nova: violação `heading-order` (moderate) por `<h1>` seguido directamente de `<h3>` sem `<h2>` a meio — corrigido com um `<h2>` visível ("Escolhe o teu simulador") antes da grelha de cards, sem esconder nada via CSS. Confirmado com Chromium real (Playwright): hub com 3 cards e nav funcional, homepage com a secção nova e o link na nav (3 ocorrências: dropdown context + desktop + mobile), breadcrumb do abono a mostrar "Início › Simuladores › Abono de Família". Suite completa: 1149 passed, 4 skipped (mesmos skips já documentados); `ruff check scripts/ --select E,F,W --ignore E501 .` limpo; `html5validator` sobre as páginas tocadas sem erros novos (os 2 avisos de CSS `text-underline-offset`/`scrollbar-width` são falsos positivos pré-existentes do `vnu.jar`, já presentes noutras páginas publicadas — confirmado comparando com `p/apoios-escolares.html` antes de assumir que era um problema novo); 0 violações de acessibilidade nas 39 páginas reais (incluindo a nova). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
+
+---
+
+*Última revisão: 2026-07-04 — smoke test de produção pós-deploy, para apanhar falhas silenciosas do GitHub Pages como as duas já documentadas (`##[error]Deployment failed, try again later.` em `actions/deploy-pages@v5`, sem qualquer sinal de erro no resto do pipeline). Novo `.github/workflows/smoke-producao.yml` (`workflow_run` sobre "pages build and deployment" + cron `30 6 * * *` de segurança, depois do `pipeline-diario.yml`, + `workflow_dispatch` manual) e `scripts/smoke_producao.sh` (retry 3× com 30s de espera, `User-Agent` identificado, lista de páginas em `scripts/urls_criticas.txt` — único sítio a editar). Para as 3 páginas de simulador, confirma também que o corpo da resposta contém `"Verificado a"` — apanha 200 com conteúdo errado/antigo, não só 404; essa verificação nunca tem retry (conteúdo não muda entre tentativas). Nova secção "SMOKE TEST DE PRODUÇÃO" documenta tudo. Testado com um falso-404 real contra produção (`workflow_dispatch`, run 28721561322): as 9 páginas reais passaram em ~2,5s (confirmando de caminho que `/simuladores.html` e os 3 simuladores estão mesmo em produção — resolve a dúvida em aberto da sessão anterior sobre o deploy do commit `121686b`), o URL inventado falhou 404 nas 3 tentativas com exactamente 30s entre cada uma, job terminou vermelho ao fim de ~63s — linha de teste removida no commit seguinte. Lógica de sucesso/404/conteúdo-em-falta também confirmada localmente com um `http.server` a fazer de produção, sem tocar em produção real para esses três casos. Decisão desta sessão: falha = vermelho no Actions é suficiente por agora, sem notificações externas nem referências públicas. Nenhuma alteração a `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` (continuam `False`) — este workflow só lê a produção, nunca escreve nada.

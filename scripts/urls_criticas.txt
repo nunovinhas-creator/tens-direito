@@ -16,4 +16,3 @@
 /abono-de-familia.html
 /rsi.html
 /subsidio-desemprego.html
-/pagina-inventada-para-teste-smoke-nao-deve-existir.html
