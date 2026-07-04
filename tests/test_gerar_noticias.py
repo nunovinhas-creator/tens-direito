@@ -13,6 +13,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from gerar_noticias import (
+    CLUSTER_KEYWORDS,
+    FEEDS,
     ItemNoticia,
     SaudeFeed,
     agrupar_por_mes,
@@ -38,6 +40,8 @@ from gerar_noticias import (
     sincronizar_saidas,
     titulos_semelhantes,
 )
+
+RAIZ = Path(__file__).parent.parent
 
 # Data de referência fixa para selecionar_vencedor() nestes testes — nunca
 # datetime.now() real, que tornaria os testes dependentes de quando correm
@@ -156,6 +160,82 @@ def test_detectar_cluster_psu():
 
 def test_detectar_cluster_sem_correspondencia():
     assert detectar_cluster("Notícia qualquer sem palavras-chave conhecidas", "") is None
+
+
+# ── Feeds novos de 2026-07-04 (Fiscalidade, IAS, calendário de pagamentos,
+# Habitação, salário mínimo, CSI) — testados com fetch real num
+# workflow_dispatch temporário antes de entrar em FEEDS; aqui só se
+# confirma a estrutura e a classificação, nunca a rede real. ─────────────
+
+_NOMES_FEEDS_NOVOS_2026_07_04 = [
+    "irs_fiscalidade",
+    "ias_valor_referencia",
+    "calendario_pagamentos_seg_social",
+    "habitacao_arrendamento",
+    "salario_minimo",
+    "csi_idosos",
+]
+
+
+def test_feeds_novos_presentes_em_feeds():
+    for nome in _NOMES_FEEDS_NOVOS_2026_07_04:
+        assert nome in FEEDS
+
+
+def test_feeds_novos_tem_url_de_pesquisa_google_news_bem_formada():
+    for nome in _NOMES_FEEDS_NOVOS_2026_07_04:
+        url = FEEDS[nome]
+        assert url.startswith("https://news.google.com/rss/search?q=")
+        assert url.endswith("&hl=pt-PT&gl=PT&ceid=PT:pt")
+
+
+def test_total_de_feeds_e_treze():
+    assert len(FEEDS) == 13
+
+
+# Títulos reais capturados no diagnóstico de 2026-07-04 (workflow_dispatch
+# temporário, apagado no fim) — nunca reescritos à mão.
+
+def test_detect_category_fiscal_com_titulo_real_do_diagnostico():
+    titulo = "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos"
+    assert detect_category(_entry(titulo)) == "fiscal"
+
+
+def test_detect_category_habitacao_com_titulo_real_do_diagnostico():
+    titulo = "Apoios ao arrendamento jovem reforçados em 2026"
+    assert detect_category(_entry(titulo)) == "habitacao"
+
+
+def test_detect_category_emprego_para_salario_minimo():
+    titulo = "Governo aumenta salário mínimo para 920 euros em 2026"
+    assert detect_category(_entry(titulo)) == "emprego"
+
+
+def test_detectar_cluster_habitacao_com_titulo_real_do_diagnostico():
+    """Gap encontrado 2026-07-04: o cluster 'habitacao' existe em
+    data/clusters.json desde 3 jul 2026 mas nunca tinha sido adicionado a
+    CLUSTER_KEYWORDS — corrigido ao ligar o feed habitacao_arrendamento."""
+    titulo = "Porta 65: o apoio que pode pagar parte da tua renda em Portugal"
+    assert detectar_cluster(titulo, "") == "habitacao"
+
+
+def test_detectar_cluster_trabalho_rendimento_para_salario_minimo():
+    assert detectar_cluster("Salário mínimo nacional em 2026: valor e descontos", "") == "trabalho-rendimento"
+
+
+def test_detectar_cluster_idosos_para_csi_com_titulo_real_do_diagnostico():
+    titulo = "Complemento Solidário para Idosos sobe em janeiro: confira os valores"
+    assert detectar_cluster(titulo, "") == "idosos-incapacidade-cuidadores"
+
+
+def test_cluster_keywords_cobre_todos_os_clusters_do_site():
+    """Regressão para o gap de 'habitacao' encontrado e corrigido em
+    2026-07-04: CLUSTER_KEYWORDS tem de ter uma entrada para todos os
+    clusters reais de data/clusters.json — nunca um cluster novo do site
+    sem correspondência aqui."""
+    clusters = json.loads((RAIZ / "data" / "clusters.json").read_text(encoding="utf-8"))
+    ids_site = {c["id"] for c in clusters["clusters"]}
+    assert ids_site <= set(CLUSTER_KEYWORDS.keys())
 
 
 # ── Selecção com dedup e observabilidade ──────────────────────────────────

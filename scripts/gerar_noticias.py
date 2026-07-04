@@ -135,6 +135,19 @@ def escrever_ficheiro_seguro(caminho, conteudo):
 # indefinida), `portugal.gov.pt/pt/gc25/comunicacao/rss` (404) — não existe
 # hoje um substituto oficial vivo; ver CLAUDE.md secção "FRESCURA DA
 # HOMEPAGE" para o registo completo.
+#
+# 6 feeds novos (2026-07-04, pedido do Nuno — cobrir categorias Fiscalidade
+# e Habitação que ficavam a zero, mais IAS/calendário de pagamentos/salário
+# mínimo/CSI): todos testados com fetch real num `workflow_dispatch`
+# temporário antes de entrar aqui (mesma disciplina dos 7 feeds originais) —
+# `irs_fiscalidade` (98 entradas, notícias reais de prazo de entrega),
+# `ias_valor_referencia` (48, cobertura concentrada em torno da actualização
+# anual de dez/jan — normal para um tema sazonal, não um sinal de feed
+# fraco), `calendario_pagamentos_seg_social` (100, calendário mensal de
+# pensões/prestações), `habitacao_arrendamento` (85, apoios ao arrendamento
+# para além do Porta 65 — sobreposição ocasional com `porta65_arrendamento`
+# é esperada e tratada pelo dedup existente, não pelo feed), `salario_minimo`
+# (100) e `csi_idosos` (88). Nenhum tinha `bozo=True` nem 0 entradas.
 FEEDS = {
     "abono_familia": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "subsidio_desemprego": "https://news.google.com/rss/search?q=subs%C3%ADdio+de+desemprego+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
@@ -143,13 +156,19 @@ FEEDS = {
     "acao_social_escolar": "https://news.google.com/rss/search?q=a%C3%A7%C3%A3o+social+escolar+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "cuidador_informal": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "porta65_arrendamento": "https://news.google.com/rss/search?q=Porta+65+arrendamento+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "irs_fiscalidade": "https://news.google.com/rss/search?q=IRS+declara%C3%A7%C3%A3o+de+rendimentos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "ias_valor_referencia": "https://news.google.com/rss/search?q=IAS+indexante+apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "calendario_pagamentos_seg_social": "https://news.google.com/rss/search?q=calend%C3%A1rio+pagamentos+seguran%C3%A7a+social+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "habitacao_arrendamento": "https://news.google.com/rss/search?q=apoio+arrendamento+habita%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "salario_minimo": "https://news.google.com/rss/search?q=sal%C3%A1rio+m%C3%ADnimo+nacional+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
+    "csi_idosos": "https://news.google.com/rss/search?q=complemento+solid%C3%A1rio+para+idosos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
 }
 
 # Quantos itens de cada feed são examinados por corrida. Antes eram 10 — o
 # diagnóstico mostrou que o factor decisivo foi a especificidade da query
 # (o item de abono de 1 jul apareceu em 1.º lugar no feed dedicado), não
 # este limite; sobe-se ligeiramente para 15 por margem de segurança, a
-# custo desprezável (15 × 7 feeds = 105 entradas/corrida).
+# custo desprezável (15 × 13 feeds = 195 entradas/corrida).
 LIMITE_ENTRADAS_POR_FEED = 15
 
 # Corte de recência: só candidatos publicados nos últimos N dias podem
@@ -170,6 +189,23 @@ KEYWORDS = [
 ]
 
 STOPWORDS = ["publicidade", "patrocinado", "sponsored", "advertisement"]
+
+# "ias" (IAS, o Indexante dos Apoios Sociais) é curta de mais para
+# `kw in texto` simples — é substring de palavras portuguesas correntes
+# sem relação nenhuma com o tema (a mais comum: "dias"; também
+# "família"/"famílias") — descoberto ao adicionar o feed `ias_valor_referencia`
+# (2026-07-04): um título real sobre IRS ("...arriscam multas... famílias...")
+# ficava "apoios" em vez de "fiscal" só por conter "famílias". Exige
+# fronteira de palavra só para esta keyword; as restantes mantêm o
+# comportamento de substring simples (nenhuma outra é ambígua ao ponto de
+# aparecer dentro de palavras comuns não relacionadas).
+_REGEX_PALAVRA_IAS = re.compile(r"\bias\b")
+
+
+def _contem_keyword(kw: str, texto: str) -> bool:
+    if kw == "ias":
+        return bool(_REGEX_PALAVRA_IAS.search(texto))
+    return kw in texto
 
 CAT_KEYWORDS = {
     "apoios": ["abono", "rsi", "prestação", "apoio social", "segurança social", "psu", "ias", "rmg", "pensão"],
@@ -192,12 +228,17 @@ CAT_LABELS = {
 # Classificação best-effort para ligação futura ao guia do cluster
 # (Fase 3 — "Relacionado: o nosso guia sobre X"). Não é garantidamente
 # precisa; apenas a melhor correspondência por palavra-chave.
+#
+# "habitacao" estava em falta (gap encontrado 2026-07-04, ao ligar o feed
+# `habitacao_arrendamento`) — o cluster existe em data/clusters.json desde
+# 3 jul 2026 (p/habitacao.html) mas nunca tinha sido adicionado aqui.
 CLUSTER_KEYWORDS = {
     "prestacao-social-unica": ["psu", "prestação social única"],
     "apoios-escolares": ["ase", "ação social escolar", "bolsa de mérito", "manuais escolares", "manuais gratuitos", "passe sub-23", "passe sub23"],
     "familia": ["abono de família", "abono", "licença parental", "subsídio parental"],
     "idosos-incapacidade-cuidadores": ["csi", "complemento solidário", "cuidador informal", "amim", "incapacidade multiuso"],
-    "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção"],
+    "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção", "salário mínimo"],
+    "habitacao": ["porta 65", "apoio ao arrendamento", "apoio à renda", "arrendamento", "ihru"],
 }
 
 MESES_PT = [
@@ -367,13 +408,13 @@ def score_entry(entry) -> int:
     text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
     if any(s in text for s in STOPWORDS):
         return -1
-    return sum(1 for kw in KEYWORDS if kw in text)
+    return sum(1 for kw in KEYWORDS if _contem_keyword(kw, text))
 
 
 def detect_category(entry) -> str:
     text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
     for cat, kws in CAT_KEYWORDS.items():
-        if any(kw in text for kw in kws):
+        if any(_contem_keyword(kw, text) for kw in kws):
             return cat
     return "apoios"
 
