@@ -11,7 +11,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **03 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **04 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -193,7 +193,6 @@ tens-direito/
 │       └── _fontes_config.json
 ├── .github/
 │   └── workflows/
-│       ├── diagnostico-noticias-temp.yml
 │       ├── integridade.yml
 │       ├── pipeline-diario.yml
 │       ├── shadow-daily.yml
@@ -210,14 +209,15 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── adicionar_article_jsonld.py
 │   ├── adicionar_autoria_artigos.py
+│   ├── adicionar_canonicas.py
 │   ├── atualizar_branding_nvlabs.py
 │   ├── atualizar_claude_md.py
 │   ├── auto_update_engine.py
 │   ├── classificador_resposta.py
 │   ├── classificar_datas.py
 │   ├── decisao_datas.py
-│   ├── diagnostico_noticias_temp.py
 │   ├── extrair_valores.py
 │   ├── gerar_noticias.py
 │   ├── gerar_pagina.py
@@ -284,7 +284,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
-| `diagnostico-noticias-temp.yml` | — | diagnostico-noticias-temp |
 | `integridade.yml` | — | integridade |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
 | `shadow-daily.yml` | — | shadow-daily |
@@ -344,6 +343,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 03 de julho de 2026 às 22:35 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 04 de julho de 2026 às 10:00 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
