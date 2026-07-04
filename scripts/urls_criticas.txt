@@ -1,0 +1,19 @@
+# Lista de páginas críticas para o smoke test de produção
+# (.github/workflows/smoke-producao.yml + scripts/smoke_producao.sh).
+#
+# Uma página por linha, caminho relativo ao domínio (começa sempre por
+# "/"). Linhas vazias ou a começar por "#" são ignoradas.
+#
+# Para adicionar uma página nova importante: acrescenta uma linha aqui
+# — nunca editar a lista dentro do workflow ou do script.
+
+/
+/simuladores.html
+/simulador-abono.html
+/simulador-ase.html
+/simulador-csi.html
+/sitemap.xml
+/abono-de-familia.html
+/rsi.html
+/subsidio-desemprego.html
+/pagina-inventada-para-teste-smoke-nao-deve-existir.html

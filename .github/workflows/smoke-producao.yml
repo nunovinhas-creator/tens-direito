@@ -1,0 +1,30 @@
+name: Verificação de Produção (Smoke Test)
+
+# Corre depois de cada deploy do GitHub Pages (workflow_run) e também
+# diariamente às 06:30 UTC, como rede de segurança — o deploy do Pages
+# já falhou silenciosamente duas vezes nesta fase do projecto
+# ("##[error]Deployment failed, try again later." em
+# actions/deploy-pages@v5), sem qualquer sinal de erro no resto do
+# pipeline: só foi descoberto ao visitar a página e encontrar 404. O
+# `workflow_run` sobre "pages build and deployment" é o sinal mais
+# rápido; o cron das 06:30 (depois do `pipeline-diario.yml` às 06:00)
+# garante que uma falha de deploy nunca fica por detectar até alguém
+# reparar manualmente — mesmo padrão de rede de segurança usado em
+# `shadow-daily.yml` para o `workflow_run` de "Pipeline Diário".
+on:
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+  schedule:
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    name: Smoke test às páginas críticas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar páginas críticas em produção
+        run: bash scripts/smoke_producao.sh
