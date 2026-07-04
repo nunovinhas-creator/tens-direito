@@ -54,7 +54,8 @@
         {"slug": "complemento-solidario-idosos.html", "titulo": "Complemento Solidário para Idosos", "tipo": "artigo", "destaque": true, "emoji": "👴", "desc": "CSI 2026: quem tem direito, cálculo do valor, BAS automático e filhos não contam."},
         {"slug": "cuidador-informal.html", "titulo": "Cuidador Informal", "tipo": "artigo", "destaque": false},
         {"slug": "amim.html", "titulo": "AMIM — Atestado Médico de Incapacidade Multiuso", "tipo": "artigo", "destaque": false},
-        {"slug": "prestacao-social-para-a-inclusao.html", "titulo": "Prestação Social para a Inclusão (PSI)", "tipo": "artigo", "destaque": false}
+        {"slug": "prestacao-social-para-a-inclusao.html", "titulo": "Prestação Social para a Inclusão (PSI)", "tipo": "artigo", "destaque": false},
+        {"slug": "simulador-csi.html", "titulo": "Simulador do CSI", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": []
     },
