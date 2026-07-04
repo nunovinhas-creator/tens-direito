@@ -50,6 +50,10 @@ EXCLUIDAS = {
     "index.html", "noticias.html", "comecar-aqui.html",
     "sobre.html", "fontes.html", "privacidade.html", "404.html",
     "acessibilidade.html",
+    # Hub cross-cluster dos simuladores — agrega ferramentas de 3 clusters
+    # diferentes (familia, apoios-escolares, idosos-incapacidade-cuidadores),
+    # não pertence a nenhum cluster único. Mesma categoria de comecar-aqui.html.
+    "simuladores.html",
     # Ferramenta pronta mas deliberadamente não publicada — aguarda o
     # decreto-lei da PSU (ver PARAMETROS_PSU no próprio ficheiro e
     # CLAUDE.md "IMPACTO DA PSU"). Fica fora de clusters.json até ao dia

@@ -64,3 +64,14 @@ def test_nav_tem_dropdown_apoios_e_pesquisa(caminho):
     assert 'id="campo-pesquisa-nav"' in bloco, f"{caminho.name}: pesquisa da nav (desktop) em falta"
     assert 'id="campo-pesquisa-nav-movel"' in bloco, f"{caminho.name}: pesquisa da nav (mobile) em falta"
     assert bloco.count('href="/comecar-aqui.html"') >= 1, f"{caminho.name}: link 'Começa aqui' em falta na nav"
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_nav_tem_link_simuladores(caminho):
+    html = caminho.read_text(encoding="utf-8")
+    m = re.search(r"<!-- NAV:INICIO -->([\s\S]*?)<!-- NAV:FIM -->", html)
+    assert m, f"{caminho.name}: bloco NAV vazio ou em falta"
+    bloco = m.group(1)
+    assert bloco.count('href="/simuladores.html"') >= 2, (
+        f"{caminho.name}: link '/simuladores.html' em falta na nav (esperado no menu desktop e mobile)"
+    )
