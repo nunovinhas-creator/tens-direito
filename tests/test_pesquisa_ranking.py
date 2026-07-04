@@ -38,7 +38,7 @@ def _localizar_chromium():
     for base in bases:
         if not base:
             continue
-        candidatos = sorted(glob.glob(os.path.join(base, "chromium-*", "chrome-linux", "chrome")))
+        candidatos = sorted(glob.glob(os.path.join(base, "chromium-*", "chrome-linux*", "chrome")))
         if candidatos:
             return candidatos[-1]
     return None
