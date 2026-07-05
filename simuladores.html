@@ -19,9 +19,9 @@
   <meta name="robots" content="index, follow">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <title>Simuladores e Calculadoras — Tens Direito</title>
-  <meta name="description" content="Simuladores gratuitos de abono de família, Ação Social Escolar (ASE) e Complemento Solidário para Idosos (CSI). Cálculos no browser, sem envio de dados.">
+  <meta name="description" content="Simuladores gratuitos de abono de família, Ação Social Escolar (ASE), Complemento Solidário para Idosos (CSI) e subsídio de doença. Cálculos no browser, sem envio de dados.">
   <meta property="og:title" content="Simuladores e Calculadoras — Tens Direito">
-  <meta property="og:description" content="Simuladores gratuitos de abono de família, ASE e CSI. Cálculos no browser, sem envio de dados.">
+  <meta property="og:description" content="Simuladores gratuitos de abono de família, ASE, CSI e subsídio de doença. Cálculos no browser, sem envio de dados.">
   <meta property="og:url" content="https://tensdireito.com/simuladores.html">
   <link rel="canonical" href="https://tensdireito.com/simuladores.html">
   <meta property="og:type" content="website">
@@ -66,6 +66,12 @@
         "name": "Simulador do Complemento Solidário para Idosos (CSI) 2026",
         "url": "https://tensdireito.com/simulador-csi.html",
         "applicationCategory": "FinanceApplication"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "Simulador de Subsídio de Doença 2026",
+        "url": "https://tensdireito.com/simulador-subsidio-doenca.html",
+        "applicationCategory": "FinanceApplication"
       }
     ]
   }
@@ -92,7 +98,7 @@
     .card p { color: #495057; margin-bottom: 0.6rem; }
     .card p:last-child { margin-bottom: 0; }
     .badge { display: inline-block; background: #e6f4f1; color: #0F766E; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .sim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 1.5rem 0 2rem; }
+    .sim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin: 1.5rem 0 2rem; }
     .sim-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #0F766E; display: flex; flex-direction: column; }
     .sim-card .sim-icon { font-size: 2rem; margin-bottom: 0.5rem; }
     .sim-card h3 { font-size: 1.05rem; color: #0F172A; margin-bottom: 0.5rem; }
@@ -190,7 +196,7 @@
 <!-- partilhar:fim -->
 
     <div class="resposta-direta">
-      Três calculadoras gratuitas para estimar o teu escalão e valor de apoio. Todos os cálculos correm no teu navegador — nenhum dado é enviado nem guardado.
+      Quatro calculadoras gratuitas para estimar o teu escalão e valor de apoio. Todos os cálculos correm no teu navegador — nenhum dado é enviado nem guardado.
     </div>
   </div>
 </header>
@@ -217,19 +223,25 @@
       <p>Estima o valor mensal do CSI com base na idade, situação (isolado ou casal) e rendimentos declarados.</p>
       <a href="/simulador-csi.html" class="btn-sim">🧮 Simular CSI →</a>
     </div>
+    <div class="sim-card">
+      <div class="sim-icon">🤒</div>
+      <h3>Simulador de Subsídio de Doença</h3>
+      <p>Calcula a estimativa da baixa médica por escalão (55% a 75%), com dias de espera, majoração e desagregação diária.</p>
+      <a href="/simulador-subsidio-doenca.html" class="btn-sim">🧮 Simular subsídio de doença →</a>
+    </div>
   </div>
 
   <div class="card">
     <span class="badge">Como funcionam</span>
     <h2>O que estas calculadoras têm em comum</h2>
-    <p>As três calculadoras são 100% client-side: o cálculo corre inteiramente no teu navegador, sem enviar nenhum dado para nenhum servidor. Os valores usados (IAS, escalões, limites) estão sempre citados com a fonte oficial — nunca inventados.</p>
+    <p>As quatro calculadoras são 100% client-side: o cálculo corre inteiramente no teu navegador, sem enviar nenhum dado para nenhum servidor. Os valores usados (IAS, escalões, limites) estão sempre citados com a fonte oficial — nunca inventados.</p>
     <p>Todas são estimativas educativas, não vinculativas. A decisão final sobre o teu caso é sempre da entidade competente (Segurança Social ou secretaria da escola) — confirma sempre a tua situação junto dos serviços oficiais.</p>
   </div>
 
   <div class="fonte-bloco">
     <strong>Fontes e legislação</strong><br>
-    Abono de família: Portaria n.º 60/2026/1 · ASE: Despacho n.º 8452-A/2015 e n.º 5296/2017 · CSI: Decreto-Lei n.º 126-A/2017 e Decreto-Lei n.º 35/2024 ·
-    Verificado a 04/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
+    Abono de família: Portaria n.º 60/2026/1 · ASE: Despacho n.º 8452-A/2015 e n.º 5296/2017 · CSI: Decreto-Lei n.º 126-A/2017 e Decreto-Lei n.º 35/2024 · Subsídio de doença: Decreto-Lei n.º 28/2004, na redação atual ·
+    Verificado a 05/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
   </div>
 
   <div class="disclaimer">

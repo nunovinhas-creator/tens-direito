@@ -1174,6 +1174,52 @@ confirmados — ver o Passo 5a de `.claude/commands/atualizar-cluster-psu.md`.
 
 ---
 
+## GATILHO AUTOBAIXA
+
+Registado a 2026-07-05 — mesmo padrão do "Cluster PSU — páginas em
+espera": um gatilho documentado para uma página futura, **não criada
+nesta sessão nem antes de disparar**.
+
+**Página em espera**: `autobaixa.html` — landing dedicada às queries
+"autobaixa" / "autodeclaração de doença", hoje cobertas apenas pela
+secção 8 de `baixa-medica-subsidio-doenca.html`.
+
+**Condição de disparo**: o Nuno confirma no Google Search Console que
+`baixa-medica-subsidio-doenca.html` acumula impressões relevantes para
+essas queries — decisão manual dele, não automatizável (o Code não tem
+acesso ao GSC). Nenhum limiar numérico fixado; é julgamento do Nuno
+sobre quando o volume justifica uma página dedicada.
+
+**Ação quando disparar**:
+1. Criar `autobaixa.html`, reaproveitando e aprofundando a secção 8
+   ("Autodeclaração de doença — guia completo") do artigo pilar.
+2. O artigo pilar mantém uma versão resumida dessa secção, com um link
+   "→ guia completo sobre autodeclaração de doença" para a landing —
+   nunca apagar o conteúdo todo do pilar, só encurtar.
+3. **Evitar canibalização de SEO**: `title`/H1 da landing centrados em
+   "autodeclaração de doença (autobaixa)"; o pilar mantém-se centrado em
+   "baixa médica e subsídio de doença". Descrições e `meta description`
+   também não podem ser quase-idênticas.
+4. Cross-links nos dois sentidos (pilar → landing na secção resumida;
+   landing → pilar como "guia completo do subsídio de doença").
+5. Cluster: `trabalho-rendimento` (mesmo do pilar), `tipo: "artigo"`.
+6. Checklist obrigatória completa (GA4, JSON-LD, disclaimer, "Verificado
+   a", canónica, autoria, sitemap, pesquisa.js, testes).
+
+**Pontos ⚠️ a re-verificar nesse momento** (já documentados em
+`baixa-medica-subsidio-doenca.html`, mas com potencial de terem mudado
+entretanto):
+- Comunicação da autodeclaração ao empregador — à data de 05/07/2026,
+  não automática (código SMS/e-mail); confirmar se entretanto passou a
+  automática antes de reafirmar na landing.
+- Anteprojecto de reforma laboral ("Trabalho XXI") sobre autodeclaração
+  fraudulenta como justa causa de despedimento — em debate a
+  05/07/2026, com indicação de que essa parte específica pode ter sido
+  retirada da versão em negociação; confirmar o estado real (proposta
+  morta, revivida, ou já aprovada) antes de publicar como facto.
+
+---
+
 ## CLUSTER HABITAÇÃO
 
 Criado a 3 jul 2026 — pillar `p/habitacao.html` + 2 artigos-filho
@@ -2624,6 +2670,23 @@ Resultado confirmado por re-auditoria completa: **0 violações em 36/36 página
 ---
 
 *Última revisão: 2026-07-04 — smoke test de produção pós-deploy, para apanhar falhas silenciosas do GitHub Pages como as duas já documentadas (`##[error]Deployment failed, try again later.` em `actions/deploy-pages@v5`, sem qualquer sinal de erro no resto do pipeline). Novo `.github/workflows/smoke-producao.yml` (`workflow_run` sobre "pages build and deployment" + cron `30 6 * * *` de segurança, depois do `pipeline-diario.yml`, + `workflow_dispatch` manual) e `scripts/smoke_producao.sh` (retry 3× com 30s de espera, `User-Agent` identificado, lista de páginas em `scripts/urls_criticas.txt` — único sítio a editar). Para as 3 páginas de simulador, confirma também que o corpo da resposta contém `"Verificado a"` — apanha 200 com conteúdo errado/antigo, não só 404; essa verificação nunca tem retry (conteúdo não muda entre tentativas). Nova secção "SMOKE TEST DE PRODUÇÃO" documenta tudo. Testado com um falso-404 real contra produção (`workflow_dispatch`, run 28721561322): as 9 páginas reais passaram em ~2,5s (confirmando de caminho que `/simuladores.html` e os 3 simuladores estão mesmo em produção — resolve a dúvida em aberto da sessão anterior sobre o deploy do commit `121686b`), o URL inventado falhou 404 nas 3 tentativas com exactamente 30s entre cada uma, job terminou vermelho ao fim de ~63s — linha de teste removida no commit seguinte. Lógica de sucesso/404/conteúdo-em-falta também confirmada localmente com um `http.server` a fazer de produção, sem tocar em produção real para esses três casos. Decisão desta sessão: falha = vermelho no Actions é suficiente por agora, sem notificações externas nem referências públicas. Nenhuma alteração a `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` (continuam `False`) — este workflow só lê a produção, nunca escreve nada.
+
+---
+
+*Última revisão: 2026-07-05 (sessão seguinte) — simulador de subsídio de doença (4.ª calculadora) + gatilho autobaixa registado. Nova secção "GATILHO AUTOBAIXA" no CLAUDE.md, mesmo padrão do "Cluster PSU — páginas em espera": página `autobaixa.html` fica registada como gatilho futuro (condição: Nuno confirmar no GSC impressões relevantes para "autobaixa"/"autodeclaração de doença" em `baixa-medica-subsidio-doenca.html`), não criada nesta sessão.
+
+Fact-check prévio via `WebSearch` dos 3 pontos ⚠️ ainda em aberto do artigo:
+- **⚠️A (retroatividade dos dias de espera):** **não confirmado** — nenhuma fonte encontrada sustenta que os 3 dias de espera são pagos retroactivamente quando a baixa ultrapassa 30 dias. A pista mais provável é confusão com "registo de remuneração equivalente" (Decreto-Lei n.º 28/2004) — um conceito de carreira contributiva, não de pagamento em dinheiro. Implementada a versão conservadora: dias de espera nunca pagos, excepto nas 3 excepções legais já documentadas (internamento/cirurgia/tuberculose).
+- **⚠️B (piso 300€/325€ em períodos parciais):** as fontes confirmam o piso mensal mas não especificam a aplicação a períodos parciais. Implementada a versão conservadora indicada no brief: piso diário proporcional (300÷30=10,00€; 325÷30=10,8333€), documentado como interpretação conservadora tanto no simulador como no FAQ.
+- **⚠️C (tratamento fiscal):** **confirmado** via 2 fontes independentes — o subsídio de doença é isento de IRS e a Segurança Social não aplica descontos adicionais sobre o próprio subsídio (ao contrário do salário normal, que gera descontos TSU/IRS). O simulador mostra sempre o valor bruto/estimado da prestação, com nota explicativa.
+
+Nova página `simulador-subsidio-doenca.html` (hero claro, fora da navegação contextual — mesmo padrão de `simulador-abono.html`/`simulador-ase.html`/`simulador-csi.html`, JSON-LD `WebApplication`+`FAQPage`+`BreadcrumbList`+`Article`, nada inventado face ao padrão real). `PARAMETROS_SUBSIDIO_DOENCA` com `fonte`/`verificado_em` por constante. Função pura `calcularSubsidioDoenca()` — escalões contados desde o dia 1 da incapacidade (os dias de espera consomem escalão, mas não são pagos), majoração automática por RR≤500€ ou condição familiar, piso universal 5,37€/dia, piso proporcional 300€/325€, tetos de duração 1095/365/sem limite (tuberculose), com aviso visível quando a duração excede o teto. Desagregação por escalão sempre visível no resultado (dias × taxa × valor/dia = subtotal) — decisão deliberada do brief para tornar o resultado auditável. Opção avançada de 6 meses de salário **não implementada** (permitida pelo brief como opcional "sem complexidade excessiva" — mantido o campo único de salário mensal constante, com nota a explicar a simplificação).
+
+15 golden tests em `tests/test_simulador_subsidio_doenca_calculo.py`, todos calculados à mão nos comentários (fracções exactas onde possível — ex. RR diária de 1.400€ = 140/3€, o que torna vários casos exactos ao cêntimo sem arredondamento intermédio): caso 1 (1.400€/100 dias → 2.699,67€) confirmado idêntico ao exemplo já publicado no artigo, com um teste extra que verifica literalmente a substring "2.699,67" no HTML do artigo — nunca deixa os dois divergirem em silêncio. Caso 5 (510€/60 dias) confirma o piso 300/325 a morder de facto (9,35€ e 10,20€/dia calculados sobem para 10,00€ e 10,8333€). Caso 8 usa 1200 dias de tuberculose deliberadamente (excederia o teto de 1095 do regime geral) para provar a ausência de limite. Teste de coerência artigo↔simulador dedicado — reimporta `PARAMETROS_SUBSIDIO_DOENCA` real e confirma que as constantes batem certo com os valores publicados no artigo (nunca só no simulador).
+
+Integração: `data/clusters.json` (cluster `trabalho-rendimento`, tipo `ferramenta`); `sincronizar_clusters.py` corrido com sucesso — regenerou automaticamente o `PILLAR-LISTA` de `p/trabalho-rendimento.html` (badge "Ferramenta"), o cartão do cluster na homepage ("3 guias · 1 simulador") e o `RELACIONADOS` de `rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`; idempotência confirmada. `sincronizar_nav.py`/`inserir_botao_partilhar.py` confirmaram idempotência (marcadores já inseridos manualmente, mesmo padrão dos outros simuladores). `adicionar_canonicas.py --write` sem alterações (canónica já inline). `simuladores.html` (hub) e a secção "Simuladores e Calculadoras" do `index.html` ganharam o 4.º cartão; `sim-grid` do hub passou de `repeat(3,1fr)` para `repeat(auto-fit, minmax(220px,1fr))` para acomodar o crescimento sem novas alterações manuais no futuro. Cross-link nos dois sentidos com o artigo (secção "Quanto se recebe" do artigo deixou de anunciar "brevemente" e passa a linkar directamente).
+
+Confirmado com Chromium real: caso 1 renderiza exactamente "€2699.67" com 3 linhas de desagregação; caso 10 (1200 dias) mostra o aviso de teto visível. Suite completa: 1201 passed, 4 skipped (mesma limitação de `feedparser` neste sandbox, corre completo no CI); `ruff check scripts/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
 
 ---
 

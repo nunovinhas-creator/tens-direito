@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XP46PM8H1Q');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador de Subsídio de Doença 2026</title>
+  <meta name="description" content="Calculadora online do subsídio de doença 2026. Simula a estimativa por escalão (55% a 75%), dias de espera, majoração e pisos mínimos. Cálculos no browser, sem envio de dados.">
+  <meta property="og:title" content="Simulador de Subsídio de Doença 2026">
+  <meta property="og:description" content="Calculadora online do subsídio de doença 2026, com desagregação por escalão. Cálculos cliente-side, privados.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-subsidio-doenca.html">
+  <link rel="canonical" href="https://tensdireito.com/simulador-subsidio-doenca.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador de Subsídio de Doença 2026",
+    "url": "https://tensdireito.com/simulador-subsidio-doenca.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como é calculado o valor do subsídio de doença?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A remuneração de referência (RR) diária é o salário mensal × 6 ÷ 180. A cada dia de incapacidade aplica-se a percentagem do escalão correspondente — 55% até 30 dias, 60% de 31 a 90, 70% de 91 a 365, 75% a partir de 365 — sobre a RR diária. Os dias de espera (3, 10 ou 30, consoante o vínculo) não são pagos, mas contam para o avanço dos escalões."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Os dias de espera são sempre descontados, mesmo em baixas longas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Não encontrámos, nas fontes consultadas, nenhuma regra que pague retroactivamente os dias de espera quando a baixa ultrapassa 30 dias — essa ideia pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera são internamento hospitalar, cirurgia de ambulatório e tuberculose."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador considera a majoração e os pisos mínimos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a remuneração de referência é igual ou inferior a 500€/mês ou assinalas uma condição familiar, o piso universal de 5,37€/dia, e o piso de 300€/325€ mensais (aplicado aqui como piso diário proporcional — interpretação conservadora, pode não reflectir exactamente a prática da Segurança Social para períodos parciais)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O subsídio de doença é tributado em IRS ou sofre descontos para a Segurança Social?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Segundo as fontes consultadas, não. O subsídio de doença é um rendimento isento de IRS, e a Segurança Social não faz descontos adicionais sobre o próprio subsídio. Por isso, o valor que este simulador mostra corresponde ao valor que recebes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. É apenas uma estimativa educativa. O valor final é sempre determinado pela Segurança Social, que pode ajustar o cálculo com base em factores não incluídos aqui. Confirma a tua situação na Segurança Social Direta."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador de Subsídio de Doença", "item": "https://tensdireito.com/simulador-subsidio-doenca.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador de Subsídio de Doença 2026",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-subsidio-doenca.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-07-05",
+    "dateModified": "2026-07-05"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .checkbox-linha { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.75rem; }
+    .checkbox-linha input { width: auto; margin-top: 0.2rem; }
+    .checkbox-linha label { font-weight: 500; font-size: 0.9rem; margin-bottom: 0; }
+    .campo-condicional { background: #F9FAFB; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; display: none; }
+    .campo-condicional.show { display: block; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .resultado-card { border-radius: var(--radius); padding: 2rem; color: var(--white); margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.12); background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .resultado-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.95; }
+    .resultado-valor { font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0; }
+    .resultado-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .resultado-detalhe p { margin-bottom: 0.5rem; }
+    .resultado-detalhe strong { font-weight: 700; }
+    .btn-copiar { margin-top: 1rem; background: rgba(255,255,255,.15); color: var(--white); border: 1px solid rgba(255,255,255,.4); }
+    .btn-copiar:hover { background: rgba(255,255,255,.25); }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-top: 1rem; font-size: 0.88rem; color: #92400E; line-height: 1.5; }
+    .desagregacao-wrap { overflow-x: auto; margin-top: 1rem; }
+    .desagregacao-wrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: rgba(255,255,255,.08); border-radius: 8px; overflow: hidden; }
+    .desagregacao-wrap th { text-align: left; padding: 0.6rem 0.8rem; background: rgba(255,255,255,.12); font-weight: 700; }
+    .desagregacao-wrap td { padding: 0.55rem 0.8rem; border-top: 1px solid rgba(255,255,255,.15); }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
+    .formula-box ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .formula-box li { margin-bottom: 0.4rem; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .resultado-valor { font-size: 1.8rem; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/simuladores.html">🧮 Simuladores</a>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <header class="hero">
+    <p style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem;"><a href="/" style="color:#6B7280;text-decoration:underline;">Início</a> › <a href="/simuladores.html" style="color:#6B7280;text-decoration:underline;">Simuladores</a> › Subsídio de Doença</p>
+    <h1>Simulador de Subsídio de Doença 2026</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">Calcula a estimativa do teu subsídio de doença, com desagregação por escalão. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+  </header>
+
+  <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Valores 2026</strong> — escalões de 55% a 75%, IAS 537,13€ · <strong>Verificado a 05/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/baixa-medica-subsidio-doenca.html">ver guia completo da baixa médica</a>
+    </div>
+
+    <div class="calc-card">
+      <form id="formSubsidioDoenca" onsubmit="calcularSubsidioDoencaFormulario(event)">
+        <div class="form-group">
+          <label for="salario">Salário bruto mensal (€)</label>
+          <input type="number" id="salario" inputmode="numeric" placeholder="1400" min="0" step="10" required>
+          <small>Assume salário constante nos 6 meses de referência. A Segurança Social usa os primeiros 6 dos últimos 8 meses ÷ 180 — ver <a href="/baixa-medica-subsidio-doenca.html">guia completo</a> se o teu salário variou.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="duracaoDias">Duração da baixa (dias corridos)</label>
+          <input type="number" id="duracaoDias" inputmode="numeric" placeholder="30" min="1" step="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="vinculo">Vínculo</label>
+          <select id="vinculo">
+            <option value="conta_outrem">Trabalhador por conta de outrem</option>
+            <option value="independente">Trabalhador independente</option>
+            <option value="seguro_social_voluntario">Seguro social voluntário</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="situacaoEspecial">Situação especial</label>
+          <select id="situacaoEspecial" onchange="alternarFamiliaresTuberculose()">
+            <option value="nenhuma">Nenhuma</option>
+            <option value="internamento_cirurgia">Internamento hospitalar ou cirurgia de ambulatório</option>
+            <option value="tuberculose">Tuberculose</option>
+          </select>
+          <small>Internamento, cirurgia de ambulatório e tuberculose eliminam o período de espera.</small>
+        </div>
+
+        <div class="campo-condicional" id="campoFamiliaresTuberculose">
+          <div class="form-group" style="margin-bottom:0">
+            <label for="familiaresACargo">Nº de familiares a cargo</label>
+            <input type="number" id="familiaresACargo" inputmode="numeric" placeholder="0" min="0" step="1" value="0">
+            <small>Tuberculose paga 80% (até 2 familiares a cargo) ou 100% (mais de 2), sem limite de duração.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Condições de majoração (+5 pontos percentuais nos escalões de 55%/60%)</label>
+          <div class="checkbox-linha">
+            <input type="checkbox" id="majoracao3Filhos">
+            <label for="majoracao3Filhos">Agregado com 3 ou mais descendentes até 16 anos (24 anos, se com abono de família)</label>
+          </div>
+          <div class="checkbox-linha">
+            <input type="checkbox" id="majoracaoDeficiencia">
+            <label for="majoracaoDeficiencia">Descendente com bonificação por deficiência do abono de família</label>
+          </div>
+          <small>Se a tua remuneração de referência for igual ou inferior a 500€/mês, a majoração é aplicada automaticamente — não precisas de assinalar nada.</small>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary">🧮 Calcular subsídio</button>
+          <button type="reset" class="btn btn-secondary" onclick="limparResultado()">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado" aria-live="polite"></div>
+
+    <div class="formula-box">
+      <h2>Como funciona o cálculo</h2>
+      <code>RR diária = (salário mensal × 6) ÷ 180<br>Subsídio do dia = taxa do escalão × RR diária (com pisos mínimos aplicáveis)</code>
+      <ul>
+        <li><strong>Escalões</strong> (contados desde o dia 1 da incapacidade — os dias de espera consomem escalão): 55% até 30 dias · 60% de 31 a 90 · 70% de 91 a 365 · 75% a partir de 365.</li>
+        <li><strong>Dias de espera</strong> (não pagos): 3 dias — conta de outrem · 10 dias — independente · 30 dias — seguro social voluntário. Zero dias em internamento, cirurgia de ambulatório ou tuberculose.</li>
+        <li><strong>Majoração de +5pp</strong> nos escalões de 55%/60%, se a RR for ≤ 500€/mês ou assinalares uma condição familiar.</li>
+        <li><strong>Piso universal:</strong> 5,37€/dia (30% do IAS 2026), sujeito a um limite de 100% da remuneração de referência líquida que este simulador não calcula.</li>
+        <li><strong>Piso de 300€/325€</strong> quando a RR mensal é superior a 500€, nos escalões de 55%/60% — aplicado aqui como piso diário proporcional (300÷30 e 325÷30). É uma interpretação conservadora: as fontes públicas não especificam com clareza como este piso se aplica a períodos parciais.</li>
+        <li><strong>Duração máxima:</strong> 1095 dias (conta de outrem) · 365 dias (independente e seguro social voluntário) · sem limite definido (tuberculose).</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--muted)">Não confirmámos, nas fontes consultadas, nenhuma regra que pague retroactivamente os dias de espera em baixas superiores a 30 dias — por isso este simulador nunca paga esses dias, excepto nas excepções legais já listadas. Ver <a href="/baixa-medica-subsidio-doenca.html">guia completo da baixa médica</a> para o detalhe.</p>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como é calculado o valor do subsídio de doença?</summary>
+        <div class="faq-resposta">
+          A remuneração de referência (RR) diária é o salário mensal × 6 ÷ 180. A cada dia de incapacidade aplica-se a percentagem do escalão correspondente — 55% até 30 dias, 60% de 31 a 90, 70% de 91 a 365, 75% a partir de 365 — sobre a RR diária. Os dias de espera não são pagos, mas contam para o avanço dos escalões.
+        </div>
+      </details>
+
+      <details>
+        <summary>Os dias de espera são sempre descontados, mesmo em baixas longas?</summary>
+        <div class="faq-resposta">
+          Sim. Não encontrámos nenhuma regra que pague retroactivamente os dias de espera quando a baixa ultrapassa 30 dias — essa ideia pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera são internamento hospitalar, cirurgia de ambulatório e tuberculose.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador considera a majoração e os pisos mínimos?</summary>
+        <div class="faq-resposta">
+          Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a RR é igual ou inferior a 500€/mês ou assinalas uma condição familiar, o piso universal de 5,37€/dia, e o piso de 300€/325€ mensais (aplicado como piso diário proporcional — interpretação conservadora).
+        </div>
+      </details>
+
+      <details>
+        <summary>O subsídio de doença é tributado em IRS ou sofre descontos para a Segurança Social?</summary>
+        <div class="faq-resposta">
+          Segundo as fontes consultadas, não. O subsídio de doença é isento de IRS, e a Segurança Social não faz descontos adicionais sobre o próprio subsídio. Por isso, o valor mostrado corresponde ao valor que recebes.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. É apenas uma <strong>estimativa educativa</strong>. O valor final é sempre determinado pela Segurança Social. Confirma a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a>.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 28/2004, na redação atual), mas podem conter erros ou omissões. Simulação indicativa, valor bruto estimado — o valor final é determinado pela Segurança Social.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ── PARAMETROS_SUBSIDIO_DOENCA — fonte única de verdade da fórmula ──────
+    // Cada valor tem "fonte" e "verificado_em" próprios (mesmo padrão de
+    // PARAMETROS_CSI em simulador-csi.html). Valores já fact-checked e
+    // publicados em baixa-medica-subsidio-doenca.html (verificado 05/07/2026).
+    // Os pontos ⚠️A/⚠️B (retroatividade dos dias de espera; aplicação
+    // proporcional do piso 300€/325€) ficam documentados no CLAUDE.md —
+    // este simulador implementa sempre a versão conservadora.
+    const PARAMETROS_SUBSIDIO_DOENCA = {
+      taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-05' },
+      taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-05' },
+      taxaEscalao3: { valor: 0.70, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 91 a 365 dias', verificado_em: '2026-07-05' },
+      taxaEscalao4: { valor: 0.75, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — mais de 365 dias', verificado_em: '2026-07-05' },
+      taxaTuberculoseAte2Familiares: { valor: 0.80, fonte: 'Tuberculose, até 2 familiares a cargo', verificado_em: '2026-07-05' },
+      taxaTuberculoseMais2Familiares: { valor: 1.00, fonte: 'Tuberculose, mais de 2 familiares a cargo', verificado_em: '2026-07-05' },
+      diasEsperaContaOutrem: { valor: 3, fonte: 'Regime geral — pago a partir do 4.º dia', verificado_em: '2026-07-05' },
+      diasEsperaIndependente: { valor: 10, fonte: 'Trabalhadores independentes — pago a partir do 11.º dia', verificado_em: '2026-07-05' },
+      diasEsperaSeguroSocialVoluntario: { valor: 30, fonte: 'Seguro social voluntário — pago a partir do 31.º dia', verificado_em: '2026-07-05' },
+      tetoDuracaoContaOutrem: { valor: 1095, fonte: 'Regime geral — 3 anos', verificado_em: '2026-07-05' },
+      tetoDuracaoIndependenteSSV: { valor: 365, fonte: 'Independentes e seguro social voluntário — 1 ano', verificado_em: '2026-07-05' },
+      majoracaoPontosPercentuais: { valor: 0.05, fonte: 'Majoração nos escalões de 55%/60%, RR ≤ 500€ ou condição familiar', verificado_em: '2026-07-05' },
+      limiteRRParaMajoracaoOuPiso: { valor: 500, fonte: 'Limiar de RR mensal que separa a majoração automática (≤500€) do piso 300€/325€ (>500€)', verificado_em: '2026-07-05' },
+      pisoDiarioUniversal: { valor: 5.37, fonte: '30% do IAS 2026 (537,13€), Portaria n.º 480-A/2025/1 — sujeito a limite de 100% da RR líquida, não calculável aqui', verificado_em: '2026-07-05' },
+      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'Guia Prático do ISS — piso de 300€/mês nos escalões de 55%, aplicado aqui como 300÷30 (interpretação conservadora, ⚠️B)', verificado_em: '2026-07-05' },
+      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'Guia Prático do ISS — piso de 325€/mês no escalão de 60%, aplicado aqui como 325÷30 (interpretação conservadora, ⚠️B)', verificado_em: '2026-07-05' },
+    };
+
+    // ── Mecânica de cálculo ──────────────────────────────────────────────────
+    // Função pura, testada em tests/test_simulador_subsidio_doenca_calculo.py.
+    function calcularSubsidioDoenca(params, input) {
+      const salario = input.salario || 0;
+      const rrDiaria = (salario * 6) / 180;
+      const rrMensal = rrDiaria * 30;
+      const vinculo = input.vinculo || 'conta_outrem';
+      const situacao = input.situacaoEspecial || 'nenhuma';
+      const familiares = input.familiaresACargo || 0;
+      const duracaoInput = input.duracaoDias || 0;
+      const majoracaoFamiliar = !!input.majoracaoFamiliar;
+
+      const semEspera = situacao === 'internamento_cirurgia' || situacao === 'tuberculose';
+      let diasEspera = 0;
+      if (!semEspera) {
+        if (vinculo === 'independente') diasEspera = params.diasEsperaIndependente.valor;
+        else if (vinculo === 'seguro_social_voluntario') diasEspera = params.diasEsperaSeguroSocialVoluntario.valor;
+        else diasEspera = params.diasEsperaContaOutrem.valor;
+      }
+
+      let tetoDuracao;
+      if (situacao === 'tuberculose') {
+        tetoDuracao = null; // sem limite
+      } else if (vinculo === 'conta_outrem') {
+        tetoDuracao = params.tetoDuracaoContaOutrem.valor;
+      } else {
+        tetoDuracao = params.tetoDuracaoIndependenteSSV.valor;
+      }
+
+      const duracaoExcedeTeto = tetoDuracao !== null && duracaoInput > tetoDuracao;
+      const duracaoEfetiva = tetoDuracao !== null ? Math.min(duracaoInput, tetoDuracao) : duracaoInput;
+
+      const majoracaoAplicavel = rrMensal <= params.limiteRRParaMajoracaoOuPiso.valor || majoracaoFamiliar;
+      const pisoAplicavel = rrMensal > params.limiteRRParaMajoracaoOuPiso.valor;
+
+      const desagregacao = [];
+      let totalGeral = 0;
+      let diasPagos = 0;
+
+      function acumular(escalao, taxaPct, dias, valorDia) {
+        if (dias <= 0) return;
+        const subtotal = dias * valorDia;
+        totalGeral += subtotal;
+        diasPagos += dias;
+        desagregacao.push({ escalao: escalao, taxaPct: taxaPct, dias: dias, valorDia: valorDia, subtotal: subtotal });
+      }
+
+      if (situacao === 'tuberculose') {
+        const taxa = familiares > 2 ? params.taxaTuberculoseMais2Familiares.valor : params.taxaTuberculoseAte2Familiares.valor;
+        const valorDia = Math.max(taxa * rrDiaria, params.pisoDiarioUniversal.valor);
+        acumular('Tuberculose', taxa, duracaoEfetiva, valorDia);
+      } else {
+        const tiers = [
+          { inicio: 1, fim: 30, taxaBase: params.taxaEscalao1.valor, majoravel: true, pisoDiario: params.pisoDiarioProporcionalTaxa55.valor },
+          { inicio: 31, fim: 90, taxaBase: params.taxaEscalao2.valor, majoravel: true, pisoDiario: params.pisoDiarioProporcionalTaxa60.valor },
+          { inicio: 91, fim: 365, taxaBase: params.taxaEscalao3.valor, majoravel: false, pisoDiario: null },
+          { inicio: 366, fim: Infinity, taxaBase: params.taxaEscalao4.valor, majoravel: false, pisoDiario: null },
+        ];
+
+        for (let i = 0; i < tiers.length; i++) {
+          const tier = tiers[i];
+          const inicioTier = Math.max(tier.inicio, diasEspera + 1);
+          const fimTier = Math.min(tier.fim, duracaoEfetiva);
+          const dias = Math.max(0, fimTier - inicioTier + 1);
+          if (dias <= 0) continue;
+
+          let taxa = tier.taxaBase;
+          if (tier.majoravel && majoracaoAplicavel) taxa += params.majoracaoPontosPercentuais.valor;
+
+          let valorDia = taxa * rrDiaria;
+          valorDia = Math.max(valorDia, params.pisoDiarioUniversal.valor);
+          if (tier.pisoDiario !== null && pisoAplicavel) {
+            valorDia = Math.max(valorDia, tier.pisoDiario);
+          }
+
+          const rotulo = tier.fim === Infinity ? (tier.inicio + '+ dias') : (tier.inicio + '–' + tier.fim + ' dias');
+          acumular(rotulo, taxa, dias, valorDia);
+        }
+      }
+
+      return {
+        rrDiaria: rrDiaria,
+        rrMensal: rrMensal,
+        diasEspera: diasEspera,
+        duracaoEfetiva: duracaoEfetiva,
+        duracaoExcedeTeto: duracaoExcedeTeto,
+        tetoDuracao: tetoDuracao,
+        majoracaoAplicavel: majoracaoAplicavel,
+        diasPagos: diasPagos,
+        desagregacao: desagregacao,
+        totalGeral: totalGeral,
+        valorMedioDiarioPago: diasPagos > 0 ? totalGeral / diasPagos : 0,
+      };
+    }
+
+    // ── Ligação ao formulário (não testada directamente — só calcularSubsidioDoenca) ──
+    function alternarFamiliaresTuberculose() {
+      const tuberculose = document.getElementById('situacaoEspecial').value === 'tuberculose';
+      document.getElementById('campoFamiliaresTuberculose').classList.toggle('show', tuberculose);
+    }
+
+    function limparResultado() {
+      const resultDiv = document.getElementById('resultado');
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+    }
+
+    function copiarResultado(texto) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(texto);
+      }
+    }
+
+    function calcularSubsidioDoencaFormulario(e) {
+      e.preventDefault();
+
+      const input = {
+        salario: parseFloat(document.getElementById('salario').value) || 0,
+        duracaoDias: parseInt(document.getElementById('duracaoDias').value, 10) || 0,
+        vinculo: document.getElementById('vinculo').value,
+        situacaoEspecial: document.getElementById('situacaoEspecial').value,
+        familiaresACargo: parseInt(document.getElementById('familiaresACargo').value, 10) || 0,
+        majoracaoFamiliar: document.getElementById('majoracao3Filhos').checked || document.getElementById('majoracaoDeficiencia').checked,
+      };
+
+      const r = calcularSubsidioDoenca(PARAMETROS_SUBSIDIO_DOENCA, input);
+      const resultDiv = document.getElementById('resultado');
+
+      let html = `<div class="resultado-card">`;
+      html += `<div class="resultado-titulo">Estimativa do subsídio de doença</div>`;
+      html += `<div class="resultado-valor">€${r.totalGeral.toFixed(2)}</div>`;
+      html += `<div class="resultado-detalhe">`;
+      html += `<p>Remuneração de referência diária: <strong>€${r.rrDiaria.toFixed(2)}</strong></p>`;
+      html += `<p>Dias de espera (não pagos): <strong>${r.diasEspera}</strong></p>`;
+      html += `<p>Dias pagos: <strong>${r.diasPagos}</strong> de ${r.duracaoEfetiva} dias de incapacidade considerados</p>`;
+      html += `<p>Valor médio por dia pago: €${r.valorMedioDiarioPago.toFixed(2)}</p>`;
+      if (r.majoracaoAplicavel) {
+        html += `<p>✓ Majoração de +5 pontos percentuais aplicada nos escalões de 55%/60%.</p>`;
+      }
+      html += `</div>`;
+
+      if (r.desagregacao.length > 0) {
+        html += `<div class="desagregacao-wrap"><table><thead><tr><th>Escalão</th><th>Taxa</th><th>Dias</th><th>Valor/dia</th><th>Subtotal</th></tr></thead><tbody>`;
+        for (let i = 0; i < r.desagregacao.length; i++) {
+          const linha = r.desagregacao[i];
+          html += `<tr><td>${linha.escalao}</td><td>${(linha.taxaPct * 100).toFixed(0)}%</td><td>${linha.dias}</td><td>€${linha.valorDia.toFixed(2)}</td><td>€${linha.subtotal.toFixed(2)}</td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+      }
+
+      html += `<button type="button" class="btn btn-copiar" onclick="copiarResultado(this.dataset.texto)" data-texto="Simulação subsídio de doença: €${r.totalGeral.toFixed(2)} (${r.diasPagos} dias pagos).">📋 Copiar resultado</button>`;
+      html += `</div>`;
+
+      if (r.duracaoExcedeTeto) {
+        html += `<div class="aviso-teto">⚠️ A duração indicada (${input.duracaoDias} dias) excede o teto máximo de ${r.tetoDuracao} dias para o vínculo escolhido. O cálculo considera apenas os primeiros ${r.tetoDuracao} dias.</div>`;
+      }
+
+      html += `<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-top: 1rem;">💡 Valor bruto estimado. Segundo as fontes consultadas, o subsídio de doença é isento de IRS e sem descontos adicionais para a Segurança Social. Confirma a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: #0F766E; font-weight: 600;">Segurança Social Direta</a>.</p>`;
+
+      resultDiv.innerHTML = html;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'subsidio_doenca' });
+      }
+    }
+  </script>
+
+</body>
+</html>
