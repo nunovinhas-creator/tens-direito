@@ -1,20 +1,33 @@
 name: Verificação de Produção (Smoke Test)
 
-# Corre depois de cada deploy do GitHub Pages (workflow_run) e também
-# diariamente às 06:30 UTC, como rede de segurança — o deploy do Pages
-# já falhou silenciosamente duas vezes nesta fase do projecto
-# ("##[error]Deployment failed, try again later." em
-# actions/deploy-pages@v5), sem qualquer sinal de erro no resto do
-# pipeline: só foi descoberto ao visitar a página e encontrar 404. O
-# `workflow_run` sobre "pages build and deployment" é o sinal mais
-# rápido; o cron das 06:30 (depois do `pipeline-diario.yml` às 06:00)
+# Corre a cada push a main e também diariamente às 06:30 UTC, como rede
+# de segurança — o deploy do Pages já falhou silenciosamente duas vezes
+# nesta fase do projecto ("##[error]Deployment failed, try again
+# later." em actions/deploy-pages@v5), sem qualquer sinal de erro no
+# resto do pipeline: só foi descoberto ao visitar a página e encontrar
+# 404. O cron das 06:30 (depois do `pipeline-diario.yml` às 06:00)
 # garante que uma falha de deploy nunca fica por detectar até alguém
 # reparar manualmente — mesmo padrão de rede de segurança usado em
 # `shadow-daily.yml` para o `workflow_run` de "Pipeline Diário".
+#
+# Gatilho corrigido a 2026-07-05: o `on: workflow_run` original escutava
+# "pages build and deployment", mas esse nunca disparou — confirmado
+# pelo histórico completo do workflow (3 runs desde a criação, todos
+# `workflow_dispatch`, zero `workflow_run`). Causa: "pages build and
+# deployment" é um workflow **dinâmico**, gerido internamente pelo
+# GitHub Pages (não um workflow definido neste repositório) — o
+# `workflow_run` do Actions só encadeia de forma fiável workflows reais
+# do repositório, nunca este. Lição generalizável: nunca usar
+# `workflow_run` para escutar um workflow gerido pela plataforma
+# (Pages, Dependabot, etc.), só workflows com ficheiro `.yml` próprio no
+# repositório. Substituído por `push` directo a `main`: dispara sempre,
+# de forma garantida, e o deploy real deste site estático completa
+# tipicamente em segundos (confirmado: 26s no deploy do commit
+# f9030b7) — bem dentro da margem já existente em
+# `scripts/smoke_producao.sh` (3 tentativas, 30s entre elas).
 on:
-  workflow_run:
-    workflows: ["pages build and deployment"]
-    types: [completed]
+  push:
+    branches: [main]
   schedule:
     - cron: '30 6 * * *'
   workflow_dispatch:

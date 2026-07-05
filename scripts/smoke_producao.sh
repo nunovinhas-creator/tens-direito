@@ -18,12 +18,20 @@
 # Uso: scripts/smoke_producao.sh
 # Variável de ambiente DOMINIO permite apontar para outro host (usado
 # nos testes locais deste script, nunca em produção real).
+#
+# TENTATIVAS/ESPERA_S (2026-07-05): o workflow passou de `workflow_run`
+# (nunca disparava — ver smoke-producao.yml) para `push` directo a
+# main, que dispara quase instantaneamente, antes de o deploy do Pages
+# estar necessariamente publicado. 9 tentativas × 30s = até ~4,5 min de
+# tolerância à propagação do Pages, sem penalizar o caso comum (sai do
+# ciclo assim que um 200 é confirmado — o deploy real observado demora
+# tipicamente segundos, não minutos).
 set -uo pipefail
 
 DOMINIO="${DOMINIO:-https://tensdireito.com}"
 LISTA="$(dirname "$0")/urls_criticas.txt"
 USER_AGENT="TensDireito-SmokeTest/1.0 (+https://tensdireito.com/sobre.html)"
-TENTATIVAS=3
+TENTATIVAS=9
 ESPERA_S=30
 
 # Páginas de simulador — a verificação extra de conteúdo só se aplica

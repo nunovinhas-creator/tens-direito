@@ -16,3 +16,4 @@
 /abono-de-familia.html
 /rsi.html
 /subsidio-desemprego.html
+/baixa-medica-subsidio-doenca.html

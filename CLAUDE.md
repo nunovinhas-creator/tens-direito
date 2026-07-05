@@ -173,7 +173,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
-| `smoke-producao.yml` | `workflow_run` após "pages build and deployment" + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
+| `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
 
 **`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`,
 cada um com um âmbito de escrita disjunto e garantido por guardrail próprio**
@@ -196,36 +196,76 @@ outros 5 workflows verifica a produção real — todos correm sobre o
 checkout local do repositório.
 
 1. **`.github/workflows/smoke-producao.yml`** — três triggers:
-   - `workflow_run` sobre "pages build and deployment" (`types:
-     [completed]`) — o sinal mais rápido, corre logo a seguir a
-     qualquer deploy do Pages, com sucesso ou falha.
+   - `push` a `main` — dispara em todos os pushes, incluindo os do
+     pipeline automático. **Substituiu `workflow_run` sobre "pages
+     build and deployment" a 2026-07-05** — ver "GATILHO CORRIGIDO"
+     abaixo, esse nunca disparou.
    - `schedule` `30 6 * * *` — rede de segurança, depois do
      `pipeline-diario.yml` (06:00 UTC); garante que uma falha de deploy
-     nunca fica por detectar até alguém reparar manualmente, mesmo se o
-     `workflow_run` nunca chegar a disparar (mesmo padrão de
-     `shadow-daily.yml` para o `workflow_run` de "Pipeline Diário").
+     nunca fica por detectar até alguém reparar manualmente.
    - `workflow_dispatch` — para testar manualmente (usado nesta sessão
      para confirmar o falso-404 antes de publicar).
 2. **`scripts/smoke_producao.sh`** — lê `scripts/urls_criticas.txt`
    (único sítio a editar — nunca hardcoded no script nem no workflow),
    faz `curl` a cada página com `User-Agent` identificado
-   (`TensDireito-SmokeTest/1.0`), 3 tentativas com 30s de espera entre
-   elas (absorve flutuações momentâneas do CDN, sem mascarar uma falha
-   real). Para as páginas de simulador (`SIMULADORES` no topo do
-   script — `simulador-abono.html`, `simulador-ase.html`,
-   `simulador-csi.html`), confirma também que o corpo da resposta
-   contém literalmente `"Verificado a"` — apanha o caso de a página
-   responder 200 mas servir conteúdo errado ou desactualizado (cache
-   do CDN com uma versão antiga), não só o 404. Essa verificação de
-   conteúdo nunca tem retry — se o 200 já chegou, o conteúdo não muda
-   entre tentativas, por isso falha de imediato em vez de esperar 90s
-   para nada.
+   (`TensDireito-SmokeTest/1.0`), **9 tentativas com 30s de espera entre
+   elas (até ~4,5 min, desde 2026-07-05 — ver "GATILHO CORRIGIDO")**
+   (absorve flutuações momentâneas do CDN e a latência de propagação do
+   Pages, sem mascarar uma falha real). Para as páginas de simulador
+   (`SIMULADORES` no topo do script — `simulador-abono.html`,
+   `simulador-ase.html`, `simulador-csi.html`), confirma também que o
+   corpo da resposta contém literalmente `"Verificado a"` — apanha o
+   caso de a página responder 200 mas servir conteúdo errado ou
+   desactualizado (cache do CDN com uma versão antiga), não só o 404.
+   Essa verificação de conteúdo nunca tem retry — se o 200 já chegou, o
+   conteúdo não muda entre tentativas, por isso falha de imediato em
+   vez de esperar mais tempo para nada.
 3. **`scripts/urls_criticas.txt`** — uma página por linha, caminho
    relativo ao domínio; linhas vazias ou a começar por `#` são
    ignoradas. Cobre: homepage, o hub `/simuladores.html`, os 3
-   simuladores, `/sitemap.xml` e 3 páginas evergreen de topo (abono,
-   RSI, subsídio de desemprego). Adicionar uma página nova importante
-   é só acrescentar uma linha aqui.
+   simuladores, `/sitemap.xml` e 4 páginas evergreen de topo (abono,
+   RSI, subsídio de desemprego, baixa médica). Adicionar uma página
+   nova importante é só acrescentar uma linha aqui.
+
+### GATILHO CORRIGIDO (2026-07-05) — `workflow_run` nunca disparou
+
+Sintoma: depois do deploy do commit `f9030b7` (nova página
+`baixa-medica-subsidio-doenca.html`), o smoke test não correu sozinho —
+só via disparo manual. Diagnóstico antes de mexer: listado o histórico
+completo de `smoke-producao.yml` desde a criação (3 runs) — **os 3
+foram `workflow_dispatch`, zero `workflow_run`**. O gatilho automático
+nunca funcionou, nem uma única vez, desde que o workflow foi criado —
+não é uma regressão recente, é um defeito de origem que passou
+despercebido porque as duas primeiras vezes que o smoke test "correu a
+seguir a um deploy" foi sempre por disparo manual imediatamente a
+seguir, nunca pelo `workflow_run` de facto.
+
+**Causa raiz**: "pages build and deployment" é um workflow **dinâmico**,
+gerido internamente pelo GitHub Pages — não tem ficheiro `.yml` no
+repositório (confirmado via API: `path: "dynamic/pages/pages-build-deployment"`,
+`event: "dynamic"`). O gatilho `workflow_run` do GitHub Actions só
+encadeia de forma fiável workflows reais do repositório (com ficheiro
+`.yml` próprio); não consegue escutar um workflow gerido pela própria
+plataforma. **Lição generalizável, para qualquer workflow futuro**:
+nunca usar `on: workflow_run` para escutar "pages build and
+deployment", Dependabot, ou qualquer outro workflow que apareça no
+separador Actions mas não tenha ficheiro `.yml` no repositório — só
+funciona com workflows definidos por nós.
+
+**Correcção**: `on: push: branches: [main]` substitui o `workflow_run`
+partido — dispara sempre, de forma garantida (é um evento nativo do
+Git, não depende de outro workflow terminar). Risco considerado: o job
+arranca quase instantaneamente após o push, antes de o deploy do Pages
+estar necessariamente publicado — mitigado subindo `TENTATIVAS` de 3
+para 9 em `scripts/smoke_producao.sh` (até ~4,5 min de tolerância; o
+deploy real deste site estático completa tipicamente em segundos —
+confirmado 26s no deploy do commit `f9030b7` — por isso o caso comum
+sai do ciclo na 1.ª ou 2.ª tentativa, sem penalizar o tempo de CI).
+
+**Testado no mesmo commit desta correcção**: push directo, confirmado
+via API que o `smoke-producao.yml` disparou sozinho por `push` (não por
+`workflow_dispatch`) e terminou com sucesso — ver entrada de revisão no
+fim deste ficheiro para o run real.
 4. **Falha = vermelho no Actions, sem mais nada** — decisão deliberada
    desta sessão: sem notificações externas, sem referências públicas.
    Suficiente como alerta por agora; se o volume de falsos alarmes
