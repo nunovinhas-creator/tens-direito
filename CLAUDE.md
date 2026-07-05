@@ -1104,6 +1104,24 @@ Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado
 Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
 (5.ª página filha — ver "PÁGINAS PUBLICADAS").
 
+**Sentinela automático (`dre_psu`) — URL de pesquisa do DRE confirmada
+morta, substituto ainda por confirmar**: a fonte `dre_psu` (a única que
+vigia automaticamente a publicação deste decreto-lei) nunca conseguiu
+extrair conteúdo real desde a criação — ver secção "AUDITORIA DE
+INFRAESTRUTURA E ROBUSTEZ (2026-07-05)". O endpoint novo do DRE
+(`dre.pt/dre/pesquisa?termo=...`) devolve o índice inteiro da
+legislação, não filtrado pelo termo — trocar a URL sem confirmar o
+mecanismo real de disparo da pesquisa (provavelmente um evento JS na
+caixa de pesquisa, não um parâmetro de URL lido em navegação directa)
+criaria uma falha silenciosa pior do que a actual. **Trabalho futuro,
+sem prazo**: sessão com browser interactivo real para confirmar o
+mecanismo de pesquisa correcto antes de qualquer troca de URL. Até lá,
+o silêncio original está fechado (ver "INVARIANTE — nenhum estado de
+erro pode parecer sucesso" mais abaixo): conteúdo insuficiente já
+nunca fica `OK`, gera Issue `fonte-bloqueada` ao 3.º dia consecutivo
+como qualquer outra fonte bloqueada — a detecção do decreto-lei em si
+continua por resolver, mas deixou de ser um silêncio invisível.
+
 ### Páginas NÃO afectadas pela PSU
 
 Estas páginas mantêm-se inalteradas — os subsistemas/apoios são explicitamente excluídos do âmbito da PSU:
@@ -1953,6 +1971,59 @@ scripts/ --select E,F,W --ignore E501 .` limpo.
 diagnóstico temporários (`diagnostico-dre-psu-temp.yml`,
 `scripts/_diag_dre_psu.py`) apagados no fim, mesmo padrão de sessões
 anteriores.
+
+---
+
+## INVARIANTE — NENHUM ESTADO DE ERRO PODE PARECER SUCESSO
+
+Princípio extraído da sessão de fecho da auditoria de infraestrutura
+(2026-07-05), depois de os três achados da sessão original se
+revelarem, na prática, a mesma classe de bug:
+
+1. **`dre_psu`** — uma extracção de 0 caracteres ficava classificada
+   `OK` (sem captcha, sem redirect de login — nada que o classificador
+   reconhecesse como bloqueio), por isso nunca gerava alerta. Zero
+   conteúdo == sucesso, aos olhos do sistema.
+2. **`smoke-producao.yml`** — o `on: push` "corrigido" parecia
+   funcionar (testado com um push de sessão) mas nunca disparava para
+   os commits automáticos do pipeline — exactamente o caso que motivou
+   a criação do smoke test. Verde na aparência, sem nunca correr onde
+   importava.
+3. **Gitleaks** — o job "Verificar Segredos" está verde em todos os
+   pushes a `main` há semanas, mas isso nunca provou o histórico
+   limpo: `gitleaks-action@v2` só faz scan completo (`--all`) quando
+   disparado por `workflow_dispatch`; em `push`, aparentemente só
+   avalia os commits desse push. Verde não incluía o histórico que
+   supostamente estava a proteger.
+
+Nos três casos, o mecanismo de verificação existia, corria, e reportava
+sucesso — e o sucesso era falso. Nenhum dos três era "sem verificação
+nenhuma"; eram verificações com uma zona cega específica que produzia
+exactamente o sinal que se esperaria de um estado saudável.
+
+**Regra para qualquer fonte, teste, workflow ou verificação nova (ou
+alterada) neste repositório**: antes de aceitar como pronta, provar
+explicitamente o caminho onde ela FALHA — não só o caminho onde
+funciona. Perguntas obrigatórias:
+- Uma fonte nova: o que acontece se a extracção vier vazia mas o HTTP
+  for 200 sem qualquer sinal de bloqueio? Fica `OK` por omissão, ou
+  exige confirmação positiva de conteúdo?
+- Um workflow novo (ou gatilho alterado): o disparo foi confirmado
+  contra o evento REAL que importa (ex.: um commit de bot, não só um
+  push de sessão), ou só contra o evento mais conveniente de testar?
+- Um guardrail de segurança/qualidade: "0 problemas encontrados"
+  significa mesmo "verificado e limpo", ou pode significar "não
+  chegou a verificar tudo"? Confirmar o âmbito real do scan, não
+  assumir pelo nome do job.
+
+Teste que só cobre o caminho feliz não é teste — é uma confirmação de
+que o código faz o que já se espera dele quando tudo corre bem. O
+valor está em provar o caminho de falha, com uma asserção que falharia
+se a lacuna reaparecesse (ver `tests/test_scraper_conteudo_suspeito.py`,
+`test_ponta_a_ponta_conteudo_vazio_nunca_fica_ok_e_gera_issue_ao_3o_dia`,
+para o padrão a seguir: liga as duas pontas reais — scraper e máquina
+de estados — em vez de testar cada uma isolada e assumir que a
+integração funciona).
 
 ---
 

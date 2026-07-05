@@ -1,0 +1,49 @@
+# .gitleaksignore — falsos positivos confirmados, com justificação.
+#
+# Investigado em 2026-07-05 (auditoria de infraestrutura): um scan de
+# histórico completo (`gitleaks detect --log-opts="--all"`, disparado via
+# workflow_dispatch — os pushes normais a main só escaneiam o diff do
+# push, nunca reavaliam isto) encontrou 8 "leaks", todos em
+# tests/fixtures/*_real.html / *_portal.html — capturas reais de HTML de
+# seg-social.pt feitas em 2026-07-03 (ver CLAUDE.md "SEG-SOCIAL —
+# ESTRATÉGIA DE FETCH" / "CLASSIFICADOR — VERIFICAÇÃO POSITIVA"), usadas
+# como fixtures de teste para tests/test_classificador_resposta.py.
+#
+# Critério aplicado a cada um, sem excepção: público por design, OU
+# inútil mesmo à data do commit (não só hoje). Nenhum dos 8 concedia
+# acesso a dados de cidadão nem a qualquer recurso protegido — ambos os
+# tipos de valor abaixo pertencem sempre a uma sessão anónima,
+# pré-autenticação, do próprio portal público da Segurança Social
+# (nunca uma credencial deste projecto nem do seu autor).
+#
+# Tipo 1 — token_value (JSF CTKN_DYN, anti-CSRF/continuidade de sessão):
+# `session_max_inactive_interval = 300` (expira aos 5 min) e
+# `last_bookmarkable_url` confirma sempre uma página pública de
+# informação (login gateway "Segurança Social Direta", ou o deep-link
+# público de abono/RSI) — nunca uma área autenticada com dados de
+# cidadão. A sessão nunca autenticou; o token nunca deu acesso a nada
+# além da mesma página pública que o scraper já via. Inofensivo mesmo
+# no instante do commit, não só hoje.
+#
+# Tipo 2 — chatbotToken (widget Hijiffy, `ss.widget.hijiffy.com`):
+# chave pública de site/widget, embutida identicamente no HTML servido
+# a qualquer visitante de seg-social.pt — equivalente a um ID de
+# Google Analytics ou site key de reCAPTCHA. Público por design, em
+# qualquer data.
+
+# Tipo 1: sessão anónima, login gateway "Segurança Social Direta" (RSI)
+dba750db0287fd269bbdbbc9d2f05cf68daa5f57:tests/fixtures/seg_social_rsi_real.html:generic-api-key:173
+# Tipo 2: chave pública do widget de chatbot (RSI, login gateway)
+dba750db0287fd269bbdbbc9d2f05cf68daa5f57:tests/fixtures/seg_social_rsi_real.html:generic-api-key:250
+# Tipo 1: sessão anónima, login gateway "Segurança Social Direta" (abono)
+dba750db0287fd269bbdbbc9d2f05cf68daa5f57:tests/fixtures/seg_social_abono_real.html:generic-api-key:173
+# Tipo 2: chave pública do widget de chatbot (abono, login gateway)
+dba750db0287fd269bbdbbc9d2f05cf68daa5f57:tests/fixtures/seg_social_abono_real.html:generic-api-key:250
+# Tipo 1: sessão anónima, deep-link público de RSI (conteúdo real sem login)
+fabc65da19860c4ddeb3aa61f1ab587bf5a3bddc:tests/fixtures/seg_social_rsi_portal.html:generic-api-key:192
+# Tipo 2: chave pública do widget de chatbot (RSI, deep-link)
+fabc65da19860c4ddeb3aa61f1ab587bf5a3bddc:tests/fixtures/seg_social_rsi_portal.html:generic-api-key:269
+# Tipo 1: sessão anónima, deep-link público de abono (conteúdo real sem login)
+fabc65da19860c4ddeb3aa61f1ab587bf5a3bddc:tests/fixtures/seg_social_abono_portal.html:generic-api-key:194
+# Tipo 2: chave pública do widget de chatbot (abono, deep-link)
+fabc65da19860c4ddeb3aa61f1ab587bf5a3bddc:tests/fixtures/seg_social_abono_portal.html:generic-api-key:271
