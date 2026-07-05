@@ -144,68 +144,68 @@ footer a{color:var(--muted)}
  <script src="/scripts/pesquisa.js" defer></script>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+ <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
  <!-- NAV:INICIO -->
 <div class="nav-wrap">
-    <nav>
-      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
-        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="36" height="36" rx="9" fill="#0F766E"/>
-          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
-      </a>
+ <nav>
+ <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+ <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+ <rect width="36" height="36" rx="9" fill="#0F766E"/>
+ <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </svg>
+ <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+ </a>
 
-      <div class="nav-links">
-        <div class="nav-dropdown" id="navApoiosDropdown">
-          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
-          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
-            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
-            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
-            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
-            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
-            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
-            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
-          </div>
-        </div>
-        <a href="/comecar-aqui.html">Começa aqui</a>
-        <a href="/simuladores.html">🧮 Simuladores</a>
-        <a href="/noticias.html">Notícias</a>
-      </div>
+ <div class="nav-links">
+ <div class="nav-dropdown" id="navApoiosDropdown">
+ <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+ <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+ <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+ <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+ <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+ <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+ <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+ <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+ </div>
+ </div>
+ <a href="/comecar-aqui.html">Começa aqui</a>
+ <a href="/simuladores.html">🧮 Simuladores</a>
+ <a href="/noticias.html">Notícias</a>
+ </div>
 
-      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
-        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
-          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
-        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
-      </div>
+ <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+ <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+ oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+ <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+ </div>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-    </nav>
+ <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+ <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+ <line x1="3" y1="6" x2="21" y2="6"/>
+ <line x1="3" y1="12" x2="21" y2="12"/>
+ <line x1="3" y1="18" x2="21" y2="18"/>
+ </svg>
+ </button>
+ </nav>
 
-    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
-      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
-        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
-          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
-        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
-      </div>
-      <span class="nav-mobile-label">Apoios</span>
-    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
-    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
-    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
-    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
-    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
-    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
-      <a href="/comecar-aqui.html">Começa aqui</a>
-      <a href="/simuladores.html">🧮 Simuladores</a>
-      <a href="/noticias.html">Notícias</a>
-    </div>
-  </div>
+ <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+ <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+ <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+ oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+ <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+ </div>
+ <span class="nav-mobile-label">Apoios</span>
+ <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+ <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+ <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+ <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+ <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+ <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+ <a href="/comecar-aqui.html">Começa aqui</a>
+ <a href="/simuladores.html">🧮 Simuladores</a>
+ <a href="/noticias.html">Notícias</a>
+ </div>
+ </div>
 <!-- NAV:FIM -->
 
  <header class="hero">
@@ -255,11 +255,38 @@ footer a{color:var(--muted)}
  <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
  <div class="arquivo-meta">
  <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
+ <time datetime="2026-06-30">30 jun. 2026</time>
+ </div>
+ <h3 class="arquivo-titulo">Prestação Social Única: o acordo e a oportunidade desta reforma - Expresso</h3>
+ <p class="arquivo-resumo">Prestação Social Única: o acordo e a oportunidade desta reforma Expresso…</p>
+ <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxOcHd1VHZFNFRWVEdVYmJ2MzQ4QWlfbnllRUNzQV9IWVpKUWZZQnNfUkJuSUtZMkluZjE0MkRaaUZlaEREaEJQYWZwbU1sVUZkQm8tcmJVM1BpS044Vy1ZSUxaSmUtNndvQmlTQXVqS3BZNE9DTjB3QmZYYTRRcGk2Mk5Bdk1uNlNEOTA5RU9USm1PZ3hDNmxDdUlIYlFSQTh0QWJPWjJKcjFhVGpoajVR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+ </article>
+ <article class="arquivo-card" data-cat="fiscal" data-mes="2026-06">
+ <div class="arquivo-meta">
+ <span class="cat-badge cat-fiscal"><span class="cat-dot"></span><span class="cat-label">Fiscalidade</span></span>
+ <time datetime="2026-06-30">30 jun. 2026</time>
+ </div>
+ <h3 class="arquivo-titulo">Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos - ECO</h3>
+ <p class="arquivo-resumo">Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos ECO…</p>
+ <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQR2M4SFBzckxyTHJURkFicmRwN2NNb19MMGliVGdueDNOQnhBanJjd2tSMUJOY2w0cDJZZGE0RXRlS2hBOTR2NjQ3Yk9KSkwtTEluaFdQMy10RmFLRlU4WjBTaEdsQWdUUDYtT2Faci0xZFIyZ2lwWHJVSnV5Tl9zNmxHNkpHVVBhc0tOQlJHQ1d4WHNzYTN1YnFPaTFRZW1ocWZTNmpjU3lFZHl5bTQtMUg5eURQbV9jS2gxMld2cw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+ </article>
+ <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
+ <div class="arquivo-meta">
+ <span class="cat-badge cat-apoios"><span class="cat-dot"></span><span class="cat-label">Apoios Sociais</span></span>
  <time datetime="2026-06-29">29 jun. 2026</time>
  </div>
  <h3 class="arquivo-titulo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho - Notícias ao Minuto</h3>
  <p class="arquivo-resumo">Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto…</p>
  <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxNZWJMNmg0ejQ3UmlsRy1TNEowb3RtdzZ6NzlLaGxkTHJOX2g0WWxIR2FlbUVhYzFDVzQ2VERoeDkzQUU4S2w0cF9reERsZ0xVM3hZMjQxRlBja0hyRTNua3NsV2FZVWxxZ3FHbEI0RnZ4RElPWnN6ZmxvZV9LWXVHVTZzQ0ZEUWhMY0hDRHVKY0R2TVFkaTZYYXpoNWszMktDMzF6S2k5OWd2SUtVZjhiclljVU9uYmpuanJrRm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+ </article>
+ <article class="arquivo-card" data-cat="educacao" data-mes="2026-06">
+ <div class="arquivo-meta">
+ <span class="cat-badge cat-educacao"><span class="cat-dot"></span><span class="cat-label">Educação</span></span>
+ <time datetime="2026-06-28">28 jun. 2026</time>
+ </div>
+ <h3 class="arquivo-titulo">Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 - Vale do Sousa TV</h3>
+ <p class="arquivo-resumo">Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 Vale do Sousa TV…</p>
+ <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQdnBNd29iSTJtZnlHWkRwcEhEVE1rN2MzdFI2NjFDYi1EeG9SUW5hZC1fQ1BJcTNsSzVQRGJwZUZ6a183eGdnOEt6MnJwQUxYS3pXSGdJNklLNkpkZ2JoNWs0RUhoekpIZWE1ZEFVMGtNNW8yWi1zR1BlOHVjeF8wU0VfdFBZLUFwaXBsekdRUG5VenBMV2xrTlMyb2JpY29VNHdQZmlDRGhFOU1NTzIyMVZzOVJkSVE?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
  </article>
  <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
  <div class="arquivo-meta">

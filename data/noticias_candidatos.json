@@ -193,5 +193,152 @@
       "feed_nome": "calendario_pagamentos_seg_social",
       "score": 3
     }
+  },
+  {
+    "data": "2026-07-05",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 13,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 11,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 12,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de julho - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-01",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-01"
+      },
+      {
+        "titulo": "Prestação Social Única: o acordo e a oportunidade desta reforma - Expresso",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-06-30",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=apoios"
+      },
+      {
+        "titulo": "Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 - Vale do Sousa TV",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-06-28",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=educacao"
+      },
+      {
+        "titulo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos - ECO",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-06-30",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=fiscal"
+      },
+      {
+        "titulo": "Entrega do IRS termina hoje com 6 milhões de declarações já submetidas - dnoticias.pt",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-06-30",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Prazo para entregar declaração de IRS termina amanhã - Contas Poupança",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-06-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Declaração de IRS: amanhã é o último dia! Atenção às coimas - Pplware",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-06-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Segurança Social: revelado calendário de pagamentos para julho de 2026 - 4gnews",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-06-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Saiba em que datas vai receber as prestações sociais em julho - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-06-28",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Ação social escolar: como pedir e quais os prazos de candidatura?? - Contas Connosco",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-06-29",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Prestação Social Única: o acordo e a oportunidade desta reforma - Expresso",
+        "feed_nome": "psu_pensoes",
+        "score": 2
+      },
+      {
+        "titulo": "Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 - Vale do Sousa TV",
+        "feed_nome": "acao_social_escolar",
+        "score": 2
+      },
+      {
+        "titulo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos - ECO",
+        "feed_nome": "irs_fiscalidade",
+        "score": 1
+      }
+    ]
   }
 ]

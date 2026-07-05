@@ -11,7 +11,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **04 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **05 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -19,8 +19,10 @@ Actualizado automaticamente a partir do repositório em **04 de julho de 2026**.
 |---|---|
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
+| [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
+| [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
@@ -31,6 +33,7 @@ Actualizado automaticamente a partir do repositório em **04 de julho de 2026**.
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir |
+| [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | Prestação Social para a Inclusão (PSI) 2026: Guia Completo | Tens Direito |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
 | [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como |
@@ -42,7 +45,9 @@ Actualizado automaticamente a partir do repositório em **04 de julho de 2026**.
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
+| [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
 | [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
+| [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
@@ -196,6 +201,7 @@ tens-direito/
 │       ├── integridade.yml
 │       ├── pipeline-diario.yml
 │       ├── shadow-daily.yml
+│       ├── smoke-producao.yml
 │       ├── validar-conteudo.yml
 │       ├── verificar-links.yml
 ├── .claude/
@@ -287,6 +293,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 | `integridade.yml` | — | integridade |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
 | `shadow-daily.yml` | — | shadow-daily |
+| `smoke-producao.yml` | — | smoke-producao |
 | `validar-conteudo.yml` | push para main (`**.html`) | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator |
 | `verificar-links.yml` | `0 7 * * 1` (segunda 07:00 UTC) | lychee testa todos os links HTML + Issue se 404 |
 
@@ -343,6 +350,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 04 de julho de 2026 às 10:00 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 05 de julho de 2026 às 10:20 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

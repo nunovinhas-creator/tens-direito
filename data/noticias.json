@@ -10,6 +10,24 @@
       "cluster_id": null
     },
     {
+      "data_iso": "2026-06-30",
+      "titulo": "Prestação Social Única: o acordo e a oportunidade desta reforma",
+      "fonte_nome": "Expresso",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOcHd1VHZFNFRWVEdVYmJ2MzQ4QWlfbnllRUNzQV9IWVpKUWZZQnNfUkJuSUtZMkluZjE0MkRaaUZlaEREaEJQYWZwbU1sVUZkQm8tcmJVM1BpS044Vy1ZSUxaSmUtNndvQmlTQXVqS3BZNE9DTjB3QmZYYTRRcGk2Mk5Bdk1uNlNEOTA5RU9USm1PZ3hDNmxDdUlIYlFSQTh0QWJPWjJKcjFhVGpoajVR?oc=5",
+      "resumo": "Prestação Social Única: o acordo e a oportunidade desta reforma Expresso",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-06-30",
+      "titulo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQR2M4SFBzckxyTHJURkFicmRwN2NNb19MMGliVGdueDNOQnhBanJjd2tSMUJOY2w0cDJZZGE0RXRlS2hBOTR2NjQ3Yk9KSkwtTEluaFdQMy10RmFLRlU4WjBTaEdsQWdUUDYtT2Faci0xZFIyZ2lwWHJVSnV5Tl9zNmxHNkpHVVBhc0tOQlJHQ1d4WHNzYTN1YnFPaTFRZW1ocWZTNmpjU3lFZHl5bTQtMUg5eURQbV9jS2gxMld2cw?oc=5",
+      "resumo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos ECO",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-06-29",
       "titulo": "Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho",
       "fonte_nome": "Notícias ao Minuto",
@@ -17,6 +35,15 @@
       "resumo": "Pensões, subsídios e outros apoios: Descubra já quando os recebe em julho Notícias ao Minuto",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-06-28",
+      "titulo": "Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027",
+      "fonte_nome": "Vale do Sousa TV",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQdnBNd29iSTJtZnlHWkRwcEhEVE1rN2MzdFI2NjFDYi1EeG9SUW5hZC1fQ1BJcTNsSzVQRGJwZUZ6a183eGdnOEt6MnJwQUxYS3pXSGdJNklLNkpkZ2JoNWs0RUhoekpIZWE1ZEFVMGtNNW8yWi1zR1BlOHVjeF8wU0VfdFBZLUFwaXBsekdRUG5VenBMV2xrTlMyb2JpY29VNHdQZmlDRGhFOU1NTzIyMVZzOVJkSVE?oc=5",
+      "resumo": "Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 Vale do Sousa TV",
+      "categoria": "educacao",
+      "cluster_id": "apoios-escolares"
     },
     {
       "data_iso": "2026-06-26",

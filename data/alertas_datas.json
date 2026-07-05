@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "tipo": "data_mes_ano",
+    "titulo": "📅 REVER: baixa-medica-subsidio-doenca.html — Data com mês e ano",
+    "corpo": "A página `baixa-medica-subsidio-doenca.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Data com mês e ano\n**Mês actual:** 7/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário.",
+    "classificacao": {
+      "data": "outubro de 2025",
+      "estado": "OUTDATED_REVIEW_REQUIRED",
+      "contexto": " direito ao subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar a falta perante os serviços da Segurança Social, com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.\"\n        }\n      },\n      {\n        \"@type\": \"Question\",\n        \"name\": \"Posso viajar para o estrangeiro estando de baixa médica?\",\n        \"acceptedA"
+    },
+    "decisao": {
+      "estado": "OUTDATED_REVIEW_REQUIRED",
+      "acao": "CREATE_ISSUE",
+      "contexto": {
+        "data": "outubro de 2025",
+        "estado": "OUTDATED_REVIEW_REQUIRED",
+        "contexto": " direito ao subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar a falta perante os serviços da Segurança Social, com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.\"\n        }\n      },\n      {\n        \"@type\": \"Question\",\n        \"name\": \"Posso viajar para o estrangeiro estando de baixa médica?\",\n        \"acceptedA"
+      }
+    }
+  }
+]
