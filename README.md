@@ -47,6 +47,7 @@ Actualizado automaticamente a partir do repositório em **05 de julho de 2026**.
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
 | [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
+| [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
@@ -350,6 +351,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 05 de julho de 2026 às 10:20 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 05 de julho de 2026 às 15:27 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

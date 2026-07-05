@@ -85,5 +85,14 @@
       "desafio:recaptcha"
     ],
     "chars_uteis": 8120
+  },
+  {
+    "slug": "dre_psu",
+    "url": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
+    "data": "2026-07-05T14:27:03.399357+00:00",
+    "motivos": [
+      "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
+    ],
+    "chars_uteis": 0
   }
 ]
