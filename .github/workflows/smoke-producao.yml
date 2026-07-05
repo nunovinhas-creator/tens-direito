@@ -32,12 +32,35 @@ on:
     - cron: '30 6 * * *'
   workflow_dispatch:
 
+# actions: write só é necessário para o step "Garantir deploy do
+# GitHub Pages" poder disparar um rerun via API quando o deploy falha
+# com o erro genérico de infra-estrutura (ver esse step).
+permissions:
+  actions: write
+
 jobs:
   smoke-test:
     name: Smoke test às páginas críticas
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # ── Garantir deploy do GitHub Pages ──────────────────────────────────────
+      # Achado de 2026-07-05 (fecho da auditoria): "pages build and
+      # deployment" falha esporadicamente com um erro genérico de
+      # infra-estrutura ("Deployment failed, try again later.", já
+      # confirmado 3 vezes, nunca relacionado com o conteúdo) — até agora
+      # só descoberto por um humano a ver a notificação de email e a
+      # correr o rerun manualmente. Como esse workflow é dinâmico (sem
+      # ficheiro .yml no repositório — não podemos editar-lhe a lógica
+      # nem dar-lhe retries internos), este step trata o problema por
+      # fora: espera pelo deploy do commit actual (GITHUB_SHA) e, se
+      # falhar, dispara-o de novo via API automaticamente — nunca um gate
+      # rígido, segue sempre para o smoke test a seguir.
+      - name: Garantir deploy do GitHub Pages
+        run: bash scripts/garantir_deploy_pages.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verificar páginas críticas em produção
         run: bash scripts/smoke_producao.sh

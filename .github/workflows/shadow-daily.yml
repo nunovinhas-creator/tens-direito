@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 # Mesmo grupo de concorrência de pipeline-diario.yml — o outro workflow
 # que faz `git push` a main. Serializa as duas escritas: nunca correm
@@ -123,6 +124,18 @@ jobs:
             git push
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # ── Garantir deploy do GitHub Pages ──────────────────────────────────────
+      # Mesmo mecanismo de pipeline-diario.yml — ver comentário lá para o
+      # raciocínio completo. "pages build and deployment" é dinâmico (sem
+      # ficheiro .yml, não editável); este step espera pelo deploy do
+      # commit actual e recupera automaticamente via API se falhar com o
+      # erro genérico de infra-estrutura já confirmado 3 vezes.
+      - name: Garantir deploy do GitHub Pages
+        if: steps.commit_push.outputs.pushed == 'true'
+        run: bash scripts/garantir_deploy_pages.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # ── Smoke test de produção inline ────────────────────────────────────────
       # Mesmo motivo que em pipeline-diario.yml: um push feito com o

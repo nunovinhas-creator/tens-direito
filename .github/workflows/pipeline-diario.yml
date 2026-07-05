@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write
 
 # Serializa qualquer escrita concorrente em main: este workflow e
 # shadow-daily.yml (o outro que faz `git push`) partilham o mesmo grupo
@@ -607,6 +608,24 @@ jobs:
             git push
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # ── Step 7c2: Garantir deploy do GitHub Pages ────────────────────────────
+      # Achado de 2026-07-05 (fecho da auditoria): "pages build and
+      # deployment" falha esporadicamente com um erro genérico de
+      # infra-estrutura ("Deployment failed, try again later.", já
+      # confirmado 3 vezes, nunca relacionado com o conteúdo) — até agora
+      # só descoberto por um humano a ver a notificação de email e a
+      # correr o rerun manualmente. Como esse workflow é dinâmico (sem
+      # ficheiro .yml no repositório — não podemos editar-lhe a lógica
+      # nem dar-lhe retries internos), este step trata o problema por
+      # fora: espera pelo deploy do commit actual e, se falhar, dispara-o
+      # de novo via API automaticamente (scripts/garantir_deploy_pages.sh,
+      # nunca um gate rígido — segue sempre para o smoke test a seguir).
+      - name: Garantir deploy do GitHub Pages
+        if: steps.commit_push.outputs.pushed == 'true'
+        run: bash scripts/garantir_deploy_pages.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # ── Step 7d: Smoke test de produção inline ───────────────────────────────
       # Achado de 2026-07-05: pushes feitos com o GITHUB_TOKEN por omissão

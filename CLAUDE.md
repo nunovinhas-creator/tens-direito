@@ -227,6 +227,40 @@ checkout local do repositório.
    RSI, subsídio de desemprego, baixa médica). Adicionar uma página
    nova importante é só acrescentar uma linha aqui.
 
+### RECUPERAÇÃO AUTOMÁTICA DO DEPLOY (2026-07-05) — sem intervenção manual
+
+A falha de infra-estrutura "`##[error]Deployment failed, try again
+later.`" (secção acima) já aconteceu **3 vezes** — sempre descoberta e
+corrigida por um humano: o Nuno vê a notificação de email do GitHub
+("Some jobs were not successful"), reporta à sessão, e o Code corre
+`rerun_workflow_run` manualmente pela API. Como "pages build and
+deployment" é um workflow **dinâmico** (sem ficheiro `.yml` no
+repositório — confirmado via API, `path: "dynamic/pages/pages-build-
+deployment"`), nunca é possível editar-lhe a lógica nem acrescentar-lhe
+retries internos.
+
+**Corrigido com um script novo, chamado de fora**: `scripts/
+garantir_deploy_pages.sh` corre logo antes do smoke test nos **3
+sítios** que já verificam produção (`smoke-producao.yml` e o smoke
+inline de `pipeline-diario.yml`/`shadow-daily.yml`) — espera que o
+deploy do commit actual (`GITHUB_SHA`) termine (polling via `gh api`,
+até 180s por tentativa) e, se falhar, dispara-o de novo
+automaticamente via `POST .../actions/runs/{id}/rerun`, até 3
+tentativas. **Nunca é um gate rígido** — se não conseguir confirmar ou
+recuperar dentro do tempo limite, sai com sucesso na mesma (`exit 0`)
+e deixa o smoke test a seguir ser a verificação real; o objectivo é só
+eliminar a necessidade de um humano ver uma notificação e correr um
+comando à mão, não substituir o smoke test como fonte de verdade.
+Requer `permissions: actions: write` nos 3 workflows (novo, só para
+poder disparar o rerun via API — nada mais muda de comportamento).
+
+**Verificado no incidente real que motivou esta correcção**: o deploy
+do commit `cdaee04` falhou com o erro genérico habitual; corrigido
+manualmente nessa altura (`rerun_workflow_run`, sucesso na 2.ª
+tentativa, confirmado por `smoke-producao.yml` a seguir) — este script
+existe precisamente para a *próxima* vez que isto acontecer não
+precisar de repetir esse processo manual.
+
 ### GATILHO CORRIGIDO (2026-07-05) — `workflow_run` nunca disparou
 
 Sintoma: depois do deploy do commit `f9030b7` (nova página
