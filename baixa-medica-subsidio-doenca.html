@@ -214,6 +214,9 @@ nav a.nav-link:hover{color:#0F766E}
 .hero-inner{max-width:900px;margin:0 auto}
 .hero h1{font-size:1.75rem;margin-bottom:0.75rem;line-height:1.3}
 .hero .resposta-direta{background:#0F766E;border-left:4px solid #fff;padding:1rem 1.25rem;border-radius:0 6px 6px 0;font-size:1.05rem}
+.resposta-rapida-label{display:block;font-weight:700;font-size:0.85rem;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:0.5rem}
+.resposta-rapida-texto{margin:0}
+.resposta-rapida-tempo{display:block;font-size:0.85rem;font-weight:400;margin-top:0.65rem}
 main{max-width:900px;margin:2rem auto;padding:0 1rem}
 h2{color:#0F766E;font-size:1.2rem;margin-bottom:0.75rem;margin-top:0.25rem}
 h3{color:#0F172A;font-size:1.02rem;margin-bottom:0.5rem;margin-top:1rem}
@@ -290,6 +293,8 @@ footer a{color:#5C6770}
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -369,8 +374,10 @@ footer a{color:#5C6770}
 </div>
 <!-- partilhar:fim -->
 
-      <div class="resposta-direta">
-        A baixa médica é a incapacidade temporária para o trabalho, certificada por um médico (CIT) ou, em episódios curtos, autodeclarada no SNS24. O Certificado de Incapacidade Temporária dá acesso a um subsídio de doença pago pela Segurança Social, entre 55% e 75% da tua remuneração de referência consoante a duração — a autodeclaração, por si só, não dá.
+      <div class="resposta-direta resposta-rapida">
+        <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+        <p class="resposta-rapida-texto">A baixa médica é a incapacidade temporária para o trabalho, certificada por um médico (CIT) ou, em episódios curtos, autodeclarada no SNS24. O Certificado de Incapacidade Temporária dá acesso a um subsídio de doença pago pela Segurança Social, entre 55% e 75% da tua remuneração de referência consoante a duração — a autodeclaração, por si só, não dá.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 14 min</span>
       </div>
     </div>
   </header>
@@ -616,6 +623,20 @@ footer a{color:#5C6770}
       <h3>Função pública</h3>
       <p>Quem tem vínculo de emprego público e está inscrito na Caixa Geral de Aposentações segue o regime de proteção social convergente, com uma junta médica própria que depende da ADSE, distinta da junta médica da Segurança Social. Os detalhes exactos de prazos de convocação estão sujeitos a alterações regulamentares recentes — confirma sempre o teu caso na <a href="https://www.dgaep.gov.pt" target="_blank" rel="noopener">DGAEP</a>.</p>
     </div>
+
+    <!-- CHECKLIST FINAL -->
+    <section class="checklist-final" aria-label="Checklist final">
+      <h2>Checklist: pedir a baixa médica e o subsídio de doença</h2>
+      <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+      <ul class="checklist-lista">
+        <li><label><input type="checkbox"><span>Marcaste consulta (médico de família, urgência do SNS, ou — desde março de 2024 — privado/social) e recebeste o CIT electrónico?</span></label></li>
+        <li><label><input type="checkbox"><span>Entregaste o CIT (ou o código de acesso) ao empregador no prazo de 5 dias úteis a contar do 1.º dia de ausência?</span></label></li>
+        <li><label><input type="checkbox"><span>Confirmaste que tens pelo menos 6 meses de registo de remunerações na Segurança Social (prazo de garantia)?</span></label></li>
+        <li><label><input type="checkbox"><span>Sabes quantos dias de espera se aplicam ao teu regime (3, 10 ou 30 dias, ou nenhum nas excepções previstas)?</span></label></li>
+        <li><label><input type="checkbox"><span>Se a baixa se prolongar, marcaste nova consulta antes do fim do CIT actual para pedir prorrogação?</span></label></li>
+        <li><label><input type="checkbox"><span>Guardaste prova documental (por exemplo, declaração de internamento) para justificar uma eventual falta a uma convocatória da junta médica de verificação?</span></label></li>
+      </ul>
+    </section>
 
     <!-- DÚVIDAS FREQUENTES -->
     <section class="zona-cinzenta">

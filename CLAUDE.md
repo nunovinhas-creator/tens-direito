@@ -106,6 +106,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` (13 feeds RSS por tema + corte de recência de 7 dias) → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
+| Checklist final | `assets/js/checklist.js` + `assets/css/checklist.css` — bloco `.checklist-final` (FASE 1 de `MELHORIAS-SPEC.md`, ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL"), sem localStorage |
 
 **Ranking e apresentação da pesquisa (`scripts/pesquisa.js`)** — reformulado
 2026-07-02: antes, "sub" devolvia páginas sem o termo no título
@@ -396,6 +397,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
+- [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos da FASE 1 de `MELHORIAS-SPEC.md` — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
 - [ ] Commit e push directamente para `main`
 
@@ -409,9 +411,11 @@ tens-direito/
 ├── assets/
 │   ├── js/share.js           ← lógica do botão "Partilhar este artigo" (vanilla JS)
 │   ├── js/nav.js             ← interacção da nav principal (dropdown, hamburger) — partilhado
+│   ├── js/checklist.js       ← contador do bloco .checklist-final (vanilla JS, sem localStorage)
 │   ├── css/share.css         ← estilo do botão/mensagens de partilha
 │   ├── css/clusters.css      ← estilo do breadcrumb/pertence/relacionados injectados nos artigos
-│   └── css/nav.css           ← estilo da nav principal única (todas as páginas)
+│   ├── css/nav.css           ← estilo da nav principal única (todas as páginas)
+│   └── css/checklist.css     ← estilo do bloco .checklist-final (FASE 1 de MELHORIAS-SPEC.md)
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
@@ -1077,6 +1081,126 @@ feed, classificação completa de candidatos, retenção por dias),
 **Verificado no pipeline real** (`workflow_dispatch` de
 `pipeline-diario.yml`, não só no runner de diagnóstico): ver entrada de
 revisão no fim deste ficheiro para o resultado real, não assumido.
+
+---
+
+## RESPOSTA RÁPIDA + CHECKLIST FINAL (FASE 1 de MELHORIAS-SPEC.md)
+
+Dois componentes reutilizáveis, aplicados nesta fase a 4 artigos:
+`baixa-medica-subsidio-doenca.html` (alvo explícito da spec) e os 3
+artigos com mais tráfego GSC confirmados pelo Nuno —
+`manuais-escolares-mega.html`, `acao-social-escolar.html`,
+`subsidio-desemprego.html`.
+
+### `.resposta-rapida` — reaproveita `.resposta-direta`, não duplica
+
+Achado antes de implementar: os ~28 artigos do site já têm um bloco
+`.resposta-direta` no hero (caixa teal, resposta directa de 2-3 frases)
+com exactamente o mesmo objectivo SEO (featured snippet) que a spec
+pede para `.resposta-rapida`. Decisão (confirmada com o Nuno): **nunca
+duplicar a caixa** — a mesma `.resposta-direta` ganhou a classe extra
+`resposta-rapida` mais dois elementos novos:
+
+```html
+<div class="resposta-direta resposta-rapida">
+  <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+  <p class="resposta-rapida-texto">[texto já existente, ≤60 palavras]</p>
+  <span class="resposta-rapida-tempo">📖 Leitura completa: X min</span>
+</div>
+```
+
+CSS inline por página (mesmo padrão de `.resposta-direta`, nunca um
+ficheiro partilhado — cada artigo já define os seus próprios
+componentes inline). Tempo de leitura calculado uma vez (palavras do
+`<main>` ÷ 200 ppm, arredondado) e escrito como texto estático — não é
+recalculado em runtime. **Achado de acessibilidade durante a
+implementação**: a 1.ª versão usava `opacity` no rótulo/tempo para
+hierarquia visual — reduzia o contraste do texto branco sobre o fundo
+teal (`#0F766E`) de 5.47:1 para 4.41:1, abaixo do mínimo AA de 4.5:1
+(apanhado por `tests/test_acessibilidade.py`, não por inspecção visual).
+Corrigido removendo o `opacity` — texto branco sólido, mesmo contraste
+já auditado e aprovado do resto do `.resposta-direta`.
+
+### `.checklist-final` — novo, reutilizável via `assets/`
+
+Ao contrário de `.resposta-direta`, este componente é genuinamente
+novo. Segue o padrão de `share.js`/`share.css` (ficheiro partilhado em
+`assets/`, ligado via `<link>`/`<script>` no `<head>`, nunca duplicado
+inline por página):
+
+- **`assets/css/checklist.css`** — caixa no mesmo estilo de `.card`,
+  contador de progresso, lista de checkboxes com touch target ≥44px
+  (o `<label>` inteiro é o alvo clicável, não só a checkbox de 22px).
+- **`assets/js/checklist.js`** — actualiza o contador ("X de N
+  concluídos") em `change`, delegado em `document` (mesmo padrão de
+  `share.js`). **Estado só em memória** — nunca chama
+  `localStorage`/`sessionStorage`; recarregar a página repõe todas as
+  checkboxes por marcar, por desenho, exactamente como a spec exige.
+
+HTML por artigo (sem ficheiro de template — cada página escreve o seu
+próprio `<section class="checklist-final">`, com itens sourced do
+`HowTo` JSON-LD já publicado nessa página, nunca inventados):
+
+```html
+<section class="checklist-final" aria-label="Checklist final">
+  <h2>Checklist: [tarefa do artigo]</h2>
+  <p class="checklist-progresso" aria-live="polite">0 de N concluídos</p>
+  <ul class="checklist-lista">
+    <li><label><input type="checkbox"><span>[item accionável]</span></label></li>
+    ...
+  </ul>
+</section>
+```
+
+Posicionado antes da secção "Dúvidas frequentes" nos 3 artigos que a
+têm; `manuais-escolares-mega.html` não tem uma secção de FAQ visível
+dedicada (só JSON-LD) — o checklist foi colocado antes de
+`RELACIONADOS`, ainda assim no fim do corpo do artigo, sem inventar uma
+secção que a página não tem.
+
+**Achado lateral, não relacionado com os blocos novos**: ao validar
+`acao-social-escolar.html` com o `vnu.jar` (HTML5), encontrado um bug
+pré-existente (não introduzido nesta sessão, confirmado por
+`git show HEAD`) — um `<div class="tabela-wrap">` (tabela) dentro de um
+`<span>` no passo 1 do "Como candidatar", inválido porque `<span>` só
+aceita conteúdo de fraseado. Corrigido trocando esse `<span>` por
+`<div>` (o `<ol>` já usa `display:flex` via `.passos li`, que
+"blockifica" o filho de qualquer forma — zero mudança visual) e
+ajustada a regra CSS `.passos li span` para `.passos li span, .passos
+li > div`, preservando a cor/alinhamento exactos.
+
+### Retrofit dos 3 artigos GSC — decisão do Nuno, não assumida
+
+A spec pedia "retrofit nos 3 artigos com mais tráfego GSC (confirmar
+quais na sessão)" — sem acesso ao Google Search Console, a sessão
+perguntou directamente e o Nuno confirmou os 3: `manuais-escolares-
+mega.html`, `acao-social-escolar.html`, `subsidio-desemprego.html`.
+Não são um palpite nem um valor por omissão.
+
+### Testes
+
+`tests/test_resposta_rapida_checklist.py` (37 casos, parametrizados
+sobre os 4 artigos reais): estrutural (rótulo + tempo presentes, ≤60
+palavras, caixa continua dentro do hero, checklist com checkboxes
+dentro de `<label>`, ordem antes do FAQ, assets ligados no `<head>`,
+`checklist.js` nunca chama `localStorage`/`sessionStorage`) e funcional
+via Chromium real (viewport mobile 390px sem overflow horizontal nos 2
+blocos, contador a actualizar ao marcar/desmarcar, e a garantia
+explícita de que um reload nunca preserva o estado das checkboxes —
+requisito "SEM localStorage" da spec, verificado a sério, não só por
+ausência da string no código). Suite existente (`test_nav_coerencia.py`,
+`test_breadcrumb_coerencia.py`, `test_higiene_indexacao.py`,
+`test_acessibilidade.py`) reconfirmada sem regressões nos 4 artigos
+tocados.
+
+### Critérios de aceitação da spec — confirmados
+
+- Blocos renderizam correctamente em mobile (viewport 390px) — testado
+  com Chromium real, sem overflow horizontal.
+- Validação HTML5 passa — confirmado com `vnu.jar` nas 4 páginas
+  (incluindo a correcção do bug pré-existente acima).
+- Zero dependências externas novas — `checklist.js`/`checklist.css` são
+  vanilla JS/CSS, mesmo padrão de `share.js`/`share.css`.
 
 ---
 
@@ -3020,3 +3144,50 @@ Secção "GATILHO AUTOBAIXA" actualizada: o ponto "Anteprojecto de reforma labor
 ---
 
 *Última revisão: 2026-07-05 (fecho da auditoria) — quatro decisões definitivas antes do merge. 1) **Gitleaks**: os 8 "leaks" confirmados falsos positivos um por um (nunca só "porque sim") — token de sessão JSF (`CTKN_DYN`) pertence sempre a uma sessão anónima pré-autenticação numa página pública (login gateway ou deep-link de informação da Segurança Social, nunca área com dados de cidadão) e chave de widget de chatbot é pública por design; nenhum concedia acesso a nada de sensível, mesmo no instante do commit. Silenciados em `.gitleaksignore` (nunca reescrita de histórico), com justificação por fingerprint; confirmado no runner real que o scan volta a "no leaks found". 2) **dre_psu**: confirmado que a correcção da sessão anterior não recriava o silêncio — `_guardar_resultado()` escreve directamente em `data/bloqueios.json` (o mesmo ficheiro que `gerir_estado_fontes.py` lê), independente da classificação `Estado.OK` do `classificador_resposta.py`; novo teste de ponta-a-ponta (`test_ponta_a_ponta_conteudo_vazio_nunca_fica_ok_e_gera_issue_ao_3o_dia`) liga os dois módulos reais ao longo de 3 dias simulados e prova: conteúdo vazio nunca é `OK`, fica elegível a Issue exactamente no 3.º dia. URL do DRE mantém-se por corrigir (trabalho futuro, ligado à secção "IMPACTO DA PSU"). 3) **Merge para `main`**: fast-forward directo (`12c7ad8`), sem PR — CI real confirmado: Gitleaks limpo, ruff limpo, HTML5 limpo, prompt-injection limpo (todos via evento `push` real, não `workflow_dispatch`). 4) **Prova real do smoke inline**: `pipeline-diario.yml` disparado via `workflow_dispatch` (run `28743926685`) fez scrape completo das 7 fontes, commit real como `github-actions[bot]` (`047739a auto: pipeline diário 2026-07-05`) e o step "Smoke test de produção (inline, pós-push)" correu **no mesmo run**, imediatamente a seguir ao commit, com sucesso — a prova que faltava desde a sessão anterior, de que um commit de bot real fica coberto por verificação de produção no mesmo run, não só por push de sessão. Cron `30 6 * * *` mantém-se como segunda rede, não cobertura principal. Nota operacional: o job "Suite de Testes (pytest)" mostrou lentidão anómala (>9 min) quando corrido via `workflow_dispatch` nesta sessão, sem explicação encontrada — via `push` real a `main` corre normalmente (~2 min); registado como observação, não bloqueou o merge (suite local sempre verde, 1082 passed/135 skipped). Nova secção "INVARIANTE — nenhum estado de erro pode parecer sucesso" fecha a sessão como princípio permanente do repositório. Branch `claude/infrastructure-audit-robustness-10k2wc` fica órfã após o fast-forward — para o Nuno apagar manualmente (mesma limitação de sempre, sem permissão de API para apagar branches nesta sessão).*
+
+---
+
+*Última revisão: 2026-07-05 — FASE 1 de `MELHORIAS-SPEC.md` (nova secção
+"RESPOSTA RÁPIDA + CHECKLIST FINAL"). Antes de implementar, achado
+real: os ~28 artigos já têm `.resposta-direta` no hero com o mesmo
+objectivo SEO que a spec pedia para `.resposta-rapida` — confirmado com
+o Nuno para reaproveitar em vez de duplicar (acrescentado só o rótulo
+"⚡ Resposta rápida" + tempo de leitura, mesma caixa). Os "3 artigos com
+mais tráfego GSC" do ponto 1.3 também foram confirmados directamente
+pelo Nuno (sem acesso do Code ao Search Console):
+`manuais-escolares-mega.html`, `acao-social-escolar.html`,
+`subsidio-desemprego.html` — mais `baixa-medica-subsidio-doenca.html`
+(alvo explícito da spec), 4 artigos no total. `.checklist-final` é
+novo: `assets/css/checklist.css` + `assets/js/checklist.js` (mesmo
+padrão de `share.css`/`share.js`), checkboxes com estado só em memória
+(nunca `localStorage`), itens sourced do `HowTo` JSON-LD já publicado
+em cada artigo. Dois achados corrigidos durante a implementação, ambos
+apanhados pelos testes reais e não por inspecção: 1) a 1.ª versão da
+`.resposta-rapida` usava `opacity` no rótulo/tempo, reduzindo o
+contraste do texto branco sobre o hero teal de 5.47:1 para 4.41:1
+(abaixo do mínimo AA de 4.5:1) — apanhado por
+`tests/test_acessibilidade.py`, corrigido removendo o `opacity`; 2) bug
+de HTML5 pré-existente (não desta sessão, confirmado por `git show
+HEAD`) em `acao-social-escolar.html` — um `<div>` (tabela) dentro de um
+`<span>`, inválido — corrigido trocando para `<div>` sem alterar o
+visual (o `<ol>` já usa `display:flex`, que blockifica o filho de
+qualquer forma). Novo `tests/test_resposta_rapida_checklist.py` (37
+casos: estrutural + Chromium real — viewport mobile 390px sem overflow,
+contador do checklist a actualizar, e a garantia explícita de que um
+reload nunca preserva o estado das checkboxes). Checklist obrigatória
+ganhou o item "novo artigo inclui os dois blocos"; `sitemap.xml`/
+`data/clusters.json` inalterados (nenhuma página nova, só 4 artigos
+existentes modificados). Suite completa: 1249 passed, 5 skipped (3
+ficheiros de notícias não recolhidos por falta de `feedparser` neste
+sandbox, mesma limitação documentada em sessões anteriores — corre
+completo no CI); `ruff check scripts/ tests/ --select E,F,W --ignore
+E501 .` limpo; `html5validator` (vnu.jar) sem erros nas 4 páginas.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados por esta sessão). Trabalho feito na branch
+`claude/melhorias-spec-phase-1-anlctz` (designada pelo ambiente remoto
+desta sessão). FASE 2 (calculadora de subsídio de doença — nota: já
+existe `simulador-subsidio-doenca.html`, publicado numa sessão anterior;
+confirmar com o Nuno se a FASE 2 da spec já está coberta por essa página
+antes de a reimplementar), FASE 3 (gerador de documentos) e FASE 4
+(árvore de decisão PSU, com gatilho no decreto-lei) ficam para sessões
+seguintes, pela ordem definida em `MELHORIAS-SPEC.md`.*

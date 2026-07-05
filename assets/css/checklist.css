@@ -1,0 +1,72 @@
+/*
+ * assets/css/checklist.css — Tens Direito
+ * Estilos do bloco ".checklist-final" (FASE 1 de MELHORIAS-SPEC.md):
+ * checklist accionável no fim de cada artigo, antes da secção de FAQ.
+ * Reaproveita a mesma paleta/raio de borda já usada em ".card" no resto
+ * da página — não introduz cores novas.
+ */
+
+.checklist-final {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.checklist-final h2 {
+  color: #0F766E;
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+.checklist-progresso {
+  font-size: 0.9rem;
+  color: #5C6770;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.checklist-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* O <label> inteiro é o alvo clicável — dá um touch target >= 44px sem
+   depender só da checkbox em si (20-22px seria insuficiente sozinha). */
+.checklist-lista label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  min-height: 44px;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #212529;
+  line-height: 1.5;
+}
+
+.checklist-lista input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  accent-color: #0F766E;
+  cursor: pointer;
+}
+
+.checklist-lista input[type="checkbox"]:checked ~ span {
+  text-decoration: line-through;
+  color: #5C6770;
+}
+
+.checklist-lista label:focus-within {
+  outline: 3px solid #0F766E;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

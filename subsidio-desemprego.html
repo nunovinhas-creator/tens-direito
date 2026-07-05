@@ -186,6 +186,9 @@ nav a.nav-link:hover{color:#0F766E}
 .hero-inner{max-width:900px;margin:0 auto}
 .hero h1{font-size:1.75rem;margin-bottom:0.75rem;line-height:1.3}
 .hero .resposta-direta{background:#0F766E;border-left:4px solid #fff;padding:1rem 1.25rem;border-radius:0 6px 6px 0;font-size:1.05rem}
+.resposta-rapida-label{display:block;font-weight:700;font-size:0.85rem;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:0.5rem}
+.resposta-rapida-texto{margin:0}
+.resposta-rapida-tempo{display:block;font-size:0.85rem;font-weight:400;margin-top:0.65rem}
 main{max-width:900px;margin:2rem auto;padding:0 1rem}
 h2{color:#0F766E;font-size:1.2rem;margin-bottom:0.75rem;margin-top:0.25rem}
 .card{background:white;border-radius:8px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.08)}
@@ -267,6 +270,8 @@ footer a{color:#5C6770}
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -351,8 +356,10 @@ footer a{color:#5C6770}
 </div>
 <!-- partilhar:fim -->
 
-      <div class="resposta-direta">
-        Apoio mensal para quem perdeu o emprego de forma involuntária. Prazo de garantia: 360 dias de contribuições nos últimos 24 meses. Valor: 65% da remuneração de referência, entre 537,13 € e 1.342,83 €/mês em 2026.
+      <div class="resposta-direta resposta-rapida">
+        <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+        <p class="resposta-rapida-texto">Apoio mensal para quem perdeu o emprego de forma involuntária. Prazo de garantia: 360 dias de contribuições nos últimos 24 meses. Valor: 65% da remuneração de referência, entre 537,13 € e 1.342,83 €/mês em 2026.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 7 min</span>
       </div>
     </div>
   </header>
@@ -494,6 +501,20 @@ footer a{color:#5C6770}
       </ul>
       <p style="margin-top:.5rem;font-size:.9rem;color:#5C6770;">Verifica as condições específicas em <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> antes de pedir.</p>
     </div>
+
+    <!-- CHECKLIST FINAL -->
+    <section class="checklist-final" aria-label="Checklist final">
+      <h2>Checklist: pedir o subsídio de desemprego</h2>
+      <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+      <ul class="checklist-lista">
+        <li><label><input type="checkbox"><span>Inscreveste-te como desempregado num Serviço de Emprego do IEFP (online em iefp.pt ou presencialmente), logo após o desemprego?</span></label></li>
+        <li><label><input type="checkbox"><span>Reuniste BI/CC, NIF, NISS e comprovativo de IBAN?</span></label></li>
+        <li><label><input type="checkbox"><span>Obtiveste a declaração da entidade empregadora (Modelo RP5044-DGSS) com data e motivo do desemprego, e o último recibo de vencimento?</span></label></li>
+        <li><label><input type="checkbox"><span>Se o empregador recusar emitir a declaração, sabes que a ACT emite certidão em, no máximo, 30 dias?</span></label></li>
+        <li><label><input type="checkbox"><span>Submeteste o requerimento no prazo de 90 dias seguidos a contar da data do desemprego (online na Segurança Social Direta ou num Serviço de Emprego do IEFP)?</span></label></li>
+        <li><label><input type="checkbox"><span>Sabes que tens de comunicar ao IEFP, em 5 dias úteis, qualquer mudança de residência, saída do país, início de parentalidade ou início de trabalho?</span></label></li>
+      </ul>
+    </section>
 
     <!-- DÚVIDAS FREQUENTES -->
     <section class="zona-cinzenta">

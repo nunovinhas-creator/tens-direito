@@ -42,6 +42,9 @@ nav a.nav-link:hover { color: #0F766E; }
 .hero-inner { max-width: 900px; margin: 0 auto; }
 .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
 .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+.resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.resposta-rapida-texto { margin: 0; }
+.resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
 main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
 .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
@@ -72,7 +75,7 @@ tbody tr:last-child td { border-bottom: none; }
 .passos ol { padding-left: 0; list-style: none; counter-reset: passos; }
 .passos li { counter-increment: passos; display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
 .passos li::before { content: counter(passos); background: #0F766E; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-.passos li span { color: #495057; padding-top: 0.2rem; }
+.passos li span, .passos li > div { color: #495057; padding-top: 0.2rem; }
 .prazo-destaque { background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; margin-bottom: 0.75rem; }
 .prazo-destaque strong { color: #856404; }
 .portal-cta { background: #0F766E; color: white; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
@@ -359,6 +362,8 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -438,8 +443,10 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
 </div>
 <!-- partilhar:fim -->
 
-      <div class="resposta-direta">
-        A Ação Social Escolar (ASE) é um apoio do Estado a alunos do ensino público em situação de carência económica. Poderá cobrir refeições, manuais, material escolar e transportes — com dois escalões definidos pelo rendimento per capita do agregado familiar.
+      <div class="resposta-direta resposta-rapida">
+        <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+        <p class="resposta-rapida-texto">A Ação Social Escolar (ASE) é um apoio do Estado a alunos do ensino público em situação de carência económica. Poderá cobrir refeições, manuais, material escolar e transportes — com dois escalões definidos pelo rendimento per capita do agregado familiar.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 8 min</span>
       </div>
     </div>
   </header>
@@ -581,7 +588,7 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
       </div>
       <ol>
         <li>
-          <span><strong>Recolhe os documentos</strong> necessários. A declaração de rendimentos deve ser emitida pela Segurança Social — não é a declaração de IRS.
+          <div><strong>Recolhe os documentos</strong> necessários. A declaração de rendimentos deve ser emitida pela Segurança Social — não é a declaração de IRS.
           <div class="tabela-wrap" style="margin:.65rem 0 .25rem">
             <table>
               <thead><tr><th>Documento</th><th>Onde obter</th></tr></thead>
@@ -593,7 +600,7 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
               </tbody>
             </table>
           </div>
-          </span>
+          </div>
         </li>
         <li><span><strong>Dirige-te aos serviços administrativos do agrupamento</strong> ou escola. A candidatura à ASE é presencial — não existe portal público para encarregados de educação. O SIGE é um sistema de gestão interno das escolas.<br><em style="font-size:.88rem;color:#5C6770;">Dica: se já recebes o Abono de Família, pergunta na secretaria se conseguem importar o escalão directamente através da interface com a Segurança Social — pode dispensar a entrega de declarações de rendimentos extra.</em></span></li>
         <li><span><strong>Preenche o requerimento de candidatura</strong> à ASE com os dados do agregado familiar, composição do agregado e rendimentos mensais brutos de cada membro.</span></li>
@@ -616,6 +623,20 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
       </ul>
     </div>
 
+
+    <!-- CHECKLIST FINAL -->
+    <section class="checklist-final" aria-label="Checklist final">
+      <h2>Checklist: candidatar à Ação Social Escolar</h2>
+      <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+      <ul class="checklist-lista">
+        <li><label><input type="checkbox"><span>Reuniste a declaração de rendimentos emitida pela Segurança Social (seg-social.pt ou balcão da SS — nunca a declaração de IRS)?</span></label></li>
+        <li><label><input type="checkbox"><span>Reuniste o cartão de cidadão do aluno e o comprovativo de morada?</span></label></li>
+        <li><label><input type="checkbox"><span>Sabes que a candidatura é presencial nos serviços administrativos do agrupamento de escolas (não existe portal público)?</span></label></li>
+        <li><label><input type="checkbox"><span>Preencheste o requerimento com os dados do agregado familiar e os rendimentos mensais brutos de todos os membros?</span></label></li>
+        <li><label><input type="checkbox"><span>Entregaste ou carregaste todos os documentos comprovativos de rendimento pedidos pela escola?</span></label></li>
+        <li><label><input type="checkbox"><span>Confirmaste o prazo aplicável ao teu caso (antes do início do ano letivo, 30 dias úteis, ou 15 dias após matrícula tardia)?</span></label></li>
+      </ul>
+    </section>
 
     <!-- DÚVIDAS FREQUENTES -->
     <section class="zona-cinzenta" aria-label="Dúvidas frequentes">

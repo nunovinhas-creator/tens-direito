@@ -42,6 +42,9 @@ nav a.nav-link:hover { color: #0F766E; }
 .hero-inner { max-width: 900px; margin: 0 auto; }
 .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
 .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+.resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.resposta-rapida-texto { margin: 0; }
+.resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
 main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
 .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
@@ -253,6 +256,8 @@ footer a { color: #5C6770; }
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -332,8 +337,10 @@ footer a { color: #5C6770; }
 </div>
 <!-- partilhar:fim -->
 
-      <div class="resposta-direta">
-        O programa MEGA (Manuais Escolares Gratuitos e Apoio) garante manuais gratuitos a <strong>todos os alunos do 1.º ao 12.º ano do ensino público</strong>, independentemente do escalão ASE ou do rendimento familiar. Os vales são disponibilizados em manuaisescolares.pt entre julho e agosto.
+      <div class="resposta-direta resposta-rapida">
+        <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+        <p class="resposta-rapida-texto">O programa MEGA (Manuais Escolares Gratuitos e Apoio) garante manuais gratuitos a <strong>todos os alunos do 1.º ao 12.º ano do ensino público</strong>, independentemente do escalão ASE ou do rendimento familiar. Os vales são disponibilizados em manuaisescolares.pt entre julho e agosto.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 5 min</span>
       </div>
     </div>
   </header>
@@ -489,6 +496,20 @@ footer a { color: #5C6770; }
       </ul>
       <p style="margin-top:0.85rem;font-size:0.9rem;color:#5C6770;">O apoio a material escolar adicional (cadernos, material de escrita) poderá estar disponível através da <a href="/acao-social-escolar.html">Ação Social Escolar (ASE)</a> para quem tenha escalão A ou B.</p>
     </div>
+
+    <!-- CHECKLIST FINAL -->
+    <section class="checklist-final" aria-label="Checklist final">
+      <h2>Checklist: levantar os vales MEGA</h2>
+      <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+      <ul class="checklist-lista">
+        <li><label><input type="checkbox"><span>Acedeste a manuaisescolares.pt (ou instalaste a app Edu Rede Escolar) e criaste conta como encarregado de educação?</span></label></li>
+        <li><label><input type="checkbox"><span>Preencheste os dados de registo (nome, email, NIF) e validaste o NIF com o Portal das Finanças no 1.º acesso?</span></label></li>
+        <li><label><input type="checkbox"><span>Confirmaste a data de disponibilização dos vales (julho/agosto, consoante o ano de escolaridade)?</span></label></li>
+        <li><label><input type="checkbox"><span>Sabes se o teu educando está no 1.º ciclo (manuais novos, sem devolução) ou do 5.º ao 12.º ano (manuais reutilizados, com devolução obrigatória)?</span></label></li>
+        <li><label><input type="checkbox"><span>Para manuais novos: preparaste o QR code do vale para apresentar numa livraria aderente ou para resgate online?</span></label></li>
+        <li><label><input type="checkbox"><span>Para manuais reutilizados: sabes que o levantamento é feito directamente na escola?</span></label></li>
+      </ul>
+    </section>
 
     <!-- RELACIONADOS:INICIO -->
     <div class="cluster-relacionados">
