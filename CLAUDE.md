@@ -3,6 +3,9 @@
 Instruções globais para o Claude Code neste repositório.
 Ler sempre antes de qualquer tarefa.
 
+**Próximos passos e gatilhos: ver `ROADMAP.md`** — índice único (privado,
+nunca servido) de tudo o que está à espera de um sinal, automático ou manual.
+
 ---
 
 ## REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS
@@ -2722,6 +2725,20 @@ nunca escreve nada).
 ---
 
 *Última revisão automática: 2026-07-05*
+
+---
+
+*Última revisão: 2026-07-05 — criado `ROADMAP.md` (índice único, privado,
+nunca servido — é `.md`, fora do sitemap/pesquisa.js/qualquer link de
+página), consolidando os gatilhos e o trabalho pendente já espalhados por
+mais de 15 secções deste ficheiro: gatilhos manuais (autobaixa, auto-update
+de carimbo, densidade da PSU, backlog de Habitação), gatilhos automáticos
+(decreto-lei da PSU + dependência quebrada do `dre_psu`, datas expiradas,
+fontes/feeds bloqueados), trabalho futuro registado com apontador para a
+secção de detalhe, datas fixas de revisão sazonal, e o que foi concluído
+recentemente. Nada inventado — só extraído e apontado, nunca copiado, para
+nunca divergir do detalhe que continua a viver aqui. Adicionada a linha de
+apontador no topo deste ficheiro. Zero HTML tocado nesta sessão.
 
 ---
 
