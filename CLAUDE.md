@@ -1775,6 +1775,187 @@ alterações no bloco NAV). Zero regressões na suite pré-existente.
 
 ---
 
+## AUDITORIA DE INFRAESTRUTURA E ROBUSTEZ (2026-07-05)
+
+Sessão pedida a partir de uma análise externa feita só a partir deste
+ficheiro, sem acesso ao código — as 6 hipóteses foram investigadas
+antes de qualquer correcção. Resultado: **3 confirmadas como problema
+real (uma delas mais grave e diferente da hipótese original), 1 já
+resolvida antes desta sessão, 2 reportadas sem acção** (histórico Git
+e ranking da pesquisa, fora do âmbito).
+
+### 1. Achado principal — `dre_psu` nunca extraiu conteúdo real
+
+A hipótese original ("pipeline em modo degradado crónico") estava
+errada para 6 das 7 fontes monitorizadas — `seg_social_abono/rsi`,
+`iefp_desemprego`, `dge_ase`, `dge_manuais`, `mega_datas` estão
+genuinamente `OK`, com conteúdo real extraído todos os dias pelo
+runner (o bloqueio de `WebFetch` que existe nesta sessão de
+desenvolvimento é uma política de rede exclusiva do sandbox — não se
+aplica ao runner de produção, que tem acesso à internet completo).
+
+Mas `dre_psu` — o único sentinela automático que vigia a publicação
+do decreto-lei da PSU — está marcada `OK` em `estado_fontes.json`
+desde a sua criação (`26818af`, 2026-07-03) **sem nunca ter extraído
+conteúdo real**: `titulo`/`paragrafos` sempre vazios, `avisos.log`
+com "conteúdo suspeito: 0 caracteres" todos os dias desde 01/07.
+Diagnosticado num runner real (`workflow_dispatch` temporário,
+apagado no fim, mesmo padrão de sessões anteriores): a URL configurada
+(`dre.pt/pesquisa?q=...`) devolve hoje um soft-404 ("A página não se
+encontra disponível", HTTP 200) — o parâmetro de pesquisa mudou de
+`q=` para `termo=` e o caminho de `/pesquisa` para `/dre/pesquisa`
+(confirmado: `dre.pt/dre/pesquisa?termo=...` devolve
+`page.title(): 'Resultados de pesquisa | DR'`, HTTP 200, redirecciona
+para `diariodarepublica.pt/dr/pesquisa`).
+
+**Decisão deliberada: não trocar a URL.** O novo endpoint devolve
+"25 de 2.248.417 resultados" — o índice inteiro da legislação, não
+filtrado pelo termo de pesquisa (confirmado com espera de até 10s,
+sem alteração). O parâmetro `termo=` não parece ser lido pela SPA em
+navegação directa — precisaria de simular a interacção real com a
+caixa de pesquisa (evento JS), não só um GET com query string. Trocar
+a URL agora criaria um estado **pior** do que o actual: pareceria
+"conteúdo real" (chars > 100, contornando o guardrail abaixo) mas
+nunca detectaria genuinamente o decreto-lei (o texto de 2,2M de
+resultados genéricos não contém as palavras do decreto específico) —
+uma falha silenciosa disfarçada de sucesso. Registado para uma sessão
+com acesso a browser interactivo real, que consiga confirmar o
+mecanismo correcto de disparo da pesquisa antes de qualquer troca de
+URL.
+
+**Corrigida a causa raiz do silêncio** (`scripts/scraper_playwright.py`,
+`_guardar_resultado()`): "conteúdo suspeito" (status `ok`, sem sinal
+de bloqueio, mas conteúdo insuficiente) só escrevia uma linha em
+`avisos.log` — nunca contava para `data/estado_fontes.json` nem gerava
+Issue, por isso uma fonte podia ficar `OK` e inútil indefinidamente,
+sem qualquer alerta visível. Agora reaproveita `_registar_bloqueio()`
+(a mesma infra-estrutura já testada de `fonte-bloqueada` — 3 dias
+consecutivos → Issue, fecho automático ao recuperar) em vez de criar
+uma máquina de estados paralela; `dre_psu` vai gerar a sua primeira
+Issue `fonte-bloqueada` real no 3.º dia consecutivo a partir de agora,
+finalmente visível. Testado em
+`tests/test_scraper_conteudo_suspeito.py` (conteúdo insuficiente
+regista bloqueio; conteúdo suficiente não regista nada; confirma que
+`gerir_estado_fontes.py` trata este caso exactamente como um bloqueio
+real, sem precisar de nenhuma alteração nesse script).
+
+### 2. Concorrência de writes em `main` — sem `concurrency:`
+
+`pipeline-diario.yml` e `shadow-daily.yml` são os únicos dois
+workflows que fazem `git push` a `main`, e nenhum tinha bloco
+`concurrency:` (confirmado por grep). Ambos fazem
+`git pull --rebase origin main && git push` sem retry se o push
+falhar por non-fast-forward. O desenho actual já mitiga o caso mais
+comum (`shadow-daily` corre via `workflow_run` só depois de
+`pipeline-diario` terminar — confirmado nos runs reais de hoje,
+aecc32b→b6326e6 com 17s de intervalo, sem colisão), mas não protege
+contra um `workflow_dispatch` manual a correr em paralelo com o cron,
+ou uma sessão humana a fazer push no mesmo instante. Corrigido:
+`concurrency: { group: main-writes, cancel-in-progress: false }`
+adicionado aos dois workflows — nunca cancela um push a meio, só
+serializa a fila.
+
+### 3. Smoke test de produção — não disparava para os commits automáticos
+
+Achado mais sério do que "ruído de commits de dados": confirmado, ao
+cruzar o histórico de runs de `smoke-producao.yml` com os commits
+reais, que **nenhum dos 7 runs correspondia a um commit
+`github-actions[bot]`** — só a commits de sessões humanas/Claude.
+Causa: pushes feitos com o `GITHUB_TOKEN` por omissão (o caso de
+`pipeline-diario.yml`/`shadow-daily.yml`, sem PAT/App token próprio)
+**nunca disparam outros workflows via `on: push`** — protecção
+anti-recursão nativa do GitHub Actions, sem forma de contornar sem um
+token dedicado. A "correcção" da sessão anterior (trocar `workflow_run`
+por `push`, commit `f75170c`) funcionou para os pushes de sessão que a
+testaram, mas nunca cobriu o pipeline automático — exactamente o fluxo
+que já causou as duas falhas silenciosas de deploy documentadas nesta
+secção "SMOKE TEST DE PRODUÇÃO". Só o cron de segurança `30 6 * * *`
+cobria os commits automáticos, com risco real de disparar antes do
+commit do dia (espera aleatória de até 30 min + tempo de scrape podem
+empurrar o push do pipeline para depois das 6:30).
+
+**Corrigido com smoke inline**: novo step "Smoke test de produção
+(inline, pós-push)" em `pipeline-diario.yml` e `shadow-daily.yml`,
+condicionado a `steps.commit_push.outputs.pushed == 'true'`, corre
+`bash scripts/smoke_producao.sh` — o mesmo script, sem duplicar
+lógica — no mesmo run que fez o push. Resolve por causalidade (o
+smoke corre sempre que este workflow publicou de facto um commit),
+não por timing (o cron `30 6 * * *` mantém-se como rede de segurança
+adicional, não como cobertura principal). `smoke-producao.yml`
+standalone mantém-se inalterado — continua a cobrir pushes humanos
+directos a HTML, fora do pipeline.
+
+**Lição registada**: um token por omissão nunca deve ser assumido
+capaz de disparar workflows a jusante — qualquer automação futura que
+precise disso (Issues são excepção, criadas via API directamente, não
+via evento `push`) precisa de um PAT/App token dedicado, ou de correr
+inline no mesmo workflow que fez o push, como aqui.
+
+### 4. Testes fantasma no CI — só o caso já corrigido, nada novo
+
+Grep a todo `scripts/`/`tests/` por outros paths hardcoded de sandbox
+ou fallbacks só-locais: só as 9 referências a `/opt/pw-browsers` já
+corrigidas na sessão anterior (fallback de 3 níveis: env var →
+`/opt/pw-browsers` → `~/.cache/ms-playwright`). Nenhum padrão novo
+encontrado — falso alarme parcial (o caso já estava resolvido).
+
+### 5. Segredos no histórico Git — não verificável nesta sessão
+
+`gitleaks` CLI não está instalado no sandbox de desenvolvimento e a
+rede desta sessão está limitada ao repositório `tens-direito`
+(tentativa de descarregar o binário do GitHub Releases bloqueada:
+*"GitHub access to this repository is not enabled for this
+session"*). O job "Verificar Segredos (Gitleaks)" do CI usa
+`fetch-depth: 0` (checkout completo) e passa em todos os pushes
+recentes, mas não ficou confirmado se `gitleaks-action@v2` em eventos
+`push` escaneia sempre o histórico completo ou só os commits do push
+— **não reportado como limpo nem sujo com confiança**. Recomendado ao
+Nuno correr `gitleaks detect --source . --log-opts="--all"` localmente
+antes de tornar o repositório privado. Nada alterado.
+
+### 6. Pesquisa interna — ranking por camadas, corte por saturação
+
+Confirmado: `pesquisa.js` (20,7 KB) já não ordena por ordem de
+ficheiro — 3 camadas (título/descrição/keywords) + alfabética dentro
+de cada camada — mas corta a 8 resultados (`MAX_RESULTADOS`) por
+saturação, não por relevância real. Com mais páginas a conter "sub" no
+título, exemplos mais antigos são empurrados para fora do topo — o
+mesmo efeito já observado e documentado na sessão da página de baixa
+médica. Ranking por relevância real (pontuação por posição do termo)
+resolveria isto, mas é decisão de UX — fora do âmbito desta sessão,
+só reportado.
+
+### Canário de valores-âncora — novo, independente da investigação
+
+Novo `tests/test_valores_ancora.py`: afirma explicitamente os
+valores-base de 2026 que atravessam vários simuladores — IAS
+(537,13€), percentagens do subsídio de doença (55/60/70/75%, mais
+80/100% tuberculose), pisos mínimos (5,37€/dia universal; 300€/325€
+proporcional) e dias de espera por vínculo (3/10/30) — extraídos dos
+ficheiros HTML reais (`simulador-abono.html`, `simulador-ase.html`,
+`simulador-subsidio-doenca.html`), nunca uma cópia. **Falhar aqui é o
+comportamento desejado** quando a lei mudar (tipicamente em janeiro,
+nova Portaria do IAS) — força uma revisão consciente de todos os
+simuladores afectados em vez de uma alteração silenciosa. Confirmado
+a falhar de propósito: valor do IAS adulterado manualmente para
+999.99 → teste falha com mensagem clara (`assert 999.99 == 537.13`);
+revertido e confirmado a passar de novo.
+
+### Verificação final
+
+Suite completa localmente (sandbox sem Playwright/feedparser
+instalados, mesma limitação documentada em sessões anteriores): 1081
+passed, 135 skipped — os 3 novos testes (`test_valores_ancora.py`,
+`test_scraper_conteudo_suspeito.py`) confirmados a passar. `ruff check
+scripts/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados por esta sessão). Workflow e script de
+diagnóstico temporários (`diagnostico-dre-psu-temp.yml`,
+`scripts/_diag_dre_psu.py`) apagados no fim, mesmo padrão de sessões
+anteriores.
+
+---
+
 ## GSTACK
 
 Skills disponíveis via gstack instalado globalmente.
@@ -2709,3 +2890,7 @@ Suite completa: 1168 passed, 4 skipped localmente (3 ficheiros de notícias não
 Verificação de efeitos colaterais antes de remover (não apenas depois): nenhuma das duas passagens correspondia a uma pergunta do JSON-LD `FAQPage` (as 9 perguntas do schema são todas sobre percentagens, dias de espera, despedimento por doença — tema distinto —, IRS, junta médica, viagens, duração e independentes; nenhuma sobre a reforma laboral ou isolamento) nem a um dos 9 blocos `<details>` visíveis da secção "Dúvidas frequentes" — confirmado por grep a `<summary>` antes de editar. A página não tem índice/sumário com âncoras internas, por isso não havia risco de link morto para uma secção removida. Nenhum facto de cálculo, percentagem, prazo ou o exemplo dos 2.699,67€ foi tocado. Carimbo "Verificado a" mantido em 05/07/2026 (mesma sessão de calendário da publicação original, sem alteração de data necessária).
 
 Secção "GATILHO AUTOBAIXA" actualizada: o ponto "Anteprojecto de reforma laboral… confirmar o estado real" deixou de constar da lista de pontos ⚠️ a re-verificar — passou de "em aberto" a "resolvido e removido definitivamente", com nota explícita para não reintroduzir nenhum dos dois temas sem um facto novo e confirmado. Suite completa + `ruff check scripts/ --select E,F,W --ignore E501 .` a correr antes do commit; `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
+
+---
+
+*Última revisão: 2026-07-05 — auditoria de infraestrutura e robustez, pedida a partir de uma análise externa feita só sobre este ficheiro (6 hipóteses, investigadas antes de qualquer correcção — ver nova secção "AUDITORIA DE INFRAESTRUTURA E ROBUSTEZ (2026-07-05)"). Achado principal, diferente da hipótese original: `dre_psu` (o único sentinela automático da publicação do decreto-lei da PSU) nunca extraiu conteúdo real desde a criação (2026-07-03) — a URL configurada devolve hoje um soft-404 (`q=` → `termo=`, `/pesquisa` → `/dre/pesquisa`, confirmado num runner real); decidido não trocar a URL porque o endpoint novo devolve o índice inteiro da legislação (2,2M resultados) não filtrado pelo termo, o que criaria uma falha silenciosa disfarçada de sucesso. Corrigida a causa raiz do silêncio: "conteúdo suspeito" passa a reaproveitar a máquina de estados já testada de `fonte-bloqueada` (`scripts/scraper_playwright.py::_guardar_resultado`), gerando Issue ao 3.º dia consecutivo em vez de ficar indefinidamente `OK` e inútil. Confirmado e corrigido: nenhum dos dois workflows que fazem `git push` (`pipeline-diario.yml`/`shadow-daily.yml`) tinha bloco `concurrency:` — adicionado `{ group: main-writes, cancel-in-progress: false }` aos dois. Achado mais sério do que "ruído": `smoke-producao.yml` nunca disparou para nenhum commit automático (`github-actions[bot]`) — pushes feitos com o `GITHUB_TOKEN` por omissão não disparam outros workflows via `on: push`, protecção anti-recursão nativa do GitHub Actions; corrigido com smoke inline (novo step nos dois workflows automáticos, reutilizando `scripts/smoke_producao.sh`, condicionado a ter havido push nesse run). Falsos alarmes confirmados: testes fantasma (já corrigidos numa sessão anterior, nada novo); pesquisa interna (ranking já em camadas, corte por saturação é decisão de UX). Sem acção, só reportado: segredos no histórico Git (`gitleaks` CLI indisponível neste sandbox, sem rede para o instalar — recomendado ao Nuno correr localmente antes de tornar o repositório privado). Novo `tests/test_valores_ancora.py` (canário de valores-âncora 2026 — IAS, percentagens/pisos/dias de espera do subsídio de doença — confirmado a falhar de propósito com um valor adulterado, depois revertido) e `tests/test_scraper_conteudo_suspeito.py`. Suite completa localmente (sandbox sem Playwright/feedparser, mesma limitação documentada): 1081 passed, 135 skipped; `ruff` limpo; `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho feito na branch `claude/infrastructure-audit-robustness-10k2wc` (exigida pelo ambiente remoto desta sessão).

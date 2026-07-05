@@ -9,6 +9,16 @@ permissions:
   contents: write
   issues: write
 
+# Serializa qualquer escrita concorrente em main: este workflow e
+# shadow-daily.yml (o outro que faz `git push`) partilham o mesmo grupo
+# — nunca correm ao mesmo tempo, mesmo que um workflow_dispatch manual
+# coincida com o cron. cancel-in-progress: false porque um push a meio
+# nunca deve ser cancelado — a corrida seguinte espera a sua vez em vez
+# de interromper a que já está a escrever.
+concurrency:
+  group: main-writes
+  cancel-in-progress: false
+
 jobs:
   pipeline:
     runs-on: ubuntu-latest
@@ -582,18 +592,38 @@ jobs:
 
       # ── Step 7: Push único ───────────────────────────────────────────────────
       - name: Commit e push (único por dia)
+        id: commit_push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ index.html noticias.html README.md CLAUDE.md
           if git diff --staged --quiet; then
             echo "Sem alterações para commitar."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "auto: pipeline diário ${DATE}"
             git pull --rebase origin main
             git push
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # ── Step 7d: Smoke test de produção inline ───────────────────────────────
+      # Achado de 2026-07-05: pushes feitos com o GITHUB_TOKEN por omissão
+      # (o caso deste workflow) NUNCA disparam outros workflows via `on:
+      # push` — é uma proteção anti-recursão nativa do GitHub Actions, sem
+      # forma de contornar sem um PAT/App token dedicado. smoke-producao.yml
+      # (`on: push`) nunca correu, e nunca vai correr, a seguir a um commit
+      # deste pipeline — só o cron de segurança das 06:30 UTC o cobria, com
+      # risco de disparar antes do commit do dia (por causa da espera
+      # aleatória + tempo de scrape). Corrigido correndo o mesmo script de
+      # smoke aqui, no mesmo run que fez o push — causalidade, não timing.
+      # Reutiliza scripts/smoke_producao.sh tal como smoke-producao.yml o
+      # usa, sem duplicar a lógica de verificação. Só corre se este run
+      # publicou de facto um commit novo.
+      - name: Smoke test de produção (inline, pós-push)
+        if: steps.commit_push.outputs.pushed == 'true'
+        run: bash scripts/smoke_producao.sh
 
       # ── Step 7b: Garantir label fonte-bloqueada ──────────────────────────────
       - name: Criar label fonte-bloqueada se não existir

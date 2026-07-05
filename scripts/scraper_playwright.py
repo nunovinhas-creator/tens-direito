@@ -22,6 +22,7 @@ import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
 import requests
 from bs4 import BeautifulSoup
@@ -660,6 +661,19 @@ def _guardar_resultado(slug: str, resultado: dict) -> None:
     if chars < MIN_CHARS_CONTEUDO:
         motivo = f"conteúdo suspeito: apenas {chars} caracteres (mínimo {MIN_CHARS_CONTEUDO})"
         _registar_aviso(slug, motivo)
+        # Achado de 2026-07-05: "conteúdo suspeito" (status "ok", sem sinal
+        # de bloqueio, mas conteúdo extraído insuficiente — ex.: dre_psu,
+        # 0 chars desde a criação da fonte, nunca detectado) ficava só
+        # neste log, sem nunca contar para a máquina de estados de
+        # gerir_estado_fontes.py nem gerar Issue — uma fonte podia ficar
+        # "OK" e inútil indefinidamente. Reutiliza _registar_bloqueio (a
+        # mesma infra-estrutura testada de fonte-bloqueada, 3 dias
+        # consecutivos → Issue, fecho automático ao recuperar) em vez de
+        # criar uma máquina de estados paralela.
+        _registar_bloqueio(
+            slug, resultado.get("url", ""),
+            SimpleNamespace(motivos=[motivo], chars_uteis=chars),
+        )
         # Guardar o ficheiro diário mesmo assim (para auditoria), mas NÃO actualizar latest
         resultado["aviso"] = motivo
         with open(daily_path, "w", encoding="utf-8") as f:

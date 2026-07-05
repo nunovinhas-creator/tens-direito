@@ -20,6 +20,14 @@ on:
 permissions:
   contents: write
 
+# Mesmo grupo de concorrência de pipeline-diario.yml — o outro workflow
+# que faz `git push` a main. Serializa as duas escritas: nunca correm
+# ao mesmo tempo, mesmo que um workflow_dispatch manual coincida com o
+# `workflow_run` que já sequencia a maior parte dos casos.
+concurrency:
+  group: main-writes
+  cancel-in-progress: false
+
 jobs:
   shadow-daily:
     runs-on: ubuntu-latest
@@ -101,14 +109,29 @@ jobs:
       # ── Commit automático só se houver alterações reais em
       # shadow_history/ — nunca cria um commit vazio.
       - name: Commit e push (só se houver alterações)
+        id: commit_push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add shadow_history/
           if git diff --staged --quiet; then
             echo "Sem alterações em shadow_history/ — nada para commitar."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore(shadow): daily shadow mode report update"
             git pull --rebase origin main
             git push
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # ── Smoke test de produção inline ────────────────────────────────────────
+      # Mesmo motivo que em pipeline-diario.yml: um push feito com o
+      # GITHUB_TOKEN por omissão nunca dispara smoke-producao.yml (`on:
+      # push`) — a proteção anti-recursão do GitHub Actions aplica-se aqui
+      # também. O deploy do GitHub Pages redeploy o site inteiro a cada
+      # push a main, mesmo quando só shadow_history/*.md mudou — por isso
+      # vale a pena confirmar produção aqui também, não só nos pushes do
+      # pipeline principal. Reutiliza o mesmo scripts/smoke_producao.sh.
+      - name: Smoke test de produção (inline, pós-push)
+        if: steps.commit_push.outputs.pushed == 'true'
+        run: bash scripts/smoke_producao.sh
