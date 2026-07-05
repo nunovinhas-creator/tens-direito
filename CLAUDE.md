@@ -1212,11 +1212,13 @@ entretanto):
 - Comunicação da autodeclaração ao empregador — à data de 05/07/2026,
   não automática (código SMS/e-mail); confirmar se entretanto passou a
   automática antes de reafirmar na landing.
-- Anteprojecto de reforma laboral ("Trabalho XXI") sobre autodeclaração
-  fraudulenta como justa causa de despedimento — em debate a
-  05/07/2026, com indicação de que essa parte específica pode ter sido
-  retirada da versão em negociação; confirmar o estado real (proposta
-  morta, revivida, ou já aprovada) antes de publicar como facto.
+
+O anteprojecto de reforma laboral ("Trabalho XXI") sobre autodeclaração
+fraudulenta como justa causa de despedimento **deixou de ser um ponto a
+re-verificar** — foi removido da página em 2026-07-05 (ver entrada de
+revisão no fim deste ficheiro): a Proposta de Lei n.º 77/XVII/1.ª foi
+chumbada na Assembleia da República, não é lei nem proposta viva. Não
+reintroduzir sem um facto novo e confirmado.
 
 ---
 
@@ -2699,3 +2701,11 @@ Integração completa: `data/clusters.json` (3.ª página do cluster Trabalho e 
 Achado real durante a verificação da suite: `tests/test_pesquisa_ranking.py::test_match_fora_do_titulo_mostra_excerto_destacado` fixava a pesquisa por "sub" a devolver sempre `cuidador-informal.html` num resultado de camada 2 — com a página nova (título "Baixa médica e **sub**sídio de doença") a somar-se aos títulos já existentes com "sub" (`subsidio-parental`, `subsidio-desemprego`, `passe-sub23`, `psu-lista-13-apoios`), os 8 resultados ficam todos preenchidos antes de chegar ao Cuidador Informal — confirmado correndo `pesquisar('sub')` num Chromium real antes de mexer, não assumido. Não é um bug do conteúdo novo, é o limite de `MAX_RESULTADOS = 8` a ser atingido por crescimento orgânico do site — o mesmo voltará a acontecer com a próxima página cujo título contenha "sub". Corrigido generalizando o teste (confirma que *algum* resultado de camada 2/3 aparece com `<mark>` no excerto, sem fixar uma página específica) em vez de pinar `cuidador-informal.html` para sempre — preserva a intenção original do teste (validar o mecanismo de excerto) sem ficar frágil a cada nova página com "sub" no título.
 
 Suite completa: 1168 passed, 4 skipped localmente (3 ficheiros de notícias não recolhidos por falta de `feedparser` neste sandbox — `sgmllib3k` falha a compilar, mesma limitação documentada em sessões anteriores, corre completo no CI); `html5validator` não instalável neste sandbox (erro de build `install_layout` do `setuptools`/`distutils` do sistema, afecta qualquer pacote com `setup.py` legado — validação estrutural feita manualmente com `json.loads()` sobre os 4 blocos JSON-LD, confirmação via CI depois do push); `ruff check scripts/ --select E,F,W --ignore E501 .` limpo. Confirmado com Chromium real: título, H1, breadcrumb de 3 níveis, 9 blocos `<details>` a abrir/fechar, skip-link presente, pesquisa da nav a devolver a página nova para "baixa". `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
+
+---
+
+*Última revisão: 2026-07-05 (sessão de correcções pontuais) — duas remoções factuais definitivas em `baixa-medica-subsidio-doenca.html`, verificadas via `WebSearch` antes de mexer. 1) **Anteprojecto "Trabalho XXI"** (autodeclaração fraudulenta equiparada a justa causa de despedimento): removido por completo do parágrafo final da secção "Autodeclaração de doença" — confirmado que a Proposta de Lei n.º 77/XVII/1.ª foi **chumbada** na Assembleia da República (~20 jun 2026, votos contra de Chega/PS/Livre/PCP/BE/PAN/JPP, só PSD/CDS/IL a favor); o Código do Trabalho mantém-se inalterado nesse ponto. Não é uma nota histórica que se mantém marcada como "chumbada" — é remoção total, por decisão do Nuno: informação sobre uma proposta rejeitada não pertence a um guia prático de direitos. 2) **Isolamento profilático**: removida a subsecção inteira (`h3`+parágrafo) de "Regimes especiais" — estava marcada "depende das regras em vigor" desde a publicação por não ter sido possível confirmar o regime de pagamento pós-COVID; instrução explícita desta sessão: sem confirmação, sai, não fica meio-dito.
+
+Verificação de efeitos colaterais antes de remover (não apenas depois): nenhuma das duas passagens correspondia a uma pergunta do JSON-LD `FAQPage` (as 9 perguntas do schema são todas sobre percentagens, dias de espera, despedimento por doença — tema distinto —, IRS, junta médica, viagens, duração e independentes; nenhuma sobre a reforma laboral ou isolamento) nem a um dos 9 blocos `<details>` visíveis da secção "Dúvidas frequentes" — confirmado por grep a `<summary>` antes de editar. A página não tem índice/sumário com âncoras internas, por isso não havia risco de link morto para uma secção removida. Nenhum facto de cálculo, percentagem, prazo ou o exemplo dos 2.699,67€ foi tocado. Carimbo "Verificado a" mantido em 05/07/2026 (mesma sessão de calendário da publicação original, sem alteração de data necessária).
+
+Secção "GATILHO AUTOBAIXA" actualizada: o ponto "Anteprojecto de reforma laboral… confirmar o estado real" deixou de constar da lista de pontos ⚠️ a re-verificar — passou de "em aberto" a "resolvido e removido definitivamente", com nota explícita para não reintroduzir nenhum dos dois temas sem um facto novo e confirmado. Suite completa + `ruff check scripts/ --select E,F,W --ignore E501 .` a correr antes do commit; `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`.
