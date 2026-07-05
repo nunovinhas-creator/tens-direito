@@ -3247,3 +3247,32 @@ localmente (sandbox sem `feedparser`, mesma limitação documentada):
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho
 directo em `main`, sem branch nova (a designação de branch do ambiente
 remoto desta sessão já tinha sido resolvida pelo merge da tarefa 1).*
+
+---
+
+*Última revisão: 2026-07-05 — 3.ª tarefa da mesma sessão: `<title>`/meta
+description de `subsidio-desemprego.html` revistos por baixo CTR no GSC
+(1.229 impressões, 4 cliques, 0,3%). Title antigo ("condições, cálculo
+e como pedir") já tinha "2026" mas nenhum valor ou condição concretos —
+passou a "Subsídio de desemprego 2026: valor até 1.342,83€ e como
+pedir" (61 caracteres, dentro do limite de exibição do Google). Meta
+description reescrita para abrir com o valor concreto em vez de
+linguagem técnica ("fórmula de cálculo RR×65%"): "quanto recebes
+(537,13€–1.342,83€/mês), prazo de garantia de 360 dias e como pedir.
+Base legal: DL 220/2006." `og:title`/`og:description` sincronizados; o
+`headline` do JSON-LD `Article` (deriva de `og:title` por
+`adicionar_article_jsonld.py`, mas o script só insere o bloco quando
+está em falta, nunca actualiza um já existente) actualizado à mão para
+o mesmo texto. Entrada de `subsidio-desemprego.html` em
+`scripts/pesquisa.js` (`descricao`, curada à mão a partir da meta
+description real — nunca uma cópia automática, sem teste que force
+sincronização perpétua) actualizada a par, para o resultado da pesquisa
+interna nunca mostrar um excerto desactualizado. **Nenhum facto novo**
+— os valores (537,13€/1.342,83€, 360 dias, DL 220/2006) já estavam
+verificados e publicados no corpo do artigo; só a apresentação em
+metadata mudou. H1 (`<h1>Subsídio de desemprego 2026</h1>`) e o resto
+do corpo do artigo permanecem inalterados, conforme pedido. Confirmado:
+os 4 blocos JSON-LD continuam válidos (`json.loads`), `html5validator`/
+`vnu.jar` sem erros (só o aviso informativo pré-existente "type
+attribute unnecessary"), suite de higiene/pesquisa/acessibilidade
+reconfirmada sem regressões. Trabalho directo em `main`.*
