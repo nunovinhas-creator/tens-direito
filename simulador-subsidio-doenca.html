@@ -427,10 +427,25 @@
     // ── PARAMETROS_SUBSIDIO_DOENCA — fonte única de verdade da fórmula ──────
     // Cada valor tem "fonte" e "verificado_em" próprios (mesmo padrão de
     // PARAMETROS_CSI em simulador-csi.html). Valores já fact-checked e
-    // publicados em baixa-medica-subsidio-doenca.html (verificado 05/07/2026).
-    // Os pontos ⚠️A/⚠️B (retroatividade dos dias de espera; aplicação
-    // proporcional do piso 300€/325€) ficam documentados no CLAUDE.md —
-    // este simulador implementa sempre a versão conservadora.
+    // publicados em baixa-medica-subsidio-doenca.html (verificado 05/07/2026),
+    // reconfirmados por WebSearch contra seg-social.pt/subsidio-de-doenca
+    // numa auditoria posterior (05/07/2026) — percentagens (55/60/70/75%,
+    // 80/100% tuberculose), dias de espera (3/10/30), tectos de duração
+    // (1095/365/sem limite), prazo de garantia (6 meses) e piso universal
+    // (5,37€/dia) confirmados sem divergências.
+    // Ponto ⚠️A (retroatividade dos dias de espera): a auditoria de
+    // 05/07/2026 encontrou várias fontes secundárias (blogs) a alegarem que
+    // os 3 dias de espera são pagos retroactivamente em baixas >30 dias —
+    // mas o texto do próprio Decreto-Lei n.º 28/2004 só prevê retroactividade
+    // por atraso no envio do CIT aos serviços (art. 34.º), nunca por duração
+    // da baixa. Mantida a versão conservadora (nunca paga os dias de espera,
+    // salvo as 3 excepções legais).
+    // Ponto ⚠️B (piso 300€/325€ em períodos parciais): confirmado como piso
+    // MENSAL — nunca encontrada uma fonte que diga como se aplica a um
+    // período parcial, por isso o piso diário proporcional (300÷30, 325÷30)
+    // continua a ser a interpretação conservadora, não um valor confirmado.
+    // Ambos os pontos ficam documentados em detalhe no CLAUDE.md — este
+    // simulador implementa sempre a versão conservadora.
     const PARAMETROS_SUBSIDIO_DOENCA = {
       taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-05' },
       taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-05' },
@@ -446,8 +461,8 @@
       majoracaoPontosPercentuais: { valor: 0.05, fonte: 'Majoração nos escalões de 55%/60%, RR ≤ 500€ ou condição familiar', verificado_em: '2026-07-05' },
       limiteRRParaMajoracaoOuPiso: { valor: 500, fonte: 'Limiar de RR mensal que separa a majoração automática (≤500€) do piso 300€/325€ (>500€)', verificado_em: '2026-07-05' },
       pisoDiarioUniversal: { valor: 5.37, fonte: '30% do IAS 2026 (537,13€), Portaria n.º 480-A/2025/1 — sujeito a limite de 100% da RR líquida, não calculável aqui', verificado_em: '2026-07-05' },
-      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'Guia Prático do ISS — piso de 300€/mês nos escalões de 55%, aplicado aqui como 300÷30 (interpretação conservadora, ⚠️B)', verificado_em: '2026-07-05' },
-      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'Guia Prático do ISS — piso de 325€/mês no escalão de 60%, aplicado aqui como 325÷30 (interpretação conservadora, ⚠️B)', verificado_em: '2026-07-05' },
+      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 55% não pode ser inferior a 300€/mês; aplicado aqui como piso diário 300÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-05' },
+      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 60% não pode ser inferior a 325€/mês; aplicado aqui como piso diário 325÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-05' },
     };
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────

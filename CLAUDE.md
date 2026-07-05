@@ -3191,3 +3191,59 @@ confirmar com o Nuno se a FASE 2 da spec já está coberta por essa página
 antes de a reimplementar), FASE 3 (gerador de documentos) e FASE 4
 (árvore de decisão PSU, com gatilho no decreto-lei) ficam para sessões
 seguintes, pela ordem definida em `MELHORIAS-SPEC.md`.*
+
+---
+
+*Última revisão: 2026-07-05 — sessão de continuidade do MELHORIAS-SPEC.md,
+duas tarefas. 1) **Merge para `main`**: `claude/melhorias-spec-phase-1-
+anlctz` (FASE 1) estava presa numa branch, violando a REGRA ABSOLUTA —
+GIT — confirmado que `origin/main` não tinha avançado desde a criação
+da branch (merge-base = HEAD de `main`), por isso fast-forward puro,
+sem conflitos; push directo para `main` (commit `774cb51`). Branch
+local apagado; branch remoto deu 403 na API (mesma limitação de sempre,
+sem `gh` CLI nem tool MCP com permissão) — fica para o Nuno apagar
+manualmente. `smoke-producao.yml` confirmado `success` no commit do
+merge (run 28758600078). 2) **Auditoria da FASE 2** (`simulador-
+subsidio-doenca.html`, já existia de uma sessão anterior) — **NÃO
+reimplementado de raiz**, conforme pedido; os 4 pontos da spec
+confirmados, não assumidos:
+- **Valores/escalões**: reconfirmados por `WebSearch` directamente
+  contra `seg-social.pt/subsidio-de-doenca` e fontes secundárias
+  cruzadas (percentagens 55/60/70/75%, tuberculose 80/100%, dias de
+  espera 3/10/30, tectos 1095/365/sem limite, prazo de garantia 6
+  meses, piso universal 5,37€/dia) — todos batem certo com o já
+  implementado, zero divergências. Reforçada a citação de `fonte` de
+  `pisoDiarioProporcionalTaxa55`/`60` (antes "Guia Prático do ISS",
+  vago e sem URL — já confirmado noutra sessão como inacessível
+  directamente) para apontar a `seg-social.pt/subsidio-de-doenca`
+  directamente. Ponto ⚠️A (retroactividade dos dias de espera)
+  re-investigado a fundo depois de várias fontes secundárias (blogs)
+  alegarem retroactividade em baixas >30 dias — rastreado ao texto do
+  próprio Decreto-Lei n.º 28/2004, que só prevê retroactividade por
+  atraso no envio do CIT (art. 34.º), nunca por duração da baixa;
+  mantida a versão conservadora (nunca paga), agora com o achado
+  documentado no comentário do código. Ponto ⚠️B (piso 300€/325€ em
+  períodos parciais) reconfirmado como piso mensal, sem fonte que
+  especifique períodos parciais — interpretação conservadora mantida.
+- **Golden tests**: já existiam 15 casos em `tests/test_simulador_
+  subsidio_doenca_calculo.py`, incluindo a fronteira 90/91 dias e a
+  mistura de escalões 70%/75% — acrescentados 2 novos para o caso de
+  fronteira explicitamente citado na spec ("baixa de 3 dias"): duração
+  exactamente igual ao período de espera (zero dias pagos) e duração
+  imediatamente a seguir (1 dia pago). 17 testes a passar.
+- **Card no hub**: já existia em `/simuladores.html` (`sim-card` com
+  ícone, título, descrição e link), confirmado.
+- **Link bidireccional**: já existia nos dois sentidos — artigo →
+  simulador (2 locais) e simulador → artigo (3 locais, incluindo a
+  nota sobre RR variável e o disclaimer sobre dias de espera).
+
+Conclusão: **FASE 2 de `MELHORIAS-SPEC.md` está coberta** por
+`simulador-subsidio-doenca.html` — nenhuma calculadora nova é
+necessária. `html5validator`/`vnu.jar` confirma a página sem erros (só
+avisos informativos pré-existentes, "type attribute unnecessary" e
+"inputmode", presentes noutras páginas já publicadas). Suite completa
+localmente (sandbox sem `feedparser`, mesma limitação documentada):
+1251 passed, 5 skipped; `ruff` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho
+directo em `main`, sem branch nova (a designação de branch do ambiente
+remoto desta sessão já tinha sido resolvida pelo merge da tarefa 1).*

@@ -241,6 +241,25 @@ def test_duracao_menor_que_dias_de_espera_nao_paga_nada(pagina):
     assert r["desagregacao"] == []
 
 
+# ── Caso de fronteira explícito da spec: baixa de exactamente 3 dias ────────
+def test_baixa_de_exactamente_3_dias_iguala_periodo_de_espera_nao_paga_nada(pagina):
+    # Para conta de outrem, diasEspera=3 — uma baixa de exactamente 3 dias
+    # esgota-se inteira no período de espera: zero dias pagos.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 3, "vinculo": "conta_outrem"})
+    assert r["diasEspera"] == 3
+    assert r["diasPagos"] == 0
+    assert r["totalGeral"] == 0
+    assert r["desagregacao"] == []
+
+
+def test_baixa_de_4_dias_paga_exactamente_1_dia_apos_o_periodo_de_espera(pagina):
+    # O dia seguinte (4.º dia) já é pago — confirma a fronteira exacta
+    # entre "período de espera" e "primeiro dia pago", nos dois lados.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 4, "vinculo": "conta_outrem"})
+    assert r["diasPagos"] == 1
+    assert round(r["totalGeral"], 2) == 25.67
+
+
 # ── Coerência artigo ↔ simulador ─────────────────────────────────────────────
 def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     """Se um dia o artigo for actualizado sem o simulador (ou
