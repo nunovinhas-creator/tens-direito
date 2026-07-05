@@ -140,13 +140,17 @@ def test_match_em_titulo_destaca_o_titulo(pagina):
 
 
 def test_match_fora_do_titulo_mostra_excerto_destacado(pagina):
-    # "Estatuto do Cuidador Informal" não tem "sub" no título, só na
-    # descrição ("subsídio") -- tem de aparecer com <mark> no excerto.
+    # Páginas sem "sub" no título mas com o termo na descrição/keywords
+    # (ex.: "Estatuto do Cuidador Informal", via "subsídio" na descrição)
+    # têm de aparecer com <mark> no excerto. Não fixamos uma página
+    # concreta: a lista de páginas com "sub" no título cresce à medida
+    # que o site cresce (mais "subsídio X" no top 8 desloca exemplos
+    # antigos) — o teste verifica o mecanismo de camada 2/3, não a
+    # posição de ranking de uma página específica.
     resultados = _pesquisar(pagina, "sub")
-    alvo = next((r for r in resultados if r["url"] == "/cuidador-informal.html"), None)
-    assert alvo is not None, "Cuidador Informal devia aparecer a pesquisar 'sub' (via descrição)"
-    assert alvo["camada"] in (2, 3)
-    assert "<mark>" in alvo["excertoHtml"]
+    fora_do_titulo = [r for r in resultados if r["camada"] in (2, 3)]
+    assert fora_do_titulo, "Pesquisa por 'sub' devia devolver pelo menos um resultado por descrição/keywords"
+    assert all("<mark>" in r["excertoHtml"] for r in fora_do_titulo)
 
 
 # ── Badges de cluster/ferramenta ───────────────────────────────────────────

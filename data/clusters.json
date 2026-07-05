@@ -62,12 +62,13 @@
     {
       "id": "trabalho-rendimento",
       "nome": "Trabalho e Rendimento",
-      "descricao_curta": "Subsídio de desemprego e RSI — apoios para quem está sem trabalho ou com rendimentos baixos.",
+      "descricao_curta": "Subsídio de desemprego, RSI e baixa médica — apoios para quem está sem trabalho, com rendimentos baixos ou temporariamente incapacitado.",
       "icone": "💶",
       "pillar": "/p/trabalho-rendimento.html",
       "paginas": [
         {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true, "emoji": "📋", "desc": "Como pedir ao IEFP, processo passo a passo e situações especiais na UE."},
-        {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false}
+        {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false},
+        {"slug": "baixa-medica-subsidio-doenca.html", "titulo": "Baixa médica e subsídio de doença", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["prestacao-social-unica"]
     },

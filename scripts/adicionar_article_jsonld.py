@@ -86,6 +86,7 @@ DATAS_PUBLICACAO = {
     "apoio-extraordinario-renda.html": "2026-07-03",
     "prova-escolar.html": "2026-07-03",
     "prestacao-social-para-a-inclusao.html": "2026-07-04",
+    "baixa-medica-subsidio-doenca.html": "2026-07-05",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')
