@@ -78,6 +78,14 @@ Verificação obrigatória antes de cada push:
   git branch  → deve mostrar * main
   Se não mostrar: git checkout main primeiro
 
+**Rede automática (2026-07-06)**: esta regra já não depende só de disciplina —
+`.github/workflows/limpar-branches.yml` corre diariamente (mais push a `main` e
+manual) com o GITHUB_TOKEN do próprio Actions e apaga sozinho qualquer branch
+remota != `main` que já esteja totalmente integrada (0 commits únicos), sem
+depender de uma sessão estar logada. Uma branch com trabalho por integrar nunca
+é apagada — fica registada numa Issue única até alguém a trazer para `main` ou
+a apagar manualmente. Ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES".
+
 ---
 
 ## O QUE É ESTE PROJECTO
@@ -168,7 +176,7 @@ Chromium real (não é possível apanhar isto só por inspecção de texto)
 em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 `index.html` real em vez de manter uma cópia à parte.
 
-### Workflows (6 — 2 fazem push, âmbitos disjuntos)
+### Workflows (7 — 2 fazem push de conteúdo, 1 apaga branches remotas)
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
@@ -178,11 +186,14 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
+| `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
-**`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`,
-cada um com um âmbito de escrita disjunto e garantido por guardrail próprio**
-(ficheiros de conteúdo/dados vs. só `shadow_history/*.md`). Os restantes só lêem.
-Isto elimina race conditions entre workflows concorrentes.
+**`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`
+de conteúdo, cada um com um âmbito de escrita disjunto e garantido por
+guardrail próprio** (ficheiros de conteúdo/dados vs. só `shadow_history/*.md`).
+`limpar-branches.yml` é uma terceira categoria de escrita, à parte — nunca toca
+em conteúdo do repositório, só apaga refs de branch e gere uma Issue. Os
+restantes só lêem. Isto elimina race conditions entre workflows concorrentes.
 
 ---
 
@@ -3560,6 +3571,75 @@ porque esses pontos vivem em `name`, nunca em `classname`). Testado em
 `tests/test_verificar_skips_permitidos.py`: reconstrução do nodeid,
 extracção de um XML JUnit real, e as duas direcções de falha + o
 caminho feliz, todos com asserts explícitos (nunca só "não rebentou").
+
+---
+
+## LIMPEZA AUTOMÁTICA DE BRANCHES
+
+`.github/workflows/limpar-branches.yml` (2026-07-06) — rede automática
+para a "REGRA ABSOLUTA — GIT": sessões de trabalho já ficaram com
+branches órfãs `claude/*` totalmente integradas em `main` sem
+conseguir apagá-las (`git push origin --delete` dá sempre 403 quando a
+sessão não está autenticada como utilizador logado — mesma limitação
+documentada em várias revisões anteriores). Este workflow corre com o
+GITHUB_TOKEN do próprio Actions (`permissions: contents: write` +
+`issues: write`), nunca depende de quem está logado.
+
+**Triggers**: `push` a `main` (apanha o caso comum — logo a seguir a um
+fast-forward de sessão) + cron `0 5 * * *` (diário, antes do pipeline
+das 06:00 UTC, rede de segurança) + `workflow_dispatch` (manual).
+
+**Lógica, só sobre branches remotas != `main`**:
+1. `git remote set-branches origin '*'` + `git fetch origin --prune` —
+   `actions/checkout` só traz o ref do evento por omissão, é preciso
+   pedir explicitamente todas as branches.
+2. Para cada branch: `git rev-list --count origin/main..origin/<b>`.
+   - **0 commits únicos** (totalmente integrada) → apagada via
+     `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<b>`,
+     registada no job summary, **sem** Issue nem email — é o caso
+     normal e silencioso.
+   - **≥1 commit único** → nunca apagada, entra na lista para a Issue.
+3. Issue única de título estável (`🌿 Branches órfãs por integrar`,
+   labels `branch-orfa`+`verificar`): corpo **substituído** a cada
+   corrida (nunca acumula comentários, ao contrário de
+   `fonte-bloqueada`/`feed-morto` — aqui o conteúdo é sempre "estado
+   actual", não um log de ocorrências), com a tabela de branches e
+   commits únicos. Fecho automático (com comentário) quando a lista
+   fica vazia — mesma lição de fecho automático já usada nas outras
+   máquinas de estado deste repositório.
+
+**Guardrail próprio**: nunca apaga `main` (excluída da listagem por
+construção, mais uma verificação explícita dentro do próprio loop que
+falha o job se `main` alguma vez lá chegasse); nunca faz `git push` de
+conteúdo, nunca modifica HTML, nunca cria branches — as duas únicas
+escritas permitidas são apagar um ref `heads/*` != `main` e gerir a
+Issue única. Uma falha real de API ao apagar uma branch que devia ser
+apagada (0 commits únicos) nunca é engolida em silêncio — fica no job
+summary, gera `::error::` e falha o job (mesmo princípio de "nenhum
+estado de erro pode parecer sucesso"); se for sempre 403 mesmo com
+GITHUB_TOKEN, é sinal de um ruleset "restrict deletions" activo — a
+correcção é pôr o Actions no bypass do ruleset, nunca baixar a
+protecção.
+
+Construção do array JSON de branches por integrar feita com `jq`
+(nunca concatenação de string em bash/Python) — nomes de branch
+passados como `--arg`, nunca interpolados directamente num literal
+JSON, para não partir com caracteres especiais no nome.
+
+**Provadas as duas direcções em CI real** antes de confiar no
+workflow, mesmo padrão já usado para o guardrail de skips: branch de
+teste totalmente integrada em `main` → confirmado apagada sozinha, sem
+Issue; branch de teste com 1 commit único → confirmado NÃO apagada e
+Issue única aberta com a contagem certa. Ver entrada de revisão
+correspondente para os run_ids reais.
+
+Estado do repositório confirmado nesta sessão, antes de qualquer teste
+(via API `list_branches` + `git ls-remote --heads origin`, não por
+suposição): as duas branches órfãs documentadas em revisões anteriores
+(`claude/infrastructure-audit-robustness-10k2wc`,
+`claude/melhorias-spec-phase-1-anlctz`) **já não existiam** — foram
+apagadas manualmente entretanto (fora desta sessão). Só `main`
+existia no remoto antes deste workflow correr pela primeira vez.
 
 ---
 

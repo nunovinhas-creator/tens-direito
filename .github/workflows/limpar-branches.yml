@@ -1,0 +1,186 @@
+name: Limpar Branches Órfãs
+
+# Rede de segurança automática para a "REGRA ABSOLUTA — GIT" do CLAUDE.md
+# ("NUNCA criar branches. SEMPRE trabalhar em main."): sessões de trabalho
+# só apagam uma branch remota se estiverem autenticadas como utilizador
+# logado (git push --delete deu 403 em várias sessões — ver CLAUDE.md,
+# secção "Fast-forward para main e limpeza de branch"). Este workflow
+# corre com o GITHUB_TOKEN do próprio Actions, nunca depende de quem
+# está logado.
+#
+# GUARDRAIL — âmbito estrito deste workflow:
+# - só actua sobre branches remotas != main;
+# - NUNCA apaga main (verificação explícita antes de cada delete, mesmo
+#   que a listagem já exclua main por construção);
+# - NUNCA faz `git push` de conteúdo, NUNCA modifica HTML, NUNCA cria
+#   branches — as duas únicas escritas permitidas são "apagar um ref de
+#   branch != main" e "criar/actualizar/fechar uma Issue".
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 5 * * *'  # diário, antes do pipeline das 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  limpar-branches:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apagar branches totalmente integradas, listar as que não estão
+        id: processar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+
+          # actions/checkout só traz o ref do próprio evento — precisamos
+          # de ver todas as branches remotas para as poder comparar/apagar.
+          git remote set-branches origin '*'
+          git fetch origin --prune
+
+          apagadas=()
+          falhas_delete=()
+          orfas_json="[]"
+
+          {
+            echo "## 🌿 Limpar Branches Órfãs"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          branches=$(git branch -r --format='%(refname:short)' | grep '^origin/' | sed 's#^origin/##' | grep -v '^main$' || true)
+
+          if [ -z "$branches" ]; then
+            echo "Nenhuma branch além de main — nada a fazer." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          for b in $branches; do
+            # Guardrail explícito — nunca apagar main, mesmo que apareça aqui
+            # por algum motivo inesperado (a listagem acima já a exclui).
+            if [ "$b" = "main" ]; then
+              echo "::error::GUARDRAIL violado — tentativa de processar 'main' bloqueada."
+              exit 1
+            fi
+
+            commits_unicos=$(git rev-list --count "origin/main..origin/$b")
+
+            if [ "$commits_unicos" -eq 0 ]; then
+              echo "Branch '$b' totalmente integrada em main (0 commits únicos) — a apagar."
+              if gh api -X DELETE "repos/${REPO}/git/refs/heads/${b}" >/dev/null 2>/tmp/gh_erro; then
+                apagadas+=("$b")
+                echo "- 🗑️ \`$b\` — apagada (já totalmente integrada em main)" >> "$GITHUB_STEP_SUMMARY"
+              else
+                falhas_delete+=("$b")
+                erro=$(cat /tmp/gh_erro)
+                echo "::error::Falha ao apagar '$b' via API: $erro"
+                echo "- ⚠️ \`$b\` — devia ser apagada (0 commits únicos) mas a API falhou: $erro" >> "$GITHUB_STEP_SUMMARY"
+                echo "  Se for 403 mesmo com GITHUB_TOKEN, é sinal de um ruleset \"restrict deletions\" activo — a correcção é pôr o Actions no bypass do ruleset, nunca baixar a protecção." >> "$GITHUB_STEP_SUMMARY"
+              fi
+            else
+              echo "Branch '$b' tem $commits_unicos commit(s) único(s) — NÃO apagada."
+              echo "- 🔶 \`$b\` — $commits_unicos commit(s) único(s), por integrar" >> "$GITHUB_STEP_SUMMARY"
+              # jq (não Python/bash string interpolation) para nunca partir
+              # com um nome de branch que contenha aspas ou outros
+              # caracteres especiais — escaping JSON correcto garantido.
+              orfas_json=$(jq --arg b "$b" --argjson c "$commits_unicos" '. + [{"branch": $b, "commits_unicos": $c}]' <<< "$orfas_json")
+            fi
+          done
+
+          echo "$orfas_json" > /tmp/orfas.json
+          echo "orfas_json_path=/tmp/orfas.json" >> "$GITHUB_OUTPUT"
+
+          if [ "${#falhas_delete[@]}" -gt 0 ]; then
+            echo "::error::${#falhas_delete[@]} branch(es) deviam ter sido apagadas mas a API falhou — ver acima."
+            exit 1
+          fi
+
+      - name: Gerir Issue única de branches por integrar
+        if: always() && steps.processar.outputs.orfas_json_path != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const TITULO = '🌿 Branches órfãs por integrar';
+
+            let orfas = [];
+            try {
+              orfas = JSON.parse(fs.readFileSync('/tmp/orfas.json', 'utf8'));
+            } catch (_) {}
+
+            const existentes = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'branch-orfa',
+            });
+            const issueExistente = existentes.data.find(i => i.title === TITULO);
+
+            if (orfas.length === 0) {
+              // Nada por integrar — fecha a Issue se ainda estiver aberta
+              // (mesma lição de fecho automático de fonte-bloqueada/feed-morto:
+              // nunca fica uma Issue órfã depois do problema desaparecer).
+              if (issueExistente) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueExistente.number,
+                  body: `✅ Todas as branches ficaram integradas/apagadas — fechado pelo workflow em ${new Date().toISOString()}.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueExistente.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+                console.log('Issue de branches órfãs fechada — lista vazia.');
+              } else {
+                console.log('Sem branches por integrar e sem Issue aberta — nada a fazer.');
+              }
+              return;
+            }
+
+            const corpo = [
+              `## 🌿 Branches remotas por integrar em \`main\``,
+              ``,
+              `Estas branches têm commits únicos (não estão totalmente contidas em \`main\`) — o workflow \`limpar-branches.yml\` nunca as apaga automaticamente, só as reporta aqui.`,
+              ``,
+              `| Branch | Commits únicos |`,
+              `|---|---|`,
+              ...orfas.map(o => `| \`${o.branch}\` | ${o.commits_unicos} |`),
+              ``,
+              `### Acção necessária`,
+              `1. Rever cada branch: trazer o trabalho para \`main\` (nunca por PR — commit directo, ver "REGRA ABSOLUTA — GIT" no CLAUDE.md) ou confirmar que é obsoleta.`,
+              `2. Depois de integrada ou apagada manualmente, esta Issue fecha-se sozinha na próxima corrida.`,
+              ``,
+              `Actualizado automaticamente em ${new Date().toISOString()} — corpo substituído a cada corrida, nunca acumula comentários antigos.`,
+            ].join('\n');
+
+            if (issueExistente) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueExistente.number,
+                body: corpo,
+              });
+              console.log(`Issue de branches órfãs actualizada (#${issueExistente.number}), ${orfas.length} branch(es).`);
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: TITULO,
+                body: corpo,
+                labels: ['branch-orfa', 'verificar'],
+              });
+              console.log(`Issue de branches órfãs criada, ${orfas.length} branch(es).`);
+            }
