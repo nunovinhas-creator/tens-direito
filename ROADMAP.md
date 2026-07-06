@@ -105,6 +105,11 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   (`mudanca_estrutural:`); não existe hoje um tipo de Issue nem consumidor
   para esse padrão — ver CLAUDE.md **"SEG-SOCIAL — ESTRATÉGIA DE FETCH"**
   (Gap conhecido).
+- **Retroactividade dos 3 dias de espera (`simulador-subsidio-doenca.html`,
+  ⚠️A)** — reconfirmado sem resolução em 2026-07-05 e 2026-07-06 (fontes
+  secundárias divergem, sem primária a decidir); precisa de acesso directo
+  ao Guia Prático do ISS, indisponível via `WebFetch` nesta sessão — ver
+  CLAUDE.md, entrada de revisão 2026-07-06 (auditoria Fase 2).
 - **Ranking da pesquisa interna por relevância real** — hoje corta a 8
   resultados por saturação (`MAX_RESULTADOS`), não por relevância; decisão de
   UX, não bug — ver CLAUDE.md **"AUDITORIA DE INFRAESTRUTURA"** achado 6.
@@ -162,6 +167,17 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **Auditoria completa (Fase 2) de `simulador-subsidio-doenca.html`** —
+  2026-07-06. Valores reconfirmados sem divergências (zero correcções de
+  código); 8 golden tests novos (fronteiras 30/31 e 365/366, piso
+  universal a morder de facto, majoração via checkbox, seguro social
+  voluntário, teto exacto); FAQ nova a esclarecer que gravidez de risco
+  é prestação distinta (lacuna de UX real, não coberta antes); carimbo
+  actualizado. Ponto ⚠️A (retroactividade dos dias de espera) continua
+  por confirmar em definitivo — precisa de acesso directo ao Guia
+  Prático do ISS, bloqueado por `WebFetch` nesta sessão — ver CLAUDE.md
+  **"Última revisão: 2026-07-06"** (entrada da auditoria) para o
+  detalhe completo.
 - **`limpar-branches.yml`** — 2026-07-06, apaga sozinho branches remotas
   totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de
   sessão logada) e regista as que têm commits únicos numa Issue única —

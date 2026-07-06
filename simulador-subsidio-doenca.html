@@ -89,6 +89,14 @@
           "@type": "Answer",
           "text": "Não. É apenas uma estimativa educativa. O valor final é sempre determinado pela Segurança Social, que pode ajustar o cálculo com base em factores não incluídos aqui. Confirma a tua situação na Segurança Social Direta."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador serve para gravidez de risco?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. A gravidez de risco dá acesso a uma prestação distinta — o subsídio por risco clínico durante a gravidez — paga a 100% da remuneração de referência desde o 1.º dia até à data provável do parto, sem dias de espera nem escalões. Este simulador não a calcula; consulta a Segurança Social se estiveres nesta situação."
+        }
       }
     ]
   }
@@ -116,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-05",
-    "dateModified": "2026-07-05"
+    "dateModified": "2026-07-06"
   }
   </script>
 
@@ -286,7 +294,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Valores 2026</strong> — escalões de 55% a 75%, IAS 537,13€ · <strong>Verificado a 05/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/baixa-medica-subsidio-doenca.html">ver guia completo da baixa médica</a>
+      💡 <strong>Valores 2026</strong> — escalões de 55% a 75%, IAS 537,13€ · <strong>Verificado a 06/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/baixa-medica-subsidio-doenca.html">ver guia completo da baixa médica</a>
     </div>
 
     <div class="calc-card">
@@ -318,7 +326,7 @@
             <option value="internamento_cirurgia">Internamento hospitalar ou cirurgia de ambulatório</option>
             <option value="tuberculose">Tuberculose</option>
           </select>
-          <small>Internamento, cirurgia de ambulatório e tuberculose eliminam o período de espera.</small>
+          <small>Internamento, cirurgia de ambulatório e tuberculose eliminam o período de espera. Gravidez de risco não é uma situação aqui — é uma prestação diferente, com regras próprias (ver Perguntas frequentes).</small>
         </div>
 
         <div class="campo-condicional" id="campoFamiliaresTuberculose">
@@ -402,6 +410,13 @@
           Não. É apenas uma <strong>estimativa educativa</strong>. O valor final é sempre determinado pela Segurança Social. Confirma a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a>.
         </div>
       </details>
+
+      <details>
+        <summary>Este simulador serve para gravidez de risco?</summary>
+        <div class="faq-resposta">
+          Não. A gravidez de risco dá acesso a uma prestação distinta — o <strong>subsídio por risco clínico durante a gravidez</strong> — paga a 100% da remuneração de referência desde o 1.º dia até à data provável do parto, sem dias de espera nem escalões. Este simulador não a calcula; consulta a <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social</a> se estiveres nesta situação.
+        </div>
+      </details>
     </section>
 
     <div class="disclaimer">
@@ -431,40 +446,55 @@
     // PARAMETROS_CSI em simulador-csi.html). Valores já fact-checked e
     // publicados em baixa-medica-subsidio-doenca.html (verificado 05/07/2026),
     // reconfirmados por WebSearch contra seg-social.pt/subsidio-de-doenca
-    // numa auditoria posterior (05/07/2026) — percentagens (55/60/70/75%,
-    // 80/100% tuberculose), dias de espera (3/10/30), tectos de duração
-    // (1095/365/sem limite), prazo de garantia (6 meses) e piso universal
-    // (5,37€/dia) confirmados sem divergências.
-    // Ponto ⚠️A (retroatividade dos dias de espera): a auditoria de
-    // 05/07/2026 encontrou várias fontes secundárias (blogs) a alegarem que
-    // os 3 dias de espera são pagos retroactivamente em baixas >30 dias —
-    // mas o texto do próprio Decreto-Lei n.º 28/2004 só prevê retroactividade
-    // por atraso no envio do CIT aos serviços (art. 34.º), nunca por duração
-    // da baixa. Mantida a versão conservadora (nunca paga os dias de espera,
-    // salvo as 3 excepções legais).
-    // Ponto ⚠️B (piso 300€/325€ em períodos parciais): confirmado como piso
-    // MENSAL — nunca encontrada uma fonte que diga como se aplica a um
-    // período parcial, por isso o piso diário proporcional (300÷30, 325÷30)
-    // continua a ser a interpretação conservadora, não um valor confirmado.
+    // numa 2.ª auditoria completa (06/07/2026, "Fase 2") — percentagens
+    // (55/60/70/75%, 80/100% tuberculose), majoração de +5pp, dias de espera
+    // (3/10/30), tectos de duração (1095/365/sem limite), prazo de garantia
+    // (6 meses), piso universal (5,37€/dia), IAS 2026 (537,13€) e o
+    // tratamento de gravidez de risco (prestação distinta, fora do âmbito
+    // deste simulador — ver FAQ) confirmados sem divergências.
+    // Ponto ⚠️A (retroatividade dos dias de espera): reconfirmado em
+    // 06/07/2026 — uma pesquisa voltou a mostrar a alegação de que os 3 dias
+    // de espera são pagos retroactivamente em baixas >30 dias, mas só em
+    // agregadores secundários de baixa fiabilidade (mesma categoria já
+    // rejeitada em 05/07/2026); uma pesquisa mais restrita a essa frase
+    // específica devolveu antes "dias de espera... sem rendimento", sem
+    // qualquer menção a retroactividade. O texto do próprio Decreto-Lei
+    // n.º 28/2004 só prevê retroactividade por atraso no envio do CIT aos
+    // serviços (art. 34.º), nunca por duração da baixa. Mantida a versão
+    // conservadora (nunca paga os dias de espera, salvo as 3 excepções
+    // legais) — fechar esta dúvida em definitivo exige acesso directo ao
+    // Guia Prático do ISS, indisponível nesta sessão (WebFetch bloqueado
+    // para qualquer domínio externo).
+    // Ponto ⚠️B (piso 300€/325€ em períodos parciais): reconfirmado em
+    // 06/07/2026 — a formulação encontrada (sempre em fontes secundárias,
+    // nunca o texto directo do Guia Prático) descreve o piso como "o valor
+    // do subsídio resultante da aplicação da majoração a uma remuneração de
+    // referência de 500€" — o que confirma matematicamente os valores já
+    // usados (60%×500€=300€; 65%×500€=325€) e mostra que a conversão para
+    // piso diário (÷30) usada aqui é consistente com o mesmo método
+    // (RR mensal = RR diária × 30) já usado no resto do código. Continua
+    // sem confirmação directa de uma fonte primária sobre a aplicação a
+    // períodos parciais — mantida a mesma interpretação conservadora,
+    // agora com citação mais forte.
     // Ambos os pontos ficam documentados em detalhe no CLAUDE.md — este
     // simulador implementa sempre a versão conservadora.
     const PARAMETROS_SUBSIDIO_DOENCA = {
-      taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-05' },
-      taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-05' },
-      taxaEscalao3: { valor: 0.70, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 91 a 365 dias', verificado_em: '2026-07-05' },
-      taxaEscalao4: { valor: 0.75, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — mais de 365 dias', verificado_em: '2026-07-05' },
-      taxaTuberculoseAte2Familiares: { valor: 0.80, fonte: 'Tuberculose, até 2 familiares a cargo', verificado_em: '2026-07-05' },
-      taxaTuberculoseMais2Familiares: { valor: 1.00, fonte: 'Tuberculose, mais de 2 familiares a cargo', verificado_em: '2026-07-05' },
-      diasEsperaContaOutrem: { valor: 3, fonte: 'Regime geral — pago a partir do 4.º dia', verificado_em: '2026-07-05' },
-      diasEsperaIndependente: { valor: 10, fonte: 'Trabalhadores independentes — pago a partir do 11.º dia', verificado_em: '2026-07-05' },
-      diasEsperaSeguroSocialVoluntario: { valor: 30, fonte: 'Seguro social voluntário — pago a partir do 31.º dia', verificado_em: '2026-07-05' },
-      tetoDuracaoContaOutrem: { valor: 1095, fonte: 'Regime geral — 3 anos', verificado_em: '2026-07-05' },
-      tetoDuracaoIndependenteSSV: { valor: 365, fonte: 'Independentes e seguro social voluntário — 1 ano', verificado_em: '2026-07-05' },
-      majoracaoPontosPercentuais: { valor: 0.05, fonte: 'Majoração nos escalões de 55%/60%, RR ≤ 500€ ou condição familiar', verificado_em: '2026-07-05' },
-      limiteRRParaMajoracaoOuPiso: { valor: 500, fonte: 'Limiar de RR mensal que separa a majoração automática (≤500€) do piso 300€/325€ (>500€)', verificado_em: '2026-07-05' },
-      pisoDiarioUniversal: { valor: 5.37, fonte: '30% do IAS 2026 (537,13€), Portaria n.º 480-A/2025/1 — sujeito a limite de 100% da RR líquida, não calculável aqui', verificado_em: '2026-07-05' },
-      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 55% não pode ser inferior a 300€/mês; aplicado aqui como piso diário 300÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-05' },
-      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 60% não pode ser inferior a 325€/mês; aplicado aqui como piso diário 325÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-05' },
+      taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-06' },
+      taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-06' },
+      taxaEscalao3: { valor: 0.70, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 91 a 365 dias', verificado_em: '2026-07-06' },
+      taxaEscalao4: { valor: 0.75, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — mais de 365 dias', verificado_em: '2026-07-06' },
+      taxaTuberculoseAte2Familiares: { valor: 0.80, fonte: 'Tuberculose, até 2 familiares a cargo', verificado_em: '2026-07-06' },
+      taxaTuberculoseMais2Familiares: { valor: 1.00, fonte: 'Tuberculose, mais de 2 familiares a cargo', verificado_em: '2026-07-06' },
+      diasEsperaContaOutrem: { valor: 3, fonte: 'Regime geral — pago a partir do 4.º dia', verificado_em: '2026-07-06' },
+      diasEsperaIndependente: { valor: 10, fonte: 'Trabalhadores independentes — pago a partir do 11.º dia', verificado_em: '2026-07-06' },
+      diasEsperaSeguroSocialVoluntario: { valor: 30, fonte: 'Seguro social voluntário — pago a partir do 31.º dia', verificado_em: '2026-07-06' },
+      tetoDuracaoContaOutrem: { valor: 1095, fonte: 'Regime geral — 3 anos', verificado_em: '2026-07-06' },
+      tetoDuracaoIndependenteSSV: { valor: 365, fonte: 'Independentes e seguro social voluntário — 1 ano', verificado_em: '2026-07-06' },
+      majoracaoPontosPercentuais: { valor: 0.05, fonte: 'Majoração nos escalões de 55%/60%, RR ≤ 500€ ou condição familiar', verificado_em: '2026-07-06' },
+      limiteRRParaMajoracaoOuPiso: { valor: 500, fonte: 'Limiar de RR mensal que separa a majoração automática (≤500€) do piso 300€/325€ (>500€)', verificado_em: '2026-07-06' },
+      pisoDiarioUniversal: { valor: 5.37, fonte: '30% do IAS 2026 (537,13€), Portaria n.º 480-A/2025/1 — sujeito a limite de 100% da RR líquida, não calculável aqui', verificado_em: '2026-07-06' },
+      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 55% não pode ser inferior a 300€/mês; aplicado aqui como piso diário 300÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-06' },
+      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 60% não pode ser inferior a 325€/mês; aplicado aqui como piso diário 325÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-06' },
     };
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────

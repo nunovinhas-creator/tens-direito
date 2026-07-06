@@ -4453,3 +4453,93 @@ e candidatas 4-12 para a Sessão 2 registados em `ROADMAP.md` → "GERADOR
 DE DOCUMENTOS — ESTADO". `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados
 por esta sessão).*
+
+---
+
+*Última revisão: 2026-07-06 — auditoria completa (Fase 2) de
+`simulador-subsidio-doenca.html`, publicado no dia anterior sem nunca
+ter sido revisto depois da publicação. Quatro frentes, pedidas
+explicitamente pelo Nuno:
+
+**1) Auditoria de valores** — reconfirmadas via `WebSearch` (WebFetch
+continua completamente bloqueado nesta sessão, mesmo para PDFs — só
+403, incluindo o Guia Prático do ISS) contra seg-social.pt e agregadores
+financeiros de referência, à data de hoje: percentagens por escalão
+(55/60/70/75%), majoração de +5pp (RR≤500€ ou condição familiar),
+fórmula da RR (primeiros 6 dos últimos 8 meses ÷ 180), prazo de
+garantia (6 meses), dias de espera por regime (3/10/30), tectos de
+duração (1095/365/sem limite), tuberculose (80%/100%, sem limite), IAS
+2026 (537,13€, Portaria n.º 480-A/2025/1) e gravidez de risco (confirmado,
+mais uma vez, como prestação distinta — subsídio por risco clínico,
+100% da RR desde o 1.º dia até à data provável do parto). **Zero
+valores desactualizados encontrados** — nenhuma correcção de código
+necessária.
+
+Achado que reforça (sem alterar) o piso 300€/325€ já implementado: uma
+pesquisa mais específica revelou a formulação exacta da regra — "o
+valor do subsídio resultante da aplicação da majoração a uma
+remuneração de referência de 500€" — o que confirma matematicamente
+300€=60%×500€ e 325€=65%×500€ (as taxas majoradas, não as taxas base
+55%/60%), e mostra que a conversão para piso diário (÷30) já usada é
+consistente com o mesmo método (RR mensal = RR diária × 30) usado no
+resto do simulador. Comentário do código (⚠️B) reforçado com esta
+citação mais forte — valores inalterados.
+
+Ponto ⚠️A (retroactividade dos 3 dias de espera em baixas >30 dias)
+reconfirmado como não resolvido: uma pesquisa voltou a mostrar a
+alegação (mesma categoria de blogs de baixa fiabilidade já rejeitada em
+2026-07-05), mas uma pesquisa mais restrita devolveu antes "dias de
+espera... sem rendimento", sem menção a retroactividade — mantida a
+versão conservadora. Fechar esta dúvida em definitivo precisa de acesso
+directo ao Guia Prático do ISS (bloqueado por `WebFetch` nesta sessão)
+— registado para uma sessão futura com acesso a browser real.
+
+**2) Auditoria de lógica** — os 17 golden tests existentes cobriam bem
+os casos principais mas tinham lacunas reais nas fronteiras: faltavam a
+transição 30/31 dias (escalão 55%→60%), a transição 365/366 (70%→75%),
+o limite exacto de 1095 dias (sem exceder), o piso universal de 5,37€/dia
+a *morder de facto* (o único teste existente para majoração automática
+tinha RR alta de mais para o piso alguma vez ser vinculativo), a
+majoração activada só pelo checkbox (nunca testada isoladamente da
+majoração automática por RR≤500€, nem o caso negativo — RR>500€ sem
+checkbox nunca majora), e o regime de seguro social voluntário (30 dias
+de espera nunca tinha sido exercitado, ao contrário de conta de outrem
+e independente) — achado interessante deste último: 30 dias de espera
+esgotam por completo o 1.º escalão (1-30 dias), o pagamento começa
+directamente no escalão de 60%. 8 testes novos, todos calculados à mão
+nos comentários e confirmados a bater certo à primeira tentativa.
+Reconfirmado `test_coerencia_artigo_simulador_constantes_de_producao`
+(simulador↔artigo) sem divergências.
+
+**3) Auditoria de UX/padrão** — comparados os 4 simuladores
+(abono/ASE/CSI/subsídio de doença): breadcrumb, "Verificado a", 4 blocos
+JSON-LD (`WebApplication`+`FAQPage`+`BreadcrumbList`+`Article`), texto
+do disclaimer ("⚠️ Aviso de independência" + "Simulação indicativa..."),
+`inputmode="numeric"`, evento GA4 `calc_resultado`, presença no hub
+`/simuladores.html`, `sitemap.xml`, `scripts/pesquisa.js` e
+`data/clusters.json` — **tudo já alinhado**, nenhuma correcção
+necessária. Achado real de UX (não um desvio de padrão, uma lacuna
+genuína): o simulador não dizia nada sobre gravidez de risco — um
+utilizador nessa situação podia usar o formulário sem perceber que está
+a calcular a prestação errada. Corrigido com uma FAQ nova (JSON-LD +
+visível) e uma nota no campo "Situação especial", com os mesmos 3 factos
+já publicados no artigo (100% da RR, desde o 1.º dia, até à data
+provável do parto) — novo teste de coerência garante que os dois nunca
+divergem.
+
+**4) Relatório** — carimbo actualizado (`Verificado a 06/07/2026`,
+`dateModified` do JSON-LD `Article`, e os 16 `verificado_em` de
+`PARAMETROS_SUBSIDIO_DOENCA`). Resumo em `ROADMAP.md` →
+"CONCLUÍDO RECENTEMENTE", apontando para esta secção — nem
+`MELHORIAS-SPEC.md` nem `CALCULADORAS-SPEC.md` (citados na instrução
+original) existem neste repositório: são documentos externos referidos
+em sessões anteriores, nunca commitados (mesmo padrão de
+`PROMPTGERADORDOCUMENTOSv1.md`) — a auditoria seguiu os 4 pontos
+explícitos do pedido do Nuno, sem depender desses ficheiros.
+
+25 testes em `tests/test_simulador_subsidio_doenca_calculo.py` (17→25).
+Suite completa: **1747 passed, 4 skipped** (mesmos skips estruturais já
+documentados); `ruff check scripts/ tests/ --select E,F,W --ignore
+E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados por esta sessão). Trabalho directo
+em `main`, sem branches novas.*

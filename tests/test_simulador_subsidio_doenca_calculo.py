@@ -260,7 +260,109 @@ def test_baixa_de_4_dias_paga_exactamente_1_dia_apos_o_periodo_de_espera(pagina)
     assert round(r["totalGeral"], 2) == 25.67
 
 
+# ── Fase 2 (auditoria 2026-07-06) — fronteiras de escalão em falta ──────────
+
+def test_fronteira_30_31_escalao_55_para_60(pagina):
+    # Dias 4-30 (27d) a 55% = 693,00€ (igual ao caso1). Dia 31 (1d) já cai
+    # no escalão de 60%: 46,6667×0,60 = 28,00€. Total = 721,00€.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 31, "vinculo": "conta_outrem"})
+    assert len(r["desagregacao"]) == 2
+    assert r["desagregacao"][0]["dias"] == 27
+    assert r["desagregacao"][0]["taxaPct"] == 0.55
+    assert r["desagregacao"][1]["dias"] == 1
+    assert r["desagregacao"][1]["taxaPct"] == 0.60
+    assert round(r["desagregacao"][1]["subtotal"], 2) == 28.00
+    assert round(r["totalGeral"], 2) == 721.00
+
+
+def test_fronteira_365_366_escalao_70_para_75(pagina):
+    # 27d@55%=693,00; 60d@60%=1.680,00; 275d@70%=8.983,33 (dias 91-365);
+    # 1d@75%=35,00 (dia 366). Total = 11.391,33€.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 366, "vinculo": "conta_outrem"})
+    assert len(r["desagregacao"]) == 4
+    assert r["desagregacao"][2]["dias"] == 275
+    assert r["desagregacao"][2]["taxaPct"] == 0.70
+    assert r["desagregacao"][3]["dias"] == 1
+    assert r["desagregacao"][3]["taxaPct"] == 0.75
+    assert round(r["desagregacao"][3]["subtotal"], 2) == 35.00
+    assert round(r["totalGeral"], 2) == 11391.33
+
+
+def test_teto_exactamente_no_limite_nao_dispara_aviso(pagina):
+    # 1095 dias exactos (não 1096) — duracaoExcedeTeto usa ">" estrito,
+    # nunca ">=", por isso o limite exacto não deve disparar o aviso.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 1095, "vinculo": "conta_outrem"})
+    assert r["duracaoExcedeTeto"] is False
+    assert r["duracaoEfetiva"] == 1095
+    assert r["tetoDuracao"] == 1095
+
+
+# ── Piso universal (5,37€/dia) a morder de facto — RR muito baixa ──────────
+
+def test_piso_universal_5_37_morde_com_rr_muito_baixa(pagina):
+    # RR mensal=100€ (≤500€ → majoração automática 55%→60%). RR diária=
+    # 3,3333€; 60%×3,3333=2,00€/dia < piso universal 5,37€ → usa 5,37€.
+    # Dias 4-10 (7d, dentro do escalão de 30 dias) × 5,37 = 37,59€.
+    r = _calcular(pagina, {"salario": 100, "duracaoDias": 10, "vinculo": "conta_outrem"})
+    assert r["majoracaoAplicavel"] is True
+    assert r["diasPagos"] == 7
+    assert round(r["desagregacao"][0]["valorDia"], 2) == 5.37
+    assert round(r["totalGeral"], 2) == 37.59
+
+
+# ── Majoração via checkbox (nunca só automática por RR≤500€) ────────────────
+
+def test_majoracao_via_checkbox_com_rr_acima_de_500(pagina):
+    # RR mensal=3.000€ (>500€, sem majoração automática), mas
+    # majoracaoFamiliar=True activa-a na mesma. RR diária=100,00€;
+    # taxa=0,55+0,05=0,60; valorDia=60,00€ (piso 300/325 não morde).
+    # Dias 4-10 (7d) × 60,00 = 420,00€.
+    r = _calcular(pagina, {
+        "salario": 3000, "duracaoDias": 10, "vinculo": "conta_outrem",
+        "majoracaoFamiliar": True,
+    })
+    assert r["majoracaoAplicavel"] is True
+    assert round(r["desagregacao"][0]["valorDia"], 2) == 60.00
+    assert round(r["totalGeral"], 2) == 420.00
+
+
+def test_sem_majoracao_e_sem_checkbox_rr_acima_de_500_nao_majora(pagina):
+    # Mesmo salário/duração do teste anterior, mas sem o checkbox —
+    # confirma que a majoração nunca é automática acima de 500€ sem a
+    # condição familiar assinalada. Taxa fica em 0,55 (não 0,60).
+    r = _calcular(pagina, {"salario": 3000, "duracaoDias": 10, "vinculo": "conta_outrem"})
+    assert r["majoracaoAplicavel"] is False
+    assert r["desagregacao"][0]["taxaPct"] == 0.55
+
+
+# ── Seguro social voluntário — 30 dias de espera consomem todo o 1.º escalão ─
+
+def test_seguro_social_voluntario_30_dias_espera(pagina):
+    # 30 dias de espera esgotam por completo o escalão de 1-30 dias — zero
+    # dias pagos a 55%. Só o dia 31-35 (5d) é pago, já a 60%: 46,6667×0,60=
+    # 28,00€/dia × 5 = 140,00€.
+    r = _calcular(pagina, {"salario": 1400, "duracaoDias": 35, "vinculo": "seguro_social_voluntario"})
+    assert r["diasEspera"] == 30
+    assert r["diasPagos"] == 5
+    assert len(r["desagregacao"]) == 1
+    assert r["desagregacao"][0]["taxaPct"] == 0.60
+    assert round(r["totalGeral"], 2) == 140.00
+
+
 # ── Coerência artigo ↔ simulador ─────────────────────────────────────────────
+
+def test_gravidez_de_risco_fora_do_ambito_coerente_com_o_artigo():
+    """A auditoria de 2026-07-06 encontrou o simulador silencioso sobre
+    gravidez de risco (o artigo já a trata como prestação distinta desde
+    a publicação) — corrigido com uma FAQ nova. Confirma que os 3 factos-
+    -chave (100%, 1.º dia, data provável do parto) batem certo nos dois
+    sítios, nunca só num deles."""
+    assert "gravidez de risco" in SIMULADOR_HTML.lower()
+    for facto in ["100%", "1.º dia", "data provável do parto"]:
+        assert facto in SIMULADOR_HTML, f"'{facto}' não encontrado no simulador"
+        assert facto in ARTIGO_HTML, f"'{facto}' não encontrado no artigo"
+
+
 def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     """Se um dia o artigo for actualizado sem o simulador (ou
     vice-versa), este teste é a rede — reimporta os PARAMETROS reais do
