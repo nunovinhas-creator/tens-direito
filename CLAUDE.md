@@ -399,6 +399,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
 - [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos da FASE 1 de `MELHORIAS-SPEC.md` — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
 - [ ] Editou `<title>` ou `<meta name="description">` com um valor legal em € ou %? Tem de estar coberto por `tests/test_valores_ancora.py` — ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION"
+- [ ] Página nova de prestação com valores anuais? `<title>`/description devem incluir o ano corrente; qualquer ano civil anterior citado tem de ter excepção explícita em `tests/test_anos_metadados.py` — ver secção "CANÁRIO DE ANOS EM METADADOS"
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
 - [ ] Commit e push directamente para `main`
 
@@ -561,6 +562,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 9. **Long-tail**: responder às "zonas cinzentas" que os portais oficiais não respondem directamente (ex: trabalhadores independentes, mudança de escalão a meio do ano, cumulação de apoios).
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
 11. **Valor legal em `<title>` ou meta description**: qualquer valor em € ou % com origem legal (IAS, um tecto/piso derivado do IAS, ou um valor próprio de Portaria/limiar) usado num `<title>` ou `<meta name="description">` tem de estar coberto por um teste em `tests/test_valores_ancora.py` — nunca pode ficar um valor "solto" em metadados, invisível a qualquer teste, a ficar errado em silêncio quando a lei mudar (ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION").
+12. **Ano civil em `<title>` ou meta description**: um `<title>`/description de uma prestação com valores anuais deve incluir o ano corrente quando fizer sentido editorial (os utilizadores pesquisam com o ano, ex.: "cuidador informal 2026") — páginas atemporais (institucionais, hubs, quiz) ficam de fora por critério editorial, não por omissão. Qualquer ano civil *anterior* ao ano corrente num `<title>`/description tem de estar numa excepção explícita em `tests/test_anos_metadados.py` (citação de diploma legal ou facto histórico permanente) — nunca um esquecimento silencioso (ver secção "CANÁRIO DE ANOS EM METADADOS").
 
 ### Não fazer
 - Não usar Jekyll ou qualquer SSG
@@ -3385,6 +3387,98 @@ não o substitui, só encurta o tempo até à detecção.
 
 ---
 
+## CANÁRIO DE ANOS EM METADADOS
+
+`tests/test_anos_metadados.py` (2026-07-06) — mesmo princípio do canário
+de valores-âncora, mas para anos civis em `<title>`/`<meta
+name="description">` em vez de valores em €/%. Disparado pela mesma
+sessão SEO intermédia: as queries reais do GSC mostram que os
+utilizadores pesquisam com o ano ("cuidador informal 2026", "rsi 2026",
+"prova escolar 2026") — um `<title>` com um ano civil desactualizado é o
+mesmo problema do canário do IAS, só que sem fórmula nenhuma a verificar:
+o próprio ano corrente já é a fórmula.
+
+**Diferença de desenho face ao canário do IAS**: `ANO_ATUAL` é calculado
+via `datetime.now().year`, nunca uma constante fixa tipo `IAS_2026 =
+537.13` — o teste fica vermelho sozinho em janeiro, para qualquer página
+que ainda diga "2026", sem precisar de ninguém "lembrar" de bater
+`ANO_ATUAL` no calendário primeiro (ao contrário do IAS, que exige sempre
+uma Portaria nova e um humano a actualizar a constante).
+
+### Scan ao repositório (2026-07-06)
+
+Todas as 42 páginas reais (raiz + `p/*.html`) têm o `<title>`/description
+verificados. Páginas atemporais (institucionais, hubs, quiz) ficam
+deliberadamente **sem** ano, por critério editorial — não é uma lacuna:
+`404.html`, `acessibilidade.html`, `comecar-aqui.html`, `fontes.html`,
+`index.html`, `noticias.html`, `privacidade.html`, `sobre.html`,
+`simuladores.html` (hub, cada simulador já tem o seu próprio ano),
+`simulador-psu.html` (`noindex`, deliberadamente não publicado, não
+importa para SEO).
+
+Encontradas 3 páginas de conteúdo/prestação **sem** ano no `<title>`
+(tinham no resto — `og:title` ou description) — acrescentado "2026" ao
+`<title>` das 3 (e a `og:title`/`headline` quando já eram idênticos ao
+`<title>`, para não criar uma nova divergência):
+
+| Página | `<title>` antes | `<title>` depois |
+|---|---|---|
+| `psu-quem-tem-direito.html` | "Quem tem direito à PSU — condições…" | "Quem tem direito à **PSU 2026** — condições…" |
+| `psu-trabalho-social.html` | "Trabalho social na PSU: aprovado…" | "Trabalho social na **PSU 2026**: aprovado…" |
+| `psu-vs-abono-familia.html` | "PSU e Abono de Família: são apoios…" | "**PSU 2026** e Abono de Família: são apoios…" |
+
+**H1 e breadcrumb visível destas 3 páginas NUNCA foram tocados**
+(regra explícita da sessão: "não alterar corpo dos artigos") — só
+`<title>`, `og:title` (quando já era idêntico ao `<title>`) e o
+`headline` do JSON-LD `Article`. Precedente já existente no site para
+`<title>`/breadcrumb-JSON-LD divergirem do H1/breadcrumb visível:
+`manuais-escolares-mega.html` (`<title>` "…2026/2027…", H1/breadcrumb
+visível só "Manuais escolares gratuitos (MEGA)").
+
+**Achado durante a implementação, não um bug de dados**: uma 1.ª
+tentativa usou `replace_all` para acrescentar "2026" ao título de
+`psu-trabalho-social.html` — como o H1 e a `<span>` do breadcrumb visível
+tinham exactamente o mesmo texto do `<title>` nessa página, o
+`replace_all` alterou-os também, o que violaria a regra "não alterar
+corpo". Apanhado antes do commit por revisão do diff, não por um teste
+— corrigido com edições pontuais em vez de substituição global.
+**Lição**: nunca usar `replace_all` para um texto que possa coincidir
+com conteúdo visível do artigo, mesmo quando a intenção é só mexer em
+metadados.
+
+### Excepções a anos históricos — `EXCECOES_ANOS_HISTORICOS`
+
+4 excepções encontradas no scan, todas citações legítimas, nunca
+esquecimentos:
+
+| Página | Ano | Motivo |
+|---|---|---|
+| `apoio-extraordinario-renda.html` | 2023 | PAER fechado a novos candidatos desde 15/03/2023 — facto histórico permanente |
+| `complemento-solidario-idosos.html` | 2024 | Regra de rendimentos dos filhos deixou de contar desde 2024 — facto histórico permanente |
+| `cuidador-informal.html` | 2025 | Decreto-Lei n.º 138/2025 — número do diploma, não data de vigência |
+| `subsidio-desemprego.html` | 2006 | Decreto-Lei n.º 220/2006 — número do diploma, não data de vigência |
+
+Cada excepção é validada por `test_excecoes_continuam_a_existir_na_pagina`
+— se o ano deixar de aparecer na página (ex.: reescrita da description),
+a excepção fica órfã e o teste falha, forçando a remover a excepção em
+vez de a deixar esquecida a "proteger" um ano que já não existe.
+
+**Confirmado a falhar de propósito**: acrescentado "(dados 2025)" ao
+`<title>` de `abono-de-familia.html` → `test_sem_ano_civil_
+desactualizado_em_title_ou_description[abono-de-familia.html]` falha com
+mensagem clara (`assert [2025] == []`, ano sem excepção registada);
+revertido e confirmado a passar de novo.
+
+### Execução diária — `pipeline-diario.yml`
+
+Junta-se ao mesmo Step 4c do canário de valores-âncora (mesmo motivo:
+correr todos os dias, não só no cron semanal/push de `integridade.yml`)
+— `pytest tests/test_valores_ancora.py tests/test_anos_metadados.py -q`,
+sem `continue-on-error`. Nunca precisa de manutenção manual quando o ano
+civil muda — `ANO_ATUAL` recalcula-se sozinho a cada execução.
+
+---
+
 *Última revisão: 2026-07-06 — TAREFA 1 de sessão SEO intermédia (antes da
 FASE 3 de `MELHORIAS-SPEC.md`): actualização sazonal de
 `manuais-escolares-mega.html`, página #1 do site em cliques GSC, em
@@ -3436,3 +3530,26 @@ limitação de `feedparser` no sandbox, documentada em sessões
 anteriores); ruff limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
 esta sessão).
+
+---
+
+*Última revisão: 2026-07-06 — TAREFA 2 da mesma sessão SEO intermédia:
+scan a `<title>`/`<meta name="description">` das 42 páginas reais por
+anos civis, e novo canário `tests/test_anos_metadados.py` (ver secção
+"CANÁRIO DE ANOS EM METADADOS"). Encontradas 3 páginas de conteúdo sem
+ano no `<title>` (`psu-quem-tem-direito.html`, `psu-trabalho-social.html`,
+`psu-vs-abono-familia.html`) — acrescentado "2026", sem tocar em H1 nem
+breadcrumb visível (regra explícita da tarefa). Achado corrigido antes do
+commit: uma 1.ª tentativa com `replace_all` alterou também o H1 de
+`psu-trabalho-social.html` (texto idêntico ao `<title>` nessa página) —
+apanhado por revisão do diff, corrigido com edições pontuais. Canário
+novo usa `datetime.now().year` como ano corrente (nunca uma constante
+fixa) — fica vermelho sozinho em janeiro, sem manutenção manual; 4
+excepções documentadas para anos históricos legítimos (citação de
+diploma legal ou facto permanente), cada uma validada contra ficar
+órfã. Confirmado a falhar de propósito (ano "2025" injectado no título
+de `abono-de-familia.html`, revertido depois). Junta-se ao mesmo Step 4c
+de `pipeline-diario.yml` do canário de valores-âncora. Suite completa:
+1304 passed, 5 skipped (42 novos); ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False`.

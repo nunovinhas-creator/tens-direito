@@ -277,13 +277,17 @@ jobs:
       # — é o mecanismo mais rápido para apanhar um valor legal (IAS, ou um
       # tecto/piso derivado dele) que ficou desactualizado em <title>/meta
       # description depois de uma Portaria nova, tipicamente em janeiro.
-      # Só este ficheiro de testes (rápido, sem Playwright) — nunca
-      # "|| echo ... continuar": se o canário falhar, o job fica vermelho,
-      # nunca um sucesso silencioso (invariante CLAUDE.md).
-      - name: Canário de valores-âncora (IAS e valores legais em metadados)
+      # test_anos_metadados.py junta-se aqui pelo mesmo motivo, mas para anos
+      # civis em vez de valores: fica vermelho sozinho em janeiro sem
+      # precisar de ninguém "lembrar" de o corrigir (ANO_ATUAL calculado via
+      # datetime.now(), nunca uma constante fixa). Só estes ficheiros de
+      # testes (rápidos, sem Playwright) — nunca "|| echo ... continuar": se
+      # o canário falhar, o job fica vermelho, nunca um sucesso silencioso
+      # (invariante CLAUDE.md).
+      - name: Canário de valores-âncora (IAS, valores legais e anos em metadados)
         run: |
           pip install pytest
-          pytest tests/test_valores_ancora.py -q
+          pytest tests/test_valores_ancora.py tests/test_anos_metadados.py -q
 
       # ── Step 5: Actualizar README ────────────────────────────────────────────
       - name: Actualizar README
