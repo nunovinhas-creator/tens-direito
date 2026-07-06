@@ -1,6 +1,6 @@
 """
-Golden tests do Gerador de Documentos (Sessão 1 —
-PROMPTGERADORDOCUMENTOSv1.md). Corre com Chromium real (Playwright)
+Golden tests do Gerador de Documentos (Sessão 1 + Sessão 2 —
+PROMPT-GERADOR-DOCUMENTOS-v1). Corre com Chromium real (Playwright)
 sobre as páginas reais em documentos/, servidas por um http.server
 local — nunca file://, mesmo motivo já documentado em
 test_acessibilidade.py (caminhos absolutos "/assets/..." não carregam
@@ -36,7 +36,26 @@ PAGINAS_MINUTA = [
     "documentos/reclamacao-decisao-seguranca-social.html",
     "documentos/carta-acompanhamento-csi.html",
     "documentos/carta-acompanhamento-reavaliacao-abono.html",
+    "documentos/recurso-hierarquico-seguranca-social.html",
+    "documentos/exposicao-atraso-processamento.html",
+    "documentos/carta-acompanhamento-divida-prestacoes.html",
+    "documentos/carta-acompanhamento-svi-recurso.html",
+    "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "documentos/requerimento-reavaliacao-escalao-ase.html",
+    "documentos/pedido-acesso-documentos-administrativos.html",
+    "documentos/requerimento-generico-seguranca-social.html",
+    "documentos/pedido-declaracao-comprovativo-prestacoes.html",
 ]
+
+# Alguns campos de identificação fiscal têm ids/padrões diferentes do NISS
+# standard de 11 dígitos (ex.: NIF de 9 dígitos, ou um campo que aceita
+# ambos) — mapeamento explícito em vez de adivinhar pelo tipo, para o
+# valor de exemplo bater sempre certo com o padrão (regex) real do campo.
+_VALORES_NUMERICOS_ESPECIFICOS = {
+    "niss": "12345678901",
+    "niss_ou_nif": "12345678901",
+    "nif_encarregado": "123456789",
+}
 
 DISCLAIMER = "Este documento é um modelo informativo e não substitui aconselhamento jurídico."
 
@@ -103,10 +122,10 @@ def _abrir(browser, base_url, rel):
     return page
 
 
-def _valor_exemplo(campo, *, niss_valido="12345678901"):
+def _valor_exemplo(campo):
     tipo = campo.get("tipo", "text")
-    if campo["id"] == "niss":
-        return niss_valido
+    if campo["id"] in _VALORES_NUMERICOS_ESPECIFICOS:
+        return _VALORES_NUMERICOS_ESPECIFICOS[campo["id"]]
     if tipo == "select":
         opcoes = campo.get("opcoes") or []
         return opcoes[0] if opcoes else ""

@@ -46,6 +46,7 @@ EXCECOES_ANOS_HISTORICOS = {
     ("complemento-solidario-idosos.html", 2024): "Regra de rendimentos dos filhos deixou de contar desde 2024 — facto histórico permanente",
     ("cuidador-informal.html", 2025): "Decreto-Lei n.º 138/2025 — número do diploma, não uma data de vigência",
     ("subsidio-desemprego.html", 2006): "Decreto-Lei n.º 220/2006 — número do diploma, não uma data de vigência",
+    ("documentos/pedido-acesso-documentos-administrativos.html", 2016): "Lei n.º 26/2016 (LADA) — número do diploma, não uma data de vigência",
 }
 
 

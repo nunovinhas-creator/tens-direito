@@ -382,6 +382,15 @@ para esses três casos.
 | `documentos/reclamacao-decisao-seguranca-social.html` | Reclamação de decisão da Segurança Social | 6 jul. 2026 |
 | `documentos/carta-acompanhamento-csi.html` | Carta de acompanhamento — pedido de CSI | 6 jul. 2026 |
 | `documentos/carta-acompanhamento-reavaliacao-abono.html` | Carta de acompanhamento — reavaliação do escalão do abono | 6 jul. 2026 |
+| `documentos/recurso-hierarquico-seguranca-social.html` | Recurso hierárquico de decisão da Segurança Social | 6 jul. 2026 |
+| `documentos/exposicao-atraso-processamento.html` | Exposição por atraso no processamento de prestação | 6 jul. 2026 |
+| `documentos/carta-acompanhamento-divida-prestacoes.html` | Carta de acompanhamento — dívida em prestações | 6 jul. 2026 |
+| `documentos/carta-acompanhamento-svi-recurso.html` | Carta de acompanhamento — recurso de decisão do SVI | 6 jul. 2026 |
+| `documentos/carta-acompanhamento-comunicacao-alteracao.html` | Carta de acompanhamento — alteração de morada/agregado/rendimentos | 6 jul. 2026 |
+| `documentos/requerimento-reavaliacao-escalao-ase.html` | Pedido de reavaliação do escalão de ASE | 6 jul. 2026 |
+| `documentos/pedido-acesso-documentos-administrativos.html` | Pedido de acesso a documentos administrativos (LADA) | 6 jul. 2026 |
+| `documentos/requerimento-generico-seguranca-social.html` | Requerimento genérico à Segurança Social | 6 jul. 2026 |
+| `documentos/pedido-declaracao-comprovativo-prestacoes.html` | Pedido de declaração/comprovativo de prestações | 6 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1329,13 +1338,104 @@ verificadas uma a uma antes de escrever qualquer template:
    `documentos/carta-acompanhamento-csi.html` — carta de
    acompanhamento, com link directo para `seg-social.pt/formularios`.
 
-**Nenhuma candidata ficou de fora nesta sessão** — as 3 do núcleo
-passaram o portão (2 com pivot, 1 sem). As candidatas 4-12 da lista de
-expansão do prompt (recurso hierárquico, dívida em prestações,
-comunicação de alteração de agregado/morada/rendimentos, atraso no
-processamento, SVI/junta médica, ASE, pedido de consulta do processo,
-requerimento genérico, declaração/comprovativo de situação) ficam
-**por verificar** para a Sessão 2 — ver `ROADMAP.md`.
+**Nenhuma candidata ficou de fora na Sessão 1** — as 3 do núcleo
+passaram o portão (2 com pivot, 1 sem).
+
+### PORTÃO DE VERIFICAÇÃO — resultado das candidatas 4-12 (Sessão 2, 2026-07-06)
+
+As 9 candidatas de expansão do prompt foram todas verificadas e
+publicadas — **nenhuma rejeitada**, 6 sem pivot e 3 com pivot:
+
+4. **Recurso hierárquico de decisão da Segurança Social** — publicado
+   sem pivot (`documentos/recurso-hierarquico-seguranca-social.html`).
+   Artigos 193.º a 198.º do CPA, sem Mod. próprio — complementa a
+   reclamação já publicada (dirigido ao superior hierárquico, não ao
+   mesmo órgão que decidiu).
+5. **Pedido de pagamento de dívida à SS em prestações** — **pivot**
+   (`documentos/carta-acompanhamento-divida-prestacoes.html`).
+   Confirmado Mod. próprio: "Requerimento para Pagamento em
+   Prestações" (IMP.PN.01.01), submetido via Segurança Social Direta
+   ou por email para igfss-divida@seg-social.pt.
+6. **Comunicação de alteração de agregado/morada/rendimentos** —
+   **pivot** (`documentos/carta-acompanhamento-comunicacao-alteracao.html`).
+   Desde jul. 2023 existe a "Declaração de Situação Familiar" na
+   Segurança Social Direta como canal principal; formulários mais
+   antigos ligados a encargos familiares (Mod. GF 37-DGSS, Mod. GF
+   54-DGSS) também encontrados — sem Mod. universal único, tratado
+   como pivot por prudência (mesma lição do GF58).
+7. **Exposição por atraso no processamento de prestação** — publicado
+   sem pivot (`documentos/exposicao-atraso-processamento.html`).
+   Artigos 128.º (prazo geral de 90 dias) e 129.º (dever de decisão)
+   do CPA — sem Mod. próprio.
+8. **Reclamação de decisão do SVI / junta médica** — **pivot**
+   (`documentos/carta-acompanhamento-svi-recurso.html`). Confirmado
+   Mod. SVI 55-DGSS obrigatório ("Requerimento — Comissão de
+   Reavaliação/Comissão de Recurso"), prazo de **10 dias** — mais
+   curto do que os 15 dias da reclamação em regime geral, destacado na
+   página. Distinto do processo de recurso do AMIM (JMAI, Ministério
+   da Saúde, 30 dias) — **nunca cross-linkado com `amim.html`
+   deliberadamente**, para não conflacionar os dois sistemas de junta
+   médica diferentes (SVI é da Segurança Social, para prestações
+   contributivas; AMIM é da Saúde, atestado multiuso).
+9. **Pedido de reavaliação de escalão ASE** — publicado sem pivot
+   (`documentos/requerimento-reavaliacao-escalao-ase.html`). Processo
+   descentralizado por agrupamento de escolas, sem Mod. nacional da
+   DGE — página recomenda confirmar se a escola tem impresso próprio.
+10. **Pedido de consulta do processo / acesso a documentos (CPA)** —
+    publicado sem pivot (`documentos/pedido-acesso-documentos-administrativos.html`).
+    Lei n.º 26/2016 (LADA), artigo 12.º exige só requerimento escrito
+    (sem Mod. numerado), artigo 15.º fixa prazo de 10 dias úteis.
+11. **Requerimento genérico à Segurança Social** — publicado sem pivot
+    (`documentos/requerimento-generico-seguranca-social.html`).
+    Template catch-all, direito de petição (artigo 52.º CRP) — página
+    avisa explicitamente para nunca ser usado a substituir um Mod.
+    oficial existente nem para contestar uma decisão já tomada.
+12. **Pedido de declaração/comprovativo de situação de prestações** —
+    publicado sem pivot forte (`documentos/pedido-declaracao-comprovativo-prestacoes.html`).
+    Sem Mod. numerado — emitido em auto-serviço pela Segurança Social
+    Direta; a página recomenda esse canal como mais rápido e trata
+    esta minuta como alternativa em papel.
+
+**Excluída à partida** (decisão do prompt original, nunca avaliada):
+procurações e qualquer documento com efeitos de representação legal.
+
+### Integração e cross-links da Sessão 2
+
+Mesmo padrão da Sessão 1: as 9 páginas novas entram em `EXCLUIDAS` de
+`sincronizar_clusters.py` (mesma limitação de sub-caminhos já
+documentada acima), hub `/documentos.html` ganhou 9 cards novos,
+`sitemap.xml`/`scripts/pesquisa.js` actualizados. Cross-links
+adicionados: `reclamacao-decisao-seguranca-social.html` → recurso
+hierárquico (FAQ); `acao-social-escolar.html` → requerimento de
+reavaliação de ASE (FAQ já existente sobre reavaliação); `abono-de-familia.html`
+→ carta de comunicação de alteração; e um aviso novo (`aviso-info`,
+reaproveitando a classe já existente onde disponível) em
+`rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`/
+`prestacao-social-para-a-inclusao.html` a apontar para a reclamação —
+nenhuma destas 4 páginas tinha até agora qualquer menção a "o que fazer
+se o pedido for indeferido".
+
+**Título da carta de CSI encurtado** (79 → 50 caracteres): a versão da
+Sessão 1 incluía o sufixo "— não substitui o Mod. CSI 1" no `<title>`,
+arriscando corte no Google (o `og:title` já usava a versão curta,
+inconsistência corrigida). Meta descriptions das 3 páginas da Sessão 1
+também revistas para CTR (mais curtas, lideram com a pergunta/benefício
+concreto, sem repetir "Gera uma..." em todas).
+
+**Achado real, corrigido antes do commit**: um teste falhou
+(`test_sem_ano_civil_desactualizado_em_title_ou_description`) porque a
+meta description do pedido de acesso a documentos cita "Lei n.º
+26/2016" — o canário de anos em metadados apanhou correctamente "2016"
+como um ano potencialmente desactualizado. Mesma categoria já
+documentada para `cuidador-informal.html`/`subsidio-desemprego.html`
+(número de diploma, não data de vigência) — nova excepção registada em
+`EXCECOES_ANOS_HISTORICOS` (`tests/test_anos_metadados.py`).
+
+Suite completa: **1738 passed, 4 skipped** (76 testes novos: 45 golden
+tests do gerador — 5 por página × 9 páginas novas — mais 31 de
+higiene/nav/pesquisa/acessibilidade parametrizados sobre as páginas
+reais); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
+limpo.
 
 **Excluída à partida, conforme instrução do prompt**: procurações e
 qualquer documento com efeitos de representação legal — nunca
@@ -4255,6 +4355,56 @@ Suite completa local (nenhum código Python alterado por esta sessão):
 --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho
 directo em `main`, sem branches novas.*
+
+---
+
+*Última revisão: 2026-07-06 — Sessão 2 do Gerador de Documentos
+(`PROMPT-GERADOR-DOCUMENTOS-v1.md`): verificadas e publicadas as 9
+candidatas de expansão (4-12) — nenhuma rejeitada, 6 sem pivot
+(recurso hierárquico, exposição por atraso, reavaliação de ASE, acesso
+a documentos/LADA, requerimento genérico, declaração/comprovativo) e 3
+com pivot (dívida em prestações — Mod. IMP.PN.01.01; comunicação de
+alteração — Mod. GF 37/GF 54-DGSS; SVI/junta médica — Mod. SVI
+55-DGSS, prazo de 10 dias). Achado de verificação real, igual em
+espírito ao GF58 da Sessão 1: a candidata #6 (comunicação de
+alteração), que o prompt original assumia simples, revelou-se também
+ter Mod. próprios em certos contextos — tratada como pivot por
+prudência. Distinção deliberada preservada entre SVI (Segurança
+Social, prestações contributivas) e o processo de recurso do AMIM
+(JMAI, Ministério da Saúde) — nunca cross-linkados entre si, para não
+conflacionar dois sistemas de junta médica diferentes.
+
+Motor genérico reaproveitado sem alterações de fundo (só removido o
+disparo de evento GA4 ao gerar, decisão já tomada na Sessão 1 para
+cumprir "zero chamadas de rede depois do load" de forma literal).
+Integração completa: hub `/documentos.html` com 12 cards, `sitemap.xml`,
+`scripts/pesquisa.js`, `EXCLUIDAS` em `sincronizar_clusters.py` (mesma
+limitação de sub-caminhos da Sessão 1 — registada para o futuro, não
+corrigida), cross-links novos a partir de `reclamacao-decisao-seguranca-social.html`,
+`acao-social-escolar.html`, `abono-de-familia.html`, e de
+`rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`/
+`prestacao-social-para-a-inclusao.html` para a reclamação (nenhuma
+destas 4 tinha até agora orientação sobre "o que fazer se o pedido for
+indeferido"). Título da carta de CSI encurtado (79→50 caracteres,
+risco de corte no Google) e meta descriptions das 3 páginas da Sessão 1
+revistas para CTR.
+
+Achado real corrigido antes do commit: o canário de anos em metadados
+(`tests/test_anos_metadados.py`) apanhou correctamente "2016" na meta
+description do pedido de acesso a documentos (cita "Lei n.º 26/2016")
+como um ano potencialmente desactualizado — nova excepção registada em
+`EXCECOES_ANOS_HISTORICOS`, mesma categoria já usada para
+`cuidador-informal.html`/`subsidio-desemprego.html` (número de diploma,
+não data de vigência).
+
+45 golden tests novos (5 critérios × 9 páginas, mesmo ficheiro genérico
+`tests/test_gerador_documentos.py` da Sessão 1 — só a lista
+`PAGINAS_MINUTA` cresceu, nenhuma lógica de teste duplicada) + 1 teste
+de nav. Suite completa: **1738 passed, 4 skipped** (mesmos skips já
+documentados); `ruff check scripts/ tests/ --select E,F,W --ignore
+E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados por esta sessão). Trabalho directo
+em `main`, sem branches novas.*
 
 ---
 

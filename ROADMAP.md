@@ -12,53 +12,58 @@ completo sempre em `CLAUDE.md`, nunca aqui.
 
 ---
 
-## 📄 GERADOR DE DOCUMENTOS — ESTADO (Sessão 1 de 2, concluída 2026-07-06)
+## 📄 GERADOR DE DOCUMENTOS — ESTADO (Sessões 1 e 2 concluídas, 2026-07-06)
 
 Ver CLAUDE.md → **"GERADOR DE DOCUMENTOS"** para o detalhe completo
-(arquitectura, portão de verificação, testes). Resumo para a Sessão 2:
+(arquitectura, portão de verificação, testes). Projecto concluído — as
+12 minutas candidatas do prompt original foram todas verificadas e
+publicadas (nenhuma rejeitada).
 
-**Publicado nesta sessão** — motor (`assets/js/gerador-documentos.js`)
-+ CSS partilhado + hub `/documentos.html` + 3 páginas em `documentos/`:
-1. `reclamacao-decisao-seguranca-social.html` — minuta completa (canal
-   legítimo, CPA artigos 191.º-198.º, sem pivot).
-2. `carta-acompanhamento-reavaliacao-abono.html` — **pivot** (Modelo
-   GF58-DGSS obrigatório; achado desta sessão, o prompt original não
-   antecipava pivot aqui).
-3. `carta-acompanhamento-csi.html` — **pivot** (Mod. CSI 1/1.1/1.2
-   obrigatório; pivot já antecipado pelo prompt original).
+**Motor** (`assets/js/gerador-documentos.js`) + CSS partilhado + hub
+`/documentos.html` (12 cards) + 12 páginas em `documentos/`:
 
-Integração completa: nav (`sincronizar_nav.py`), `sitemap.xml`,
-`scripts/pesquisa.js`, cross-links a partir de `abono-de-familia.html`
-e `complemento-solidario-idosos.html`, golden tests + teste de rede
-(`tests/test_gerador_documentos.py`, 17 testes). Suite completa: 1549
-passed, 4 skipped. Trabalho directo em `main`.
-
-**Para a Sessão 2** — verificar as candidatas 4-12 da lista de expansão
-do prompt original (`PROMPTGERADORDOCUMENTOSv1.md`), publicando as que
-passarem o portão de verificação:
-
-| # | Candidata | Nota |
+| # | Minuta | Resultado do portão |
 |---|---|---|
-| 4 | Recurso hierárquico de decisão da Segurança Social | Complementa a reclamação já publicada (artigos 193.º-198.º do CPA) |
-| 5 | Pedido de pagamento de dívida à SS em prestações | Por verificar — confirmar se existe Mod. próprio |
-| 6 | Comunicação de alteração de agregado/morada/rendimentos | Distinta da reavaliação de escalão (já publicada); por verificar |
-| 7 | Exposição por atraso no processamento de prestação | Só se o prazo legal aplicável for verificável |
-| 8 | Reclamação de decisão do SVI / junta médica | Por verificar canal legítimo |
-| 9 | Pedido de reavaliação de escalão ASE | Liga ao cluster `apoios-escolares` já existente |
-| 10 | Pedido de consulta do processo / acesso a documentos (CPA) | Por verificar |
-| 11 | Requerimento genérico à Segurança Social | Template base — por verificar se acrescenta valor além da reclamação já publicada |
-| 12 | Pedido de declaração/comprovativo de situação de prestações | Por verificar |
+| 1 | `reclamacao-decisao-seguranca-social.html` | Sem pivot — CPA arts. 191.º-192.º |
+| 2 | `carta-acompanhamento-reavaliacao-abono.html` | **Pivot** — Modelo GF58-DGSS |
+| 3 | `carta-acompanhamento-csi.html` | **Pivot** — Mod. CSI 1/1.1/1.2 |
+| 4 | `recurso-hierarquico-seguranca-social.html` | Sem pivot — CPA arts. 193.º-198.º |
+| 5 | `carta-acompanhamento-divida-prestacoes.html` | **Pivot** — Mod. IMP.PN.01.01 |
+| 6 | `carta-acompanhamento-comunicacao-alteracao.html` | **Pivot** — Mod. GF 37/GF 54-DGSS (contextos específicos) |
+| 7 | `exposicao-atraso-processamento.html` | Sem pivot — CPA arts. 128.º-129.º |
+| 8 | `carta-acompanhamento-svi-recurso.html` | **Pivot** — Mod. SVI 55-DGSS, prazo 10 dias |
+| 9 | `requerimento-reavaliacao-escalao-ase.html` | Sem pivot — processo descentralizado por escola |
+| 10 | `pedido-acesso-documentos-administrativos.html` | Sem pivot — Lei n.º 26/2016 (LADA) |
+| 11 | `requerimento-generico-seguranca-social.html` | Sem pivot — template catch-all |
+| 12 | `pedido-declaracao-comprovativo-prestacoes.html` | Sem pivot forte — SS Direta é auto-serviço |
 
 **Excluída à partida** (decisão do prompt original, nunca avaliada):
 procurações e qualquer documento com efeitos de representação legal.
 
-Também para a Sessão 2: rever meta descriptions das 4 páginas para CTR,
-avaliar interligação com mais páginas de conteúdo (ex.: `rsi.html` →
-reclamação; outras prestações → reclamação), e considerar se vale a
-pena generalizar `Pagina.slug` em `sincronizar_clusters.py` para
-suportar sub-caminhos (ver CLAUDE.md, "Integração no sistema de
-clusters") — só se o número de minutas publicadas crescer o
-suficiente para justificar o refactor.
+Integração completa: nav, `sitemap.xml`, `scripts/pesquisa.js`,
+cross-links a partir de `abono-de-familia.html`,
+`complemento-solidario-idosos.html`, `acao-social-escolar.html`,
+`reclamacao-decisao-seguranca-social.html`, e de
+`rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`/
+`prestacao-social-para-a-inclusao.html` para a reclamação. Meta
+descriptions das 3 páginas da Sessão 1 revistas para CTR nesta sessão;
+título da carta de CSI encurtado (risco de corte no Google).
+
+62 golden tests (`tests/test_gerador_documentos.py`, genérico sobre as
+12 páginas via `page.evaluate("CONFIG_DOCUMENTO")` — nunca hardcoded
+por minuta) + teste de rede. Suite completa: **1738 passed, 4
+skipped**. Trabalho directo em `main`.
+
+**Registado para o futuro, sem prazo**: generalizar `Pagina.slug` em
+`sincronizar_clusters.py` para suportar sub-caminhos (`documentos/...`)
+e dar cluster membership a sério às minutas (badge "Ferramenta",
+contagem no cartão da homepage) — só as 12 páginas ficarem em
+`EXCLUIDAS` funciona bem hoje, o refactor só se justifica se o número
+de minutas crescer muito mais. SVI (`carta-acompanhamento-svi-recurso.html`)
+e AMIM (`amim.html`) deliberadamente **nunca** cross-linkados entre si
+— são processos de junta médica distintos (Segurança Social vs.
+Ministério da Saúde) — não reverter essa decisão sem confirmar de novo
+que são de facto o mesmo sistema.
 
 ---
 

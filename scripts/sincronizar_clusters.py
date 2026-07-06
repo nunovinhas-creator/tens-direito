@@ -76,6 +76,17 @@ EXCLUIDAS = {
     "reclamacao-decisao-seguranca-social.html",
     "carta-acompanhamento-csi.html",
     "carta-acompanhamento-reavaliacao-abono.html",
+    # Sessão 2 do Gerador de Documentos (2026-07-06) — candidatas 4-12
+    # verificadas e publicadas, mesma categoria/razão das 3 anteriores.
+    "recurso-hierarquico-seguranca-social.html",
+    "exposicao-atraso-processamento.html",
+    "carta-acompanhamento-divida-prestacoes.html",
+    "carta-acompanhamento-svi-recurso.html",
+    "carta-acompanhamento-comunicacao-alteracao.html",
+    "requerimento-reavaliacao-escalao-ase.html",
+    "pedido-acesso-documentos-administrativos.html",
+    "requerimento-generico-seguranca-social.html",
+    "pedido-declaracao-comprovativo-prestacoes.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
