@@ -1,0 +1,47 @@
+name: Diagnóstico temporário — IGeFE MEGA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar dependências
+        run: pip install requests beautifulsoup4 lxml
+      - name: Testar URLs candidatas
+        run: |
+          python3 << 'PYEOF'
+          import requests
+
+          urls = [
+              "https://www.igefe.mec.pt/Page/Index/199",
+              "https://eduqa.pt/adocao-de-manuais-escolares-em-2026-com-efeitos-no-ano-letivo-de-2026-2027/",
+          ]
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+              "Accept-Language": "pt-PT,pt;q=0.9",
+          }
+          for url in urls:
+              print(f"\n=== {url} ===")
+              try:
+                  r = requests.get(url, headers=headers, timeout=20)
+                  print("status:", r.status_code)
+                  print("len:", len(r.text))
+                  low = r.text.lower()
+                  print("tem 'mega':", "mega" in low)
+                  print("tem 'manuais escolares':", "manuais escolares" in low)
+                  print("tem 'cloudflare':", "cloudflare" in low or "cf-browser-verification" in low)
+                  print("tem 'just a moment':", "just a moment" in low)
+                  # imprimir um excerto do <title> e primeiros 300 chars de texto visível
+                  import re
+                  m = re.search(r"<title>(.*?)</title>", r.text, re.S | re.I)
+                  print("title:", m.group(1).strip()[:150] if m else "(sem title)")
+              except Exception as exc:
+                  print("ERRO:", repr(exc))
+          PYEOF
