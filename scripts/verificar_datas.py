@@ -66,6 +66,15 @@ MARCADORES_HISTORICOS = [
     # ocorrido), não um valor ou prazo corrente (issue #51: "pediu ... uma
     # revisão urgente em agosto de 2025").
     r"revisão urgente",
+    # Regra antiga descrita como já revogada, com a data-limite da mudança
+    # (issue #53, baixa-medica-subsidio-doenca.html: "já não existe o limite
+    # mínimo de 30 dias que existia antes de 1 de abril de 2024" — descreve
+    # permanentemente um estado passado, nunca "expira"; a citação legal
+    # "em vigor desde 1 de abril de 2024" mais abaixo na página está fora da
+    # janela de 220 caracteres desta ocorrência específica, por isso precisa
+    # do seu próprio marcador). "exist(?:e|ia|iam)" para não apanhar um
+    # "antes de" genérico sem relação com uma regra revogada.
+    r"exist(?:e|ia|iam)\s+antes\s+de\b",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

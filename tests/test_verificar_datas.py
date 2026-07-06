@@ -208,6 +208,29 @@ def test_contratos_celebrados_ate_data_limite_nao_gera_alerta():
     assert detectar_alertas(html, "apoio-extraordinario-renda.html", ANO, MES) is None
 
 
+def test_regra_revogada_existia_antes_de_nao_gera_alerta():
+    # Regra antiga descrita como já revogada, com a data-limite da mudança —
+    # descreve permanentemente um estado passado, nunca "expira" (issue #53,
+    # baixa-medica-subsidio-doenca.html).
+    html = _html(
+        "já não existe o limite mínimo de 30 dias que existia antes de "
+        "1 de abril de 2024."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "baixa-medica-subsidio-doenca.html", ANO, MES) is None
+
+
+def test_antes_de_generico_sem_exist_nao_e_mascarado_por_engano():
+    # "antes de <data antiga>" sozinho, sem "existia/existe/existiam", não é
+    # uma regra revogada — não pode ser mascarado por sobreposição de
+    # substring com o marcador novo.
+    html = _html(
+        "O prazo para submeter o pedido terminou antes de 15 de março de 2024."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "acao-social-escolar.html", ANO, MES) is not None
+
+
 def test_posterior_ate_sem_data_nao_e_mascarado_por_engano():
     # "posterior até" (ressarcimento posterior até X€, sem data-limite) não
     # pode ser confundido com "posterior a <data>" — o marcador usa \b para
@@ -412,3 +435,12 @@ def test_apoio_extraordinario_renda_real_nao_gera_alerta_issue_51():
 def test_porta_65_real_nao_gera_alerta_issue_52():
     html = _ler_pagina_real("porta-65.html")
     assert detectar_alertas(html, "porta-65.html", ANO, MES) is None
+
+
+def test_baixa_medica_subsidio_doenca_real_nao_gera_alerta_issue_53():
+    # Match real: "já não existe o limite mínimo de 30 dias que existia
+    # antes de 1 de abril de 2024" — regra revogada pelo DL n.º 8/2024,
+    # fora da janela de 220 caracteres da citação legal "em vigor desde
+    # 1 de abril de 2024" mais abaixo na página.
+    html = _ler_pagina_real("baixa-medica-subsidio-doenca.html")
+    assert detectar_alertas(html, "baixa-medica-subsidio-doenca.html", ANO, MES) is None
