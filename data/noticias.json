@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-03",
+      "titulo": "Primeiro pagamento de julho da Segurança Social chega hoje à conta: veja quem recebe e o restante calendário",
+      "fonte_nome": "Executive Digest",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQWHQtZTNnVFY3aHFNX1ZTZ3J5YVpDbElfSW9lTTIzZ0dZcFZ2NWg1MllheVpMdUUzVTBvNEJ2U1NkVnhya244am9HanRDU1lKUEFsaTQ5bExJVlBUZ1dYY19WMGp1TjVUMjVFVWFzc1lmU2dlanM3Rmk2eDlQcVFJby13bU5LZGdrc3VfXzVKS3ZQcFAzQmsyMmdIOHNzMHp2S0ZLYWN5VWhyZkp1Rnc1VFZ3T0JwSnBfcjctNnVmTVZSZW9IMmdaUHA0QU5NazNyMGVFOWhuOA?oc=5",
+      "resumo": "Primeiro pagamento de julho da Segurança Social chega hoje à conta: veja quem recebe e o restante calendário Executive Digest",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-07-01",
       "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de julho",
       "fonte_nome": "Notícias ao Minuto",
@@ -24,6 +33,15 @@
       "fonte_nome": "ECO",
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQR2M4SFBzckxyTHJURkFicmRwN2NNb19MMGliVGdueDNOQnhBanJjd2tSMUJOY2w0cDJZZGE0RXRlS2hBOTR2NjQ3Yk9KSkwtTEluaFdQMy10RmFLRlU4WjBTaEdsQWdUUDYtT2Faci0xZFIyZ2lwWHJVSnV5Tl9zNmxHNkpHVVBhc0tOQlJHQ1d4WHNzYTN1YnFPaTFRZW1ocWZTNmpjU3lFZHl5bTQtMUg5eURQbV9jS2gxMld2cw?oc=5",
       "resumo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos ECO",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-06-30",
+      "titulo": "Entrega do IRS termina hoje com 6 milhões de declarações já submetidas",
+      "fonte_nome": "dnoticias.pt",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPQ2M2bjllZDRXT0puSkRTQVYyck1NekN2SE9WSmNsM1ExWFNaUlNQTGRsajBWNHYyYVVtOW9Nanl4aGlRNjk2WTFBUHdPVzdZckJ0X3p6YUJHWGl2d2czYU1JcE9Yc3NlSHpRSHVkZWxxdjhXS1RxMDhudnJNcWhGS2YxOF9OQ1BRbzZzS1VveXhhTC13R1hRU2pjd2V5TTJwUUhsS2tURWxfd0hyMGhLVnFLdw?oc=5",
+      "resumo": "Entrega do IRS termina hoje com 6 milhões de declarações já submetidas dnoticias.pt",
       "categoria": "fiscal",
       "cluster_id": null
     },

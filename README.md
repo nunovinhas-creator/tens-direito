@@ -11,7 +11,7 @@
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **05 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **06 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -50,7 +50,7 @@ Actualizado automaticamente a partir do repositório em **05 de julho de 2026**.
 | [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
-| [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: condições, cálculo e como pedir |
+| [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor até 1.342,83€ e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
 
 <!-- END:ESTADO -->
@@ -351,6 +351,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 05 de julho de 2026 às 15:27 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 06 de julho de 2026 às 07:12 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
