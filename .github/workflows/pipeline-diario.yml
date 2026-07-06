@@ -984,7 +984,16 @@ jobs:
             // primeiro)
             try {
               const avisos_txt = fs.readFileSync('data/scraped/avisos.log', 'utf8');
-              if (avisos_txt.includes('mega_2026_2027_publicadas')) {
+              // avisos.log é um log cumulativo, nunca rotacionado — um
+              // .includes()/.match() sobre o ficheiro inteiro reencontra
+              // para sempre uma linha antiga já accionada/fechada (achado
+              // real: Issues #55-#58, todas da mesma linha de 07:21:13 de
+              // uma corrida anterior à correcção do regex). Filtrar só às
+              // linhas de hoje, mesmo padrão já usado abaixo para
+              // bloqueio_por_slug_hoje.
+              const avisos_hoje = avisos_txt.split('\n').filter(l => l.startsWith(hoje));
+              const linha_mega = avisos_hoje.find(l => l.includes('mega_2026_2027_publicadas'));
+              if (linha_mega) {
                 const existing = await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -994,7 +1003,7 @@ jobs:
                 const duplicate = existing.data.find(i => i.title.includes('MEGA 2026/2027') && i.title.includes('datas'));
                 if (!duplicate) {
                   // Extrair excertos do log
-                  const match = avisos_txt.match(/mega_2026_2027_publicadas:([^\n]*)/);
+                  const match = linha_mega.match(/mega_2026_2027_publicadas:(.*)$/);
                   const excertos = match ? match[1].trim() : '(ver data/scraped/mega_datas_latest.json ou data/scraped/igefe_mega_latest.json)';
                   await github.rest.issues.create({
                     owner: context.repo.owner,
@@ -1024,7 +1033,9 @@ jobs:
               }
 
               // Issue específica: decreto-lei da PSU detectado em DRE
-              if (avisos_txt.includes('dre_psu_decreto_detectado')) {
+              // (mesmo cuidado do bloco MEGA acima — só linhas de hoje)
+              const linha_psu = avisos_hoje.find(l => l.includes('dre_psu_decreto_detectado'));
+              if (linha_psu) {
                 const existing_psu = await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -1033,7 +1044,7 @@ jobs:
                 });
                 const duplicate_psu = existing_psu.data.find(i => i.title.includes('decreto-lei PSU') && i.title.includes('DRE'));
                 if (!duplicate_psu) {
-                  const match_psu = avisos_txt.match(/dre_psu_decreto_detectado:([^\n]*)/);
+                  const match_psu = linha_psu.match(/dre_psu_decreto_detectado:(.*)$/);
                   const excertos_psu = match_psu ? match_psu[1].trim() : '(ver data/scraped/dre_psu_latest.json)';
                   await github.rest.issues.create({
                     owner: context.repo.owner,
