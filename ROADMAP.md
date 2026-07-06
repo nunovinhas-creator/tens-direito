@@ -22,6 +22,7 @@ completo sempre em `CLAUDE.md`, nunca aqui.
 | **Auto-update do carimbo "Verificado a"** (`REVALIDACAO_CARIMBO_HABILITADA`) | ≥14 relatórios shadow consecutivos com simulações correctas (zero falsos elegíveis) **e** fontes correspondentes maioritariamente `OK` — decisão do Nuno, nunca do Claude Code | `shadow_history/*.md`, secção "Carimbos elegíveis para revalidação (simulado)" de cada relatório | Ligar a flag numa sessão manual dedicada, nunca de ânimo leve — ver CLAUDE.md **"REVALIDAÇÃO DE CARIMBO"** |
 | **Densidade da PSU na homepage** | "Quando o tema arrefecer" (sem data fixada) — julgamento do Nuno | Olhar à homepage / tráfego | Remover banner do topo + cartão de prazos (dos 6 pontos actuais que a PSU ocupa) — ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 1 |
 | **Backlog Habitação** (garantia crédito jovem, isenção IMT jovem, RSAA, 1.º Direito) | Nenhum — só quando houver prioridade dedicada | — | Fact-check + página nova, um apoio de cada vez — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** → Backlog |
+| **Novo sistema de ação social no ensino superior** (`bolsa-de-estudo-ensino-superior.html`) | Publicação em dre.pt do decreto-lei aprovado em Conselho de Ministros a 21/05/2026 (aplicável a partir de 2026/2027) — nenhuma fonte automática vigia isto, verificação manual/`WebSearch` em `dges.gov.pt`/dre.pt | dre.pt, dges.gov.pt (Code não tem scraper dedicado) | Reescrever a secção "O que muda a partir de 2026/2027" com os valores/fórmula reais do diploma publicado; actualizar `<title>`/description se um valor máximo concreto passar a existir (e nesse caso, cobrir em `tests/test_valores_ancora.py`) |
 
 ### Automáticos (o sistema já avisa via Issue)
 
@@ -97,6 +98,12 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **Vigilância automática das datas MEGA alargada a `igefe.mec.pt`** (nova
+  fonte `igefe_mega`) — 2026-07-06, fecha o furo em que só `dge.mec.pt` era
+  vigiado.
+- **Página `bolsa-de-estudo-ensino-superior.html`** — publicada 2026-07-06,
+  6.ª página do cluster `apoios-escolares`, fecha a lacuna já admitida pelo
+  próprio `p/apoios-escolares.html`.
 - **Simulador de subsídio de doença** (`simulador-subsidio-doenca.html`) —
   publicado 2026-07-05, 4.ª calculadora do site.
 - **Página `baixa-medica-subsidio-doenca.html`** — publicada 2026-07-05.

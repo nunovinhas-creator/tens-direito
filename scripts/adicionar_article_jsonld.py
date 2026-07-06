@@ -87,6 +87,7 @@ DATAS_PUBLICACAO = {
     "prova-escolar.html": "2026-07-03",
     "prestacao-social-para-a-inclusao.html": "2026-07-04",
     "baixa-medica-subsidio-doenca.html": "2026-07-05",
+    "bolsa-de-estudo-ensino-superior.html": "2026-07-06",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

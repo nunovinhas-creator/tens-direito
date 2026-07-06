@@ -365,6 +365,7 @@ para esses três casos.
 | `prova-escolar.html` | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como | 3 jul. 2026 |
 | `prestacao-social-para-a-inclusao.html` | Prestação Social para a Inclusão (PSI) 2026 | 4 jul. 2026 |
 | `baixa-medica-subsidio-doenca.html` | Baixa médica e subsídio de doença 2026 | 5 jul. 2026 |
+| `bolsa-de-estudo-ensino-superior.html` | Bolsa de Estudo do Ensino Superior 2026/2027 | 6 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -3604,3 +3605,113 @@ limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False`. Fecha a sessão SEO intermédia das 3 tarefas
 (actualização MEGA 2026/2027, canário de anos em metadados, esta
 análise) antes da FASE 3 de `MELHORIAS-SPEC.md`.
+
+---
+
+*Última revisão: 2026-07-06 — TAREFA 1 de sessão de continuidade:
+fechado o furo de vigilância MEGA identificado em `ANALISE-CLUSTER-
+ESCOLAR.md`/sessão anterior — o único sentinela automático das datas
+dos vales (`mega_datas`) só vigiava `dge.mec.pt`, mas quem emite de
+facto os vouchers aos encarregados de educação é a IGeFE, I.P.
+Confirmado num runner real (`diagnostico-igefe-temp.yml`, apagado no
+fim) que `igefe.mec.pt/Page/Index/199` é acessível via pedido HTTP
+simples e que o seu conteúdo real (secção "Emissão de Vouchers") vive
+num `<div class="ig-publicsite-paragraph">`, nunca em `<p>` — a 1.ª
+tentativa de extracção com selectores genéricos devolvia quase nada
+(585 chars, tudo navegação), corrigido calibrando selectores
+específicos a esta fonte antes de integrar. Nova fonte `igefe_mega`
+(`scripts/scraper_playwright.py`, `metodo="http"`, `min_chars_uteis=300`,
+`ancora_conteudo=("voucher",)`) e lógica de detecção partilhada com
+`mega_datas` (`_detectar_datas_mega()`, extraída para função comum,
+chamada tanto por `scrape_playwright()` como por `scrape_http()`) sob a
+mesma chave de aviso `mega_2026_2027_publicadas` — a Issue automática
+dispara com qualquer uma das duas fontes, independentemente de qual
+detectar primeiro. `igefe_mega` também entra em `SLUGS_MONITORIZADOS`
+(`gerir_estado_fontes.py`) e em `data/pagina_fonte.json`, para herdar a
+máquina de estados de `fonte-bloqueada` e a simulação de revalidação de
+carimbo sem código adicional. EduQA não foi adicionada como fonte —
+confirmado que o calendário que gere é o de **adopção de manuais pelas
+escolas** (Despacho n.º 3026/2024), processo distinto da **emissão de
+vouchers** que esta página documenta.
+
+**Dois falsos positivos reais, corrigidos em duas iterações** — ver
+"PÁGINAS COM DATAS SAZONAIS" para o detalhe técnico. 1.ª tentativa
+(janela de proximidade de 60 chars): o conteúdo real e actual de
+`igefe_mega` ("28 de julho de 2025", ano letivo 2025/2026 ainda a
+decorrer) disparou a Issue #55 por engano — a lógica original herdada
+de `mega_datas` não tinha âncora nenhuma ao ano. Corrigido com uma
+janela de proximidade; verificado num 2.º disparo real do pipeline que
+**não foi suficiente** — Issue #56, mesma causa, porque "2026" continua
+a aparecer a menos de 60 chars de "julho" no HTML bruto (markup entre o
+texto visível engorda a distância face ao texto limpo usado para
+calibrar a janela). Corrigido de vez exigindo a frase completa e
+inequívoca "julho de 2026"/"agosto de 2026", nunca uma proximidade
+aproximada — testado com 7 casos (incluindo os dois falsos positivos
+reais e um caso pensado para quebrar qualquer janela futura) e
+confirmado num 3.º disparo real do pipeline: `igefe_mega` classifica OK
+e nenhuma Issue nova foi criada. Ambas as Issues falsas (#55, #56)
+fechadas com comentário explicativo. **Lição**: uma correcção a um
+falso positivo tem de ser verificada contra o cenário real que o
+disparou, nunca só contra um fixture construído à mão — a 1.ª correcção
+pareceu suficiente num fixture reconstruído da memória do diagnóstico,
+mas falhou contra o HTML bruto real.
+
+TAREFA 2: nova página `bolsa-de-estudo-ensino-superior.html` (6.ª
+página do cluster `apoios-escolares`), fechando a lacuna que o próprio
+`p/apoios-escolares.html` já admitia publicamente duas vezes no seu
+texto ("bolsas de ação social da DGES... não estão cobertos neste
+guia"). Fact-check via `WebSearch` restrito a `dges.gov.pt` e `dre.pt`
+(instrução explícita desta sessão): Regulamento de Atribuição de Bolsas
+de Estudo a Estudantes do Ensino Superior (Despacho n.º 8442-A/2012,
+com a alteração mais recente pelo Despacho n.º 7253/2024), plataforma
+BeOn (candidatura exclusivamente online), prazo geral 14 de agosto a 2
+de outubro (extensível até 31 de maio com valor proporcional; 20 dias
+úteis se a inscrição for próxima do prazo, ou após início de estágio
+profissional), documentos (IBAN, Valor do Património Mobiliário a 31
+de dezembro do ano anterior), propina de referência 2025/2026 = 697 €
+(inalterada face ao ano anterior, confirmado 3× independentemente) e
+bolsa mínima de referência ≈ 872 € (125% da propina) — todos com fonte
+citada em comentário/fonte-bloco, nunca de memória.
+
+**Achado importante, tratado com o mesmo cuidado do "GATILHO
+AUTOBAIXA"**: o Conselho de Ministros aprovou, a 21 de maio de 2026, um
+novo sistema de ação social no ensino superior, aplicável a partir do
+ano letivo 2026/2027 — mas confirmado por pesquisa restrita a `dre.pt`
+que o decreto-lei **ainda não tinha sido publicado** em Diário da
+República à data de verificação (06/07/2026), apenas aprovado em
+Conselho de Ministros (fase anterior à publicação). Como a fonte dessa
+notícia é `portugal.gov.pt` (fora do âmbito `dges.gov.pt`/`dre.pt`
+definido para esta tarefa), a página menciona a reforma apenas como
+facto verificável e datado (aprovação em CM nessa data, ainda sem
+diploma em DRE) — nunca os valores/fórmulas específicos estimados na
+comunicação do Governo, que não têm fonte DRE/DGES. Título deliberadamente
+**sem valor em €** — não há um "valor máximo" simples e confirmado (a
+bolsa é calculada caso a caso) nem faz sentido ancorar um valor do
+sistema actual (872€, mínimo 2025/2026) que a reforma pendente pode vir
+a alterar assim que o diploma sair; por isso `tests/test_valores_
+ancora.py` não precisou de nova entrada. Gatilho registado em
+`ROADMAP.md` para reescrever a secção "O que muda a partir de
+2026/2027" assim que o decreto-lei for publicado.
+
+Inclui os dois blocos da FASE 1 (`.resposta-rapida` + `.checklist-final`),
+interligação nos dois sentidos com `p/apoios-escolares.html` (2
+ocorrências do texto "não cobertos" substituídas por link real),
+`acao-social-escolar.html` (via `RELACIONADOS` automático) e
+`bolsa-de-merito.html` (cross-link manual "Acabaste o 12.º ano?",
+seguindo a proposta já registada em `ANALISE-CLUSTER-ESCOLAR.md`).
+`data/clusters.json`, `sitemap.xml` e `scripts/pesquisa.js` actualizados;
+`scripts/sincronizar_clusters.py`/`sincronizar_nav.py`/`inserir_botao_
+partilhar.py`/`adicionar_canonicas.py`/`adicionar_autoria_artigos.py`/
+`adicionar_article_jsonld.py` corridos com sucesso (idempotência
+confirmada — 2.ª corrida de `sincronizar_clusters.py` = zero alterações).
+
+Verificação: 4 blocos JSON-LD (`FAQPage`+`HowTo`+`BreadcrumbList`+
+`Article`) confirmados como JSON válido; `html5validator` sem erros (só
+o aviso informativo pré-existente "type attribute unnecessary"); suite
+completa — 1163 passed, 65 skipped (mesma limitação de `feedparser`
+neste sandbox, documentada em sessões anteriores); os 11 testes
+parametrizados sobre a página nova em `test_higiene_indexacao.py`/
+`test_breadcrumb_coerencia.py`/`test_nav_coerencia.py` confirmados a
+passar; `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False`. Trabalho directo em `main`, sem branches.
