@@ -1229,7 +1229,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 | Página | Data a rever | Trigger |
 |---|---|---|
-| `manuais-escolares-mega.html` | Julho, semanal até publicação (datas MEGA 2026/2027) | Issue automática do scraper (`dge.mec.pt`) + verificação manual semanal — ver nota abaixo |
+| `manuais-escolares-mega.html` | Julho, até publicação (datas MEGA 2026/2027) | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
 | `acao-social-escolar.html` | Setembro (prazo ASE) | Calendário anual |
 | `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
@@ -1244,28 +1244,51 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
 
-**`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06)**:
-verificado por `WebSearch` (fontes: gov.pt, manuaisescolares.pt, IGeFE,
-DGE, EduQA — nunca blogs/notícias secundárias) que **as datas de emissão
-dos vales MEGA 2026/2027 ainda não foram publicadas**. Achado relevante
-para a próxima verificação: o calendário de **adopção de manuais pelas
-escolas** (processo diferente, interno, nunca dá acesso a vales) para
-2026/2027 já está confirmado — EduQA, I.P., ao abrigo do Despacho
-n.º 3026/2024, de 21 de março (registo em SIME-MEGA: 1-26 jun. 2026;
-requisição de manuais em braille/digital: 29 jun.-24 jul. 2026) — nunca
-confundir os dois processos na página. Descoberta institucional: a
-entidade que gere a plataforma MEGA (vales aos encarregados de
-educação) é a **IGeFE, I.P.** (`igefe.mec.pt`), não a DGE — a fonte
-`mega_datas` do scraper (`scripts/scraper_playwright.py`) só vigia
-`dge.mec.pt/manuais-escolares`, por isso **pode não ser a 1.ª a reflectir
-um anúncio** se este surgir primeiro em `manuaisescolares.pt` ou
-`igefe.mec.pt`. Até o scraper ser actualizado para vigiar também estas
-fontes (não feito nesta sessão — âmbito maior, precisa de confirmar o
-padrão de HTML de cada uma), **verificação manual semanal por
-`WebSearch`** continua necessária em julho/agosto, além da Issue
-automática existente. Página actualizada com estas fontes adicionais no
-bloco "Fontes e verificação" e no corpo (secção "Calendário"); `title`/
-`meta description` já diziam "2026/2027" antes desta sessão — mantidos.
+**`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06,
+actualizada 2026-07-06)**: a lacuna de vigilância identificada na sessão
+anterior (o scraper só vigiava `dge.mec.pt`, entidade que não gere de
+facto a plataforma MEGA) **está fechada** — nova fonte `igefe_mega`
+(`scripts/scraper_playwright.py`, `metodo="http"`) vigia directamente
+`https://www.igefe.mec.pt/Page/Index/199`, a página real onde a IGeFE,
+I.P. (a entidade que emite os vouchers aos encarregados de educação)
+publica a secção "Emissão de Vouchers". Confirmado num runner real
+(2026-07-06) que o conteúdo útil desta página não vive em `<p>` — está
+num `<div class="ig-publicsite-paragraph">` — por isso os selectores são
+específicos a esta fonte (`paragrafos: ".ig-publicsite-paragraph"`, não
+o `"p"` genérico usado nas outras fontes); `min_chars_uteis=300` e
+`ancora_conteudo=("voucher",)` calibrados com o conteúdo real (~1000
+chars úteis, "voucher" nunca aparece na navegação/rodapé, só no
+parágrafo de conteúdo). `mega_datas` (`dge.mec.pt`) e `igefe_mega`
+partilham a mesma lógica rica de detecção e a mesma chave de aviso
+(`mega_2026_2027_publicadas`, via `MEGA_SLUGS_DATAS_RICAS` e
+`_detectar_datas_mega()`) — a Issue automática
+"📅 MEGA 2026/2027 — datas de emissão detectadas" dispara sempre que
+**qualquer uma** das duas detectar o padrão, independentemente de qual
+publicar primeiro. Testado com fixtures reais (conteúdo actual de
+2025/2026 classifica OK; conteúdo simulado com "2026/2027" + data de
+julho/agosto dispara o aviso; conteúdo vazio nunca classifica OK — as
+3 pontas do invariante "nenhum estado de erro pode parecer sucesso").
+
+**O que continua manual**: o scraper só *alerta* — nunca escreve HTML
+de artigos (ver "REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS", só
+`index.html`/`noticias.html`/`CLAUDE.md`/`README.md`/`data/*.json` podem
+ser escritos pelo pipeline). Uma Issue `mega_2026_2027_publicadas`
+continua a exigir uma sessão manual para confirmar as datas exactas e
+editar `manuais-escolares-mega.html` — o que mudou é só a rapidez e a
+cobertura da detecção (2 fontes independentes em vez de 1), não quem
+faz a edição. **Verificação manual semanal por `WebSearch` deixa de ser
+necessária** como rede de segurança principal — mantém-se só como
+reforço oportunista se alguém estiver a rever a página por outro
+motivo, já que nenhuma automação garante 100% de cobertura (ex.: um
+anúncio que apareça primeiro num canal que nenhuma das duas fontes
+vigia, como redes sociais ou imprensa).
+
+EduQA (`eduqa.pt`) **não foi adicionada como fonte** — confirmado que o
+calendário que gere (registo SIME-MEGA, requisição de manuais em
+braille/digital, Despacho n.º 3026/2024) é o processo de **adopção de
+manuais pelas escolas**, distinto do processo de **emissão de vouchers
+aos encarregados de educação** que esta página documenta; scraper essa
+fonte não ajudaria a detectar o sinal que importa aqui.
 
 **`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
 ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb

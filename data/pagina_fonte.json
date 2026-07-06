@@ -6,7 +6,7 @@
   "acao-social-escolar.html": ["dge_ase"],
   "simulador-ase.html": ["dge_ase"],
   "bolsa-de-merito.html": ["dge_ase"],
-  "manuais-escolares-mega.html": ["dge_manuais", "mega_datas"],
+  "manuais-escolares-mega.html": ["dge_manuais", "mega_datas", "igefe_mega"],
   "prestacao-social-unica.html": ["dre_psu"],
   "psu-quando-entra-em-vigor.html": ["dre_psu"],
   "psu-quem-tem-direito.html": ["dre_psu"],

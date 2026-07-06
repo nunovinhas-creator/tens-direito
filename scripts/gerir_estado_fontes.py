@@ -31,7 +31,7 @@ from typing import Dict, List, Optional
 
 LIMIAR_DIAS_PARA_ISSUE = 3
 
-# Mesmas 7 fontes do mapa `fontes` no step "Detectar mudanças" de
+# Mesmas fontes do mapa `fontes` no step "Detectar mudanças" de
 # pipeline-diario.yml — mantidas aqui à parte porque este módulo não
 # importa scraper_playwright (evita puxar Playwright/BeautifulSoup só
 # para calcular um estado).
@@ -41,6 +41,7 @@ SLUGS_MONITORIZADOS = (
     "dge_ase",
     "dge_manuais",
     "mega_datas",
+    "igefe_mega",
     "iefp_desemprego",
     "dre_psu",
 )

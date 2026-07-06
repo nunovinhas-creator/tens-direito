@@ -73,9 +73,30 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         metodo="http",
     ),
     "mega_datas": FonteConfig(nome="DGE — MEGA datas", min_chars_uteis=300),
+    # IGeFE, I.P. é a entidade que emite de facto os vouchers MEGA aos
+    # encarregados de educação — mega_datas/dge_manuais só vigiam
+    # dge.mec.pt, que pode não ser a 1.ª fonte a reflectir o anúncio (ver
+    # CLAUDE.md "PÁGINAS COM DATAS SAZONAIS"). Calibrado com dados reais
+    # de um runner (2026-07-06): conteúdo útil real (título + parágrafo
+    # ".ig-publicsite-paragraph") ~1000 chars — 300 dá margem sem deixar
+    # passar um "conteúdo suspeito" como OK. "voucher" só aparece no
+    # parágrafo de conteúdo real, nunca na navegação/menu/rodapé.
+    "igefe_mega": FonteConfig(
+        nome="IGeFE — Vouchers MEGA",
+        min_chars_uteis=300,
+        ancora_conteudo=("voucher",),
+        metodo="http",
+    ),
     # DRE search — min baixo porque a página de resultados pode ter pouco texto extraível
     "dre_psu": FonteConfig(nome="DRE — Pesquisa PSU decreto-lei", min_chars_uteis=50),
 }
+
+# Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
+# para o novo ano lectivo) e por isso partilham a mesma lógica rica de
+# detecção (_detectar_datas_mega) e a mesma chave de aviso — para que o
+# pipeline dispare a MESMA Issue independentemente de qual fonte a detectar
+# primeiro (ver CLAUDE.md "PÁGINAS COM DATAS SAZONAIS").
+MEGA_SLUGS_DATAS_RICAS = ("mega_datas", "igefe_mega")
 
 
 def _fonte_config(slug: str) -> FonteConfig:
@@ -218,6 +239,27 @@ FONTES_PLAYWRIGHT = [
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
+            "listas": "ul li, ol li",
+        },
+        "detectar_ano": "2026/2027",
+    },
+    {
+        # metodo="http" (ver _FONTE_CONFIGS) — página real acessível via
+        # pedido simples, confirmado num runner real (2026-07-06). O
+        # conteúdo real (secção "Emissão de Vouchers", hoje ainda para o
+        # ano letivo 2025/2026) vive num <div class="ig-publicsite-paragraph">,
+        # nunca dentro de <p> — confirmado por inspecção directa da
+        # estrutura HTML, não assumido a partir de um selector genérico.
+        "slug": "igefe_mega",
+        "url": "https://www.igefe.mec.pt/Page/Index/199",
+        "nota": (
+            "IGeFE, I.P. — entidade que emite os vouchers MEGA aos encarregados "
+            "de educação; complementa mega_datas/dge_manuais, que só vigiam "
+            "dge.mec.pt (ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')"
+        ),
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": ".ig-publicsite-paragraph",
             "listas": "ul li, ol li",
         },
         "detectar_ano": "2026/2027",
@@ -430,30 +472,8 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 
     # Detectar ano lectivo novo e datas MEGA (ex: MEGA 2026/2027)
     ano_detectar = fonte.get("detectar_ano")
-    if ano_detectar and slug == "mega_datas":
-        import re as _re
-        html_lower = html.lower()
-        ano_confirmado = ano_detectar in html
-        datas_confirmadas = bool(
-            _re.search(r"\b(julho|agosto)\b.*\b2026\b", html_lower) or
-            _re.search(r"\b2026\b.*\b(julho|agosto)\b", html_lower) or
-            _re.search(r"\b\d{1,2}\s+de\s+(julho|agosto)\b", html_lower)
-        )
-        if ano_confirmado:
-            _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
-            log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
-        if datas_confirmadas:
-            # Extrair excertos relevantes para facilitar actualização manual
-            excertos = []
-            for p in conteudo.get("paragrafos", []) + conteudo.get("itens_lista", []):
-                if any(kw in p.lower() for kw in ["julho", "agosto", "voucher", "vale"]):
-                    excertos.append(p[:200])
-            excertos_txt = "\n".join(f"- {e}" for e in excertos[:5]) or "(sem excertos — ver scrape JSON)"
-            _registar_aviso(slug, f"mega_datas_publicadas:2026/2027:{excertos_txt[:300]}")
-            log.warning(
-                "%s: DATAS MEGA 2026/2027 DETECTADAS — actualizar manuais-escolares-mega.html!\n%s",
-                slug, excertos_txt
-            )
+    if ano_detectar and slug in MEGA_SLUGS_DATAS_RICAS:
+        _detectar_datas_mega(slug, html, conteudo, ano_detectar)
     elif ano_detectar and ano_detectar in html:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
         log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
@@ -518,6 +538,38 @@ def _registar_aviso(slug: str, motivo: str) -> None:
     with open(AVISOS_LOG, "a", encoding="utf-8") as f:
         f.write(linha)
     log.warning("AVISO registado em avisos.log: %s — %s", slug, motivo)
+
+
+def _detectar_datas_mega(slug: str, html: str, conteudo: dict, ano_detectar: str) -> None:
+    """Detecta o ano lectivo novo e datas de emissão dos vales MEGA
+    (julho/agosto). Partilhada por scrape_playwright()/scrape_http() —
+    qualquer fonte em MEGA_SLUGS_DATAS_RICAS usa a mesma lógica e a
+    mesma chave de aviso (mega_2026_2027_publicadas), para que o
+    pipeline dispare a MESMA Issue independentemente de qual fonte a
+    detectar primeiro (dge.mec.pt via mega_datas, ou igefe.mec.pt via
+    igefe_mega — ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')."""
+    import re as _re
+    html_lower = html.lower()
+    ano_confirmado = ano_detectar in html
+    datas_confirmadas = bool(
+        _re.search(r"\b(julho|agosto)\b.*\b2026\b", html_lower) or
+        _re.search(r"\b2026\b.*\b(julho|agosto)\b", html_lower) or
+        _re.search(r"\b\d{1,2}\s+de\s+(julho|agosto)\b", html_lower)
+    )
+    if ano_confirmado:
+        _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
+        log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
+    if datas_confirmadas:
+        excertos = []
+        for p in conteudo.get("paragrafos", []) + conteudo.get("itens_lista", []):
+            if any(kw in p.lower() for kw in ["julho", "agosto", "voucher", "vale"]):
+                excertos.append(p[:200])
+        excertos_txt = "\n".join(f"- {e}" for e in excertos[:5]) or "(sem excertos — ver scrape JSON)"
+        _registar_aviso(slug, f"mega_2026_2027_publicadas:{excertos_txt[:300]}")
+        log.warning(
+            "%s: DATAS MEGA 2026/2027 DETECTADAS — actualizar manuais-escolares-mega.html!\n%s",
+            slug, excertos_txt
+        )
 
 
 def _registar_bloqueio(slug: str, url: str, classif) -> None:
@@ -770,6 +822,14 @@ def scrape_http(fonte: dict) -> dict | None:
     resultado["hash_conteudo"] = hashlib.sha256(hash_payload.encode()).hexdigest()
 
     _guardar_resultado(slug, resultado)
+
+    ano_detectar = fonte.get("detectar_ano")
+    if ano_detectar and slug in MEGA_SLUGS_DATAS_RICAS:
+        _detectar_datas_mega(slug, resp.text, conteudo, ano_detectar)
+    elif ano_detectar and ano_detectar in resp.text:
+        _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
+        log.info("%s: ano lectivo %s detectado — pode haver novas datas", slug, ano_detectar)
+
     return resultado
 
 

@@ -88,6 +88,7 @@ jobs:
               'dge_ase': 'https://www.dge.mec.pt',
               'dge_manuais': 'https://www.dge.mec.pt/manuais-escolares',
               'mega_datas': 'https://www.dge.mec.pt/manuais-escolares',
+              'igefe_mega': 'https://www.igefe.mec.pt/Page/Index/199',
               'iefp_desemprego': 'https://www.iefp.pt/subsidio-desemprego',
               'dre_psu': 'https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica',
             };
@@ -976,9 +977,14 @@ jobs:
             }
 
             // Issue específica: datas MEGA 2026/2027 detectadas
+            // (dge_manuais/mega_datas OU igefe_mega — ver
+            // MEGA_SLUGS_DATAS_RICAS em scraper_playwright.py; ambas
+            // registam a mesma chave de aviso, para que qualquer uma
+            // dispare esta Issue independentemente de qual detectar
+            // primeiro)
             try {
               const avisos_txt = fs.readFileSync('data/scraped/avisos.log', 'utf8');
-              if (avisos_txt.includes('mega_datas_publicadas:2026/2027')) {
+              if (avisos_txt.includes('mega_2026_2027_publicadas')) {
                 const existing = await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -988,8 +994,8 @@ jobs:
                 const duplicate = existing.data.find(i => i.title.includes('MEGA 2026/2027') && i.title.includes('datas'));
                 if (!duplicate) {
                   // Extrair excertos do log
-                  const match = avisos_txt.match(/mega_datas_publicadas:2026\/2027:([^\n]*)/);
-                  const excertos = match ? match[1].trim() : '(ver data/scraped/mega_datas_latest.json)';
+                  const match = avisos_txt.match(/mega_2026_2027_publicadas:([^\n]*)/);
+                  const excertos = match ? match[1].trim() : '(ver data/scraped/mega_datas_latest.json ou data/scraped/igefe_mega_latest.json)';
                   await github.rest.issues.create({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -998,7 +1004,7 @@ jobs:
                       `## 📅 Datas MEGA 2026/2027 detectadas automaticamente`,
                       ``,
                       `**Data/hora:** ${hoje} ${hora} UTC`,
-                      `**Fonte:** https://www.dge.mec.pt/manuais-escolares`,
+                      `**Fontes vigiadas:** https://www.dge.mec.pt/manuais-escolares e https://www.igefe.mec.pt/Page/Index/199`,
                       ``,
                       `### Excertos detectados`,
                       `\`\`\``,
