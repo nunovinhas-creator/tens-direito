@@ -272,6 +272,19 @@ jobs:
             }
             console.log(`${alertas.length} alerta(s) processado(s)`);
 
+      # ── Step 4c: Canário de valores-âncora (IAS e valores legais em metadados) ──
+      # Corre todos os dias (não só no cron semanal/push de integridade.yml)
+      # — é o mecanismo mais rápido para apanhar um valor legal (IAS, ou um
+      # tecto/piso derivado dele) que ficou desactualizado em <title>/meta
+      # description depois de uma Portaria nova, tipicamente em janeiro.
+      # Só este ficheiro de testes (rápido, sem Playwright) — nunca
+      # "|| echo ... continuar": se o canário falhar, o job fica vermelho,
+      # nunca um sucesso silencioso (invariante CLAUDE.md).
+      - name: Canário de valores-âncora (IAS e valores legais em metadados)
+        run: |
+          pip install pytest
+          pytest tests/test_valores_ancora.py -q
+
       # ── Step 5: Actualizar README ────────────────────────────────────────────
       - name: Actualizar README
         uses: actions/github-script@v7

@@ -398,6 +398,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
 - [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos da FASE 1 de `MELHORIAS-SPEC.md` — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
+- [ ] Editou `<title>` ou `<meta name="description">` com um valor legal em € ou %? Tem de estar coberto por `tests/test_valores_ancora.py` — ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION"
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
 - [ ] Commit e push directamente para `main`
 
@@ -559,6 +560,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 8. **Dúvidas frequentes** com `<details>`/`<summary>` e classe `.zona-cinzenta`.
 9. **Long-tail**: responder às "zonas cinzentas" que os portais oficiais não respondem directamente (ex: trabalhadores independentes, mudança de escalão a meio do ano, cumulação de apoios).
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
+11. **Valor legal em `<title>` ou meta description**: qualquer valor em € ou % com origem legal (IAS, um tecto/piso derivado do IAS, ou um valor próprio de Portaria/limiar) usado num `<title>` ou `<meta name="description">` tem de estar coberto por um teste em `tests/test_valores_ancora.py` — nunca pode ficar um valor "solto" em metadados, invisível a qualquer teste, a ficar errado em silêncio quando a lei mudar (ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION").
 
 ### Não fazer
 - Não usar Jekyll ou qualquer SSG
@@ -3276,3 +3278,84 @@ os 4 blocos JSON-LD continuam válidos (`json.loads`), `html5validator`/
 `vnu.jar` sem erros (só o aviso informativo pré-existente "type
 attribute unnecessary"), suite de higiene/pesquisa/acessibilidade
 reconfirmada sem regressões. Trabalho directo em `main`.*
+
+---
+
+## CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION
+
+Extensão a `tests/test_valores_ancora.py` (2026-07-06), disparada pelo
+risco criado na sessão anterior: o `<title>` de `subsidio-desemprego.html`
+passou a incluir "1.342,83€" (tecto = 2,5 × IAS) para melhorar o CTR no
+GSC — mas esse valor não estava ligado a nenhum teste. Quando o IAS for
+actualizado (tipicamente Portaria de janeiro), esse título fica errado
+em silêncio: não há nenhuma "data de validade" de página a apanhar um
+`<title>`, e é exactamente a promessa visível nos resultados do Google.
+
+**Regra (ver "REGRAS DE CONTEÚDO", ponto 11)**: qualquer valor legal em
+€ ou % usado num `<title>` ou `<meta name="description">` tem de estar
+coberto por um teste em `tests/test_valores_ancora.py`.
+
+### Scan ao repositório (2026-07-06) — o que foi encontrado
+
+Grep a todos os `<title>`/`<meta name="description">` do site por
+padrões de €/%. Resultado, com a cobertura adicionada:
+
+| Página | Valor encontrado | Ligação ao IAS | Teste |
+|---|---|---|---|
+| `subsidio-desemprego.html` (`<title>`) | 1.342,83€ | 2,5 × IAS | `test_subsidio_desemprego_title_teto_2_5x_ias` |
+| `subsidio-desemprego.html` (description) | 537,13€ + 1.342,83€ | 100%/2,5× IAS | `test_subsidio_desemprego_meta_description_piso_e_teto_ias` |
+| `cuidador-informal.html` (description) | 590,84€ | 1,1 × IAS | `test_cuidador_informal_meta_description_valor_1_1x_ias` |
+| `acao-social-escolar.html` (description) | 537,13€ | IAS literal | `test_acao_social_escolar_meta_description_ias_literal` |
+| `baixa-medica-subsidio-doenca.html` (description) | 55%/75% | via `taxaEscalao1`/`4` do simulador | `test_baixa_medica_meta_description_percentagens_batem_com_simulador` |
+| `simulador-subsidio-doenca.html` (description) | 55%/75% | idem, mesmo ficheiro | `test_simulador_subsidio_doenca_meta_description_percentagens_batem_com_o_js` |
+| `abono-de-familia.html` (description) | 190,98€ | nenhuma (Portaria própria) — canário de consistência com a tabela do corpo | `test_abono_meta_description_bate_com_tabela_do_artigo` |
+| `prestacao-social-para-a-inclusao.html` (description) | 333,64€ + 60% | nenhuma (Portaria própria + limiar AMIM) — canário de consistência com o corpo | `test_psi_meta_description_bate_com_o_corpo_do_artigo` |
+| `amim.html` (description) | 60% | nenhuma (limiar legal de incapacidade) — canário de consistência com o corpo | `test_amim_meta_description_bate_com_o_limiar_do_artigo` |
+
+Mais um teste de coerência cruzada: `test_limiar_60_por_cento_nunca_diverge_entre_amim_e_psi`
+— o limiar de 60% é citado em duas páginas diferentes (`amim.html` e
+`prestacao-social-para-a-inclusao.html`) e nunca pode divergir entre elas.
+
+Dois tipos de canário, conforme o valor tenha ou não fórmula com o IAS:
+1. **Valores IAS-derivados** (multiplicador × IAS): o teste recalcula
+   `IAS_2026 × multiplicador` e compara — falha sozinho quando `IAS_2026`
+   subir de ano para o próximo, forçando a revisão do `<title>`/meta
+   description ao mesmo tempo que o resto do site.
+2. **Valores de Portaria própria, sem fórmula** (abono 190,98€, PSI
+   333,64€, limiar AMIM 60%): sem relação com o IAS, por isso sem
+   fórmula para verificar — o canário aqui é de **consistência**: o
+   valor da meta description tem de bater sempre com o valor publicado
+   no corpo do próprio artigo (já fact-checked). Protege contra um
+   sítio ser editado e o outro esquecido; não protege sozinho contra os
+   dois ficarem errados ao mesmo tempo — para isso continuam a valer as
+   regras normais de fact-checking contra fonte primária.
+
+**Confirmado a falhar de propósito** (mesmo padrão dos canários
+anteriores): valor do `<title>` de `subsidio-desemprego.html` adulterado
+manualmente para "1.999,99€" → `test_subsidio_desemprego_title_teto_2_5x_ias`
+e `test_subsidio_desemprego_meta_description_piso_e_teto_ias` falham com
+mensagem clara (`assert [1999.99] == [1342.83]`); revertido e confirmado
+a passar de novo.
+
+### Execução diária — `pipeline-diario.yml`
+
+Novo Step 4c ("Canário de valores-âncora (IAS e valores legais em
+metadados)") corre `pytest tests/test_valores_ancora.py -q` — só este
+ficheiro (rápido, sem Playwright), **todos os dias**, não só no cron
+semanal/push de `integridade.yml`. É o mecanismo mais rápido para
+apanhar um valor legal desactualizado em metadados depois de uma
+Portaria nova: se o IAS mudar em janeiro e ninguém corrigir o `<title>`
+de `subsidio-desemprego.html`, este step falha logo na corrida seguinte
+do pipeline (dentro de 24h), em vez de esperar pelo cron semanal de
+`integridade.yml` ou por um push manual a `main`.
+
+**Nunca um sucesso silencioso** (invariante já documentada em "INVARIANTE
+— NENHUM ESTADO DE ERRO PODE PARECER SUCESSO"): o step não tem
+`continue-on-error` nem `|| echo ... continuar` — se `pytest` falhar, o
+job fica vermelho e os steps seguintes (README, commit, push, deploy,
+smoke test) ficam por correr nesse dia, por desenho: um valor legal
+errado em produção pesa mais do que a frescura cosmética do pipeline
+diário. `test_valores_ancora.py` continua também coberto pela suite
+completa no job "Suite de Testes (pytest)" de `integridade.yml`
+(push a `main` + cron semanal) — o novo step do `pipeline-diario.yml`
+não o substitui, só encurta o tempo até à detecção.
