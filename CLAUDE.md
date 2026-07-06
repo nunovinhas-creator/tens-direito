@@ -3900,3 +3900,65 @@ scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados por esta sessão). Trabalho directo em `main`, sem
 branches novas.*
+
+---
+
+*Última revisão: 2026-07-06 — substituído `LIMIAR_SKIPPED` (número
+mágico, corrigido duas vezes nesta mesma semana — 2026-07-05 e
+2026-07-06 — só por ninguém o incrementar quando um skip legítimo novo
+aparecia, e que nunca detectava a direcção inversa: um skip esperado a
+deixar de acontecer silenciosamente) por uma allow-list de conjunto
+exacto — nova secção "GUARDRAIL DE SKIPS — ALLOW-LIST (não limiar
+numérico)" com o detalhe completo. `.github/workflows/integridade.yml`
+ganhou `--junitxml=report-testes.xml` no step da suite e um step novo
+que corre `scripts/verificar_skips_permitidos.py` (novo, com
+`tests/test_verificar_skips_permitidos.py`, 8 testes: reconstrução do
+nodeid, extracção de um XML JUnit real, as duas direcções de falha e o
+caminho feliz) contra `tests/skips_permitidos.json` (nodeid →
+`{motivo, tipo}`); artefacto `report-testes.xml` publicado sempre
+(`if: always()`) para diagnóstico.
+
+Achado real ao construir a allow-list (a mesma disciplina exigida pela
+tarefa: nunca allow-listar um skip sem confirmar a fundo que é mesmo
+estrutural): o skip de `p/apoios-escolares.html` em
+`test_adicionar_autoria_artigos.py` — documentado numa sessão anterior
+(2026-07-04) como "pillar sem carimbo", categoria supostamente
+estrutural — tinha na verdade um carimbo real, só com fraseado antigo
+("Verificado em junho de 2026", sem dia nem atribuição), diferente dos
+outros 4 pillars do site (já com "Verificado a [data] pela redação do
+Tens Direito"). Corrigido na página (data de 30 jun 2026, já
+documentada na tabela "PÁGINAS PUBLICADAS", nenhum facto novo) em vez
+de encapsulado na allow-list — o skip desapareceu por completo, ficando
+só os 4 genuinamente estruturais. Novo teste
+`test_allow_list_real_nunca_esconde_falta_de_carimbo_verificado_a`
+força a mesma investigação para qualquer entrada futura que mencione
+"carimbo"/"Verificado a".
+
+**Provadas as duas direcções de falha em CI real, não só localmente**
+(mesma disciplina do guardrail anterior): removida uma entrada real da
+allow-list (`manuais-escolares-mega.html`) → run
+[28790193082](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28790193082),
+commit exacto `901c679a`, `conclusion: failure`, mensagem exacta "1
+teste(s) saltados nesta corrida SEM entrada" com o nodeid certo;
+revertida e acrescentada uma entrada fantasma que nunca salta de facto
+→ run
+[28790416502](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28790416502),
+commit exacto `db5ec39d`, `conclusion: failure`, mensagem exacta "1
+entrada(s) ... já NÃO saltam". Revertido o fantasma, commit final →
+run
+[28790782476](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28790782476),
+commit exacto `ba4525f2`, `conclusion: success` — confirmado via API em
+todos os três casos, nunca assumido pelo "run mais recente". Smoke
+test de produção também verde no mesmo commit (run `28790782431`).
+`pages build and deployment` não chegou a aparecer no Actions para este
+commit específico durante a verificação desta sessão — não bloqueante,
+já que os dois checks que realmente importam (suite + smoke de
+produção) confirmam tudo correcto; registado para confirmação
+oportunista numa próxima sessão, não um sinal de falha.
+
+Suite completa local: 1425 passed, 4 skipped; `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão). Trabalho directo em `main`, sem branches novas — 6
+commits nesta sessão (carimbo, guardrail novo, 2 de teste intencional +
+2 de reversão).*
