@@ -551,10 +551,19 @@ def _detectar_datas_mega(slug: str, html: str, conteudo: dict, ano_detectar: str
     import re as _re
     html_lower = html.lower()
     ano_confirmado = ano_detectar in html
+    # Bug real encontrado em produção (2026-07-06, ver CLAUDE.md): o
+    # padrão solto \d{1,2}\s+de\s+(julho|agosto) (sem âncora ao ano) e o
+    # `.*` sem limite nos outros dois geravam falso positivo com
+    # qualquer "DD de julho/agosto" antigo (ex.: igefe_mega tem "28 de
+    # julho de 2025", ano letivo ainda a decorrer) ou mesmo texto sem
+    # relação nenhuma (ex.: um endereço "Avenida 24 de Julho") desde que
+    # "2026" aparecesse noutro ponto qualquer da página (ex.: o ano de
+    # copyright no rodapé). Corrigido com uma janela de proximidade
+    # limitada (60 chars) — exige "2026" genuinamente ao lado de
+    # "julho"/"agosto", nunca só algures na mesma página.
     datas_confirmadas = bool(
-        _re.search(r"\b(julho|agosto)\b.*\b2026\b", html_lower) or
-        _re.search(r"\b2026\b.*\b(julho|agosto)\b", html_lower) or
-        _re.search(r"\b\d{1,2}\s+de\s+(julho|agosto)\b", html_lower)
+        _re.search(r"\b(julho|agosto)\b.{0,60}\b2026\b", html_lower) or
+        _re.search(r"\b2026\b.{0,60}\b(julho|agosto)\b", html_lower)
     )
     if ano_confirmado:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
