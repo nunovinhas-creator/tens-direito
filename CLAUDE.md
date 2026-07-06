@@ -3553,3 +3553,31 @@ de `pipeline-diario.yml` do canário de valores-âncora. Suite completa:
 1304 passed, 5 skipped (42 novos); ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False`.
+
+---
+
+*Última revisão: 2026-07-06 — TAREFA 3 da mesma sessão SEO intermédia:
+análise do cluster escolar, só documento, nada implementado. Novo
+`ANALISE-CLUSTER-ESCOLAR.md` (raiz, privado, mesma categoria de
+`ROADMAP.md`): inventário confirma o cluster `apoios-escolares` 100%
+interligado (scan directo aos `href` das 5 artigos + pillar + simulador
+ASE, sem páginas órfãs nem links em falta). Duas lacunas identificadas:
+1) nenhuma página agrega os prazos dispersos (vales MEGA, prova escolar
+31 jul, ASE/bolsa de mérito setembro) por mês; 2) o próprio
+`p/apoios-escolares.html` já admite publicamente, duas vezes no seu
+próprio texto, que "bolsas de ação social da DGES... não estão cobertos
+neste guia" — lacuna real e auto-assinalada, prestação claramente
+distinta da bolsa de mérito (secundário/mérito vs. superior/condição de
+recursos). Proposta final: no máximo 2 páginas
+(`calendario-escolar-apoios.html`, `bolsa-de-estudo-ensino-superior.html`),
+cada uma com query-alvo, âmbito, risco de canibalização avaliado (baixo/
+nenhum) e ligação ao cluster — ordem sugerida não vinculativa (DGES
+primeiro, caso mais forte). Gaps considerados e descartados por âmbito
+(seguro escolar, calendário escolar geral, transporte municipal) também
+documentados, com o motivo. Apontador registado em `ROADMAP.md` →
+"TRABALHO FUTURO REGISTADO". Suite completa reconfirmada sem alterações
+(1304 passed, 5 skipped — nenhum código tocado, só o novo `.md`); ruff
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False`. Fecha a sessão SEO intermédia das 3 tarefas
+(actualização MEGA 2026/2027, canário de anos em metadados, esta
+análise) antes da FASE 3 de `MELHORIAS-SPEC.md`.

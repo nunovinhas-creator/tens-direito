@@ -69,6 +69,12 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Branch remota órfã `claude/infrastructure-audit-robustness-10k2wc`** —
   já integrada em `main` por fast-forward; sem permissão de API para apagar
   nesta sessão — apagar manualmente no GitHub.
+- **2 páginas novas propostas para o cluster escolar** (decisão do Nuno,
+  nada implementado) — `calendario-escolar-apoios.html` (calendário único
+  de prazos ASE/bolsa mérito/MEGA/prova escolar) e
+  `bolsa-de-estudo-ensino-superior.html` (lacuna já admitida pelo próprio
+  `p/apoios-escolares.html` — bolsas DGES nunca cobertas) — ver
+  `ANALISE-CLUSTER-ESCOLAR.md` para o inventário completo e o raciocínio.
 
 ---
 
