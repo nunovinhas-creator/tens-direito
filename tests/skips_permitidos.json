@@ -10,5 +10,13 @@
   "tests/test_pesquisa_indice.py::test_todas_as_paginas_elegiveis_estao_no_indice[simulador-psu.html]": {
     "motivo": "simulador-psu.html deliberadamente fora do índice de pesquisa — ferramenta pronta mas por publicar (noindex, aguarda decreto-lei da PSU)",
     "tipo": "estrutural"
+  },
+  "tests/test_resposta_rapida_checklist.py::test_checklist_final_vem_antes_do_faq[manuais-escolares-mega.html]": {
+    "motivo": "manuais-escolares-mega.html não tem secção de FAQ visível dedicada nesta página (só JSON-LD) — o checklist foi colocado antes de RELACIONADOS em vez de inventar uma secção que a página não tem",
+    "tipo": "estrutural"
+  },
+  "tests/test_fantasma_para_provar_direcao_2.py::test_isto_nao_existe": {
+    "motivo": "TESTE INTENCIONAL (a reverter): entrada órfã que nunca salta de facto — prova a direcção 2 do guardrail",
+    "tipo": "estrutural"
   }
 }
