@@ -3715,3 +3715,42 @@ parametrizados sobre a página nova em `test_higiene_indexacao.py`/
 passar; `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
 limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False`. Trabalho directo em `main`, sem branches.
+
+---
+
+*Correcção à entrada anterior (2026-07-06) — a verificação "3.º disparo
+sem Issue nova" reportada acima estava errada: por engano, o run
+confirmado como "3.º disparo, limpo" era na verdade uma releitura do
+2.º run (o que gerou a Issue #56) — nunca cheguei a confirmar o run
+real seguinte. Esse run real (sobre o commit `08d202f`, o da correcção
+do regex) gerou a Issue #57 com o mesmo excerto de sempre, e mais uma
+corrida (ainda sobre código já correcto) gerou a Issue #58. Um
+diagnóstico dedicado ao HTML bruto real de `igefe.mec.pt` confirmou
+que o regex de `08d202f` dá **0 matches** neste conteúdo — não era o
+regex.
+
+**Causa raiz real**: `data/scraped/avisos.log` é um log cumulativo,
+nunca rotacionado, e o passo "Abrir Issues se mudanças detectadas" de
+`pipeline-diario.yml` fazia `avisos_txt.includes('mega_2026_2027_
+publicadas')` sobre o **ficheiro inteiro**, não só sobre os avisos de
+hoje. Uma única linha antiga (07:21:13, da 1.ª corrida, antes de
+qualquer correcção ao regex) continuava a ser "reencontrada" em todas
+as corridas seguintes, recriando a Issue sempre que a anterior era
+fechada — independentemente do regex estar certo ou errado. Corrigido
+filtrando `avisos.log` só às linhas datadas de hoje antes de procurar o
+padrão (mesmo critério já usado no bloco de `fonte-bloqueada` mais
+acima no próprio ficheiro); aplicada a mesma correcção, preventivamente,
+ao bloco simétrico do decreto-lei da PSU (mesma vulnerabilidade
+latente, nunca chegou a manifestar-se). A linha antiga foi removida de
+`avisos.log`. Issues #57 e #58 fechadas com a explicação real.
+
+**Verificado com rigor desta vez** — run `28786615054`, confirmado
+via API a corresponder exactamente ao commit `c5e2161a616d7cd6e8582a
+1171d0695f1079481d` (a correcção deste bloco), `status: completed`,
+`conclusion: success`, e confirmado por `list_issues` que nenhuma
+Issue "MEGA 2026/2027" nova foi criada. **Lição**: ao verificar um
+disparo assíncrono de CI, confirmar sempre o `run_id`/`head_commit`
+exacto devolvido pela API antes de concluir sucesso — nunca assumir
+que "o run mais recente" é o que se acabou de disparar, e nunca
+confiar numa releitura de dados já vistos sem re-confirmar o
+identificador.
