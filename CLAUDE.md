@@ -1227,7 +1227,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 | Página | Data a rever | Trigger |
 |---|---|---|
-| `manuais-escolares-mega.html` | Julho (datas MEGA) | Issue automática do scraper |
+| `manuais-escolares-mega.html` | Julho, semanal até publicação (datas MEGA 2026/2027) | Issue automática do scraper (`dge.mec.pt`) + verificação manual semanal — ver nota abaixo |
 | `acao-social-escolar.html` | Setembro (prazo ASE) | Calendário anual |
 | `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
@@ -1241,6 +1241,29 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
+
+**`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06)**:
+verificado por `WebSearch` (fontes: gov.pt, manuaisescolares.pt, IGeFE,
+DGE, EduQA — nunca blogs/notícias secundárias) que **as datas de emissão
+dos vales MEGA 2026/2027 ainda não foram publicadas**. Achado relevante
+para a próxima verificação: o calendário de **adopção de manuais pelas
+escolas** (processo diferente, interno, nunca dá acesso a vales) para
+2026/2027 já está confirmado — EduQA, I.P., ao abrigo do Despacho
+n.º 3026/2024, de 21 de março (registo em SIME-MEGA: 1-26 jun. 2026;
+requisição de manuais em braille/digital: 29 jun.-24 jul. 2026) — nunca
+confundir os dois processos na página. Descoberta institucional: a
+entidade que gere a plataforma MEGA (vales aos encarregados de
+educação) é a **IGeFE, I.P.** (`igefe.mec.pt`), não a DGE — a fonte
+`mega_datas` do scraper (`scripts/scraper_playwright.py`) só vigia
+`dge.mec.pt/manuais-escolares`, por isso **pode não ser a 1.ª a reflectir
+um anúncio** se este surgir primeiro em `manuaisescolares.pt` ou
+`igefe.mec.pt`. Até o scraper ser actualizado para vigiar também estas
+fontes (não feito nesta sessão — âmbito maior, precisa de confirmar o
+padrão de HTML de cada uma), **verificação manual semanal por
+`WebSearch`** continua necessária em julho/agosto, além da Issue
+automática existente. Página actualizada com estas fontes adicionais no
+bloco "Fontes e verificação" e no corpo (secção "Calendário"); `title`/
+`meta description` já diziam "2026/2027" antes desta sessão — mantidos.
 
 **`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
 ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb
@@ -3359,3 +3382,57 @@ diário. `test_valores_ancora.py` continua também coberto pela suite
 completa no job "Suite de Testes (pytest)" de `integridade.yml`
 (push a `main` + cron semanal) — o novo step do `pipeline-diario.yml`
 não o substitui, só encurta o tempo até à detecção.
+
+---
+
+*Última revisão: 2026-07-06 — TAREFA 1 de sessão SEO intermédia (antes da
+FASE 3 de `MELHORIAS-SPEC.md`): actualização sazonal de
+`manuais-escolares-mega.html`, página #1 do site em cliques GSC, em
+plena época de preparação do ano lectivo. `WebSearch` restrito a fontes
+oficiais (gov.pt, manuaisescolares.pt, IGeFE, DGE, EduQA — nunca blogs
+nem notícias secundárias, incluindo um "Escola Note" descartado por ser
+blog) confirmou que **as datas de emissão dos vales 2026/2027 continuam
+por publicar** — mesmo resultado em 4 pesquisas independentes, e até os
+blogs de terceiros admitem não ter a data. Um resultado antigo do gc23
+("XXIII Governo Constitucional", vales a "2 de agosto") foi identificado
+e descartado por pesquisa adicional como sendo de 2022/2023, não do ano
+corrente — cuidado replicável para futuras pesquisas deste tipo:
+confirmar sempre o ano de publicação antes de usar uma data encontrada.
+
+Achado com valor real, apesar de não ser o anúncio de vales procurado: o
+calendário de **adopção de manuais pelas escolas** para 2026/2027 está
+oficialmente confirmado pela EduQA, I.P. (Despacho n.º 3026/2024, de 21
+de março) — processo diferente do de vales, nunca confundir os dois.
+Também descoberto que a entidade que gere a plataforma MEGA é a
+**IGeFE, I.P.** (`igefe.mec.pt`), não a DGE — acrescentada como fonte
+adicional; registada a limitação de que o scraper (`mega_datas`) só
+vigia `dge.mec.pt`, por isso pode não apanhar um anúncio publicado
+primeiro em `manuaisescolares.pt`/`igefe.mec.pt` (ver nova nota em
+"PÁGINAS COM DATAS SAZONAIS").
+
+Página actualizada com: fontes adicionais (IGeFE, EduQA) no bloco de
+fontes e no corpo (secção Calendário, citando o Despacho e as datas
+reais do processo de adopção); datas de "Verificado a" actualizadas
+(corpo + JSON-LD `dateModified`, 24/06 → 06/07/2026) nos 3 sítios que
+usam essa data (meta description, fonte-bloco, `dateModified`);
+linguagem da FAQ/HowTo ajustada para reflectir a verificação de hoje em
+vez de apontar genericamente para "julho de 2026" (que já chegou sem
+novidade). `title`/meta description já diziam "2026/2027" antes desta
+sessão — mantidos, sem alteração necessária.
+
+**Achado colateral corrigido durante os testes**: a 1.ª versão da
+reescrita do bloco de fontes removeu, sem querer, a palavra "confirmar"
+que estava a suprimir o par "2025/2026" (padrão histórico citado) na
+detecção de `ano_letivo` de `scripts/verificar_datas.py` —
+`tests/test_verificar_datas.py::test_manuais_escolares_mega_real_nao_gera_alerta_issue_45`
+apanhou a regressão de imediato. Corrigido reintroduzindo um marcador de
+pendência (`provisório`, `por confirmar`) junto da mesma menção —
+confirmado a voltar a passar.
+
+Registado gatilho de verificação semanal em `ROADMAP.md`/CLAUDE.md
+(nunca só na Issue automática do scraper, que pode não ser a 1.ª fonte a
+reflectir o anúncio). Suite completa: 1262 passed, 5 skipped (mesma
+limitação de `feedparser` no sandbox, documentada em sessões
+anteriores); ruff limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão).
