@@ -14,34 +14,42 @@ jobs:
           python-version: '3.12'
       - name: Instalar dependências
         run: pip install requests beautifulsoup4 lxml
-      - name: Testar URLs candidatas
+      - name: Testar URL candidata com extracção real
         run: |
           python3 << 'PYEOF'
+          import re
           import requests
+          from bs4 import BeautifulSoup
 
-          urls = [
-              "https://www.igefe.mec.pt/Page/Index/199",
-              "https://eduqa.pt/adocao-de-manuais-escolares-em-2026-com-efeitos-no-ano-letivo-de-2026-2027/",
-          ]
+          def texto_limpo(el):
+              return " ".join(el.get_text(separator=" ").split()) if el else ""
+
+          url = "https://www.igefe.mec.pt/Page/Index/199"
           headers = {
               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
               "Accept-Language": "pt-PT,pt;q=0.9",
           }
-          for url in urls:
-              print(f"\n=== {url} ===")
-              try:
-                  r = requests.get(url, headers=headers, timeout=20)
-                  print("status:", r.status_code)
-                  print("len:", len(r.text))
-                  low = r.text.lower()
-                  print("tem 'mega':", "mega" in low)
-                  print("tem 'manuais escolares':", "manuais escolares" in low)
-                  print("tem 'cloudflare':", "cloudflare" in low or "cf-browser-verification" in low)
-                  print("tem 'just a moment':", "just a moment" in low)
-                  # imprimir um excerto do <title> e primeiros 300 chars de texto visível
-                  import re
-                  m = re.search(r"<title>(.*?)</title>", r.text, re.S | re.I)
-                  print("title:", m.group(1).strip()[:150] if m else "(sem title)")
-              except Exception as exc:
-                  print("ERRO:", repr(exc))
+          r = requests.get(url, headers=headers, timeout=20)
+          print("status:", r.status_code)
+          soup = BeautifulSoup(r.text, "lxml")
+
+          titulo = texto_limpo(soup.select_one("h1"))
+          paragrafos = [texto_limpo(p) for p in soup.select("p") if len(p.get_text(strip=True)) > 40][:15]
+          itens = [texto_limpo(li) for li in soup.select("ul li, ol li") if len(li.get_text(strip=True)) > 10][:30]
+
+          total_chars = len(titulo) + sum(len(p) for p in paragrafos) + sum(len(i) for i in itens)
+          print("titulo:", titulo[:150])
+          print("n_paragrafos:", len(paragrafos))
+          print("n_itens:", len(itens))
+          print("total_chars_uteis:", total_chars)
+          print("\n--- primeiros 5 parágrafos ---")
+          for p in paragrafos[:5]:
+              print("-", p[:200])
+          print("\n--- primeiros 10 itens de lista ---")
+          for i in itens[:10]:
+              print("-", i[:200])
+
+          texto_tudo = (titulo + " " + " ".join(paragrafos) + " " + " ".join(itens)).lower()
+          print("\ntem '2026/2027':", "2026/2027" in texto_tudo)
+          print("tem 'julho'+'2026' proximos:", bool(re.search(r"\b(julho|agosto)\b.{0,40}\b2026\b", texto_tudo) or re.search(r"\b2026\b.{0,40}\b(julho|agosto)\b", texto_tudo)))
           PYEOF
