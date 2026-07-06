@@ -10,11 +10,16 @@
     "ultima_ok": "2026-07-06"
   },
   "dre_psu": {
-    "dias_consecutivos_bloqueado": 2,
+    "dias_consecutivos_bloqueado": 3,
     "estado": "BLOQUEADO",
     "ultima_ok": "2026-07-05"
   },
   "iefp_desemprego": {
+    "dias_consecutivos_bloqueado": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-06"
+  },
+  "igefe_mega": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
     "ultima_ok": "2026-07-06"

@@ -39,9 +39,9 @@ Actualizado automaticamente a partir do repositório em **06 de julho de 2026**.
 | [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
 | [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: o que já foi aprovado e o que ainda falta decidir |
-| [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU — condições de acesso aprovadas pela Assembleia da República |
-| [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU: aprovado vs. por definir |
-| [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU e Abono de Família: são apoios diferentes — não se confundem |
+| [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso aprovadas pela Assembleia da República |
+| [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: aprovado vs. por definir |
+| [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
@@ -351,6 +351,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 06 de julho de 2026 às 07:12 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 06 de julho de 2026 às 08:22 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
