@@ -3503,6 +3503,66 @@ civil muda — `ANO_ATUAL` recalcula-se sozinho a cada execução.
 
 ---
 
+## GUARDRAIL DE SKIPS — ALLOW-LIST (não limiar numérico)
+
+`.github/workflows/integridade.yml`, job "Suite de Testes (pytest)":
+depois de correr a suite completa (`pytest tests/ -q --junitxml=report-
+testes.xml`), o step "Guardrail — skips têm de bater certo com a allow-
+list" corre `scripts/verificar_skips_permitidos.py report-testes.xml`.
+
+**Nunca mais um número** (o antigo `LIMIAR_SKIPPED` já deixou `main`
+vermelha duas vezes — 2026-07-05 e 2026-07-06 — só porque ninguém
+incrementava o número quando um skip legítimo novo aparecia; uma
+contagem também nunca detecta a direcção inversa, um skip esperado que
+deixa silenciosamente de acontecer). Em vez disso, **comparação por
+conjunto exacto** entre os nodeids que saltaram nesta corrida real
+(extraídos do relatório JUnit) e as chaves de `tests/skips_permitidos.json`
+(nodeid → `{motivo, tipo}`, `tipo` em `estrutural`/`ambiente`):
+
+1. **Skip saltou mas não está na allow-list** → skip novo, não
+   documentado — pode ser um binário/dependência em falta a impedir
+   testes de correr, ou uma página nova sem carimbo/atribuição. Falha
+   com o nodeid exacto e o motivo real reportado pelo próprio pytest.
+2. **Entrada da allow-list já não salta** → um skip esperado deixou de
+   acontecer silenciosamente (página corrigida sem se reparar que uma
+   entrada ficou órfã, ou apagada/renomeada). Falha com o nodeid exacto.
+
+Só as duas listas **idênticas**, elemento a elemento, é que passam —
+nunca "a de baixo cabe dentro da de cima" nem o inverso.
+
+**Antes de allow-listar qualquer skip por falta de carimbo "Verificado
+a": a raiz é sempre o carimbo, nunca a allow-list.** Achado real desta
+sessão: `p/apoios-escolares.html` estava na lista de skips "legítimos"
+documentada numa sessão anterior (2026-07-04) como se fosse uma
+exclusão estrutural (pillar page, "sem carimbo") — mas ao investigar a
+fundo, a página tinha de facto um carimbo, só com fraseado antigo
+("Verificado em junho de 2026", pré-padronização, sem dia nem
+atribuição), diferente dos outros 4 pillars do site (que já diziam
+"Verificado a [data] pela redação do Tens Direito"). Corrigido na
+página (`p/apoios-escolares.html`, usando a data de publicação já
+documentada na tabela "PÁGINAS PUBLICADAS" — 30 jun 2026 — nenhum
+facto novo inventado) em vez de allow-listado — o teste deixou de
+saltar e a allow-list ficou só com os 4 skips genuinamente estruturais:
+`404.html`/`index.html`/`simulador-psu.html` (fora do índice de
+pesquisa, deliberado) e `manuais-escolares-mega.html` (sem secção de
+FAQ visível dedicada). `tests/test_verificar_skips_permitidos.py` tem
+um teste dedicado (`test_allow_list_real_nunca_esconde_falta_de_
+carimbo_verificado_a`) que falha se alguma entrada futura da allow-list
+mencionar "carimbo"/"Verificado a" no motivo — força a mesma
+investigação sempre que alguém for tentado a allow-listar em vez de
+corrigir.
+
+`scripts/verificar_skips_permitidos.py` reconstrói o nodeid pytest
+(`tests/test_x.py::test_y[param]`) a partir de `classname`/`name` do
+JUnit (`classname.replace(".", "/") + ".py::" + name` — seguro mesmo
+quando o próprio parâmetro tem pontos, ex. `p/apoios-escolares.html`,
+porque esses pontos vivem em `name`, nunca em `classname`). Testado em
+`tests/test_verificar_skips_permitidos.py`: reconstrução do nodeid,
+extracção de um XML JUnit real, e as duas direcções de falha + o
+caminho feliz, todos com asserts explícitos (nunca só "não rebentou").
+
+---
+
 *Última revisão: 2026-07-06 — TAREFA 1 de sessão SEO intermédia (antes da
 FASE 3 de `MELHORIAS-SPEC.md`): actualização sazonal de
 `manuais-escolares-mega.html`, página #1 do site em cliques GSC, em

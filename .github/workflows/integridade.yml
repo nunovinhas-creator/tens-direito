@@ -98,42 +98,22 @@ jobs:
       - name: Correr suite completa
         run: |
           set -o pipefail
-          pytest tests/ -q | tee /tmp/pytest-output.txt
-      - name: Guardrail — limiar de testes skipped
-        # Achado real de 2026-07-05: 44 testes Playwright (test_pesquisa_hero.py,
-        # test_pesquisa_ranking.py, test_share_js.py, test_simulador_psu_calculo.py)
-        # ficaram sempre "skipped" no CI, silenciosamente, desde a criação deste
-        # job — o helper _localizar_chromium() só procurava em /opt/pw-browsers
-        # (convenção do sandbox do Claude Code), que não existe nos runners do
-        # GitHub Actions. Corrigido com fallback para ~/.cache/ms-playwright.
-        #
-        # Limiar revisto de 6 para 4 em 2026-07-05 (sessão de correcções pós-CSI):
-        # o commit do simulador-csi.html tinha subido o total real para 7 sem que
-        # o limiar documentado (6) fosse actualizado — a causa não era um binário
-        # em falta, mas sim as 3 novas páginas de simuladores (abono/ase/csi)
-        # ficarem sem o carimbo "Verificado a" + atribuição exigidos por
-        # test_adicionar_autoria_artigos.py, cada uma a contar como um skip
-        # legítimo mas não documentado.
-        #
-        # Limiar revisto de 4 para 5 em 2026-07-06 (sessão de estabilização de
-        # `main`, disparada por 18 corridas seguidas vermelhas desde o commit
-        # 774cb51, FASE 1 de MELHORIAS-SPEC.md): esse commit introduziu o 5.º
-        # skip real — manuais-escolares-mega.html não tem secção de FAQ visível
-        # dedicada (só JSON-LD), por isso test_checklist_final_vem_antes_do_faq
-        # (tests/test_resposta_rapida_checklist.py) salta-o deliberadamente em
-        # vez de inventar uma secção que a página não tem — sem que ninguém
-        # tivesse actualizado este limiar nesse commit. Confirmado localmente
-        # (`python3 -m pytest tests/ -q -rs`) que os 5 skips são sempre os
-        # mesmos 5, todos estruturais/deliberados, nunca um binário em falta:
-        # p/apoios-escolares.html (pillar sem carimbo), 404.html/index.html/
-        # simulador-psu.html (fora do índice de pesquisa, deliberado), e agora
-        # manuais-escolares-mega.html (sem FAQ visível). Subir este número
-        # exige decisão consciente, nunca um acidente de ambiente.
-        run: |
-          LIMIAR_SKIPPED=5
-          SKIPPED=$(grep -oE '[0-9]+ skipped' /tmp/pytest-output.txt | grep -oE '[0-9]+' || echo 0)
-          echo "Testes skipped: $SKIPPED (limiar: $LIMIAR_SKIPPED)"
-          if [ "$SKIPPED" -gt "$LIMIAR_SKIPPED" ]; then
-            echo "::error::$SKIPPED testes skipped, acima do limiar documentado de $LIMIAR_SKIPPED. Pode ser uma regressão silenciosa (dependência/binário em falta a impedir testes de correr, ou página nova sem carimbo/atribuição) — investigar antes de subir este limiar."
-            exit 1
-          fi
+          pytest tests/ -q --junitxml=report-testes.xml | tee /tmp/pytest-output.txt
+      - name: Guardrail — skips têm de bater certo com a allow-list
+        # Substitui o antigo "limiar de testes skipped" (LIMIAR_SKIPPED), que
+        # já deixou main vermelha duas vezes (2026-07-05, 2026-07-06) só por
+        # ninguém ter incrementado o número quando um skip legítimo novo
+        # aparecia — um número mágico dessincroniza-se sempre. Comparação
+        # agora é por CONJUNTO exacto (nunca contagem): cada nodeid saltado
+        # neste run tem de estar em tests/skips_permitidos.json, e cada
+        # entrada dessa allow-list tem de continuar de facto saltada — as
+        # duas direcções contam como falha, não só a contagem subir. Ver
+        # scripts/verificar_skips_permitidos.py e CLAUDE.md.
+        run: python scripts/verificar_skips_permitidos.py report-testes.xml
+      - name: Publicar relatório JUnit (para diagnóstico)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-testes
+          path: report-testes.xml
+          retention-days: 14
