@@ -113,13 +113,24 @@ jobs:
         # em falta, mas sim as 3 novas páginas de simuladores (abono/ase/csi)
         # ficarem sem o carimbo "Verificado a" + atribuição exigidos por
         # test_adicionar_autoria_artigos.py, cada uma a contar como um skip
-        # legítimo mas não documentado. Corrigido o carimbo nas 3 páginas
-        # (em vez de simplesmente subir o limiar) — os 4 skips finais são
+        # legítimo mas não documentado.
+        #
+        # Limiar revisto de 4 para 5 em 2026-07-06 (sessão de estabilização de
+        # `main`, disparada por 18 corridas seguidas vermelhas desde o commit
+        # 774cb51, FASE 1 de MELHORIAS-SPEC.md): esse commit introduziu o 5.º
+        # skip real — manuais-escolares-mega.html não tem secção de FAQ visível
+        # dedicada (só JSON-LD), por isso test_checklist_final_vem_antes_do_faq
+        # (tests/test_resposta_rapida_checklist.py) salta-o deliberadamente em
+        # vez de inventar uma secção que a página não tem — sem que ninguém
+        # tivesse actualizado este limiar nesse commit. Confirmado localmente
+        # (`python3 -m pytest tests/ -q -rs`) que os 5 skips são sempre os
+        # mesmos 5, todos estruturais/deliberados, nunca um binário em falta:
         # p/apoios-escolares.html (pillar sem carimbo), 404.html/index.html/
-        # simulador-psu.html (fora do índice de pesquisa, deliberado). Subir
-        # este número exige decisão consciente, nunca um acidente de ambiente.
+        # simulador-psu.html (fora do índice de pesquisa, deliberado), e agora
+        # manuais-escolares-mega.html (sem FAQ visível). Subir este número
+        # exige decisão consciente, nunca um acidente de ambiente.
         run: |
-          LIMIAR_SKIPPED=4
+          LIMIAR_SKIPPED=5
           SKIPPED=$(grep -oE '[0-9]+ skipped' /tmp/pytest-output.txt | grep -oE '[0-9]+' || echo 0)
           echo "Testes skipped: $SKIPPED (limiar: $LIMIAR_SKIPPED)"
           if [ "$SKIPPED" -gt "$LIMIAR_SKIPPED" ]; then
