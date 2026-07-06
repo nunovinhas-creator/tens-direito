@@ -4543,3 +4543,35 @@ documentados); `ruff check scripts/ tests/ --select E,F,W --ignore
 E501 .` limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False` (inalterados por esta sessão). Trabalho directo
 em `main`, sem branches novas.*
+
+---
+
+*Última revisão: 2026-07-06 (continuação) — ponto ⚠️A **fechado**: o
+Nuno confirmou directamente, com detalhe legal, que **não existe
+qualquer retroactividade** dos dias de espera — são sempre uma perda
+efectiva de rendimento, seja qual for a duração da baixa, confirmando a
+versão conservadora já implementada desde a publicação (nenhuma
+alteração de código necessária, só de texto/citação). Actualizado
+`simulador-subsidio-doenca.html` (comentário JS ⚠️A marcado "FECHADO",
+FAQ JSON-LD + visível e nota do `formula-box` reformuladas de forma
+assertiva, em vez da formulação anterior "não encontrámos nenhuma regra
+que...") e `baixa-medica-subsidio-doenca.html` (novo parágrafo explícito
+sobre ausência de retroactividade, mais duas nuances novas trazidas pelo
+Nuno e antes não documentadas: 1. baixas intermitentes com menos de 60
+dias de intervalo não voltam a aplicar o período de espera — mesma
+regra de "fusão de baixas" já existente para o tecto de duração, agora
+também referida aqui; 2. nota sobre Contratos Colectivos de Trabalho que,
+nalguns sectores, obrigam a entidade patronal a pagar o vencimento
+destes dias, apesar de a Segurança Social não o fazer — distinto de
+acidente de trabalho, já coberto noutra secção do artigo). Carimbo do
+artigo actualizado para 06/07/2026 (`Verificado a`, `dateModified`,
+fonte-bloco).
+
+Ponto ⚠️B (piso 300€/325€ em períodos parciais) continua em aberto —
+nenhuma informação nova recebida sobre esse ponto nesta continuação.
+
+Nenhum teste dependia do texto exacto alterado (confirmado por grep
+antes de editar); JSON-LD validado (`json.loads`) nos dois ficheiros.
+Suite completa reconfirmada sem regressões; `ruff` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False`. Trabalho directo em `main`, sem branches novas.*

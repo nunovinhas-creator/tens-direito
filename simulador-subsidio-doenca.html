@@ -63,7 +63,7 @@
         "name": "Os dias de espera são sempre descontados, mesmo em baixas longas?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim. Não encontrámos, nas fontes consultadas, nenhuma regra que pague retroactivamente os dias de espera quando a baixa ultrapassa 30 dias — essa ideia pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera são internamento hospitalar, cirurgia de ambulatório e tuberculose."
+          "text": "Sim, sempre — não há retroactividade, seja qual for a duração da baixa. Os dias de espera (3, 10 ou 30, consoante o vínculo) nunca são pagos pela Segurança Social, mesmo que a baixa se prolongue por meses ou anos; representam sempre uma perda efectiva de rendimento. Essa ideia de retroactividade pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera, das que este simulador calcula, são internamento hospitalar, cirurgia de ambulatório e tuberculose (o guia completo da baixa médica lista as restantes excepções legais, por exemplo doença iniciada durante o subsídio parental)."
         }
       },
       {
@@ -370,7 +370,7 @@
         <li><strong>Piso de 300€/325€</strong> quando a RR mensal é superior a 500€, nos escalões de 55%/60% — aplicado aqui como piso diário proporcional (300÷30 e 325÷30). É uma interpretação conservadora: as fontes públicas não especificam com clareza como este piso se aplica a períodos parciais.</li>
         <li><strong>Duração máxima:</strong> 1095 dias (conta de outrem) · 365 dias (independente e seguro social voluntário) · sem limite definido (tuberculose).</li>
       </ul>
-      <p style="font-size:0.85rem;color:var(--muted)">Não confirmámos, nas fontes consultadas, nenhuma regra que pague retroactivamente os dias de espera em baixas superiores a 30 dias — por isso este simulador nunca paga esses dias, excepto nas excepções legais já listadas. Ver <a href="/baixa-medica-subsidio-doenca.html">guia completo da baixa médica</a> para o detalhe.</p>
+      <p style="font-size:0.85rem;color:var(--muted)">Os dias de espera nunca são pagos pela Segurança Social, seja qual for a duração da baixa — não há retroactividade, mesmo que a baixa se prolongue por meses ou anos. Este simulador nunca paga esses dias, excepto nas excepções legais já listadas. Ver <a href="/baixa-medica-subsidio-doenca.html">guia completo da baixa médica</a> para o detalhe.</p>
     </div>
 
     <section class="faq-section">
@@ -386,7 +386,7 @@
       <details>
         <summary>Os dias de espera são sempre descontados, mesmo em baixas longas?</summary>
         <div class="faq-resposta">
-          Sim. Não encontrámos nenhuma regra que pague retroactivamente os dias de espera quando a baixa ultrapassa 30 dias — essa ideia pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera são internamento hospitalar, cirurgia de ambulatório e tuberculose.
+          Sim, sempre — não há retroactividade, seja qual for a duração da baixa. Os dias de espera nunca são pagos pela Segurança Social, mesmo que a baixa se prolongue por meses ou anos. Essa ideia de retroactividade pode confundir-se com o registo de remuneração equivalente para efeitos de carreira contributiva, que é um conceito diferente de pagamento em dinheiro. As únicas excepções que eliminam o período de espera, das que este simulador calcula, são internamento hospitalar, cirurgia de ambulatório e tuberculose — ver o <a href="/baixa-medica-subsidio-doenca.html">guia completo</a> para as restantes excepções legais.
         </div>
       </details>
 
@@ -452,19 +452,20 @@
     // (6 meses), piso universal (5,37€/dia), IAS 2026 (537,13€) e o
     // tratamento de gravidez de risco (prestação distinta, fora do âmbito
     // deste simulador — ver FAQ) confirmados sem divergências.
-    // Ponto ⚠️A (retroatividade dos dias de espera): reconfirmado em
-    // 06/07/2026 — uma pesquisa voltou a mostrar a alegação de que os 3 dias
-    // de espera são pagos retroactivamente em baixas >30 dias, mas só em
-    // agregadores secundários de baixa fiabilidade (mesma categoria já
-    // rejeitada em 05/07/2026); uma pesquisa mais restrita a essa frase
-    // específica devolveu antes "dias de espera... sem rendimento", sem
-    // qualquer menção a retroactividade. O texto do próprio Decreto-Lei
-    // n.º 28/2004 só prevê retroactividade por atraso no envio do CIT aos
-    // serviços (art. 34.º), nunca por duração da baixa. Mantida a versão
-    // conservadora (nunca paga os dias de espera, salvo as 3 excepções
-    // legais) — fechar esta dúvida em definitivo exige acesso directo ao
-    // Guia Prático do ISS, indisponível nesta sessão (WebFetch bloqueado
-    // para qualquer domínio externo).
+    // Ponto ⚠️A (retroatividade dos dias de espera) — FECHADO em 06/07/2026:
+    // confirmado (Nuno) que NÃO existe qualquer retroatividade — os dias de
+    // espera nunca são pagos pela Segurança Social, seja qual for a duração
+    // da baixa, e representam sempre uma perda efectiva de rendimento. Uma
+    // pesquisa desta mesma sessão já tinha mostrado sinais divergentes: a
+    // alegação de retroactividade aparecia só em agregadores secundários de
+    // baixa fiabilidade (mesma categoria já rejeitada em 05/07/2026), nunca
+    // em resultados mais restritos ("dias de espera... sem rendimento", sem
+    // menção a retroactividade) — consistente com o texto do próprio
+    // Decreto-Lei n.º 28/2004, que só prevê retroactividade por atraso no
+    // envio do CIT aos serviços (art. 34.º), nunca por duração da baixa. A
+    // versão conservadora já implementada (nunca paga os dias de espera,
+    // salvo as 3 excepções legais) está confirmada como a versão correcta —
+    // nenhuma alteração de código necessária.
     // Ponto ⚠️B (piso 300€/325€ em períodos parciais): reconfirmado em
     // 06/07/2026 — a formulação encontrada (sempre em fontes secundárias,
     // nunca o texto directo do Guia Prático) descreve o piso como "o valor
@@ -476,8 +477,9 @@
     // sem confirmação directa de uma fonte primária sobre a aplicação a
     // períodos parciais — mantida a mesma interpretação conservadora,
     // agora com citação mais forte.
-    // Ambos os pontos ficam documentados em detalhe no CLAUDE.md — este
-    // simulador implementa sempre a versão conservadora.
+    // Ponto ⚠️A fechado, ⚠️B ainda em aberto — ambos documentados em
+    // detalhe no CLAUDE.md; este simulador implementa sempre a versão
+    // conservadora enquanto ⚠️B não tiver confirmação directa.
     const PARAMETROS_SUBSIDIO_DOENCA = {
       taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-06' },
       taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-06' },
