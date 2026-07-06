@@ -14,7 +14,7 @@ jobs:
           python-version: '3.12'
       - name: Instalar dependências
         run: pip install requests beautifulsoup4 lxml
-      - name: Testar URL candidata com extracção real
+      - name: Investigar estrutura real do conteúdo
         run: |
           python3 << 'PYEOF'
           import re
@@ -31,25 +31,44 @@ jobs:
           }
           r = requests.get(url, headers=headers, timeout=20)
           print("status:", r.status_code)
+          print("len(r.text):", len(r.text))
           soup = BeautifulSoup(r.text, "lxml")
 
-          titulo = texto_limpo(soup.select_one("h1"))
-          paragrafos = [texto_limpo(p) for p in soup.select("p") if len(p.get_text(strip=True)) > 40][:15]
-          itens = [texto_limpo(li) for li in soup.select("ul li, ol li") if len(li.get_text(strip=True)) > 10][:30]
+          # Corpo de texto total da página, sem selectores específicos
+          corpo_total = texto_limpo(soup.body)
+          print("len(texto corpo inteiro):", len(corpo_total))
+          print("\n--- texto completo do <body> (primeiros 3000 chars) ---")
+          print(corpo_total[:3000])
 
-          total_chars = len(titulo) + sum(len(p) for p in paragrafos) + sum(len(i) for i in itens)
-          print("titulo:", titulo[:150])
-          print("n_paragrafos:", len(paragrafos))
-          print("n_itens:", len(itens))
-          print("total_chars_uteis:", total_chars)
-          print("\n--- primeiros 5 parágrafos ---")
-          for p in paragrafos[:5]:
-              print("-", p[:200])
-          print("\n--- primeiros 10 itens de lista ---")
-          for i in itens[:10]:
-              print("-", i[:200])
+          print("\n--- candidatos a container de conteúdo (id/class com 'content'/'conteudo'/'main'/'texto'/'corpo') ---")
+          candidatos = soup.select(
+              "[id*=content], [class*=content], [id*=conteudo], [class*=conteudo], "
+              "[id*=main], [class*=main], main, article, [class*=texto], [class*=corpo], [class*=page]"
+          )
+          vistos = set()
+          for el in candidatos[:20]:
+              chave = (el.name, el.get("id"), tuple(el.get("class") or []))
+              if chave in vistos:
+                  continue
+              vistos.add(chave)
+              txt = texto_limpo(el)
+              print(f"- <{el.name} id={el.get('id')!r} class={el.get('class')!r}> len={len(txt)} :: {txt[:150]}")
 
-          texto_tudo = (titulo + " " + " ".join(paragrafos) + " " + " ".join(itens)).lower()
-          print("\ntem '2026/2027':", "2026/2027" in texto_tudo)
-          print("tem 'julho'+'2026' proximos:", bool(re.search(r"\b(julho|agosto)\b.{0,40}\b2026\b", texto_tudo) or re.search(r"\b2026\b.{0,40}\b(julho|agosto)\b", texto_tudo)))
+          print("\n--- <script> tags que sugerem SPA/render client-side (angular/react/vue/data-*) ---")
+          scripts = soup.select("script[src]")
+          for s in scripts[:30]:
+              src = s.get("src", "")
+              if any(k in src.lower() for k in ("angular", "react", "vue", "app.js", "main.js", "bundle")):
+                  print("-", src)
+
+          print("\n--- iframes ---")
+          for f in soup.select("iframe"):
+              print("-", f.get("src"))
+
+          print("\n--- divs com mais texto (top 10 por tamanho) ---")
+          divs = soup.select("div")
+          divs_com_texto = [(len(texto_limpo(d)), d) for d in divs]
+          divs_com_texto.sort(key=lambda x: -x[0])
+          for tamanho, d in divs_com_texto[:10]:
+              print(f"- len={tamanho} id={d.get('id')!r} class={d.get('class')!r}")
           PYEOF
