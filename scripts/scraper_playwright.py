@@ -551,19 +551,19 @@ def _detectar_datas_mega(slug: str, html: str, conteudo: dict, ano_detectar: str
     import re as _re
     html_lower = html.lower()
     ano_confirmado = ano_detectar in html
-    # Bug real encontrado em produção (2026-07-06, ver CLAUDE.md): o
-    # padrão solto \d{1,2}\s+de\s+(julho|agosto) (sem âncora ao ano) e o
-    # `.*` sem limite nos outros dois geravam falso positivo com
-    # qualquer "DD de julho/agosto" antigo (ex.: igefe_mega tem "28 de
-    # julho de 2025", ano letivo ainda a decorrer) ou mesmo texto sem
-    # relação nenhuma (ex.: um endereço "Avenida 24 de Julho") desde que
-    # "2026" aparecesse noutro ponto qualquer da página (ex.: o ano de
-    # copyright no rodapé). Corrigido com uma janela de proximidade
-    # limitada (60 chars) — exige "2026" genuinamente ao lado de
-    # "julho"/"agosto", nunca só algures na mesma página.
+    # Bug real encontrado em produção 2× (2026-07-06, Issues #55 e #56 —
+    # ver CLAUDE.md): tanto o padrão solto \d{1,2}\s+de\s+(julho|agosto)
+    # (sem âncora ao ano) como uma janela de proximidade de 60 chars
+    # (1.ª tentativa de correcção — ainda insuficiente, confirmado no
+    # pipeline real: "2026" aparece a menos de 60 chars de "julho" no
+    # HTML bruto do igefe_mega mesmo sem relação nenhuma, provavelmente
+    # markup/atributos entre o texto visível) geravam falso positivo com
+    # a data antiga "28 de julho de 2025" (ano letivo 2025/2026 ainda a
+    # decorrer). Corrigido exigindo a frase completa e inequívoca — só
+    # "julho de 2026"/"agosto de 2026" (com ou sem o dia à frente) conta,
+    # nunca uma proximidade aproximada.
     datas_confirmadas = bool(
-        _re.search(r"\b(julho|agosto)\b.{0,60}\b2026\b", html_lower) or
-        _re.search(r"\b2026\b.{0,60}\b(julho|agosto)\b", html_lower)
+        _re.search(r"\b(?:\d{1,2}\s+de\s+)?(julho|agosto)\s+de\s+2026\b", html_lower)
     )
     if ano_confirmado:
         _registar_aviso(slug, f"ano_lectivo_detectado:{ano_detectar}")
