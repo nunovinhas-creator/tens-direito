@@ -56,7 +56,7 @@ var paginas = [
    cluster: 'trabalho-rendimento', clusterNome: 'Trabalho e Rendimento', tipo: 'artigo'},
   {url: '/subsidio-desemprego.html',
    titulo: 'Subsídio de desemprego 2026',
-   descricao: 'Subsídio de desemprego 2026: quanto recebes (537,13€–1.342,83€/mês), prazo de garantia de 360 dias e como pedir.',
+   descricao: 'Descobre se tens direito, quanto vais receber (65% do salário, mín. 537,13€) e como pedir em 90 dias.',
    keywords: 'subsidio desemprego iefp segurança social como pedir inscricao involuntario',
    cluster: 'trabalho-rendimento', clusterNome: 'Trabalho e Rendimento', tipo: 'artigo'},
   {url: '/baixa-medica-subsidio-doenca.html',

@@ -138,9 +138,11 @@ def test_subsidio_desemprego_title_teto_2_5x_ias():
     assert _valores_eur(titulo) == [round(IAS_2026 * 2.5, 2)], titulo
 
 
-def test_subsidio_desemprego_meta_description_piso_e_teto_ias():
+def test_subsidio_desemprego_meta_description_piso_ias():
+    # A description passou a citar só o piso (2026-07-06, revisão de CTR) —
+    # o teto de 2,5x IAS continua ancorado no <title> pelo teste acima.
     desc = _meta_description("subsidio-desemprego.html")
-    assert _valores_eur(desc) == [IAS_2026, round(IAS_2026 * 2.5, 2)], desc
+    assert _valores_eur(desc) == [IAS_2026], desc
 
 
 def test_subsidio_desemprego_og_tags_espelham_title_e_description():
@@ -213,6 +215,15 @@ def test_limiar_60_por_cento_nunca_diverge_entre_amim_e_psi():
     limiar_psi = _percentagens(_meta_description("prestacao-social-para-a-inclusao.html"))
     limiar_amim = _percentagens(_meta_description("amim.html"))
     assert limiar_psi == limiar_amim == [60.0]
+
+
+def test_subsidio_desemprego_meta_description_percentagem_bate_com_o_corpo():
+    # 65% é a taxa fixa do DL n.º 220/2006 (RR × 65%) — sem relação com o
+    # IAS, canário de consistência com o corpo do artigo (já fact-checked).
+    html = _ler("subsidio-desemprego.html")
+    desc = _meta_description("subsidio-desemprego.html")
+    assert _percentagens(desc) == [65.0], desc
+    assert "RR × 65%" in html, "fórmula RR × 65% não encontrada no corpo"
 
 
 # ── Subsídio de doença — dias de espera ──────────────────────────────────────

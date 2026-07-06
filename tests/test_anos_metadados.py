@@ -11,7 +11,7 @@ Este teste falha sempre que um <title>/description contenha um ano civil
 inferior ao ano corrente (calculado via `datetime.now().year`, nunca uma
 constante fixa — o ponto é o teste ficar vermelho sozinho em janeiro, sem
 precisar de ninguém "lembrar" de o actualizar), excepto para referências
-históricas legítimas — citações de diplomas legais (ex.: "DL 220/2006") ou
+históricas legítimas — citações de diplomas legais (ex.: "DL 138/2025") ou
 factos permanentes com data no passado (ex.: "fechado desde 2023") — que
 vivem em EXCECOES_ANOS_HISTORICOS, cada uma com o motivo registado.
 
@@ -45,7 +45,6 @@ EXCECOES_ANOS_HISTORICOS = {
     ("apoio-extraordinario-renda.html", 2023): "PAER fechado a novos candidatos desde 15/03/2023 — facto histórico permanente, o apoio não voltou a abrir",
     ("complemento-solidario-idosos.html", 2024): "Regra de rendimentos dos filhos deixou de contar desde 2024 — facto histórico permanente",
     ("cuidador-informal.html", 2025): "Decreto-Lei n.º 138/2025 — número do diploma, não uma data de vigência",
-    ("subsidio-desemprego.html", 2006): "Decreto-Lei n.º 220/2006 — número do diploma, não uma data de vigência",
     ("documentos/pedido-acesso-documentos-administrativos.html", 2016): "Lei n.º 26/2016 (LADA) — número do diploma, não uma data de vigência",
 }
 
