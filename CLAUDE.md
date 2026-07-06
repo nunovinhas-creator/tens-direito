@@ -3754,3 +3754,89 @@ exacto devolvido pela API antes de concluir sucesso — nunca assumir
 que "o run mais recente" é o que se acabou de disparar, e nunca
 confiar numa releitura de dados já vistos sem re-confirmar o
 identificador.
+
+---
+
+*Última revisão: 2026-07-06 — sessão de estabilização de `main`, disparada
+por 18 corridas seguidas vermelhas de "Integridade do Código" (desde o
+commit `774cb51`, FASE 1 de MELHORIAS-SPEC.md) e 2 branches remotas a
+violar a REGRA ABSOLUTA — GIT. Diagnóstico pelo log real (`get_job_logs`,
+nunca por adivinhação): a suite em si estava sempre a passar
+(`1413 passed`) — a falha era só o guardrail "limiar de testes skipped"
+(`.github/workflows/integridade.yml`), que ficou em `LIMIAR_SKIPPED=4`
+desde a sessão anterior (2026-07-05) e nunca foi actualizado quando o
+commit `774cb51` introduziu um 5.º skip legítimo:
+`manuais-escolares-mega.html` não tem secção de FAQ visível dedicada
+(só JSON-LD), por isso `test_checklist_final_vem_antes_do_faq`
+(`tests/test_resposta_rapida_checklist.py`) salta-o deliberadamente em
+vez de inventar uma secção que a página não tem — não era um binário em
+falta nem uma regressão silenciosa, confirmado reproduzindo localmente
+(`python3 -m pytest tests/ -q -rs`, sempre os mesmos 5 skips estruturais).
+Corrigido subindo `LIMIAR_SKIPPED` de 4 para 5, com o raciocínio completo
+documentado no próprio comentário do workflow (commit `cbd7c71`) — **run
+`28787861005`, commit exacto `cbd7c716`, confirmado `status: completed`,
+`conclusion: success`** via API, primeiro verde depois de 18 corridas.
+
+Ao correr a suite completa localmente pela primeira vez nesta sessão
+(sandbox sem `feedparser`/`bs4`/`requests`/Playwright pré-instalados —
+`sgmllib3k` falha a compilar por incompatibilidade `install_layout` do
+`setuptools` do sistema, mesma limitação já documentada; contornado
+extraindo `sgmllib.py` do tarball para `site-packages` à mão, e usando
+sempre `python3 -m pytest` em vez do `pytest` do PATH, que resolvia para
+um venv `uv tool` isolado sem as dependências do projecto), confirmado
+que Issue #53 (`baixa-medica-subsidio-doenca.html`, `data-expirada`) era
+um falso positivo real, não um alerta genuíno: o match era "já não
+existe o limite mínimo de 30 dias que existia **antes de 1 de abril de
+2024**" — uma regra revogada pelo DL n.º 8/2024, descrita
+permanentemente no passado, nunca "expira". A citação legal completa
+("em vigor desde 1 de abril de 2024") está mais abaixo na página, fora
+da janela de 220 caracteres desta ocorrência específica, por isso
+precisava do seu próprio marcador — mesma categoria já corrigida para as
+Issues #51/#52 (`MARCADORES_HISTORICOS` em `scripts/verificar_datas.py`,
+ver secção "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS").
+Novo marcador `exist(?:e|ia|iam)\s+antes\s+de\b`, anchorado para não
+mascarar um "antes de X" genérico sem relação com uma regra revogada
+(guarda testada explicitamente). Commit `d432f5b` — **run `28788267407`,
+commit exacto `d432f5ba`, confirmado `status: completed`, `conclusion:
+success`**. Issue #53 fechada manualmente com a explicação (não esperado
+o fecho automático do próximo cron).
+
+Issue #54 (`dre_psu` BLOQUEADO) investigada e confirmada **real**, não
+duplicada: `data/estado_fontes.json` mostra 8 dias consecutivos
+bloqueado, `avisos.log` com uma linha nova a cada corrida (nunca o
+padrão de linha antiga reencontrada que causou as Issues #55-#58 de
+MEGA). Verificação externa via `WebSearch` (não pelo scraper, já
+confirmado quebrado) confirmou que o decreto-lei da PSU continua por
+publicar em DR à data de hoje — nenhuma página do site precisa de
+actualização. Comentário explicativo adicionado à Issue, mantida aberta
+correctamente (sentinela `dre_psu` continua quebrado, correcção da URL
+exige sessão com browser interactivo real, já registada em
+`ROADMAP.md` — não tentada aqui para não arriscar disfarçar o bloqueio
+real de um "sucesso" falso, ver "INVARIANTE — NENHUM ESTADO DE ERRO PODE
+PARECER SUCESSO").
+
+Branches `claude/infrastructure-audit-robustness-10k2wc` e
+`claude/melhorias-spec-phase-1-anlctz`: confirmado por
+`git rev-list --count origin/main..<branch>` = 0 em ambas — já
+totalmente integradas em `main` por fast-forward em sessões anteriores,
+zero conteúdo único, seguras para apagar. `git push origin --delete`
+voltou a dar **403** (mesma limitação já documentada em várias sessões
+anteriores — sem `gh` CLI nem ferramenta MCP com permissão para apagar
+branches remotas nesta sessão) — ficam registadas para o Nuno apagar
+manualmente no GitHub; nenhum trabalho por perder.
+
+`pages build and deployment` do commit `b8b1c25e` (~08:35 hora de
+Lisboa / 07:32-07:35 UTC) confirmado **transitório**: o commit seguinte
+já tinha deploy com sucesso, e o deploy do HEAD actual (`d432f5ba`, run
+`28788266298`) e o smoke test de produção (`28788267373`) confirmam-se
+verdes — produção a servir a versão certa, sem necessidade de
+`rerun_workflow_run`.
+
+Estado final confirmado via API: `Integridade do Código`, `pages build
+and deployment`, `Verificação de Produção (Smoke Test)` e `Verificar
+Links (lychee)` todos `success` no commit `d432f5ba`. Suite completa
+local: 1416 passed, 5 skipped (limiar actualizado); `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados por esta sessão). Trabalho directo em `main`, sem
+branches novas.*
