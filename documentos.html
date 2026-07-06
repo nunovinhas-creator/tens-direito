@@ -18,12 +18,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-  <title>Simuladores e Calculadoras — Tens Direito</title>
-  <meta name="description" content="Simuladores gratuitos de abono de família, Ação Social Escolar (ASE), Complemento Solidário para Idosos (CSI) e subsídio de doença. Cálculos no browser, sem envio de dados.">
-  <meta property="og:title" content="Simuladores e Calculadoras — Tens Direito">
-  <meta property="og:description" content="Simuladores gratuitos de abono de família, ASE, CSI e subsídio de doença. Cálculos no browser, sem envio de dados.">
-  <meta property="og:url" content="https://tensdireito.com/simuladores.html">
-  <link rel="canonical" href="https://tensdireito.com/simuladores.html">
+  <title>Gerador de Documentos — minutas grátis para a Segurança Social</title>
+  <meta name="description" content="Gera minutas de reclamações e cartas de acompanhamento para a Segurança Social. Preenche os campos e recebe o texto pronto — tudo no teu browser, nada é enviado.">
+  <meta property="og:title" content="Gerador de Documentos — minutas grátis para a Segurança Social">
+  <meta property="og:description" content="Minutas de reclamações e cartas de acompanhamento para a Segurança Social, geradas no teu browser. Nada é enviado nem guardado.">
+  <meta property="og:url" content="https://tensdireito.com/documentos.html">
+  <link rel="canonical" href="https://tensdireito.com/documentos.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_PT">
   <meta property="og:site_name" content="Tens Direito">
@@ -34,7 +34,7 @@
     "@type": "BreadcrumbList",
     "itemListElement": [
       {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com/"},
-      {"@type": "ListItem", "position": 2, "name": "Simuladores e Calculadoras", "item": "https://tensdireito.com/simuladores.html"}
+      {"@type": "ListItem", "position": 2, "name": "Documentos", "item": "https://tensdireito.com/documentos.html"}
     ]
   }
   </script>
@@ -43,35 +43,29 @@
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Simuladores e Calculadoras — Tens Direito",
-    "description": "Simuladores gratuitos de abono de família, Ação Social Escolar (ASE) e Complemento Solidário para Idosos (CSI). Cálculos no browser, sem envio de dados.",
-    "url": "https://tensdireito.com/simuladores.html",
+    "name": "Gerador de Documentos — Tens Direito",
+    "description": "Minutas de reclamações e cartas de acompanhamento para a Segurança Social, geradas no browser, sem envio de dados.",
+    "url": "https://tensdireito.com/documentos.html",
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "hasPart": [
       {
         "@type": "WebApplication",
-        "name": "Simulador de Abono de Família 2026",
-        "url": "https://tensdireito.com/simulador-abono.html",
-        "applicationCategory": "FinanceApplication"
+        "name": "Reclamação de decisão da Segurança Social",
+        "url": "https://tensdireito.com/documentos/reclamacao-decisao-seguranca-social.html",
+        "applicationCategory": "BusinessApplication"
       },
       {
         "@type": "WebApplication",
-        "name": "Simulador de Ação Social Escolar (ASE) 2026/2027",
-        "url": "https://tensdireito.com/simulador-ase.html",
-        "applicationCategory": "FinanceApplication"
+        "name": "Carta de acompanhamento — pedido de CSI",
+        "url": "https://tensdireito.com/documentos/carta-acompanhamento-csi.html",
+        "applicationCategory": "BusinessApplication"
       },
       {
         "@type": "WebApplication",
-        "name": "Simulador do Complemento Solidário para Idosos (CSI) 2026",
-        "url": "https://tensdireito.com/simulador-csi.html",
-        "applicationCategory": "FinanceApplication"
-      },
-      {
-        "@type": "WebApplication",
-        "name": "Simulador de Subsídio de Doença 2026",
-        "url": "https://tensdireito.com/simulador-subsidio-doenca.html",
-        "applicationCategory": "FinanceApplication"
+        "name": "Carta de acompanhamento — reavaliação do escalão do abono",
+        "url": "https://tensdireito.com/documentos/carta-acompanhamento-reavaliacao-abono.html",
+        "applicationCategory": "BusinessApplication"
       }
     ]
   }
@@ -80,12 +74,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; line-height: 1.6; }
-    header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
-    nav { display: flex; align-items: center; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
-    .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-    .logo-text { font-size: 1.4rem; font-weight: 700; line-height: 1; }
-    .logo-text span.tens { color: #0F172A; }
-    .logo-text span.direito { color: #0D9488; }
     .hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; }
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
@@ -98,14 +86,16 @@
     .card p { color: #495057; margin-bottom: 0.6rem; }
     .card p:last-child { margin-bottom: 0; }
     .badge { display: inline-block; background: #e6f4f1; color: #0F766E; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .sim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin: 1.5rem 0 2rem; }
-    .sim-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #0F766E; display: flex; flex-direction: column; }
-    .sim-card .sim-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    .sim-card h3 { font-size: 1.05rem; color: #0F172A; margin-bottom: 0.5rem; }
-    .sim-card p { color: #495057; font-size: 0.92rem; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
-    .sim-card a.btn-sim { display: inline-block; background: #0F766E; color: #fff; font-weight: 700; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem; text-align: center; }
-    .sim-card a.btn-sim:hover { background: #115E59; }
-    @media (max-width: 700px) { .sim-grid { grid-template-columns: 1fr; } }
+    .badge-pivot { background: #FEE2E2; color: #991B1B; }
+    .doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin: 1.5rem 0 2rem; }
+    .doc-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #0F766E; display: flex; flex-direction: column; }
+    .doc-card.pivot { border-top-color: #DC2626; }
+    .doc-card .doc-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .doc-card h3 { font-size: 1.05rem; color: #0F172A; margin-bottom: 0.5rem; }
+    .doc-card p { color: #495057; font-size: 0.92rem; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
+    .doc-card a.btn-doc { display: inline-block; background: #0F766E; color: #fff; font-weight: 700; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem; text-align: center; }
+    .doc-card a.btn-doc:hover { background: #115E59; }
+    .gerador-privacidade { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 1rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; line-height: 1.6; }
     .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
     .fonte-bloco a { color: #0F766E; font-weight: 600; }
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
@@ -189,8 +179,8 @@
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="breadcrumb"><a href="/">Início</a> › Simuladores e Calculadoras</p>
-    <h1>Simuladores e Calculadoras</h1>
+    <p class="breadcrumb"><a href="/">Início</a> › Documentos</p>
+    <h1>Gerador de Documentos</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
   <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
@@ -198,56 +188,58 @@
 <!-- partilhar:fim -->
 
     <div class="resposta-direta">
-      Quatro calculadoras gratuitas para estimar o teu escalão e valor de apoio. Todos os cálculos correm no teu navegador — nenhum dado é enviado nem guardado.
+      Minutas de reclamações e cartas de acompanhamento dirigidas à Segurança Social, geradas 100% no teu browser. Preenches os campos, recebes o texto pronto a copiar ou descarregar.
     </div>
   </div>
 </header>
 
 <main id="main-content">
 
-  <h2>Escolhe o teu simulador</h2>
-  <div class="sim-grid">
-    <div class="sim-card">
-      <div class="sim-icon">👶</div>
-      <h3>Simulador de Abono de Família</h3>
-      <p>Calcula o escalão e o valor mensal do abono de família com base no rendimento e nas idades das crianças do agregado.</p>
-      <a href="/simulador-abono.html" class="btn-sim">🧮 Simular abono →</a>
+  <div class="gerador-privacidade">
+    🔒 <strong>Os dados que preenches nunca saem do teu dispositivo</strong> — todos os geradores funcionam inteiramente no teu browser. Nada é enviado para nenhum servidor, nada fica guardado depois de fechares a página.
+  </div>
+
+  <h2>Escolhe o teu documento</h2>
+  <div class="doc-grid">
+    <div class="doc-card">
+      <div class="doc-icon">📨</div>
+      <span class="badge">Reclamação</span>
+      <h3>Reclamação de decisão da Segurança Social</h3>
+      <p>Discordas de um indeferimento ou de um valor atribuído? Gera uma minuta de reclamação, com base nos artigos 191.º e 192.º do CPA.</p>
+      <a href="/documentos/reclamacao-decisao-seguranca-social.html" class="btn-doc">📝 Gerar reclamação →</a>
     </div>
-    <div class="sim-card">
-      <div class="sim-icon">🎒</div>
-      <h3>Simulador de Ação Social Escolar (ASE)</h3>
-      <p>Descobre o teu escalão ASE (A ou B) e o que cobre — refeições, material escolar, transportes e visitas de estudo.</p>
-      <a href="/simulador-ase.html" class="btn-sim">🧮 Simular ASE →</a>
+    <div class="doc-card pivot">
+      <div class="doc-icon">👴</div>
+      <span class="badge badge-pivot">Carta de acompanhamento</span>
+      <h3>Pedido de Complemento Solidário para Idosos (CSI)</h3>
+      <p>O pedido de CSI exige o Mod. CSI 1 – DGSS. Esta ferramenta gera só a carta de acompanhamento — nunca substitui o formulário oficial.</p>
+      <a href="/documentos/carta-acompanhamento-csi.html" class="btn-doc">📝 Gerar carta →</a>
     </div>
-    <div class="sim-card">
-      <div class="sim-icon">👴</div>
-      <h3>Simulador do Complemento Solidário para Idosos (CSI)</h3>
-      <p>Estima o valor mensal do CSI com base na idade, situação (isolado ou casal) e rendimentos declarados.</p>
-      <a href="/simulador-csi.html" class="btn-sim">🧮 Simular CSI →</a>
-    </div>
-    <div class="sim-card">
-      <div class="sim-icon">🤒</div>
-      <h3>Simulador de Subsídio de Doença</h3>
-      <p>Calcula a estimativa da baixa médica por escalão (55% a 75%), com dias de espera, majoração e desagregação diária.</p>
-      <a href="/simulador-subsidio-doenca.html" class="btn-sim">🧮 Simular subsídio de doença →</a>
+    <div class="doc-card pivot">
+      <div class="doc-icon">👶</div>
+      <span class="badge badge-pivot">Carta de acompanhamento</span>
+      <h3>Reavaliação do escalão do abono de família</h3>
+      <p>O canal preferencial é o pedido online na Segurança Social Direta. Esta ferramenta gera uma carta de acompanhamento para quem entrega o processo em papel.</p>
+      <a href="/documentos/carta-acompanhamento-reavaliacao-abono.html" class="btn-doc">📝 Gerar carta →</a>
     </div>
   </div>
 
   <div class="card">
-    <span class="badge">Como funcionam</span>
-    <h2>O que estas calculadoras têm em comum</h2>
-    <p>As quatro calculadoras são 100% client-side: o cálculo corre inteiramente no teu navegador, sem enviar nenhum dado para nenhum servidor. Os valores usados (IAS, escalões, limites) estão sempre citados com a fonte oficial — nunca inventados.</p>
-    <p>Todas são estimativas educativas, não vinculativas. A decisão final sobre o teu caso é sempre da entidade competente (Segurança Social ou secretaria da escola) — confirma sempre a tua situação junto dos serviços oficiais.</p>
+    <span class="badge">Como funciona</span>
+    <h2>O que estes geradores têm em comum</h2>
+    <p>Todos os documentos são gerados 100% no teu browser: nenhum dado é enviado para nenhum servidor, nada é guardado em cookies, localStorage ou qualquer outro sítio — se recarregares a página, o formulário fica limpo outra vez.</p>
+    <p>Sempre que o canal oficial da Segurança Social exigir um formulário próprio (ex.: Mod. CSI 1, Modelo GF58-DGSS), a minuta nunca se apresenta como substituto — passa a ser uma carta de acompanhamento, com um aviso destacado e um link directo para o formulário oficial.</p>
+    <p>Todas as minutas são modelos informativos e não substituem aconselhamento jurídico. Confirma sempre os requisitos junto da Segurança Social ou de um advogado/solicitador.</p>
   </div>
 
   <div class="fonte-bloco">
     <strong>Fontes e legislação</strong><br>
-    Abono de família: Portaria n.º 60/2026/1 · ASE: Despacho n.º 8452-A/2015 e n.º 5296/2017 · CSI: Decreto-Lei n.º 126-A/2017 e Decreto-Lei n.º 35/2024 · Subsídio de doença: Decreto-Lei n.º 28/2004, na redação atual ·
-    Verificado a 05/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
+    Reclamação: Código do Procedimento Administrativo (Decreto-Lei n.º 4/2015, de 7 de janeiro), artigos 191.º a 198.º · CSI: Decreto-Lei n.º 126-A/2017, Mod. CSI 1/1.1/1.2 · Abono: Modelo GF58-DGSS (seg-social.pt) ·
+    Verificado a 06/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
   </div>
 
   <div class="disclaimer">
-    <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. Os simuladores são ferramentas educativas, não vinculativas. Confirma sempre os detalhes da tua situação junto da Segurança Social ou da secretaria da escola.
+    <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. Estes documentos são modelos informativos e não substituem aconselhamento jurídico. Confirma sempre os requisitos da tua situação junto da Segurança Social ou de um advogado/solicitador.
   </div>
 
 </main>

@@ -1,0 +1,199 @@
+/*
+ * assets/css/gerador-documentos.css — Tens Direito
+ * Estilo partilhado do Gerador de Documentos — mesmo padrão visual dos
+ * simuladores (calc-card, form-group, btn, resultado). Uma única folha
+ * de estilos para as três minutas, nunca CSS duplicado por página.
+ */
+
+.gerador-privacidade {
+  background: #EFF6FF;
+  border-left: 4px solid #2563EB;
+  border-radius: 0 6px 6px 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  color: #1E40AF;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.gerador-aviso-formulario {
+  background: #FEF3C7;
+  border-left: 4px solid #F59E0B;
+  padding: 1rem 1.25rem;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+  color: #92400E;
+  line-height: 1.6;
+}
+
+.gerador-aviso-formulario a {
+  color: #b45309;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.gerador-card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 12px rgba(0, 0, 0, .06);
+  margin-bottom: 2rem;
+}
+
+.gerador-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.gerador-form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #0F172A;
+  font-size: 0.95rem;
+}
+
+.gerador-form-group input,
+.gerador-form-group select,
+.gerador-form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.gerador-form-group input:focus,
+.gerador-form-group select:focus,
+.gerador-form-group textarea:focus {
+  outline: none;
+  border-color: #0F766E;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, .1);
+}
+
+.gerador-form-group textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.gerador-form-group small {
+  display: block;
+  color: #6B7280;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.gerador-erro-campo {
+  color: #DC2626 !important;
+  font-weight: 600;
+}
+
+.gerador-erro-resumo {
+  font-size: 0.92rem;
+  color: #991B1B;
+  background: #FEE2E2;
+  border-radius: 6px;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.gerador-erro-resumo:not(:empty) {
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.gerador-btn-grupo {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.gerador-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.gerador-btn-primary {
+  background: #0F766E;
+  color: #fff;
+}
+
+.gerador-btn-primary:hover {
+  background: #115E59;
+}
+
+.gerador-btn-secondary {
+  background: #F3F4F6;
+  color: #0F172A;
+}
+
+.gerador-btn-secondary:hover:not(:disabled) {
+  background: #E5E7EB;
+}
+
+.gerador-btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.gerador-resultado {
+  display: none;
+}
+
+.gerador-resultado.show {
+  display: block;
+  animation: geradorSlideIn 0.25s ease-out;
+}
+
+@keyframes geradorSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.gerador-pre {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 1.5rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #1F2937;
+  margin-bottom: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.gerador-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.gerador-feedback {
+  font-size: 0.88rem;
+  color: #0F766E;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .gerador-card { padding: 1.25rem; }
+  .gerador-btn-grupo, .gerador-acoes { flex-direction: column; align-items: stretch; }
+}

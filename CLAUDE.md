@@ -115,6 +115,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 | Checklist final | `assets/js/checklist.js` + `assets/css/checklist.css` — bloco `.checklist-final` (FASE 1 de `MELHORIAS-SPEC.md`, ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL"), sem localStorage |
+| Gerador de Documentos | `assets/js/gerador-documentos.js` (motor único config-driven) + `assets/css/gerador-documentos.css` + hub `/documentos.html` + páginas em `documentos/*.html` — minutas 100% client-side, zero rede/localStorage (ver secção "GERADOR DE DOCUMENTOS") |
 
 **Ranking e apresentação da pesquisa (`scripts/pesquisa.js`)** — reformulado
 2026-07-02: antes, "sub" devolvia páginas sem o termo no título
@@ -377,6 +378,10 @@ para esses três casos.
 | `prestacao-social-para-a-inclusao.html` | Prestação Social para a Inclusão (PSI) 2026 | 4 jul. 2026 |
 | `baixa-medica-subsidio-doenca.html` | Baixa médica e subsídio de doença 2026 | 5 jul. 2026 |
 | `bolsa-de-estudo-ensino-superior.html` | Bolsa de Estudo do Ensino Superior 2026/2027 | 6 jul. 2026 |
+| `documentos.html` | Gerador de Documentos (hub) | 6 jul. 2026 |
+| `documentos/reclamacao-decisao-seguranca-social.html` | Reclamação de decisão da Segurança Social | 6 jul. 2026 |
+| `documentos/carta-acompanhamento-csi.html` | Carta de acompanhamento — pedido de CSI | 6 jul. 2026 |
+| `documentos/carta-acompanhamento-reavaliacao-abono.html` | Carta de acompanhamento — reavaliação do escalão do abono | 6 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1217,6 +1222,149 @@ tocados.
   (incluindo a correcção do bug pré-existente acima).
 - Zero dependências externas novas — `checklist.js`/`checklist.css` são
   vanilla JS/CSS, mesmo padrão de `share.js`/`share.css`.
+
+---
+
+## GERADOR DE DOCUMENTOS
+
+Diferenciador do site (2026-07-06, Sessão 1 de 2 —
+`PROMPTGERADORDOCUMENTOSv1.md`): minutas de requerimentos, reclamações e
+cartas dirigidas à Segurança Social, geradas 100% no browser. Ver
+`ROADMAP.md` → "GERADOR DE DOCUMENTOS — ESTADO" para o índice rápido do
+que falta para a Sessão 2.
+
+### Arquitectura — motor único config-driven
+
+Nenhuma minuta tem JS próprio:
+
+- **`assets/js/gerador-documentos.js`** — motor genérico. Lê um objecto
+  `CONFIG_DOCUMENTO` (inline, `<script>` no fim da página), renderiza o
+  formulário a partir de `CONFIG_DOCUMENTO.campos`, valida obrigatórios
+  + padrões (regex) antes de gerar, substitui `{{campo}}` no
+  `template`, e mostra o resultado num `<pre>` com botão **Copiar**
+  (Clipboard API, fallback `execCommand`) e **Descarregar .txt** (Blob
+  + URL). Campos opcionais vazios resolvem para `campo.valorVazio`
+  (por omissão, string vazia); campos `tipo: "date"` são formatados
+  automaticamente de ISO para `DD/MM/AAAA`; `data_hoje`/
+  `data_hoje_extenso` são injectados automaticamente em todos os
+  templates, sem serem campos do formulário.
+- **`assets/css/gerador-documentos.css`** — estilo partilhado
+  (`.gerador-*`), mesmo padrão visual dos simuladores.
+- **`documentos/*.html`** — uma página por minuta (landing page própria
+  para SEO). `documentos/*.html` foi acrescentado a
+  `encontrar_paginas()` em `scripts/sincronizar_clusters.py` (mesmo
+  padrão de `p/*.html`) — por isso as páginas desta pasta entram
+  automaticamente em todos os testes que já usam essa função
+  (`test_nav_coerencia.py`, `test_higiene_indexacao.py`,
+  `test_acessibilidade.py`, `test_pesquisa_indice.py`).
+- **`/documentos.html`** — hub com cards, mesmo padrão de
+  `/simuladores.html`.
+
+**Restrição dura verificada por teste real** (`tests/test_gerador_documentos.py::test_zero_pedidos_de_rede_ao_interagir_com_o_gerador`):
+zero chamadas de rede depois do load, mesmo ao gerar o documento — por
+isso o motor **nunca** dispara eventos GA4 ao clicar em "Gerar
+documento" (ao contrário dos simuladores, que disparam `calc_resultado`
+via `gtag`). Decisão deliberada desta sessão: o próprio prompt exige um
+teste de rede que falha com qualquer pedido, e um evento GA4 é uma
+chamada de rede real — a mensagem "os dados que preenches nunca saem do
+teu dispositivo" tem de ser verificada a sério, não só quanto ao
+conteúdo do formulário. Zero `localStorage`/`sessionStorage` — estado
+só em memória (mesmo padrão de `checklist.js`).
+
+### Integração no sistema de clusters — decisão desta sessão
+
+`cluster_da_pagina()`/`processar_pagina()` em `sincronizar_clusters.py`
+comparam `Pagina.slug` só contra `caminho.name` (basename) — desenhado
+para páginas na raiz, nunca precisou de suportar sub-caminhos como
+`documentos/...` (ao contrário do `pillar`, que já tinha uma função
+própria, `cluster_do_pillar()`, para caminhos com `/`). Estender o
+matching de `paginas[].slug` para aceitar sub-caminhos é um refactor à
+parte, fora do âmbito desta sessão. Por isso as 4 páginas do gerador
+(`documentos.html` + as 3 minutas) ficam em `EXCLUIDAS` — mesma
+categoria de `comecar-aqui.html`/`simuladores.html` — e a integração é
+feita inteiramente por fora do sistema de clusters: nav (link "📄
+Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão do link
+"🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no hub
+`/documentos.html`, e cross-links manuais a partir de
+`abono-de-familia.html` e `complemento-solidario-idosos.html` para as
+duas cartas de acompanhamento respectivas. *Registado para o futuro*:
+se o número de minutas crescer muito, vale a pena generalizar
+`Pagina.slug` para aceitar caminhos relativos completos e dar-lhes
+cluster membership a sério (badge "Ferramenta" no `PILLAR-LISTA`,
+contagem no cartão da homepage) — não decidido, sem prazo.
+
+### PORTÃO DE VERIFICAÇÃO — resultado das 3 candidatas da Sessão 1
+
+Núcleo do prompt original, as 3 candidatas de maior prioridade,
+verificadas uma a uma antes de escrever qualquer template:
+
+1. **Reclamação de decisão da Segurança Social** — **publicada
+   integralmente** (`documentos/reclamacao-decisao-seguranca-social.html`).
+   Verificado via pesquisa a fontes que reproduzem o texto consolidado
+   do Código do Procedimento Administrativo (Decreto-Lei n.º 4/2015, de
+   7 de janeiro): o artigo 191.º consagra a reclamação em regime geral,
+   **sem exigir formulário próprio** — um texto livre e fundamentado é
+   um canal legítimo, com prazo geral de 15 dias úteis "quando a lei
+   não estabeleça prazo diferente" e decisão em 30 dias (artigo 192.º,
+   n.º 2); recurso hierárquico nos artigos 193.º a 198.º. É a única das
+   3 candidatas que não precisou de pivot.
+2. **Pedido de reavaliação de escalão de abono de família** — **pivot
+   obrigatório**, diferente do que o prompt original assumia (só
+   sinalizava pivot como "provável" para a CSI). Achado: o nosso
+   próprio artigo já fact-checked `abono-de-familia.html` documenta
+   que a reavaliação usa o **Modelo GF58-DGSS** (disponível em
+   seg-social.pt) e que o canal normal e mais rápido é o **pedido
+   online** na Segurança Social Direta (Família → Abono de Família →
+   Pedido de reavaliação do escalão), com uma carência de 90 dias desde
+   a última verificação/alteração. Publicada como
+   `documentos/carta-acompanhamento-reavaliacao-abono.html` — carta de
+   acompanhamento do Modelo GF58-DGSS, nunca um substituto, com aviso
+   destacado (`.aviso-pivot`) a apontar primeiro para o canal online.
+3. **CSI** — **pivot confirmado**, exactamente como o prompt
+   antecipava. O nosso próprio artigo já fact-checked
+   `complemento-solidario-idosos.html` documenta "Modelos CSI 1, CSI
+   1/1 e CSI 1/2 (obrigatório)" — requerimento inicial de prestação,
+   caso típico da regra do portão ("nunca apresentar uma minuta como
+   substituto de um Mod. oficial"). Publicada como
+   `documentos/carta-acompanhamento-csi.html` — carta de
+   acompanhamento, com link directo para `seg-social.pt/formularios`.
+
+**Nenhuma candidata ficou de fora nesta sessão** — as 3 do núcleo
+passaram o portão (2 com pivot, 1 sem). As candidatas 4-12 da lista de
+expansão do prompt (recurso hierárquico, dívida em prestações,
+comunicação de alteração de agregado/morada/rendimentos, atraso no
+processamento, SVI/junta médica, ASE, pedido de consulta do processo,
+requerimento genérico, declaração/comprovativo de situação) ficam
+**por verificar** para a Sessão 2 — ver `ROADMAP.md`.
+
+**Excluída à partida, conforme instrução do prompt**: procurações e
+qualquer documento com efeitos de representação legal — nunca
+avaliadas nem candidatas, decisão tomada antes de qualquer
+verificação.
+
+### Disclaimer obrigatório
+
+Presente em texto idêntico nas 4 páginas E no texto gerado de cada
+minuta (verificado por `tests/test_gerador_documentos.py::test_disclaimer_presente_na_pagina_e_no_texto_gerado`):
+> "Este documento é um modelo informativo e não substitui aconselhamento
+> jurídico. Confirme sempre os requisitos junto da Segurança Social ou de
+> um advogado/solicitador."
+
+### Testes desta sessão
+
+`tests/test_gerador_documentos.py` (17 testes, Chromium real via
+Playwright, mesmo padrão de `test_acessibilidade.py` — nunca `file://`):
+formulário preenchido gera texto com todos os campos, campo obrigatório
+vazio bloqueia + mostra erro, NISS inválido bloqueia com mensagem de
+padrão, disclaimer presente na página e no texto gerado, botão Copiar
+existe e fica activo após gerar, consistência do hub (cada card aponta
+para ficheiro real, cada minuta linka de volta), e zero pedidos de rede
+ao interagir com o gerador. Genérico sobre as 3 páginas via
+`page.evaluate("CONFIG_DOCUMENTO")` — nunca hardcoded por minuta, mesma
+filosofia de `test_simulador_csi_calculo.py`. Mais: `test_nav_tem_link_documentos`
+novo em `tests/test_nav_coerencia.py` (mesmo padrão de
+`test_nav_tem_link_simuladores`). Suite completa reconfirmada sem
+regressões (ver entrada de revisão no fim deste ficheiro), ruff limpo.
 
 ---
 
@@ -4107,3 +4255,51 @@ Suite completa local (nenhum código Python alterado por esta sessão):
 --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho
 directo em `main`, sem branches novas.*
+
+---
+
+*Última revisão: 2026-07-06 — Sessão 1 do Gerador de Documentos
+(`PROMPTGERADORDOCUMENTOSv1.md`), nova secção "GERADOR DE DOCUMENTOS".
+Motor único config-driven (`assets/js/gerador-documentos.js` +
+`assets/css/gerador-documentos.css`) — nenhuma minuta tem JS próprio,
+cada página só define `CONFIG_DOCUMENTO` (campos + template com
+`{{placeholders}}`) e chama `GeradorDocumentos.iniciar()`. Hub
+`/documentos.html` (padrão de `/simuladores.html`) + 3 páginas em
+`documentos/*.html`, novo directório acrescentado a
+`encontrar_paginas()` em `sincronizar_clusters.py`.
+
+Portão de verificação aplicado às 3 candidatas do núcleo do prompt: 1)
+"Reclamação de decisão da Segurança Social" publicada integralmente —
+confirmado via pesquisa que o artigo 191.º do CPA (Decreto-Lei n.º
+4/2015) consagra a reclamação em regime geral sem exigir formulário
+próprio; 2) "Pedido de reavaliação de escalão de abono de família"
+teve de fazer **pivot para carta de acompanhamento** — achado real
+desta sessão, não antecipado pelo prompt original: o nosso próprio
+artigo já fact-checked `abono-de-familia.html` documenta o Modelo
+GF58-DGSS como via oficial, com o pedido online na Segurança Social
+Direta como canal preferencial; 3) CSI também fez **pivot para carta
+de acompanhamento** — confirmado pelo próprio `complemento-solidario-idosos.html`
+("Modelos CSI 1, CSI 1/1 e CSI 1/2 (obrigatório)"), exactamente como o
+prompt antecipava. Nenhuma minuta apresenta-se como substituto de um
+Mod. oficial — as duas cartas de acompanhamento têm aviso destacado
+(`.aviso-pivot`) com link directo para o formulário/canal real.
+
+Restrição dura verificada por teste real (não só documentada):
+`tests/test_gerador_documentos.py::test_zero_pedidos_de_rede_ao_interagir_com_o_gerador`
+— por isso o motor nunca dispara eventos GA4 ao gerar (decisão
+deliberada, diferente dos simuladores). Integração completa: nav
+(`scripts/sincronizar_nav.py`, link "📄 Documentos"), `sitemap.xml`,
+`scripts/pesquisa.js`, cross-links a partir de `abono-de-familia.html`
+e `complemento-solidario-idosos.html`. As 4 páginas novas ficam fora do
+sistema de clusters (`EXCLUIDAS`) por uma limitação real do
+`sincronizar_clusters.py` — `Pagina.slug` só é comparado contra
+`caminho.name` (basename), nunca desenhado para sub-caminhos como
+`documentos/...` — registado para o futuro, não corrigido nesta
+sessão. 17 testes novos em `tests/test_gerador_documentos.py`
+(Chromium real) + 1 em `tests/test_nav_coerencia.py`. Suite completa:
+1549 passed, 4 skipped (mesmos skips já documentados); `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo. Estado completo
+e candidatas 4-12 para a Sessão 2 registados em `ROADMAP.md` → "GERADOR
+DE DOCUMENTOS — ESTADO". `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados
+por esta sessão).*

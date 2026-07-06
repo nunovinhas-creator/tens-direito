@@ -59,6 +59,23 @@ EXCLUIDAS = {
     # CLAUDE.md "IMPACTO DA PSU"). Fica fora de clusters.json até ao dia
     # do decreto (ver .claude/commands/atualizar-cluster-psu.md).
     "simulador-psu.html",
+    # Hub cross-cluster do Gerador de Documentos — mesma categoria de
+    # simuladores.html (agrega minutas de vários temas, não pertence a
+    # um único cluster).
+    "documentos.html",
+    # As 3 minutas vivem em documentos/ — fora do sistema de clusters
+    # por desenho: cluster_da_pagina()/processar_pagina() comparam
+    # p.slug só contra caminho.name (basename), pensado para páginas na
+    # raiz; estender isso a caminhos com subdirectório é um refactor à
+    # parte, fora do âmbito desta sessão (ver ROADMAP.md). A reclamação
+    # é também genérica a qualquer prestação, sem cluster único óbvio —
+    # mesma razão de comecar-aqui.html. Integração feita por fora do
+    # sistema de clusters: nav, sitemap, pesquisa.js, hub /documentos.html
+    # e cross-links manuais a partir de abono-de-familia.html e
+    # complemento-solidario-idosos.html.
+    "reclamacao-decisao-seguranca-social.html",
+    "carta-acompanhamento-csi.html",
+    "carta-acompanhamento-reavaliacao-abono.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
@@ -367,7 +384,11 @@ def _garantir_clusters_css(conteudo: str) -> str:
 
 
 def encontrar_paginas(raiz: Path = RAIZ) -> List[Path]:
-    return sorted(raiz.glob("*.html")) + sorted(raiz.glob("p/*.html"))
+    return (
+        sorted(raiz.glob("*.html"))
+        + sorted(raiz.glob("p/*.html"))
+        + sorted(raiz.glob("documentos/*.html"))
+    )
 
 
 def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str]:

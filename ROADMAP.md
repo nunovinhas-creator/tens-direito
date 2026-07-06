@@ -12,6 +12,56 @@ completo sempre em `CLAUDE.md`, nunca aqui.
 
 ---
 
+## 📄 GERADOR DE DOCUMENTOS — ESTADO (Sessão 1 de 2, concluída 2026-07-06)
+
+Ver CLAUDE.md → **"GERADOR DE DOCUMENTOS"** para o detalhe completo
+(arquitectura, portão de verificação, testes). Resumo para a Sessão 2:
+
+**Publicado nesta sessão** — motor (`assets/js/gerador-documentos.js`)
++ CSS partilhado + hub `/documentos.html` + 3 páginas em `documentos/`:
+1. `reclamacao-decisao-seguranca-social.html` — minuta completa (canal
+   legítimo, CPA artigos 191.º-198.º, sem pivot).
+2. `carta-acompanhamento-reavaliacao-abono.html` — **pivot** (Modelo
+   GF58-DGSS obrigatório; achado desta sessão, o prompt original não
+   antecipava pivot aqui).
+3. `carta-acompanhamento-csi.html` — **pivot** (Mod. CSI 1/1.1/1.2
+   obrigatório; pivot já antecipado pelo prompt original).
+
+Integração completa: nav (`sincronizar_nav.py`), `sitemap.xml`,
+`scripts/pesquisa.js`, cross-links a partir de `abono-de-familia.html`
+e `complemento-solidario-idosos.html`, golden tests + teste de rede
+(`tests/test_gerador_documentos.py`, 17 testes). Suite completa: 1549
+passed, 4 skipped. Trabalho directo em `main`.
+
+**Para a Sessão 2** — verificar as candidatas 4-12 da lista de expansão
+do prompt original (`PROMPTGERADORDOCUMENTOSv1.md`), publicando as que
+passarem o portão de verificação:
+
+| # | Candidata | Nota |
+|---|---|---|
+| 4 | Recurso hierárquico de decisão da Segurança Social | Complementa a reclamação já publicada (artigos 193.º-198.º do CPA) |
+| 5 | Pedido de pagamento de dívida à SS em prestações | Por verificar — confirmar se existe Mod. próprio |
+| 6 | Comunicação de alteração de agregado/morada/rendimentos | Distinta da reavaliação de escalão (já publicada); por verificar |
+| 7 | Exposição por atraso no processamento de prestação | Só se o prazo legal aplicável for verificável |
+| 8 | Reclamação de decisão do SVI / junta médica | Por verificar canal legítimo |
+| 9 | Pedido de reavaliação de escalão ASE | Liga ao cluster `apoios-escolares` já existente |
+| 10 | Pedido de consulta do processo / acesso a documentos (CPA) | Por verificar |
+| 11 | Requerimento genérico à Segurança Social | Template base — por verificar se acrescenta valor além da reclamação já publicada |
+| 12 | Pedido de declaração/comprovativo de situação de prestações | Por verificar |
+
+**Excluída à partida** (decisão do prompt original, nunca avaliada):
+procurações e qualquer documento com efeitos de representação legal.
+
+Também para a Sessão 2: rever meta descriptions das 4 páginas para CTR,
+avaliar interligação com mais páginas de conteúdo (ex.: `rsi.html` →
+reclamação; outras prestações → reclamação), e considerar se vale a
+pena generalizar `Pagina.slug` em `sincronizar_clusters.py` para
+suportar sub-caminhos (ver CLAUDE.md, "Integração no sistema de
+clusters") — só se o número de minutas publicadas crescer o
+suficiente para justificar o refactor.
+
+---
+
 ## 🔔 À ESPERA DE UM SINAL
 
 ### Manuais (só o Nuno vê o sinal — o sistema não avisa)

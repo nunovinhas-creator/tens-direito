@@ -75,3 +75,14 @@ def test_nav_tem_link_simuladores(caminho):
     assert bloco.count('href="/simuladores.html"') >= 2, (
         f"{caminho.name}: link '/simuladores.html' em falta na nav (esperado no menu desktop e mobile)"
     )
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_nav_tem_link_documentos(caminho):
+    html = caminho.read_text(encoding="utf-8")
+    m = re.search(r"<!-- NAV:INICIO -->([\s\S]*?)<!-- NAV:FIM -->", html)
+    assert m, f"{caminho.name}: bloco NAV vazio ou em falta"
+    bloco = m.group(1)
+    assert bloco.count('href="/documentos.html"') >= 2, (
+        f"{caminho.name}: link '/documentos.html' em falta na nav (esperado no menu desktop e mobile)"
+    )
