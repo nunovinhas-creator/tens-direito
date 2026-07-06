@@ -4042,3 +4042,68 @@ tests/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 esta sessão). Trabalho directo em `main`, sem branches novas — 6
 commits nesta sessão (carimbo, guardrail novo, 2 de teste intencional +
 2 de reversão).*
+
+---
+
+*Última revisão: 2026-07-06 — criado `.github/workflows/limpar-branches.yml`
+(nova secção "LIMPEZA AUTOMÁTICA DE BRANCHES"), rede automática para a
+"REGRA ABSOLUTA — GIT": sessões já tinham ficado com branches `claude/*`
+totalmente integradas em `main` sem conseguir apagá-las (`git push
+--delete` sempre 403 sem sessão logada). Este workflow corre com o
+GITHUB_TOKEN do próprio Actions — `permissions: contents: write` +
+`issues: write` — e nunca depende de quem está logado. Triggers: `push`
+a `main` + cron diário `0 5 * * *` (antes do pipeline das 06:00) +
+`workflow_dispatch`.
+
+Confirmado por API (`list_branches`, `git ls-remote --heads origin`)
+antes de qualquer alteração: as duas branches órfãs documentadas em
+revisões anteriores (`claude/infrastructure-audit-robustness-10k2wc`,
+`claude/melhorias-spec-phase-1-anlctz`) **já não existiam** — apagadas
+manualmente entretanto, fora desta sessão; só `main` existia no
+remoto. Entrada correspondente do "TRABALHO FUTURO REGISTADO" em
+`ROADMAP.md` removida por estar desactualizada.
+
+**Verificado em CI real, não só localmente** (mesmo padrão do guardrail
+de skips): o 1.º push desta sessão (commit `c0bdb27`) já disparou o
+workflow pela primeira vez — run
+[28792058530](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28792058530),
+`conclusion: success`, log confirma "Sem branches por integrar e sem
+Issue aberta — nada a fazer" (esperado, só `main` existia). Para provar
+as duas direcções com branches reais, criadas via API: `teste-janitor-
+integrada` (0 commits únicos, mesmo tip de `main`) e `teste-janitor-
+nao-integrada` (1 commit único, ficheiro `.janitor-test-marker.txt`).
+`workflow_dispatch` manual → run
+[28792310830](https://github.com/nunovinhas-creator/tens-direito/actions/runs/28792310830),
+commit exacto `c0bdb275`, `conclusion: success`, log confirma
+literalmente: "Branch 'teste-janitor-integrada' totalmente integrada em
+main (0 commits únicos) — a apagar." seguido de "Branch 'teste-janitor-
+nao-integrada' tem 1 commit(s) único(s) — NÃO apagada." e "Issue de
+branches órfãs criada, 1 branch(es)." Confirmado via API a seguir:
+`teste-janitor-integrada` já não existe em `list_branches`,
+`teste-janitor-nao-integrada` continua, Issue #59 ("🌿 Branches órfãs
+por integrar") criada com a tabela certa (`teste-janitor-nao-integrada`
+| 1). `main` confirmada intocada nos dois casos (mesmo SHA antes/depois).
+
+**Achado real ao tentar limpar os artefactos de teste**: a própria
+sessão tentou `git push origin --delete teste-janitor-nao-integrada`
+para arrumar — deu **403**, a mesma limitação de sempre (sessão sem
+autenticação de utilizador logado). Confirma de forma directa e
+concreta a premissa inteira deste workflow: só o GITHUB_TOKEN do
+Actions consegue apagar refs de forma fiável, nunca uma sessão. Branch
+de teste `teste-janitor-nao-integrada` e a Issue #59 correspondente
+ficam por resolver manualmente — registado em `ROADMAP.md`.
+
+**Não verificado nesta sessão** (honestidade sobre o que falta, não
+assumido): o fecho automático da Issue quando a lista de branches por
+integrar fica vazia — o código segue exactamente o mesmo padrão já
+provado noutras máquinas de estado do repositório
+(`fonte-bloqueada`/`feed-morto`), mas só depois de
+`teste-janitor-nao-integrada` ser apagada manualmente é que uma corrida
+seguinte (cron ou `workflow_dispatch`) pode confirmar o fecho em CI
+real — registado em `ROADMAP.md` como verificação pendente.
+
+Suite completa local (nenhum código Python alterado por esta sessão):
+1425 passed, 4 skipped; `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`. Trabalho
+directo em `main`, sem branches novas.*

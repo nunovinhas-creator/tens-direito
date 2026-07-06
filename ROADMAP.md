@@ -32,6 +32,7 @@ completo sempre em `CLAUDE.md`, nunca aqui.
 | **Data/valor expirado numa página** | `verificar_datas.py` (Shadow Mode + pipeline) detecta um padrão não suprimido | Issues `data-expirada` (fecho automático se corrigido) | Rever a página assinalada — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** |
 | **Fonte do scraper bloqueada 3 dias seguidos** | `data/estado_fontes.json` regista o 3.º dia consecutivo `BLOQUEADO` (inclui `dre_psu` desde 2026-07-05, agora que "conteúdo suspeito" conta como bloqueio) | Issues `fonte-bloqueada` (fecho automático ao recuperar) | Investigar/corrigir o scraper para essa fonte — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** e **"AUDITORIA DE INFRAESTRUTURA"** achado 1 |
 | **Feed de notícias morto 3 dias seguidos** | `data/estado_feeds.json` regista o 3.º dia consecutivo `MORTO` | Issues `feed-morto` (fecho automático ao recuperar) | Substituir/reparar o feed — ver CLAUDE.md **"FRESCURA DA HOMEPAGE"** → "Fontes RSS" |
+| **Branch remota com commits únicos** | `limpar-branches.yml` (push a main, cron diário `0 5 * * *`, manual) encontra uma branch != `main` não totalmente integrada | Issue única `🌿 Branches órfãs por integrar` (fecho automático quando a lista fica vazia) | Trazer o trabalho para `main` (commit directo, nunca PR) ou apagar a branch manualmente — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE BRANCHES"** |
 
 ---
 
@@ -67,9 +68,17 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **CSS morto da nav antiga** — limpeza cosmética nos `<style>` de cada
   página, sem risco (nada o usa) — ver CLAUDE.md **"FECHO DO PROJECTO"** →
   "Registado para o futuro", ponto 3.
-- **Branch remota órfã `claude/infrastructure-audit-robustness-10k2wc`** —
-  já integrada em `main` por fast-forward; sem permissão de API para apagar
-  nesta sessão — apagar manualmente no GitHub.
+- **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
+  para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
+  com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca
+  chega a `main`); a sessão não conseguiu apagá-la (`git push --delete` deu
+  403, mesma limitação de sempre) — apagar manualmente no GitHub. Depois de
+  apagada, a Issue #59 ("🌿 Branches órfãs por integrar") fecha-se sozinha
+  na próxima corrida do workflow (push a main, cron `0 5 * * *`, ou
+  `workflow_dispatch` manual) — **esse fecho automático ainda não foi
+  confirmado em CI real** (só o caminho "cria/actualiza a Issue" foi
+  verificado nesta sessão) — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE
+  BRANCHES"**.
 - **2 páginas novas propostas para o cluster escolar** (decisão do Nuno,
   nada implementado) — `calendario-escolar-apoios.html` (calendário único
   de prazos ASE/bolsa mérito/MEGA/prova escolar) e
@@ -98,6 +107,11 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **`limpar-branches.yml`** — 2026-07-06, apaga sozinho branches remotas
+  totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de
+  sessão logada) e regista as que têm commits únicos numa Issue única —
+  fecha a lacuna que já tinha deixado 2 branches órfãs por apagar
+  manualmente em sessões anteriores.
 - **Vigilância automática das datas MEGA alargada a `igefe.mec.pt`** (nova
   fonte `igefe_mega`) — 2026-07-06, fecha o furo em que só `dge.mec.pt` era
   vigiado.
