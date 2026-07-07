@@ -2663,14 +2663,18 @@ uma Issue é criada ou um valor é alterado:
    mais de `LIMIAR_ANOMALIA_PAGINAS` (25) páginas analisadas como **anomalia
    explícita** em vez de "sistema estável" — "0" nunca é lido em silêncio
    como "está tudo bem" (ver `tests/test_run_shadow_daily_fonte_propria.py`).
-   **Limitação conhecida, descoberta ao correr o pipeline real na Fase 5**:
-   `_paginas_elegiveis()` usa `raiz.glob("*.html")` (não recursivo) — as 22
-   páginas contadas são só as da raiz; as pillar pages em `p/*.html` nunca
-   entram nesta contagem (mesma limitação pré-existente em
-   `verificar_datas.py main()`, não introduzida por esta fase). Com 22 < 25,
-   o limiar de anomalia nunca dispara no estado actual do repositório —
-   registado para o futuro: baixar o limiar ou tornar `_paginas_elegiveis()`
-   recursivo (`**/*.html`), não decidido, sem prazo.
+   ~~Limitação conhecida (Fase 5): `_paginas_elegiveis()`/`verificar_datas.main()`
+   só cobriam a raiz~~ — **fechada a 2026-07-07**: ambos passaram a cobrir
+   também `p/` e `documentos/` (52 páginas elegíveis; mudam sempre juntos,
+   são a mesma fonte por desenho). Antes de ligar a recursividade, a
+   simulação prévia sobre as 17 páginas novas encontrou exactamente 1 falso
+   positivo que dispararia no dia 1 (`p/habitacao.html`, "contrato anterior
+   a 15 de março de 2023" — a data-limite fixa do PAER, família de #51/#52)
+   — corrigido primeiro com o marcador `anterior(es) a` em
+   `MARCADORES_HISTORICOS`, nunca depois de a Issue falsa existir. Ver
+   testes novos em `tests/test_verificar_datas.py` (regressão sobre o
+   pillar real, guarda anti-sobre-supressão, `main()` a cobrir os 3
+   directórios com nomes relativos).
 
 **Diagnóstico "0 alertas" (2026-07-02)**: os relatórios `shadow_report_2026-07-01/02.md`
 mostravam "Alertas analisados: 0" ao mesmo tempo que o pipeline tinha
@@ -4817,3 +4821,38 @@ teste vermelho com mensagem clara; revertido → verde). Sem imagens
 e Cuidadores") confirmado a caber no layout por inspecção visual real.
 Nota de cache do Facebook mantém-se: links já partilhados precisam de
 "Scrape Again" no Sharing Debugger. Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-07 (continuação) — detecção de datas expiradas
+tornada recursiva, fechando a limitação documentada desde a Fase 5 do
+Shadow Mode: `verificar_datas.main()` e `run_shadow_daily._paginas_elegiveis()`
+(sempre juntos — mesma fonte por desenho) passaram a cobrir também `p/`
+e `documentos/`, que até hoje tinham **zero vigilância de datas** (17
+páginas servidas fora do âmbito). Clarificação importante face à análise
+que motivou a sessão: o aviso "⚠️ ANOMALIA: 0 alertas" dos relatórios de
+4 e 7 de julho NÃO era sintoma deste gap — é o sinal de honestidade
+desenhado (raiz cresceu além das 25 páginas do limiar; nos dias 5-6
+havia alertas reais, por isso a linha não aparecia). Antes de ligar a
+recursividade, simulação prévia com o `detectar_alertas()` real sobre as
+17 páginas: exactamente 1 falso positivo dispararia no dia 1 —
+`p/habitacao.html`, "contrato anterior a 15 de março de 2023" (3
+ocorrências; a data-limite fixa de elegibilidade do PAER, mesma família
+das Issues #51/#52 mas com a formulação inversa "anterior a", que os
+marcadores existentes não cobriam). Ordem deliberada: 1.º o marcador
+`\\banterior(?:es)?\\s+a\\b` em `MARCADORES_HISTORICOS` (ancorado como
+"posterior a" — "anterior" solto nunca suprime, testado), 2.º a
+recursividade — nunca deixar a Issue falsa nascer para a fechar depois.
+Nomes de página passam a caminho relativo (`p/habitacao.html`) nos
+alertas/Issues — para as páginas da raiz nada muda. 5 testes novos em
+`tests/test_verificar_datas.py` (41 no ficheiro): regressão sobre o
+pillar real, estado trancado "0 alertas nas 17 páginas de p/ e
+documentos/", guarda anti-sobre-supressão do marcador novo, supressão do
+caso real isolado, e `main()` a percorrer os 3 directórios com data
+fixada em julho (o padrão `data_mes_ano` só é revisto em 1/7/8/9 — sem
+isso o teste ficaria sazonalmente vermelho de Outubro a Junho).
+Verificação ponta-a-ponta local com o código novo: 52 páginas
+elegíveis, 0 alertas — exactamente o resultado previsto na simulação.
+Suite completa: 1784 passed, 4 skipped; ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Trabalho directo em `main`.*

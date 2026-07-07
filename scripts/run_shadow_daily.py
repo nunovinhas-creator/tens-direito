@@ -82,27 +82,32 @@ def calcular_raiz_repo() -> Path:
 
 
 def _paginas_elegiveis(raiz: Path) -> List[Path]:
-    """Páginas HTML da raiz sujeitas a deteção de datas — as mesmas que
+    """Páginas HTML sujeitas a deteção de datas — as mesmas que
     `coletar_alertas_do_dia` percorre, sem os ficheiros que o pipeline
     gera (`AUTO_GERADOS`). Extraída à parte para que o total de páginas
     analisadas (usado na proveniência do relatório) venha sempre da
     mesma fonte que a própria deteção, nunca de uma contagem paralela
-    que possa divergir dela."""
-    return [caminho for caminho in sorted(raiz.glob("*.html")) if caminho.name not in AUTO_GERADOS]
+    que possa divergir dela. Desde 2026-07-07 cobre também `p/` e
+    `documentos/` — o mesmo âmbito de `verificar_datas.main()`, que
+    mudou no mesmo commit (têm de mudar sempre juntos)."""
+    paginas = (sorted(raiz.glob("*.html"))
+               + sorted((raiz / "p").glob("*.html"))
+               + sorted((raiz / "documentos").glob("*.html")))
+    return [caminho for caminho in paginas if caminho.name not in AUTO_GERADOS]
 
 
 def coletar_alertas_do_dia(raiz: Path, *, ano: int, mes: int) -> List[dict]:
     """Obtém a lista de alertas de hoje reutilizando
     `verificar_datas.detectar_alertas` (a mesma função já usada e testada
-    na Camada 1) sobre cada HTML da raiz do repositório — só leitura,
-    nunca chama `verificar_datas.main()` nem escreve nada."""
+    na Camada 1) sobre cada HTML servido (raiz, p/, documentos/) — só
+    leitura, nunca chama `verificar_datas.main()` nem escreve nada."""
     alertas: List[dict] = []
     for caminho in _paginas_elegiveis(raiz):
         try:
             conteudo = caminho.read_text(encoding="utf-8")
         except Exception:
             continue
-        alerta = detectar_alertas(conteudo, caminho.name, ano, mes)
+        alerta = detectar_alertas(conteudo, caminho.relative_to(raiz).as_posix(), ano, mes)
         if alerta:
             alertas.append(alerta)
     return alertas

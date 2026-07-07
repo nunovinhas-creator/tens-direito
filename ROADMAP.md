@@ -103,10 +103,6 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Ranking da pesquisa interna por relevância real** — hoje corta a 8
   resultados por saturação (`MAX_RESULTADOS`), não por relevância; decisão de
   UX, não bug — ver CLAUDE.md **"AUDITORIA DE INFRAESTRUTURA"** achado 6.
-- **`LIMIAR_ANOMALIA_PAGINAS=25` nunca dispara** — `_paginas_elegiveis()` só
-  conta as 22 páginas da raiz (`*.html`, não recursivo), as pillar pages em
-  `p/*.html` nunca entram — ver CLAUDE.md **"SHADOW MODE — SISTEMA DE
-  OBSERVAÇÃO"**.
 - **Scan de segredos ao histórico completo** — `gitleaks` CLI indisponível
   no sandbox de desenvolvimento; recomendado ao Nuno correr
   `gitleaks detect --source . --log-opts="--all"` localmente antes de tornar
@@ -180,6 +176,9 @@ PSU"**.
 - **Simulador de subsídio de doença** (`simulador-subsidio-doenca.html`) —
   publicado 2026-07-05, 4.ª calculadora do site.
 - **Página `baixa-medica-subsidio-doenca.html`** — publicada 2026-07-05.
+- **Detecção de datas expiradas tornada recursiva** (`p/` + `documentos/`,
+  52 páginas; marcador "anterior a" para o falso positivo do PAER no pillar
+  de Habitação) — 2026-07-07; ver CLAUDE.md "SHADOW MODE" ponto 8.
 - **Sentinela `dre_psu` corrigido de vez** (Issue #54) — 2026-07-07: pesquisa
   interactiva de frase exacta no diariodarepublica.pt (nenhum parâmetro de
   URL filtra — confirmado num runner com browser real); ver CLAUDE.md

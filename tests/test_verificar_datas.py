@@ -444,3 +444,90 @@ def test_baixa_medica_subsidio_doenca_real_nao_gera_alerta_issue_53():
     # 1 de abril de 2024" mais abaixo na página.
     html = _ler_pagina_real("baixa-medica-subsidio-doenca.html")
     assert detectar_alertas(html, "baixa-medica-subsidio-doenca.html", ANO, MES) is None
+
+
+# ── Recursividade da detecção + marcador "anterior a" (2026-07-07) ─────
+# Ao tornar a detecção recursiva sobre p/ e documentos/ (antes: só a
+# raiz — 17 páginas servidas sem vigilância nenhuma), a simulação prévia
+# encontrou exactamente 1 falso positivo que dispararia no dia 1:
+# p/habitacao.html, "contrato anterior a 15 de março de 2023" (a
+# data-limite fixa de elegibilidade do PAER — mesma família de #51/#52,
+# formulação inversa de "posterior a"). O marcador foi adicionado ANTES
+# de ligar a recursividade, nunca depois de a Issue falsa existir.
+
+
+def test_pillar_habitacao_real_nao_gera_alerta():
+    # Match real não suprimido antes do marcador: "contrato anterior a
+    # 15 de março de 2023" / "contratos de arrendamento anteriores a 15
+    # de março de 2023" (3 ocorrências, corpo + FAQ JSON-LD).
+    html = (RAIZ_REPO / "p" / "habitacao.html").read_text(encoding="utf-8")
+    assert detectar_alertas(html, "p/habitacao.html", ANO, MES) is None
+
+
+def test_todas_as_paginas_de_p_e_documentos_reais_sem_alerta():
+    # Estado trancado no dia em que a recursividade foi ligada: zero
+    # alertas nas 17 páginas de p/ e documentos/. Se uma passar a
+    # disparar, ou é desactualização real (corrigir a página) ou um
+    # falso positivo novo (marcador cirúrgico, como #51/#52/#53).
+    paginas = sorted((RAIZ_REPO / "p").glob("*.html")) + sorted(
+        (RAIZ_REPO / "documentos").glob("*.html"))
+    assert len(paginas) >= 17
+    com_alerta = []
+    for caminho in paginas:
+        html = caminho.read_text(encoding="utf-8")
+        nome = caminho.relative_to(RAIZ_REPO).as_posix()
+        if detectar_alertas(html, nome, ANO, MES) is not None:
+            com_alerta.append(nome)
+    assert com_alerta == []
+
+
+def test_marcador_anterior_a_nao_sobre_suprime():
+    # Guarda contra sobre-supressão: "anterior" solto (sem "a" de
+    # data-limite de contrato) nunca pode suprimir uma data antiga
+    # genuína — este conteúdo tem de continuar a alertar.
+    conteudo = (
+        "<p>Como no ano anterior, o prazo de candidatura terminou em "
+        "março de 2023 e não foi renovado.</p>"
+    )
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is not None
+
+
+def test_marcador_anterior_a_suprime_data_limite_de_contrato():
+    # O caso real do p/habitacao.html, isolado: elegibilidade fixa por
+    # data-limite de contrato nunca expira.
+    conteudo = (
+        "<p>O Apoio Extraordinário à Renda destina-se só a contratos de "
+        "arrendamento anteriores a 15 de março de 2023.</p>"
+    )
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
+
+
+def test_main_cobre_p_e_documentos(tmp_path, monkeypatch):
+    # O fluxo main() real (não só detectar_alertas) tem de percorrer
+    # raiz, p/ e documentos/ — com o nome relativo correcto no alerta.
+    import datetime as _dt
+    import json as _json
+    import verificar_datas as vd
+
+    # main() usa datetime.now() e data_mes_ano só é revisto em 1/7/8/9 —
+    # fixar julho para o teste nunca ficar sazonalmente vermelho.
+    class _DatetimeFixo(_dt.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls(ANO, MES, 15)
+
+    monkeypatch.setattr(vd, "datetime", _DatetimeFixo)
+
+    expirado = "<p>O prazo de candidatura terminou em março de 2023.</p>"
+    (tmp_path / "na-raiz.html").write_text(expirado, encoding="utf-8")
+    (tmp_path / "p").mkdir()
+    (tmp_path / "p" / "pilar.html").write_text(expirado, encoding="utf-8")
+    (tmp_path / "documentos").mkdir()
+    (tmp_path / "documentos" / "minuta.html").write_text(expirado, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    vd.main()
+
+    alertas = _json.loads((tmp_path / "data" / "alertas_datas.json").read_text(encoding="utf-8"))
+    paginas = sorted(a["pagina"] for a in alertas)
+    assert paginas == ["documentos/minuta.html", "na-raiz.html", "p/pilar.html"]

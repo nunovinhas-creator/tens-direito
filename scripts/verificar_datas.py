@@ -62,6 +62,13 @@ MARCADORES_HISTORICOS = [
     # março de 2023"). "\b...a\b" (não "\bposterior at[ée]") para não apanhar
     # "posterior até" (ressarcimento posterior até X€, sem data-limite nenhuma).
     r"\bposterior a\b", r"celebrados?\s+at[ée]\b",
+    # Mesma família de #51, formulação inversa encontrada ao tornar a
+    # detecção recursiva (2026-07-07, p/habitacao.html: "contrato anterior
+    # a 15 de março de 2023", "contratos de arrendamento anteriores a 15 de
+    # março de 2023" — a data-limite fixa de elegibilidade do PAER, nunca
+    # expira). "\b...\s+a\b" ancorado como "posterior a" — nunca apanha
+    # "anterior" solto (ex.: "no ano anterior, março de..." não suprime).
+    r"\banterior(?:es)?\s+a\b",
     # Citação datada de um facto histórico específico (queixa/pedido/anúncio já
     # ocorrido), não um valor ou prazo corrente (issue #51: "pediu ... uma
     # revisão urgente em agosto de 2025").
@@ -293,9 +300,17 @@ def main():
     ano, mes = hoje.year, hoje.month
 
     alertas = []
-    for html_path in sorted(glob.glob("*.html")):
-        nome = os.path.basename(html_path)
-        if nome in AUTO_GERADOS:
+    # Raiz + pillars + minutas — até 2026-07-07 o glob era só "*.html"
+    # (não recursivo), deixando p/ e documentos/ (17 páginas servidas)
+    # totalmente fora da vigilância de datas expiradas. `nome` é o caminho
+    # relativo (ex.: "p/habitacao.html") — para as páginas da raiz é
+    # idêntico ao basename de sempre, nada muda nas Issues existentes.
+    paginas = (sorted(glob.glob("*.html"))
+               + sorted(glob.glob("p/*.html"))
+               + sorted(glob.glob("documentos/*.html")))
+    for html_path in paginas:
+        nome = html_path.replace(os.sep, "/")
+        if os.path.basename(html_path) in AUTO_GERADOS:
             continue
         try:
             with open(html_path, encoding="utf-8") as f:
