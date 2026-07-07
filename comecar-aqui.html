@@ -73,22 +73,6 @@ footer{text-align:center;padding:2rem;color:#5C6770;font-size:0.85rem}
 footer a{color:#5C6770}
 @media(max-width:600px){.hero h1{font-size:1.5rem}.step-question{font-size:1.1rem}}
   
-.mobile-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #FFFFFF;
-  border-bottom: 2px solid #0F766E;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  z-index: 999;
-  padding: 1rem 1.5rem;
-  display: none;
-}
-.mobile-menu.aberto { display: block; }
-.mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
-.mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0F766E; }
 </style>
   <link rel="stylesheet" href="/assets/css/share.css">
   <script src="/assets/js/share.js" defer></script>
@@ -457,23 +441,6 @@ footer a{color:#5C6770}
       }
     ]
   }
-  </script>
-  <script>
-    function toggleMobileMenu(btn) {
-      const menu = document.getElementById('menuMobile');
-      const open = menu.classList.toggle('aberto');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.querySelector('.mobile-menu');
-      const hamburger = document.querySelector('.hamburger');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('aberto');
-          if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
   </script>
 </body>
 </html>

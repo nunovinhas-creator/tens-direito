@@ -771,28 +771,33 @@ todas as páginas).
    presentes dentro do bloco.
 
 **Dívida técnica conhecida (fora do âmbito da Fase 4):**
-- CSS morto da nav antiga — **limpo a 2026-07-07** por
-  `scripts/limpar_css_morto_nav.py` (170 regras em 35 páginas: `.hamburger`,
-  `nav a.nav-link*`, `.nav-mobile-sim-label/link`, `@media` esvaziados).
-  Regra do script, deliberadamente global e conservadora: uma regra só é
-  removida se TODOS os seletores exigirem um token (classe/id) ausente de
-  TODAS as páginas servidas E não-adicionável por nenhum JS do site
-  (mutações `classList.add/toggle`, `class=` em strings JS, `className=` —
-  leituras tipo `querySelector` não contam); qualquer correspondência em
-  qualquer página → AMBÍGUO, intocado, nunca removido "por o nome parecer
-  antigo". **O que ficou, de propósito**: as regras `.mobile-menu*` em 34
-  páginas, porque 8 páginas (`amim`, `complemento-solidario-idosos`,
-  `prestacao-social-para-a-inclusao` e as 5 do cluster PSU) ainda têm um
-  `<div id="menu-mobile" class="mobile-menu">` órfão da nav antiga logo a
-  seguir a `<!-- NAV:FIM -->` — invisível (`display:none`, sem hamburger
-  que o abra, links desactualizados) mas um elemento real: remover o CSS
-  torná-lo-ia visível. 16 páginas têm também um `<script>` inline morto da
-  nav antiga (`toggleMobileMenu`, nunca chamado — só faz `querySelector`,
-  nunca cria elementos/classes, inofensivo). Remover os divs órfãos + os
-  scripts mortos + o CSS `.mobile-menu` é uma sessão dedicada futura (mexe
-  em HTML, não só CSS) — registado em `ROADMAP.md`. O script tem `--check`
-  (exit ≠ 0 se voltar a existir regra morta removível) e idempotência
-  provada (2.ª corrida `--write` = zero alterações).
+- CSS morto da nav antiga — **totalmente limpo a 2026-07-07**, em duas
+  passagens no mesmo dia, por `scripts/limpar_css_morto_nav.py`. Regra do
+  script, deliberadamente global e conservadora: uma regra só é removida
+  se TODOS os seletores exigirem um token (classe/id) ausente de TODAS as
+  55 páginas servidas E não-adicionável por nenhum JS do site (mutações
+  `classList.add/toggle`, `class=` em strings JS, `className=` — leituras
+  tipo `querySelector` não contam); qualquer correspondência em qualquer
+  página → AMBÍGUO, intocado, nunca removido "por o nome parecer antigo".
+  1.ª passagem: 170 regras em 35 páginas (`.hamburger`, `nav a.nav-link*`,
+  `.nav-mobile-sim-label/link`, `@media` esvaziados); as regras
+  `.mobile-menu*` ficaram AMBÍGUAS porque 8 páginas ainda tinham um
+  `<div id="menu-mobile" class="mobile-menu">` órfão da nav antiga (real,
+  invisível). 2.ª passagem (aprovada pelo Nuno na mesma sessão): removidos
+  os 8 divs órfãos, os 16 `<script>` inline mortos (`toggleMobileMenu`) e
+  a variante própria do `index.html` (`toggleMenu`/`toggleSimDropdown`,
+  ids `#mobileMenu`/`#navSimDropdown` inexistentes) — com o HTML residual
+  fora, as 165 regras `.mobile-menu*` passaram a provadamente mortas e o
+  próprio script limpou-as. **Zero resíduos da nav antiga em todas as 55
+  páginas** (confirmado por grep de token exacto). O script mantém-se no
+  repositório: `--check` (exit ≠ 0 se voltar a existir regra morta
+  removível) e idempotência provada (2.ª corrida `--write` = zero
+  alterações). Nota preventiva: o código morto propagava-se por cópia de
+  páginas existentes ao criar páginas novas (ex.:
+  `bolsa-de-estudo-ensino-superior.html`, publicada a 2026-07-06, já
+  nasceu com o script morto) — com as 16 instâncias removidas, a fonte de
+  contágio desapareceu; o template `estrutura-pagina.md` sempre esteve
+  limpo.
 
 Dois achados sinalizados no fecho da Fase 4 (não relacionados com o
 ponto acima) — JSON-LD inválido em `simulador-ase.html` e OG
@@ -901,9 +906,9 @@ correr ambos.
    de texto escuro em vez de forçar hero escuro nas ferramentas (ver
    secção "SISTEMA DE CLUSTERS", ponto 6).
 3. **CSS morto da nav antiga** — ~~limpeza cosmética nos `<style>`
-   de cada página~~ **feito a 2026-07-07** (`scripts/limpar_css_morto_nav.py`);
-   resta o resíduo AMBÍGUO documentado na secção "NAVEGAÇÃO PRINCIPAL"
-   (dívida técnica) e em `ROADMAP.md`.
+   de cada página~~ **concluído a 2026-07-07** (`scripts/limpar_css_morto_nav.py`,
+   duas passagens: CSS morto + HTML/JS residual) — zero resíduos da nav
+   antiga nas 55 páginas; ver secção "NAVEGAÇÃO PRINCIPAL" (dívida técnica).
 
 ---
 
@@ -4647,3 +4652,43 @@ igual na versão HEAD, não é regressão desta limpeza); suite pytest
 completa sem regressões; `ruff check scripts/ tests/ --select E,F,W
 --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).*
+
+---
+
+*Última revisão: 2026-07-07 (mesma sessão, 2.ª passagem — aprovada pelo
+Nuno depois do relatório da limpeza de CSS morto) — removido o resíduo
+HTML/JS da nav antiga que tinha deixado as regras `.mobile-menu*` como
+AMBÍGUAS: os 8 `<div id="menu-mobile" class="mobile-menu">` órfãos
+(blocos byte-idênticos, confirmado por hash antes de remover), os 16
+`<script>` inline mortos `toggleMobileMenu` (idem) e a variante própria
+do `index.html` (`toggleMenu`/`toggleSimDropdown`, a apontar para ids
+`#mobileMenu`/`#navSimDropdown` que não existem em página nenhuma —
+apanhada por grep de token exacto, não pelo padrão dos outros 16). Com o
+HTML fora, `limpar_css_morto_nav.py --write` reclassificou as 165 regras
+`.mobile-menu*` de AMBÍGUO para MORTO e limpou-as (17.271 bytes, 33
+páginas) — zero resíduos da nav antiga nas 55 páginas, zero AMBÍGUOS no
+inventário final, `--check` verde. A fonte de contágio (código morto
+copiado de páginas existentes para páginas novas — a página de bolsa do
+superior, publicada na véspera, já nascia com ele) desapareceu; o
+template `estrutura-pagina.md` confirmado sempre limpo.
+
+Na mesma passagem, corrigidos os 4 únicos overflows horizontais a 375px
+de todo o site (scan Playwright às 55 páginas, não amostragem; todos
+pré-existentes, confirmados idênticos em HEAD antes de mexer):
+`acao-social-escolar.html` (link-botão do `.portal-cta` com
+`white-space: nowrap` — removido também em `manuais-escolares-mega.html`
+e `prova-escolar.html`, mesmo padrão copiado, ainda sem sintoma);
+`prestacao-social-unica.html` e `psu-quando-entra-em-vigor.html`
+(`.timeline-item .desc` é filho flex sem `min-width: 0` — o token
+inquebrável "Chega+Livre+PCP+BE+PAN+JPP" no texto real dos votos definia
+a largura mínima; adicionado `min-width: 0` + `overflow-wrap:
+break-word`); `complemento-solidario-idosos.html` (`.checklist li` é
+flex e o `<ul>` aninhado dos valores de referência virava item flex AO
+LADO do texto em vez de abaixo — `flex-wrap: wrap` no li +
+`flex-basis: 100%` no ul). Cada correcção testada primeiro por injecção
+de CSS no browser real (447→375, 462→375, 439→375) e só depois aplicada
+ao ficheiro. Scan final: 0 de 55 páginas com overflow a 375px; menu
+mobile aberto e 10/10 links clicáveis (elementFromPoint) nas 13 páginas
+verificadas. Suite pytest completa sem regressões, ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados).*

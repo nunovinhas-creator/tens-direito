@@ -235,22 +235,6 @@ footer a{color:#5C6770}
 .exemplo-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:1.1rem;margin:.75rem 0;font-size:.93rem;color:#1E40AF}
 .exemplo-box strong{color:#1E3A8A}
 
-.mobile-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #FFFFFF;
-  border-bottom: 2px solid #0F766E;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  z-index: 999;
-  padding: 1rem 1.5rem;
-  display: none;
-}
-.mobile-menu.aberto { display: block; }
-.mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
-.mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0F766E; }
 .resumo-rapido { background: #f0faf8; border-left: 4px solid #0F766E; border-radius: 0 8px 8px 0; padding: 1rem 1.4rem; margin-bottom: 1.5rem; }
 .resumo-rapido ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .resumo-rapido li { font-size: 0.95rem; color: #212529; line-height: 1.5; }
@@ -608,22 +592,5 @@ footer a{color:#5C6770}
     </a>
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
-  <script>
-    function toggleMobileMenu(btn) {
-      const menu = document.getElementById('menuMobile');
-      const open = menu.classList.toggle('aberto');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.querySelector('.mobile-menu');
-      const hamburger = document.querySelector('.hamburger');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('aberto');
-          if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-  </script>
 </body>
 </html>

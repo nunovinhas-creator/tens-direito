@@ -78,7 +78,7 @@ tbody tr:last-child td { border-bottom: none; }
 .prazo-destaque strong { color: #856404; }
 .portal-cta { background: #0F766E; color: white; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .portal-cta p { opacity: 0.95; font-size: 0.95rem; }
-.portal-cta a { display: inline-block; background: white; color: #0F766E; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; white-space: nowrap; }
+.portal-cta a { display: inline-block; background: white; color: #0F766E; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; }
 .portal-cta a:hover { background: #e6f4f1; }
 .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
 .fonte-bloco a { color: #0F766E; font-weight: 600; }
@@ -96,22 +96,6 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
 .resposta p { margin-bottom: 0.5rem; }
 .fonte-inline { font-size: 0.8rem; color: #94A3B8; margin-top: 0.5rem; }
 
-.mobile-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #FFFFFF;
-  border-bottom: 2px solid #0F766E;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  z-index: 999;
-  padding: 1rem 1.5rem;
-  display: none;
-}
-.mobile-menu.aberto { display: block; }
-.mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
-.mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0F766E; }
 .resumo-rapido { background: #f0faf8; border-left: 4px solid #0F766E; border-radius: 0 8px 8px 0; padding: 1rem 1.4rem; margin-bottom: 1.5rem; }
 .resumo-rapido ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .resumo-rapido li { font-size: 0.95rem; color: #212529; line-height: 1.5; }
@@ -723,22 +707,5 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
     </a>
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
-  <script>
-    function toggleMobileMenu(btn) {
-      const menu = document.getElementById('menuMobile');
-      const open = menu.classList.toggle('aberto');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.querySelector('.mobile-menu');
-      const hamburger = document.querySelector('.hamburger');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('aberto');
-          if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-  </script>
 </body>
 </html>

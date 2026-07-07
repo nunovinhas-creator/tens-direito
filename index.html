@@ -764,37 +764,6 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       }
     });
   </script>
-  <script>
-    function toggleMenu(btn) {
-      const menu = document.getElementById('mobileMenu');
-      const open = menu.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.getElementById('mobileMenu');
-      const hamburger = document.querySelector('.nav-toggle');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-    function toggleSimDropdown(btn) {
-      const wrap = document.getElementById('navSimDropdown');
-      const open = wrap.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const wrap = document.getElementById('navSimDropdown');
-      if (wrap && !wrap.contains(e.target)) {
-        wrap.classList.remove('open');
-        const btn = wrap.querySelector('.nav-dropdown-btn');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-  </script>
 
 </body>
 </html>

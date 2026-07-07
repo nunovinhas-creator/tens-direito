@@ -47,22 +47,6 @@ main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
 footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; }
 .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: #664d03; }
 
-.mobile-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #FFFFFF;
-  border-bottom: 2px solid #0F766E;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  z-index: 999;
-  padding: 1rem 1.5rem;
-  display: none;
-}
-.mobile-menu.aberto { display: block; }
-.mobile-menu a { display: block; padding: 0.75rem 0; font-size: 1rem; font-weight: 600; color: #0F172A; text-decoration: none; border-bottom: 1px solid #E5E7EB; }
-.mobile-menu a:last-child { border-bottom: none; }
-.mobile-menu a:hover { color: #0F766E; }
 </style>
   <link rel="stylesheet" href="/assets/css/share.css">
   <script src="/assets/js/share.js" defer></script>
@@ -193,22 +177,5 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
     </a>
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
-  <script>
-    function toggleMobileMenu(btn) {
-      const menu = document.getElementById('menuMobile');
-      const open = menu.classList.toggle('aberto');
-      btn.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', function(e) {
-      const menu = document.querySelector('.mobile-menu');
-      const hamburger = document.querySelector('.hamburger');
-      if (menu && hamburger) {
-        if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
-          menu.classList.remove('aberto');
-          if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-  </script>
 </body>
 </html>
