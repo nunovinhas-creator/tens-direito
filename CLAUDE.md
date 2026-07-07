@@ -412,7 +412,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Links testados — só usar URLs da lista verificada ou homepage do domínio oficial
 - [ ] Página tem GA4 snippet `G-XP46PM8H1Q`
 - [ ] CookieYes script **ANTES** do GA4 no `<head>`
-- [ ] `og:title`, `og:description`, `og:url`, `og:locale` presentes
+- [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes (og:image vem de `python scripts/adicionar_og_image.py --write` — imagem única do site, `assets/img/og-default.png`)
 - [ ] JSON-LD `FAQPage` + `HowTo` + `BreadcrumbList` presentes
 - [ ] `"Verificado a [data]"` visível no corpo da página
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
@@ -453,6 +453,7 @@ tens-direito/
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas 35 páginas (idempotente)
+│   ├── adicionar_og_image.py ← insere og:image (+width/height/alt, twitter:card) nas páginas servidas (idempotente)
 │   ├── adicionar_article_jsonld.py ← insere JSON-LD Article (author/publisher/datas) nas 27 páginas de conteúdo (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
 │   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
@@ -609,7 +610,7 @@ Ordem no `<head>`:
 2. CookieYes script
 3. GA4 script (`G-XP46PM8H1Q`)
 4. favicon, viewport, title, description
-5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`
+5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`, `og:image` (+ `og:image:width/height/alt` e `twitter:card` — inseridos por `scripts/adicionar_og_image.py`, imagem única 1200×630 em `assets/img/og-default.png`)
 6. JSON-LD: `FAQPage` + `HowTo` + `BreadcrumbList`
 
 Conteúdo obrigatório no `<body>`:
@@ -4747,3 +4748,39 @@ Issue #54; fecho automático da Issue pela máquina de estados ao
 primeiro dia OK. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False` (inalterados por esta sessão). Trabalho directo
 em `main`.*
+
+---
+
+*Última revisão: 2026-07-07 — og:image em todas as partilhas sociais.
+Sintoma reportado pelo Nuno com screenshot real: partilhar um artigo no
+Facebook mostrava a pré-visualização só com texto, sem imagem nenhuma —
+confirmado por grep que **nenhuma** das 55 páginas servidas tinha
+`og:image` (as restantes OG tags existiam todas desde a Fase 5). Criada
+`assets/img/og-default.png` (1200×630, formato standard do
+Facebook/WhatsApp/LinkedIn), gerada com Chromium real a partir da marca
+existente (quadrado teal #0F766E + visto branco do `favicon.svg` —
+nunca um logótipo inventado): logo + "Tens Direito" + tagline "Apoios
+sociais, direitos e burocracia em Portugal" + selo "Verificado em
+fontes oficiais" + domínio. Novo `scripts/adicionar_og_image.py`
+(idempotente, `--write`, mesmo padrão de `adicionar_canonicas.py`):
+insere `og:image` (URL absoluto), `og:image:width`/`height` (permitem
+render à primeira partilha), `og:image:alt` e `twitter:card =
+summary_large_image` a seguir à última tag `og:*` de cada página —
+aplicado às 55 páginas (raiz + `p/` + `documentos/`, incluindo
+`404.html`/`simulador-psu.html`: og:image não faz mal a páginas
+noindex), 2.ª corrida = zero alterações. Decisão pragmática: **uma
+imagem única para o site inteiro** — imagens por página seriam um
+projecto à parte, registável se um dia se justificar. Novo
+`tests/test_og_image.py` (57 casos): og:image presente em todas as
+páginas com o URL certo, metadados width/height a bater com as
+dimensões REAIS do PNG em disco (lidas do cabeçalho IHDR, nunca números
+soltos), imagem existe e é 1200×630, twitter:card presente — uma página
+nova sem og:image falha o CI. Checklist obrigatória e "ESTRUTURA HTML
+OBRIGATÓRIA" actualizadas. Suite completa local: 1724 passed, 4 skipped
+(desta vez com os testes Playwright a correr no sandbox); ruff limpo.
+Nota operacional para partilhas já feitas: o Facebook guarda a
+pré-visualização em cache — para a refrescar num link já partilhado,
+usar o Sharing Debugger (developers.facebook.com/tools/debug) e "Scrape
+Again"; partilhas novas apanham a imagem automaticamente.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False`. Trabalho directo em `main`.*
