@@ -83,7 +83,7 @@ que são de facto o mesmo sistema.
 
 | Item | Gatilho exacto | Onde verifico | Acção quando disparar |
 |---|---|---|---|
-| **Decreto-lei da PSU publicado** | Publicação em dre.pt do decreto-lei da PSU (prazo PRR: 31 ago 2026) | ⚠️ **`dre_psu` está quebrado** — nunca extraiu conteúdo real desde a criação (URL de pesquisa do DRE devolve o índice inteiro, não filtrado); até corrigir, só verificação manual/news serve de facto | Correr `/atualizar-cluster-psu` (9 passos: actualizar 4 páginas do cluster, criar `como-pedir-psu.html` + `calendario-pagamentos-psu.html`, publicar `simulador-psu.html`, transformar `rsi.html`, actualizar avisos em subsídio desemprego/parental, nunca apagar páginas antigas, reduzir densidade da PSU depois, actualizar `data/clusters.json`, revalidar a lista dos 13 apoios em `prestacao-social-para-a-inclusao.html`) — ver CLAUDE.md **"IMPACTO DA PSU"** → "Plano de acção" |
+| **Decreto-lei da PSU publicado** | Publicação em dre.pt do decreto-lei da PSU (prazo PRR: 31 ago 2026) | `dre_psu` — **corrigido a 2026-07-07** (Issue #54): pesquisa interactiva de frase exacta no diariodarepublica.pt, com âncora que prova filtragem real; Issue automática ao detectar um Decreto-Lei nos resultados (ver CLAUDE.md "IMPACTO DA PSU" → nota do sentinela) | Correr `/atualizar-cluster-psu` (9 passos: actualizar 4 páginas do cluster, criar `como-pedir-psu.html` + `calendario-pagamentos-psu.html`, publicar `simulador-psu.html`, transformar `rsi.html`, actualizar avisos em subsídio desemprego/parental, nunca apagar páginas antigas, reduzir densidade da PSU depois, actualizar `data/clusters.json`, revalidar a lista dos 13 apoios em `prestacao-social-para-a-inclusao.html`) — ver CLAUDE.md **"IMPACTO DA PSU"** → "Plano de acção" |
 | **Data/valor expirado numa página** | `verificar_datas.py` (Shadow Mode + pipeline) detecta um padrão não suprimido | Issues `data-expirada` (fecho automático se corrigido) | Rever a página assinalada — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** |
 | **Fonte do scraper bloqueada 3 dias seguidos** | `data/estado_fontes.json` regista o 3.º dia consecutivo `BLOQUEADO` (inclui `dre_psu` desde 2026-07-05, agora que "conteúdo suspeito" conta como bloqueio) | Issues `fonte-bloqueada` (fecho automático ao recuperar) | Investigar/corrigir o scraper para essa fonte — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** e **"AUDITORIA DE INFRAESTRUTURA"** achado 1 |
 | **Feed de notícias morto 3 dias seguidos** | `data/estado_feeds.json` regista o 3.º dia consecutivo `MORTO` | Issues `feed-morto` (fecho automático ao recuperar) | Substituir/reparar o feed — ver CLAUDE.md **"FRESCURA DA HOMEPAGE"** → "Fontes RSS" |
@@ -96,11 +96,6 @@ que são de facto o mesmo sistema.
 Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 "quando" tomada:
 
-- **URL de pesquisa do `dre_psu` quebrada** — trocar exige primeiro confirmar
-  o mecanismo real de disparo da pesquisa da SPA do DRE (não é só trocar
-  `q=` por `termo=`); sessão com browser interactivo real necessária — ver
-  CLAUDE.md **"IMPACTO DA PSU"** (nota do sentinela) e **"AUDITORIA DE
-  INFRAESTRUTURA"** achado 1.
 - **`MUDOU` nunca cria Issue** — só fica em `avisos.log`
   (`mudanca_estrutural:`); não existe hoje um tipo de Issue nem consumidor
   para esse padrão — ver CLAUDE.md **"SEG-SOCIAL — ESTRATÉGIA DE FETCH"**
@@ -185,6 +180,10 @@ PSU"**.
 - **Simulador de subsídio de doença** (`simulador-subsidio-doenca.html`) —
   publicado 2026-07-05, 4.ª calculadora do site.
 - **Página `baixa-medica-subsidio-doenca.html`** — publicada 2026-07-05.
+- **Sentinela `dre_psu` corrigido de vez** (Issue #54) — 2026-07-07: pesquisa
+  interactiva de frase exacta no diariodarepublica.pt (nenhum parâmetro de
+  URL filtra — confirmado num runner com browser real); ver CLAUDE.md
+  "IMPACTO DA PSU" → nota do sentinela.
 - **Auditoria de infraestrutura e robustez** (dre_psu, concurrency,
   smoke inline, gitleaks) — fechada 2026-07-05.
 - **Recuperação automática do deploy do GitHub Pages** — 2026-07-05.

@@ -1600,23 +1600,46 @@ Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado
 Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
 (5.ª página filha — ver "PÁGINAS PUBLICADAS").
 
-**Sentinela automático (`dre_psu`) — URL de pesquisa do DRE confirmada
-morta, substituto ainda por confirmar**: a fonte `dre_psu` (a única que
-vigia automaticamente a publicação deste decreto-lei) nunca conseguiu
-extrair conteúdo real desde a criação — ver secção "AUDITORIA DE
-INFRAESTRUTURA E ROBUSTEZ (2026-07-05)". O endpoint novo do DRE
-(`dre.pt/dre/pesquisa?termo=...`) devolve o índice inteiro da
-legislação, não filtrado pelo termo — trocar a URL sem confirmar o
-mecanismo real de disparo da pesquisa (provavelmente um evento JS na
-caixa de pesquisa, não um parâmetro de URL lido em navegação directa)
-criaria uma falha silenciosa pior do que a actual. **Trabalho futuro,
-sem prazo**: sessão com browser interactivo real para confirmar o
-mecanismo de pesquisa correcto antes de qualquer troca de URL. Até lá,
-o silêncio original está fechado (ver "INVARIANTE — nenhum estado de
-erro pode parecer sucesso" mais abaixo): conteúdo insuficiente já
-nunca fica `OK`, gera Issue `fonte-bloqueada` ao 3.º dia consecutivo
-como qualquer outra fonte bloqueada — a detecção do decreto-lei em si
-continua por resolver, mas deixou de ser um silêncio invisível.
+**Sentinela automático (`dre_psu`) — CORRIGIDO DE VEZ a 2026-07-07
+(Issue #54), com o mecanismo confirmado num runner com browser
+interactivo real** — o trabalho que estava registado como pendente
+desde a auditoria de 2026-07-05. O que o diagnóstico provou (runs
+28860869507/28861231682, workflow temporário apagado no fim):
+- A hipótese da auditoria estava certa: a pesquisa do
+  diariodarepublica.pt é uma SPA OutSystems que guarda o termo num
+  **cookie de sessão** — nenhum parâmetro de URL (`?q=`, `?termo=`,
+  caminho antigo/novo) filtra em navegação directa; devolve sempre o
+  índice inteiro (2,2M resultados) com HTTP 200, o falso sucesso
+  perfeito. A URL antiga (`dre.pt/pesquisa?q=...`) devolve soft-404.
+- A pesquisa **interactiva** (escrever na caixa `input[type='search']`
+  da home + Enter) funciona; e **com aspas** força frase exacta no
+  Elasticsearch por trás: `"prestação social única"` → 2 resultados
+  (vs 12.651 sem aspas) — hoje uma Lei (73-B/2025, Grandes Opções) e
+  um Despacho. O dia em que um **Decreto-Lei** entrar nesta lista é o
+  sinal exacto do sentinela.
+
+Implementação (`scraper_playwright.py`): nova opção
+`pesquisa_interactiva` por fonte + `_obter_html_pesquisa()` (home →
+preencher caixa → Enter → esperar pelo **eco do termo com aspas** na
+página de resultados via `wait_for_function`); a âncora
+(`ancora_conteudo=('"prestação social única"',)`) é a prova de que o
+filtro foi aplicado — o índice inteiro não tem esse eco e classifica
+`MUDOU`, nunca `OK` (testado). Selectores calibrados ao markup real
+OutSystems (`a[href*='/dr/detalhe/']` = um título de acto por
+resultado; `span[data-expression]` = títulos/designações — nunca
+`<p>`). Detecção do decreto (`_detectar_decreto_psu()`) passou a ser
+**por item** — dispara quando o título de um resultado é um
+Decreto-Lei — corrigindo um falso positivo latente da versão antiga
+(regex `decreto.lei.*presta` sobre o texto todo concatenado, que
+dispararia com um decreto-lei num resultado e "prestação" noutro sem
+relação; nunca se manifestou só porque a fonte nunca extraiu
+conteúdo). Perfil de browser fixado ao provado no diagnóstico
+(`PerfilBrowser(stealth=False, headers_custom=False)` — mesma lição do
+seg-social: nunca acrescentar componentes de contexto não provados
+contra o backend real). Testes: `tests/test_dre_psu_pesquisa.py`
+(9 casos, fixtures do texto real do diagnóstico — índice inteiro nunca
+OK, eco sem aspas nunca OK, resultados actuais reais nunca disparam,
+decreto dispara, falso positivo antigo não dispara).
 
 ### Páginas NÃO afectadas pela PSU
 
@@ -4692,3 +4715,35 @@ mobile aberto e 10/10 links clicáveis (elementFromPoint) nas 13 páginas
 verificadas. Suite pytest completa sem regressões, ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados).*
+
+---
+
+*Última revisão: 2026-07-07 — sentinela `dre_psu` corrigido de vez
+(Issue #54, bloqueado há 9 dias consecutivos). Executado o trabalho que
+estava registado como pendente desde a auditoria de 2026-07-05: sessão
+com browser interactivo real (workflow `workflow_dispatch` temporário,
+2 iterações — runs 28860869507 e 28861231682 — apagado no fim, mesmo
+padrão das sessões anteriores) para confirmar o mecanismo real de
+pesquisa do DRE antes de qualquer troca de URL. Confirmado: a pesquisa
+do diariodarepublica.pt é uma SPA OutSystems que guarda o termo num
+cookie — NENHUM parâmetro de URL filtra em navegação directa (índice
+inteiro, 2,2M resultados, HTTP 200); a pesquisa interactiva na caixa
+funciona, e com aspas força frase exacta no Elasticsearch (2 resultados
+vs 12.651 sem aspas). O endpoint API interno
+(`screenservices/.../DataActionGetPesquisas`) foi identificado mas
+deliberadamente não usado — exige tokens CSRF/versão de módulo
+OutSystems que mudam a cada deploy do DRE, uma fragilidade pior do que
+a interacção real com a página. Correcção completa na secção "IMPACTO
+DA PSU" → nota do sentinela: `pesquisa_interactiva` +
+`_obter_html_pesquisa()` + âncora com o eco do termo entre aspas +
+detecção por item (`_detectar_decreto_psu()`, corrige falso positivo
+latente) + perfil de browser provado. 9 testes novos
+(`tests/test_dre_psu_pesquisa.py`, fixtures do texto real do
+diagnóstico); suite completa local 1438 passed sem regressões
+(feedparser/Playwright indisponíveis no sandbox, mesma limitação
+documentada — CI corre tudo); ruff limpo. Verificado no pipeline real
+(`workflow_dispatch` de `pipeline-diario.yml`) — ver o run exacto na
+Issue #54; fecho automático da Issue pela máquina de estados ao
+primeiro dia OK. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados por esta sessão). Trabalho directo
+em `main`.*
