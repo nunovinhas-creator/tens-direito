@@ -87,8 +87,20 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         ancora_conteudo=("voucher",),
         metodo="http",
     ),
-    # DRE search — min baixo porque a página de resultados pode ter pouco texto extraível
-    "dre_psu": FonteConfig(nome="DRE — Pesquisa PSU decreto-lei", min_chars_uteis=50),
+    # Pesquisa de frase exacta no diariodarepublica.pt via interacção real
+    # com a caixa de pesquisa (ver "pesquisa_interactiva" em
+    # FONTES_PLAYWRIGHT). A âncora é o eco do termo COM aspas na página de
+    # resultados ('Resultados de: "prestação social única"') — só aparece
+    # quando o filtro foi de facto aplicado; a navegação directa por URL
+    # devolve o índice inteiro da legislação (2,2M resultados) SEM esse
+    # eco, por isso nunca fica OK por engano. min_chars calibrado com
+    # dados reais de um runner (2026-07-07): página filtrada (2 resultados)
+    # ~2400 chars de texto útil; página de erro do DRE ~800.
+    "dre_psu": FonteConfig(
+        nome="DRE — Pesquisa PSU decreto-lei",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"prestação social única"',),
+    ),
 }
 
 # Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
@@ -126,6 +138,13 @@ class PerfilBrowser:
 _PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
     "seg_social_abono": PerfilBrowser(headers_custom=False),
     "seg_social_rsi": PerfilBrowser(headers_custom=False),
+    # dre_psu: perfil idêntico ao do diagnóstico real que provou a pesquisa
+    # interactiva a funcionar (2026-07-07, runner com contexto UA/locale/
+    # timezone/viewport, SEM stealth e SEM extra_http_headers) — mesma
+    # lição do seg-social: nunca acrescentar componentes de contexto não
+    # provados contra o backend real (extra_http_headers chegou a provocar
+    # um erro 500 genuíno no portal da Segurança Social).
+    "dre_psu": PerfilBrowser(stealth=False, headers_custom=False),
 }
 
 
@@ -266,16 +285,30 @@ FONTES_PLAYWRIGHT = [
     },
     {
         "slug": "dre_psu",
-        # Pesquisa DRE por "prestação social única" — detectar publicação do decreto-lei.
-        # A lei de autorização legislativa (Jun 2026) está publicada; queremos o DECRETO-LEI
-        # que regulamenta valores e procedimentos (prazo PRR: 31 ago 2026).
-        "url": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
+        # Detectar a publicação do DECRETO-LEI da PSU (prazo PRR: 31 ago 2026).
+        # Mecanismo confirmado num runner real com browser interactivo
+        # (2026-07-07, Issue #54): a pesquisa do diariodarepublica.pt é uma
+        # SPA OutSystems que guarda o termo num cookie — NENHUM parâmetro de
+        # URL (?q=, ?termo=, caminho antigo/novo) filtra em navegação
+        # directa (devolve sempre o índice inteiro: 2,2M resultados). A URL
+        # antiga (dre.pt/pesquisa?q=...) devolve hoje um soft-404. Por isso
+        # esta fonte usa "pesquisa_interactiva": navegar à home, escrever o
+        # termo na caixa (input[type='search']) e premir Enter — com ASPAS,
+        # que forçam frase exacta no Elasticsearch por trás (confirmado:
+        # 2 resultados vs 12.651 sem aspas). Selectores calibrados com o
+        # markup real: cada resultado é um <a href="/dr/detalhe/..."> com o
+        # título do acto; títulos/designações vivem em span[data-expression],
+        # nunca em <p>.
+        "url": "https://diariodarepublica.pt/dr/home",
         "nota": "DRE — vigiar publicação do decreto-lei da PSU (prazo PRR: 31 ago 2026)",
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"prestação social única"',
+        },
         "seletores": {
             "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li, .result-title, .resultado, h2, h3",
-            "links": "a[href]",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
         },
         "detectar_decreto_lei_psu": True,
     },
@@ -404,6 +437,63 @@ def _obter_html(page, url: str, url_fallback: str | None, slug: str,
     return url_usado, page.content()
 
 
+def _obter_html_pesquisa(page, url: str, pesquisa: dict, slug: str,
+                         ancora: str | None) -> tuple[str, str] | None:
+    """Fluxo interactivo para SPAs cuja pesquisa não é accionável por URL.
+
+    Caso real (dre_psu, confirmado num runner com browser real a
+    2026-07-07): o diariodarepublica.pt guarda o termo de pesquisa num
+    cookie de sessão — nenhuma query string filtra em navegação directa,
+    que devolve sempre o índice inteiro com HTTP 200 (um falso sucesso
+    perfeito). Este fluxo navega à página com a caixa de pesquisa,
+    escreve o termo e prime Enter; a `ancora` (o eco do termo na página
+    de resultados) é a prova de que o filtro foi de facto aplicado — sem
+    ela o resultado classifica MUDOU/BLOQUEADO a jusante, nunca OK.
+
+    Qualquer falha de interacção devolve a página no estado em que ficou,
+    para a Camada 1 a classificar honestamente — nunca devolve None por
+    falha de interacção (None é só para falha de navegação, como em
+    _obter_html)."""
+    if not _tentar_goto(page, url):
+        log.error("%s: navegação para %s falhou após 3 tentativas", slug, url)
+        return None
+    try:
+        page.wait_for_load_state("networkidle", timeout=10_000)
+    except Exception:
+        pass
+
+    try:
+        campo = page.locator(pesquisa["campo"]).first
+        campo.wait_for(state="visible", timeout=15_000)
+        campo.click()
+        campo.fill(pesquisa["termo"])
+        campo.press("Enter")
+    except Exception as exc:
+        log.warning("%s: interacção com a caixa de pesquisa falhou (%s) — "
+                    "a devolver a página actual para classificação honesta", slug, exc)
+        return page.url, page.content()
+
+    if ancora:
+        try:
+            page.wait_for_function(
+                "text => document.body && document.body.innerText.toLowerCase().includes(text)",
+                arg=ancora.lower(),
+                timeout=20_000,
+            )
+        except Exception as exc:
+            log.warning("%s: âncora %r não apareceu após a pesquisa em 20s: %s",
+                        slug, ancora, exc)
+    # A âncora (eco do termo) aparece antes de a lista de resultados acabar
+    # de renderizar — dar tempo à SPA de completar os pedidos e pintar os
+    # resultados antes de capturar o HTML.
+    try:
+        page.wait_for_load_state("networkidle", timeout=10_000)
+    except Exception:
+        pass
+    time.sleep(3)
+    return page.url, page.content()
+
+
 def scrape_playwright(page, fonte: dict) -> dict | None:
     url = fonte["url"]
     slug = fonte["slug"]
@@ -413,10 +503,14 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 
     config = _fonte_config(slug)
     ancora = config.ancora_conteudo[0] if config.ancora_conteudo else None
+    pesquisa = fonte.get("pesquisa_interactiva")
     url_usado, html, classif = url, "", None
 
     for tentativa in range(1, TENTATIVAS_BLOQUEIO + 1):
-        obtido = _obter_html(page, url, url_fallback, slug, ancora=ancora)
+        if pesquisa:
+            obtido = _obter_html_pesquisa(page, url, pesquisa, slug, ancora)
+        else:
+            obtido = _obter_html(page, url, url_fallback, slug, ancora=ancora)
         if obtido is None:
             # Falha de navegação (rede/timeout), não de conteúdo bloqueado —
             # já esgotou as suas próprias 3 tentativas dentro de _tentar_goto,
@@ -480,38 +574,42 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
 
     # Detecção do decreto-lei da PSU em DRE
     if fonte.get("detectar_decreto_lei_psu") and slug == "dre_psu":
-        import re as _re
-        # Juntar todo o texto extraído para pesquisa
-        todo_texto = " ".join([
-            conteudo.get("titulo", ""),
-            *conteudo.get("paragrafos", []),
-            *conteudo.get("itens_lista", []),
-            *[lnk.get("texto", "") for lnk in conteudo.get("links_uteis", [])],
-        ])
-        todo_lower = todo_texto.lower()
-
-        # Detectar DECRETO-LEI (não "Lei" — a lei de autorização já foi publicada)
-        # O decreto-lei terá "decreto-lei n.º" e "prestação social única" no mesmo documento
-        decreto_psu = bool(
-            _re.search(r"decreto.lei\b.*\bpresta", todo_lower) or
-            _re.search(r"presta[çc][aã]o\s+social\s+[uú]nica.*decreto.lei\b", todo_lower)
-        )
-
-        if decreto_psu:
-            excertos = []
-            for item in conteudo.get("paragrafos", []) + conteudo.get("itens_lista", []):
-                if "decreto" in item.lower() and "prest" in item.lower():
-                    excertos.append(item[:300])
-            excertos_txt = "\n".join(f"- {e}" for e in excertos[:5]) or "(ver data/scraped/dre_psu_latest.json)"
-            _registar_aviso(slug, f"dre_psu_decreto_detectado:{excertos_txt[:500]}")
-            log.warning(
-                "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
-                slug, excertos_txt
-            )
-        else:
-            log.info("%s: decreto-lei PSU ainda não publicado em DRE (só lei de autorização)", slug)
+        if not _detectar_decreto_psu(slug, conteudo):
+            log.info("%s: decreto-lei PSU ainda não publicado em DRE "
+                     "(pesquisa de frase exacta sem nenhum Decreto-Lei nos resultados)", slug)
 
     return resultado
+
+
+def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
+    """Detecta um Decreto-Lei entre os resultados da pesquisa de frase
+    exacta '"prestação social única"'.
+
+    Como a pesquisa usa aspas (frase exacta no Elasticsearch do DRE —
+    confirmado num runner real: 2 resultados vs 12.651 sem aspas), TODOS
+    os resultados extraídos dizem já respeito à frase — basta o título de
+    um resultado (itens_lista: um <a href="/dr/detalhe/..."> por acto) ser
+    um Decreto-Lei para haver sinal real.
+
+    Verificação por item, deliberadamente — a versão anterior fazia
+    `decreto.lei\\b.*\\bpresta` sobre TODO o texto concatenado, o que
+    dispararia com um decreto-lei qualquer num resultado e "prestação"
+    noutro resultado sem relação (falso positivo latente que nunca se
+    manifestou só porque a fonte antiga nunca extraiu conteúdo — mesma
+    lição das Issues #55/#56 do MEGA)."""
+    import re as _re
+    padrao = _re.compile(r"\bdecreto[\s-]?lei\s+n", _re.IGNORECASE)
+    candidatos = [conteudo.get("titulo", "")] + list(conteudo.get("itens_lista", []))
+    achados = [t for t in candidatos if t and padrao.search(t)]
+    if not achados:
+        return False
+    excertos_txt = "\n".join(f"- {t[:300]}" for t in achados[:5])
+    _registar_aviso(slug, f"dre_psu_decreto_detectado:{excertos_txt[:500]}")
+    log.warning(
+        "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
+        slug, excertos_txt,
+    )
+    return True
 
 
 # ── Guardar resultado ──────────────────────────────────────────────────────────
