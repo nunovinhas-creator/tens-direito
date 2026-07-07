@@ -71,7 +71,7 @@ def _resumo_pagina(page, rotulo: str) -> None:
     print(f"    contagem  : {_contar_resultados(corpo_limpo)}")
     ocorr = corpo_limpo.lower().count("prestação social única")
     print(f"    ocorrências do termo no body: {ocorr}")
-    print(f"    primeiros 900 chars do body:")
+    print("    primeiros 900 chars do body:")
     print("    " + corpo_limpo[:900].replace("\n", " "))
     # Títulos de resultados prováveis
     for sel in ("h2", "h3", ".result-title", "a[href*='detalhe']"):
