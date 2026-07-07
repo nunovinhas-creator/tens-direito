@@ -1,0 +1,277 @@
+{
+  "404": {
+    "chip": null,
+    "pagina": "404.html",
+    "titulo": "Página não encontrada"
+  },
+  "abono-de-familia": {
+    "chip": "Família e Crianças",
+    "pagina": "abono-de-familia.html",
+    "titulo": "Abono de família 2026: escalões, valores e como pedir"
+  },
+  "acao-social-escolar": {
+    "chip": "Apoios Escolares",
+    "pagina": "acao-social-escolar.html",
+    "titulo": "Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos"
+  },
+  "acessibilidade": {
+    "chip": null,
+    "pagina": "acessibilidade.html",
+    "titulo": "Acessibilidade"
+  },
+  "amim": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "amim.html",
+    "titulo": "AMIM 2026: Guia Completo do Atestado Médico de Incapacidade Multiuso"
+  },
+  "apoio-extraordinario-renda": {
+    "chip": "Habitação",
+    "pagina": "apoio-extraordinario-renda.html",
+    "titulo": "Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas"
+  },
+  "baixa-medica-subsidio-doenca": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "titulo": "Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração"
+  },
+  "bolsa-de-estudo-ensino-superior": {
+    "chip": "Apoios Escolares",
+    "pagina": "bolsa-de-estudo-ensino-superior.html",
+    "titulo": "Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar"
+  },
+  "bolsa-de-merito": {
+    "chip": "Apoios Escolares",
+    "pagina": "bolsa-de-merito.html",
+    "titulo": "Bolsa de mérito 2026/2027: quem tem direito e como candidatar"
+  },
+  "comecar-aqui": {
+    "chip": null,
+    "pagina": "comecar-aqui.html",
+    "titulo": "Começa aqui"
+  },
+  "complemento-solidario-idosos": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "complemento-solidario-idosos.html",
+    "titulo": "Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI"
+  },
+  "cuidador-informal": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "cuidador-informal.html",
+    "titulo": "Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir"
+  },
+  "documentos": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos.html",
+    "titulo": "Gerador de Documentos — minutas grátis para a Segurança Social"
+  },
+  "documentos-carta-acompanhamento-comunicacao-alteracao": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "titulo": "Carta de acompanhamento — alteração de morada, agregado ou rendimentos"
+  },
+  "documentos-carta-acompanhamento-csi": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/carta-acompanhamento-csi.html",
+    "titulo": "Carta de acompanhamento do pedido de CSI (grátis)"
+  },
+  "documentos-carta-acompanhamento-divida-prestacoes": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/carta-acompanhamento-divida-prestacoes.html",
+    "titulo": "Carta de acompanhamento — pagamento de dívida à Segurança Social em prestações"
+  },
+  "documentos-carta-acompanhamento-reavaliacao-abono": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/carta-acompanhamento-reavaliacao-abono.html",
+    "titulo": "Carta de acompanhamento — reavaliação do escalão do abono (grátis)"
+  },
+  "documentos-carta-acompanhamento-svi-recurso": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/carta-acompanhamento-svi-recurso.html",
+    "titulo": "Carta de acompanhamento — recurso de decisão do SVI (junta médica)"
+  },
+  "documentos-exposicao-atraso-processamento": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/exposicao-atraso-processamento.html",
+    "titulo": "Exposição por atraso no processamento de uma prestação (grátis)"
+  },
+  "documentos-pedido-acesso-documentos-administrativos": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/pedido-acesso-documentos-administrativos.html",
+    "titulo": "Modelo de pedido de acesso ao processo / documentos administrativos (grátis)"
+  },
+  "documentos-pedido-declaracao-comprovativo-prestacoes": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/pedido-declaracao-comprovativo-prestacoes.html",
+    "titulo": "Pedido de declaração ou comprovativo de prestação social (grátis)"
+  },
+  "documentos-reclamacao-decisao-seguranca-social": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/reclamacao-decisao-seguranca-social.html",
+    "titulo": "Modelo de reclamação de decisão da Segurança Social (grátis)"
+  },
+  "documentos-recurso-hierarquico-seguranca-social": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/recurso-hierarquico-seguranca-social.html",
+    "titulo": "Modelo de recurso hierárquico de decisão da Segurança Social (grátis)"
+  },
+  "documentos-requerimento-generico-seguranca-social": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/requerimento-generico-seguranca-social.html",
+    "titulo": "Requerimento genérico à Segurança Social (modelo grátis)"
+  },
+  "documentos-requerimento-reavaliacao-escalao-ase": {
+    "chip": "Gerador de documentos",
+    "pagina": "documentos/requerimento-reavaliacao-escalao-ase.html",
+    "titulo": "Modelo de pedido de reavaliação do escalão de ASE (grátis)"
+  },
+  "fontes": {
+    "chip": null,
+    "pagina": "fontes.html",
+    "titulo": "Fontes Oficiais"
+  },
+  "index": {
+    "chip": null,
+    "pagina": "index.html",
+    "titulo": "Apoios Sociais e Direitos em Portugal"
+  },
+  "manuais-escolares-mega": {
+    "chip": "Apoios Escolares",
+    "pagina": "manuais-escolares-mega.html",
+    "titulo": "Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales"
+  },
+  "noticias": {
+    "chip": null,
+    "pagina": "noticias.html",
+    "titulo": "Atualidades"
+  },
+  "p-apoios-escolares": {
+    "chip": "Apoios Escolares",
+    "pagina": "p/apoios-escolares.html",
+    "titulo": "Apoios Escolares em Portugal 2026/2027 — Guia Completo"
+  },
+  "p-familia": {
+    "chip": "Família e Crianças",
+    "pagina": "p/familia.html",
+    "titulo": "Apoios para Família e Crianças em Portugal 2026 — Guia Completo"
+  },
+  "p-habitacao": {
+    "chip": "Habitação",
+    "pagina": "p/habitacao.html",
+    "titulo": "Apoios à Habitação em Portugal 2026 — Guia Completo"
+  },
+  "p-idosos-incapacidade-cuidadores": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "p/idosos-incapacidade-cuidadores.html",
+    "titulo": "Apoios para Idosos, Incapacidade e Cuidadores em Portugal 2026 — Guia Completo"
+  },
+  "p-trabalho-rendimento": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "p/trabalho-rendimento.html",
+    "titulo": "Apoios de Trabalho e Rendimento em Portugal 2026 — Guia Completo"
+  },
+  "passe-sub23": {
+    "chip": "Apoios Escolares",
+    "pagina": "passe-sub23.html",
+    "titulo": "Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos"
+  },
+  "porta-65": {
+    "chip": "Habitação",
+    "pagina": "porta-65.html",
+    "titulo": "Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir"
+  },
+  "prestacao-social-para-a-inclusao": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "prestacao-social-para-a-inclusao.html",
+    "titulo": "PSI 2026: Guia Completo da Prestação Social para a Inclusão"
+  },
+  "prestacao-social-unica": {
+    "chip": "Prestação Social Única",
+    "pagina": "prestacao-social-unica.html",
+    "titulo": "Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor"
+  },
+  "privacidade": {
+    "chip": null,
+    "pagina": "privacidade.html",
+    "titulo": "Política de Privacidade"
+  },
+  "prova-escolar": {
+    "chip": "Apoios Escolares",
+    "pagina": "prova-escolar.html",
+    "titulo": "Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como"
+  },
+  "psu-lista-13-apoios": {
+    "chip": "Prestação Social Única",
+    "pagina": "psu-lista-13-apoios.html",
+    "titulo": "As 13 prestações que a PSU vai substituir (lista completa)"
+  },
+  "psu-quando-entra-em-vigor": {
+    "chip": "Prestação Social Única",
+    "pagina": "psu-quando-entra-em-vigor.html",
+    "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir"
+  },
+  "psu-quem-tem-direito": {
+    "chip": "Prestação Social Única",
+    "pagina": "psu-quem-tem-direito.html",
+    "titulo": "Quem tem direito à PSU (o que a lei já define)"
+  },
+  "psu-trabalho-social": {
+    "chip": "Prestação Social Única",
+    "pagina": "psu-trabalho-social.html",
+    "titulo": "Trabalho social na PSU 2026: aprovado vs. por definir"
+  },
+  "psu-vs-abono-familia": {
+    "chip": "Prestação Social Única",
+    "pagina": "psu-vs-abono-familia.html",
+    "titulo": "PSU 2026 e Abono de Família: são apoios diferentes — não se confundem"
+  },
+  "rsi": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "rsi.html",
+    "titulo": "RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção"
+  },
+  "simulador-abono": {
+    "chip": "Família e Crianças",
+    "pagina": "simulador-abono.html",
+    "titulo": "Simulador de Abono de Família 2026"
+  },
+  "simulador-ase": {
+    "chip": "Apoios Escolares",
+    "pagina": "simulador-ase.html",
+    "titulo": "Simulador de Ação Social Escolar (ASE) 2026/2027"
+  },
+  "simulador-csi": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "simulador-csi.html",
+    "titulo": "Simulador do Complemento Solidário para Idosos (CSI) 2026"
+  },
+  "simulador-psu": {
+    "chip": null,
+    "pagina": "simulador-psu.html",
+    "titulo": "Simulador da Prestação Social Única (PSU) — em preparação"
+  },
+  "simulador-subsidio-doenca": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "simulador-subsidio-doenca.html",
+    "titulo": "Simulador de Subsídio de Doença 2026"
+  },
+  "simuladores": {
+    "chip": "Simuladores e calculadoras",
+    "pagina": "simuladores.html",
+    "titulo": "Simuladores e Calculadoras"
+  },
+  "sobre": {
+    "chip": null,
+    "pagina": "sobre.html",
+    "titulo": "Sobre"
+  },
+  "subsidio-desemprego": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "subsidio-desemprego.html",
+    "titulo": "Subsídio de desemprego 2026: valor até 1.342,83€ e como pedir"
+  },
+  "subsidio-parental": {
+    "chip": "Família e Crianças",
+    "pagina": "subsidio-parental.html",
+    "titulo": "Licença parental 2026: dias, valores e como pedir o subsídio parental"
+  }
+}

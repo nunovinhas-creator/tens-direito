@@ -412,7 +412,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Links testados — só usar URLs da lista verificada ou homepage do domínio oficial
 - [ ] Página tem GA4 snippet `G-XP46PM8H1Q`
 - [ ] CookieYes script **ANTES** do GA4 no `<head>`
-- [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes (og:image vem de `python scripts/adicionar_og_image.py --write` — imagem única do site, `assets/img/og-default.png`)
+- [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes — página nova: correr `python scripts/adicionar_og_image.py --write` (insere o bloco og:image) e depois `python scripts/gerar_og_images.py --write` (gera a imagem própria da página, 1200×630, com o título no cartão, e aponta o og:image para ela); mudar um `og:title` exige regenerar (`gerar_og_images.py --write`) — `tests/test_og_image.py` falha se esquecido
 - [ ] JSON-LD `FAQPage` + `HowTo` + `BreadcrumbList` presentes
 - [ ] `"Verificado a [data]"` visível no corpo da página
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
@@ -453,7 +453,8 @@ tens-direito/
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas 35 páginas (idempotente)
-│   ├── adicionar_og_image.py ← insere og:image (+width/height/alt, twitter:card) nas páginas servidas (idempotente)
+│   ├── adicionar_og_image.py ← bootstrap: insere o bloco og:image em páginas novas (idempotente)
+│   ├── gerar_og_images.py    ← gera assets/img/og/<slug>.jpg por página (Chromium real, manifest, idempotente)
 │   ├── adicionar_article_jsonld.py ← insere JSON-LD Article (author/publisher/datas) nas 27 páginas de conteúdo (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
 │   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
@@ -610,7 +611,7 @@ Ordem no `<head>`:
 2. CookieYes script
 3. GA4 script (`G-XP46PM8H1Q`)
 4. favicon, viewport, title, description
-5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`, `og:image` (+ `og:image:width/height/alt` e `twitter:card` — inseridos por `scripts/adicionar_og_image.py`, imagem única 1200×630 em `assets/img/og-default.png`)
+5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`, `og:image` (+ `og:image:width/height/alt` e `twitter:card`) — imagem PRÓPRIA de cada página (1200×630, título do artigo + chip do cluster no cartão), gerada por `scripts/gerar_og_images.py` em `assets/img/og/<slug>.jpg`; `scripts/adicionar_og_image.py` é só o bootstrap do bloco de metas em páginas novas
 6. JSON-LD: `FAQPage` + `HowTo` + `BreadcrumbList`
 
 Conteúdo obrigatório no `<body>`:
@@ -4784,3 +4785,35 @@ usar o Sharing Debugger (developers.facebook.com/tools/debug) e "Scrape
 Again"; partilhas novas apanham a imagem automaticamente.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False`. Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-07 (continuação, pedida pelo Nuno na mesma
+conversa do og:image) — imagens de partilha social POR PÁGINA, estilo
+jornal. `scripts/gerar_og_images.py` (sessão manual, nunca pipeline):
+renderiza com Chromium real um cartão 1200×630 por página — título real
+do artigo (o `og:title` curado, com a marca "Tens Direito" removida do
+texto quando duplicaria o wordmark do cartão), chip com o nome do
+cluster (de `data/clusters.json`, fonte única; "Gerador de documentos"
+para as minutas, "Simuladores e calculadoras" para o hub), selo
+"Verificado em fontes oficiais" e domínio — guardado em
+`assets/img/og/<slug>.jpg` (JPEG q88, ~55KB/imagem, ~3,2MB pelas 55 —
+PNG seria 5× mais pesado sem ganho visível). Tamanho de fonte do título
+adaptativo ao comprimento (58→34px) + line-clamp de 4 linhas.
+Idempotente por manifest (`assets/img/og/manifest.json`: slug →
+título/chip usados): só re-renderiza quando o título/chip muda ou a
+imagem falta (`--force` regenera tudo); remove imagens órfãs de páginas
+apagadas/renomeadas; actualiza `og:image`/`og:image:alt` de cada página
+para a sua imagem. `adicionar_og_image.py` fica como bootstrap do bloco
+de metas em páginas novas (a imagem única `og-default.png` mantém-se
+como alvo provisório desse bootstrap até o gerador correr).
+`tests/test_og_image.py` reescrito (112 casos): cada página aponta para
+a SUA imagem, o JPEG existe e é mesmo 1200×630 (dimensões lidas do
+cabeçalho SOF, nunca números soltos), e o manifest tem de bater com o
+`og:title` actual — mudar um título sem regenerar falha o CI
+(**provado a falhar de propósito**: og:title do abono adulterado →
+teste vermelho com mensagem clara; revertido → verde). Sem imagens
+órfãs (teste dedicado). Chip mais longo do site ("Idosos, Incapacidade
+e Cuidadores") confirmado a caber no layout por inspecção visual real.
+Nota de cache do Facebook mantém-se: links já partilhados precisam de
+"Scrape Again" no Sharing Debugger. Trabalho directo em `main`.*
