@@ -3183,7 +3183,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-07-06*
+*Última revisão automática: 2026-07-07*
 
 ---
 
