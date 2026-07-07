@@ -201,6 +201,7 @@ tens-direito/
 │       └── _fontes_config.json
 ├── .github/
 │   └── workflows/
+│       ├── diagnostico-dre-pesquisa-temp.yml
 │       ├── integridade.yml
 │       ├── limpar-branches.yml
 │       ├── pipeline-diario.yml
@@ -219,6 +220,7 @@ tens-direito/
 │       ├── estrutura-pagina.md
 │       ├── verificar-url.md
 ├── scripts/
+│   ├── _diag_dre_pesquisa.py
 │   ├── adicionar_article_jsonld.py
 │   ├── adicionar_autoria_artigos.py
 │   ├── adicionar_canonicas.py
@@ -296,6 +298,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
+| `diagnostico-dre-pesquisa-temp.yml` | — | diagnostico-dre-pesquisa-temp |
 | `integridade.yml` | — | integridade |
 | `limpar-branches.yml` | — | limpar-branches |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
@@ -357,6 +360,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 07 de julho de 2026 às 10:54 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 07 de julho de 2026 às 12:12 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

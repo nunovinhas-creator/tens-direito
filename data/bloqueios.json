@@ -103,14 +103,5 @@
       "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
     ],
     "chars_uteis": 0
-  },
-  {
-    "slug": "dre_psu",
-    "url": "https://dre.pt/pesquisa?q=presta%C3%A7%C3%A3o+social+%C3%BAnica",
-    "data": "2026-07-07T09:54:19.772448+00:00",
-    "motivos": [
-      "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
-    ],
-    "chars_uteis": 0
   }
 ]
