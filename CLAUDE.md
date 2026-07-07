@@ -466,6 +466,7 @@ tens-direito/
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
+│   ├── limpar_css_morto_nav.py ← inventário/remoção de CSS morto da nav antiga (idempotente, --check p/ CI)
 │   ├── verificar_injecao.py  ← guardrail: prompt injection em data/ e shadow_history/ (integridade.yml)
 │   ├── gerir_estado_fontes.py ← máquina de estados de fontes bloqueadas (Step 1b do pipeline)
 │   ├── wayback_fallback.py   ← fallback Wayback Machine, puro, sem I/O próprio (fetch_json injectado)
@@ -769,12 +770,29 @@ todas as páginas).
    dropdown "Apoios" + pesquisa (desktop e mobile) + "Começa aqui"
    presentes dentro do bloco.
 
-**Dívida técnica conhecida (fora do âmbito da Fase 4, ainda por resolver):**
-- CSS morto: as regras da nav antiga (`.mobile-menu`, `.hamburger`,
-  `.nav-mobile-sim-label`, etc.) continuam nos `<style>` de cada
-  página — inofensivas (nada as usa) mas não foram removidas, para
-  manter o diff desta fase pequeno. *Registado para o futuro*: limpeza
-  cosmética, sem prazo, sem risco.
+**Dívida técnica conhecida (fora do âmbito da Fase 4):**
+- CSS morto da nav antiga — **limpo a 2026-07-07** por
+  `scripts/limpar_css_morto_nav.py` (170 regras em 35 páginas: `.hamburger`,
+  `nav a.nav-link*`, `.nav-mobile-sim-label/link`, `@media` esvaziados).
+  Regra do script, deliberadamente global e conservadora: uma regra só é
+  removida se TODOS os seletores exigirem um token (classe/id) ausente de
+  TODAS as páginas servidas E não-adicionável por nenhum JS do site
+  (mutações `classList.add/toggle`, `class=` em strings JS, `className=` —
+  leituras tipo `querySelector` não contam); qualquer correspondência em
+  qualquer página → AMBÍGUO, intocado, nunca removido "por o nome parecer
+  antigo". **O que ficou, de propósito**: as regras `.mobile-menu*` em 34
+  páginas, porque 8 páginas (`amim`, `complemento-solidario-idosos`,
+  `prestacao-social-para-a-inclusao` e as 5 do cluster PSU) ainda têm um
+  `<div id="menu-mobile" class="mobile-menu">` órfão da nav antiga logo a
+  seguir a `<!-- NAV:FIM -->` — invisível (`display:none`, sem hamburger
+  que o abra, links desactualizados) mas um elemento real: remover o CSS
+  torná-lo-ia visível. 16 páginas têm também um `<script>` inline morto da
+  nav antiga (`toggleMobileMenu`, nunca chamado — só faz `querySelector`,
+  nunca cria elementos/classes, inofensivo). Remover os divs órfãos + os
+  scripts mortos + o CSS `.mobile-menu` é uma sessão dedicada futura (mexe
+  em HTML, não só CSS) — registado em `ROADMAP.md`. O script tem `--check`
+  (exit ≠ 0 se voltar a existir regra morta removível) e idempotência
+  provada (2.ª corrida `--write` = zero alterações).
 
 Dois achados sinalizados no fecho da Fase 4 (não relacionados com o
 ponto acima) — JSON-LD inválido em `simulador-ase.html` e OG
@@ -882,8 +900,10 @@ correr ambos.
    breadcrumb/relacionados também aos simuladores, criar uma variante
    de texto escuro em vez de forçar hero escuro nas ferramentas (ver
    secção "SISTEMA DE CLUSTERS", ponto 6).
-3. **CSS morto da nav antiga** — limpeza cosmética nos `<style>`
-   de cada página (ver secção "NAVEGAÇÃO PRINCIPAL", dívida técnica).
+3. **CSS morto da nav antiga** — ~~limpeza cosmética nos `<style>`
+   de cada página~~ **feito a 2026-07-07** (`scripts/limpar_css_morto_nav.py`);
+   resta o resíduo AMBÍGUO documentado na secção "NAVEGAÇÃO PRINCIPAL"
+   (dívida técnica) e em `ROADMAP.md`.
 
 ---
 
@@ -4575,3 +4595,55 @@ antes de editar); JSON-LD validado (`json.loads`) nos dois ficheiros.
 Suite completa reconfirmada sem regressões; `ruff` limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False`. Trabalho directo em `main`, sem branches novas.*
+
+---
+
+*Última revisão: 2026-07-07 — limpeza de CSS morto da nav antiga (dívida
+técnica registada na Fase 4, 2026-07-02). Novo
+`scripts/limpar_css_morto_nav.py` (padrão dos `sincronizar_*.py`:
+inventário por omissão, `--write` para aplicar, `--check` para CI, exit
+≠ 0 em estado inesperado — parse CSS falhado ou remoção que não converge
+nunca parecem sucesso). Inventário primeiro, nunca assumido: tabela
+ficheiro/seletor/correspondências sobre as 55 páginas servidas (raiz +
+`p/` + `documentos/`), correspondência por token exacto de classe/id
+(nunca substring — `nav-mobile-menu` da nav nova contém "mobile-menu" e
+teria sido um falso positivo desastroso), mais detecção de classes que o
+JS consegue adicionar em runtime (`classList.add/toggle`, `class=` em
+strings JS, `className=` — leituras `querySelector` não contam).
+**Removidas 170 regras em 35 páginas (12.528 bytes, diff só de remoções,
+zero inserções)**: `.hamburger` (×2/página), `nav a.nav-link`/`:hover`/
+`.active`, `.nav-mobile-sim-label`/`.nav-mobile-sim-link` (só
+`index.html`) e os `@media (max-width:700px)` que ficaram vazios.
+
+**Achado principal do inventário — não estava no mapa**: 8 páginas
+(`amim`, `complemento-solidario-idosos`, `prestacao-social-para-a-inclusao`
+e as 5 do cluster PSU) ainda têm um `<div id="menu-mobile"
+class="mobile-menu">` completo da nav antiga logo a seguir a
+`<!-- NAV:FIM -->` (links desactualizados — "Por onde começar?",
+simuladores antigos), invisível por `display:none` e sem hamburger que o
+abra. Por isso **as regras `.mobile-menu*` ficaram intocadas nas 34
+páginas onde aparecem** (AMBÍGUO pela regra global: um seletor que
+corresponde a algo em qualquer página nunca é removido — e removê-las
+nas 8 páginas tornaria o div visível). `.mobile-menu.aberto` também
+ficou (a classe `aberto` é adicionável pelo `nav.js` — a prova de morte
+tem de ser por token nunca-adicionável, não por combinação improvável).
+16 páginas têm ainda um `<script>` inline morto (`toggleMobileMenu`,
+nunca chamado, só leituras) — fora do âmbito CSS desta sessão. Remoção
+dos divs órfãos + scripts + CSS `.mobile-menu` registada em `ROADMAP.md`
+como sessão dedicada futura. 18 seletores mortos FORA da família nav
+também encontrados e deliberadamente não tocados — vários são
+falsos-mortos por interpolação JS (`escalo-${n}` no simulador de abono,
+`cat-${categoria}` em notícias): lição registada — detecção estática de
+classes "mortas" nunca pode tocar em classes construídas dinamicamente.
+
+Verificação: idempotência provada (2.ª corrida `--write` = 0 alterações;
+`--check` exit 0); Playwright real a 375px em
+`index`/`manuais-escolares-mega`/`acao-social-escolar`/
+`subsidio-desemprego`/`amim` — nav abre, 10/10 links do menu clicáveis
+(elementFromPoint, sem sobreposições), div órfão continua invisível,
+scrollWidth idêntico antes/depois (o overflow de 462px em
+`acao-social-escolar.html` é pré-existente — tabela larga — confirmado
+igual na versão HEAD, não é regressão desta limpeza); suite pytest
+completa sem regressões; `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).*

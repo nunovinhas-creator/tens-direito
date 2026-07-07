@@ -120,9 +120,19 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Variante clara de `clusters.css`** — se um dia se quiser dar
   breadcrumb/relacionados também aos simuladores, sem forçar hero escuro —
   ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 2.
-- **CSS morto da nav antiga** — limpeza cosmética nos `<style>` de cada
-  página, sem risco (nada o usa) — ver CLAUDE.md **"FECHO DO PROJECTO"** →
-  "Registado para o futuro", ponto 3.
+- **Resíduos AMBÍGUOS da nav antiga** — a limpeza de CSS morto (2026-07-07,
+  `scripts/limpar_css_morto_nav.py`) removeu tudo o que era provadamente
+  morto (`.hamburger`, `nav a.nav-link`, `.nav-mobile-sim-*`), mas ficou por
+  decisão manual: 8 páginas (amim, CSI, PSI, PSU ×5) ainda têm um `<div
+  id="menu-mobile" class="mobile-menu">` órfão da nav antiga logo a seguir a
+  `<!-- NAV:FIM -->` (invisível — `display:none`, sem hamburger que o abra,
+  com links desactualizados) e por isso as regras CSS `.mobile-menu*` ficaram
+  intocadas em todas as 34 páginas onde aparecem (regra: seletor que
+  corresponde a algo em qualquer página nunca é removido). 16 páginas têm
+  também um `<script>` inline morto (`toggleMobileMenu`, nunca chamado).
+  Remover os divs órfãos + o script + o CSS `.mobile-menu` é uma sessão
+  dedicada (mexe em HTML, não só CSS) — ver CLAUDE.md **"NAVEGAÇÃO
+  PRINCIPAL"** (dívida técnica).
 - **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
   para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
   com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca
