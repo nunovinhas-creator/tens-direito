@@ -27,16 +27,7 @@ TERMO = "prestação social única"
 TERMO_URL = "presta%C3%A7%C3%A3o%20social%20%C3%BAnica"
 TERMO_URL_PLUS = "presta%C3%A7%C3%A3o+social+%C3%BAnica"
 
-CANDIDATAS_DIRECTAS = [
-    ("dre.pt antigo (actual, sabido morto — referência)",
-     f"https://dre.pt/pesquisa?q={TERMO_URL_PLUS}"),
-    ("dre.pt novo caminho, termo=",
-     f"https://dre.pt/dre/pesquisa?termo={TERMO_URL_PLUS}"),
-    ("diariodarepublica.pt /dr/pesquisa?termo=",
-     f"https://diariodarepublica.pt/dr/pesquisa?termo={TERMO_URL}"),
-    ("diariodarepublica.pt /dr/pesquisa?q=",
-     f"https://diariodarepublica.pt/dr/pesquisa?q={TERMO_URL}"),
-]
+CANDIDATAS_DIRECTAS: list[tuple[str, str]] = []
 
 PALAVRAS_REDE = ("pesquisa", "search", "api", "query", "solr", "elastic", "resultado")
 
@@ -114,6 +105,65 @@ def _instalar_captura_rede(page, registos: list) -> None:
     page.on("response", on_response)
 
 
+def _dump_resultados(page) -> None:
+    """Inventário do markup dos resultados: links, títulos e um exemplo
+    de outerHTML — para configurar os selectores reais do scraper."""
+    corpo = " ".join(page.inner_text("body").split())
+    print("    body chars 900-5500 (zona de resultados):")
+    print("    " + corpo[900:5500])
+    print("    links com texto longo (até 30):")
+    try:
+        links = page.locator("a")
+        total = links.count()
+        vistos = 0
+        for i in range(total):
+            if vistos >= 30:
+                break
+            el = links.nth(i)
+            try:
+                txt = " ".join((el.inner_text() or "").split())
+                href = el.get_attribute("href") or ""
+            except Exception:  # noqa: BLE001
+                continue
+            if len(txt) > 30 or "detalhe" in href:
+                print(f"      [{i}] href={href[:120]!r} texto={txt[:140]!r}")
+                vistos += 1
+    except Exception as e:  # noqa: BLE001
+        print(f"    [!] inventário de links falhou: {e}")
+    try:
+        primeiro = page.locator("a[href*='detalhe']").first
+        html_avo = primeiro.evaluate(
+            "el => el.parentElement && el.parentElement.parentElement"
+            " ? el.parentElement.parentElement.outerHTML : el.outerHTML"
+        )
+        print("    outerHTML do avô do 1.º link 'detalhe' (até 2500 chars):")
+        print("    " + " ".join(html_avo.split())[:2500])
+    except Exception as e:  # noqa: BLE001
+        print(f"    [!] outerHTML falhou: {e}")
+
+
+def _pesquisa_interactiva(ctx, termo: str, rotulo: str, dump: bool = False) -> None:
+    print(f"\n{'=' * 72}\n[INTERACTIVA] {rotulo} — termo: {termo!r}")
+    page = ctx.new_page()
+    try:
+        page.goto("https://diariodarepublica.pt/dr/home",
+                  wait_until="domcontentloaded", timeout=45_000)
+        page.wait_for_timeout(6_000)
+        campo = page.locator("input[type='search']").first
+        campo.click()
+        campo.fill(termo)
+        page.wait_for_timeout(800)
+        campo.press("Enter")
+        page.wait_for_timeout(12_000)
+        _resumo_pagina(page, rotulo)
+        if dump:
+            _dump_resultados(page)
+    except Exception as e:  # noqa: BLE001
+        print(f"    [ERRO interactiva] {e}")
+    finally:
+        page.close()
+
+
 def main() -> int:
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
@@ -127,6 +177,12 @@ def main() -> int:
             timezone_id="Europe/Lisbon",
             viewport={"width": 1280, "height": 900},
         )
+
+        # ── Fase 0 (2.ª iteração): frase exacta com aspas + markup ─────
+        _pesquisa_interactiva(ctx, f'"{TERMO}"', "frase exacta com aspas", dump=True)
+        ctx.clear_cookies()
+        _pesquisa_interactiva(ctx, TERMO, "sem aspas (referência)", dump=False)
+        ctx.clear_cookies()
 
         # ── Fase 1: candidatas de navegação directa ────────────────────
         for rotulo, url in CANDIDATAS_DIRECTAS:
