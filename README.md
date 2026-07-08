@@ -1,11 +1,14 @@
 # Tens Direito
 
-© 2026 NV Labs — Todos os direitos reservados. O conteúdo e o código deste repositório não estão licenciados para reutilização, reprodução ou modificação.
+**Os teus direitos, com data e fonte.**
 
-📋 Documentação interna e índice de portfólio mantidos em repositório privado.
+O registo em português de Portugal (PT-PT), datado e referenciado à fonte primária, sobre dinheiro, direitos e burocracia.
 
-> **Os teus direitos, com data e fonte.**
-> O registo PT-PT, datado e referenciado à fonte primária, de **dinheiro + direitos + burocracia**.
+---
+
+© 2026 NV Labs. Todos os direitos reservados.
+
+Este repositório é disponibilizado exclusivamente para consulta e demonstração. O código-fonte, os conteúdos, a estrutura, o design e a documentação não estão licenciados para reutilização, reprodução, modificação ou distribuição, total ou parcial, sem autorização prévia e expressa do autor.
 
 <!-- AUTO:ESTADO -->
 
