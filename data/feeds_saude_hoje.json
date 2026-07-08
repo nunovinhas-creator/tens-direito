@@ -4,8 +4,8 @@
     "url": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 94,
-    "data": "2026-07-07"
+    "n_entradas": 90,
+    "data": "2026-07-08"
   },
   {
     "nome": "subsidio_desemprego",
@@ -13,7 +13,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "rsi",
@@ -21,7 +21,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "psu_pensoes",
@@ -29,7 +29,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "acao_social_escolar",
@@ -37,7 +37,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 77,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "cuidador_informal",
@@ -45,7 +45,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 50,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "porta65_arrendamento",
@@ -53,23 +53,23 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 79,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "irs_fiscalidade",
     "url": "https://news.google.com/rss/search?q=IRS+declara%C3%A7%C3%A3o+de+rendimentos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 96,
-    "data": "2026-07-07"
+    "n_entradas": 97,
+    "data": "2026-07-08"
   },
   {
     "nome": "ias_valor_referencia",
     "url": "https://news.google.com/rss/search?q=IAS+indexante+apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 46,
-    "data": "2026-07-07"
+    "n_entradas": 48,
+    "data": "2026-07-08"
   },
   {
     "nome": "calendario_pagamentos_seg_social",
@@ -77,15 +77,15 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "habitacao_arrendamento",
     "url": "https://news.google.com/rss/search?q=apoio+arrendamento+habita%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 77,
-    "data": "2026-07-07"
+    "n_entradas": 79,
+    "data": "2026-07-08"
   },
   {
     "nome": "salario_minimo",
@@ -93,7 +93,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   },
   {
     "nome": "csi_idosos",
@@ -101,6 +101,6 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 88,
-    "data": "2026-07-07"
+    "data": "2026-07-08"
   }
 ]
