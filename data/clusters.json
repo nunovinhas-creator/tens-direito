@@ -35,12 +35,13 @@
     {
       "id": "familia",
       "nome": "Família e Crianças",
-      "descricao_curta": "Abono de família, licença parental e simulador para quem tem filhos.",
+      "descricao_curta": "Abono de família, licença parental, faltas para assistência e simulador para quem tem filhos.",
       "icone": "👶",
       "pillar": "/p/familia.html",
       "paginas": [
         {"slug": "abono-de-familia.html", "titulo": "Abono de família", "tipo": "artigo", "destaque": true, "emoji": "👶", "desc": "Prestação mensal para crianças e jovens. Escalões e valores 2026."},
         {"slug": "subsidio-parental.html", "titulo": "Licença parental", "tipo": "artigo", "destaque": false},
+        {"slug": "assistencia-familia-filhos.html", "titulo": "Faltas e licenças para assistência a filhos e família", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-abono.html", "titulo": "Simulador de Abono de Família", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["prestacao-social-unica"]

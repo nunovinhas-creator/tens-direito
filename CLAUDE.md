@@ -378,6 +378,7 @@ para esses três casos.
 | `prestacao-social-para-a-inclusao.html` | Prestação Social para a Inclusão (PSI) 2026 | 4 jul. 2026 |
 | `baixa-medica-subsidio-doenca.html` | Baixa médica e subsídio de doença 2026 | 5 jul. 2026 |
 | `bolsa-de-estudo-ensino-superior.html` | Bolsa de Estudo do Ensino Superior 2026/2027 | 6 jul. 2026 |
+| `assistencia-familia-filhos.html` | Faltas e licenças para assistência a filhos e família 2026 | 11 jul. 2026 |
 | `documentos.html` | Gerador de Documentos (hub) | 6 jul. 2026 |
 | `documentos/reclamacao-decisao-seguranca-social.html` | Reclamação de decisão da Segurança Social | 6 jul. 2026 |
 | `documentos/carta-acompanhamento-csi.html` | Carta de acompanhamento — pedido de CSI | 6 jul. 2026 |
@@ -4990,3 +4991,50 @@ disparam nada), 0px de overflow a 375px com Chromium real,
 do `index.html`, que estava desactualizado da sessão anterior — datas
 reais dos carimbos, as 3 páginas desta sessão não entram porque os
 carimbos delas não mudaram). Suite completa + ruff limpos.*
+
+---
+
+*Última revisão: 2026-07-11 — nova página `assistencia-familia-filhos.html`
+(cluster `familia`, 4.ª página — "Faltas e licenças para assistência a
+filhos e família 2026"), cobrindo as 4 modalidades + subsídios: faltas
+para assistência a filho (art. 49.º CT — 30 dias/ano <12 anos ou
+deficiência/doença crónica sem limite de idade, 15 dias ≥12, +1 dia por
+filho além do 1.º, nunca os dois progenitores em simultâneo), subsídio
+para assistência a filho (100% RRL, nunca <65% RR, mínimo diário 14,32 €
+= 80% de 1/30 do IAS 2026, +2% Regiões Autónomas, garantia 6 meses, CIT
+do SNS dispensa requerimento senão Mod. RP5052-DGSS, urgências nunca
+contam como certificação, pago desde o 1.º dia, não declarado em IRS),
+licença para assistência a filho (art. 52.º CT — até 2 anos, 3 com 3+
+filhos, NÃO remunerada, comunicação escrita 30 dias antes), assistência
+a filho com deficiência/doença crónica/oncológica (Mod. RP5053; não
+acumula com subsídio social de desemprego, acumula com RSI), faltas para
+membro do agregado (art. 252.º CT — 15 dias/ano SEM subsídio, destacado
+na resposta rápida como o ponto que mais surpreende) e avós (Mod. RP5054
+— nascimento de neto de adolescente <16 anos: 30 dias a 100% RR;
+doença de neto menor: até 30 dias a 65% RR).
+
+**PASSO 0 da tarefa (valor em transição) cumprido**: a LOE2026 (Lei
+n.º 73-A/2025, art. 253.º) alterou o art. 36.º do DL 91/2009 — o PDF do
+Guia Prático está bloqueado pela política de rede desta sessão (mesma
+limitação documentada), mas o valor foi confirmado por triangulação de
+duas fontes oficiais independentes via WebSearch (o próprio guia
+2026 em seg-social.pt indexado + anúncio em garantiainfancia.gov.pt):
+**80% da RR** para deficiência/doença crónica e **100% da RR** para
+doença oncológica, desde 01/01/2026, com tecto mensal de **1.611,39 €**
+(3 × IAS 2026) — sem divergência face aos factos fornecidos; o tecto é
+um facto adicional confirmado nessa verificação e citado na página.
+
+FAQ pedida "afeta férias/antiguidade?" deliberadamente NÃO incluída —
+não havia facto verificado no pacote da tarefa que a suportasse (zero
+factos de memória); substituída por FAQs cobertas pelos factos (filho
+≥12 anos; cuidar de pais/cônjuge). Integração completa: `data/clusters.json`
+(+`descricao_curta` actualizada), `sincronizar_clusters.py`
+(PILLAR-LISTA de `p/familia.html`, cartão da homepage "3 guias · 1
+simulador", RELACIONADOS cruzados com abono/parental), `sitemap.xml`
+(com `lastmod`), `scripts/pesquisa.js`, `DATAS_PUBLICACAO`, imagem og
+própria (`gerar_og_images.py`), scripts idempotentes todos a 0
+alterações na 2.ª corrida. 3 âncoras novas em `tests/test_valores_ancora.py`
+(dias/formulários RP5052-4; mínimo 14,32 € e tecto 1.611,39 €
+IAS-derivados — falham sozinhos quando o IAS mudar; percentagens
+pós-LOE2026). Verificado: axe zero violações, 0px overflow a 375px,
+`detectar_alertas()` sem falsos positivos, JSON-LD 4 blocos válidos.*

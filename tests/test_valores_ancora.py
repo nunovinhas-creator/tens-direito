@@ -279,3 +279,49 @@ def test_cartao_estacionamento_liga_ao_guia_amim_excepto_no_proprio():
             assert '"/amim.html"' not in seccao, "amim.html não deve linkar para si próprio"
         else:
             assert 'href="/amim.html"' in seccao, f"{pagina}: sem link para o guia do AMIM"
+
+
+# ── Assistência a filhos e família (2026-07-11) ──────────────────────────────
+# Valores do Código do Trabalho (arts. 49.º/52.º/252.º) e do DL n.º 91/2009
+# (art. 36.º na redação da Lei n.º 73-A/2025 — LOE2026), confirmados nos
+# guias práticos da Segurança Social a 2026-07-11 (incl. 80%/100% RR
+# pós-LOE2026, verificação do PASSO 0 dessa sessão). O mínimo diário de
+# 14,32 € é IAS-derivado (80% de 1/30 do IAS) — recalculado aqui para
+# falhar sozinho quando o IAS mudar; o tecto de 1.611,39 €/mês é 3 × IAS.
+
+def test_assistencia_familia_dias_e_formularios():
+    html = _ler("assistencia-familia-filhos.html")
+    # Dias por modalidade (art. 49.º e 252.º CT)
+    assert "30 dias por ano civil" in html, "30 dias (filho <12) em falta"
+    assert "15 dias por ano civil" in html, "15 dias (filho ≥12) em falta"
+    assert html.count("Modelo RP5052-DGSS") >= 2, "formulário RP5052-DGSS em falta"
+    assert "Modelo RP5053" in html, "formulário RP5053 em falta"
+    assert "Modelo RP5054" in html, "formulário RP5054 em falta"
+    # Prazos de 6 meses (garantia e prazo para pedir)
+    assert "6 meses de descontos" in html, "prazo de garantia de 6 meses em falta"
+    assert "6 meses</strong> a contar do 1.º dia de falta" in html, "prazo para pedir (6 meses) em falta"
+
+
+def test_assistencia_familia_minimo_diario_e_teto_derivados_do_ias():
+    html = _ler("assistencia-familia-filhos.html")
+    # Mínimo diário = 80% de 1/30 do IAS — falha sozinho quando o IAS mudar.
+    minimo = round(IAS_2026 / 30 * 0.8, 2)
+    assert minimo == 14.32
+    assert html.count("14,32 €") >= 2, "mínimo diário de 14,32 € em falta (subsídio filho + avós)"
+    assert "537,13 €" in html, "IAS 2026 em falta"
+    # Tecto do subsídio deficiência/doença crónica/oncológica = 3 × IAS.
+    teto = round(IAS_2026 * 3, 2)
+    assert teto == 1611.39
+    assert "1.611,39 €" in html, "tecto de 3 × IAS em falta"
+
+
+def test_assistencia_familia_percentagens_pos_loe2026():
+    # 80% RR (deficiência/doença crónica) e 100% RR (oncológica) — valores
+    # em vigor desde 01/01/2026 (LOE2026), confirmados no guia prático da
+    # Segurança Social e em garantiainfancia.gov.pt a 2026-07-11.
+    html = _ler("assistencia-familia-filhos.html")
+    assert "80% da remuneração de referência" in html
+    assert "100% da remuneração de referência" in html
+    # A description promete "30 dias" e "2026" — canário do metadado.
+    desc = _meta_description("assistencia-familia-filhos.html")
+    assert "30 dias" in desc and "2026" in desc and "subsídio" in desc
