@@ -4961,3 +4961,32 @@ allow-list); ruff limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
 Depois do deploy: apagar o site/conta CookieYes no painel deles é opcional
 mas recomendado — o script já não é chamado por nenhuma página.*
+
+---
+
+*Última revisão: 2026-07-11 — secção "Bónus: Cartão Europeu de
+Estacionamento" adicionada a 3 páginas de incapacidade: `amim.html`
+(alvo principal — o cartão exige o AMIM; a subsecção 7.6 e o checklist
+final passam a linkar à secção nova por âncora `#cartao-estacionamento`),
+`prestacao-social-para-a-inclusao.html` e `cuidador-informal.html`
+(ambas com link para o guia do AMIM). Factos exclusivamente do pacote
+verificado pelo Nuno a 2026-07-11 (fontes: imt-ip.pt e gov.pt) — DL
+n.º 307/2003 na redação do DL n.º 128/2017; limiares ≥60% (motora,
+intelectual/PEA, oncológica com AMIM, Forças Armadas) e ≥95% (visual);
+gratuito via Serviços IMT Online ou balcão; pessoal e intransmissível;
+validade 10 anos salvo reavaliação. Páginas com menção meramente
+incidental a "incapacidade" (baixa médica = incapacidade temporária
+para o trabalho, CSI, cluster PSU) e o pillar (agregador, já lista o
+amim.html) ficaram deliberadamente de fora. Carimbos de página e
+`dateModified` NÃO foram tocados (o resto do conteúdo não foi
+re-verificado) — a secção nova leva a sua própria linha "Verificado a
+11/07/2026", regra "Data em cada facto". Canário novo em
+`tests/test_valores_ancora.py` (limiares 60/95%, validade 10 anos e
+diplomas nunca podem divergir entre as 3 cópias da secção; link ao AMIM
+obrigatório excepto no próprio). Verificado: `detectar_alertas()` real
+sem falsos positivos nas 3 páginas (os anos 2003/2017 dos diplomas não
+disparam nada), 0px de overflow a 375px com Chromium real,
+`sincronizar_clusters.py` corrido (refrescou o bloco ATUALIZACOES:HOME
+do `index.html`, que estava desactualizado da sessão anterior — datas
+reais dos carimbos, as 3 páginas desta sessão não entram porque os
+carimbos delas não mudaram). Suite completa + ruff limpos.*

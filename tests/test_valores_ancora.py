@@ -233,3 +233,49 @@ def test_dias_de_espera_por_vinculo():
     assert _valor_js(html, "diasEsperaContaOutrem") == 3
     assert _valor_js(html, "diasEsperaIndependente") == 10
     assert _valor_js(html, "diasEsperaSeguroSocialVoluntario") == 30
+
+
+# ── Cartão Europeu de Estacionamento (secção "Bónus", 2026-07-11) ────────────
+# Valores do DL n.º 307/2003, na redação do DL n.º 128/2017 (fontes:
+# imt-ip.pt e gov.pt, verificados a 2026-07-11). Sem relação com o IAS —
+# canário de consistência: a mesma secção vive em 3 páginas e os limiares
+# (≥60%, ≥95%) e a validade (10 anos) nunca podem divergir entre elas.
+
+PAGINAS_CARTAO_ESTACIONAMENTO = (
+    "amim.html",
+    "prestacao-social-para-a-inclusao.html",
+    "cuidador-informal.html",
+)
+
+
+def _seccao_cartao(pagina: str) -> str:
+    html = _ler(pagina)
+    m = re.search(
+        r'<div class="card" id="cartao-estacionamento">(.*?)</div>\s*\n\s*(?:<!-- RELACIONADOS:INICIO -->)',
+        html,
+        re.S,
+    )
+    assert m, f"{pagina}: secção #cartao-estacionamento não encontrada"
+    return m.group(1)
+
+
+def test_cartao_estacionamento_limiares_e_validade_consistentes():
+    for pagina in PAGINAS_CARTAO_ESTACIONAMENTO:
+        seccao = _seccao_cartao(pagina)
+        # 4 situações com limiar de 60% (motora, intelectual/PEA,
+        # oncológica, Forças Armadas) e 1 com 95% (visual).
+        assert seccao.count("≥ 60%") == 4, f"{pagina}: limiar 60% divergente na secção do cartão"
+        assert seccao.count("≥ 95%") == 1, f"{pagina}: limiar 95% divergente na secção do cartão"
+        assert "Validade: 10 anos" in seccao, f"{pagina}: validade de 10 anos em falta"
+        assert "Decreto-Lei n.º 307/2003" in seccao, f"{pagina}: diploma base em falta"
+        assert "Decreto-Lei n.º 128/2017" in seccao, f"{pagina}: diploma alterador em falta"
+        assert "pessoal e intransmissível" in seccao, f"{pagina}: regra de uso em falta"
+
+
+def test_cartao_estacionamento_liga_ao_guia_amim_excepto_no_proprio():
+    for pagina in PAGINAS_CARTAO_ESTACIONAMENTO:
+        seccao = _seccao_cartao(pagina)
+        if pagina == "amim.html":
+            assert '"/amim.html"' not in seccao, "amim.html não deve linkar para si próprio"
+        else:
+            assert 'href="/amim.html"' in seccao, f"{pagina}: sem link para o guia do AMIM"
