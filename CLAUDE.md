@@ -4856,3 +4856,43 @@ elegíveis, 0 alertas — exactamente o resultado previsto na simulação.
 Suite completa: 1784 passed, 4 skipped; ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados). Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-11 — expansão de `subsidio-desemprego.html` (pedido
+do Nuno, com fact-check obrigatório sobre um rascunho que continha erros
+reais). **Fact-check corrigiu o rascunho em 3 pontos** antes de publicar,
+por triangulação de 3 fontes independentes (Montepio, DECO PROteste, CGD
+Saldo Positivo — `WebFetch`/`curl` continuam bloqueados nesta sessão, 403
+via proxy, mesma limitação documentada; dre.tretas.org também inacessível):
+1) os escalões intermédios da tabela de duração propostos (240/270/330
+dias) estavam errados — os valores reais do art. 37.º do DL n.º 220/2006
+são **330** (30-39 anos), **360** (40-49) e **480** (50+) dias para o
+escalão "mais de 15 até 24 meses"; 2) o acréscimo por carreira longa não é
+"30 dias para os 50+" — é **30 dias (menos de 40 anos), 45 dias (40-49) e
+60 dias (50+)** por cada 5 anos com registo de remunerações nos últimos 20
+anos, só no escalão >24 meses de descontos; 3) o exemplo proposto (52 anos,
+20 anos de descontos → 660 dias) estava errado — o valor correcto é **780
+dias** (540 + 4×60), publicado assim. Adicionado: secção "Quanto tempo dura
+o subsídio de desemprego em 2026" (tabela completa 4 idades × 3 escalões,
+antes de "Como pedir"), secção "Subsídio de desemprego parcial" (fórmula
+verificada: subsídio + 35% − remuneração do trabalho, com exemplo
+500/350→325 €; nunca excede o subsídio base; prazo de 90 dias), 3 FAQs
+novas (duração; IRS/descontos — não sujeito a IRS, sem descontos SS, conta
+para a reforma por equivalência, confirmado em fontes fiscais; part-time),
+bullet de duração no resumo rápido, tempo de leitura recalculado (7→11
+min). Meta description e `og:description` ganharam "quanto tempo dura"
+(canários `test_valores_ancora.py` continuam a passar — 537,13 € e 65%
+intactos; `<title>` com 1.342,83 € intocado, já optimizado a 2026-07-05);
+entrada de `scripts/pesquisa.js` sincronizada (descricao + keywords
+duração/parcial/irs). **Pedido do rascunho deliberadamente não aplicado**:
+converter as FAQs de `<details>/<summary>` para `<h3>` abertos — viola a
+regra 8 de "REGRAS DE CONTEÚDO" (padrão de todo o site) e o conteúdo já é
+indexável (HTML estático + JSON-LD `FAQPage`, que é o que alimenta os rich
+results); título proposto também rejeitado (o actual, com o valor em €, foi
+optimizado com canário há dias para o mesmo problema de CTR). Testes:
+1035 passed nos ficheiros de higiene/canários/nav/breadcrumb/pesquisa/og,
+36 passed em `test_resposta_rapida_checklist.py` (Chromium real), axe da
+página a passar; JSON-LD dos 4 blocos validado (`json.loads`). Sem
+alterações a `.py` (ruff não aplicável). `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
