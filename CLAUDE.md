@@ -4896,3 +4896,24 @@ optimizado com canário há dias para o mesmo problema de CTR). Testes:
 página a passar; JSON-LD dos 4 blocos validado (`json.loads`). Sem
 alterações a `.py` (ruff não aplicável). `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+
+---
+
+*Última revisão: 2026-07-11 (fecho do merge) — a expansão de
+`subsidio-desemprego.html` foi integrada em `main` por rebase +
+fast-forward (commit `ae3d88f`, depois de `main` ter avançado com os
+pipelines de 09-10/07). Ao verificar o CI do merge, encontrado e corrigido
+um vermelho **pré-existente** (desde o push de 08/07, sem relação com esta
+sessão): `test_acessibilidade` falhava em `noticias.html` com
+`color-contrast` (serious) nas badges de categoria `Habitação`
+(`#16A34A`, 3.30:1) e `Emprego` (`#D97706`, 3.19:1) — categorias novas
+dos feeds de 2026-07-04 cuja primeira notícia só chegou ao arquivo a
+08/07, altura em que o axe passou a vê-las renderizadas. Corrigido nas
+variáveis CSS do próprio `noticias.html` (o `<head>` é estático — o
+pipeline só escreve entre `DESTAQUE`/`ARQUIVO`, a correcção persiste):
+`--cat-emprego: #B45309` (5.02:1) e `--cat-habitacao: #15803D` (5.02:1),
+mesma família de cor escurecida, prática da auditoria WCAG. As outras 4
+cores de categoria foram verificadas por cálculo directo e já cumpriam
+(apoios 5.47, educacao 5.17, fiscal 5.70, legislacao 4.83) — nenhuma
+regressão latente ficou à espera da primeira notícia dessas categorias.
+Axe local de `noticias.html` a passar após a correcção.*
