@@ -200,14 +200,22 @@ def browser():
         b.close()
 
 
+def _remover_banner_consentimento(page):
+    """O banner de consentimento próprio (assets/js/consentimento.js) é fixo
+    ao fundo da página e interceptaria os cliques destes testes — removido
+    do DOM sem tocar em localStorage (o teste de "zero chaves" abaixo
+    continua válido; o banner tem testes próprios em test_consentimento.py)."""
+    page.evaluate("var b = document.getElementById('td-consent'); if (b) b.remove();")
+
+
 @pytestmark_playwright
 @pytest.mark.parametrize("pagina", PAGINAS_ALVO)
 def test_blocos_sem_overflow_horizontal_em_mobile_390px(servidor, browser, pagina):
     page = browser.new_page(viewport={"width": 390, "height": 844})
-    page.route("https://cdn-cookieyes.com/**", lambda route: route.abort())
     page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
     try:
         page.goto(f"{servidor}/{pagina}", wait_until="networkidle", timeout=30000)
+        _remover_banner_consentimento(page)
 
         for seletor in (".resposta-rapida", ".checklist-final"):
             elemento = page.locator(seletor)
@@ -225,10 +233,10 @@ def test_blocos_sem_overflow_horizontal_em_mobile_390px(servidor, browser, pagin
 @pytest.mark.parametrize("pagina", PAGINAS_ALVO)
 def test_checklist_contador_actualiza_ao_marcar_e_desmarcar(servidor, browser, pagina):
     page = browser.new_page()
-    page.route("https://cdn-cookieyes.com/**", lambda route: route.abort())
     page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
     try:
         page.goto(f"{servidor}/{pagina}", wait_until="networkidle", timeout=30000)
+        _remover_banner_consentimento(page)
 
         progresso = page.locator(".checklist-final .checklist-progresso").first
         checkboxes = page.locator('.checklist-final input[type="checkbox"]')
@@ -253,10 +261,10 @@ def test_checklist_nunca_persiste_estado_entre_reloads(servidor, browser, pagina
     página tem de repor todas as checkboxes por marcar, e nunca deve
     existir nenhuma chave de checklist em localStorage."""
     page = browser.new_page()
-    page.route("https://cdn-cookieyes.com/**", lambda route: route.abort())
     page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
     try:
         page.goto(f"{servidor}/{pagina}", wait_until="networkidle", timeout=30000)
+        _remover_banner_consentimento(page)
 
         checkboxes = page.locator('.checklist-final input[type="checkbox"]')
         checkboxes.nth(0).check()

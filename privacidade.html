@@ -2,15 +2,10 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
-  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js"></script>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XP46PM8H1Q"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XP46PM8H1Q');
-  </script>
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -49,6 +44,9 @@ main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
 .card ul { padding-left: 1.25rem; }
 .card a { color: #0F766E; }
 .updated { font-size: 0.85rem; color: #5C6770; margin-bottom: 1rem; }
+.botao-gerir-cookies { min-height: 44px; padding: 10px 22px; border-radius: 8px; border: 2px solid #0F766E; background: #0F766E; color: #FFFFFF; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+.botao-gerir-cookies:hover { background: #0d655e; }
+.botao-gerir-cookies:focus-visible { outline: 3px solid #0F766E; outline-offset: 2px; }
 footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; }
 .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: #664d03; }
 
@@ -137,18 +135,20 @@ footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; 
   </header>
   <main id="main-content">
     <div class="card">
-      <p class="updated">Última atualização: 24 de junho de 2026</p>
+      <p class="updated">Última atualização: 11 de julho de 2026</p>
       <h2>Recolha de dados pessoais</h2>
       <p>O Tens Direito <strong>não recolhe, armazena nem processa dados pessoais</strong> dos seus visitantes. Não existem formulários de registo, contas de utilizador nem qualquer mecanismo de identificação pessoal neste site.</p>
     </div>
     <div class="card">
       <h2>Cookies e análise de tráfego</h2>
-      <p>Este site pode utilizar os seguintes serviços de terceiros que colocam cookies no teu dispositivo:</p>
+      <p>Por omissão, este site <strong>não coloca nenhum cookie de análise</strong> no teu dispositivo. Só é utilizado um serviço de terceiros, e apenas depois de o aceitares no aviso de cookies:</p>
       <ul>
-        <li><strong>Google Analytics 4</strong> — análise de tráfego anónima (páginas visitadas, origem do tráfego, tempo de permanência). Os dados são anonimizados e não permitem identificar utilizadores individuais.</li>
+        <li><strong>Google Analytics 4</strong> — análise de tráfego anónima (páginas visitadas, origem do tráfego, tempo de permanência). <strong>Só é carregado depois de clicares "Aceitar" no aviso de cookies</strong>; se rejeitares (ou não responderes), nunca chega a ser carregado nem coloca cookies. Os dados são anonimizados e não permitem identificar utilizadores individuais.</li>
         <li><strong>Google AdSense</strong> (futuro) — publicidade contextual. Se ativado, poderá usar cookies para personalização de anúncios, mediante consentimento explícito.</li>
       </ul>
-      <p>Podes desativar cookies no teu browser ou usar extensões como uBlock Origin.</p>
+      <p>A tua escolha (aceitar ou rejeitar) fica guardada no armazenamento local do teu browser — só para o aviso não voltar a aparecer em cada página. Podes mudar de ideias a qualquer momento:</p>
+      <p><button type="button" class="botao-gerir-cookies" onclick="window.tdGerirConsentimento && window.tdGerirConsentimento()">Gerir cookies</button></p>
+      <p>Podes também desativar cookies no teu browser ou usar extensões como uBlock Origin.</p>
     </div>
     <div class="card">
       <h2>Direitos ao abrigo do RGPD</h2>

@@ -106,8 +106,8 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 |---|---|
 | Hosting | GitHub Pages, branch main, raiz / |
 | HTML | Estático puro — sem Jekyll, sem SSG |
-| Analytics | GA4: `G-XP46PM8H1Q` |
-| Consentimento | CookieYes: `cdn-cookieyes.com/client_data/522e43e147a82ddc222c861fa2abead7/script.js` |
+| Analytics | GA4: `G-XP46PM8H1Q` — **só carrega depois de o visitante aceitar** no banner de consentimento (nunca gtag.js estático no `<head>`) |
+| Consentimento | Banner próprio self-hosted: `assets/js/consentimento.js` (substituiu o CookieYes a 2026-07-11 — o plano gratuito tinha limite de 5.000 pageviews/mês; zero serviços externos, zero limites, bloqueio real de script + Consent Mode v2 negado por omissão; escolha em localStorage `td_consentimento`; `window.tdGerirConsentimento()` reabre o banner — botão "Gerir cookies" em `privacidade.html`; testado em `tests/test_consentimento.py`) |
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`), com `playwright-stealth`, retries com jitter e fallback Wayback (`OK_VIA_ARQUIVO`) — ver secção "SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS" |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
@@ -410,8 +410,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `git branch` mostra `* main`
 - [ ] Factos retirados de `data/scraped/` ou pesquisa verificada — **NUNCA de memória**
 - [ ] Links testados — só usar URLs da lista verificada ou homepage do domínio oficial
-- [ ] Página tem GA4 snippet `G-XP46PM8H1Q`
-- [ ] CookieYes script **ANTES** do GA4 no `<head>`
+- [ ] Página tem o bloco de consentimento próprio no `<head>`: stub inline (Consent Mode v2 negado por omissão) + `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — **nunca** gtag.js estático (contornaria o consentimento; `tests/test_consentimento.py` falha se aparecer)
 - [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes — página nova: correr `python scripts/adicionar_og_image.py --write` (insere o bloco og:image) e depois `python scripts/gerar_og_images.py --write` (gera a imagem própria da página, 1200×630, com o título no cartão, e aponta o og:image para ela); mudar um `og:title` exige regenerar (`gerar_og_images.py --write`) — `tests/test_og_image.py` falha se esquecido
 - [ ] JSON-LD `FAQPage` + `HowTo` + `BreadcrumbList` presentes
 - [ ] `"Verificado a [data]"` visível no corpo da página
@@ -608,8 +607,8 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 
 Ordem no `<head>`:
 1. `<meta charset="UTF-8">`
-2. CookieYes script
-3. GA4 script (`G-XP46PM8H1Q`)
+2. Stub inline de consentimento (`window.dataLayer` + `gtag()` global + `gtag('consent','default',{...denied})`)
+3. `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — é este script que carrega o GA4, só após aceitação; nunca um `<script>` gtag.js estático
 4. favicon, viewport, title, description
 5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`, `og:image` (+ `og:image:width/height/alt` e `twitter:card`) — imagem PRÓPRIA de cada página (1200×630, título do artigo + chip do cluster no cartão), gerada por `scripts/gerar_og_images.py` em `assets/img/og/<slug>.jpg`; `scripts/adicionar_og_image.py` é só o bootstrap do bloco de metas em páginas novas
 6. JSON-LD: `FAQPage` + `HowTo` + `BreadcrumbList`
@@ -4917,3 +4916,48 @@ cores de categoria foram verificadas por cálculo directo e já cumpriam
 (apoios 5.47, educacao 5.17, fiscal 5.70, legislacao 4.83) — nenhuma
 regressão latente ficou à espera da primeira notícia dessas categorias.
 Axe local de `noticias.html` a passar após a correcção.*
+
+---
+
+*Última revisão: 2026-07-11 — CookieYes removido e substituído por banner de
+consentimento próprio, gratuito e self-hosted (pedido do Nuno: o plano
+gratuito do CookieYes atingiu 80% do limite de 5.000 pageviews/mês — ao
+chegar a 100%, o banner deixaria de aparecer, com risco RGPD). Nota: as
+alternativas WordPress consideradas inicialmente (Complianz, etc.) não se
+aplicam — o site é HTML estático puro no GitHub Pages. Solução no mesmo
+padrão de `share.js`/`nav.js`: novo `assets/js/consentimento.js` (vanilla
+JS, ~6KB, estilos injectados pelo próprio script, zero dependências
+externas, zero limites) com **bloqueio real de script** — o gtag.js do GA4
+deixou de estar estático no `<head>` e passa a ser injectado pelo próprio
+`consentimento.js` SÓ depois de o visitante clicar "Aceitar"; "Rejeitar"
+(ou não responder) mantém a página sem qualquer pedido de rede de
+analytics. Consent Mode v2 negado por omissão num stub inline (que também
+define o `gtag()` global de que os simuladores dependem para
+`calc_resultado`); escolha em localStorage (`td_consentimento`), com
+`window.tdGerirConsentimento()` a reabrir o banner — novo botão "Gerir
+cookies" em `privacidade.html`, cuja secção de cookies foi reescrita
+(GA4 só após aceitação, escolha revogável) e datada de 11/07/2026.
+Migração das 55 páginas servidas por novo `scripts/migrar_consentimento.py`
+(idempotente, dry-run por omissão, recusa páginas cujo bloco não
+corresponda ao padrão esperado — 55/55 migradas, 0 erros, 2.ª corrida =
+zero alterações, zero restos de "cookieyes" em HTML confirmado por grep).
+Novo `tests/test_consentimento.py` (115 casos): estático (nenhuma página
+volta a referenciar CookieYes; todas têm o stub + `data-ga4`; gtag.js
+estático proibido — o teste falha se voltar a aparecer; ordem stub →
+consentimento.js) e Chromium real com intercepção de rede (banner na 1.ª
+visita com zero pedidos ao googletagmanager; Aceitar carrega GA e persiste
+entre reloads; Rejeitar nunca carrega e persiste; "Gerir cookies" reabre o
+banner). Testes existentes adaptados: `test_acessibilidade.py` audita as
+55 páginas COM o banner visível (experiência real da 1.ª visita — 0
+violações axe, contraste do banner desenhado com a paleta já auditada,
+branco sobre `#0F766E` 5.47:1, touch targets ≥44px); os testes que clicam
+(`test_gerador_documentos.py`, `test_resposta_rapida_checklist.py`)
+removem o banner do DOM sem tocar em localStorage (o teste "zero chaves"
+do checklist continua válido) — as rotas mortas de `cdn-cookieyes.com`
+foram removidas dos 3 ficheiros. `CLAUDE.md` (stack, checklist, estrutura
+HTML) e `.claude/commands/atualizar-cluster-psu.md` actualizados. Suite
+completa: **1988 passed, 4 skipped** (mesmos 4 skips estruturais da
+allow-list); ruff limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
+Depois do deploy: apagar o site/conta CookieYes no painel deles é opcional
+mas recomendado — o script já não é chamado por nenhuma página.*

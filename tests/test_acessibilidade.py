@@ -104,8 +104,9 @@ def browser():
 
 def _auditar_pagina(browser, base_url, rel):
     page = browser.new_page(viewport={"width": 1280, "height": 900})
-    page.route("https://cdn-cookieyes.com/**", lambda route: route.abort())
     page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
+    # O banner de consentimento próprio fica deliberadamente visível — a
+    # experiência real da 1.ª visita (banner incluído) é o que o axe audita.
     try:
         page.goto(f"{base_url}/{rel}", wait_until="networkidle", timeout=30000)
         page.add_script_tag(content=AXE_JS)

@@ -149,7 +149,7 @@ um número solto no meio da lógica de cálculo.
    os testes correspondentes antes de publicar.
 
 Cada página nova ou modificada usa a skill `estrutura-pagina` para a estrutura
-obrigatória (GA4, CookieYes, OG, JSON-LD).
+obrigatória (GA4 via banner de consentimento próprio, OG, JSON-LD).
 
 ### Passo 6 — Testes de coerência
 
@@ -169,7 +169,7 @@ Antes do commit, confirmar todos os pontos da checklist do CLAUDE.md:
 - [ ] Valores vêm do decreto-lei confirmado no Passo 4 — nunca de memória
 - [ ] Links testados com a skill `verificar-url`
 - [ ] GA4 `G-XP46PM8H1Q` presente
-- [ ] CookieYes antes do GA4 no `<head>`
+- [ ] Bloco de consentimento próprio no `<head>` (stub Consent Mode + `assets/js/consentimento.js` com `data-ga4`) — nunca gtag.js estático
 - [ ] OG tags presentes
 - [ ] JSON-LD FAQPage + HowTo + BreadcrumbList presentes
 - [ ] "Verificado a [data]" visível

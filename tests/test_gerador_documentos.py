@@ -116,9 +116,13 @@ def browser():
 
 def _abrir(browser, base_url, rel):
     page = browser.new_page()
-    page.route("https://cdn-cookieyes.com/**", lambda route: route.abort())
     page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
     page.goto(f"{base_url}/{rel}", wait_until="networkidle", timeout=30000)
+    # O banner de consentimento próprio (assets/js/consentimento.js) é fixo
+    # ao fundo da página e interceptaria os cliques destes testes — removido
+    # do DOM sem tocar em localStorage (o comportamento do banner tem os
+    # seus próprios testes em test_consentimento.py).
+    page.evaluate("var b = document.getElementById('td-consent'); if (b) b.remove();")
     return page
 
 
