@@ -466,6 +466,7 @@ tens-direito/
 │   ├── shadow_mode_analytics.py ← agrega relatórios do Shadow Mode em métricas
 │   ├── shadow_report_md.py   ← métricas → relatório Markdown legível
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
+│   ├── validar_carimbos_elegiveis.py ← validação manual das simulações de carimbo (só leitura, sessão manual — passo humano do critério ≥14)
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
 │   ├── limpar_css_morto_nav.py ← inventário/remoção de CSS morto da nav antiga (idempotente, --check p/ CI)
@@ -3189,6 +3190,23 @@ regra de nunca activar auto-update de valores.
    correspondentes maioritariamente `OK` (a secção "SCRAPER — ROBUSTEZ
    CONTRA BLOQUEIOS" tem de estar a reduzir bloqueios primeiro, senão
    quase nada chega a ser elegível).
+6. **Ferramenta da validação manual (2026-07-11)**:
+   `scripts/validar_carimbos_elegiveis.py` — sessão manual, só leitura,
+   nunca no pipeline. Recalcula a elegibilidade com a função REAL
+   (`calcular_carimbos_elegiveis`), compara com a secção do relatório de
+   hoje, e verifica por página elegível: fontes `OK`, hash hoje==ontem,
+   conteúdo real (≥200 chars), status `ok` (nunca `ok_via_arquivo`).
+   Cobre também a zona cega documentada no ponto 4: mudanças de hash da
+   fonte DESDE o carimbo da página — com URL diferente entre os dois
+   scrapes são classificadas como artefacto das nossas correcções de
+   fetch (casos reais: seg-social 03/07, dre_psu 07/07); com a mesma URL
+   ficam como aviso ⚠️ para juízo humano, nunca falham sozinhas.
+   Exit 0 = o dia conta para a contagem de ≥14; exit 1 = falso elegível
+   real/scrape em falta/divergência com o relatório — o dia NÃO conta.
+   Testado em `tests/test_validar_carimbos_elegiveis.py` (11 casos,
+   todos os caminhos de falha provados). **Contagem iniciada: 2026-07-11
+   = dia 1 validado** (9 avisos, todos artefactos de scraper) — registo
+   corrente no ROADMAP.md, linha do gatilho.
 
 Testes: `tests/test_auto_update_engine.py` (elegibilidade — só `OK` +
 hash igual; `OK_VIA_ARQUIVO`/`BLOQUEADO` nunca elegíveis; flag desligada
@@ -5038,3 +5056,28 @@ alterações na 2.ª corrida. 3 âncoras novas em `tests/test_valores_ancora.py`
 IAS-derivados — falham sozinhos quando o IAS mudar; percentagens
 pós-LOE2026). Verificado: axe zero violações, 0px overflow a 375px,
 `detectar_alertas()` sem falsos positivos, JSON-LD 4 blocos válidos.*
+
+---
+
+*Última revisão: 2026-07-11 — novo `scripts/validar_carimbos_elegiveis.py`
+(sessão manual, só leitura, nunca no pipeline): o passo humano do
+critério de activação da revalidação de carimbo, nascido da validação
+manual feita nesta sessão a pedido do Nuno. Recalcula a elegibilidade com
+a função real (`calcular_carimbos_elegiveis`), compara com o relatório
+shadow do dia, verifica cada página elegível (fontes OK, hash 24h,
+conteúdo real, status nunca `ok_via_arquivo`) e cobre a zona cega
+documentada da simplificação de 24h — mudanças de hash da fonte desde o
+carimbo da página, classificadas como artefacto do scraper (URL mudou
+entre scrapes) ou aviso ⚠️ de possível mudança real (mesma URL, juízo
+humano). Exit 0 = dia conta para a contagem de ≥14 simulações correctas;
+exit 1 = falso elegível/scrape em falta/divergência. Corrido contra os
+dados reais de 2026-07-11: 14/14 elegíveis validados, zero falsos
+elegíveis, 9 avisos todos rastreados às correcções de fetch de 03/07
+(seg-social/iefp) e 07/07 (dre_psu) — nunca a mudanças externas das
+fontes. **Contagem do gatilho iniciada: 2026-07-11 = dia 1 validado**
+(registo corrente na linha do gatilho em ROADMAP.md). Secção
+"REVALIDAÇÃO DE CARIMBO" ganhou o ponto 6 com a ferramenta. 11 testes
+novos em `tests/test_validar_carimbos_elegiveis.py` (todos os caminhos
+de falha provados, isolados em tmp_path); ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` — este script não muda nenhum comportamento, só observa.*
