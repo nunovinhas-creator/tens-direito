@@ -1,16 +1,13 @@
 """
-Diagnóstico TEMPORÁRIO (Fase 3 do calendário de pagamentos) — ronda 2.
+Diagnóstico TEMPORÁRIO (Fase 3 do calendário de pagamentos) — ronda 3.
 
-Ronda 1 (requests) provou que o portal antigo está morto para pedidos
-simples: a notícia mensal, /noticias e /pagamentos2 redireccionam todos
-para o gateway da SSD (/ptss/pssd/home?r=...), devolvendo só a shell de
-cookies (213 chars). Esta ronda testa a via Playwright:
-
-  A. deep-link do portal novo "Calendário" (valores-a-receber) — mesma
-     família dos deep-links que o scraper de produção já usa com
-     sucesso (perfil sem headers custom, espera explícita por âncora);
-  B. a própria notícia mensal via Playwright — o parâmetro ?r= sugere
-     que a SPA pode rotear de volta ao recurso pedido depois de carregar.
+Ronda 1: portal antigo morto para pedidos simples (redirect universal
+para o gateway SSD). Ronda 2: o deep-link "Calendário" do portal novo é
+só uma página de serviço (sem tabela de datas); a notícia antiga não é
+restaurada pela SPA — mas a home tem uma secção "Notícias" com link
+"Aceder às notícias". Esta ronda navega a secção de notícias do portal
+novo à procura da notícia mensal "datas de pagamento" e despeja o
+artigo completo, para calibrar o parser da Fase 3.
 
 Só lê e imprime — nunca escreve ficheiros do repositório. Apagar este
 script e o workflow correspondente no fim do diagnóstico.
@@ -24,41 +21,71 @@ from playwright.sync_api import sync_playwright
 
 BASE = "https://www.seg-social.pt"
 
-ALVOS = [
-    # (nome, url, frase de âncora a esperar no DOM)
-    ("calendario_portal_novo",
-     f"{BASE}/ptss/pssd/menu/pagamentos-dividas/valores-a-receber/calendario",
-     "alendário"),
-    ("noticia_julho_via_spa",
-     f"{BASE}/noticias/-/asset_publisher/kBZtOMZgstp3/content/"
-     "datas-de-pagamento-dos-subsidios-sociais-e-pensoes-em-julho",
-     "agamento"),
-    ("noticia_agosto_via_spa",
-     f"{BASE}/noticias/-/asset_publisher/kBZtOMZgstp3/content/"
-     "datas-de-pagamento-dos-subsidios-sociais-e-pensoes-em-agosto",
-     "agamento"),
+CANDIDATOS_LISTAGEM = [
+    f"{BASE}/ptss/pssd/noticias",
+    f"{BASE}/ptss/pssd/menu/noticias",
 ]
 
 
-def examinar(page, nome: str, url: str, ancora: str) -> None:
-    print(f"\n{'='*78}\n[{nome}] {url}")
+def dump_links(page) -> list[tuple[str, str]]:
+    pares = page.evaluate(
+        """() => Array.from(document.querySelectorAll('a[href]'))
+            .map(a => [a.getAttribute('href'), a.innerText.trim().replace(/\\s+/g, ' ')])
+            .filter(([h, t]) => t.length > 0)"""
+    )
+    return [(h, t) for h, t in pares]
+
+
+def examinar_listagem(page, url: str) -> str | None:
+    """Devolve o href da notícia de datas de pagamento, se existir."""
+    print(f"\n{'='*78}\n[listagem] {url}")
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=45000)
         try:
             page.wait_for_function(
-                "frase => document.body && document.body.innerText.includes(frase)",
-                arg=ancora, timeout=20000,
+                "() => document.body && document.body.innerText.length > 2000",
+                timeout=20000,
             )
-            print(f"  âncora '{ancora}' encontrada no DOM")
         except Exception:
-            print(f"  ⚠️ âncora '{ancora}' NUNCA apareceu em 20s")
+            print("  ⚠️ corpo nunca passou de 2000 chars em 20s")
         print(f"  url final: {page.url}")
-        print(f"  title: {page.title()}")
-        texto = page.evaluate("document.body ? document.body.innerText : ''")
+        links = dump_links(page)
+        print(f"  links com texto: {len(links)} — os que mencionam notícia/pagamento:")
+        alvo = None
+        for h, t in links:
+            tl = t.lower()
+            if "pagamento" in tl or "notícia" in tl or "noticia" in (h or "").lower():
+                print(f"    [{t[:80]}] -> {h}")
+                if re.search(r"datas? de pagamento", tl) and alvo is None:
+                    alvo = h
+        # também despejar os títulos visíveis (cards sem <a> directo)
+        texto = page.evaluate("document.body.innerText")
+        m = re.findall(r"[^\n]*[Dd]atas? de pagamento[^\n]*", texto)
+        print(f"  linhas com 'datas de pagamento' no texto: {m[:5]}")
+        return alvo
+    except Exception as e:
+        print(f"  ERRO: {e}")
+        return None
+
+
+def examinar_artigo(page, href: str) -> None:
+    url = href if href.startswith("http") else BASE + href
+    print(f"\n{'='*78}\n[artigo] {url}")
+    try:
+        page.goto(url, wait_until="domcontentloaded", timeout=45000)
+        try:
+            page.wait_for_function(
+                "() => document.body && /datas? de pagamento/i.test(document.body.innerText)",
+                timeout=20000,
+            )
+        except Exception:
+            print("  ⚠️ 'datas de pagamento' nunca apareceu em 20s")
+        print(f"  url final: {page.url}")
+        texto = page.evaluate("document.body.innerText")
         texto = re.sub(r"\n{3,}", "\n\n", texto.strip())
-        print(f"  texto útil ({len(texto)} chars) — primeiros 7000:")
+        print(f"  texto útil ({len(texto)} chars) — completo até 9000:")
         print("  ---")
-        print(texto[:7000])
+        print(texto[:9000])
         print("  ---")
         n_tabelas = page.evaluate("document.querySelectorAll('table').length")
         print(f"  tabelas no DOM: {n_tabelas}")
@@ -66,18 +93,53 @@ def examinar(page, nome: str, url: str, ancora: str) -> None:
         print(f"  ERRO: {e}")
 
 
+def tentar_clicar_aceder(page) -> None:
+    """A partir da home, segue o link 'Aceder às notícias' da SPA."""
+    print(f"\n{'='*78}\n[home->aceder às notícias] {BASE}")
+    try:
+        page.goto(f"{BASE}/ptss/pssd/home", wait_until="domcontentloaded",
+                  timeout=45000)
+        page.wait_for_function(
+            "() => document.body && document.body.innerText.includes('Aceder às notícias')",
+            timeout=20000,
+        )
+        with page.expect_navigation(wait_until="domcontentloaded", timeout=30000):
+            page.get_by_text("Aceder às notícias", exact=False).first.click()
+        print(f"  url após clique: {page.url}")
+        links = dump_links(page)
+        print("  links relevantes na página de notícias:")
+        alvo = None
+        for h, t in links:
+            tl = t.lower()
+            if "pagamento" in tl:
+                print(f"    [{t[:90]}] -> {h}")
+                if re.search(r"datas? de pagamento", tl) and alvo is None:
+                    alvo = h
+        texto = page.evaluate("document.body.innerText")
+        m = re.findall(r"[^\n]*[Dd]atas? de pagamento[^\n]*", texto)
+        print(f"  linhas com 'datas de pagamento': {m[:8]}")
+        if alvo:
+            examinar_artigo(page, alvo)
+        else:
+            # sem link directo — talvez os cards sejam clicáveis por texto
+            cartoes = [t for _, t in links][:40]
+            print(f"  (sem link 'datas de pagamento'; 1.os títulos: {cartoes[:15]})")
+    except Exception as e:
+        print(f"  ERRO: {e}")
+
+
 def main() -> int:
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
-        # perfil provado no scraper de produção para seg-social:
-        # sem extra_http_headers (causavam 500 real do backend),
-        # locale/timezone PT
-        context = browser.new_context(
-            locale="pt-PT", timezone_id="Europe/Lisbon",
-        )
+        context = browser.new_context(locale="pt-PT", timezone_id="Europe/Lisbon")
         page = context.new_page()
-        for nome, url, ancora in ALVOS:
-            examinar(page, nome, url, ancora)
+        alvo = None
+        for url in CANDIDATOS_LISTAGEM:
+            alvo = examinar_listagem(page, url) or alvo
+        if alvo:
+            examinar_artigo(page, alvo)
+        else:
+            tentar_clicar_aceder(page)
         browser.close()
     return 0
 
