@@ -58,6 +58,7 @@ PRESTACOES = {
     "rsi": "Rendimento Social de Inserção (RSI)",
     "fgs": "Fundo de Garantia Salarial",
     "cuidador_informal": "Subsídio de apoio ao cuidador informal",
+    "subsidio_suspensao_atividade_cultural": "Subsídio por Suspensão da Atividade Cultural",
 }
 
 METODOS = {
@@ -81,6 +82,7 @@ RESUMO_CURTO = {
     "rsi": "RSI",
     "fgs": "Fundo de Garantia Salarial",
     "cuidador_informal": "Cuidador informal",
+    "subsidio_suspensao_atividade_cultural": "Suspensão de atividade cultural",
 }
 
 # Secção "Por prestação" — âncoras exigidas pela spec + guia interno.

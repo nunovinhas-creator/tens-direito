@@ -42,7 +42,10 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
+import json  # noqa: E402
+
 from atualizar_calendario import (  # noqa: E402
+    DADOS,
     MESES_PT,
     _encontrar_mes,
     _mes_seguinte,
@@ -50,10 +53,51 @@ from atualizar_calendario import (  # noqa: E402
     hoje_lisboa,
     validar_dados,
 )
+from scraper_calendario import URL as URL_PAGAMENTOS  # noqa: E402
+from scraper_calendario import ScraperError, raspar_mes  # noqa: E402
 
 BASE = "https://www.seg-social.pt"
 LISTAGEM_NOTICIAS = f"{BASE}/ptss/pssd/noticias"
 DIA_CORTE_MES_SEGUINTE = 20
+
+
+def tentar_scraper_e_gravar(dados: dict, ano: int, mes: int) -> tuple[bool, list[str]]:
+    """Tenta obter o mês da fonte pública oficial (/ptss/pssd/pagamentos)
+    e, em caso de sucesso, grava-o em data/calendario_pagamentos.json.
+    Devolve (sucesso, linhas de relatório). Nunca grava dados que não
+    passem a validação — INVARIANTE: um erro nunca parece sucesso."""
+    linhas = [f"### Scraper automático ({URL_PAGAMENTOS})"]
+    try:
+        mes_novo = raspar_mes(ano, mes)
+    except ScraperError as e:
+        linhas.append(f"- ❌ Scraper falhou: {e}")
+        return False, linhas
+    except Exception as e:  # rede/timeout/Playwright — nunca rebenta o workflow
+        linhas.append(f"- ⚠️ Scraper indisponível ({type(e).__name__}): {e}")
+        return False, linhas
+
+    novos = {"meses": [m for m in dados.get("meses", [])
+                       if not (m["ano"] == ano and m["mes"] == mes)] + [mes_novo]}
+    fundido = dict(dados)
+    fundido["meses"] = sorted(novos["meses"], key=lambda m: (m["ano"], m["mes"]))
+    fundido["atualizado_em"] = hoje_lisboa().isoformat()
+    fundido["fonte_url"] = URL_PAGAMENTOS
+
+    problemas = validar_dados(fundido)
+    if problemas:
+        linhas.append("- ❌ Dados raspados falharam a validação (não gravados):")
+        linhas += [f"  - {p}" for p in problemas]
+        return False, linhas
+
+    DADOS.write_text(
+        json.dumps(fundido, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    dias = ", ".join(str(p["dia"]) for p in mes_novo["pagamentos"])
+    linhas.append(
+        f"- ✅ {MESES_PT[mes]} de {ano} obtido automaticamente da fonte oficial "
+        f"e gravado em `data/calendario_pagamentos.json` (dias: {dias})."
+    )
+    return True, linhas
 
 
 def mes_alvo(hoje: dt.date, forcar_seguinte: bool = False) -> tuple[int, int]:
@@ -182,21 +226,31 @@ def main(argv: list[str] | None = None) -> int:
         for p in problemas:
             print(f"  - {p}", file=sys.stderr)
 
-    estado = "dados_ok" if tem_alvo else "precisa_manual"
-
     linhas = [
         f"## Estado do calendário — alvo {MESES_PT[mes]} de {ano}",
         "",
         f"- Corrida de {hoje.isoformat()} (`verificar_calendario_mensal.py`).",
         f"- `data/calendario_pagamentos.json` {'JÁ TEM' if tem_alvo else 'NÃO tem'} o mês alvo.",
     ]
-    if estado == "precisa_manual":
+
+    if tem_alvo:
+        estado = "dados_ok"
+    else:
+        # 1.º: tentar a fonte pública oficial automaticamente (scraper).
         linhas.append("")
-        linhas.append("### Sonda às rotas oficiais")
-        linhas += sondar_fonte_oficial(ano, mes)
-        linhas.append("")
-        linhas.append("### Prompt pronto para a sessão manual")
-        linhas.append(prompt_sessao_manual(ano, mes))
+        sucesso, linhas_scraper = tentar_scraper_e_gravar(dados, ano, mes)
+        linhas += linhas_scraper
+        if sucesso:
+            estado = "dados_ok"
+        else:
+            # 2.º: fallback manual — sonda + Issue com prompt pronto.
+            estado = "precisa_manual"
+            linhas.append("")
+            linhas.append("### Sonda às rotas oficiais (fallback)")
+            linhas += sondar_fonte_oficial(ano, mes)
+            linhas.append("")
+            linhas.append("### Prompt pronto para a sessão manual")
+            linhas.append(prompt_sessao_manual(ano, mes))
 
     relatorio = "\n".join(linhas) + "\n"
     print(relatorio)
