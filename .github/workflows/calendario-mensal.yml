@@ -1,0 +1,185 @@
+# Calendário de Pagamentos da Segurança Social — actualização mensal
+# (Fase 3 de CALENDARIO-PAGAMENTOS-SPEC.md; ver CLAUDE.md secção
+# "CALENDÁRIO DE PAGAMENTOS" e docs/FONTE-CALENDARIO.md).
+#
+# Fluxo SEMIAUTOMÁTICO por desenho — o diagnóstico de 2026-07-12 provou
+# que a fonte oficial pública deixou de existir com a migração do portal
+# da Segurança Social, por isso os dados entram no JSON via sessão
+# manual verificada; este workflow:
+#   - dia 25 (06:00 UTC) + retry dia 28: verifica se o mês seguinte já
+#     está no JSON; se não, sonda as rotas oficiais e abre/actualiza a
+#     Issue `calendario-manual` com prompt pronto — nunca commit parcial;
+#   - dia 1 (05:30 UTC): quando o JSON já tem o mês novo, vira a página
+#     (injecção idempotente) e faz commit confinado;
+#   - workflow_dispatch: manual, com opção de forçar o mês seguinte.
+#
+# Âmbito de escrita DISJUNTO dos outros workflows com push (mesmo padrão
+# de shadow-daily.yml): só data/calendario_pagamentos.json e
+# calendario-pagamentos-seguranca-social.html (entre marcadores CAL:*,
+# confinamento garantido por scripts/atualizar_calendario.py) — o
+# guardrail abaixo falha o job se qualquer outro ficheiro aparecer
+# modificado antes do commit.
+
+name: Calendário de Pagamentos (mensal)
+
+on:
+  schedule:
+    - cron: "0 6 25 * *"   # obter o mês seguinte
+    - cron: "0 6 28 * *"   # retry
+    - cron: "30 5 1 * *"   # virar a página para o mês novo
+  workflow_dispatch:
+    inputs:
+      forcar_seguinte:
+        description: "Alvo é o mês seguinte (em vez da regra por dia do mês)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: main-writes
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  actions: write   # garantir_deploy_pages.sh (rerun do deploy do Pages)
+
+jobs:
+  calendario:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          pip install requests beautifulsoup4 playwright pytest
+          playwright install chromium --with-deps
+
+      - name: Verificar mês alvo e sondar fonte oficial
+        id: verificar
+        run: |
+          EXTRA=""
+          if [ "${{ inputs.forcar_seguinte }}" = "true" ]; then
+            EXTRA="--forcar-seguinte"
+          fi
+          python scripts/verificar_calendario_mensal.py \
+            --relatorio "$RUNNER_TEMP/relatorio_calendario.md" $EXTRA
+
+      - name: Actualizar página (injecção idempotente)
+        if: steps.verificar.outputs.estado == 'dados_ok'
+        run: python scripts/atualizar_calendario.py
+
+      - name: Testes do calendário (canário de frescura)
+        if: steps.verificar.outputs.estado == 'dados_ok'
+        run: python -m pytest tests/test_calendario_frescura.py -q
+
+      - name: Guardrail — só os ficheiros do calendário podem mudar
+        if: steps.verificar.outputs.estado == 'dados_ok'
+        run: |
+          ALTERADOS=$(git status --porcelain | awk '{print $2}')
+          ERRO=0
+          for f in $ALTERADOS; do
+            case "$f" in
+              data/calendario_pagamentos.json) ;;
+              calendario-pagamentos-seguranca-social.html) ;;
+              *) echo "::error::Ficheiro fora do âmbito deste workflow modificado: $f"; ERRO=1 ;;
+            esac
+          done
+          [ "$ERRO" -eq 0 ] || exit 1
+          echo "Guardrail OK — nenhuma alteração fora do âmbito do calendário."
+
+      - name: Commit e push (se houver alterações)
+        id: commit_push
+        if: steps.verificar.outputs.estado == 'dados_ok'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html
+            git commit -m "auto(calendario): página sincronizada com o mês ${{ steps.verificar.outputs.mes_alvo }}"
+            git pull --rebase origin main
+            git push origin main
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Página já sincronizada — nada a commitar."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Garantir deploy do GitHub Pages (recuperação automática)
+        if: steps.commit_push.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/garantir_deploy_pages.sh || true
+
+      - name: Smoke test de produção (inline, pós-push)
+        if: steps.commit_push.outputs.pushed == 'true'
+        run: bash scripts/smoke_producao.sh
+
+      - name: Fechar Issue calendario-manual resolvida
+        if: steps.verificar.outputs.estado == 'dados_ok'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const mesAlvo = '${{ steps.verificar.outputs.mes_alvo }}';
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'calendario-manual', per_page: 50,
+            });
+            for (const issue of issues.data) {
+              if (issue.title.includes(mesAlvo)) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `O mês ${mesAlvo} já está em \`data/calendario_pagamentos.json\` e a página foi sincronizada — fechado pelo workflow mensal.`,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number, state: 'closed',
+                });
+                console.log(`Issue #${issue.number} fechada.`);
+              }
+            }
+
+      - name: Abrir/actualizar Issue calendario-manual
+        if: steps.verificar.outputs.estado == 'precisa_manual'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const mesAlvo = '${{ steps.verificar.outputs.mes_alvo }}';
+            const titulo = `📅 Calendário de pagamentos — actualização manual necessária (${mesAlvo})`;
+            const corpo = fs.readFileSync(
+              process.env.RUNNER_TEMP + '/relatorio_calendario.md', 'utf8');
+
+            // label garantida (idempotente)
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'calendario-manual', color: '0E8A16',
+                description: 'Calendário de pagamentos precisa de sessão manual',
+              });
+            } catch (e) { /* já existe */ }
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'calendario-manual', per_page: 50,
+            });
+            const existente = issues.data.find(i => i.title === titulo);
+            if (existente) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existente.number,
+                body: `Nova corrida do workflow — o mês ${mesAlvo} continua em falta.\n\n${corpo}`,
+              });
+              console.log(`Comentado na Issue #${existente.number} (dedup).`);
+            } else {
+              const criada = await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: titulo, body: corpo, labels: ['calendario-manual'],
+              });
+              console.log(`Issue #${criada.data.number} criada.`);
+            }

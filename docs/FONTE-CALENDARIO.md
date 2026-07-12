@@ -94,27 +94,58 @@ Estas regras servem só para **validação de plausibilidade** na Fase 3
 (um valor fora deste padrão exige confirmação extra) — nunca para
 *gerar* datas. Datas geram-se apenas a partir da fonte oficial.
 
-## Decisão Fase 3 (registada, a executar na próxima sessão)
+## ⚠️ ACHADO DECISIVO (diagnóstico de 2026-07-12, 4 rondas num runner real)
 
-**Fluxo semiautomático com fallback obrigatório** (lição do `dre_psu`:
-nunca scraper frágil sem fallback):
+**A fonte oficial pública deixou de existir com a migração do portal.**
+Provado com fetch/Playwright reais (runs do workflow temporário
+`diagnostico-calendario-temp.yml`, apagado no fim):
 
-1. Workflow agendado (dia 25, 06:00 UTC + retry dia 28) tenta obter o
-   calendário do mês seguinte num runner real — 1.ª tentativa à notícia
-   mensal (HTML simples), 2.ª à página SPA (Playwright + âncora).
-2. Validação dura antes de qualquer commit: mês/ano == mês seguinte
-   esperado (extraído do CONTEÚDO, nunca do URL — ver fragilidade do
-   slug acima); dias 1-31; prestações não vazias; slugs todos na
-   allow-list `PRESTACOES` de `scripts/atualizar_calendario.py`.
-3. Falha em qualquer passo → Issue `calendario-manual` com prompt
-   pronto a colar (padrão do fluxo PSU), **nunca commit parcial**.
-4. O workflow novo escreve APENAS `data/calendario_pagamentos.json` +
-   `calendario-pagamentos-seguranca-social.html` (só entre marcadores
-   `CAL:META`/`CAL:CORPO`) — âmbito disjunto dos outros workflows com
-   push, guardrail próprio no workflow (mesmo padrão de
-   `shadow-daily.yml`). Nota: a página é HTML "manual" aos olhos do
-   guardrail do `pipeline-diario.yml` — o workflow novo é separado e
-   tem de declarar o seu próprio âmbito.
+1. **Portal antigo morto**: a notícia mensal, `/noticias` e
+   `/pagamentos2` redireccionam TODOS para o gateway da SSD
+   (`/ptss/pssd/home?r=...`) — com `requests` devolvem só a shell de
+   cookies (213 chars); com Playwright a SPA carrega a home e **não
+   restaura o recurso pedido** (o parâmetro `r=` é ignorado).
+2. **Portal novo sem calendário público**: a listagem
+   `/ptss/pssd/noticias` renderiza (13 notícias, sem paginação) mas
+   **nenhuma** é de datas de pagamento; slugs candidatos dão 404 real
+   (`/ptss/fraw/errors/404`); a página "Calendário" de
+   `pagamentos-dividas/valores-a-receber` é uma funcionalidade com
+   login ("os seus próximos pagamentos"), não uma publicação mensal.
+3. A notícia de julho existia no portal antigo (indexada pelo Google)
+   — morreu com a migração, dias depois de publicada.
+
+**Consequência**: scraping automático da fonte oficial é hoje
+IMPOSSÍVEL, não apenas frágil. O fluxo mensal é o fallback
+semiautomático que a spec previa, com uma sonda que detecta se a
+publicação oficial reaparecer.
+
+## Fase 3 — IMPLEMENTADA (2026-07-12): fluxo semiautomático
+
+`.github/workflows/calendario-mensal.yml` + `scripts/verificar_calendario_mensal.py`:
+
+1. **Dia 25 (06:00 UTC) + retry dia 28**: alvo = mês seguinte. Se
+   `data/calendario_pagamentos.json` já o tem (posto por sessão manual
+   verificada) → injecção idempotente + testes + commit confinado.
+   Se não tem → sonda `/ptss/pssd/noticias` (Playwright) à procura de
+   uma notícia de datas de pagamento reaparecida, e abre/actualiza a
+   Issue `calendario-manual` (título com o mês alvo — dedup por
+   título; corpo com o relatório da sonda + prompt pronto a colar).
+   **Nunca commit parcial, nunca dados inventados.**
+2. **Dia 1 (05:30 UTC)**: alvo = mês corrente. Quando o JSON já tem o
+   mês novo, a injecção vira a página automaticamente e o commit segue
+   — sem este disparo, a página ficava no mês velho até alguém correr
+   o script (com o canário do CI vermelho a exigi-lo).
+3. **Guardrail próprio**: falha o job se qualquer ficheiro fora de
+   `data/calendario_pagamentos.json` + a página aparecer modificado
+   antes do commit (âmbito disjunto de todos os outros workflows com
+   push, mesmo padrão de `shadow-daily.yml`). `concurrency:
+   main-writes` partilhado com os outros workflows de push.
+4. Ao ficar `dados_ok`, fecha automaticamente a Issue
+   `calendario-manual` do mês (mesmo padrão de fecho automático de
+   `fonte-bloqueada`).
+5. Pós-push: `garantir_deploy_pages.sh` + smoke test inline (mesmo
+   padrão do pipeline diário — pushes de GITHUB_TOKEN não disparam
+   workflows `on: push`).
 
 ## Decisão og:title estável (tomada nesta sessão)
 

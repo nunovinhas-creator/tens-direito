@@ -177,7 +177,7 @@ Chromium real (não é possível apanhar isto só por inspecção de texto)
 em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 `index.html` real em vez de manter uma cópia à parte.
 
-### Workflows (7 — 2 fazem push de conteúdo, 1 apaga branches remotas)
+### Workflows (8 — 3 fazem push de conteúdo, 1 apaga branches remotas)
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
@@ -187,11 +187,14 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
+| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês alvo → injecção + testes + commit confinado; senão → sonda a fonte oficial e abre/actualiza Issue `calendario-manual` com prompt pronto (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html`, guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
-**`pipeline-diario.yml` e `shadow-daily.yml` são os únicos que fazem `git push`
-de conteúdo, cada um com um âmbito de escrita disjunto e garantido por
-guardrail próprio** (ficheiros de conteúdo/dados vs. só `shadow_history/*.md`).
+**`pipeline-diario.yml`, `shadow-daily.yml` e `calendario-mensal.yml` são os
+únicos que fazem `git push` de conteúdo, cada um com um âmbito de escrita
+disjunto e garantido por guardrail próprio** (ficheiros de conteúdo/dados vs.
+só `shadow_history/*.md` vs. só o JSON do calendário + a página do calendário
+entre marcadores CAL:*).
 `limpar-branches.yml` é uma terceira categoria de escrita, à parte — nunca toca
 em conteúdo do repositório, só apaga refs de branch e gere uma Issue. Os
 restantes só lêem. Isto elimina race conditions entre workflows concorrentes.
@@ -1558,15 +1561,48 @@ tabela velha silenciosa.
   `test_higiene_indexacao.py` não segue hrefs com `#fragmento`, achado
   real desta sessão).
 
-### Pendente (não fazer no pipeline diário)
+### Fases 3+4 — IMPLEMENTADAS (2026-07-12, mesma data das Fases 0-2)
 
-**Fases 3+4 — até 31 jul 2026** (ver ROADMAP.md → DATAS FIXAS):
-workflow mensal próprio (dia 25 + retry 28; Issue `calendario-manual`
-com prompt pronto como fallback; nunca commit parcial), com âmbito de
-escrita disjunto e guardrail próprio (só o JSON + a página entre
-marcadores CAL:* — mesmo padrão de `shadow-daily.yml`). Para o
-`pipeline-diario.yml`, esta página é HTML manual protegido como
-qualquer outra. **Fase 5** (sessão à parte):
+**Achado decisivo do diagnóstico em runner real (4 rondas,
+`workflow_dispatch` temporário apagado no fim — detalhe completo em
+`docs/FONTE-CALENDARIO.md`)**: com a migração do portal da Segurança
+Social, a fonte oficial pública do calendário DEIXOU DE EXISTIR — o
+portal antigo (notícia mensal, `/noticias`, `/pagamentos2`) redirecciona
+tudo para o gateway SSD e a SPA não restaura o recurso do parâmetro
+`r=`; o portal novo não tem nenhuma notícia de datas de pagamento na
+listagem pública (13 itens, sem paginação; slugs candidatos dão 404
+real) e o "Calendário" de valores-a-receber exige login. Scraping
+automático é hoje **impossível, não apenas frágil** — o fluxo mensal é
+o fallback semiautomático que a spec previa.
+
+- **`.github/workflows/calendario-mensal.yml`** — dia 25 + retry 28
+  (alvo: mês seguinte) e dia 1 às 05:30 (alvo: mês corrente — vira a
+  página quando o JSON já tem o mês novo); `workflow_dispatch` com
+  input `forcar_seguinte`. Se o JSON tem o mês alvo → injecção
+  idempotente + `pytest tests/test_calendario_frescura.py` + guardrail
+  (falha se QUALQUER ficheiro fora do JSON + página aparecer
+  modificado) + commit/push + `garantir_deploy_pages.sh` + smoke
+  inline; fecha automaticamente a Issue `calendario-manual` do mês.
+  Se não tem → **nunca commit parcial**: sonda as rotas oficiais e
+  abre/actualiza (dedup por título com o mês) a Issue
+  `calendario-manual` com o relatório da sonda + prompt pronto a colar
+  para a sessão manual. `concurrency: main-writes`.
+- **`scripts/verificar_calendario_mensal.py`** — decide o mês alvo
+  (dia ≥ 20 → mês seguinte), verifica o JSON, sonda
+  `/ptss/pssd/noticias` via Playwright (detecta se a publicação
+  oficial reaparecer — o resultado vai no corpo da Issue, nunca é
+  usado para inventar dados) e emite `estado`/`mes_alvo` via
+  `GITHUB_OUTPUT`.
+- A entrada de dados continua 100% manual e verificada (sessão manual
+  com triangulação, mesmo padrão desta sessão) — o workflow só
+  automatiza a vigilância, o lembrete e a viragem de mês. Fase 4
+  completa: `tests/test_calendario_frescura.py` ganhou os testes
+  Playwright mobile (375px sem overflow, 9 âncoras, navegação por
+  âncora real, guarda JS com mês velho servido em memória — nunca um
+  ficheiro escrito no repositório).
+
+Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
+protegido como qualquer outra. **Fase 5** (sessão à parte):
 `pagamento-apos-deferimento.html`.
 
 ---
@@ -5197,3 +5233,47 @@ zero erros JS; axe a passar; `detectar_alertas()` sem falsos positivos na
 página nova. Fases 3+4 (workflow mensal, até 31 jul) e 5 registadas em
 ROADMAP.md. Ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 não tocados.*
+---
+
+*Última revisão: 2026-07-12 (mesma sessão, continuação) — Fases 3+4 de
+`CALENDARIO-PAGAMENTOS-SPEC.md`, com um achado que mudou o desenho.
+Diagnóstico em runner real (4 rondas de `workflow_dispatch` temporário,
+`diagnostico-calendario-temp.yml` + `scripts/_diag_calendario.py`, ambos
+apagados no fim — runs 29191741983/29191780772/29191873395/29191994617):
+**a fonte oficial pública do calendário deixou de existir com a migração
+do portal da Segurança Social** — o portal antigo (notícia mensal,
+`/noticias`, `/pagamentos2`) redirecciona tudo para o gateway SSD (213
+chars de shell de cookies via requests; via Playwright a SPA carrega a
+home e ignora o parâmetro `r=`); o portal novo não tem nenhuma notícia
+de datas de pagamento na listagem pública (13 itens, sem paginação),
+slugs candidatos dão 404 real (`/ptss/fraw/errors/404`) e o "Calendário"
+de valores-a-receber é funcionalidade com login. Scraping automático é
+hoje impossível, não apenas frágil — implementado o fallback
+semiautomático que a spec previa: novo `.github/workflows/calendario-mensal.yml`
+(cron dia 25 + retry 28 para o mês seguinte; cron dia 1 às 05:30 que
+vira a página quando o JSON já tem o mês novo; `workflow_dispatch` com
+`forcar_seguinte`; `concurrency: main-writes`; guardrail próprio — falha
+se qualquer ficheiro fora de `data/calendario_pagamentos.json` + a
+página aparecer modificado; pós-push: `garantir_deploy_pages.sh` + smoke
+inline; fecho automático da Issue do mês ao ficar resolvida) + novo
+`scripts/verificar_calendario_mensal.py` (decide o mês alvo — dia ≥ 20 →
+seguinte; sonda `/ptss/pssd/noticias` via Playwright para detectar a
+publicação oficial a reaparecer; relatório da sonda + prompt pronto a
+colar no corpo da Issue `calendario-manual`, dedup por título com o
+mês; nunca commit parcial, nunca dados inventados). Fase 4 completa:
+`tests/test_calendario_frescura.py` passou de 13 para 16 testes —
+Playwright mobile 375px (tabela visível, 0px de overflow, 9 âncoras da
+spec presentes e navegação por âncora real) e a guarda JS provada com a
+página de mês velho servida em memória por um handler HTTP de teste
+(nunca um ficheiro escrito no repositório, para o guardrail do workflow
+nunca tropeçar em restos de teste). Tabela de workflows actualizada
+(8 workflows, 3 com push de conteúdo, âmbitos disjuntos).
+`docs/FONTE-CALENDARIO.md` reescrito com o achado e o desenho final.
+Verificado em CI real por run_id exacto (ver entrada seguinte se
+aplicável): caminho `dados_ok` (no-op, sem commit) e caminho
+`precisa_manual` (Issue de agosto criada com sonda + prompt) — a Issue
+de agosto fica deliberadamente aberta como tracking real até à sessão
+manual que publicar agosto. Ruff limpo; suite completa local verde
+(2081+ testes; única falha local era `lxml` em falta no sandbox,
+instalado e confirmado a passar).
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*

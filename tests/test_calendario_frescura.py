@@ -9,17 +9,24 @@ calendário ter sido actualizado (workflow mensal da Fase 3 falhado, ou
 Fase 3 ainda por implementar) — CI vermelho força a actualização, em
 vez de deixar datas velhas em produção em silêncio.
 
-Este ficheiro adianta da Fase 4 apenas o núcleo do invariante (canário
-+ idempotência + estado degradado + caminhos de falha da validação).
-O resto da Fase 4 (Playwright mobile 375px, âncoras clicáveis) fica
-para a sessão da Fase 3+4, conforme a spec.
+Cobre o invariante completo da Fase 4: canário de frescura,
+idempotência, estado degradado, caminhos de falha da validação, e os
+testes Playwright mobile (375px sem overflow, âncoras por prestação,
+guarda JS de mês velho — com Chromium real, nunca file://).
 """
 from __future__ import annotations
 
 import datetime as dt
+import functools
+import glob
+import http.server
+import os
 import re
 import sys
+import threading
 from pathlib import Path
+
+import pytest
 
 RAIZ = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
@@ -186,3 +193,124 @@ def test_validacao_rejeita_mes_duplicado():
     dados = _base_valida()
     dados["meses"].append(dados["meses"][0].copy())
     assert any("duplicado" in p for p in validar_dados(dados))
+
+
+# ── Fase 4: âncoras por prestação (verificação estática) ──────────────────
+
+ANCORAS_SPEC = [
+    "pensoes", "csi", "psi", "abono-familia", "subsidio-desemprego",
+    "subsidio-doenca", "rsi", "apoio-renda", "cuidador-informal",
+]
+
+
+def test_ancoras_por_prestacao_presentes_quando_ha_mes_corrente():
+    if _mes_renderizado() == "":
+        pytest.skip("estado degradado — sem tabela por prestação para ancorar")
+    for anchor in ANCORAS_SPEC:
+        assert f'id="{anchor}"' in HTML, f"âncora #{anchor} em falta na página"
+
+
+# ── Fase 4: Playwright mobile 375px (Chromium real, nunca file://) ────────
+
+
+def _localizar_chromium():
+    bases = [os.environ.get("PLAYWRIGHT_BROWSERS_PATH")]
+    bases += ["/opt/pw-browsers", os.path.expanduser("~/.cache/ms-playwright")]
+    for base in bases:
+        if not base:
+            continue
+        candidatos = sorted(glob.glob(
+            os.path.join(base, "chromium-*", "chrome-linux*", "chrome")))
+        if candidatos:
+            return candidatos[-1]
+    return None
+
+
+try:
+    from playwright.sync_api import sync_playwright
+    _PLAYWRIGHT_DISPONIVEL = _localizar_chromium() is not None
+except ImportError:
+    _PLAYWRIGHT_DISPONIVEL = False
+
+PAGINA_URL = "/calendario-pagamentos-seguranca-social.html"
+PAGINA_VELHA_URL = "/_calendario_mes_velho_teste.html"
+
+
+class _Handler(http.server.SimpleHTTPRequestHandler):
+    """Serve o repositório real; o caminho especial de teste devolve a
+    página com data-mes adulterado para um mês passado — só em memória,
+    nunca um ficheiro escrito no repositório."""
+
+    def do_GET(self):  # noqa: N802 (API do http.server)
+        if self.path == PAGINA_VELHA_URL:
+            corpo = HTML.replace(
+                re.search(r'data-mes="\d{4}-\d{2}"', HTML).group(0),
+                'data-mes="2000-01"',
+            ).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(corpo)))
+            self.end_headers()
+            self.wfile.write(corpo)
+            return
+        super().do_GET()
+
+    def log_message(self, *args):  # silêncio no output do pytest
+        pass
+
+
+@pytest.fixture(scope="module")
+def servidor():
+    handler = functools.partial(_Handler, directory=str(RAIZ))
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    yield f"http://127.0.0.1:{srv.server_address[1]}"
+    srv.shutdown()
+
+
+@pytest.mark.skipif(not _PLAYWRIGHT_DISPONIVEL,
+                    reason="Playwright/Chromium indisponível neste ambiente")
+class TestMobilePlaywright:
+    def test_mobile_375px_tabela_visivel_sem_overflow_e_ancoras(self, servidor):
+        if _mes_renderizado() == "":
+            pytest.skip("estado degradado — sem tabela para verificar")
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            erros = []
+            page.on("pageerror", lambda e: erros.append(str(e)))
+            page.goto(servidor + PAGINA_URL)
+            page.wait_for_load_state("networkidle")
+
+            assert page.locator("#mes-corrente").is_visible()
+            overflow = page.evaluate(
+                "document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow == 0, f"overflow horizontal de {overflow}px a 375px"
+
+            for anchor in ANCORAS_SPEC:
+                assert page.locator(f"#{anchor}").count() == 1, f"âncora #{anchor}"
+            # navegar por âncora posiciona a página (funciona de facto)
+            page.goto(servidor + PAGINA_URL + "#rsi")
+            page.wait_for_load_state("networkidle")
+            assert page.evaluate("window.scrollY") > 0
+
+            # estado normal: aviso de desatualização escondido
+            assert page.locator("#cal-aviso-desatualizado").is_hidden()
+            assert erros == [], f"erros JS: {erros}"
+            browser.close()
+
+    def test_guarda_js_mostra_aviso_quando_mes_renderizado_e_passado(self, servidor):
+        if _mes_renderizado() == "":
+            pytest.skip("estado degradado — a guarda não se aplica (já explícito)")
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            page.goto(servidor + PAGINA_VELHA_URL)
+            page.wait_for_load_state("networkidle")
+            aviso = page.locator("#cal-aviso-desatualizado")
+            assert aviso.is_visible(), (
+                "página com data-mes no passado não mostrou o aviso de "
+                "desatualização — a guarda JS regrediu"
+            )
+            assert page.locator("#cal-mes-actual-nome").text_content().strip()
+            browser.close()
