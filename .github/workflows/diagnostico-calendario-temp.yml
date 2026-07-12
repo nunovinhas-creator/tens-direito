@@ -1,0 +1,24 @@
+# TEMPORÁRIO — diagnóstico da fonte oficial do calendário de pagamentos
+# (Fase 3 de CALENDARIO-PAGAMENTOS-SPEC.md). Só lê e imprime, nunca faz
+# commit. Apagar este ficheiro e scripts/_diag_calendario.py assim que o
+# diagnóstico estiver concluído (mesmo padrão de diagnostico-dre-psu-temp).
+name: Diagnóstico Calendário (temporário)
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependências
+        run: pip install requests beautifulsoup4
+      - name: Examinar fontes oficiais
+        run: python scripts/_diag_calendario.py
