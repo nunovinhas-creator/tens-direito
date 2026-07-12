@@ -241,8 +241,11 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 
   <div class="cal-topo-regiao" role="region" aria-label="Calendário de pagamentos">
     <a class="cal-topo" href="/calendario-pagamentos-seguranca-social.html">
-      📅 <span class="cal-topo-longo">Calendário de pagamentos da Segurança Social — ver as datas do mês</span><span class="cal-topo-curto">Calendário de pagamentos SS</span> <span aria-hidden="true">→</span>
+      <span class="cal-topo-texto">📅 <span class="cal-topo-longo">Calendário de pagamentos da Segurança Social — ver as datas do mês</span><span class="cal-topo-curto">Calendário de pagamentos SS</span></span> <span class="cal-topo-seta" aria-hidden="true">→</span>
     </a>
+    <!-- CAL-HOME:INICIO -->
+    <script id="cal-home-dados" type="application/json" data-mes="2026-07">[{"dia": 3, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "Pensões · CSI · Reembolso de funeral · PSI"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "RSI · Fundo de Garantia Salarial"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]</script>
+<!-- CAL-HOME:FIM -->
   </div>
 
   <div role="region" aria-label="Destaque">
@@ -787,6 +790,36 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
         }
       }
     });
+  </script>
+
+  <script>
+  // Barra fixa do calendário — promove a próxima data de pagamento a contar
+  // de hoje (progressive enhancement, zero rede). Só quando o mês dos dados
+  // (#cal-home-dados[data-mes], escrito por scripts/atualizar_calendario.py)
+  // é o mês corrente do visitante; num mês diferente (dados por actualizar)
+  // ou sem dados, mantém o rótulo genérico — nunca inventa uma data velha.
+  (function () {
+    var d = document.getElementById('cal-home-dados');
+    var texto = document.querySelector('.cal-topo .cal-topo-texto');
+    if (!d || !texto) return;
+    var mes = d.getAttribute('data-mes');
+    if (!/^\d{4}-\d{2}$/.test(mes)) return;
+    var agora = new Date();
+    var mesCorrente = agora.getFullYear() + '-' + ('0' + (agora.getMonth() + 1)).slice(-2);
+    if (mes !== mesCorrente) return;
+    var itens;
+    try { itens = JSON.parse(d.textContent); } catch (e) { return; }
+    if (!Array.isArray(itens) || !itens.length) return;
+    var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    var hojeDia = agora.getDate();
+    var prox = null;
+    for (var i = 0; i < itens.length; i++) {
+      if (itens[i].dia >= hojeDia) { prox = itens[i]; break; }
+    }
+    if (!prox) return;  // pagamentos do mês já processados — mantém o rótulo genérico
+    texto.innerHTML = '📅 Próximo pagamento: <strong>' + prox.dia + ' de ' + nomes[agora.getMonth()] + '</strong>';
+  })();
   </script>
 
 </body>

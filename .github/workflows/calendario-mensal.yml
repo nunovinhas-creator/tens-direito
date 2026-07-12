@@ -14,11 +14,12 @@
 #   - workflow_dispatch: manual, com opção de forçar o mês seguinte.
 #
 # Âmbito de escrita DISJUNTO dos outros workflows com push (mesmo padrão
-# de shadow-daily.yml): só data/calendario_pagamentos.json e
-# calendario-pagamentos-seguranca-social.html (entre marcadores CAL:*,
-# confinamento garantido por scripts/atualizar_calendario.py) — o
-# guardrail abaixo falha o job se qualquer outro ficheiro aparecer
-# modificado antes do commit.
+# de shadow-daily.yml): só data/calendario_pagamentos.json,
+# calendario-pagamentos-seguranca-social.html (entre marcadores CAL:*) e
+# index.html (só entre marcadores CAL-HOME:*, a barra fixa "Próximo
+# pagamento" da homepage) — confinamento garantido por
+# scripts/atualizar_calendario.py; o guardrail abaixo falha o job se
+# qualquer outro ficheiro aparecer modificado antes do commit.
 
 name: Calendário de Pagamentos (mensal)
 
@@ -86,6 +87,7 @@ jobs:
             case "$f" in
               data/calendario_pagamentos.json) ;;
               calendario-pagamentos-seguranca-social.html) ;;
+              index.html) ;;
               *) echo "::error::Ficheiro fora do âmbito deste workflow modificado: $f"; ERRO=1 ;;
             esac
           done
@@ -99,8 +101,8 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html
-            git commit -m "auto(calendario): página sincronizada com o mês ${{ steps.verificar.outputs.mes_alvo }}"
+            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html index.html
+            git commit -m "auto(calendario): página e barra da homepage sincronizadas com o mês ${{ steps.verificar.outputs.mes_alvo }}"
             git pull --rebase origin main
             git push origin main
             echo "pushed=true" >> "$GITHUB_OUTPUT"

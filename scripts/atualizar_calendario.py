@@ -36,6 +36,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data" / "calendario_pagamentos.json"
 PAGINA = RAIZ / "calendario-pagamentos-seguranca-social.html"
+INDEX = RAIZ / "index.html"
 
 FONTE_OFICIAL_FALLBACK = "https://www.seg-social.pt"
 
@@ -308,6 +309,20 @@ def _seccao_por_prestacao(m: dict) -> str:
     )
 
 
+def _dados_js(m: dict) -> list[dict]:
+    """Lista (dia, resumo curto) do mês, ordenada — partilhada pelo destaque
+    do topo da página do calendário e pela barra da homepage."""
+    return [
+        {
+            "dia": p["dia"],
+            "resumo": " · ".join(
+                RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"]
+            ),
+        }
+        for p in sorted(m["pagamentos"], key=lambda x: x["dia"])
+    ]
+
+
 def _destaque_topo(m: dict) -> str:
     """Destaque "Próximo pagamento" no topo do mês corrente.
 
@@ -325,18 +340,9 @@ def _destaque_topo(m: dict) -> str:
     else:
         dias_txt = ", ".join(str(d) for d in dias[:-1]) + f" e {dias[-1]}"
 
-    dados_js = [
-        {
-            "dia": p["dia"],
-            "resumo": " · ".join(
-                RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"]
-            ),
-        }
-        for p in pagamentos
-    ]
     # json.dumps com ensure_ascii=False dá acentos legíveis; nunca contém
     # "</script>" (só nomes de prestações), por isso é seguro embutir.
-    dados_json = json.dumps(dados_js, ensure_ascii=False)
+    dados_json = json.dumps(_dados_js(m), ensure_ascii=False)
 
     return (
         f'  <div id="cal-destaque" class="cal-destaque" data-mes="{m["ano"]}-{m["mes"]:02d}">\n'
@@ -408,6 +414,29 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
     return "\n\n".join(blocos)
 
 
+def render_home(dados: dict, hoje: dt.date) -> str:
+    """Zona CAL-HOME do index.html: dados do mês corrente para a barra fixa
+    'Próximo pagamento' da homepage.
+
+    Sem mês corrente no JSON, data-mes fica vazio e a lista vazia — a barra
+    mantém o rótulo genérico ('Calendário de pagamentos SS'), nunca uma data
+    velha (mesma honestidade do estado degradado da página). O script de
+    runtime da homepage só promove a próxima data quando este data-mes é
+    igual ao mês corrente do visitante.
+    """
+    atual = _encontrar_mes(dados, hoje.year, hoje.month)
+    if atual:
+        data_mes = f"{hoje.year}-{hoje.month:02d}"
+        dados_json = json.dumps(_dados_js(atual), ensure_ascii=False)
+    else:
+        data_mes = ""
+        dados_json = "[]"
+    return (
+        f'    <script id="cal-home-dados" type="application/json" '
+        f'data-mes="{data_mes}">{dados_json}</script>'
+    )
+
+
 def render_meta(dados: dict, hoje: dt.date) -> str:
     """Zona CAL:META — <title> + meta description com o mês corrente.
 
@@ -439,13 +468,35 @@ def render_meta(dados: dict, hoje: dt.date) -> str:
 # ── injecção confinada ───────────────────────────────────────────────────
 
 
-def injetar_zona(html_pagina: str, marcador: str, novo_conteudo: str) -> str:
-    inicio = f"<!-- CAL:{marcador}:INICIO -->"
-    fim = f"<!-- CAL:{marcador}:FIM -->"
+def _injetar(html_pagina: str, inicio: str, fim: str, novo_conteudo: str) -> str:
     padrao = re.compile(re.escape(inicio) + r"[\s\S]*?" + re.escape(fim))
     if not padrao.search(html_pagina):
-        raise ValueError(f"marcador CAL:{marcador} não encontrado na página")
+        raise ValueError(f"marcador {inicio} não encontrado na página")
     return padrao.sub(inicio + "\n" + novo_conteudo + "\n" + fim, html_pagina)
+
+
+def injetar_zona(html_pagina: str, marcador: str, novo_conteudo: str) -> str:
+    return _injetar(
+        html_pagina,
+        f"<!-- CAL:{marcador}:INICIO -->",
+        f"<!-- CAL:{marcador}:FIM -->",
+        novo_conteudo,
+    )
+
+
+def atualizar_homepage(
+    dados: dict, hoje: dt.date, caminho: Path = INDEX, escrever: bool = True
+) -> bool:
+    """Regenera a zona CAL-HOME da homepage. Devolve True se mudou."""
+    original = caminho.read_text(encoding="utf-8")
+    novo = _injetar(
+        original, "<!-- CAL-HOME:INICIO -->", "<!-- CAL-HOME:FIM -->",
+        render_home(dados, hoje),
+    )
+    mudou = novo != original
+    if mudou and escrever:
+        caminho.write_text(novo, encoding="utf-8")
+    return mudou
 
 
 def atualizar_pagina(
@@ -478,6 +529,7 @@ def main(argv: list[str] | None = None) -> int:
     hoje = hoje_lisboa()
     try:
         mudou = atualizar_pagina(dados, hoje, escrever=not args.dry_run)
+        mudou_home = atualizar_homepage(dados, hoje, escrever=not args.dry_run)
     except ValueError as e:
         print(f"ERRO: {e}", file=sys.stderr)
         return 3
@@ -488,10 +540,14 @@ def main(argv: list[str] | None = None) -> int:
         if atual
         else f"SEM dados do mês corrente ({nome_mes(hoje.year, hoje.month)}) — estado degradado"
     )
-    accao = "actualizada" if mudou else "já estava sincronizada (zero alterações)"
-    if args.dry_run and mudou:
-        accao = "seria actualizada (--dry-run)"
-    print(f"{PAGINA.name}: {estado}; página {accao}.")
+
+    def _accao(m: bool) -> str:
+        if args.dry_run and m:
+            return "seria actualizada (--dry-run)"
+        return "actualizada" if m else "já estava sincronizada (zero alterações)"
+
+    print(f"{PAGINA.name}: {estado}; página {_accao(mudou)}.")
+    print(f"{INDEX.name}: barra do calendário {_accao(mudou_home)}.")
     return 0
 
 

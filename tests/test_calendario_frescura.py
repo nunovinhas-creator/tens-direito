@@ -32,8 +32,10 @@ RAIZ = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
 from atualizar_calendario import (  # noqa: E402
+    INDEX,
     PAGINA,
     _encontrar_mes,
+    atualizar_homepage,
     atualizar_pagina,
     carregar_dados,
     hoje_lisboa,
@@ -43,6 +45,7 @@ from atualizar_calendario import (  # noqa: E402
 )
 
 HTML = PAGINA.read_text(encoding="utf-8")
+INDEX_HTML = INDEX.read_text(encoding="utf-8")
 
 
 # ── canário de frescura (o invariante) ─────────────────────────────────────
@@ -247,6 +250,49 @@ def test_cal_dados_json_valido_e_coerente_com_o_json_de_dados():
     )
 
 
+# ── Barra fixa "Próximo pagamento" da homepage (zona CAL-HOME) ────────────
+
+
+def test_homepage_tem_marcadores_e_dados_da_barra_do_calendario():
+    for marcador in ("CAL-HOME:INICIO", "CAL-HOME:FIM"):
+        assert f"<!-- {marcador} -->" in INDEX_HTML, f"marcador {marcador} em falta na homepage"
+    assert 'id="cal-home-dados"' in INDEX_HTML
+
+
+def test_homepage_barra_sincronizada_com_os_dados_e_idempotente():
+    """A zona CAL-HOME publicada tem de ser exactamente o que o injector
+    geraria hoje — apanha um JSON actualizado sem a injecção ter corrido."""
+    dados = carregar_dados()
+    assert validar_dados(dados) == []
+    mudou = atualizar_homepage(dados, hoje_lisboa(), escrever=False)
+    assert not mudou, (
+        "scripts/atualizar_calendario.py produziria uma barra CAL-HOME diferente "
+        "da publicada em index.html — correr o script e commitar o resultado"
+    )
+
+
+def test_homepage_cal_home_dados_coerente_com_o_json_e_mes_corrente():
+    import json as _json
+    m = re.search(
+        r'<script id="cal-home-dados" type="application/json" data-mes="(\d{4}-\d{2}|)">(.*?)</script>',
+        INDEX_HTML, re.S)
+    assert m, "#cal-home-dados em falta na homepage"
+    data_mes, payload = m.group(1), m.group(2)
+    itens = _json.loads(payload)
+    hoje = hoje_lisboa()
+    atual = _encontrar_mes(carregar_dados(), hoje.year, hoje.month)
+    if atual is None:
+        # sem mês corrente no JSON: barra degrada — data-mes vazio, sem dias.
+        assert data_mes == "" and itens == []
+        return
+    assert data_mes == f"{hoje.year}-{hoje.month:02d}"
+    dias_esperados = sorted(p["dia"] for p in atual["pagamentos"])
+    assert [it["dia"] for it in itens] == dias_esperados, (
+        "os dias de #cal-home-dados não batem com o JSON de dados"
+    )
+    assert all("dia" in it and "resumo" in it for it in itens)
+
+
 # ── Fase 4: Playwright mobile 375px (Chromium real, nunca file://) ────────
 
 
@@ -271,24 +317,34 @@ except ImportError:
 
 PAGINA_URL = "/calendario-pagamentos-seguranca-social.html"
 PAGINA_VELHA_URL = "/_calendario_mes_velho_teste.html"
+INDEX_URL = "/index.html"
+INDEX_VELHO_URL = "/_index_mes_velho_teste.html"
 
 
 class _Handler(http.server.SimpleHTTPRequestHandler):
-    """Serve o repositório real; o caminho especial de teste devolve a
-    página com data-mes adulterado para um mês passado — só em memória,
-    nunca um ficheiro escrito no repositório."""
+    """Serve o repositório real; os caminhos especiais de teste devolvem a
+    página / a homepage com data-mes adulterado para um mês passado — só em
+    memória, nunca um ficheiro escrito no repositório."""
+
+    def _servir(self, corpo: bytes):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(corpo)))
+        self.end_headers()
+        self.wfile.write(corpo)
 
     def do_GET(self):  # noqa: N802 (API do http.server)
         if self.path == PAGINA_VELHA_URL:
-            corpo = HTML.replace(
+            self._servir(HTML.replace(
                 re.search(r'data-mes="\d{4}-\d{2}"', HTML).group(0),
                 'data-mes="2000-01"',
-            ).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(corpo)))
-            self.end_headers()
-            self.wfile.write(corpo)
+            ).encode("utf-8"))
+            return
+        if self.path == INDEX_VELHO_URL:
+            self._servir(re.sub(
+                r'(id="cal-home-dados"[^>]*data-mes=")\d{4}-\d{2}(")',
+                r'\g<1>2000-01\g<2>', INDEX_HTML,
+            ).encode("utf-8"))
             return
         super().do_GET()
 
@@ -393,4 +449,46 @@ class TestMobilePlaywright:
             page.wait_for_load_state("networkidle")
             assert page.locator(".cal-destaque-proximo").count() == 0
             assert page.locator(".cal-destaque-linha").is_visible()
+            browser.close()
+
+    def test_barra_homepage_promove_proximo_pagamento_no_mes_corrente(self, servidor):
+        """A barra fixa da homepage promove a próxima data a contar de hoje,
+        SÓ quando os dados (#cal-home-dados[data-mes]) são do mês corrente."""
+        import json as _json
+        m = re.search(
+            r'<script id="cal-home-dados"[^>]*data-mes="(\d{4}-\d{2}|)">(.*?)</script>',
+            INDEX_HTML, re.S)
+        assert m, "#cal-home-dados em falta"
+        data_mes, payload = m.group(1), m.group(2)
+        hoje = dt.date.today()
+        if data_mes != f"{hoje.year}-{hoje.month:02d}":
+            pytest.skip("barra da homepage não é do mês corrente hoje")
+        dias = sorted(it["dia"] for it in _json.loads(payload))
+        futuros = [d for d in dias if d >= hoje.day]
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            page.goto(servidor + INDEX_URL)
+            page.wait_for_load_state("networkidle")
+            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            if futuros:
+                assert "Próximo pagamento" in texto and f"{futuros[0]} de " in texto, (
+                    f"esperava promover o dia {futuros[0]}, obteve: {texto!r}")
+            else:
+                # todos processados: nunca inventa — mantém o rótulo genérico
+                assert "Próximo pagamento" not in texto
+            browser.close()
+
+    def test_barra_homepage_nunca_promove_num_mes_velho(self, servidor):
+        """Com dados de um mês passado (data-mes adulterado), a barra mantém
+        o rótulo genérico — nunca inventa uma 'próxima' data velha."""
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            page.goto(servidor + INDEX_VELHO_URL)
+            page.wait_for_load_state("networkidle")
+            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            assert "Próximo pagamento" not in texto, (
+                f"barra promoveu uma data num mês velho: {texto!r}")
+            assert "Calendário de pagamentos" in texto
             browser.close()

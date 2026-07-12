@@ -40,6 +40,16 @@ pipeline automático (mesma categoria que `CLUSTERS:HOME`/`DESTAQUES:HOME` —
 ver secção "SISTEMA DE CLUSTERS"). Não entra nesta lista porque não é o
 pipeline `pipeline-diario.yml` a escrevê-lo.
 
+Nota 2: o marcador `<!-- CAL-HOME:INICIO/FIM -->` (dados da barra fixa
+"Próximo pagamento" no topo da homepage) também vive em `index.html`, mas é
+escrito por `scripts/atualizar_calendario.py`, corrido pelo workflow
+**`calendario-mensal.yml`** — não pelo `pipeline-diario.yml`. É a única zona
+de `index.html` fora do âmbito do pipeline diário; o guardrail próprio de
+`calendario-mensal.yml` permite `index.html` exactamente por causa desta zona
+(ver secção "CALENDÁRIO DE PAGAMENTOS"). O `pipeline-diario.yml` nunca toca em
+`CAL-HOME` (só nas suas 3 zonas), por isso os dois workflows coexistem sem
+colidir — mais o `concurrency: main-writes` partilhado a serializar os pushes.
+
 **Segundo workflow com push, âmbito completamente separado**: `shadow-daily.yml`
 só pode escrever em `shadow_history/*.md` (relatórios do Shadow Mode — ver secção
 "SHADOW MODE" mais abaixo). Guardrail próprio no próprio workflow: falha
@@ -187,14 +197,14 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
-| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html`, guardrail próprio) |
+| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage; guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
 **`pipeline-diario.yml`, `shadow-daily.yml` e `calendario-mensal.yml` são os
 únicos que fazem `git push` de conteúdo, cada um com um âmbito de escrita
 disjunto e garantido por guardrail próprio** (ficheiros de conteúdo/dados vs.
 só `shadow_history/*.md` vs. só o JSON do calendário + a página do calendário
-entre marcadores CAL:*).
+entre marcadores CAL:* + a barra `CAL-HOME:*` do `index.html`).
 `limpar-branches.yml` é uma terceira categoria de escrita, à parte — nunca toca
 em conteúdo do repositório, só apaga refs de branch e gere uma Issue. Os
 restantes só lêem. Isto elimina race conditions entre workflows concorrentes.
@@ -5397,4 +5407,34 @@ de agosto fechada sozinha; agosto servido como "mês seguinte" na página).
 `tests/test_scraper_calendario.py` (7 casos: parser com o texto real +
 desconhecida/vazio/outro-mês/método-órfão). `docs/FONTE-CALENDARIO.md` e
 esta secção reescritos. Ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+
+---
+
+*Última revisão: 2026-07-12 — link "📅 Calendário" na nav principal (desktop
++ mobile, `sincronizar_nav.py`, 58 páginas) e **barra fixa "Próximo
+pagamento" sempre visível no topo da homepage** (pedido do Nuno: é uma das
+razões mais frequentes de visita). A barra (`.cal-topo`, sticky acima da nav
+já sticky; combinador de irmão `.cal-topo-regiao ~ .nav-wrap` desce a nav só
+na homepage, sem tocar nas outras páginas; envolvida em `role="region"` pela
+regra axe) mostra por omissão "Calendário de pagamentos SS" e, por
+progressive enhancement (zero rede), promove a próxima data a contar de hoje
+— "📅 Próximo pagamento: 16 de julho". Mesma honestidade do resto do
+calendário: um script de runtime só promove quando `#cal-home-dados[data-mes]`
+(zona `CAL-HOME`, escrita por `scripts/atualizar_calendario.py`) é igual ao
+mês corrente do visitante; num mês por actualizar ou sem dados, mantém o
+rótulo genérico — nunca inventa uma data velha (provado com cópia adulterada
+`data-mes="2000-01"`). `atualizar_calendario.py` ganhou `render_home()`/
+`atualizar_homepage()` (reaproveitando `_dados_js()`, extraído de
+`_destaque_topo()`); `main()` sincroniza agora a página do calendário E a
+barra da homepage. `calendario-mensal.yml` passa a permitir `index.html` no
+guardrail (só a zona `CAL-HOME`) e a incluí-lo no commit — 2.ª zona de escrita
+de `index.html`, disjunta das 3 do `pipeline-diario.yml`, que nunca toca em
+`CAL-HOME`; `concurrency: main-writes` serializa. REGRA DE OURO (Nota 2) e a
+tabela de workflows actualizadas. Verificado com Chromium a 1200/375px: barra
+promove "16 de julho" sem overflow nem erros JS, cópia de mês velho mantém o
+rótulo genérico. `test_calendario_frescura.py` e `test_nav_coerencia.py`
+estendidos (barra da homepage: markers, JSON coerente com os dados,
+idempotência da injecção, promoção Playwright no mês corrente, sem promoção
+num mês velho; link de nav em desktop+mobile). Ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
