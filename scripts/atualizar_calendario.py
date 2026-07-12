@@ -65,6 +65,24 @@ METODOS = {
     "vale_de_correio": "vale de correio",
 }
 
+# Rótulos curtos para o destaque "Próximo pagamento" no topo (a tabela
+# completa mantém os nomes longos de PRESTACOES).
+RESUMO_CURTO = {
+    "doenca_profissional": "Doença profissional",
+    "apoio_renda": "Apoio à renda",
+    "pensoes": "Pensões",
+    "csi": "CSI",
+    "reembolso_despesas_funeral": "Reembolso de funeral",
+    "psi": "PSI",
+    "prestacoes_familiares": "Abono e prestações familiares",
+    "desemprego_doenca_parentalidade_acao_social_1": "1.º desemprego/doença/parentalidade",
+    "desemprego_doenca_parentalidade_acao_social_2": "2.º desemprego/doença/parentalidade",
+    "fgadm": "Fundo de Garantia de Alimentos",
+    "rsi": "RSI",
+    "fgs": "Fundo de Garantia Salarial",
+    "cuidador_informal": "Cuidador informal",
+}
+
 # Secção "Por prestação" — âncoras exigidas pela spec + guia interno.
 # (anchor, nome curto, slugs que contam, rótulo por slug quando há mais
 # de um, url do guia interno ou None)
@@ -288,6 +306,46 @@ def _seccao_por_prestacao(m: dict) -> str:
     )
 
 
+def _destaque_topo(m: dict) -> str:
+    """Destaque "Próximo pagamento" no topo do mês corrente.
+
+    Duas camadas, ambas sem rede:
+    - estática (sempre visível, sem JS): a lista de todos os dias de
+      pagamento do mês, para quem só quer o relance imediato;
+    - dados estruturados (`#cal-dados`, JSON) que o script de runtime da
+      página lê para promover a PRÓXIMA data a contar de hoje.
+    """
+    pagamentos = sorted(m["pagamentos"], key=lambda x: x["dia"])
+    mes_txt = MESES_PT[m["mes"]]
+    dias = [p["dia"] for p in pagamentos]
+    if len(dias) == 1:
+        dias_txt = str(dias[0])
+    else:
+        dias_txt = ", ".join(str(d) for d in dias[:-1]) + f" e {dias[-1]}"
+
+    dados_js = [
+        {
+            "dia": p["dia"],
+            "resumo": " · ".join(
+                RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"]
+            ),
+        }
+        for p in pagamentos
+    ]
+    # json.dumps com ensure_ascii=False dá acentos legíveis; nunca contém
+    # "</script>" (só nomes de prestações), por isso é seguro embutir.
+    dados_json = json.dumps(dados_js, ensure_ascii=False)
+
+    return (
+        f'  <div id="cal-destaque" class="cal-destaque" data-mes="{m["ano"]}-{m["mes"]:02d}">\n'
+        f'    <p class="cal-destaque-linha">📅 <strong>Datas de pagamento em '
+        f'{html.escape(mes_txt)}:</strong> {html.escape(dias_txt)} — '
+        f'<a href="#por-prestacao">ver o que é pago em cada dia ↓</a></p>\n'
+        f'  </div>\n'
+        f'  <script id="cal-dados" type="application/json">{dados_json}</script>'
+    )
+
+
 def _bloco_degradado(dados: dict, ano: int, mes: int) -> str:
     fonte = html.escape(dados.get("fonte_url") or FONTE_OFICIAL_FALLBACK)
     return (
@@ -312,6 +370,7 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
     if atual:
         blocos.append(
             f'<div id="cal-corrente" data-mes="{ano_a}-{mes_a:02d}">\n'
+            f"{_destaque_topo(atual)}\n"
             f'  <h2 id="mes-corrente">Calendário de {html.escape(nome_mes(ano_a, mes_a))}</h2>\n'
             f"{_tabela_mes(atual)}\n"
             f"{_seccao_por_prestacao(atual)}\n"

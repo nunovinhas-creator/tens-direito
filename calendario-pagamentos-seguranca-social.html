@@ -132,6 +132,14 @@
     .cal-guia { font-size: 0.85rem; font-weight: 600; color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
     .cal-fonte-inline { font-size: 0.85rem; color: #5C6770; margin: 0.75rem 0 1.5rem; }
     .cal-fonte-inline a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
+    .cal-destaque { background: #e6f4f1; border: 1px solid #b8e0d8; border-left: 5px solid #0F766E; border-radius: 8px; padding: 1rem 1.25rem; margin: 0 0 1.5rem; }
+    .cal-destaque-proximo { font-size: 1.15rem; color: #0F172A; margin-bottom: 0.6rem; line-height: 1.45; }
+    .cal-destaque.cal-destaque-ativo .cal-destaque-linha { border-top: 1px solid #b8e0d8; padding-top: 0.6rem; margin-top: 0.1rem; }
+    .cal-destaque-rotulo { display: inline-block; background: #0F766E; color: #fff; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.15rem 0.5rem; border-radius: 4px; vertical-align: middle; margin-right: 0.35rem; }
+    .cal-destaque-proximo strong { color: #0F766E; font-size: 1.25rem; }
+    .cal-destaque-itens { display: block; font-size: 0.92rem; color: #495057; margin-top: 0.2rem; }
+    .cal-destaque-linha { font-size: 0.95rem; color: #1a5c56; margin: 0; }
+    .cal-destaque-linha a { color: #0F766E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
     .cal-proximo-mes { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin: 1.25rem 0; }
     .cal-degradado { background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 0 6px 6px 0; padding: 1rem 1.25rem; margin: 1.25rem 0; font-size: 0.95rem; }
     .cal-degradado p { margin-top: 0.4rem; }
@@ -245,6 +253,10 @@
 
 <!-- CAL:CORPO:INICIO -->
 <div id="cal-corrente" data-mes="2026-07">
+  <div id="cal-destaque" class="cal-destaque" data-mes="2026-07">
+    <p class="cal-destaque-linha">📅 <strong>Datas de pagamento em julho:</strong> 3, 7, 8, 16, 21, 23 e 28 — <a href="#por-prestacao">ver o que é pago em cada dia ↓</a></p>
+  </div>
+  <script id="cal-dados" type="application/json">[{"dia": 3, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "Pensões · CSI · Reembolso de funeral · PSI"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "RSI · Fundo de Garantia Salarial"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]</script>
   <h2 id="mes-corrente">Calendário de julho de 2026</h2>
   <div class="tabela-wrap">
     <table class="cal-tabela">
@@ -434,6 +446,50 @@
       if (alvo) alvo.textContent = nomes[agora.getMonth()] + ' de ' + agora.getFullYear();
       aviso.hidden = false;
     }
+  })();
+
+  // Destaque "Próximo pagamento" (progressive enhancement, zero rede):
+  // lê #cal-dados e, SÓ quando o mês renderizado é o mês corrente do
+  // visitante, promove a próxima data a contar de hoje no topo da página.
+  // Num mês passado (aviso de desatualização activo) ou no estado
+  // degradado nunca inventa um "próximo" — a camada estática das datas
+  // mantém-se sempre visível, com ou sem JS.
+  (function () {
+    var caixa = document.getElementById('cal-destaque');
+    var corr = document.getElementById('cal-corrente');
+    var dados = document.getElementById('cal-dados');
+    if (!caixa || !corr || !dados) return;
+    var mes = corr.getAttribute('data-mes');
+    if (!/^\d{4}-\d{2}$/.test(mes)) return;
+    var agora = new Date();
+    var mesCorrente = agora.getFullYear() + '-' + ('0' + (agora.getMonth() + 1)).slice(-2);
+    if (mes !== mesCorrente) return;  // mês passado/futuro: só a camada estática
+
+    var itens;
+    try { itens = JSON.parse(dados.textContent); } catch (e) { return; }
+    if (!Array.isArray(itens) || !itens.length) return;
+
+    var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    var mesNome = nomes[agora.getMonth()];
+    var hojeDia = agora.getDate();
+    var proximo = null;
+    for (var i = 0; i < itens.length; i++) {
+      if (itens[i].dia >= hojeDia) { proximo = itens[i]; break; }
+    }
+
+    var destaque = document.createElement('p');
+    destaque.className = 'cal-destaque-proximo';
+    if (proximo) {
+      destaque.innerHTML = '📅 <span class="cal-destaque-rotulo">Próximo pagamento</span> ' +
+        '<strong>' + proximo.dia + ' de ' + mesNome + '</strong>' +
+        ' <span class="cal-destaque-itens">' + proximo.resumo + '</span>';
+    } else {
+      destaque.innerHTML = '✅ Os pagamentos de ' + mesNome + ' já foram todos processados. ' +
+        'Vê abaixo o calendário do mês seguinte, quando disponível.';
+    }
+    caixa.insertBefore(destaque, caixa.firstChild);
+    caixa.classList.add('cal-destaque-ativo');
   })();
   </script>
 

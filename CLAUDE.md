@@ -1541,6 +1541,21 @@ tabela velha silenciosa.
   imagens og (`tests/test_og_image.py`) exige og:title == manifest —
   um og:title mensal obrigaria a regenerar a imagem (Chromium) todos os
   meses. Só `<title>`/description variam com o mês.
+- **Destaque "Próximo pagamento" no topo** (2026-07-12, pedido do Nuno —
+  é a informação por que a maioria vem à página): logo no início do
+  conteúdo, antes da tabela, o injector escreve duas camadas, ambas sem
+  rede — (1) estática, sempre visível mesmo sem JS, com todas as datas
+  do mês num relance (`.cal-destaque-linha`); (2) `#cal-dados` (JSON com
+  `dia`+`resumo` curto por pagamento) que o script de runtime lê para
+  **promover a próxima data a contar de hoje** (`.cal-destaque-proximo`:
+  "📅 Próximo pagamento: 16 de julho · …"). Só promove quando o mês
+  renderizado é o mês corrente do visitante — num mês velho (aviso de
+  desatualização activo) ou no estado degradado nunca inventa um
+  "próximo", e a camada estática mantém-se. `RESUMO_CURTO` em
+  `atualizar_calendario.py` dá os rótulos curtos (a tabela mantém os
+  nomes longos). Testado com Chromium real (promoção do dia certo,
+  ausência de promoção num mês velho, linha estática sempre visível,
+  0px de overflow a 375px).
 - **Guarda JS em runtime** (progressive enhancement, zero rede): script
   inline compara `#cal-corrente[data-mes]` com a data do visitante e
   mostra `#cal-aviso-desatualizado` se a página tiver ficado velha —
@@ -5322,3 +5337,25 @@ evergreen, como `comecar-aqui`; o canário de anos só rejeita anos
 passados, não exige o corrente). Ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.
 Fecha o projecto CALENDÁRIO-PAGAMENTOS (Fases 0-5).*
+---
+
+*Última revisão: 2026-07-12 — destaque "Próximo pagamento" no topo de
+`calendario-pagamentos-seguranca-social.html` (pedido do Nuno: é a
+informação por que a maioria vem à página, tem de estar visível no topo
+sem scroll). Duas camadas sem rede, dentro do sistema de injecção mensal
+existente (zonas CAL:*): camada estática sempre visível com todas as
+datas do mês (funciona sem JS) + `#cal-dados` (JSON dia+resumo curto) que
+o script de runtime lê para promover a próxima data a contar de hoje
+(`.cal-destaque-proximo`). Progressive enhancement rigoroso: num mês
+renderizado no passado (aviso de desatualização) ou no estado degradado
+nunca inventa um "próximo" — só promove quando `#cal-corrente[data-mes]`
+== mês corrente do visitante; a camada estática mantém-se sempre. Novo
+`RESUMO_CURTO` em `atualizar_calendario.py` (rótulos curtos para o
+destaque; a tabela mantém os nomes longos de `PRESTACOES`). 4 testes
+novos em `tests/test_calendario_frescura.py` (16→20): destaque estático
+presente e antes da tabela, `#cal-dados` JSON válido e com os mesmos dias
+do JSON de dados, promoção do dia certo a contar de hoje (Chromium real),
+e ausência de promoção num mês velho com a camada estática intacta. axe 0
+violações (contraste do destaque na paleta já auditada), 0px de overflow
+a 375px, injector idempotente (2.ª corrida zero alterações), ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*

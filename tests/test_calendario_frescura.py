@@ -33,6 +33,7 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 
 from atualizar_calendario import (  # noqa: E402
     PAGINA,
+    _encontrar_mes,
     atualizar_pagina,
     carregar_dados,
     hoje_lisboa,
@@ -210,6 +211,42 @@ def test_ancoras_por_prestacao_presentes_quando_ha_mes_corrente():
         assert f'id="{anchor}"' in HTML, f"âncora #{anchor} em falta na página"
 
 
+# ── Destaque "Próximo pagamento" no topo (verificação estática) ───────────
+
+def test_destaque_topo_estatico_presente_quando_ha_mes_corrente():
+    """A camada estática do destaque (todas as datas do mês) tem de estar
+    sempre visível no topo, sem depender de JS — é o que responde ao
+    utilizador que só quer o relance imediato das datas."""
+    if _mes_renderizado() == "":
+        pytest.skip("estado degradado — sem destaque de datas")
+    assert 'id="cal-destaque"' in HTML
+    assert 'id="cal-dados"' in HTML
+    assert re.search(r"Datas de pagamento em \w+:", HTML), (
+        "linha estática com as datas do mês em falta no destaque do topo"
+    )
+    # o destaque vem ANTES do h2/tabela do mês (é o topo do conteúdo)
+    assert HTML.index('id="cal-destaque"') < HTML.index('id="mes-corrente"')
+
+
+def test_cal_dados_json_valido_e_coerente_com_o_json_de_dados():
+    if _mes_renderizado() == "":
+        pytest.skip("estado degradado — sem #cal-dados")
+    import json as _json
+    m = re.search(r'<script id="cal-dados" type="application/json">(.*?)</script>',
+                  HTML, re.S)
+    assert m, "#cal-dados em falta"
+    itens = _json.loads(m.group(1))
+    assert itens and all("dia" in it and "resumo" in it for it in itens)
+    dados = carregar_dados()
+    hoje = hoje_lisboa()
+    atual = _encontrar_mes(dados, hoje.year, hoje.month)
+    dias_esperados = sorted(p["dia"] for p in atual["pagamentos"])
+    assert [it["dia"] for it in itens] == dias_esperados, (
+        "os dias de #cal-dados não batem com o JSON de dados — o destaque "
+        "e a tabela deixariam de estar sincronizados"
+    )
+
+
 # ── Fase 4: Playwright mobile 375px (Chromium real, nunca file://) ────────
 
 
@@ -313,4 +350,47 @@ class TestMobilePlaywright:
                 "desatualização — a guarda JS regrediu"
             )
             assert page.locator("#cal-mes-actual-nome").text_content().strip()
+            browser.close()
+
+    def test_destaque_promove_proximo_pagamento_no_mes_corrente(self, servidor):
+        if _mes_renderizado() == "":
+            pytest.skip("estado degradado — sem destaque")
+        hoje = dt.date.today()
+        if _mes_renderizado() != f"{hoje.year}-{hoje.month:02d}":
+            pytest.skip("página não é do mês corrente hoje (o canário de frescura cobre isso)")
+        import json as _json
+        itens = _json.loads(re.search(
+            r'<script id="cal-dados" type="application/json">(.*?)</script>',
+            HTML, re.S).group(1))
+        dias = sorted(it["dia"] for it in itens)
+        futuros = [d for d in dias if d >= hoje.day]
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            page.goto(servidor + PAGINA_URL)
+            page.wait_for_load_state("networkidle")
+            # a camada estática está sempre visível
+            assert page.locator(".cal-destaque-linha").is_visible()
+            prox = page.locator(".cal-destaque-proximo")
+            assert prox.count() == 1 and prox.is_visible()
+            texto = prox.text_content()
+            if futuros:
+                assert f"{futuros[0]} de " in texto, (
+                    f"esperava promover o dia {futuros[0]}, obteve: {texto!r}")
+            else:
+                assert "processados" in texto.lower()
+            browser.close()
+
+    def test_destaque_nunca_promove_proximo_num_mes_velho(self, servidor):
+        """Num mês renderizado no passado, o destaque nunca inventa uma
+        'próxima' data — mas a camada estática das datas mantém-se."""
+        if _mes_renderizado() == "":
+            pytest.skip("estado degradado — sem destaque")
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=_localizar_chromium())
+            page = browser.new_page(viewport={"width": 375, "height": 800})
+            page.goto(servidor + PAGINA_VELHA_URL)
+            page.wait_for_load_state("networkidle")
+            assert page.locator(".cal-destaque-proximo").count() == 0
+            assert page.locator(".cal-destaque-linha").is_visible()
             browser.close()
