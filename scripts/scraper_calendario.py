@@ -226,16 +226,22 @@ def raspar_mes(ano: int, mes: int, timeout_ms: int = 45000) -> dict:
                 ).first.click(timeout=10000)
             except Exception as e:
                 raise ScraperError(f"não consegui clicar no separador '{rotulo}': {e}") from e
-            # esperar que apareça pelo menos um cabeçalho de dia do mês
+            # esperar que a tabela do mês renderize por completo — não só o
+            # cabeçalho de um dia, mas também as linhas de prestação/método
+            # (o OutSystems renderiza o cabeçalho antes das linhas; ler cedo
+            # de mais dá um dia "sem prestações"). Espera pelo cabeçalho do
+            # mês E por uma linha de método, depois deixa assentar.
             try:
                 page.wait_for_function(
-                    "r => new RegExp(r).test(document.body.innerText)",
+                    "r => { var t = document.body.innerText; "
+                    "return new RegExp(r).test(t) && /Transfer[eê]ncia/i.test(t); }",
                     arg=rf"\b\d{{1,2}}\s+{abbr}\b", timeout=15000,
                 )
             except Exception as e:
                 raise ScraperError(
                     f"a tabela de {rotulo} não carregou após clicar no separador"
                 ) from e
+            page.wait_for_timeout(1500)  # deixar todos os dias/linhas assentar
             texto = page.evaluate("document.body ? document.body.innerText : ''")
         finally:
             browser.close()
