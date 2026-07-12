@@ -87,6 +87,12 @@ EXCLUIDAS = {
     "pedido-acesso-documentos-administrativos.html",
     "requerimento-generico-seguranca-social.html",
     "pedido-declaracao-comprovativo-prestacoes.html",
+    # Calendário de pagamentos — página utilitária cross-cluster (as
+    # datas cobrem pensões, abono, desemprego, RSI, CSI, PSI, cuidador
+    # informal…), mesma categoria de simuladores.html/comecar-aqui.html.
+    # Corpo gerado por scripts/atualizar_calendario.py entre marcadores
+    # CAL:META/CAL:CORPO (ver docs/FONTE-CALENDARIO.md).
+    "calendario-pagamentos-seguranca-social.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")

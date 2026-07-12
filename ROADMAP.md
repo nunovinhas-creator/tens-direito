@@ -122,6 +122,12 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   confirmado em CI real** (só o caminho "cria/actualiza a Issue" foi
   verificado nesta sessão) — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE
   BRANCHES"**.
+- **Fase 5 do calendário de pagamentos** (sessão posterior, nunca misturar
+  com a Fase 3+4): `pagamento-apos-deferimento.html` — "Pedido deferido:
+  quando recebes o primeiro pagamento", por prestação, ligada ao
+  calendário (long-tail identificada na spec) — ver
+  `CALENDARIO-PAGAMENTOS-SPEC.md` (documento externo) e CLAUDE.md
+  **"CALENDÁRIO DE PAGAMENTOS"**.
 - **2 páginas novas propostas para o cluster escolar** (decisão do Nuno,
   nada implementado) — `calendario-escolar-apoios.html` (calendário único
   de prazos ASE/bolsa mérito/MEGA/prova escolar) e
@@ -139,6 +145,7 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 | **Janeiro/Fevereiro** | Nova portaria de actualização da PSI | `prestacao-social-para-a-inclusao.html` — verificação manual/news dre.pt |
 | **Junho** (antes do prazo 31 jul) | Rever ano lectivo/prazo — não deve disparar antes de **junho de 2027** | `prova-escolar.html` — calendário anual |
 | **Julho, até publicação** | Datas do MEGA 2026/2027 (manuais escolares) — confirmado a 06/07/2026 que ainda não há anúncio (gov.pt, manuaisescolares.pt, IGeFE); vigilância automática alargada a `igefe.mec.pt` nesse mesmo dia (nova fonte `igefe_mega`, ver CLAUDE.md) | `manuais-escolares-mega.html` — Issue automática do scraper, agora com 2 fontes independentes (`dge.mec.pt` **e** `igefe.mec.pt`) sob a mesma chave de aviso — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
+| **Até 31 jul 2026** | Fases 3+4 do calendário de pagamentos — workflow mensal (dia 25, 06:00 UTC + retry dia 28, Issue `calendario-manual` como fallback) + testes Playwright completos; obter e publicar o calendário de **agosto** a partir da fonte oficial (deliberadamente não incluído a 12/07 — sem confirmação robusta; critério de sucesso da spec: agosto live antes de 1 de agosto) | `calendario-pagamentos-seguranca-social.html` — ver CLAUDE.md **"CALENDÁRIO DE PAGAMENTOS"** e `docs/FONTE-CALENDARIO.md` |
 | **Agosto 2026** | Prazo PRR do decreto-lei da PSU | `prestacao-social-unica.html`, `psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html` — verificação manual/news dre.pt |
 | **Setembro** | Prazos ASE / Bolsa de Mérito | `acao-social-escolar.html`, `bolsa-de-merito.html` — calendário anual |
 | **Janeiro 2027** | Entrada em vigor da PSU para beneficiários (texto inicial, ainda não confirmado pelo decreto-lei) | Todo o cluster PSU |

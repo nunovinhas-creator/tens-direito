@@ -392,6 +392,7 @@ para esses três casos.
 | `documentos/pedido-acesso-documentos-administrativos.html` | Pedido de acesso a documentos administrativos (LADA) | 6 jul. 2026 |
 | `documentos/requerimento-generico-seguranca-social.html` | Requerimento genérico à Segurança Social | 6 jul. 2026 |
 | `documentos/pedido-declaracao-comprovativo-prestacoes.html` | Pedido de declaração/comprovativo de prestações | 6 jul. 2026 |
+| `calendario-pagamentos-seguranca-social.html` | Calendário de Pagamentos da Segurança Social | 12 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1493,6 +1494,80 @@ filosofia de `test_simulador_csi_calculo.py`. Mais: `test_nav_tem_link_documento
 novo em `tests/test_nav_coerencia.py` (mesmo padrão de
 `test_nav_tem_link_simuladores`). Suite completa reconfirmada sem
 regressões (ver entrada de revisão no fim deste ficheiro), ruff limpo.
+
+---
+
+## CALENDÁRIO DE PAGAMENTOS DA SEGURANÇA SOCIAL
+
+Página evergreen `calendario-pagamentos-seguranca-social.html` (Fases
+0+1+2 de `CALENDARIO-PAGAMENTOS-SPEC.md`, 2026-07-12 — documento
+externo, mesmo padrão de `MELHORIAS-SPEC.md`). URL única que acumula
+autoridade; o conteúdo do mês é injectado, nunca reescrito à mão.
+
+**Invariante crítico**: a página NUNCA mostra um mês passado como
+corrente, e nenhuma data vem de memória — só da fonte oficial da
+Segurança Social (ver `docs/FONTE-CALENDARIO.md`, Fase 0: notícia
+mensal no portal antigo + página Calendário do portal novo `/ptss/pssd/`;
+⚠️ o slug da notícia é reciclável entre meses — validar sempre o mês no
+CONTEÚDO, nunca no URL). Sem dados do mês corrente, a página degrada
+para um bloco explícito "consultar fonte oficial" com link — nunca uma
+tabela velha silenciosa.
+
+### Arquitectura
+
+- **`data/calendario_pagamentos.json`** — fonte de verdade
+  (`atualizado_em`, `fonte_url`, `meses[].pagamentos[]` com
+  dia/prestações/método/nota). Julho 2026 triangulado por ≥5 fontes
+  independentes que reproduzem o calendário oficial (seg-social.pt
+  bloqueado nesta sessão — mesmo padrão de fact-check documentado para
+  o cluster Habitação). **Agosto deliberadamente ausente**: as únicas
+  fontes eram indistinguíveis de previsão por regra de dias fixos.
+- **`scripts/atualizar_calendario.py`** — injecção idempotente (2.ª
+  corrida = zero alterações, `--dry-run` disponível), confinada a dois
+  marcadores: `CAL:META:INICIO/FIM` (title + meta description com o mês
+  corrente) e `CAL:CORPO:INICIO/FIM` (tabela do mês, secção "Quando
+  recebo a minha prestação?" com as âncoras da spec —
+  `#pensoes`/`#csi`/`#psi`/`#abono-familia`/`#subsidio-desemprego`/
+  `#subsidio-doenca`/`#rsi`/`#apoio-renda`/`#cuidador-informal` — e o
+  mês seguinte quando disponível). Validação dura antes de escrever
+  (allow-list `PRESTACOES`, dias 1-31, listas não vazias, `fonte_url`
+  só de seg-social.pt, mês duplicado) — falha sem tocar no HTML.
+  Meses passados nunca são renderizados, mesmo presentes no JSON.
+- **`og:title` estável, sem mês** (decisão deliberada): o manifest das
+  imagens og (`tests/test_og_image.py`) exige og:title == manifest —
+  um og:title mensal obrigaria a regenerar a imagem (Chromium) todos os
+  meses. Só `<title>`/description variam com o mês.
+- **Guarda JS em runtime** (progressive enhancement, zero rede): script
+  inline compara `#cal-corrente[data-mes]` com a data do visitante e
+  mostra `#cal-aviso-desatualizado` se a página tiver ficado velha —
+  testado com Chromium real (cópia adulterada com mês anterior mostra o
+  aviso; estado normal não).
+- **`tests/test_calendario_frescura.py`** — canário de frescura (FALHA
+  quando o mês renderizado < mês real: CI vermelho força actualização —
+  provado a falhar de propósito com `data-mes` adulterado, e revertido),
+  sincronização página↔script↔JSON, estado degradado (JSON vazio ou só
+  com meses passados nunca rende tabela), e os caminhos de falha da
+  validação. Adiantado da Fase 4 só este núcleo do invariante; o resto
+  (Playwright mobile no CI, workflow) fica para a sessão da Fase 3+4.
+- Integração: `EXCLUIDAS` em `sincronizar_clusters.py` (página
+  utilitária cross-cluster, mesma categoria de `simuladores.html`),
+  nav/sitemap/pesquisa.js/og-image próprios, cross-links nos dois
+  sentidos com 7 páginas de prestações (parágrafo "📅 Em que dia do mês
+  é pago?" antes do bloco de fontes, com âncora directa) + botão em
+  `comecar-aqui.html` (link sem âncora — o grafo de órfãs de
+  `test_higiene_indexacao.py` não segue hrefs com `#fragmento`, achado
+  real desta sessão).
+
+### Pendente (não fazer no pipeline diário)
+
+**Fases 3+4 — até 31 jul 2026** (ver ROADMAP.md → DATAS FIXAS):
+workflow mensal próprio (dia 25 + retry 28; Issue `calendario-manual`
+com prompt pronto como fallback; nunca commit parcial), com âmbito de
+escrita disjunto e guardrail próprio (só o JSON + a página entre
+marcadores CAL:* — mesmo padrão de `shadow-daily.yml`). Para o
+`pipeline-diario.yml`, esta página é HTML manual protegido como
+qualquer outra. **Fase 5** (sessão à parte):
+`pagamento-apos-deferimento.html`.
 
 ---
 
@@ -5081,3 +5156,44 @@ novos em `tests/test_validar_carimbos_elegiveis.py` (todos os caminhos
 de falha provados, isolados em tmp_path); ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` — este script não muda nenhum comportamento, só observa.*
+---
+
+*Última revisão: 2026-07-12 — Fases 0+1+2 de `CALENDARIO-PAGAMENTOS-SPEC.md`:
+nova página evergreen `calendario-pagamentos-seguranca-social.html` (ver nova
+secção "CALENDÁRIO DE PAGAMENTOS DA SEGURANÇA SOCIAL"). Fase 0: fonte oficial
+identificada e documentada em `docs/FONTE-CALENDARIO.md` — notícia mensal do
+portal antigo (`/noticias/-/asset_publisher/kBZtOMZgstp3/content/datas-de-pagamento-...`,
+com a fragilidade real de o slug ser reciclado entre meses — validar o mês
+sempre no conteúdo, nunca no URL) + página Calendário do portal novo
+(`/ptss/pssd/menu/pagamentos-dividas/valores-a-receber/calendario`);
+seg-social.pt continua bloqueado nesta sessão (403 na proxy, `WebFetch` e
+`curl`) — julho 2026 triangulado por ≥5 fontes independentes que reproduzem o
+calendário oficial (3/7/8/16/21/23/28 jul; tudo por transferência + vale de
+correio excepto apoio à renda, só transferência; subsídio de férias dos
+pensionistas pago com a pensão de julho). **Agosto deliberadamente não
+incluído** — as 2 únicas fontes encontradas (blogs) são indistinguíveis de
+previsão por regra de dias fixos; fica para a Fase 3. Fase 1:
+`data/calendario_pagamentos.json` (fonte de verdade). Fase 2: página com
+tabela do mês + secção "Quando recebo a minha prestação?" (9 âncoras, links
+aos guias), FAQ (5 perguntas, factos só das fontes trianguladas), JSON-LD
+`FAQPage`+`BreadcrumbList`+`Article`, e injecção idempotente por
+`scripts/atualizar_calendario.py` (zonas `CAL:META`/`CAL:CORPO`; validação
+dura com allow-list de prestações; estado degradado explícito "consultar
+fonte oficial" quando falta o mês corrente — meses passados nunca renderizados;
+og:title estável sem mês para não obrigar a regenerar a imagem og
+mensalmente). Guarda JS em runtime mostra aviso se a página ficar velha no
+browser do visitante (zero rede). Canário de frescura adiantado da Fase 4
+(`tests/test_calendario_frescura.py`, 13 testes): página com mês passado =
+CI vermelho deliberado — provado a falhar de propósito e revertido; caminhos
+de falha da validação todos cobertos (invariante "nenhum estado de erro pode
+parecer sucesso"). Achado real: o grafo de órfãs de `test_higiene_indexacao.py`
+não segue hrefs com `#fragmento` — os 7 cross-links com âncora não contavam,
+resolvido com link simples em `comecar-aqui.html` (Ferramentas). Integração
+completa: EXCLUIDAS, nav, sitemap, pesquisa.js, og-image própria,
+`DATAS_PUBLICACAO`, cross-links em 7 páginas de prestações. Verificado com
+Chromium real: aviso de desatualização a disparar na cópia com mês velho e
+escondido no estado normal, âncoras a funcionar, 0px de overflow a 375px,
+zero erros JS; axe a passar; `detectar_alertas()` sem falsos positivos na
+página nova. Fases 3+4 (workflow mensal, até 31 jul) e 5 registadas em
+ROADMAP.md. Ruff limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+não tocados.*

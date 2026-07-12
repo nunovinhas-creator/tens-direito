@@ -58,6 +58,7 @@ ID_NVLABS = "https://tensdireito.com/sobre.html#nvlabs"
 # registado — usa-se data ISO 8601 parcial (AAAA-MM), nunca um dia
 # inventado.
 DATAS_PUBLICACAO = {
+    "calendario-pagamentos-seguranca-social.html": "2026-07-12",
     "abono-de-familia.html": "2026-06",
     "acao-social-escolar.html": "2026-06",
     "bolsa-de-merito.html": "2026-06",
