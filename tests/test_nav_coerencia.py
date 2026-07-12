@@ -78,6 +78,18 @@ def test_nav_tem_link_simuladores(caminho):
 
 
 @pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_nav_tem_link_calendario(caminho):
+    html = caminho.read_text(encoding="utf-8")
+    m = re.search(r"<!-- NAV:INICIO -->([\s\S]*?)<!-- NAV:FIM -->", html)
+    assert m, f"{caminho.name}: bloco NAV vazio ou em falta"
+    bloco = m.group(1)
+    assert bloco.count('href="/calendario-pagamentos-seguranca-social.html"') >= 2, (
+        f"{caminho.name}: link '/calendario-pagamentos-seguranca-social.html' em falta na nav "
+        "(esperado no menu desktop e mobile)"
+    )
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
 def test_nav_tem_link_documentos(caminho):
     html = caminho.read_text(encoding="utf-8")
     m = re.search(r"<!-- NAV:INICIO -->([\s\S]*?)<!-- NAV:FIM -->", html)

@@ -92,6 +92,7 @@ def render_nav(clusters: List[Cluster]) -> str:
           </div>
         </div>
         <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
         <a href="/simuladores.html">🧮 Simuladores</a>
         <a href="/documentos.html">📄 Documentos</a>
         <a href="/noticias.html">Notícias</a>
@@ -121,6 +122,7 @@ def render_nav(clusters: List[Cluster]) -> str:
       <span class="nav-mobile-label">Apoios</span>
 {render_mobile_apoios(clusters)}
       <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
       <a href="/simuladores.html">🧮 Simuladores</a>
       <a href="/documentos.html">📄 Documentos</a>
       <a href="/noticias.html">Notícias</a>
