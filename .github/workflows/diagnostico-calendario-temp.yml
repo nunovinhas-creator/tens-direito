@@ -19,6 +19,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Instalar dependências
-        run: pip install requests beautifulsoup4
+        run: |
+          pip install requests beautifulsoup4 playwright
+          playwright install chromium --with-deps
       - name: Examinar fontes oficiais
         run: python scripts/_diag_calendario.py
