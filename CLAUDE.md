@@ -396,6 +396,7 @@ para esses três casos.
 | `documentos/requerimento-generico-seguranca-social.html` | Requerimento genérico à Segurança Social | 6 jul. 2026 |
 | `documentos/pedido-declaracao-comprovativo-prestacoes.html` | Pedido de declaração/comprovativo de prestações | 6 jul. 2026 |
 | `calendario-pagamentos-seguranca-social.html` | Calendário de Pagamentos da Segurança Social | 12 jul. 2026 |
+| `pagamento-apos-deferimento.html` | Pedido deferido: quando cai o primeiro pagamento | 12 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1602,8 +1603,12 @@ o fallback semiautomático que a spec previa.
   ficheiro escrito no repositório).
 
 Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
-protegido como qualquer outra. **Fase 5** (sessão à parte):
-`pagamento-apos-deferimento.html`.
+protegido como qualquer outra. **Fase 5 — concluída (2026-07-12):**
+`pagamento-apos-deferimento.html` ("Pedido deferido: quando cai o
+primeiro pagamento"), página evergreen cross-cluster com tabela por
+prestação (desemprego/doença/parental/abono/RSI/pensão/CSI) e
+cross-links nos dois sentidos com o calendário — ver a entrada de
+revisão no fim deste ficheiro.
 
 ---
 
@@ -5277,3 +5282,43 @@ manual que publicar agosto. Ruff limpo; suite completa local verde
 (2081+ testes; única falha local era `lxml` em falta no sandbox,
 instalado e confirmado a passar).
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+---
+
+*Última revisão: 2026-07-12 — Fase 5 de `CALENDARIO-PAGAMENTOS-SPEC.md`:
+nova página evergreen `pagamento-apos-deferimento.html` ("Pedido
+deferido: quando cai o primeiro pagamento"), a long-tail identificada
+na spec — responde à dúvida real de quem já foi deferido mas ainda não
+recebeu. Fact-check prévio via `WebSearch` (WebFetch continua bloqueado
+nesta sessão), triangulando o enquadramento de cada prestação: prazo
+geral de decisão de 90 dias do CPA (DL n.º 4/2015, dever de decisão);
+subsídio de desemprego (1.º pagamento em 30 dias a contar do
+requerimento completo, direito desde a data do requerimento);
+subsídio de doença (desde o fim do período de espera); parental (desde
+a data do parto); abono de família (retroativos só se pedido dentro dos
+6 meses — a excepção que penaliza quem se atrasa; fora do prazo, só a
+partir do mês seguinte ao pedido); RSI (direito desde o requerimento
+instruído; se o contrato de inserção não for celebrado em 60 dias por
+facto não imputável, devido a partir do 61.º dia); pensão de velhice
+(processamento de meses, 1.º pagamento com retroativos, possível pensão
+provisória); CSI (a partir do mês seguinte ao pedido). Mensagem central
+honesta: deferido ≠ pago, e o 1.º pagamento nem sempre cai na 1.ª data
+do calendário — mas em regra inclui retroativos. Estrutura: card de
+enquadramento (CPA), tabela por prestação com cross-link ao guia de
+cada uma, HowTo "como acompanhar o 1.º pagamento" (SSD → IBAN →
+pagamentos → exposição por atraso), FAQ (5 perguntas), JSON-LD
+`Article`+`HowTo`+`FAQPage`+`BreadcrumbList`. Cross-links nos dois
+sentidos com `calendario-pagamentos-seguranca-social.html` (a FAQ de
+deferimento do calendário passa a linkar aqui — é o que torna a página
+alcançável, não órfã) e com os geradores de `exposicao-atraso-processamento`
+e `reclamacao-decisao-seguranca-social`. Integração: `EXCLUIDAS`
+(utilitária cross-cluster, mesma categoria do calendário/comecar-aqui),
+sitemap, pesquisa.js, `DATAS_PUBLICACAO`, og-image própria; scripts
+idempotentes (partilhar/canónica/autoria/article) a zero — a página
+nasceu conforme. Verificado: axe 0 violações, 0px de overflow a 375px,
+`detectar_alertas()` sem falsos positivos (o "2015" do DL vive no corpo,
+fora de title/description), 4 blocos JSON-LD válidos, suite dos testes
+parametrizados verde. Título deliberadamente sem ano (procedimento
+evergreen, como `comecar-aqui`; o canário de anos só rejeita anos
+passados, não exige o corrente). Ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.
+Fecha o projecto CALENDÁRIO-PAGAMENTOS (Fases 0-5).*

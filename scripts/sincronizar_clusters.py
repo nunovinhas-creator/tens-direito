@@ -93,6 +93,10 @@ EXCLUIDAS = {
     # Corpo gerado por scripts/atualizar_calendario.py entre marcadores
     # CAL:META/CAL:CORPO (ver docs/FONTE-CALENDARIO.md).
     "calendario-pagamentos-seguranca-social.html",
+    # Pedido deferido: quando cai o primeiro pagamento — página utilitária
+    # cross-cluster (cobre desemprego, abono, RSI, pensão, CSI…, um por
+    # cluster diferente), mesma categoria de comecar-aqui.html/calendário.
+    "pagamento-apos-deferimento.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")

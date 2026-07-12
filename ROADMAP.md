@@ -122,12 +122,6 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   confirmado em CI real** (só o caminho "cria/actualiza a Issue" foi
   verificado nesta sessão) — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE
   BRANCHES"**.
-- **Fase 5 do calendário de pagamentos** (sessão posterior, nunca misturar
-  com a Fase 3+4): `pagamento-apos-deferimento.html` — "Pedido deferido:
-  quando recebes o primeiro pagamento", por prestação, ligada ao
-  calendário (long-tail identificada na spec) — ver
-  `CALENDARIO-PAGAMENTOS-SPEC.md` (documento externo) e CLAUDE.md
-  **"CALENDÁRIO DE PAGAMENTOS"**.
 - **2 páginas novas propostas para o cluster escolar** (decisão do Nuno,
   nada implementado) — `calendario-escolar-apoios.html` (calendário único
   de prazos ASE/bolsa mérito/MEGA/prova escolar) e

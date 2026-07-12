@@ -179,6 +179,11 @@
     "pagina": "p/trabalho-rendimento.html",
     "titulo": "Apoios de Trabalho e Rendimento em Portugal 2026 — Guia Completo"
   },
+  "pagamento-apos-deferimento": {
+    "chip": null,
+    "pagina": "pagamento-apos-deferimento.html",
+    "titulo": "Pedido deferido: quando cai o primeiro pagamento da Segurança Social"
+  },
   "passe-sub23": {
     "chip": "Apoios Escolares",
     "pagina": "passe-sub23.html",
