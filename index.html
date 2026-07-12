@@ -79,6 +79,22 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .nav-mobile-menu form { display: flex; align-items: center; background: #F3F4F6; border-radius: 8px; padding: 0.4rem 0.75rem; gap: 0.4rem; margin-bottom: 0.5rem; border: 2px solid transparent; }
 .nav-mobile-menu form:focus-within { border-color: #0F766E; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
 .nav-mobile-menu input { flex: 1; border: none; background: transparent; font-size: 0.95rem; color: var(--ink); outline: none; }
+/* Barra fixa do calendário de pagamentos — só na homepage. Sempre visível
+   (sticky) no topo, acima da nav; o combinador de irmão (.cal-topo ~ .nav-wrap)
+   desce a nav só aqui, sem tocar nas outras páginas. */
+.cal-topo-regiao { position: sticky; top: 0; z-index: 101; }
+.cal-topo { height: 40px; display: flex; align-items: center; justify-content: center; gap: 0.4rem; background: var(--teal); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.92rem; padding: 0 1rem; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+.cal-topo:hover { background: var(--teal-dark); }
+.cal-topo:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }
+.cal-topo span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal-topo .cal-topo-curto { display: none; }
+.cal-topo-regiao ~ .nav-wrap { top: 40px; }
+.cal-topo-regiao ~ .nav-wrap .nav-mobile-menu { top: 100px; }
+@media (max-width: 760px) {
+  .cal-topo { font-size: 0.86rem; }
+  .cal-topo .cal-topo-longo { display: none; }
+  .cal-topo .cal-topo-curto { display: inline; }
+}
 .hero { padding: 3.5rem 1rem 3rem; text-align: center; background: var(--white); }
 .hero h1 { font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.75rem; color: var(--ink); }
 .hero h1 em { color: var(--teal); font-style: normal; }
@@ -222,6 +238,12 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <div class="cal-topo-regiao" role="region" aria-label="Calendário de pagamentos">
+    <a class="cal-topo" href="/calendario-pagamentos-seguranca-social.html">
+      📅 <span class="cal-topo-longo">Calendário de pagamentos da Segurança Social — ver as datas do mês</span><span class="cal-topo-curto">Calendário de pagamentos SS</span> <span aria-hidden="true">→</span>
+    </a>
+  </div>
 
   <div role="region" aria-label="Destaque">
   <!-- DESTAQUE:INICIO -->
