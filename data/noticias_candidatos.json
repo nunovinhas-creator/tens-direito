@@ -2073,5 +2073,115 @@
         "score": 3
       }
     ]
+  },
+  {
+    "data": "2026-07-12",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 12,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Arrendamento: Governo aprova reforma para aumentar a oferta de habitação - XXV Governo Constitucional",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-07-09",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-09"
+      },
+      {
+        "titulo": "Despejos, atualizações, apoios. Guia simples para perceber o que vai mudar nas rendas - CNN Portugal",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-07-09",
+        "score": 3,
+        "decisao": "vencedor",
+        "motivo": "score=3, categoria=habitacao"
+      },
+      {
+        "titulo": "Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? - ECO",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-07",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-07"
+      },
+      {
+        "titulo": "Reformados recebem pensão e subsídio de férias este mês - ECO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-08",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=apoios"
+      },
+      {
+        "titulo": "Mexidas no arrendamento. Tudo o que muda com o programa \"Construir Portugal\" - Diário de Notícias",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-07-09",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'habitacao' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Candidaturas à Ação Social Escolar em Amares decorrem até 12 de julho - O Amarense – Jornal",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-07-07",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Despejos, atualizações, apoios. Guia simples para perceber o que vai mudar nas rendas - CNN Portugal",
+        "feed_nome": "habitacao_arrendamento",
+        "score": 3
+      },
+      {
+        "titulo": "Reformados recebem pensão e subsídio de férias este mês - ECO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 2
+      }
+    ]
   }
 ]

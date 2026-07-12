@@ -11,12 +11,30 @@
     },
     {
       "data_iso": "2026-07-09",
+      "titulo": "Despejos, atualizações, apoios. Guia simples para perceber o que vai mudar nas rendas",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPa1lMcFlRMzRELUZ0VEtwTGNzbGlUYTUxTTZkaDY0SFBxT1dac3pOcTBST3FPVk5idUl4SUl0T2FXVF9rMkRHY3ZqazNFYVUxSldrbEpQYVBoUjZFUUpZemRUSWJkaEVGUFZmWW1xVFM5eXdTNXFYVXZKclRfMjI2aEZRRUJUNVpyLWE3SUV4dGxQT1k5amNKUTc1ZUZzV2RQTW91U2lRTG1nUHNJWnNEdkg1QU8wUXNtSTFWY1AtTTRXcXhibUVzVFk5Ni1ZclRwTXRNRWFZcEdHX29tNjNJaVpCTlBXZ3BuMXpWTHU0cG96SlZvZlE?oc=5",
+      "resumo": "Despejos, atualizações, apoios. Guia simples para perceber o que vai mudar nas rendas CNN Portugal",
+      "categoria": "habitacao",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-07-09",
       "titulo": "Arrendamento: Governo aprova reforma para aumentar a oferta de habitação",
       "fonte_nome": "XXV Governo Constitucional",
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOUXBHaGpxYW04eTQ3SnRnQVNCNWxERk5EaWtPRERkbXNXMnNnTHpwTWMtMkp3V3MzejQwZzkyWnlVYWVOdXRIVHdOMmk3amRGQVZ3LVpiZFBoUkx1QUxBY0c3QmxxQVhabldOaWZQZS1XWFFmMjFCSFE5SjZhdXBobDFHYUxmczg3NkMxMllwaUUtZi1QeEY3MDJYclRPU3o2WlpQQ2NvenhhQ1ZteEVlS3VmRXZxYnlhTTZoVEFn?oc=5",
       "resumo": "Arrendamento: Governo aprova reforma para aumentar a oferta de habitação XXV Governo Constitucional",
       "categoria": "habitacao",
       "cluster_id": "habitacao"
+    },
+    {
+      "data_iso": "2026-07-08",
+      "titulo": "Reformados recebem pensão e subsídio de férias este mês",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQZ1U5NjIyellRRnVlS054LWw3V2RzT0FrVG83ajN4TFdUQWhmRk5IZVhYLXJCZktHQ1BBOGhweVpacXgwTHFHLXd6ZlZyOGNvdVpOVzlKMVJvMmM0YmlTT3l4N1N5RjYzOWd0d0puTldMVUJRcEVPN3NkcHZYWU5zcklPNktVanMyVmcwZFlnTGM?oc=5",
+      "resumo": "Reformados recebem pensão e subsídio de férias este mês ECO",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-07-07",

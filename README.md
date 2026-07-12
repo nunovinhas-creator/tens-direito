@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **11 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **12 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -25,6 +25,7 @@ Actualizado automaticamente a partir do repositório em **11 de julho de 2026**.
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
+| [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
@@ -240,6 +241,7 @@ tens-direito/
 │   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
 │   ├── limpar_css_morto_nav.py
+│   ├── migrar_consentimento.py
 │   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
 │   ├── run_shadow_daily.py
@@ -251,6 +253,7 @@ tens-direito/
 │   ├── sincronizar_clusters.py
 │   ├── sincronizar_nav.py
 │   ├── source_adapter.py
+│   ├── validar_carimbos_elegiveis.py
 │   ├── verificar_datas.py
 │   ├── verificar_injecao.py
 │   ├── verificar_skips_permitidos.py
@@ -362,6 +365,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 11 de julho de 2026 às 09:16 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 12 de julho de 2026 às 09:19 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
