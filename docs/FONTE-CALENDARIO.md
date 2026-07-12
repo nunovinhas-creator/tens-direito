@@ -94,43 +94,59 @@ Estas regras servem só para **validação de plausibilidade** na Fase 3
 (um valor fora deste padrão exige confirmação extra) — nunca para
 *gerar* datas. Datas geram-se apenas a partir da fonte oficial.
 
-## ⚠️ ACHADO DECISIVO (diagnóstico de 2026-07-12, 4 rondas num runner real)
+## ✅ FONTE PÚBLICA REAL ENCONTRADA (2026-07-12, pista do Nuno) — scraping automático
 
-**A fonte oficial pública deixou de existir com a migração do portal.**
-Provado com fetch/Playwright reais (runs do workflow temporário
-`diagnostico-calendario-temp.yml`, apagado no fim):
+**`https://www.seg-social.pt/ptss/pssd/pagamentos`** — página PÚBLICA
+oficial, sem login, provada num runner real (workflow temporário,
+apagado no fim):
 
-1. **Portal antigo morto**: a notícia mensal, `/noticias` e
-   `/pagamentos2` redireccionam TODOS para o gateway da SSD
-   (`/ptss/pssd/home?r=...`) — com `requests` devolvem só a shell de
-   cookies (213 chars); com Playwright a SPA carrega a home e **não
-   restaura o recurso pedido** (o parâmetro `r=` é ignorado).
-2. **Portal novo sem calendário público**: a listagem
-   `/ptss/pssd/noticias` renderiza (13 notícias, sem paginação) mas
-   **nenhuma** é de datas de pagamento; slugs candidatos dão 404 real
-   (`/ptss/fraw/errors/404`); a página "Calendário" de
-   `pagamentos-dividas/valores-a-receber` é uma funcionalidade com
-   login ("os seus próximos pagamentos"), não uma publicação mensal.
-3. A notícia de julho existia no portal antigo (indexada pelo Google)
-   — morreu com a migração, dias depois de publicada.
+- `requests` (GET simples): **HTTP 200, NÃO redirecciona para o gateway
+  de login** (`redirecciona p/ gateway SSD: False`) — ao contrário de
+  `/pagamentos2` e do "Calendário" de valores-a-receber.
+- SPA OutSystems com um **separador por mês** ("junho 2026",
+  "julho 2026", "agosto 2026", …). Ao clicar num separador, mostra a
+  tabela oficial desse mês: por cada dia, as prestações pagas e o método
+  (transferência bancária / vale de correio).
+- As datas são publicadas **antes do início do mês** (agosto já lá
+  estava a meio de julho, com as antecipações de fim-de-semana já
+  aplicadas — ex.: pensões antecipadas de 8 para 7 ago porque 8 é
+  sábado).
+- Nota estrutural: a tabela **não** é um `<table>` (`tabelas no DOM: 0`)
+  — é uma lista de blocos por dia. O cabeçalho do dia aparece antes das
+  linhas de prestação renderizarem, por isso `raspar_mes` espera pelo
+  cabeçalho do mês **E** por uma linha de método, mais um settle, antes
+  de ler (ver `scripts/scraper_calendario.py`).
 
-**Consequência**: scraping automático da fonte oficial é hoje
-IMPOSSÍVEL, não apenas frágil. O fluxo mensal é o fallback
-semiautomático que a spec previa, com uma sonda que detecta se a
-publicação oficial reaparecer.
+### Correcção à conclusão anterior (mesmo dia, mais cedo)
+
+A ronda de diagnóstico anterior concluiu, erradamente, que "a fonte
+pública deixou de existir / scraping é impossível" — porque testou
+`/pagamentos2`, `/noticias` e o "Calendário" de valores-a-receber (que
+de facto redireccionam para login ou não têm a tabela), mas **não**
+testou `/ptss/pssd/pagamentos`. O Nuno apontou esse URL; um novo
+diagnóstico confirmou-o como fonte pública real. **Scraping automático
+é possível** — implementado em `scripts/scraper_calendario.py`, com o
+fluxo manual (Issue + prompt) a ficar apenas como *fallback* se o
+scraper falhar (mês ainda não publicado, prestação nova fora da
+allow-list, layout mudado). Provado ponta-a-ponta: agosto de 2026 foi
+raspado ao vivo, validado, injectado e commitado automaticamente pelo
+`calendario-mensal.yml` (run 29201776013).
 
 ## Fase 3 — IMPLEMENTADA (2026-07-12): fluxo semiautomático
 
 `.github/workflows/calendario-mensal.yml` + `scripts/verificar_calendario_mensal.py`:
 
 1. **Dia 25 (06:00 UTC) + retry dia 28**: alvo = mês seguinte. Se
-   `data/calendario_pagamentos.json` já o tem (posto por sessão manual
-   verificada) → injecção idempotente + testes + commit confinado.
-   Se não tem → sonda `/ptss/pssd/noticias` (Playwright) à procura de
-   uma notícia de datas de pagamento reaparecida, e abre/actualiza a
-   Issue `calendario-manual` (título com o mês alvo — dedup por
-   título; corpo com o relatório da sonda + prompt pronto a colar).
-   **Nunca commit parcial, nunca dados inventados.**
+   `data/calendario_pagamentos.json` já o tem → injecção idempotente +
+   testes + commit confinado. Se não tem → **tenta o scraper automático**
+   (`scripts/scraper_calendario.py` sobre `/ptss/pssd/pagamentos`); se
+   obtiver o mês, grava-o no JSON e segue o caminho `dados_ok`. Só se o
+   scraper falhar (mês ainda não publicado, prestação nova fora da
+   allow-list `NOME_PARA_SLUG`, layout mudado) é que cai para o
+   *fallback* manual: sonda `/ptss/pssd/noticias` + abre/actualiza a
+   Issue `calendario-manual` (dedup por título; corpo com o erro do
+   scraper + sonda + prompt pronto). **Nunca commit parcial, nunca
+   dados inventados, nunca uma prestação descartada em silêncio.**
 2. **Dia 1 (05:30 UTC)**: alvo = mês corrente. Quando o JSON já tem o
    mês novo, a injecção vira a página automaticamente e o commit segue
    — sem este disparo, a página ficava no mês velho até alguém correr

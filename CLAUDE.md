@@ -187,7 +187,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04) | ❌ não |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
-| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês alvo → injecção + testes + commit confinado; senão → sonda a fonte oficial e abre/actualiza Issue `calendario-manual` com prompt pronto (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html`, guardrail próprio) |
+| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html`, guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
 **`pipeline-diario.yml`, `shadow-daily.yml` e `calendario-mensal.yml` são os
@@ -1579,18 +1579,26 @@ tabela velha silenciosa.
 
 ### Fases 3+4 — IMPLEMENTADAS (2026-07-12, mesma data das Fases 0-2)
 
-**Achado decisivo do diagnóstico em runner real (4 rondas,
-`workflow_dispatch` temporário apagado no fim — detalhe completo em
-`docs/FONTE-CALENDARIO.md`)**: com a migração do portal da Segurança
-Social, a fonte oficial pública do calendário DEIXOU DE EXISTIR — o
-portal antigo (notícia mensal, `/noticias`, `/pagamentos2`) redirecciona
-tudo para o gateway SSD e a SPA não restaura o recurso do parâmetro
-`r=`; o portal novo não tem nenhuma notícia de datas de pagamento na
-listagem pública (13 itens, sem paginação; slugs candidatos dão 404
-real) e o "Calendário" de valores-a-receber exige login. Scraping
-automático é hoje **impossível, não apenas frágil** — o fluxo mensal é
-o fallback semiautomático que a spec previa.
+**FONTE PÚBLICA REAL — scraping automático (2026-07-12, pista do Nuno;
+detalhe em `docs/FONTE-CALENDARIO.md`)**: `https://www.seg-social.pt/ptss/pssd/pagamentos`
+é uma página PÚBLICA (HTTP 200, NÃO redirecciona para o gateway de
+login), SPA com um separador por mês; ao clicar num mês mostra a tabela
+oficial (dia → prestações → método), com as datas publicadas antes do
+início do mês. Uma ronda de diagnóstico anterior tinha concluído,
+erradamente, que "scraping é impossível" — porque testou `/pagamentos2`,
+`/noticias` e o "Calendário" de valores-a-receber (esses de facto
+inúteis), mas **não** este URL. Confirmado num runner e implementado
+scraping automático de verdade; o fluxo manual passa a ser só o
+*fallback*.
 
+- **`scripts/scraper_calendario.py`** — `parse_innertext()` (função pura:
+  texto do painel do mês → schema do JSON; testada com o texto REAL de
+  agosto) + `raspar_mes()` (Playwright: clica no separador do mês, espera
+  pelo cabeçalho do mês E por uma linha de método + settle, extrai).
+  Mapeamento estrito `NOME_PARA_SLUG`; prestação fora da allow-list, mês
+  vazio ou método órfão fazem **falhar** (`ScraperError`) — nunca
+  descarta em silêncio (INVARIANTE). Prestação nova real já apanhada por
+  aqui: "Subsídio por Suspensão da Atividade Cultural" (dia 21 de agosto).
 - **`.github/workflows/calendario-mensal.yml`** — dia 25 + retry 28
   (alvo: mês seguinte) e dia 1 às 05:30 (alvo: mês corrente — vira a
   página quando o JSON já tem o mês novo); `workflow_dispatch` com
@@ -1599,23 +1607,25 @@ o fallback semiautomático que a spec previa.
   (falha se QUALQUER ficheiro fora do JSON + página aparecer
   modificado) + commit/push + `garantir_deploy_pages.sh` + smoke
   inline; fecha automaticamente a Issue `calendario-manual` do mês.
-  Se não tem → **nunca commit parcial**: sonda as rotas oficiais e
-  abre/actualiza (dedup por título com o mês) a Issue
-  `calendario-manual` com o relatório da sonda + prompt pronto a colar
-  para a sessão manual. `concurrency: main-writes`.
+  Se não tem → **tenta o scraper**; sucesso grava o mês no JSON e segue
+  `dados_ok`. Só se o scraper falhar → **nunca commit parcial**: sonda
+  as rotas oficiais e abre/actualiza (dedup por título) a Issue
+  `calendario-manual` com o erro do scraper + sonda + prompt pronto.
+  `concurrency: main-writes`.
 - **`scripts/verificar_calendario_mensal.py`** — decide o mês alvo
-  (dia ≥ 20 → mês seguinte), verifica o JSON, sonda
-  `/ptss/pssd/noticias` via Playwright (detecta se a publicação
-  oficial reaparecer — o resultado vai no corpo da Issue, nunca é
-  usado para inventar dados) e emite `estado`/`mes_alvo` via
-  `GITHUB_OUTPUT`.
-- A entrada de dados continua 100% manual e verificada (sessão manual
-  com triangulação, mesmo padrão desta sessão) — o workflow só
-  automatiza a vigilância, o lembrete e a viragem de mês. Fase 4
-  completa: `tests/test_calendario_frescura.py` ganhou os testes
-  Playwright mobile (375px sem overflow, 9 âncoras, navegação por
-  âncora real, guarda JS com mês velho servido em memória — nunca um
-  ficheiro escrito no repositório).
+  (dia ≥ 20 → mês seguinte); se o JSON não o tem, chama
+  `tentar_scraper_e_gravar()` (grava só dados que passem a validação);
+  fallback = sonda `/ptss/pssd/noticias` + Issue. Emite `estado`/
+  `mes_alvo` via `GITHUB_OUTPUT`.
+- Provado ponta-a-ponta num runner: **agosto de 2026 foi raspado ao
+  vivo da fonte oficial, validado, injectado e commitado automaticamente**
+  (`fonte_url` do JSON passou para `/ptss/pssd/pagamentos`; run mensal
+  29201776013 → commit do bot `3f1dca8`; Issue manual de agosto fechada
+  sozinha). `tests/test_scraper_calendario.py` tranca o parser com o
+  texto real + os caminhos de falha. Fase 4 completa:
+  `tests/test_calendario_frescura.py` tem os testes Playwright mobile
+  (375px sem overflow, 9 âncoras, navegação por âncora, guarda JS com
+  mês velho em memória).
 
 Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
 protegido como qualquer outra. **Fase 5 — concluída (2026-07-12):**
@@ -5358,4 +5368,33 @@ do JSON de dados, promoção do dia certo a contar de hoje (Chromium real),
 e ausência de promoção num mês velho com a camada estática intacta. axe 0
 violações (contraste do destaque na paleta já auditada), 0px de overflow
 a 375px, injector idempotente (2.ª corrida zero alterações), ruff limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+---
+
+*Última revisão: 2026-07-12 — scraper automático do calendário de
+pagamentos (pista do Nuno, que reverte a conclusão anterior de "scraping
+impossível"). A fonte pública real é `https://www.seg-social.pt/ptss/pssd/pagamentos`
+— confirmado num runner: HTTP 200 sem redirect para login, SPA com um
+separador por mês, tabela oficial por dia (prestações + método), datas
+publicadas antes do início do mês (a ronda de diagnóstico anterior só
+falhou porque testou `/pagamentos2`/`/noticias`/"Calendário de
+valores-a-receber", nunca este URL). Novo `scripts/scraper_calendario.py`:
+`parse_innertext()` puro (texto do painel → schema do JSON, testado com o
+texto real de agosto) + `raspar_mes()` via Playwright (clica no separador,
+espera pelo cabeçalho do mês E por uma linha de método + settle — sem o
+settle, ler cedo dava "dia sem prestações"; foi o único bug, corrigido e
+provado). Mapeamento `NOME_PARA_SLUG` estrito: prestação fora da
+allow-list, mês vazio ou método órfão fazem `ScraperError` — nunca
+descarta em silêncio (INVARIANTE). Prestação nova real apanhada:
+"Subsídio por Suspensão da Atividade Cultural" (dia 21 ago), acrescentada
+a `PRESTACOES`/`RESUMO_CURTO`. `verificar_calendario_mensal.py` passa a
+tentar o scraper quando falta o mês (grava só dados que passem a
+validação); a Issue manual fica só como fallback. **Provado ponta-a-ponta
+num runner: agosto de 2026 raspado ao vivo, validado, injectado, testado
+e commitado automaticamente** (run mensal 29201776013 → commit do bot
+`3f1dca8`; `fonte_url` do JSON agora `/ptss/pssd/pagamentos`; Issue #61
+de agosto fechada sozinha; agosto servido como "mês seguinte" na página).
+`tests/test_scraper_calendario.py` (7 casos: parser com o texto real +
+desconhecida/vazio/outro-mês/método-órfão). `docs/FONTE-CALENDARIO.md` e
+esta secção reescritos. Ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
