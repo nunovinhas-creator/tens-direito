@@ -1,7 +1,7 @@
 {
   "atualizado_em": "2026-07-12",
   "fonte_nome": "Segurança Social — datas de pagamento dos subsídios sociais e pensões",
-  "fonte_url": "https://www.seg-social.pt/noticias/-/asset_publisher/kBZtOMZgstp3/content/datas-de-pagamento-dos-subsidios-sociais-e-pensoes-em-julho",
+  "fonte_url": "https://www.seg-social.pt/ptss/pssd/pagamentos",
   "verificacao": "Julho 2026 triangulado por fontes independentes que reproduzem o calendário oficial — ver docs/FONTE-CALENDARIO.md. Agosto deliberadamente ausente: sem confirmação robusta da fonte oficial à data de 2026-07-12.",
   "meses": [
     {
@@ -10,40 +10,145 @@
       "pagamentos": [
         {
           "dia": 3,
-          "prestacoes": ["doenca_profissional"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"]
+          "prestacoes": [
+            "doenca_profissional"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
         },
         {
           "dia": 7,
-          "prestacoes": ["apoio_renda"],
-          "metodo": ["transferencia_bancaria"],
+          "prestacoes": [
+            "apoio_renda"
+          ],
+          "metodo": [
+            "transferencia_bancaria"
+          ],
           "nota": "O apoio à renda é pago exclusivamente por transferência bancária."
         },
         {
           "dia": 8,
-          "prestacoes": ["pensoes", "csi", "reembolso_despesas_funeral", "psi"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"],
+          "prestacoes": [
+            "pensoes",
+            "csi",
+            "reembolso_despesas_funeral",
+            "psi"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ],
           "nota": "Em julho, os pensionistas recebem também o subsídio de férias — na mesma data e na mesma transferência da pensão."
         },
         {
           "dia": 16,
-          "prestacoes": ["prestacoes_familiares", "desemprego_doenca_parentalidade_acao_social_1"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"]
+          "prestacoes": [
+            "prestacoes_familiares",
+            "desemprego_doenca_parentalidade_acao_social_1"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
         },
         {
           "dia": 21,
-          "prestacoes": ["fgadm"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"]
+          "prestacoes": [
+            "fgadm"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
         },
         {
           "dia": 23,
-          "prestacoes": ["rsi", "fgs"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"]
+          "prestacoes": [
+            "rsi",
+            "fgs"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
         },
         {
           "dia": 28,
-          "prestacoes": ["desemprego_doenca_parentalidade_acao_social_2", "cuidador_informal"],
-          "metodo": ["transferencia_bancaria", "vale_de_correio"]
+          "prestacoes": [
+            "desemprego_doenca_parentalidade_acao_social_2",
+            "cuidador_informal"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        }
+      ]
+    },
+    {
+      "ano": 2026,
+      "mes": 8,
+      "pagamentos": [
+        {
+          "dia": 3,
+          "prestacoes": [
+            "doenca_profissional"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 7,
+          "prestacoes": [
+            "apoio_renda",
+            "pensoes",
+            "csi",
+            "reembolso_despesas_funeral",
+            "psi"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 14,
+          "prestacoes": [
+            "prestacoes_familiares",
+            "desemprego_doenca_parentalidade_acao_social_1"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 21,
+          "prestacoes": [
+            "subsidio_suspensao_atividade_cultural",
+            "fgadm",
+            "fgs",
+            "rsi"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 28,
+          "prestacoes": [
+            "desemprego_doenca_parentalidade_acao_social_2",
+            "cuidador_informal"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
         }
       ]
     }
