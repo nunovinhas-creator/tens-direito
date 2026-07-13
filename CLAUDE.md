@@ -5542,3 +5542,96 @@ bloqueia por omissão os pings do GA4 — confirmando ping cookieless em
 arranca com volume mínimo e alguns dias, os números do GA4 recuperam
 gradualmente, não de imediato — GSC continua a ser a fonte de verdade
 para alcance total entretanto.*
+
+---
+
+*Última revisão: 2026-07-13 — novo `simulador-rsi.html`, 5.º simulador do
+site, cluster `trabalho-rendimento`. Sessão conduzida em 7 fases
+aprovadas sequencialmente pelo Nuno (auditoria legal → definição
+funcional → matriz de casos de cálculo → arquitetura → implementação),
+cada uma só avançando após aprovação explícita — nenhum código escrito
+antes da Fase 5.
+
+**Fase 1 (auditoria)**: valores 2026 confirmados por triangulação
+externa (DRE, Jornal de Negócios, e-konomista, Doutor Finanças) contra
+os já publicados em `rsi.html` — RSI base 247,56€ (46,09% do IAS),
+adulto adicional 173,29€ (70%), menor 123,78€ (50%), sem qualquer tecto
+ao número de elementos do agregado; limite de património 32.227,80€
+(60×IAS); trabalho dependente conta 80%, independente/subsídio de
+desemprego/outros contam 100%.
+
+**Fase 4/5 (arquitetura e implementação)**: `simulador-rsi.html`
+reutiliza integralmente o CSS/estrutura de `simulador-subsidio-doenca.html`
+(`:root` vars, `.calc-card`, `.resultado-card`, `.desagregacao-wrap`,
+`.formula-box`, `.faq-section`, `.disclaimer`, `.info-box`, `.aviso-teto`,
+`.aviso-info`) — zero classes novas de fundo, só 2 classes de layout
+(`.form-secao-titulo`, `.aviso-psu-topo`) e o padrão `.erro-campo` para
+mensagens de validação inline. JS organizado nas 8 secções pedidas
+(constantes/mensagens/utilitários/validação/cálculo/renderização/
+eventos/inicialização): `PARAMETROS_RSI` (cada valor com `fonte`/
+`verificado_em`, mesmo padrão de `PARAMETROS_CSI`/`PARAMETROS_SUBSIDIO_DOENCA`),
+`MENSAGENS_RSI` centralizado (erros/avisos/caixa de fiabilidade, nunca
+repetidos), `calcularRSI()` 100% pura (nunca toca no DOM, devolve
+componentes estruturados com `label`/`valor`/`regra`/`subtotal` — a
+mesma estrutura serve as duas tabelas do resultado via
+`renderTabelaComponentes()` genérico), `calcularIdade()` isolada
+(comparação por componentes de data, nunca subtração de milissegundos —
+evita o erro clássico de fuso horário/duração variável dos meses).
+
+**Divergência arquitetural deliberada face aos 4 simuladores anteriores**
+(decisão aprovada nas Fases 2/3, documentada em comentário no próprio
+código): `validarInputRSI()` é uma camada nova que distingue "campo
+vazio → 0€" de "texto inválido → erro bloqueante" — os outros
+simuladores usam sempre `parseFloat(x) || 0`, que nunca faz essa
+distinção. Por isso os campos de rendimento e de composição do agregado
+usam `type="text"` com `inputmode` (não `type="number"`, que bloquearia
+a entrada de texto inválido no próprio browser e tornaria a validação
+impossível de exercitar). Adultos/menores rejeitam decimais (regex de
+inteiro estrito, nunca arredondados); nenhum tecto (`max`) no HTML, só
+`min` — confirmado na Fase 1 que a lei não impõe limite ao agregado.
+
+**Transparência do resultado** (Fase 2/3, decisão aprovada): o
+breakdown (valor máximo por componente + rendimentos por tipo, cada um
+com a regra aplicada) nunca desaparece, mesmo com avisos de idade
+<18 anos, residência não-legal ou património acima do limite — os
+avisos (`.aviso-teto`/`.aviso-info`, reutilizados sem variante nova)
+aparecem a seguir ao cartão do resultado, nunca substituem o cálculo.
+Precisão numérica: `arredondarCentimos()` aplicado em cada subtotal
+antes de qualquer soma/subtração subsequente (nunca só no passo de
+exibição) e `formatarEuro()` elimina explicitamente `-0.00`.
+
+Integração completa: `data/clusters.json` (`simulador-rsi.html`, tipo
+`ferramenta`, cluster `trabalho-rendimento`), `sincronizar_clusters.py`
+corrido com sucesso (actualizou `index.html`/`p/trabalho-rendimento.html`/
+`baixa-medica-subsidio-doenca.html`/`subsidio-desemprego.html` —
+`RELACIONADOS` cruzado e cartão do cluster/homepage), `sincronizar_nav.py`/
+`inserir_botao_partilhar.py`/`adicionar_canonicas.py`/
+`adicionar_autoria_artigos.py`/`adicionar_article_jsonld.py` confirmados
+a **zero alterações** (a página já nasceu com todos os blocos correctos,
+escritos à mão seguindo o padrão exacto dos scripts — idempotência
+confirmada antes de qualquer commit); `gerar_og_images.py --write`
+gerou a imagem própria. Cross-link novo em `rsi.html` (secção "Cálculo
+do valor"), 5.º cartão em `simuladores.html`/`index.html`/`data/clusters.json`,
+entrada em `sitemap.xml` e `scripts/pesquisa.js`.
+
+**Testes**: `tests/test_simulador_rsi_calculo.py` (50 testes) cobre a
+matriz completa da Fase 3 — casos simples/casais/monoparental/agregados
+numerosos sem tecto, rendimento zero, limite exacto e fronteiras de 1
+cêntimo, robustez de ponto flutuante (nunca `-0.00` nem resíduos),
+património/residência/idade (isolados e em combinação, breakdown sempre
+visível), datas de nascimento (aniversário exacto, véspera do 18.º ano,
+29 de fevereiro), validação de inputs inválidos (decimais em
+adultos/menores, texto não-numérico em rendimentos, datas futuras/vazias
+— nunca convertidos a 0€ em silêncio) e um teste dedicado que confirma
+nenhum valor legal escrito directamente no corpo de `calcularRSI()`
+(só via `PARAMETROS_RSI`). Caso de regressão obrigatório: 2 adultos + 2
+crianças + subsídio de desemprego 450€ → 218,41€, idêntico ao já
+publicado em `rsi.html` e no histórico deste ficheiro. Suite completa
+do repositório reconfirmada sem regressões: **2243 passed, 4 skipped**
+(os mesmos 4 skips estruturais já documentados — nenhum skip novo).
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo; os 4
+blocos JSON-LD (`WebApplication`+`FAQPage`+`BreadcrumbList`+`Article`)
+confirmados como JSON válido. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão). Trabalho feito no branch `claude/rsi-simulator-audit-dxy93p`
+(designado pelo ambiente remoto desta sessão).*
