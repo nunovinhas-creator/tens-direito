@@ -3381,7 +3381,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-07-12*
+*Última revisão automática: 2026-07-13*
 
 ---
 

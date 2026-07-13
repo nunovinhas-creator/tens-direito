@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **12 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **13 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -29,6 +29,7 @@ Actualizado automaticamente a partir do repositório em **12 de julho de 2026**.
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
+| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — julho de 2026 |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
@@ -37,6 +38,7 @@ Actualizado automaticamente a partir do repositório em **12 de julho de 2026**.
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
+| [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | Prestação Social para a Inclusão (PSI) 2026: Guia Completo | Tens Direito |
@@ -205,6 +207,7 @@ tens-direito/
 │       └── _fontes_config.json
 ├── .github/
 │   └── workflows/
+│       ├── calendario-mensal.yml
 │       ├── integridade.yml
 │       ├── limpar-branches.yml
 │       ├── pipeline-diario.yml
@@ -228,6 +231,7 @@ tens-direito/
 │   ├── adicionar_canonicas.py
 │   ├── adicionar_og_image.py
 │   ├── atualizar_branding_nvlabs.py
+│   ├── atualizar_calendario.py
 │   ├── atualizar_claude_md.py
 │   ├── auto_update_engine.py
 │   ├── classificador_resposta.py
@@ -245,6 +249,7 @@ tens-direito/
 │   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
 │   ├── run_shadow_daily.py
+│   ├── scraper_calendario.py
 │   ├── scraper_fontes.py
 │   ├── scraper_playwright.py
 │   ├── shadow_mode.py
@@ -254,6 +259,7 @@ tens-direito/
 │   ├── sincronizar_nav.py
 │   ├── source_adapter.py
 │   ├── validar_carimbos_elegiveis.py
+│   ├── verificar_calendario_mensal.py
 │   ├── verificar_datas.py
 │   ├── verificar_injecao.py
 │   ├── verificar_skips_permitidos.py
@@ -304,6 +310,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
+| `calendario-mensal.yml` | — | calendario-mensal |
 | `integridade.yml` | — | integridade |
 | `limpar-branches.yml` | — | limpar-branches |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
@@ -365,6 +372,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 12 de julho de 2026 às 09:19 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 13 de julho de 2026 às 10:38 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
