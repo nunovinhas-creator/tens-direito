@@ -37,6 +37,46 @@
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "Como se calcula o RSI passo a passo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O cálculo tem 3 passos: 1) soma o valor máximo do agregado — 247,56 € pelo titular + 173,29 € por cada adulto adicional + 123,78 € por cada menor de 18 anos; 2) soma os rendimentos considerados do agregado — o trabalho dependente conta só 80%, os restantes (independente, subsídio de desemprego, outros) contam 100%; 3) subtrai o passo 2 ao passo 1. O resultado nunca é inferior a 0 €. O simulador do RSI faz este cálculo automaticamente, com a desagregação completa por componente."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto recebe uma pessoa sozinha de RSI em 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Uma pessoa sozinha sem outros rendimentos tem direito ao valor máximo de 247,56 €/mês (o RSI base). Se tiver algum rendimento, esse valor é descontado — por exemplo, com 200 € de trabalho dependente (que conta 80% = 160 €), o RSI seria 247,56 − 160 = 87,56 €/mês. Calcula o teu caso concreto no simulador do RSI."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto recebe um casal com filhos de RSI em 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Depende do número de filhos e dos rendimentos do agregado. Exemplo: casal com 2 filhos menores, sem outros rendimentos, tem direito ao valor máximo de 668,41 €/mês (247,56 + 173,29 + 123,78 + 123,78). Se esse casal receber, por exemplo, 450 €/mês de subsídio de desemprego, o RSI seria 668,41 − 450 = 218,41 €/mês. Usa o simulador do RSI para o teu caso concreto."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quem pode pedir RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pode pedir RSI quem estiver em situação de pobreza extrema (rendimento do agregado abaixo do valor máximo calculado para a sua composição), tiver residência legal em Portugal, tiver 18 anos ou mais (há excepções para menores em situações específicas) e aceitar o contrato de inserção obrigatório após a aprovação. Ver a lista completa de condições cumulativas nesta página."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como funciona o limite de património do RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O agregado não pode ter mais de 32.227,80 € (60 × IAS 2026) em activos financeiros — contas, depósitos, acções, obrigações e instrumentos semelhantes. A habitação própria permanente nunca conta para este limite. Segundo o Guia Prático do RSI, quando há património mobiliário, considera-se como rendimento de capitais 1/12 do maior valor entre os rendimentos de capitais efectivamente recebidos e 5% do património mobiliário total."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "O que é o RSI?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -156,7 +196,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-06-24"
+    "dateModified": "2026-07-13"
   }
   </script>
 
@@ -339,7 +379,7 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
-    <p class="verif">Verificado a 24 junho 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · <a href="https://www.gov.pt" style="color:#0F766E">gov.pt</a> · Base legal: Lei n.º 13/2003, de 21 de maio</p>
+    <p class="verif">Verificado a 13 julho 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · <a href="https://www.gov.pt" style="color:#0F766E">gov.pt</a> · Base legal: Lei n.º 13/2003, de 21 de maio</p>
 
     <div class="card">
       <span class="badge">O que é</span>
@@ -351,6 +391,8 @@ footer a{color:#5C6770}
       </ul>
       <p style="margin-top:.75rem">Base legal: Lei n.º 13/2003, de 21 de maio (com várias alterações posteriores).</p>
     </div>
+
+    <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0.75rem 0;">💡 Queres já uma estimativa? O <a href="/simulador-rsi.html" style="color:#1E40AF;font-weight:600;">simulador do RSI</a> calcula o valor do teu agregado em segundos, com a fórmula toda explicada passo a passo.</p>
 
     <div class="card">
       <span class="badge">Condições de acesso</span>
@@ -408,6 +450,8 @@ footer a{color:#5C6770}
       <p style="margin-top:.75rem;font-size:.9rem;color:#495057"><strong>Limite de património:</strong> O agregado não pode ter activos financeiros superiores a <strong>32.227,80 €</strong> (60 × IAS 2026). A habitação própria permanente <em>não</em> conta para este limite.</p>
     </div>
 
+    <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0.75rem 0;">A tabela acima dá os valores de referência — mas o valor final depende também dos teus rendimentos. Usa o <a href="/simulador-rsi.html" style="color:#1E40AF;font-weight:600;">simulador do RSI</a> para veres o cálculo completo aplicado à tua situação.</p>
+
     <div class="card">
       <span class="badge">Cálculo do valor</span>
       <h2>Quanto vou receber?</h2>
@@ -424,7 +468,7 @@ footer a{color:#5C6770}
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:.85rem 1.1rem;margin-top:.75rem;font-size:.88rem;color:#1E40AF">
         <strong>Nota sobre rendimentos de trabalho:</strong> Os rendimentos de trabalho dependente não contam a 100% — a Segurança Social contabiliza apenas 80% após deduzidas as contribuições. Se o beneficiário começar a trabalhar durante o RSI, aplica-se protecção adicional no 1.º ano.
       </div>
-      <p style="margin-top:.75rem"><a href="/simulador-rsi.html" style="color:#0F766E;font-weight:600">🧮 Usa o simulador do RSI para calcular o valor do teu agregado →</a></p>
+      <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin-top:.75rem;">🧮 Não precisas de fazer as contas à mão — o <a href="/simulador-rsi.html" style="color:#1E40AF;font-weight:600;">simulador do RSI</a> aplica esta fórmula automaticamente e mostra a desagregação completa por componente.</p>
     </div>
 
     <div class="card passos">
@@ -486,8 +530,51 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
+    <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0.75rem 0;">Antes de avançares para as dúvidas mais frequentes: já experimentaste o <a href="/simulador-rsi.html" style="color:#1E40AF;font-weight:600;">simulador do RSI</a> com a composição do teu agregado?</p>
+
     <section class="zona-cinzenta">
       <h2>Dúvidas frequentes</h2>
+
+      <details>
+        <summary>Como se calcula o RSI passo a passo?</summary>
+        <div class="resposta">
+          <p>O cálculo tem 3 passos: 1) soma o valor máximo do agregado — 247,56 € pelo titular + 173,29 € por cada adulto adicional + 123,78 € por cada menor de 18 anos; 2) soma os rendimentos considerados do agregado — o trabalho dependente conta só 80%, os restantes (independente, subsídio de desemprego, outros) contam 100%; 3) subtrai o passo 2 ao passo 1. O resultado nunca é inferior a 0 €.</p>
+          <p>Não precisas de fazer as contas à mão — o <a href="/simulador-rsi.html">simulador do RSI</a> faz este cálculo automaticamente, com a desagregação completa por componente.</p>
+          <p class="fonte-inline">Fonte: Portaria n.º 71/2026/1 — verificado 13/07/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Quanto recebe uma pessoa sozinha de RSI em 2026?</summary>
+        <div class="resposta">
+          <p>Uma pessoa sozinha sem outros rendimentos tem direito ao valor máximo de <strong>247,56 €/mês</strong> (o RSI base). Se tiver algum rendimento, esse valor é descontado — por exemplo, com 200 € de trabalho dependente (que conta 80% = 160 €), o RSI seria 247,56 − 160 = <strong>87,56 €/mês</strong>.</p>
+          <p class="fonte-inline">Fonte: Portaria n.º 71/2026/1 — verificado 13/07/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Quanto recebe um casal com filhos de RSI em 2026?</summary>
+        <div class="resposta">
+          <p>Depende do número de filhos e dos rendimentos do agregado. Exemplo: casal com 2 filhos menores, sem outros rendimentos, tem direito ao valor máximo de <strong>668,41 €/mês</strong> (247,56 + 173,29 + 123,78 + 123,78). Se esse casal receber, por exemplo, 450 €/mês de subsídio de desemprego, o RSI seria 668,41 − 450 = <strong>218,41 €/mês</strong>.</p>
+          <p class="fonte-inline">Fonte: Portaria n.º 71/2026/1 · seg-social.pt — verificado 13/07/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Quem pode pedir RSI?</summary>
+        <div class="resposta">
+          <p>Pode pedir RSI quem estiver em situação de pobreza extrema (rendimento do agregado abaixo do valor máximo calculado para a sua composição), tiver residência legal em Portugal, tiver 18 anos ou mais (há excepções para menores em situações específicas) e aceitar o contrato de inserção obrigatório após a aprovação. Ver a lista completa de condições cumulativas acima.</p>
+          <p class="fonte-inline">Fonte: Lei n.º 13/2003 · seg-social.pt — verificado 13/07/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Como funciona o limite de património do RSI?</summary>
+        <div class="resposta">
+          <p>O agregado não pode ter mais de <strong>32.227,80 €</strong> (60 × IAS 2026) em activos financeiros — contas, depósitos, acções, obrigações e instrumentos semelhantes. A habitação própria permanente <strong>nunca</strong> conta para este limite. Segundo o Guia Prático do RSI, quando há património mobiliário, considera-se como rendimento de capitais 1/12 do maior valor entre os rendimentos de capitais efectivamente recebidos e 5% do património mobiliário total.</p>
+          <p class="fonte-inline">Fonte: Guia Prático RSI, seg-social.pt · Portaria n.º 71/2026/1 — verificado 13/07/2026</p>
+        </div>
+      </details>
 
       <details>
         <summary>Posso pedir RSI se me despedi por iniciativa própria?</summary>
@@ -531,6 +618,8 @@ footer a{color:#5C6770}
       </details>
     </section>
 
+    <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0.75rem 0;">Já sabes as regras — falta só o valor. Calcula agora no <a href="/simulador-rsi.html" style="color:#1E40AF;font-weight:600;">simulador do RSI</a>.</p>
+
     <!-- RELACIONADOS:INICIO -->
     <div class="cluster-relacionados">
       <h2>Outros artigos deste cluster</h2>
@@ -550,7 +639,7 @@ footer a{color:#5C6770}
 
     <!-- FONTE -->
     <div class="fonte-bloco">
-      <strong>Fontes verificadas — 24 junho 2026</strong><br>
+      <strong>Fontes verificadas — 13 julho 2026</strong><br>
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — Segurança Social, informação sobre RSI<br>
       · <a href="https://www.gov.pt" target="_blank" rel="noopener">gov.pt</a> — Portal único do governo<br>
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta (seg-social.pt)</a> — pedido online<br>

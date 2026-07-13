@@ -5635,3 +5635,50 @@ confirmados como JSON válido. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
 esta sessão). Trabalho feito no branch `claude/rsi-simulator-audit-dxy93p`
 (designado pelo ambiente remoto desta sessão).*
+
+---
+
+*Última revisão: 2026-07-13 (continuação) — optimização pós-lançamento
+do simulador do RSI: `rsi.html` ganhou 5 CTAs (após a introdução, antes
+e depois da fórmula, antes da FAQ, final antes de "Outros artigos deste
+cluster"), todos reutilizando o mesmo componente visual já existente na
+página (a caixa azul `#EFF6FF`/`#2563EB` já usada para os links de
+reclamação e calendário de pagamentos) — zero CSS novo. O link ao
+simulador que já existia na secção "Cálculo do valor" foi promovido a
+esse mesmo componente em vez de ficar como link simples.
+
+FAQ expandida com 5 perguntas novas de intenção de pesquisa (como
+calcular passo a passo, quanto recebe uma pessoa sozinha, quanto recebe
+um casal com filhos, quem pode pedir, como funciona o limite de
+património — esta última com o facto novo da regra "1/12 do maior
+entre rendimentos de capitais ou 5% do património", já verificado via
+seg-social.pt/Guia Prático na sessão de auditoria do simulador),
+sincronizadas 1:1 entre os `<details>` visíveis e o `FAQPage` JSON-LD.
+Intenções já cobertas por FAQs existentes (subsídio de desemprego conta
+para o RSI, RSI conta como rendimento, valor do RSI em 2026) não foram
+duplicadas — mantidas como estavam, para não criar conteúdo quase-
+-idêntico. `dateModified`/"Verificado a"/"Fontes verificadas" avançados
+para 13/07/2026 (novo facto adicionado, mesmo padrão do resto do site).
+
+SEO interno: `p/trabalho-rendimento.html` ganhou um 2.º link `.ver-guia`
+no mini-card do RSI apontando ao simulador — mesmo padrão já usado no
+mini-card do Abono em `p/familia.html`, só não tinha sido retrofit ao
+RSI por o simulador ainda não existir. `subsidio-desemprego.html` ganhou
+um cross-link contextual (não artificial) na secção do subsídio social —
+quem não cumpre as condições de recursos desse subsídio é um público
+real para o RSI como alternativa. Nenhum link forçado para
+`simulador-csi.html`/CSI — população-alvo diferente (idosos ≥66a9m vs.
+pobreza extrema geral), sem facto verificado de acumulação a citar.
+
+Verificado: 4 blocos JSON-LD de `rsi.html` válidos (13 perguntas no
+FAQPage, 10 `<details>` visíveis — a mesma assimetria parcial já existia
+antes desta sessão, não introduzida agora), todos os links internos
+novos resolvem para ficheiros reais, `test_breadcrumb_coerencia.py`/
+`test_higiene_indexacao.py`/`test_valores_ancora.py`/
+`test_anos_metadados.py` (392 casos) e `test_acessibilidade.py` nas 4
+páginas tocadas (`rsi.html`, `subsidio-desemprego.html`,
+`p/trabalho-rendimento.html`, `simulador-rsi.html`) confirmados sem
+regressões. Suite completa: **2243 passed, 4 skipped** (mesmos skips
+estruturais já documentados). `ruff` não aplicável (zero `.py`
+alterados). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+não tocados.*
