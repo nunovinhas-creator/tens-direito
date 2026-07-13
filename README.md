@@ -283,6 +283,7 @@ tens-direito/
 - Independência declarada; sem imitação de entidades públicas.
 - Simuladores não vinculativos, client-side, sem armazenar dados pessoais.
 - Política de privacidade, página de Fontes e de Metodologia visíveis.
+- Consentimento: banner próprio (`assets/js/consentimento.js`) — Consent Mode v2 **avançado** desde 2026-07-13. O gtag.js carrega sempre, para todos os visitantes; em `denied` (omissão) o GA4 recebe só pings sem cookies. Cookies (`_ga`/`_ga_*`) só depois de "Aceitar".
 
 ---
 

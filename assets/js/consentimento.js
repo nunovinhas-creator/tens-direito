@@ -1,11 +1,18 @@
 /*
  * Tens Direito — banner de consentimento de cookies (próprio, self-hosted).
  *
- * Substitui o CookieYes (2026-07-11): zero serviços externos, zero limites
- * de visualizações, mesma conformidade RGPD por bloqueio real de script —
- * o Google Analytics (gtag.js) NUNCA é carregado antes de o visitante
- * clicar "Aceitar". Rejeitar (ou não responder) mantém a página 100% sem
- * pedidos de rede de analytics.
+ * Substitui o CookieYes (2026-07-11); desde 2026-07-13 usa o CONSENT MODE V2
+ * AVANÇADO da Google — diferença importante face à versão anterior deste
+ * ficheiro: o Google Analytics (gtag.js) carrega SEMPRE, para TODOS os
+ * visitantes, já no arranque da página, e não só depois de "Aceitar". O que
+ * decide se há ou não cookies é o ESTADO do consentimento
+ * (`analytics_storage`), negado por omissão no stub inline de cada página:
+ * em 'denied' o GA4 envia à Google medições SEM cookies ("pings
+ * cookieless"), que a Google usa para modelar estatisticamente os
+ * visitantes não consentidos — mas nenhum cookie de análise é colocado.
+ * Só ao clicar "Aceitar" o consentimento sobe a 'granted' e passam a
+ * existir cookies (`_ga`/`_ga_*`). Rejeitar (ou não responder) garante
+ * sempre ZERO cookies de análise — nunca zero pedidos de rede.
  *
  * Integração por página (o stub inline no <head> define window.dataLayer,
  * a função global gtag() e o Consent Mode v2 com tudo negado por omissão,
@@ -43,15 +50,22 @@
 
   var gaCarregado = false;
   function carregarGA() {
+    // Consent Mode AVANÇADO: carrega o gtag.js para TODOS os visitantes,
+    // independentemente da escolha. É o estado do consentimento (default
+    // 'denied' no stub inline) que decide se há cookies. Esta função nunca
+    // altera esse estado — só concederConsentimento() o faz.
     if (gaCarregado || !GA4_ID) { return; }
     gaCarregado = true;
-    window.gtag('consent', 'update', { analytics_storage: 'granted' });
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
     document.head.appendChild(s);
     window.gtag('js', new Date());
     window.gtag('config', GA4_ID);
+  }
+
+  function concederConsentimento() {
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
   }
 
   function apagarCookiesGA() {
@@ -79,7 +93,9 @@
   function aceitar() {
     guardarEscolha('aceite');
     fecharBanner();
-    carregarGA();
+    // O gtag.js já está carregado (carregarGA() corre sempre no arranque,
+    // para todos) — aqui só sobe o estado do consentimento a 'granted'.
+    concederConsentimento();
   }
 
   function recusar() {
@@ -161,8 +177,13 @@
 
   var escolha = lerEscolha();
   if (escolha === 'aceite') {
-    carregarGA();
-  } else if (escolha !== 'recusado') {
+    // Repor 'granted' ANTES do primeiro config/ping desta carga de página —
+    // quem já tinha aceite não deve voltar a passar por 'denied' a cada
+    // reload, mesmo que seja o mesmo carregarGA() a disparar os pings.
+    concederConsentimento();
+  }
+  carregarGA(); // carrega para todos, sempre, uma só vez por página
+  if (escolha !== 'aceite' && escolha !== 'recusado') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', mostrarBanner);
     } else {

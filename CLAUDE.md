@@ -116,8 +116,8 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 |---|---|
 | Hosting | GitHub Pages, branch main, raiz / |
 | HTML | Estático puro — sem Jekyll, sem SSG |
-| Analytics | GA4: `G-XP46PM8H1Q` — **só carrega depois de o visitante aceitar** no banner de consentimento (nunca gtag.js estático no `<head>`) |
-| Consentimento | Banner próprio self-hosted: `assets/js/consentimento.js` (substituiu o CookieYes a 2026-07-11 — o plano gratuito tinha limite de 5.000 pageviews/mês; zero serviços externos, zero limites, bloqueio real de script + Consent Mode v2 negado por omissão; escolha em localStorage `td_consentimento`; `window.tdGerirConsentimento()` reabre o banner — botão "Gerir cookies" em `privacidade.html`; testado em `tests/test_consentimento.py`) |
+| Analytics | GA4: `G-XP46PM8H1Q` — **Consent Mode v2 AVANÇADO** (desde 2026-07-13): o gtag.js carrega sempre, para todos os visitantes; em `denied` (omissão) só envia pings sem cookies, cookies reais só depois de "Aceitar" (nunca gtag.js estático no `<head>`) |
+| Consentimento | Banner próprio self-hosted: `assets/js/consentimento.js` (substituiu o CookieYes a 2026-07-11 — o plano gratuito tinha limite de 5.000 pageviews/mês; zero serviços externos, zero limites; **Consent Mode v2 AVANÇADO desde 2026-07-13** — o gtag.js carrega sempre, para todos, e o GA4 envia pings sem cookies em `denied` [omissão], que a Google usa para modelar estatisticamente os não consentidos; só ao "Aceitar" o consentimento sobe a `granted` e passam a existir cookies `_ga`/`_ga_*`; escolha em localStorage `td_consentimento`; `window.tdGerirConsentimento()` reabre o banner — botão "Gerir cookies" em `privacidade.html`; testado em `tests/test_consentimento.py`) |
 | Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`), com `playwright-stealth`, retries com jitter e fallback Wayback (`OK_VIA_ARQUIVO`) — ver secção "SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS" |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
@@ -625,7 +625,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 Ordem no `<head>`:
 1. `<meta charset="UTF-8">`
 2. Stub inline de consentimento (`window.dataLayer` + `gtag()` global + `gtag('consent','default',{...denied})`)
-3. `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — é este script que carrega o GA4, só após aceitação; nunca um `<script>` gtag.js estático
+3. `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — é este script que carrega o gtag.js (Consent Mode v2 avançado: para todos, sempre; cookies só depois de "Aceitar"); nunca um `<script>` gtag.js estático
 4. favicon, viewport, title, description
 5. OG tags: `og:title`, `og:description`, `og:url`, `og:type`, `og:locale`, `og:site_name`, `og:image` (+ `og:image:width/height/alt` e `twitter:card`) — imagem PRÓPRIA de cada página (1200×630, título do artigo + chip do cluster no cartão), gerada por `scripts/gerar_og_images.py` em `assets/img/og/<slug>.jpg`; `scripts/adicionar_og_image.py` é só o bootstrap do bloco de metas em páginas novas
 6. JSON-LD: `FAQPage` + `HowTo` + `BreadcrumbList`
@@ -5468,3 +5468,77 @@ ATUALIZACOES:HOME, 13 jul). Verificado com Chromium (1200/375px): tabela
 3/10/13 ago, 0px overflow, zero erros JS; axe, higiene, canários de anos/
 valores-âncora e breadcrumb todos verdes; 4 blocos JSON-LD válidos; ruff
 limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+
+---
+
+*Última revisão: 2026-07-13 (continuação) — migração para GOOGLE CONSENT
+MODE V2 AVANÇADO em `assets/js/consentimento.js`. Motivo: o modo anterior
+("básico"/carregamento condicional — gtag.js só carregava depois de
+"Aceitar") só media consenters, e o GA4 tinha caído ~90% desde a
+substituição do CookieYes (2026-07-11). Mudança de comportamento, banner e
+texto inalterados: o gtag.js passa a carregar SEMPRE, para TODOS os
+visitantes, logo no arranque da página — nunca mais à espera de "Aceitar".
+O que decide se há cookies continua a ser só o estado do consentimento
+(`analytics_storage`, negado por omissão no stub inline de cada página,
+inalterado): em `denied` o GA4 envia à Google medições sem cookies ("pings
+cookieless", usados para modelar estatisticamente os não consentidos);
+`granted` só depois de "Aceitar", e só aí passam a existir cookies
+`_ga`/`_ga_*`. `recusar()` mantém-se sem alterações (envia `denied` +
+`apagarCookiesGA()`).
+
+`carregarGA()` deixou de conceder consentimento — só injecta o `<script>`
+do gtag.js (chamada incondicional no arranque, `gaCarregado` continua a
+garantir uma só vez por página). Nova `concederConsentimento()` isola o
+`gtag('consent','update',{analytics_storage:'granted'})`, chamada por
+`aceitar()` e pelo arranque quando `lerEscolha() === 'aceite'` (repõe
+`granted` antes do primeiro ping da carga da página — sem isso, quem já
+tinha aceite passaria por `denied` a cada reload). "Sem aceitação, nenhum
+cookie de análise é colocado" no texto do banner continua verdadeiro (ping
+sem cookies ≠ cookie) — texto do banner intocado.
+
+**Testes reescritos, não enfraquecidos** (`tests/test_consentimento.py`) —
+os dois que assumiam "zero pedidos ao Google antes de aceitar" e "zero
+pedidos mesmo depois de rejeitar" tornaram-se falsos com o novo
+comportamento correcto e foram reescritos para o invariante novo, nunca
+apagados nem contornados: `test_primeira_visita_mostra_banner_e_pede_ga_em_modo_denied`
+(gtag.js pedido para todos; dataLayer nunca com `update->granted`; sem
+cookie `_ga`), `test_aceitar_concede_consentimento_e_persiste` (dataLayer
+com `update->granted` só depois de "Aceitar", persistente ao reload),
+`test_rejeitar_mantem_denied_sem_cookies_mas_ga_continua_a_carregar`
+(gtag.js continua a ser pedido, mas nunca `granted` nem cookie `_ga`, no
+banner e no reload). Novo golden `test_consent_mode_avancado_golden` cobre
+os 4 pontos da migração num único teste, lendo o `dataLayer` real via
+`page.evaluate` (nunca inspecção de texto) — o guardrail que
+`validar-conteudo.yml` não cobre (esse só confirma a tag presente no HTML
+estático, nunca que dispara com o consentimento certo em runtime). Novo
+teste estático `test_carregarga_nunca_concede_consentimento_por_si_so`
+tranca `carregarGA()` a nunca conter `'granted'` no corpo e a concessão a
+viver só dentro de `concederConsentimento()`. 122 testes a passar (era
+`test_consentimento_js_nunca_carrega_ga_sem_aceitacao_explicita`, renomeado
+e reescrito). Mantidos sem alteração:
+`test_nenhuma_pagina_referencia_cookieyes`, o bloco estático do stub
+`denied` por omissão (58/58 páginas confirmadas antes de mexer em
+qualquer código), e `test_botao_gerir_cookies_reabre_o_banner`.
+
+`privacidade.html` actualizada (secção "Cookies e análise de tráfego"):
+divulga explicitamente que, em Consent Mode avançado, são enviadas
+medições anónimas sem cookies ao GA4 mesmo sem consentimento, e que
+cookies só são colocados após "Aceitar" — data de "Última atualização"
+subida para 13/07/2026. **Redação sinalizada para revisão humana do Nuno**
+— é uma divulgação nova em página com implicações RGPD, nunca publicada
+sem essa revisão.
+
+Stack (`CLAUDE.md`, secções "STACK TÉCNICO ACTUAL" e "ESTRUTURA HTML
+OBRIGATÓRIA POR PÁGINA") actualizada para descrever o avançado em vez do
+básico. Suite completa local: 2081+ testes sem regressões (só
+`test_consentimento.py` tocado nesta sessão); `ruff` não aplicável (zero
+`.py` alterados). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+não tocados.
+
+**Fora do âmbito / verificação manual do Nuno**: validar com o Tag
+Assistant da Google (tagassistant.google.com) — nunca no Brave, que
+bloqueia por omissão os pings do GA4 — confirmando ping cookieless em
+`denied` e hit completo depois de "Aceitar"; a modelação do Google só
+arranca com volume mínimo e alguns dias, os números do GA4 recuperam
+gradualmente, não de imediato — GSC continua a ser a fonte de verdade
+para alcance total entretanto.*
