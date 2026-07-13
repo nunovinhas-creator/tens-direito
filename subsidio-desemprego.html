@@ -48,7 +48,7 @@
         "name": "Como se calcula o valor do subsídio de desemprego?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A Remuneração de Referência (RR) é calculada com a soma dos salários dos primeiros 12 meses dos últimos 14 meses anteriores ao mês do desemprego (incluindo proporcionais de subsídios de Natal e férias), dividida por 360. O valor diário do subsídio é RR × 65%. O valor mensal mínimo é 537,13 € (100% do IAS 2026), com excepção se a RR líquida for inferior ao IAS — nesse caso o subsídio iguala a RR líquida, com mínimo absoluto de 349,13 € (65% do IAS). O máximo é 1.342,83 €/mês (2,5 × IAS 2026)."
+          "text": "A Remuneração de Referência (RR) é calculada com a soma dos salários dos primeiros 12 meses dos últimos 14 meses anteriores ao mês do desemprego (incluindo proporcionais de subsídios de Natal e férias), dividida por 360. O valor diário do subsídio é RR × 65%. O valor mensal mínimo é 537,13 € (100% do IAS 2026), ou 617,70 € (115% do IAS) se a remuneração-base era igual ou superior ao salário mínimo nacional (920 €). Há ainda uma excepção: se a RR líquida for inferior ao IAS, o subsídio iguala a RR líquida, com mínimo absoluto de 349,13 € (65% do IAS). O máximo é 1.342,83 €/mês (2,5 × IAS 2026), ou 1.477,11 € se ambos os cônjuges estiverem desempregados com filhos a cargo."
         }
       },
       {
@@ -191,7 +191,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-07-11"
+    "dateModified": "2026-07-13"
   }
   </script>
 
@@ -379,7 +379,7 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
-    <p class="verif">Verificado a 11 julho 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.iefp.pt/subsidio-desemprego" style="color:#0F766E">iefp.pt</a> · <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · Base legal: Decreto-Lei n.º 220/2006, de 3 de Novembro · IAS 2026: 537,13 €</p>
+    <p class="verif">Verificado a 13 julho 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.iefp.pt/subsidio-desemprego" style="color:#0F766E">iefp.pt</a> · <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · Base legal: Decreto-Lei n.º 220/2006, de 3 de Novembro · IAS 2026: 537,13 €</p>
 
     <!-- CONDIÇÕES DE ACESSO -->
     <div class="card">
@@ -407,6 +407,8 @@ footer a{color:#5C6770}
         Subsídio diário = 40 € × 65% = <strong>26 €/dia</strong> → <strong>780 €/mês</strong> (dentro dos limites)
       </div>
 
+      <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0.75rem 0;">🧮 Não precisas de fazer as contas à mão — o <a href="/simulador-subsidio-desemprego.html" style="color:#1E40AF;font-weight:600;">simulador do subsídio de desemprego</a> aplica esta fórmula automaticamente, mostra a duração estimada e a desagregação completa.</p>
+
       <div class="tabela-wrap" style="margin-top:1rem">
         <table>
           <thead>
@@ -417,6 +419,11 @@ footer a{color:#5C6770}
               <td><strong>Mínimo</strong></td>
               <td><strong>537,13 €</strong></td>
               <td>100% do IAS 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Mínimo majorado</strong></td>
+              <td><strong>617,70 €</strong></td>
+              <td>115% do IAS 2026 — aplica-se quando a remuneração-base era igual ou superior ao salário mínimo nacional (920 €)</td>
             </tr>
             <tr>
               <td><strong>Mínimo absoluto</strong></td>
@@ -437,6 +444,9 @@ footer a{color:#5C6770}
         </table>
       </div>
       <p class="nota-tabela">Excepção ao mínimo de 537,13 €: se a RR líquida for inferior ao IAS, o subsídio iguala essa RR líquida, com mínimo absoluto de 349,13 €/mês.</p>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:.85rem 1.1rem;margin-top:.75rem;font-size:.88rem;color:#1E40AF">
+        <strong>Limite adicional (não incluído no simulador):</strong> o subsídio nunca pode exceder 75% da remuneração de referência líquida (RR bruta menos 11% de taxa contributiva e a retenção de IRS aplicável). Como a retenção de IRS varia por escalão, agregado e número de titulares — não existe uma taxa única — este limite e a excepção do mínimo absoluto (349,13 €, que também depende da RR líquida) não são calculados automaticamente pelo <a href="/simulador-subsidio-desemprego.html" style="color:#1E40AF;font-weight:600">simulador do subsídio de desemprego</a>. A Segurança Social pode ajustar o valor final com base nestes dois factores.
+      </div>
     </div>
 
     <!-- DURAÇÃO -->
@@ -474,6 +484,7 @@ footer a{color:#5C6770}
         Total: <strong>780 dias</strong> de subsídio — cerca de 26 meses.
       </div>
       <p style="margin-top:.75rem;font-size:.9rem;color:#5C6770;">Entregar o requerimento depois do prazo de 90 dias não elimina o direito — mas os dias de atraso são descontados a este período de concessão.</p>
+      <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin-top:.75rem;">A tabela acima dá os escalões de referência — mas a tua duração exacta depende da idade e dos meses de descontos. Usa o <a href="/simulador-subsidio-desemprego.html" style="color:#1E40AF;font-weight:600;">simulador do subsídio de desemprego</a> para veres o cálculo completo aplicado à tua situação.</p>
     </div>
 
     <!-- COMO PEDIR -->
@@ -578,6 +589,8 @@ footer a{color:#5C6770}
       </ul>
     </section>
 
+    <p style="background:#EFF6FF;border-left:4px solid #2563EB;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;font-size:0.9rem;color:#1E40AF;margin:0 0 1.5rem;">Antes de avançares para as dúvidas mais frequentes: já experimentaste o <a href="/simulador-subsidio-desemprego.html" style="color:#1E40AF;font-weight:600;">simulador do subsídio de desemprego</a> com a tua situação?</p>
+
     <!-- DÚVIDAS FREQUENTES -->
     <section class="zona-cinzenta">
       <h2>Dúvidas frequentes</h2>
@@ -672,7 +685,7 @@ footer a{color:#5C6770}
 
     <!-- FONTE -->
     <div class="fonte-bloco">
-      <strong>Fontes verificadas — 11 julho 2026</strong><br>
+      <strong>Fontes verificadas — 13 julho 2026</strong><br>
       · <a href="https://www.iefp.pt/subsidio-desemprego" target="_blank" rel="noopener">iefp.pt/subsidio-desemprego</a> — IEFP<br>
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — Instituto da Segurança Social<br>
       · <a href="https://dre.pt" target="_blank" rel="noopener">dre.pt</a> — Decreto-Lei n.º 220/2006, de 3 de Novembro (regime jurídico de protecção no desemprego)<br>

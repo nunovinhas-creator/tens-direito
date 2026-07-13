@@ -72,7 +72,8 @@
         {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false},
         {"slug": "baixa-medica-subsidio-doenca.html", "titulo": "Baixa médica e subsídio de doença", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-subsidio-doenca.html", "titulo": "Simulador de Subsídio de Doença", "tipo": "ferramenta", "destaque": false},
-        {"slug": "simulador-rsi.html", "titulo": "Simulador do RSI", "tipo": "ferramenta", "destaque": false}
+        {"slug": "simulador-rsi.html", "titulo": "Simulador do RSI", "tipo": "ferramenta", "destaque": false},
+        {"slug": "simulador-subsidio-desemprego.html", "titulo": "Simulador do Subsídio de Desemprego", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["prestacao-social-unica"]
     },

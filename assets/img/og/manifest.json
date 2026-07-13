@@ -269,6 +269,11 @@
     "pagina": "simulador-rsi.html",
     "titulo": "Simulador do RSI 2026"
   },
+  "simulador-subsidio-desemprego": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "simulador-subsidio-desemprego.html",
+    "titulo": "Simulador do Subsídio de Desemprego 2026"
+  },
   "simulador-subsidio-doenca": {
     "chip": "Trabalho e Rendimento",
     "pagina": "simulador-subsidio-doenca.html",

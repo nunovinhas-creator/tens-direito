@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador do Subsídio de Desemprego 2026</title>
+  <meta name="description" content="Calculadora online do subsídio de desemprego 2026. Simula o valor mensal e a duração com base na remuneração, idade e tempo de descontos. Cálculos no browser, sem envio de dados.">
+  <meta property="og:title" content="Simulador do Subsídio de Desemprego 2026">
+  <meta property="og:description" content="Calculadora online do subsídio de desemprego 2026, com desagregação da fórmula e da duração. Cálculos cliente-side, privados.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-subsidio-desemprego.html">
+  <link rel="canonical" href="https://tensdireito.com/simulador-subsidio-desemprego.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <meta property="og:image" content="https://tensdireito.com/assets/img/og/simulador-subsidio-desemprego.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Simulador do Subsídio de Desemprego 2026">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador do Subsídio de Desemprego 2026",
+    "url": "https://tensdireito.com/simulador-subsidio-desemprego.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como é calculado o valor do subsídio de desemprego?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Remuneração de Referência (RR) diária é a remuneração mensal × 12 ÷ 360. O subsídio diário é 65% da RR. O valor mensal (subsídio diário × 30) nunca é inferior a 537,13€ (ou 617,70€ se a remuneração era igual ou superior ao salário mínimo de 920€) nem superior a 1.342,83€ (ou 1.477,11€ se ambos os cônjuges estiverem desempregados com filhos a cargo)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador calcula o limite de 75% da remuneração líquida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Esse limite (e a excepção do mínimo absoluto de 349,13€) dependem da tua retenção de IRS, que varia por escalão, agregado e número de titulares — não existe uma taxa única a aplicar sem inventar uma aproximação. O simulador mostra sempre um aviso sobre isto; a Segurança Social pode ajustar o valor final com base nestes dois factores."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como é calculada a duração do subsídio de desemprego?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A duração-base depende da tua idade e dos meses com registo de remunerações desde a última situação de desemprego (entre 150 e 540 dias). Só no escalão de mais de 24 meses, acresce ainda 30 dias (menos de 40 anos), 45 dias (40 a 49 anos) ou 60 dias (50 ou mais anos) por cada 5 anos com registo de remunerações nos últimos 20 anos. Um requerimento apresentado mais de 90 dias após o desemprego reduz a duração total pelos dias de atraso."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador serve para trabalhadores independentes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, para duas modalidades: trabalhador independente economicamente dependente (mesmo prazo de garantia do regime geral, 360 dias) e trabalhador independente com actividade empresarial encerrada — Subsídio por Cessação de Actividade (prazo de garantia de 720 dias). A fórmula de valor é a mesma nos três casos; só muda o prazo de garantia exigido."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador calcula o Subsídio Social de Desemprego?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Se não cumprires o prazo de garantia do subsídio normal, o simulador mostra um aviso a informar que podes ter direito ao Subsídio Social de Desemprego (prazo reduzido, sujeito a condição de recursos), mas não calcula esse valor — é uma prestação diferente, com regras próprias. Consulta o guia completo do subsídio de desemprego."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. É apenas uma estimativa educativa, baseada exclusivamente nos dados introduzidos e na legislação em vigor (Decreto-Lei n.º 220/2006). A decisão final é sempre da Segurança Social. Confirma sempre a tua situação na Segurança Social Direta ou no IEFP."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador do Subsídio de Desemprego", "item": "https://tensdireito.com/simulador-subsidio-desemprego.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador do Subsídio de Desemprego 2026",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-subsidio-desemprego.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-07-13",
+    "dateModified": "2026-07-13"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .form-secao-titulo { font-size: 0.78rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.75rem 0 1rem; }
+    .form-secao-titulo:first-child { margin-top: 0; }
+    .checkbox-linha { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.75rem; }
+    .checkbox-linha input { width: auto; margin-top: 0.2rem; }
+    .checkbox-linha label { font-weight: 500; font-size: 0.9rem; margin-bottom: 0; }
+    .campo-condicional { background: #F9FAFB; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; display: none; }
+    .campo-condicional.show { display: block; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .duracao-card { border-radius: var(--radius); padding: 1.75rem 2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.1); background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: var(--white); }
+    .duracao-titulo { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.9; }
+    .duracao-valor { font-size: 2rem; font-weight: 800; margin: 0.5rem 0; }
+    .duracao-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .duracao-detalhe p { margin-bottom: 0.4rem; }
+    .resultado-card { border-radius: var(--radius); padding: 2rem; color: var(--white); margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.12); background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .resultado-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.95; }
+    .resultado-valor { font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0; }
+    .resultado-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .resultado-detalhe p { margin-bottom: 0.5rem; }
+    .resultado-detalhe strong { font-weight: 700; }
+    .resultado-subtitulo { font-weight: 700; margin: 1.25rem 0 0.5rem; opacity: 0.95; }
+    .btn-copiar { margin-top: 1rem; background: rgba(255,255,255,.15); color: var(--white); border: 1px solid rgba(255,255,255,.4); }
+    .btn-copiar:hover { background: rgba(255,255,255,.25); }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-top: 1rem; font-size: 0.88rem; color: #92400E; line-height: 1.5; }
+    .desagregacao-wrap { overflow-x: auto; margin-top: 1rem; }
+    .desagregacao-wrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: rgba(255,255,255,.08); border-radius: 8px; overflow: hidden; }
+    .desagregacao-wrap th { text-align: left; padding: 0.6rem 0.8rem; background: rgba(255,255,255,.12); font-weight: 700; }
+    .desagregacao-wrap td { padding: 0.55rem 0.8rem; border-top: 1px solid rgba(255,255,255,.15); }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .avisos-resultado .aviso-teto, .avisos-resultado .aviso-info { margin-top: 0; margin-bottom: 1rem; }
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
+    .formula-box ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .formula-box li { margin-bottom: 0.4rem; }
+    .antes-de-pedir { background: #F9FAFB; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .antes-de-pedir h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .antes-de-pedir ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .antes-de-pedir li { margin-bottom: 0.5rem; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    .erro-campo { color: var(--red); font-size: 0.85rem; margin-top: 0.35rem; display: none; }
+    .erro-campo.show { display: block; }
+    .form-group.tem-erro input, .form-group.tem-erro select { border-color: var(--red); }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .resultado-valor { font-size: 1.8rem; } .duracao-valor { font-size: 1.6rem; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/documentos.html">📄 Documentos</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+      <a href="/simuladores.html">🧮 Simuladores</a>
+      <a href="/documentos.html">📄 Documentos</a>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <header class="hero">
+    <p style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem;"><a href="/" style="color:#6B7280;text-decoration:underline;">Início</a> › <a href="/simuladores.html" style="color:#6B7280;text-decoration:underline;">Simuladores</a> › Subsídio de Desemprego</p>
+    <h1>Simulador do Subsídio de Desemprego 2026</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">Calcula a estimativa do valor mensal e da duração do subsídio de desemprego, com desagregação completa da fórmula. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+  </header>
+
+  <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Valores 2026</strong> — 65% da Remuneração de Referência, entre 537,13€/617,70€ e 1.342,83€/1.477,11€, IAS 537,13€ · <strong>Verificado a 13/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/subsidio-desemprego.html">ver guia completo do subsídio de desemprego</a>
+    </div>
+
+    <div class="calc-card">
+      <form id="formSubsidioDesemprego" novalidate>
+        <p class="form-secao-titulo">Situação profissional</p>
+        <div class="form-group">
+          <label for="vinculo">Tipo de trabalhador</label>
+          <select id="vinculo">
+            <option value="conta_outrem">Trabalhador por conta de outrem</option>
+            <option value="ti_dependente">Trabalhador independente economicamente dependente</option>
+            <option value="ti_cessacao">Trabalhador independente — cessação de actividade</option>
+          </select>
+          <small>Determina o prazo de garantia exigido — ver Perguntas frequentes para a diferença entre modalidades.</small>
+        </div>
+
+        <p class="form-secao-titulo">Remuneração</p>
+        <div class="form-group" id="grupoRemuneracao">
+          <label for="remuneracao">Remuneração mensal ilíquida habitual (€)</label>
+          <input type="text" id="remuneracao" inputmode="decimal" placeholder="1200" autocomplete="off">
+          <small>Assumimos que este valor se manteve constante durante o período de referência legal (os primeiros 12 dos últimos 14 meses antes do desemprego). Se o teu salário variou, o valor real pode divergir.</small>
+          <p class="erro-campo" id="erroRemuneracao"></p>
+        </div>
+
+        <p class="form-secao-titulo">Idade e tempo de descontos</p>
+        <div class="form-group" id="grupoDataNascimento">
+          <label for="dataNascimento">A tua data de nascimento</label>
+          <input type="date" id="dataNascimento" autocomplete="off">
+          <small>A idade é calculada automaticamente — determina o escalão de duração.</small>
+          <p class="erro-campo" id="erroDataNascimento"></p>
+        </div>
+        <div class="form-group" id="grupoMeses">
+          <label for="meses">Meses com registo de remunerações desde o último desemprego</label>
+          <input type="text" id="meses" inputmode="numeric" placeholder="18" autocomplete="off">
+          <small>Um número inteiro aproximado, em meses completos. É convertido internamente para dias (× 30) para verificar o prazo de garantia legal (360 ou 720 dias, consoante o vínculo).</small>
+          <p class="erro-campo" id="erroMeses"></p>
+        </div>
+        <div class="form-group campo-condicional" id="grupoAnosRegisto">
+          <label for="anosRegisto">Anos com registo de remunerações nos últimos 20 anos</label>
+          <input type="text" id="anosRegisto" inputmode="numeric" placeholder="0" autocomplete="off">
+          <small>Só relevante com mais de 24 meses de descontos desde o último desemprego — usado para calcular o acréscimo de duração por carreira longa.</small>
+          <p class="erro-campo" id="erroAnosRegisto"></p>
+        </div>
+
+        <p class="form-secao-titulo">Outras situações</p>
+        <div class="checkbox-linha">
+          <input type="checkbox" id="ambosConjuges">
+          <label for="ambosConjuges">Ambos os cônjuges/unidos de facto estão desempregados, com filhos a cargo</label>
+        </div>
+        <div class="form-group" id="grupoDiasApresentacao">
+          <label for="diasApresentacao">Dias após o desemprego até à apresentação do requerimento</label>
+          <input type="text" id="diasApresentacao" inputmode="numeric" placeholder="0" autocomplete="off">
+          <small>Deixa em branco ou 0 se vais submeter dentro do prazo de 90 dias. Acima de 90 dias, o período de concessão é reduzido pelo atraso.</small>
+          <p class="erro-campo" id="erroDiasApresentacao"></p>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary">🧮 Calcular subsídio</button>
+          <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado" aria-live="polite"></div>
+
+    <div class="antes-de-pedir">
+      <h2>Antes de pedir confirma também que…</h2>
+      <ul>
+        <li>O teu desemprego foi involuntário (despedimento colectivo, extinção do posto, caducidade de contrato a prazo, ou resolução com justa causa pelo trabalhador).</li>
+        <li>Se saíste por mútuo acordo: só tens direito se estiver inserido num processo de redução de efectivos por motivos económicos, dentro dos limites legais por triénio.</li>
+        <li>Estás inscrito no IEFP como desempregado.</li>
+        <li>Tens a situação contributiva regularizada perante a Segurança Social.</li>
+        <li>Sabes que tens de comunicar ao IEFP, em 5 dias úteis, qualquer mudança de residência, saída do país, início de parentalidade ou início de trabalho.</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--muted);margin-top:0.75rem;">Ver todas as condições no <a href="/subsidio-desemprego.html">guia completo do subsídio de desemprego</a>.</p>
+    </div>
+
+    <div class="formula-box">
+      <h2>Como funciona o cálculo</h2>
+      <code>RR diária = (remuneração mensal × 12) ÷ 360<br>Subsídio diário = RR diária × 65%<br>Subsídio mensal = Subsídio diário × 30, aplicados os limites de IAS</code>
+      <ul>
+        <li><strong>Mínimo:</strong> 537,13€ (100% IAS), ou 617,70€ (115% IAS) se a remuneração for igual ou superior ao salário mínimo (920€).</li>
+        <li><strong>Máximo:</strong> 1.342,83€ (2,5× IAS), ou 1.477,11€ (+10%) se ambos os cônjuges estiverem desempregados com filhos a cargo.</li>
+        <li><strong>Duração:</strong> entre 150 e 540 dias, conforme a idade e os meses com descontos desde o último desemprego — acresce 30/45/60 dias por cada 5 anos de carreira longa (só no escalão de mais de 24 meses).</li>
+        <li><strong>Atraso no requerimento:</strong> acima de 90 dias após o desemprego, a duração é reduzida pelos dias de atraso.</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--muted)">Este simulador não calcula o limite de 75% da remuneração de referência líquida nem a excepção do mínimo absoluto de 349,13€ — ambos dependem da tua retenção de IRS, que varia por caso, e não existe uma taxa única a aplicar sem inventar uma aproximação. Também não calcula o valor do Subsídio Social de Desemprego nem o Subsídio de Desemprego Parcial (acumulação com trabalho a tempo parcial) — ver <a href="/subsidio-desemprego.html">guia completo</a> para o detalhe.</p>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como é calculado o valor do subsídio de desemprego?</summary>
+        <div class="faq-resposta">
+          A Remuneração de Referência (RR) diária é a remuneração mensal × 12 ÷ 360. O subsídio diário é 65% da RR. O valor mensal (subsídio diário × 30) nunca é inferior a 537,13€ (ou 617,70€ se a remuneração era igual ou superior ao salário mínimo de 920€) nem superior a 1.342,83€ (ou 1.477,11€ se ambos os cônjuges estiverem desempregados com filhos a cargo).
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador calcula o limite de 75% da remuneração líquida?</summary>
+        <div class="faq-resposta">
+          Não. Esse limite (e a excepção do mínimo absoluto de 349,13€) dependem da tua retenção de IRS, que varia por escalão, agregado e número de titulares — não existe uma taxa única a aplicar sem inventar uma aproximação. O simulador mostra sempre um aviso sobre isto; a Segurança Social pode ajustar o valor final com base nestes dois factores.
+        </div>
+      </details>
+
+      <details>
+        <summary>Como é calculada a duração do subsídio de desemprego?</summary>
+        <div class="faq-resposta">
+          A duração-base depende da tua idade e dos meses com registo de remunerações desde a última situação de desemprego (entre 150 e 540 dias). Só no escalão de mais de 24 meses, acresce ainda 30 dias (menos de 40 anos), 45 dias (40 a 49 anos) ou 60 dias (50 ou mais anos) por cada 5 anos com registo de remunerações nos últimos 20 anos. Um requerimento apresentado mais de 90 dias após o desemprego reduz a duração total pelos dias de atraso.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador serve para trabalhadores independentes?</summary>
+        <div class="faq-resposta">
+          Sim, para duas modalidades: trabalhador independente economicamente dependente (mesmo prazo de garantia do regime geral, 360 dias) e trabalhador independente com actividade empresarial encerrada — Subsídio por Cessação de Actividade (prazo de garantia de 720 dias). A fórmula de valor é a mesma nos três casos; só muda o prazo de garantia exigido.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador calcula o Subsídio Social de Desemprego?</summary>
+        <div class="faq-resposta">
+          Não. Se não cumprires o prazo de garantia do subsídio normal, o simulador mostra um aviso a informar que podes ter direito ao Subsídio Social de Desemprego (prazo reduzido, sujeito a condição de recursos), mas não calcula esse valor — é uma prestação diferente, com regras próprias. Consulta o <a href="/subsidio-desemprego.html">guia completo do subsídio de desemprego</a>.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. É apenas uma <strong>estimativa educativa</strong>, baseada exclusivamente nos dados introduzidos e na legislação em vigor (Decreto-Lei n.º 220/2006). A decisão final é sempre da Segurança Social. Confirma sempre a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a> ou no <a href="https://www.iefp.pt" target="_blank" rel="noopener">IEFP</a>.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 220/2006, de 3 de novembro), mas podem conter erros ou omissões. Simulação indicativa — o valor final é determinado pela Segurança Social.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ══════════════════════════════════════════════════════════════════════
+    // SIMULADOR DO SUBSÍDIO DE DESEMPREGO — 1. CONSTANTES
+    // ══════════════════════════════════════════════════════════════════════
+    // PARAMETROS_SUBSIDIO_DESEMPREGO — fonte única de verdade da fórmula.
+    // Cada valor tem "fonte" e "verificado_em" próprios (mesmo padrão de
+    // PARAMETROS_RSI em simulador-rsi.html). Nenhum valor legal aparece
+    // solto no meio da lógica — toda a função calcularSubsidioDesemprego()
+    // e calcularDuracao() lêem exclusivamente deste objecto.
+    //
+    // Valores confirmados por triangulação externa nesta sessão
+    // (13/07/2026): DECO PROteste, ABANCA, CGD, Montepio, Doutor Finanças,
+    // Fed Finance — sem divergências. Confirmado também que a redução de
+    // 10% aos 180 dias (medida histórica de 2012) foi REVOGADA em janeiro
+    // de 2018 — não é modelada, nem deve voltar a sê-lo sem um facto novo
+    // e confirmado (ver CLAUDE.md, auditoria da Fase 1 desta sessão).
+    //
+    // Decisões aprovadas (Fase 1/3) que limitam deliberadamente o âmbito:
+    // NÃO modela o tecto de 75% da RR líquida nem a excepção do mínimo
+    // absoluto de 349,13€ (ambos dependem da retenção de IRS, sem taxa
+    // única) — mostrados sempre como aviso, nunca como número. NÃO
+    // calcula o valor do Subsídio Social de Desemprego, só sinaliza
+    // elegibilidade. NÃO inclui o Subsídio de Desemprego Parcial (fora
+    // de âmbito desta versão).
+    const PARAMETROS_SUBSIDIO_DESEMPREGO = {
+      ias: { valor: 537.13, fonte: 'Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026', verificado_em: '2026-07-13' },
+      salarioMinimo: { valor: 920.00, fonte: 'Salário mínimo nacional 2026', verificado_em: '2026-07-13' },
+      percentagemRR: { valor: 0.65, fonte: 'Decreto-Lei n.º 220/2006, de 3 de novembro — valor diário do subsídio', verificado_em: '2026-07-13' },
+      divisorRR: { valor: 360, fonte: 'DL 220/2006 — divisor da Remuneração de Referência', verificado_em: '2026-07-13' },
+      diasPorMes: { valor: 30, fonte: 'Conversão mensal↔diária usada em todo o regime (ex.: subsídio diário × 30 = valor mensal)', verificado_em: '2026-07-13' },
+      minimo: { valor: 537.13, fonte: 'DL 220/2006 — 100% do IAS 2026', verificado_em: '2026-07-13' },
+      minimoMajorado: { valor: 617.70, fonte: 'DL 220/2006 — 115% do IAS 2026, quando a remuneração-base era ≥ salário mínimo', verificado_em: '2026-07-13' },
+      maximo: { valor: 1342.83, fonte: 'DL 220/2006 — 2,5 × IAS 2026', verificado_em: '2026-07-13' },
+      maximoMajorado: { valor: 1477.11, fonte: 'DL 220/2006 — máximo + 10%, ambos os cônjuges desempregados com filhos a cargo', verificado_em: '2026-07-13' },
+      garantiaDiasGeral: { valor: 360, fonte: 'DL 220/2006 — prazo de garantia, regime geral e TI economicamente dependente', verificado_em: '2026-07-13' },
+      garantiaDiasTiCessacao: { valor: 720, fonte: 'DL 220/2006 — prazo de garantia, Subsídio por Cessação de Actividade', verificado_em: '2026-07-13' },
+      prazoRequerimentoDias: { valor: 90, fonte: 'DL 220/2006 — prazo para apresentar o requerimento', verificado_em: '2026-07-13' },
+      acrescimoAte40: { valor: 30, fonte: 'DL 220/2006, art.º 37.º — acréscimo por 5 anos de carreira longa, <40 anos', verificado_em: '2026-07-13' },
+      acrescimo40a49: { valor: 45, fonte: 'DL 220/2006, art.º 37.º — idem, 40–49 anos', verificado_em: '2026-07-13' },
+      acrescimo50Mais: { valor: 60, fonte: 'DL 220/2006, art.º 37.º — idem, ≥50 anos', verificado_em: '2026-07-13' },
+      anosPorGrupoAcrescimo: { valor: 5, fonte: 'DL 220/2006, art.º 37.º — cada grupo de anos de carreira longa que conta para o acréscimo', verificado_em: '2026-07-13' },
+    };
+
+    // Tabela de duração-base (dias), por escalão etário × escalão de meses
+    // com registo de remunerações desde o último desemprego. Fonte: DL
+    // 220/2006, art.º 37.º — confirmada por triangulação externa
+    // (13/07/2026) e coerente com o exemplo já publicado no artigo
+    // (52 anos, >24 meses, 20 anos de registo → 540 + 240 = 780 dias).
+    const TABELA_DURACAO_BASE = [
+      { idadeMin: 0, idadeMax: 29, escalao: 'ate15', dias: 150 },
+      { idadeMin: 0, idadeMax: 29, escalao: '15a24', dias: 210 },
+      { idadeMin: 0, idadeMax: 29, escalao: 'mais24', dias: 330 },
+      { idadeMin: 30, idadeMax: 39, escalao: 'ate15', dias: 180 },
+      { idadeMin: 30, idadeMax: 39, escalao: '15a24', dias: 330 },
+      { idadeMin: 30, idadeMax: 39, escalao: 'mais24', dias: 420 },
+      { idadeMin: 40, idadeMax: 49, escalao: 'ate15', dias: 210 },
+      { idadeMin: 40, idadeMax: 49, escalao: '15a24', dias: 360 },
+      { idadeMin: 40, idadeMax: 49, escalao: 'mais24', dias: 540 },
+      { idadeMin: 50, idadeMax: Infinity, escalao: 'ate15', dias: 270 },
+      { idadeMin: 50, idadeMax: Infinity, escalao: '15a24', dias: 480 },
+      { idadeMin: 50, idadeMax: Infinity, escalao: 'mais24', dias: 540 },
+    ];
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 2. MENSAGENS — centralizadas, nunca repetidas noutras funções
+    // ══════════════════════════════════════════════════════════════════════
+    const MENSAGENS_SUBSIDIO_DESEMPREGO = {
+      erros: {
+        remuneracaoObrigatoria: 'Indica a tua remuneração mensal ilíquida habitual.',
+        remuneracaoInvalida: 'O valor da remuneração não é um número válido.',
+        dataNascimentoObrigatoria: 'Indica a tua data de nascimento.',
+        dataNascimentoFutura: 'A data de nascimento não pode ser no futuro.',
+        mesesObrigatorio: 'Indica os meses com registo de remunerações desde o último desemprego.',
+        mesesInteiro: 'O número de meses tem de ser um número inteiro, sem casas decimais.',
+        anosRegistoInteiro: 'O número de anos tem de ser um número inteiro, sem casas decimais.',
+        diasApresentacaoInteiro: 'O número de dias tem de ser um número inteiro, sem casas decimais.',
+      },
+      avisos: {
+        inelegivel: function (limiarDias, vinculoTexto) {
+          return '⚠️ Não cumpres o prazo de garantia do subsídio de desemprego ' + vinculoTexto + ' — precisas de ' + limiarDias + ' dias com registo de remunerações. Podes ter direito ao Subsídio Social de Desemprego (prazo reduzido, sujeito a condição de recursos) — consulta o guia completo do subsídio de desemprego. O cálculo abaixo é apenas uma referência de quanto receberias se cumprisses o prazo.';
+        },
+        tectoNaoModelado: 'Este simulador não calcula o limite legal de 75% da remuneração de referência líquida, nem a excepção do mínimo absoluto de 349,13€ — ambos dependem da tua retenção de IRS, que varia por caso. A Segurança Social pode ajustar o valor final com base nestes dois factores.',
+        atrasoAplicado: function (atraso) {
+          return '⚠️ O requerimento foi apresentado ' + atraso + ' dia(s) além do prazo de 90 dias — a duração total foi reduzida por esse atraso.';
+        },
+      },
+      fiabilidade: 'Esta simulação baseia-se exclusivamente nos dados introduzidos e na legislação atualmente em vigor. A decisão final pertence sempre à Segurança Social, que poderá considerar outros elementos não abrangidos por esta simulação.',
+      vinculoTexto: {
+        conta_outrem: 'normal',
+        ti_dependente: 'para trabalhador independente economicamente dependente',
+        ti_cessacao: 'para trabalhador independente com cessação de actividade',
+      },
+    };
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 3. UTILITÁRIOS — reutilizados tal como estão do simulador do RSI
+    // ══════════════════════════════════════════════════════════════════════
+
+    // arredondarCentimos: elimina resíduos de ponto flutuante antes de
+    // qualquer soma/subtração subsequente. Entradas: valor (number).
+    // Saída: number arredondado a 2 casas.
+    function arredondarCentimos(valor) {
+      return Math.round((valor + Number.EPSILON) * 100) / 100;
+    }
+
+    // formatarEuro: nunca mostra "-0.00" nem resíduos de ponto flutuante.
+    // Entradas: valor (number). Saída: string, ex. "€780.00".
+    function formatarEuro(valor) {
+      var arredondado = arredondarCentimos(valor);
+      if (Object.is(arredondado, -0) || arredondado === 0) arredondado = 0;
+      return '€' + arredondado.toFixed(2);
+    }
+
+    // calcularIdade: comparação por componentes de data (ano/mês/dia),
+    // nunca por subtração de milissegundos. Ambas as datas em formato ISO
+    // "AAAA-MM-DD". Saída: idade em anos completos (number).
+    function calcularIdade(dataNascimentoISO, dataReferenciaISO) {
+      var nasc = dataNascimentoISO.split('-').map(Number);
+      var ref = dataReferenciaISO.split('-').map(Number);
+      var idade = ref[0] - nasc[0];
+      if (ref[1] < nasc[1] || (ref[1] === nasc[1] && ref[2] < nasc[2])) {
+        idade -= 1;
+      }
+      return idade;
+    }
+
+    // dataDeHojeISO: único ponto com efeito lateral (lê o relógio).
+    function dataDeHojeISO() {
+      var agora = new Date();
+      var mes = String(agora.getMonth() + 1).padStart(2, '0');
+      var dia = String(agora.getDate()).padStart(2, '0');
+      return agora.getFullYear() + '-' + mes + '-' + dia;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 4. VALIDAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    var REGEX_INTEIRO = /^\d+$/;
+    var REGEX_DECIMAL = /^\d+([.,]\d+)?$/;
+
+    function normalizarSeparadorDecimal(str) {
+      return str.replace(',', '.');
+    }
+
+    // validarInputSubsidioDesemprego: única camada autorizada a decidir
+    // "vazio → 0" vs. "inválido → erro" (mesmo padrão de validarInputRSI
+    // — nunca `parseFloat(x) || 0`). Recebe SEMPRE strings em bruto.
+    // Nunca lança excepção. Saída: { valido, erros: [{campo, mensagem}],
+    // valoresNormalizados }.
+    function validarInputSubsidioDesemprego(bruto) {
+      var erros = [];
+
+      var remuneracaoStr = (bruto.remuneracao || '').trim();
+      var remuneracaoNormalizada = null;
+      if (remuneracaoStr === '') {
+        erros.push({ campo: 'remuneracao', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.remuneracaoObrigatoria });
+      } else {
+        var remuneracaoNorm = normalizarSeparadorDecimal(remuneracaoStr);
+        if (!REGEX_DECIMAL.test(remuneracaoNorm)) {
+          erros.push({ campo: 'remuneracao', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.remuneracaoInvalida });
+        } else {
+          remuneracaoNormalizada = parseFloat(remuneracaoNorm);
+        }
+      }
+
+      var dataNascimento = (bruto.dataNascimento || '').trim();
+      if (dataNascimento === '') {
+        erros.push({ campo: 'dataNascimento', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.dataNascimentoObrigatoria });
+      } else if (dataNascimento > (bruto.dataHoje || dataDeHojeISO())) {
+        erros.push({ campo: 'dataNascimento', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.dataNascimentoFutura });
+      }
+
+      var mesesStr = (bruto.meses || '').trim();
+      var mesesNormalizado = null;
+      if (mesesStr === '') {
+        erros.push({ campo: 'meses', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.mesesObrigatorio });
+      } else if (!REGEX_INTEIRO.test(mesesStr)) {
+        erros.push({ campo: 'meses', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.mesesInteiro });
+      } else {
+        mesesNormalizado = parseInt(mesesStr, 10);
+      }
+
+      var anosRegistoStr = (bruto.anosRegisto || '').trim();
+      var anosRegistoNormalizado = 0;
+      if (anosRegistoStr !== '') {
+        if (!REGEX_INTEIRO.test(anosRegistoStr)) {
+          erros.push({ campo: 'anosRegisto', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.anosRegistoInteiro });
+        } else {
+          anosRegistoNormalizado = parseInt(anosRegistoStr, 10);
+        }
+      }
+
+      var diasApresentacaoStr = (bruto.diasApresentacao || '').trim();
+      var diasApresentacaoNormalizado = 0;
+      if (diasApresentacaoStr !== '') {
+        if (!REGEX_INTEIRO.test(diasApresentacaoStr)) {
+          erros.push({ campo: 'diasApresentacao', mensagem: MENSAGENS_SUBSIDIO_DESEMPREGO.erros.diasApresentacaoInteiro });
+        } else {
+          diasApresentacaoNormalizado = parseInt(diasApresentacaoStr, 10);
+        }
+      }
+
+      return {
+        valido: erros.length === 0,
+        erros: erros,
+        valoresNormalizados: {
+          remuneracao: remuneracaoNormalizada,
+          dataNascimento: dataNascimento,
+          meses: mesesNormalizado,
+          anosRegisto: anosRegistoNormalizado,
+          diasApresentacao: diasApresentacaoNormalizado,
+          vinculo: bruto.vinculo,
+          ambosConjuges: !!bruto.ambosConjuges,
+        },
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 5. CÁLCULO — funções puras, testadas em
+    //    tests/test_simulador_subsidio_desemprego_calculo.py
+    // ══════════════════════════════════════════════════════════════════════
+
+    // calcularDuracao: função dedicada, separada do cálculo financeiro
+    // (pedido explícito da Fase 4). NUNCA toca no DOM. Entradas: params
+    // (PARAMETROS_SUBSIDIO_DESEMPREGO) + input já validado, com "idade"
+    // já calculada por calcularIdade(). Saída: { duracaoBase, acrescimo,
+    // duracaoTotal, atraso, duracaoFinal, escalaoMeses, motivoAcrescimo }.
+    // Pré-condição: input.meses >= 0. Pós-condição: duracaoFinal nunca
+    // negativa.
+    function calcularDuracao(params, input) {
+      var escalaoMeses;
+      if (input.meses <= 15) escalaoMeses = 'ate15';
+      else if (input.meses <= 24) escalaoMeses = '15a24';
+      else escalaoMeses = 'mais24';
+
+      var linha = TABELA_DURACAO_BASE.find(function (l) {
+        return input.idade >= l.idadeMin && input.idade <= l.idadeMax && l.escalao === escalaoMeses;
+      });
+      var duracaoBase = linha ? linha.dias : 0;
+
+      var acrescimo = 0;
+      var motivoAcrescimo = null;
+      if (escalaoMeses === 'mais24' && input.anosRegisto > 0) {
+        var grupos = Math.floor(input.anosRegisto / params.anosPorGrupoAcrescimo.valor);
+        if (grupos > 0) {
+          var diasPorGrupo;
+          if (input.idade < 40) diasPorGrupo = params.acrescimoAte40.valor;
+          else if (input.idade <= 49) diasPorGrupo = params.acrescimo40a49.valor;
+          else diasPorGrupo = params.acrescimo50Mais.valor;
+          acrescimo = grupos * diasPorGrupo;
+          motivoAcrescimo = grupos + ' grupo(s) de ' + params.anosPorGrupoAcrescimo.valor + ' anos de carreira longa × ' + diasPorGrupo + ' dias';
+        }
+      }
+
+      var duracaoTotal = duracaoBase + acrescimo;
+      var atraso = Math.max(0, input.diasApresentacao - params.prazoRequerimentoDias.valor);
+      var duracaoFinal = Math.max(0, duracaoTotal - atraso);
+
+      return {
+        escalaoMeses: escalaoMeses,
+        duracaoBase: duracaoBase,
+        acrescimo: acrescimo,
+        motivoAcrescimo: motivoAcrescimo,
+        duracaoTotal: duracaoTotal,
+        atraso: atraso,
+        duracaoFinal: duracaoFinal,
+      };
+    }
+
+    // calcularSubsidioDesemprego: NUNCA toca no DOM, nunca produz HTML
+    // nem texto de interface — só dados estruturados. Entradas: params +
+    // input já validado e normalizado (com "idade" calculada). Saída:
+    // objecto estruturado (ver campos comentados abaixo). Pré-condição:
+    // input.remuneracao >= 0. Pós-condição: valorMensal nunca inferior ao
+    // mínimo aplicável nem superior ao máximo aplicável.
+    function calcularSubsidioDesemprego(params, input) {
+      var limiarGarantiaDias = input.vinculo === 'ti_cessacao'
+        ? params.garantiaDiasTiCessacao.valor
+        : params.garantiaDiasGeral.valor;
+      var diasConvertidos = input.meses * params.diasPorMes.valor;
+      var elegivel = diasConvertidos >= limiarGarantiaDias;
+
+      var rrDiaria = arredondarCentimos((input.remuneracao * 12) / params.divisorRR.valor);
+      var subsidioDiarioBruto = arredondarCentimos(rrDiaria * params.percentagemRR.valor);
+      var subsidioMensalBruto = arredondarCentimos(subsidioDiarioBruto * params.diasPorMes.valor);
+
+      var minimoAplicavel = input.remuneracao >= params.salarioMinimo.valor
+        ? params.minimoMajorado.valor
+        : params.minimo.valor;
+      var maximoAplicavel = input.ambosConjuges
+        ? params.maximoMajorado.valor
+        : params.maximo.valor;
+
+      var valorMensal = Math.min(Math.max(subsidioMensalBruto, minimoAplicavel), maximoAplicavel);
+      var minimoAplicado = valorMensal === minimoAplicavel && subsidioMensalBruto < minimoAplicavel;
+      var maximoAplicado = valorMensal === maximoAplicavel && subsidioMensalBruto > maximoAplicavel;
+
+      var duracao = calcularDuracao(params, input);
+
+      return {
+        elegivel: elegivel,
+        limiarGarantiaDias: limiarGarantiaDias,
+        diasConvertidos: diasConvertidos,
+        rrDiaria: rrDiaria,
+        subsidioDiarioBruto: subsidioDiarioBruto,
+        subsidioMensalBruto: subsidioMensalBruto,
+        minimoAplicavel: minimoAplicavel,
+        maximoAplicavel: maximoAplicavel,
+        minimoAplicado: minimoAplicado,
+        maximoAplicado: maximoAplicado,
+        valorMensal: valorMensal,
+        duracao: duracao,
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 6. RENDERIZAÇÃO — só esta camada produz HTML/texto de interface
+    // ══════════════════════════════════════════════════════════════════════
+
+    function renderDuracao(r, params) {
+      var html = '<div class="duracao-card">';
+      html += '<div class="duracao-titulo">Duração estimada do subsídio</div>';
+      html += '<div class="duracao-valor">' + r.duracao.duracaoFinal + ' dias</div>';
+      html += '<div class="duracao-detalhe">';
+      html += '<p>Duração base: <strong>' + r.duracao.duracaoBase + ' dias</strong></p>';
+      if (r.duracao.acrescimo > 0) {
+        html += '<p>Majoração por carreira longa: <strong>+' + r.duracao.acrescimo + ' dias</strong> (' + r.duracao.motivoAcrescimo + ')</p>';
+      } else {
+        html += '<p>Sem majoração por carreira longa.</p>';
+      }
+      if (r.duracao.atraso > 0) {
+        html += '<p>Redução por atraso na apresentação: <strong>−' + r.duracao.atraso + ' dias</strong></p>';
+      }
+      html += '<p>Total: <strong>' + r.duracao.duracaoFinal + ' dias</strong></p>';
+      html += '</div></div>';
+      return html;
+    }
+
+    function renderAvisos(r, params) {
+      var html = '<div class="avisos-resultado">';
+      if (!r.elegivel) {
+        var vinculoTexto = MENSAGENS_SUBSIDIO_DESEMPREGO.vinculoTexto[document.getElementById('vinculo') ? document.getElementById('vinculo').value : 'conta_outrem'];
+        html += '<div class="aviso-teto">' + MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.inelegivel(r.limiarGarantiaDias, vinculoTexto) + '</div>';
+      }
+      if (r.duracao.atraso > 0) {
+        html += '<div class="aviso-teto">' + MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.atrasoAplicado(r.duracao.atraso) + '</div>';
+      }
+      html += '<div class="aviso-info">' + MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.tectoNaoModelado + '</div>';
+      html += '<div class="aviso-info">' + MENSAGENS_SUBSIDIO_DESEMPREGO.fiabilidade + '</div>';
+      html += '</div>';
+      return html;
+    }
+
+    // renderResultado: constrói o HTML do #resultado a partir do objecto
+    // estruturado devolvido por calcularSubsidioDesemprego(). A duração
+    // aparece SEMPRE antes do breakdown financeiro (pedido explícito da
+    // Fase 2), e o breakdown nunca desaparece, mesmo quando o prazo de
+    // garantia não é cumprido (mesma filosofia de transparência do RSI).
+    function renderResultado(r, params) {
+      var html = renderDuracao(r, params);
+
+      html += '<div class="resultado-card">';
+      html += '<div class="resultado-titulo">Estimativa do subsídio de desemprego</div>';
+      html += '<div class="resultado-valor">' + formatarEuro(r.valorMensal) + '/mês</div>';
+
+      html += '<div class="resultado-detalhe">';
+      html += '<p class="resultado-subtitulo">Remuneração de Referência</p>';
+      html += '<p>RR diária = (remuneração × 12) ÷ 360 = <strong>' + formatarEuro(r.rrDiaria) + '/dia</strong></p>';
+      html += '<p>Subsídio diário bruto (65%) = <strong>' + formatarEuro(r.subsidioDiarioBruto) + '/dia</strong></p>';
+      html += '<p>Subsídio mensal bruto = <strong>' + formatarEuro(r.subsidioMensalBruto) + '</strong></p>';
+
+      html += '<p class="resultado-subtitulo">Aplicação de limites</p>';
+      html += '<div class="desagregacao-wrap"><table><thead><tr><th>Limite</th><th>Valor</th><th>Aplicado?</th></tr></thead><tbody>';
+      html += '<tr><td>Mínimo</td><td>' + formatarEuro(r.minimoAplicavel) + '</td><td>' + (r.minimoAplicado ? 'Sim' : 'Não') + '</td></tr>';
+      html += '<tr><td>Máximo</td><td>' + formatarEuro(r.maximoAplicavel) + '</td><td>' + (r.maximoAplicado ? 'Sim' : 'Não') + '</td></tr>';
+      html += '</tbody></table></div>';
+      html += '<p style="margin-top:0.5rem"><strong>Valor final: ' + formatarEuro(r.valorMensal) + '/mês</strong></p>';
+      html += '</div>';
+
+      var textoCopia = 'Simulação subsídio de desemprego: ' + formatarEuro(r.valorMensal) + '/mês, ' + r.duracao.duracaoFinal + ' dias de duração estimada.';
+      html += '<button type="button" class="btn btn-copiar" onclick="copiarResultadoSubsidioDesemprego(this.dataset.texto)" data-texto="' + textoCopia.replace(/"/g, '&quot;') + '">📋 Copiar resultado</button>';
+      html += '</div>';
+
+      html += renderAvisos(r, params);
+
+      html += '<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-top: 1rem;">💡 Simulação indicativa. Confirma sempre a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: #0F766E; font-weight: 600;">Segurança Social Direta</a>.</p>';
+
+      return html;
+    }
+
+    function limparErrosFormulario() {
+      document.querySelectorAll('.erro-campo').forEach(function (el) {
+        el.textContent = '';
+        el.classList.remove('show');
+      });
+      document.querySelectorAll('.form-group').forEach(function (el) {
+        el.classList.remove('tem-erro');
+      });
+    }
+
+    function renderErrosFormulario(erros) {
+      erros.forEach(function (erro) {
+        var elErro = document.getElementById('erro' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        var grupo = document.getElementById('grupo' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        if (elErro) {
+          elErro.textContent = erro.mensagem;
+          elErro.classList.add('show');
+        }
+        if (grupo) grupo.classList.add('tem-erro');
+      });
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 7. EVENTOS
+    // ══════════════════════════════════════════════════════════════════════
+    function copiarResultadoSubsidioDesemprego(texto) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(texto);
+      }
+    }
+
+    function limparResultadoSubsidioDesemprego() {
+      var resultDiv = document.getElementById('resultado');
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+      limparErrosFormulario();
+    }
+
+    function alternarAnosRegisto() {
+      var mesesStr = (document.getElementById('meses').value || '').trim();
+      var meses = REGEX_INTEIRO.test(mesesStr) ? parseInt(mesesStr, 10) : 0;
+      document.getElementById('grupoAnosRegisto').classList.toggle('show', meses > 24);
+    }
+
+    function calcularSubsidioDesempregoFormulario(evento) {
+      evento.preventDefault();
+      limparErrosFormulario();
+
+      var bruto = {
+        remuneracao: document.getElementById('remuneracao').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        dataHoje: dataDeHojeISO(),
+        meses: document.getElementById('meses').value,
+        anosRegisto: document.getElementById('anosRegisto').value,
+        diasApresentacao: document.getElementById('diasApresentacao').value,
+        vinculo: document.getElementById('vinculo').value,
+        ambosConjuges: document.getElementById('ambosConjuges').checked,
+      };
+
+      var validacao = validarInputSubsidioDesemprego(bruto);
+      var resultDiv = document.getElementById('resultado');
+
+      if (!validacao.valido) {
+        renderErrosFormulario(validacao.erros);
+        resultDiv.classList.remove('show');
+        resultDiv.innerHTML = '';
+        var primeiroErro = document.getElementById('grupo' + validacao.erros[0].campo.charAt(0).toUpperCase() + validacao.erros[0].campo.slice(1));
+        if (primeiroErro) primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var idade = calcularIdade(validacao.valoresNormalizados.dataNascimento, bruto.dataHoje);
+      var input = Object.assign({}, validacao.valoresNormalizados, { idade: idade });
+
+      var r = calcularSubsidioDesemprego(PARAMETROS_SUBSIDIO_DESEMPREGO, input);
+      resultDiv.innerHTML = renderResultado(r, PARAMETROS_SUBSIDIO_DESEMPREGO);
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'subsidio_desemprego' });
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 8. INICIALIZAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    // Guarda de existência (nunca assumida): permite injectar só este
+    // <script> numa página sem formulário (testes de unidade das funções
+    // puras) sem lançar excepção.
+    var formularioSubsidioDesemprego = document.getElementById('formSubsidioDesemprego');
+    if (formularioSubsidioDesemprego) {
+      formularioSubsidioDesemprego.addEventListener('submit', calcularSubsidioDesempregoFormulario);
+      document.getElementById('meses').addEventListener('input', alternarAnosRegisto);
+      document.getElementById('btnLimpar').addEventListener('click', function () {
+        formularioSubsidioDesemprego.reset();
+        document.getElementById('grupoAnosRegisto').classList.remove('show');
+        limparResultadoSubsidioDesemprego();
+      });
+    }
+  </script>
+
+</body>
+</html>

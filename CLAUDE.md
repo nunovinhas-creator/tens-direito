@@ -5682,3 +5682,133 @@ regressões. Suite completa: **2243 passed, 4 skipped** (mesmos skips
 estruturais já documentados). `ruff` não aplicável (zero `.py`
 alterados). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 não tocados.*
+
+---
+
+*Última revisão: 2026-07-13 — novo `simulador-subsidio-desemprego.html`,
+6.º simulador do site, cluster `trabalho-rendimento`. Mesmo processo de
+7 fases do RSI (auditoria legal → definição funcional → matriz de casos
+→ arquitetura → implementação), cada fase aprovada explicitamente pelo
+Nuno antes de avançar, sem reabertura de decisões já fechadas.
+
+**Fase 1 (auditoria)**: valores 2026 confirmados por triangulação
+externa (DECO PROteste, ABANCA, CGD, Montepio, Doutor Finanças, Fed
+Finance, sem divergências) — RR diária = remuneração×12÷360, subsídio
+diário = RR×65%, mínimo 537,13€ (100% IAS) ou 617,70€ majorado (115%
+IAS, quando a remuneração-base era ≥ salário mínimo de 920€), máximo
+1.342,83€ (2,5× IAS) ou 1.477,11€ majorado (ambos os cônjuges
+desempregados com filhos a cargo), prazo de garantia de 360 dias
+(regime geral e TI economicamente dependente) ou 720 dias (TI com
+cessação de actividade), duração por escalão etário × meses com
+registo (150–540 dias base) + acréscimo de carreira longa (30/45/60
+dias por grupo de 5 anos, só no escalão >24 meses), redução da duração
+pelos dias de atraso além do prazo de 90 dias para requerer. Confirmada
+e documentada a revogação em janeiro de 2018 da antiga redução de 10%
+aos 180 dias — não modelada, nem deve voltar a sê-lo sem um facto novo.
+
+**Decisões aprovadas (Fase 1), fechadas para as fases seguintes**: (1)
+tecto de 75% da RR líquida e a excepção do mínimo absoluto de 349,13€
+— nenhum dos dois é calculado (dependem da retenção de IRS, sem taxa
+única), mostrados sempre como aviso, nunca como número; (2) Subsídio
+Social de Desemprego — não calculado, só sinaliza elegibilidade
+possível quando o prazo de garantia do subsídio normal não é cumprido;
+(3) Subsídio de Desemprego Parcial — fora de âmbito desta versão; (4)
+trabalhadores independentes cobertos via selector de 3 vínculos (conta
+de outrem / TI economicamente dependente / TI com cessação de
+actividade); (5) `subsidio-desemprego.html` actualizado primeiro, como
+fonte de verdade, antes do simulador usar qualquer valor; (6)
+Remuneração de Referência simplificada a um único campo (remuneração
+mensal habitual), sem o detalhe dos 12 dos últimos 14 meses.
+
+**Fase 2 (funcional), 2 melhorias aprovadas**: (1) "meses com registo
+de remunerações" mantido como simplificação de UX, convertido
+internamente para dias (`meses × 30`) e comparado contra os limiares
+legais exactos (360/720 dias) — aproximação documentada no texto de
+ajuda do campo e em comentário no código; (2) duração do subsídio
+destacada em bloco próprio (`.duracao-card`, novo — único CSS
+genuinamente novo desta sessão), sempre antes do breakdown financeiro,
+mostrando duração total/base/majoração com motivo/redução por atraso.
+
+**Fase 4/5 (arquitetura e implementação)**: `simulador-subsidio-desemprego.html`
+reutiliza integralmente o CSS/estrutura de `simulador-rsi.html` (`:root`
+vars, `.calc-card`, `.form-group`, `.resultado-card`,
+`.desagregacao-wrap`, `.formula-box`, `.faq-section`, `.disclaimer`,
+`.info-box`, `.aviso-teto`, `.aviso-info`, `.erro-campo`) — zero
+duplicação de componentes visuais. JS nas mesmas 8 secções
+(constantes/mensagens/utilitários/validação/cálculo/renderização/
+eventos/inicialização). `PARAMETROS_SUBSIDIO_DESEMPREGO` (cada valor
+com `fonte`/`verificado_em` próprios) e `TABELA_DURACAO_BASE` (12
+combinações idade×meses) são a única fonte de valores legais —
+confirmado por teste dedicado que nenhum valor "mágico" aparece solto
+dentro de `calcularSubsidioDesemprego()`. `calcularDuracao()` e
+`calcularSubsidioDesemprego()` são funções puras, isoladas, nunca
+tocam no DOM — `calcularSubsidioDesemprego()` chama `calcularDuracao()`
+internamente e devolve tudo num único objecto estruturado.
+`validarInputSubsidioDesemprego()` segue o mesmo padrão estrito do RSI
+(nunca `parseFloat(x)||0`): remuneração e meses são obrigatórios (vazio
+→ erro), anos de registo e dias de apresentação são opcionais (vazio →
+0), decimais rejeitados sempre com erro explícito em campos inteiros.
+Transparência: o breakdown financeiro e a duração aparecem sempre,
+mesmo quando o prazo de garantia não é cumprido — o aviso de
+inelegibilidade aparece a par, nunca substitui o cálculo.
+
+Integração completa: `data/clusters.json` (6.ª página do cluster
+`trabalho-rendimento`, tipo `ferramenta`), `sincronizar_clusters.py`
+corrido com sucesso (actualizou `index.html`/`p/trabalho-rendimento.html`
+— `RELACIONADOS` cruzado e cartão do cluster/homepage), `sincronizar_nav.py`/
+`inserir_botao_partilhar.py`/`adicionar_canonicas.py`/
+`adicionar_autoria_artigos.py`/`adicionar_article_jsonld.py` confirmados
+a **zero alterações** (página já nasceu com todos os blocos correctos,
+idempotência confirmada antes do commit); `gerar_og_images.py --write`
+gerou a imagem própria. `simuladores.html` (hub — 6.º card, `hasPart`
+JSON-LD, "Cinco"→"Seis calculadoras" no `<h1>`/description/og,
+descrição do `<head>` actualizada) e a secção "Simuladores e
+Calculadoras" do `index.html` (6.º cartão) actualizados; entrada em
+`sitemap.xml` e `scripts/pesquisa.js`. Mini-card do subsídio de
+desemprego em `p/trabalho-rendimento.html` ganhou o 2.º link `.ver-guia`
+para o simulador (mesmo padrão já usado no mini-card do RSI). Três CTAs
+novos em `subsidio-desemprego.html` (após o exemplo de cálculo, após o
+exemplo de duração, antes da secção de FAQ), mesmo componente visual
+`#EFF6FF`/`#2563EB` já usado nas outras páginas do cluster — zero CSS
+novo. `subsidio-desemprego.html` também ganhou, antes desta fase de
+implementação, o valor do mínimo majorado (617,70€) na tabela de
+limites e um aviso explícito sobre os dois factores não modelados
+(tecto de 75% da RR líquida e mínimo absoluto de 349,13€), com
+`dateModified`/"Verificado a"/"Fontes verificadas" avançados para
+13/07/2026 — o artigo tinha de reflectir estes factos antes do
+simulador os usar (Decisão 5 da Fase 1).
+
+**Testes**: `tests/test_simulador_subsidio_desemprego_calculo.py` (62
+testes) cobre a matriz completa da Fase 3 — os dois casos de regressão
+obrigatórios (1.200€/mês → 780€/mês; 52 anos/>24 meses/20 anos de
+registo → 780 dias, ambos idênticos aos exemplos já publicados em
+subsidio-desemprego.html), mínimo/mínimo majorado/máximo/máximo
+majorado (incluindo fronteiras exactas), elegibilidade por prazo de
+garantia (regime geral vs. TI com cessação, incluindo fronteiras de 1
+mês), duração (as 12 combinações da tabela idade×meses, fronteiras de
+escalão, majoração por carreira longa nos 3 grupos etários, grupos
+incompletos que não contam, redução por atraso, nunca negativa),
+validação (obrigatórios vs. opcionais, decimais rejeitados, texto
+inválido nunca convertido a 0 em silêncio, datas de nascimento e no
+futuro), precisão numérica (arredondamento a cêntimos em cada passo
+intermédio, nunca -0,00€), interacção real via Chromium (campo
+condicional de anos de registo, bloqueio de submissão com erro visível,
+breakdown nunca escondido mesmo inelegível, botão Limpar), e coerência
+artigo↔simulador (constantes de produção batem com os valores
+publicados). Achado durante a escrita dos testes: o arredondamento a
+cêntimos aplicado em CADA passo intermédio (não só no fim) faz o
+resultado divergir ligeiramente de um cálculo "tudo de uma vez" —
+ex. remuneração 5.000€ dá subsídio mensal bruto de 3.250,20€, não
+3.250,00€ — comportamento correcto e testado, não um bug.
+
+Suite completa reconfirmada sem regressões nas páginas tocadas
+(`subsidio-desemprego.html`, `simulador-subsidio-desemprego.html`,
+`p/trabalho-rendimento.html`, `simuladores.html`, `index.html`) via
+`test_higiene_indexacao.py`/`test_breadcrumb_coerencia.py`/
+`test_nav_coerencia.py`/`test_valores_ancora.py`/
+`test_anos_metadados.py`/`test_pesquisa_indice.py`/`test_og_image.py`/
+`test_sincronizar_clusters.py`/`test_acessibilidade.py` (0 violações
+critical/serious nas 5 páginas). `ruff check scripts/ tests/ --select
+E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão).*
