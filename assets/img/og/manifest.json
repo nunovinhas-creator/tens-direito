@@ -264,6 +264,11 @@
     "pagina": "simulador-psu.html",
     "titulo": "Simulador da Prestação Social Única (PSU) — em preparação"
   },
+  "simulador-rsi": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "simulador-rsi.html",
+    "titulo": "Simulador do RSI 2026"
+  },
   "simulador-subsidio-doenca": {
     "chip": "Trabalho e Rendimento",
     "pagina": "simulador-subsidio-doenca.html",

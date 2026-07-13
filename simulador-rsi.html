@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador do RSI 2026</title>
+  <meta name="description" content="Calculadora online do RSI 2026. Simula o valor mensal com base na composição do agregado e nos rendimentos considerados. Cálculos no browser, sem envio de dados.">
+  <meta property="og:title" content="Simulador do RSI 2026">
+  <meta property="og:description" content="Calculadora online do RSI 2026, com desagregação por componente do agregado e por tipo de rendimento. Cálculos cliente-side, privados.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-rsi.html">
+  <link rel="canonical" href="https://tensdireito.com/simulador-rsi.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <meta property="og:image" content="https://tensdireito.com/assets/img/og/simulador-rsi.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Simulador do RSI 2026">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador do RSI 2026",
+    "url": "https://tensdireito.com/simulador-rsi.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como é calculado o valor do RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O valor do RSI é a diferença entre o valor máximo do agregado (247,56€ pelo titular + 173,29€ por cada adulto adicional + 123,78€ por cada menor de 18 anos, valores 2026) e os rendimentos considerados do agregado. Nunca é negativo — se os rendimentos forem iguais ou superiores ao valor máximo, o RSI é 0€."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que rendimentos contam para o cálculo, e em que percentagem?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O trabalho dependente conta apenas 80% do valor declarado, já deduzidas as contribuições para a Segurança Social. Trabalho independente, subsídio de desemprego e outros rendimentos (pensões, apoios, etc.) contam a 100%. Este simulador não modela separadamente os subsídios de férias e de Natal — assume rendimento mensal habitual."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador considera o património financeiro do agregado?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não calcula o valor exacto do património — só pergunta se ultrapassa o limite de 32.227,80€ em ativos financeiros (60 vezes o IAS 2026). A habitação própria permanente nunca conta para este limite. Se ultrapassares o limite, o simulador continua a mostrar o cálculo, mas com um aviso claro de que isso pode impedir o acesso ao RSI."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador verifica todas as condições de acesso ao RSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Só verifica idade mínima, residência legal e património financeiro. Há outras condições de acesso — inscrição no Centro de Emprego, disponibilidade para trabalhar, não estar em estabelecimento prisional, entre outras — que tens de confirmar separadamente (ver secção 'Antes de pedir o RSI' nesta página e o guia completo do RSI)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O RSI vai ser substituído pela PSU?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Prestação Social Única (PSU) foi aprovada pelo Parlamento a 25 de junho de 2026 e prevê absorver o RSI. Até existir decreto-lei publicado com os valores e regras definitivas, o RSI continua em vigor com as regras actuais, e é isso que este simulador calcula."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. É apenas uma estimativa educativa, baseada exclusivamente nos dados introduzidos e na legislação em vigor. A decisão final é sempre da Segurança Social, que pode considerar outros elementos do agregado ou rendimentos não incluídos aqui. Confirma sempre a tua situação na Segurança Social Direta."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador do RSI", "item": "https://tensdireito.com/simulador-rsi.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador do RSI 2026",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-rsi.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-07-13",
+    "dateModified": "2026-07-13"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .form-secao-titulo { font-size: 0.78rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.75rem 0 1rem; }
+    .form-secao-titulo:first-child { margin-top: 0; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .resultado-card { border-radius: var(--radius); padding: 2rem; color: var(--white); margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.12); background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .resultado-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.95; }
+    .resultado-valor { font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0; }
+    .resultado-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .resultado-detalhe p { margin-bottom: 0.5rem; }
+    .resultado-detalhe strong { font-weight: 700; }
+    .resultado-subtitulo { font-weight: 700; margin: 1.25rem 0 0.5rem; opacity: 0.95; }
+    .btn-copiar { margin-top: 1rem; background: rgba(255,255,255,.15); color: var(--white); border: 1px solid rgba(255,255,255,.4); }
+    .btn-copiar:hover { background: rgba(255,255,255,.25); }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-top: 1rem; font-size: 0.88rem; color: #92400E; line-height: 1.5; }
+    .desagregacao-wrap { overflow-x: auto; margin-top: 1rem; }
+    .desagregacao-wrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: rgba(255,255,255,.08); border-radius: 8px; overflow: hidden; }
+    .desagregacao-wrap th { text-align: left; padding: 0.6rem 0.8rem; background: rgba(255,255,255,.12); font-weight: 700; }
+    .desagregacao-wrap td { padding: 0.55rem 0.8rem; border-top: 1px solid rgba(255,255,255,.15); }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .aviso-psu-topo { max-width: 640px; margin: 0 auto 1.5rem; text-align: left; }
+    .avisos-resultado .aviso-teto, .avisos-resultado .aviso-info { margin-top: 0; margin-bottom: 1rem; }
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
+    .formula-box ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .formula-box li { margin-bottom: 0.4rem; }
+    .antes-de-pedir { background: #F9FAFB; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .antes-de-pedir h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .antes-de-pedir ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .antes-de-pedir li { margin-bottom: 0.5rem; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    .erro-campo { color: var(--red); font-size: 0.85rem; margin-top: 0.35rem; display: none; }
+    .erro-campo.show { display: block; }
+    .form-group.tem-erro input, .form-group.tem-erro select { border-color: var(--red); }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .resultado-valor { font-size: 1.8rem; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/documentos.html">📄 Documentos</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <span class="nav-mobile-label">Apoios</span>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      <a href="/comecar-aqui.html">Começa aqui</a>
+      <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+      <a href="/simuladores.html">🧮 Simuladores</a>
+      <a href="/documentos.html">📄 Documentos</a>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <header class="hero">
+    <p style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem;"><a href="/" style="color:#6B7280;text-decoration:underline;">Início</a> › <a href="/simuladores.html" style="color:#6B7280;text-decoration:underline;">Simuladores</a> › RSI</p>
+    <h1>Simulador do RSI 2026</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">Calcula a estimativa do valor mensal do RSI para o teu agregado, com desagregação completa por componente e por tipo de rendimento. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+
+    <div class="aviso-info aviso-psu-topo" role="note">
+      ⚠️ O RSI está previsto integrar a futura Prestação Social Única (PSU). Até existir decreto-lei publicado, esta simulação continua a utilizar as regras atualmente em vigor.
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Valores 2026</strong> — 247,56€ (titular) + 173,29€ (adulto adicional) + 123,78€ (menor), IAS 537,13€ · <strong>Verificado a 13/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/rsi.html">ver guia completo do RSI</a>
+    </div>
+
+    <div class="calc-card">
+      <form id="formRSI" novalidate>
+        <p class="form-secao-titulo">Composição do agregado</p>
+        <div class="form-group" id="grupoAdultos">
+          <label for="adultos">Número de adultos (incluindo-te)</label>
+          <input type="text" id="adultos" inputmode="numeric" placeholder="1" autocomplete="off">
+          <small>Um número inteiro, sem casas decimais. Não existe limite legal para o número de elementos do agregado.</small>
+          <p class="erro-campo" id="erroAdultos"></p>
+        </div>
+        <div class="form-group" id="grupoMenores">
+          <label for="menores">Número de menores de 18 anos</label>
+          <input type="text" id="menores" inputmode="numeric" placeholder="0" autocomplete="off">
+          <small>Deixa em branco ou indica 0 se não houver menores a cargo.</small>
+          <p class="erro-campo" id="erroMenores"></p>
+        </div>
+
+        <p class="form-secao-titulo">Rendimentos mensais do agregado</p>
+        <div class="form-group" id="grupoDependente">
+          <label for="dependente">Trabalho dependente (€/mês)</label>
+          <input type="text" id="dependente" inputmode="decimal" placeholder="0" autocomplete="off">
+          <small>Conta apenas 80% do valor, já deduzidas as contribuições para a Segurança Social. Deixa em branco se não aplicável.</small>
+          <p class="erro-campo" id="erroDependente"></p>
+        </div>
+        <div class="form-group" id="grupoIndependente">
+          <label for="independente">Trabalho independente (€/mês)</label>
+          <input type="text" id="independente" inputmode="decimal" placeholder="0" autocomplete="off">
+          <small>Conta a 100% do valor declarado.</small>
+          <p class="erro-campo" id="erroIndependente"></p>
+        </div>
+        <div class="form-group" id="grupoSubsidioDesemprego">
+          <label for="subsidioDesemprego">Subsídio de desemprego (€/mês)</label>
+          <input type="text" id="subsidioDesemprego" inputmode="decimal" placeholder="0" autocomplete="off">
+          <small>Conta a 100% — se for igual ou superior ao valor máximo do agregado, o RSI pode ser 0€.</small>
+          <p class="erro-campo" id="erroSubsidioDesemprego"></p>
+        </div>
+        <div class="form-group" id="grupoOutros">
+          <label for="outros">Outros rendimentos (€/mês)</label>
+          <input type="text" id="outros" inputmode="decimal" placeholder="0" autocomplete="off">
+          <small>Pensões, apoios e outros rendimentos regulares não incluídos acima. Conta a 100%.</small>
+          <p class="erro-campo" id="erroOutros"></p>
+        </div>
+        <p style="font-size:0.85rem;color:var(--muted);margin:-0.5rem 0 1.5rem;">Assume-se o rendimento mensal habitual. A Segurança Social aplica regras próprias para subsídios de férias/Natal e para rendimentos variáveis — este simulador não os calcula separadamente.</p>
+
+        <p class="form-secao-titulo">Elegibilidade</p>
+        <div class="form-group" id="grupoDataNascimento">
+          <label for="dataNascimento">A tua data de nascimento (titular)</label>
+          <input type="date" id="dataNascimento" autocomplete="off">
+          <small>A idade é calculada automaticamente. A idade mínima geral é 18 anos — há excepções legais, ver Perguntas frequentes.</small>
+          <p class="erro-campo" id="erroDataNascimento"></p>
+        </div>
+        <div class="form-group">
+          <label for="residenciaLegal">Tens residência legal em Portugal?</label>
+          <select id="residenciaLegal">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+          <small>Cidadãos PT/UE: sem prazo mínimo. Outros países: normalmente 1 ano de residência legal — há excepções (ex. refugiados).</small>
+        </div>
+        <div class="form-group">
+          <label for="patrimonio">O património financeiro do agregado ultrapassa 32.227,80€?</label>
+          <select id="patrimonio">
+            <option value="dentro">Não ultrapassa</option>
+            <option value="ultrapassa">Ultrapassa</option>
+            <option value="nao_sei">Não sei</option>
+          </select>
+          <small>Só contam ativos financeiros (contas, depósitos, investimentos). A habitação própria permanente nunca conta para este limite.</small>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary">🧮 Calcular RSI</button>
+          <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado" aria-live="polite"></div>
+
+    <div class="antes-de-pedir">
+      <h2>Antes de pedir o RSI confirme também que…</h2>
+      <ul>
+        <li>Estás inscrito/a no Centro de Emprego (se desempregado/a) e disponível para trabalhar, formar-te ou te inserires.</li>
+        <li>Não estás em estabelecimento prisional (excepção: podes pedir 45 dias antes da libertação).</li>
+        <li>Não estás institucionalizado/a num equipamento financiado pelo Estado (excepção temporária).</li>
+        <li>Se saíste do último emprego por iniciativa própria sem justa causa: só podes pedir o RSI 1 ano depois.</li>
+        <li>Aceitas o contrato de inserção obrigatório, a formalizar em 45 dias após a aprovação.</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--muted);margin-top:0.75rem;">Ver todas as condições de acesso no <a href="/rsi.html">guia completo do RSI</a>.</p>
+    </div>
+
+    <div class="formula-box">
+      <h2>Como funciona o cálculo</h2>
+      <code>Valor do RSI = Valor máximo do agregado − Rendimentos considerados</code>
+      <ul>
+        <li><strong>Valor máximo do agregado:</strong> 247,56€ pelo titular (100% do RSI base) + 173,29€ por cada adulto adicional (70%) + 123,78€ por cada menor de 18 anos (50%) — sem limite ao número de elementos do agregado.</li>
+        <li><strong>Rendimentos considerados:</strong> trabalho dependente conta 80% (já deduzidas as contribuições), trabalho independente, subsídio de desemprego e outros rendimentos contam 100%.</li>
+        <li><strong>Nunca negativo:</strong> se os rendimentos considerados forem iguais ou superiores ao valor máximo, o RSI é 0€.</li>
+        <li><strong>Idade mínima geral:</strong> 18 anos, com excepções legais não modeladas neste simulador (ver Perguntas frequentes).</li>
+        <li><strong>Património financeiro:</strong> limite de 32.227,80€ em ativos financeiros (60 × IAS 2026), habitação própria permanente excluída — não é calculado automaticamente, só verificado por resposta directa.</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--muted)">Este simulador não modela a excepção legal de menores de 18 anos com rendimentos próprios e direito autónomo ao RSI (grávida, casada/união de facto há mais de 2 anos, ou com menores/pessoas com deficiência a cargo) — é um caso raro, fora do âmbito desta calculadora. Ver <a href="/rsi.html">guia completo do RSI</a> para o detalhe.</p>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como é calculado o valor do RSI?</summary>
+        <div class="faq-resposta">
+          O valor do RSI é a diferença entre o valor máximo do agregado (247,56€ pelo titular + 173,29€ por cada adulto adicional + 123,78€ por cada menor de 18 anos, valores 2026) e os rendimentos considerados do agregado. Nunca é negativo — se os rendimentos forem iguais ou superiores ao valor máximo, o RSI é 0€.
+        </div>
+      </details>
+
+      <details>
+        <summary>Que rendimentos contam para o cálculo, e em que percentagem?</summary>
+        <div class="faq-resposta">
+          O trabalho dependente conta apenas 80% do valor declarado, já deduzidas as contribuições para a Segurança Social. Trabalho independente, subsídio de desemprego e outros rendimentos (pensões, apoios, etc.) contam a 100%. Este simulador não modela separadamente os subsídios de férias e de Natal — assume rendimento mensal habitual.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador considera o património financeiro do agregado?</summary>
+        <div class="faq-resposta">
+          Não calcula o valor exacto do património — só pergunta se ultrapassa o limite de 32.227,80€ em ativos financeiros (60 vezes o IAS 2026). A habitação própria permanente nunca conta para este limite. Se ultrapassares o limite, o simulador continua a mostrar o cálculo, mas com um aviso claro de que isso pode impedir o acesso ao RSI.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador verifica todas as condições de acesso ao RSI?</summary>
+        <div class="faq-resposta">
+          Não. Só verifica idade mínima, residência legal e património financeiro. Há outras condições de acesso — inscrição no Centro de Emprego, disponibilidade para trabalhar, não estar em estabelecimento prisional, entre outras — que tens de confirmar separadamente (ver secção "Antes de pedir o RSI" nesta página e o <a href="/rsi.html">guia completo do RSI</a>).
+        </div>
+      </details>
+
+      <details>
+        <summary>O RSI vai ser substituído pela PSU?</summary>
+        <div class="faq-resposta">
+          A Prestação Social Única (PSU) foi aprovada pelo Parlamento a 25 de junho de 2026 e prevê absorver o RSI. Até existir decreto-lei publicado com os valores e regras definitivas, o RSI continua em vigor com as regras actuais, e é isso que este simulador calcula. Ver <a href="/prestacao-social-unica.html">guia da PSU</a>.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. É apenas uma <strong>estimativa educativa</strong>, baseada exclusivamente nos dados introduzidos e na legislação em vigor. A decisão final é sempre da Segurança Social, que pode considerar outros elementos do agregado ou rendimentos não incluídos aqui. Confirma sempre a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a>.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Lei n.º 13/2003, de 21 de maio, e Portaria n.º 71/2026/1, de 13 de fevereiro), mas podem conter erros ou omissões. Simulação indicativa — o valor final é determinado pela Segurança Social.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ══════════════════════════════════════════════════════════════════════
+    // SIMULADOR DO RSI — 1. CONSTANTES
+    // ══════════════════════════════════════════════════════════════════════
+    // PARAMETROS_RSI — fonte única de verdade da fórmula. Cada valor tem
+    // "fonte" e "verificado_em" próprios (mesmo padrão de PARAMETROS_CSI em
+    // simulador-csi.html e PARAMETROS_SUBSIDIO_DOENCA em
+    // simulador-subsidio-doenca.html). Nenhum valor legal aparece solto no
+    // meio da lógica de cálculo — toda a função calcularRSI() lê
+    // exclusivamente deste objecto (Fase 3/Fase 4 do desenho aprovado).
+    //
+    // Valores fact-checked em rsi.html (verificado 24/06/2026) e
+    // reconfirmados por pesquisa externa nesta sessão (13/07/2026): DRE
+    // (Portaria n.º 71/2026/1), Jornal de Negócios, e-konomista, Doutor
+    // Finanças — sem divergências. Confirmado também, por 3 fontes
+    // independentes, que a escala de equivalência não tem tecto de número
+    // de elementos do agregado (ver CLAUDE.md, auditoria da Fase 1).
+    const PARAMETROS_RSI = {
+      anoReferencia: { valor: 2026, fonte: 'Ano de vigência dos valores desta simulação', verificado_em: '2026-07-13' },
+      valorTitular: { valor: 247.56, fonte: 'Portaria n.º 71/2026/1, de 13 de fevereiro — RSI base 2026 (46,09% do IAS)', verificado_em: '2026-07-13' },
+      valorAdultoAdicional: { valor: 173.29, fonte: 'Portaria n.º 71/2026/1 — 70% do RSI base, por cada adulto adicional', verificado_em: '2026-07-13' },
+      valorMenor: { valor: 123.78, fonte: 'Portaria n.º 71/2026/1 — 50% do RSI base, por cada menor de 18 anos', verificado_em: '2026-07-13' },
+      ias: { valor: 537.13, fonte: 'Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026', verificado_em: '2026-07-13' },
+      limitePatrimonio: { valor: 32227.80, fonte: '60 × IAS 2026 — limite de ativos financeiros; habitação própria permanente excluída', verificado_em: '2026-07-13' },
+      percentagemDependente: { valor: 0.80, fonte: 'Guia Prático RSI, seg-social.pt — trabalho dependente conta 80%, já deduzidas as contribuições', verificado_em: '2026-07-13' },
+      percentagemIndependente: { valor: 1.00, fonte: 'Guia Prático RSI, seg-social.pt — trabalho independente conta 100%', verificado_em: '2026-07-13' },
+      percentagemSubsidioDesemprego: { valor: 1.00, fonte: 'seg-social.pt — subsídio de desemprego soma-se a 100% aos rendimentos do agregado', verificado_em: '2026-07-13' },
+      percentagemOutros: { valor: 1.00, fonte: 'Outros rendimentos regulares (pensões, apoios, etc.) contam a 100%', verificado_em: '2026-07-13' },
+      idadeMinima: { valor: 18, fonte: 'Lei n.º 13/2003, de 21 de maio — idade mínima geral (excepções legais não modeladas)', verificado_em: '2026-07-13' },
+    };
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 2. MENSAGENS — centralizadas, nunca repetidas noutras funções
+    // ══════════════════════════════════════════════════════════════════════
+    const MENSAGENS_RSI = {
+      erros: {
+        adultosObrigatorio: 'Indica o número de adultos do agregado (mínimo 1).',
+        adultosInteiro: 'O número de adultos tem de ser um número inteiro, sem casas decimais.',
+        adultosMinimo: 'O agregado tem de ter pelo menos 1 adulto.',
+        menoresInteiro: 'O número de menores tem de ser um número inteiro, sem casas decimais — usa 0 se não houver menores.',
+        rendimentoInvalido: function (rotulo) {
+          return 'O valor de "' + rotulo + '" não é um número válido. Deixa o campo em branco para considerar 0€.';
+        },
+        rendimentoNegativo: function (rotulo) {
+          return 'O valor de "' + rotulo + '" não pode ser negativo.';
+        },
+        dataNascimentoObrigatoria: 'Indica a tua data de nascimento.',
+        dataNascimentoFutura: 'A data de nascimento não pode ser no futuro.',
+      },
+      avisos: {
+        idade: function (idade, idadeMinima) {
+          return '⚠️ Indicaste ' + idade + ' anos. A idade mínima geral de acesso ao RSI é ' + idadeMinima + ' anos. Há excepções legais (grávida, casada/união de facto há mais de 2 anos, ou com menores/pessoas com deficiência a cargo, desde que tenhas rendimentos próprios superiores a 173,29€/mês) — este simulador não as calcula, consulta o guia completo do RSI. O cálculo abaixo é apenas indicativo do valor.';
+        },
+        residencia: '⚠️ Indicaste que não tens residência legal em Portugal. Há excepções (refugiados; cidadãos de países terceiros após 1 ano de residência legal) — consulta o guia completo do RSI. O cálculo abaixo é apenas indicativo do valor, não da elegibilidade.',
+        patrimonioUltrapassa: function (limiteFormatado) {
+          return '⚠️ Indicaste que o património financeiro do agregado ultrapassa ' + limiteFormatado + '. Isto pode impedir o acesso ao RSI. A habitação própria permanente não conta para este limite. O cálculo abaixo é apresentado para referência — o valor exacto do património não é calculado automaticamente por este simulador.';
+        },
+        patrimonioNaoSei: function (limiteFormatado) {
+          return '❓ Não sabes se o património financeiro do agregado ultrapassa ' + limiteFormatado + '? Reúne os extratos de conta antes de submeter o pedido — este é um dos critérios de acesso. O cálculo abaixo assume que o património está dentro do limite.';
+        },
+        valorZero: 'Com os valores indicados, o rendimento considerado do agregado é igual ou superior ao valor máximo do RSI — por isso a estimativa é 0€. Isto não significa necessariamente que não tens direito a outros apoios: considera verificar os critérios não-financeiros na secção "Antes de pedir o RSI" acima, ou os simuladores do Subsídio de Desemprego / CSI se forem mais aplicáveis à tua situação.',
+      },
+      fiabilidade: 'Esta simulação baseia-se exclusivamente nos dados introduzidos e na legislação atualmente em vigor. A decisão final pertence sempre à Segurança Social, que poderá considerar outros elementos do agregado familiar ou rendimentos não abrangidos por esta simulação.',
+      semRendimentos: 'Nenhum rendimento indicado — considerado 0€.',
+    };
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 3. UTILITÁRIOS — funções puras, sem dependência de DOM
+    // ══════════════════════════════════════════════════════════════════════
+
+    // arredondarCentimos: elimina resíduos de ponto flutuante (ex.:
+    // 0.8 * 333.333 = 266.66639999999997 em aritmética JS nativa) antes de
+    // qualquer soma/subtração subsequente — nunca só no passo de exibição.
+    // Entradas: valor (number). Saída: number arredondado a 2 casas.
+    function arredondarCentimos(valor) {
+      return Math.round((valor + Number.EPSILON) * 100) / 100;
+    }
+
+    // formatarEuro: nunca mostra "-0.00" nem resíduos de ponto flutuante;
+    // sempre exactamente 2 casas decimais. Mesmo padrão visual (€ + ponto
+    // decimal) dos outros 4 simuladores do site — não PT-PT com vírgula,
+    // por consistência absoluta com o código já existente.
+    // Entradas: valor (number). Saída: string, ex. "€247.56".
+    function formatarEuro(valor) {
+      var arredondado = arredondarCentimos(valor);
+      if (Object.is(arredondado, -0) || arredondado === 0) arredondado = 0;
+      return '€' + arredondado.toFixed(2);
+    }
+
+    // calcularIdade: comparação por componentes de data (ano/mês/dia),
+    // nunca por subtração de milissegundos — evita o erro clássico de
+    // meses de duração variável e o risco de desvio de fuso horário ao
+    // converter string→Date. Ambas as datas em formato ISO "AAAA-MM-DD".
+    // Pré-condição: dataNascimentoISO <= dataReferenciaISO (validado antes
+    // de chamar esta função). Saída: idade em anos completos (number).
+    function calcularIdade(dataNascimentoISO, dataReferenciaISO) {
+      var nasc = dataNascimentoISO.split('-').map(Number);
+      var ref = dataReferenciaISO.split('-').map(Number);
+      var idade = ref[0] - nasc[0];
+      if (ref[1] < nasc[1] || (ref[1] === nasc[1] && ref[2] < nasc[2])) {
+        idade -= 1;
+      }
+      return idade;
+    }
+
+    // dataDeHojeISO: única função com efeito lateral (lê o relógio) desta
+    // camada de utilitários — isolada para nunca ser confundida com as
+    // funções puras acima, e para os testes poderem injectar uma data de
+    // referência fixa em vez de dependerem do dia real de execução.
+    function dataDeHojeISO() {
+      var agora = new Date();
+      var mes = String(agora.getMonth() + 1).padStart(2, '0');
+      var dia = String(agora.getDate()).padStart(2, '0');
+      return agora.getFullYear() + '-' + mes + '-' + dia;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 4. VALIDAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    var REGEX_INTEIRO = /^\d+$/;
+    var REGEX_DECIMAL = /^\d+([.,]\d+)?$/;
+
+    function normalizarSeparadorDecimal(str) {
+      return str.replace(',', '.');
+    }
+
+    // validarInputRSI: única camada autorizada a decidir "vazio → 0" vs.
+    // "inválido → erro" (Fase 2/3, decisão aprovada — diverge deliberadamente
+    // do padrão `parseFloat(x) || 0` dos outros simuladores do site, que
+    // nunca distingue as duas situações). Recebe SEMPRE strings em bruto
+    // (o valor de .value dos campos, antes de qualquer parseFloat/parseInt).
+    // Nunca lança excepção. Saída: { valido, erros: [{campo, mensagem}],
+    // valoresNormalizados }.
+    function validarInputRSI(bruto) {
+      var erros = [];
+
+      var adultosStr = (bruto.adultos || '').trim();
+      var adultosNormalizado = null;
+      if (adultosStr === '') {
+        erros.push({ campo: 'adultos', mensagem: MENSAGENS_RSI.erros.adultosObrigatorio });
+      } else if (!REGEX_INTEIRO.test(adultosStr)) {
+        erros.push({ campo: 'adultos', mensagem: MENSAGENS_RSI.erros.adultosInteiro });
+      } else {
+        adultosNormalizado = parseInt(adultosStr, 10);
+        if (adultosNormalizado < 1) {
+          erros.push({ campo: 'adultos', mensagem: MENSAGENS_RSI.erros.adultosMinimo });
+        }
+      }
+
+      var menoresStr = (bruto.menores || '').trim();
+      var menoresNormalizado = 0;
+      if (menoresStr !== '') {
+        if (!REGEX_INTEIRO.test(menoresStr)) {
+          erros.push({ campo: 'menores', mensagem: MENSAGENS_RSI.erros.menoresInteiro });
+        } else {
+          menoresNormalizado = parseInt(menoresStr, 10);
+        }
+      }
+
+      var camposRendimento = [
+        { chave: 'dependente', rotulo: 'trabalho dependente' },
+        { chave: 'independente', rotulo: 'trabalho independente' },
+        { chave: 'subsidioDesemprego', rotulo: 'subsídio de desemprego' },
+        { chave: 'outros', rotulo: 'outros rendimentos' },
+      ];
+      var rendimentosNormalizados = {};
+      camposRendimento.forEach(function (campo) {
+        var valorBruto = (bruto[campo.chave] || '').trim();
+        if (valorBruto === '') {
+          rendimentosNormalizados[campo.chave] = 0;
+          return;
+        }
+        var normalizado = normalizarSeparadorDecimal(valorBruto);
+        if (!REGEX_DECIMAL.test(normalizado)) {
+          erros.push({ campo: campo.chave, mensagem: MENSAGENS_RSI.erros.rendimentoInvalido(campo.rotulo) });
+          return;
+        }
+        rendimentosNormalizados[campo.chave] = parseFloat(normalizado);
+      });
+
+      var dataNascimento = (bruto.dataNascimento || '').trim();
+      if (dataNascimento === '') {
+        erros.push({ campo: 'dataNascimento', mensagem: MENSAGENS_RSI.erros.dataNascimentoObrigatoria });
+      } else if (dataNascimento > (bruto.dataHoje || dataDeHojeISO())) {
+        erros.push({ campo: 'dataNascimento', mensagem: MENSAGENS_RSI.erros.dataNascimentoFutura });
+      }
+
+      return {
+        valido: erros.length === 0,
+        erros: erros,
+        valoresNormalizados: {
+          adultos: adultosNormalizado,
+          menores: menoresNormalizado,
+          dependente: rendimentosNormalizados.dependente || 0,
+          independente: rendimentosNormalizados.independente || 0,
+          subsidioDesemprego: rendimentosNormalizados.subsidioDesemprego || 0,
+          outros: rendimentosNormalizados.outros || 0,
+          dataNascimento: dataNascimento,
+          residenciaLegal: bruto.residenciaLegal,
+          patrimonio: bruto.patrimonio,
+        },
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 5. CÁLCULO — função pura, testada em tests/test_simulador_rsi_calculo.py
+    // ══════════════════════════════════════════════════════════════════════
+
+    // calcularRSI: NUNCA toca no DOM, nunca produz HTML nem texto de
+    // interface (só rótulos estruturados, reaproveitados pela camada de
+    // renderização). Entradas: params (PARAMETROS_RSI) + input já validado
+    // e normalizado por validarInputRSI, com "idade" já calculada por
+    // calcularIdade(). Saída: objecto estruturado (ver comentário de cada
+    // campo). Pré-condição: input.adultos >= 1 (garantido pela validação).
+    // Pós-condição: valorRSI nunca é negativo; todos os montantes já vêm
+    // arredondados a cêntimos.
+    function calcularRSI(params, input) {
+      var adultos = input.adultos;
+      var menores = input.menores;
+
+      var componentesMaximo = [];
+      componentesMaximo.push({
+        label: 'Titular',
+        valor: params.valorTitular.valor,
+        regra: '100% do RSI base',
+        subtotal: params.valorTitular.valor,
+      });
+      if (adultos > 1) {
+        var nAdicionais = adultos - 1;
+        componentesMaximo.push({
+          label: nAdicionais + (nAdicionais === 1 ? ' adulto adicional' : ' adultos adicionais'),
+          valor: params.valorAdultoAdicional.valor,
+          regra: '70% do RSI base × ' + nAdicionais,
+          subtotal: arredondarCentimos(nAdicionais * params.valorAdultoAdicional.valor),
+        });
+      }
+      if (menores > 0) {
+        componentesMaximo.push({
+          label: menores + (menores === 1 ? ' menor' : ' menores'),
+          valor: params.valorMenor.valor,
+          regra: '50% do RSI base × ' + menores,
+          subtotal: arredondarCentimos(menores * params.valorMenor.valor),
+        });
+      }
+      var valorMaximo = arredondarCentimos(
+        componentesMaximo.reduce(function (soma, c) { return soma + c.subtotal; }, 0)
+      );
+
+      var componentesRendimento = [];
+      function acrescentarRendimento(label, valorDeclarado, percentagem, regraTexto) {
+        if (valorDeclarado > 0) {
+          componentesRendimento.push({
+            label: label,
+            valor: valorDeclarado,
+            regra: regraTexto,
+            subtotal: arredondarCentimos(valorDeclarado * percentagem),
+          });
+        }
+      }
+      acrescentarRendimento('Trabalho dependente', input.dependente, params.percentagemDependente.valor, 'conta apenas ' + (params.percentagemDependente.valor * 100) + '%');
+      acrescentarRendimento('Trabalho independente', input.independente, params.percentagemIndependente.valor, 'conta ' + (params.percentagemIndependente.valor * 100) + '%');
+      acrescentarRendimento('Subsídio de desemprego', input.subsidioDesemprego, params.percentagemSubsidioDesemprego.valor, 'conta ' + (params.percentagemSubsidioDesemprego.valor * 100) + '%');
+      acrescentarRendimento('Outros rendimentos', input.outros, params.percentagemOutros.valor, 'conta ' + (params.percentagemOutros.valor * 100) + '%');
+
+      var rendimentoConsiderado = arredondarCentimos(
+        componentesRendimento.reduce(function (soma, c) { return soma + c.subtotal; }, 0)
+      );
+
+      var diferenca = arredondarCentimos(valorMaximo - rendimentoConsiderado);
+      var valorRSI = Math.max(0, diferenca);
+      var rendimentoExcedeMaximo = diferenca <= 0;
+
+      var idadeElegivel = input.idade >= params.idadeMinima.valor;
+      var residenciaOk = input.residenciaLegal === 'sim';
+      var patrimonioEstado = input.patrimonio;
+
+      var avisos = [];
+      if (!idadeElegivel) avisos.push({ tipo: 'idade', idade: input.idade });
+      if (!residenciaOk) avisos.push({ tipo: 'residencia' });
+      if (patrimonioEstado === 'ultrapassa') avisos.push({ tipo: 'patrimonio_ultrapassa' });
+      if (patrimonioEstado === 'nao_sei') avisos.push({ tipo: 'patrimonio_nao_sei' });
+      if (rendimentoExcedeMaximo) avisos.push({ tipo: 'valor_zero' });
+
+      return {
+        valorMaximo: valorMaximo,
+        componentesMaximo: componentesMaximo,
+        rendimentoConsiderado: rendimentoConsiderado,
+        componentesRendimento: componentesRendimento,
+        valorRSI: valorRSI,
+        rendimentoExcedeMaximo: rendimentoExcedeMaximo,
+        idadeElegivel: idadeElegivel,
+        residenciaOk: residenciaOk,
+        patrimonioEstado: patrimonioEstado,
+        avisos: avisos,
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 6. RENDERIZAÇÃO — só esta camada produz HTML/texto de interface
+    // ══════════════════════════════════════════════════════════════════════
+
+    // renderTabelaComponentes: gerador único e genérico, reutilizado tanto
+    // para "Valor máximo do agregado" como para "Rendimentos considerados"
+    // — evita duplicar a mesma construção de tabela duas vezes.
+    function renderTabelaComponentes(titulo, componentes, totalLabel, total) {
+      if (componentes.length === 0) {
+        return '<p class="resultado-subtitulo">' + titulo + '</p><p>' + MENSAGENS_RSI.semRendimentos + '</p>';
+      }
+      var html = '<p class="resultado-subtitulo">' + titulo + '</p>';
+      html += '<div class="desagregacao-wrap"><table><thead><tr><th>Componente</th><th>Valor</th><th>Regra aplicada</th><th>Considerado</th></tr></thead><tbody>';
+      componentes.forEach(function (c) {
+        html += '<tr><td>' + c.label + '</td><td>' + formatarEuro(c.valor) + '</td><td>' + c.regra + '</td><td>' + formatarEuro(c.subtotal) + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+      html += '<p style="margin-top:0.5rem"><strong>' + totalLabel + ': ' + formatarEuro(total) + '</strong></p>';
+      return html;
+    }
+
+    // renderAvisos: gera um <div> por aviso, reutilizando as classes já
+    // existentes na página (.aviso-teto para os que podem impedir o acesso;
+    // .aviso-info para os meramente informativos) — nunca uma variante
+    // nova só para o resultado, para manter consistência absoluta com o
+    // resto da página (formula-box/info-box já usam as mesmas classes).
+    function renderAvisos(avisos, params) {
+      var limiteFormatado = formatarEuro(params.limitePatrimonio.valor);
+      var html = '';
+      avisos.forEach(function (aviso) {
+        if (aviso.tipo === 'idade') {
+          html += '<div class="aviso-teto">' + MENSAGENS_RSI.avisos.idade(aviso.idade, params.idadeMinima.valor) + '</div>';
+        } else if (aviso.tipo === 'residencia') {
+          html += '<div class="aviso-teto">' + MENSAGENS_RSI.avisos.residencia + '</div>';
+        } else if (aviso.tipo === 'patrimonio_ultrapassa') {
+          html += '<div class="aviso-teto">' + MENSAGENS_RSI.avisos.patrimonioUltrapassa(limiteFormatado) + '</div>';
+        } else if (aviso.tipo === 'patrimonio_nao_sei') {
+          html += '<div class="aviso-info">' + MENSAGENS_RSI.avisos.patrimonioNaoSei(limiteFormatado) + '</div>';
+        } else if (aviso.tipo === 'valor_zero') {
+          html += '<div class="aviso-info">' + MENSAGENS_RSI.avisos.valorZero + '</div>';
+        }
+      });
+      return html;
+    }
+
+    // renderResultadoRSI: constrói o HTML do #resultado a partir do objecto
+    // estruturado devolvido por calcularRSI(). O breakdown NUNCA desaparece,
+    // mesmo quando existem avisos de inelegibilidade (Fase 2, decisão
+    // aprovada — maximizar transparência). Avisos e caixa de fiabilidade
+    // ficam fora do cartão escuro (.resultado-card), no mesmo padrão já
+    // usado por .aviso-teto no simulador de Subsídio de Doença — nunca
+    // dentro de um fundo escuro, para não precisar de uma variante de cor.
+    function renderResultadoRSI(r, params) {
+      var html = '<div class="resultado-card">';
+      html += '<div class="resultado-titulo">Estimativa do RSI a receber</div>';
+      html += '<div class="resultado-valor">' + formatarEuro(r.valorRSI) + '/mês</div>';
+
+      html += '<div class="resultado-detalhe">';
+      html += renderTabelaComponentes('Valor máximo do agregado', r.componentesMaximo, 'Valor máximo', r.valorMaximo);
+      html += renderTabelaComponentes('Rendimentos considerados', r.componentesRendimento, 'Total de rendimentos', r.rendimentoConsiderado);
+
+      html += '<p class="resultado-subtitulo">Cálculo final</p>';
+      html += '<p>' + formatarEuro(r.valorMaximo) + ' (valor máximo) − ' + formatarEuro(r.rendimentoConsiderado) + ' (rendimentos) = <strong>' + formatarEuro(r.valorRSI) + '/mês</strong></p>';
+      html += '</div>';
+
+      var textoCopia = 'Simulação RSI ' + params.anoReferencia.valor + ': ' + formatarEuro(r.valorRSI) + '/mês (valor máximo ' + formatarEuro(r.valorMaximo) + ', rendimentos considerados ' + formatarEuro(r.rendimentoConsiderado) + ').';
+      html += '<button type="button" class="btn btn-copiar" onclick="copiarResultadoRSI(this.dataset.texto)" data-texto="' + textoCopia.replace(/"/g, '&quot;') + '">📋 Copiar resultado</button>';
+      html += '</div>';
+
+      html += '<div class="avisos-resultado">';
+      html += renderAvisos(r.avisos, params);
+      html += '<div class="aviso-info">💬 ' + MENSAGENS_RSI.fiabilidade + '</div>';
+      html += '</div>';
+
+      html += '<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-top: 1rem;">💡 Simulação indicativa. Confirma sempre a tua situação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color: #0F766E; font-weight: 600;">Segurança Social Direta</a>.</p>';
+
+      return html;
+    }
+
+    function limparErrosFormulario() {
+      document.querySelectorAll('.erro-campo').forEach(function (el) {
+        el.textContent = '';
+        el.classList.remove('show');
+      });
+      document.querySelectorAll('.form-group').forEach(function (el) {
+        el.classList.remove('tem-erro');
+      });
+    }
+
+    function renderErrosFormulario(erros) {
+      erros.forEach(function (erro) {
+        var elErro = document.getElementById('erro' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        var grupo = document.getElementById('grupo' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        if (elErro) {
+          elErro.textContent = erro.mensagem;
+          elErro.classList.add('show');
+        }
+        if (grupo) grupo.classList.add('tem-erro');
+      });
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 7. EVENTOS
+    // ══════════════════════════════════════════════════════════════════════
+    function copiarResultadoRSI(texto) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(texto);
+      }
+    }
+
+    function limparResultadoRSI() {
+      var resultDiv = document.getElementById('resultado');
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+      limparErrosFormulario();
+    }
+
+    function calcularRSIFormulario(evento) {
+      evento.preventDefault();
+      limparErrosFormulario();
+
+      var bruto = {
+        adultos: document.getElementById('adultos').value,
+        menores: document.getElementById('menores').value,
+        dependente: document.getElementById('dependente').value,
+        independente: document.getElementById('independente').value,
+        subsidioDesemprego: document.getElementById('subsidioDesemprego').value,
+        outros: document.getElementById('outros').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        dataHoje: dataDeHojeISO(),
+        residenciaLegal: document.getElementById('residenciaLegal').value,
+        patrimonio: document.getElementById('patrimonio').value,
+      };
+
+      var validacao = validarInputRSI(bruto);
+      var resultDiv = document.getElementById('resultado');
+
+      if (!validacao.valido) {
+        renderErrosFormulario(validacao.erros);
+        resultDiv.classList.remove('show');
+        resultDiv.innerHTML = '';
+        var primeiroErro = document.getElementById('grupo' + validacao.erros[0].campo.charAt(0).toUpperCase() + validacao.erros[0].campo.slice(1));
+        if (primeiroErro) primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var idade = calcularIdade(validacao.valoresNormalizados.dataNascimento, bruto.dataHoje);
+      var input = Object.assign({}, validacao.valoresNormalizados, { idade: idade });
+
+      var r = calcularRSI(PARAMETROS_RSI, input);
+      resultDiv.innerHTML = renderResultadoRSI(r, PARAMETROS_RSI);
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'rsi' });
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 8. INICIALIZAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    // Guarda de existência (nunca assumida): permite injectar só este
+    // <script> numa página sem formulário (testes de unidade das funções
+    // puras, tests/test_simulador_rsi_calculo.py) sem lançar excepção.
+    var formularioRSI = document.getElementById('formRSI');
+    if (formularioRSI) {
+      formularioRSI.addEventListener('submit', calcularRSIFormulario);
+      document.getElementById('btnLimpar').addEventListener('click', function () {
+        formularioRSI.reset();
+        limparResultadoRSI();
+      });
+    }
+  </script>
+
+</body>
+</html>
