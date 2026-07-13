@@ -1668,7 +1668,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 | Página | Data a rever | Trigger |
 |---|---|---|
-| `manuais-escolares-mega.html` | Julho, até publicação (datas MEGA 2026/2027) | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
+| `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
 | `acao-social-escolar.html` | Setembro (prazo ASE) | Calendário anual |
 | `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
@@ -5438,3 +5438,33 @@ estendidos (barra da homepage: markers, JSON coerente com os dados,
 idempotência da injecção, promoção Playwright no mês corrente, sem promoção
 num mês velho; link de nav em desktop+mobile). Ruff limpo.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
+
+---
+
+*Última revisão: 2026-07-13 — gatilho sazonal MEGA disparado: as datas de
+emissão dos vales 2026/2027 foram publicadas. `manuais-escolares-mega.html`
+(página #1 em cliques GSC) actualizada de "datas por publicar / padrão
+histórico" para o calendário confirmado: **3 de agosto (1.º–4.º ano), 10 de
+agosto (5.º–9.º ano), 13 de agosto (10.º–12.º ano)**. Fact-check com
+`WebSearch` (WebFetch/official 403 em toda a sessão, mesmo padrão
+documentado): triangulado por várias fontes independentes que reproduzem o
+anúncio oficial (Executive Digest, Postal, WOOK). **Dois conjuntos de datas
+recicladas apanhados e evitados** — "28 jul/4 ago/11 ago" é o calendário de
+2025/2026 (juntava o 9.º ano ao 1.º ciclo; um dos próprios links enviados
+pelo Nuno, pplware, mostrava estas); "2 de agosto" é do gc23 (2022). Sinal de
+autenticidade do calendário novo: o 9.º ano mudou da fase do 1.º ciclo para a
+fase de 10 de agosto. Actualizados: tabela do calendário, resposta rápida,
+2 respostas JSON-LD (FAQ + HowTo passo 4), item da checklist, meta
+description, `dateModified` (2026-07-13) e o carimbo "Verificado a" (13/07,
+com nota da metodologia de triangulação). Achado de detecção de datas: a
+menção a "2025/2026" (a explicar as datas recicladas) fazia
+`test_verificar_datas.py::test_manuais_escolares_mega_real_nao_gera_alerta_issue_45`
+falhar (ano_letivo passado sem marcador de supressão) — resolvido reescrevendo
+"2025/2026" como "ano letivo anterior" nas 3 ocorrências (visível + JSON-LD +
+comentário), em vez de reintroduzir um marcador de pendência falso
+(`provisório`/`por confirmar`) — as datas estão confirmadas, não pendentes.
+`sincronizar_clusters.py` corrido (promoveu a página para o topo de
+ATUALIZACOES:HOME, 13 jul). Verificado com Chromium (1200/375px): tabela
+3/10/13 ago, 0px overflow, zero erros JS; axe, higiene, canários de anos/
+valores-âncora e breadcrumb todos verdes; 4 blocos JSON-LD válidos; ruff
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.*
