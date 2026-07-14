@@ -18,3 +18,4 @@
 /subsidio-desemprego.html
 /baixa-medica-subsidio-doenca.html
 /calendario-pagamentos-seguranca-social.html
+/calendario-escolar-apoios.html

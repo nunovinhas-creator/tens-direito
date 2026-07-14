@@ -6051,3 +6051,73 @@ desta sessão, per instrução do harness — a REGRA ABSOLUTA — GIT deste
 ficheiro assume sessões locais em `main`; esta sessão remota opera sob a
 designação de branch fornecida pelo ambiente, não uma branch criada por
 iniciativa própria).*
+
+---
+
+*Última revisão: 2026-07-14 (sessão de integração `claude/calendario-escolar-apoios-tsgjcp`)
+— corrige uma violação real da REGRA ABSOLUTA — GIT da sessão anterior: o
+trabalho do calendário escolar/bolsa DGES tinha ido para uma branch em vez
+de directamente para `main`.
+
+**Integração**: `git log --oneline origin/main..claude/calendario-escolar-apoios-tsgjcp`
+confirmou exactamente 1 commit por integrar (`718b9b9`) e `git diff --stat`
+sem surpresas (13 ficheiros, mesmo diffstat já documentado na entrada
+anterior). `origin/main` estava no mesmo commit-base da branch (`7fd08f1`),
+por isso `git merge --ff-only` foi directo, sem rebase necessário — `main`
+avançou de `7fd08f1` para `718b9b9` por fast-forward puro, sem merge
+commit. Push directo (`git push origin main`, sem PR, conforme instruído).
+`git push origin --delete claude/calendario-escolar-apoios-tsgjcp` deu
+**403** (mesma limitação de sempre) — mas confirmado por
+`limpar-branches.yml`, disparado automaticamente pelo próprio push a
+`main`: a branch (0 commits únicos face a `main`) foi apagada sozinha pelo
+GITHUB_TOKEN do Actions, sem intervenção manual — `list_branches` da API
+confirma hoje só `main` no repositório remoto.
+
+**CI no push real a `main`** (não os checks da branch, que nunca contam
+como prova válida — só o evento `push` real): confirmados `success` para
+o commit `718b9b9` — `Validar Conteúdo HTML`, `pages build and
+deployment`, `Verificação de Produção (Smoke Test)`, `Limpar Branches
+Órfãs`, e todos os 6 sub-jobs de `Integridade do Código` (`Qualidade
+Python (Ruff)`, `Verificar Segredos (Gitleaks)`, `Vulnerabilidades
+Packages (pip-audit)`, `Verificar Prompt Injection`, `Validação HTML
+(W3C)`, e `Suite de Testes (pytest)` — este último foi o mais lento,
+~7 min, correndo a suite completa + o guardrail de skips, ambos
+`success`). Run completo:
+`github.com/nunovinhas-creator/tens-direito/actions/runs/29325796062`.
+Bate certo com a confirmação independente já feita localmente antes do
+push: **2382 passed, 4 skipped, 0 failed**, os 4 skips a bater certo
+elemento a elemento com `tests/skips_permitidos.json`.
+
+**Gatilho da bolsa DGES — mantido aberto, não fechado**: a entrada em
+`ROADMAP.md` → "Novo sistema de ação social no ensino superior" foi
+reescrita para deixar claro que só a **promulgação** (7/07/2026) está
+confirmada — a publicação em Diário da República e a citação exacta do
+decreto-lei continuam por confirmar (acesso a dre.pt bloqueado em duas
+sessões seguidas). Confirmado por grep que **nenhum** valor da bolsa
+(872€/2.660€/160€/1.045€) tinha sido coberto por `tests/test_valores_ancora.py`
+na sessão anterior — nada a remover. Confirmado por leitura da página que
+o texto nunca afirma "já é lei", sempre "promulgado" com a lacuna de
+publicação explicitada duas vezes (`aviso` + `Nota de verificação`) — não
+precisou de correcção. Nova acção registada no ROADMAP para quando a
+publicação for confirmada: verificar os valores contra o texto real do
+diploma, citar o número do decreto-lei na página, e só depois disso cobrir
+os valores em `test_valores_ancora.py` (nunca antes — um canário sobre um
+valor de fonte secundária protegeria o número errado se o diploma
+divergir).
+
+**Sessão MEGA de 13/07 confirmada já documentada**: `CLAUDE.md` já tinha a
+entrada "Última revisão: 2026-07-13 — gatilho sazonal MEGA disparado"
+(linha 5448) com o raciocínio completo (datas 3/10/13 ago, fact-check,
+carimbo actualizado) — nenhuma entrada retroactiva foi necessária.
+
+**`scripts/urls_criticas.txt`**: `calendario-escolar-apoios.html`
+acrescentada — mesma categoria de `calendario-pagamentos-seguranca-social.html`
+(página de referência agregadora), critério editorial, não um limiar de
+tráfego medido.
+
+Alterações desta sessão são só a `.md`/`.txt` (nenhum código Python nem
+teste tocado) — `ruff` não aplicável; confirmado por leitura directa que o
+validador de conteúdo (`validar-conteudo.yml`) não se aplica a estes dois
+ficheiros (só HTML). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` em `scripts/decisao_datas.py`, inalterados por esta
+sessão. `git branch --show-current` = `main` confirmado no fim.*
