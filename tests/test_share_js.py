@@ -151,7 +151,7 @@ def test_fallback_clipboard_quando_sem_web_share(pagina):
 
     feedback = pagina.query_selector("#partilhar-feedback")
     assert feedback is not None
-    assert feedback.inner_text() == "✅ Ligação copiada para a área de transferência."
+    assert feedback.inner_text() == "✅ Ligação copiada. Já a podes colar."
     assert feedback.get_attribute("role") == "status"
     assert feedback.get_attribute("aria-live") == "polite"
 

@@ -161,7 +161,7 @@
   function copiarTexto(texto, botao, mensagemEl) {
     function sucesso() {
       if (mensagemEl) {
-        mensagemEl.textContent = "✓ Copiado para a área de transferência.";
+        mensagemEl.textContent = "✓ Texto copiado. Já o podes colar.";
       }
     }
     function falha() {

@@ -166,7 +166,7 @@ var paginas = [
    cluster: 'idosos-incapacidade-cuidadores', clusterNome: 'Idosos, Incapacidade e Cuidadores', tipo: 'ferramenta'},
   {url: '/simulador-subsidio-doenca.html',
    titulo: 'Simulador de Subsídio de Doença 2026',
-   descricao: 'Calculadora online do subsídio de doença 2026, com desagregação por escalão (55% a 75%), dias de espera e majoração.',
+   descricao: 'Calculadora online do subsídio de doença 2026 — mostra cada parcela do cálculo por escalão (55% a 75%), dias de espera e majoração.',
    keywords: 'simulador subsídio doença calculadora baixa médica escalão percentagem cit',
    cluster: 'trabalho-rendimento', clusterNome: 'Trabalho e Rendimento', tipo: 'ferramenta'},
   {url: '/simulador-rsi.html',

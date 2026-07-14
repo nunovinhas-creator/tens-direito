@@ -6280,3 +6280,37 @@ alterações após a mudança; pesquisa global sem nenhuma ocorrência antiga
 fora desta secção histórica de 2026-07-02, que se mantém intocada pela
 regra de nunca reescrever entradas de revisão passadas). 801 testes dos
 ficheiros afectados a passar, ruff limpo.*
+
+---
+
+*Última revisão: 2026-07-14 — aplicadas as correcções da auditoria de
+linguagem (baixa literacia digital), só texto visível ao utilizador, nada
+mais: "cluster"→"tema" (homepage, única fuga de jargão interno);
+"browser"→"navegador" uniformizado em 19 ocorrências visíveis (16 páginas
++ hub documentos/index/privacidade/p-familia — as meta descriptions e
+JSON-LD com "browser" ficaram deliberadamente intocadas, por instrução
+explícita de nunca mexer em SEO/dados estruturados nesta sessão);
+"password"→"palavra-passe" (3 ocorrências visíveis; espelhos em HowTo
+JSON-LD intocados); "CMD" expandido para "Chave Móvel Digital" na
+checklist da declaração de situação contributiva; "Faz login"→"Inicia
+sessão" (2); "download"→"descarregar" (1 visível); "hub de simuladores"→
+"a página de simuladores" (com correcção de concordância do artigo);
+"desagregação"→"mostra cada parcela do cálculo" (9 ocorrências visíveis +
+1 descricao em scripts/pesquisa.js); mensagens de copiado ("…para a área
+de transferência")→"✅ Ligação copiada. Já a podes colar." (share.js,
+constante+docstring) e "✓ Texto copiado. Já o podes colar."
+(gerador-documentos.js) — só strings, zero lógica; glosa "É o salário
+bruto, antes dos descontos." no texto de ajuda do campo de remuneração do
+simulador de subsídio de desemprego; glosa "(a aprovação do pedido)" na
+1.ª ocorrência visível de "deferimento" em pagamento-apos-deferimento.html
+(ocorrências seguintes ficam simples, por desenho); "formulário
+electrónico dinâmico"→"formulário online" (visível; HowTo JSON-LD
+intocado). Teste actualizado no mesmo commit: test_share_js.py (asserção
+da mensagem de sucesso). Método: substituições exactas com guardrail de
+"exactamente 1 ocorrência" — os 4 casos com duplicados (espelhos JSON-LD,
+docstring) foram inspeccionados um a um antes de qualquer edição dirigida.
+Suite completa: 2408 passed, 4 skipped (allow-list confirmada); ruff
+limpo. Não alterado por decisão da auditoria: "online"/"site"/"email"/
+"app"/"submeter candidatura", títulos oficiais, "Checklist" (achado
+opcional, não aplicado). AUTO_UPDATE_HABILITADO/REVALIDACAO_CARIMBO_
+HABILITADA não tocados.*

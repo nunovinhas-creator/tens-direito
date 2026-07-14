@@ -13,7 +13,7 @@
  *   2. Caso contrário (ou se o utilizador cancelar a partilha nativa
  *      não conta como falha) — copia o URL actual para a área de
  *      transferência via navigator.clipboard e mostra uma mensagem
- *      "✅ Ligação copiada para a área de transferência.".
+ *      "✅ Ligação copiada. Já a podes colar.".
  *   3. Se a cópia automática falhar (ou a API não existir) — mostra
  *      uma caixa simples com o URL num campo de texto, pronta a
  *      seleccionar/copiar manualmente.
@@ -26,7 +26,7 @@
   "use strict";
 
   var SELETOR_BOTAO = ".botao-partilhar";
-  var MENSAGEM_SUCESSO = "✅ Ligação copiada para a área de transferência.";
+  var MENSAGEM_SUCESSO = "✅ Ligação copiada. Já a podes colar.";
   var DURACAO_FEEDBACK_MS = 4000;
 
   function obterUrlAtual() {
