@@ -3,7 +3,7 @@
     {
       "id": "apoios-escolares",
       "nome": "Apoios Escolares",
-      "descricao_curta": "ASE, bolsa de mérito, manuais MEGA, passe sub-23, prova escolar e bolsa de estudo do ensino superior — os apoios e obrigações escolares, mais o simulador de ASE.",
+      "descricao_curta": "ASE, bolsa de mérito, manuais MEGA, passe sub-23, prova escolar, bolsa de estudo do ensino superior e o calendário de prazos — os apoios e obrigações escolares, mais o simulador de ASE.",
       "icone": "🎒",
       "pillar": "/p/apoios-escolares.html",
       "paginas": [
@@ -13,6 +13,7 @@
         {"slug": "passe-sub23.html", "titulo": "Passe sub-23 gratuito", "tipo": "artigo", "destaque": false},
         {"slug": "prova-escolar.html", "titulo": "Prova Escolar", "tipo": "artigo", "destaque": false},
         {"slug": "bolsa-de-estudo-ensino-superior.html", "titulo": "Bolsa de Estudo do Ensino Superior", "tipo": "artigo", "destaque": false},
+        {"slug": "calendario-escolar-apoios.html", "titulo": "Calendário de Apoios Escolares 2026/2027", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-ase.html", "titulo": "Simulador de ASE", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["familia"]

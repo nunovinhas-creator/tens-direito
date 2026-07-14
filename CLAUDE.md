@@ -408,6 +408,7 @@ para esses três casos.
 | `calendario-pagamentos-seguranca-social.html` | Calendário de Pagamentos da Segurança Social | 12 jul. 2026 |
 | `pagamento-apos-deferimento.html` | Pedido deferido: quando cai o primeiro pagamento | 12 jul. 2026 |
 | `como-pedir-niss.html` | Como pedir o NISS 2026 | 14 jul. 2026 |
+| `calendario-escolar-apoios.html` | Calendário de Apoios Escolares 2026/2027 | 14 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1683,6 +1684,8 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
+| `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |
+| `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega prazos de 6 páginas do cluster, revisão obrigatória sempre que qualquer um desses prazos mudar |
 
 **`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06,
 actualizada 2026-07-06)**: a lacuna de vigilância identificada na sessão
@@ -5932,3 +5935,119 @@ allow-list). `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
 limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False` (inalterados por esta sessão — página evergreen sem
 scraper próprio, sem revalidação automática de carimbo).*
+
+---
+
+*Última revisão: 2026-07-14 (sessão `calendario-escolar-apoios`) — 3 blocos.
+
+**Bloco 1 (verificação)**: as datas MEGA 2026/2027 já tinham sido confirmadas
+e publicadas numa sessão anterior (13/07/2026, commit `62a2ebb`) — nada por
+fazer no conteúdo. Confirmado nesta sessão: `dge_manuais`/`igefe_mega`/
+`mega_datas` em `OK` em `data/estado_fontes.json`, zero Issues abertas no
+repositório, e `detectar_alertas()` real confirma zero falsos positivos na
+página hoje. Entrada "Julho, até publicação" de `ROADMAP.md` → DATAS FIXAS
+fechada e substituída por "Junho 2027" (próxima revisão sazonal).
+
+**Bloco 2 (`bolsa-de-estudo-ensino-superior.html`)**: fact-check via
+`WebSearch` (`WebFetch` continua bloqueado nesta sessão, 403, mesma
+limitação documentada em todas as sessões anteriores) confirmou dois factos
+novos, nenhum assumido de memória. 1) O prazo de candidatura 2026/2027
+(14 ago-2 out, Despacho n.º 7994/2026) é genuinamente mais tardio do que em
+anos anteriores — 2025/2026 decorreu entre 25 de junho e 30 de setembro,
+confirmado por 3 fontes independentes (ULisboa, DGES, UTAD); a página
+passou de apresentar essa data como "regra geral" sem contexto para
+explicitar a comparação. 2) O novo sistema de ação social no ensino
+superior (aprovado em CM a 21/05/2026, que a página já tratava como "ainda
+não publicado") foi **promulgado pelo Presidente da República a 7 de julho
+de 2026** — confirmado por 6+ fontes jornalísticas independentes (TVI, RTP,
+DN, Notícias ao Minuto, Observador, Jornal Económico) e pelo comunicado
+oficial do XXV Governo Constitucional, que já dá os parâmetros concretos:
+bolsa mínima mantém-se em ≈872 €/ano, valor médio sobe de 1.734 € para
+≈2.660 €, apoio de 160 €/mês para deslocados em residência, e uma nova
+Bolsa de Incentivo de 1.045 € para bolseiros do escalão A da ASE que
+ingressem pela 1.ª vez no ensino superior. **Limite reconhecido
+explicitamente na própria página**: esta sessão não conseguiu confirmar a
+citação exacta (número/data) do decreto-lei já publicado em Diário da
+República — só a promulgação, um passo anterior à publicação — por isso a
+secção "O que muda" cita o comunicado do Governo e o Regulamento já
+publicado pela DGES/IES como fonte dos valores, com uma nota de
+verificação explícita sobre essa lacuna, em vez de afirmar "já é lei" sem
+confirmação directa. `<title>`/meta description mantidos sem valores em
+€/% (só datas) — não foi necessária nova entrada em
+`tests/test_valores_ancora.py`. `p/apoios-escolares.html` já tinha "IES,
+I.P." correcto desde a publicação anterior; grep ao repositório confirmou
+nenhuma outra página a citar o prazo antigo da bolsa.
+
+**Bloco 3 (`calendario-escolar-apoios.html`, nova página, 7.ª do cluster
+`apoios-escolares`)**: implementa a Proposta 1 de `ANALISE-CLUSTER-ESCOLAR.md`
+(2026-07-06) — calendário único dos prazos de julho a outubro, agregando
+sem duplicar (cada linha liga ao guia completo do apoio respectivo,
+já fact-checked em sessões anteriores — só os 3 despachos do calendário
+escolar/matrículas foram verificados de novo nesta sessão via `WebSearch`:
+Despacho n.º 8368/2024, de 25 de julho, início das aulas 2026/2027 entre
+11 e 15 de setembro; Despacho n.º 9989/2025, de 21 de agosto, confirmado a
+alterar só o 1.º período de **2025/2026**, sem efeito em 2026/2027; Despacho
+n.º 4472-A/2026, de 6 de abril, matrículas — datas já passadas à data de
+publicação (14/07/2026), por isso tratadas como contexto na secção "Prazos
+que se repetem todos os anos", não na linha temporal accionável). Linha
+temporal julho→outubro + tabela-resumo (6 apoios) + FAQ de 6 perguntas
+(`FAQPage`, 1:1 com a secção visível) + `.resposta-rapida`/`.checklist-final`
+(FASE 1 de `MELHORIAS-SPEC.md`, obrigatórias em conteúdo novo) + JSON-LD
+`Article`+`FAQPage`+`BreadcrumbList` (sem `HowTo` — mesmo precedente de
+`calendario-pagamentos-seguranca-social.html`, página de referência sem
+procedimento de pedido) + sem `ItemList` (avaliado, não acrescentava
+validação extra face à linha temporal HTML já semântica).
+
+Cross-links bidireccionais obtidos **automaticamente** por
+`scripts/sincronizar_clusters.py` (adicionada como `tipo: "artigo"` em
+`data/clusters.json`) — nunca editados à mão: a página nova entrou no
+`PILLAR-LISTA` de `p/apoios-escolares.html` e no cartão do cluster da
+homepage ("7 guias · 1 simulador"); o `RELACIONADOS` da própria página
+(escrito à mão, 4 links por já saber a regra de "máx. 4, primeiros da
+lista") confirmado **idêntico** ao que o script geraria — corrida real
+confirma zero alterações a esse bloco. Os 6 outros artigos do cluster não
+mudaram de `RELACIONADOS` porque a regra determinística mostra sempre os
+4 primeiros irmãos da lista de `clusters.json` e a página nova entrou perto
+do fim — comportamento esperado, não um bug.
+
+**Detecção de datas sazonais** (pedido explícito da tarefa — "registar como
+`verificar_datas.py` trata esta página"): confirmado com `detectar_alertas()`
+real que a página **não** dispara hoje (julho de 2026, mês de publicação),
+mas dispara sozinha em 2027 (meses 1/7/8/9, padrão `data_mes_ano`, âncorado
+à frase "setembro de 2026" da FAQ do início das aulas) — comportamento
+desejado, mesmo padrão de `prova-escolar.html`: força uma revisão consciente
+todos os anos em vez de deixar o calendário ficar silenciosamente
+desactualizado. Nova linha em CLAUDE.md → "PÁGINAS COM DATAS SAZONAIS" e em
+`ROADMAP.md` → DATAS FIXAS ("Junho/Julho 2027").
+
+Integração completa: `data/clusters.json`, `sitemap.xml` (com `lastmod`),
+`scripts/pesquisa.js`, `scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO`, embora não usado — o `Article` já nasceu escrito à
+mão), imagem OG própria (`gerar_og_images.py --write`, confirmada 1200×630
+via cabeçalho JPEG real). `sincronizar_nav.py`/`inserir_botao_partilhar.py`/
+`adicionar_canonicas.py`/`adicionar_autoria_artigos.py`/
+`adicionar_article_jsonld.py` corridos sobre o repositório inteiro —
+**zero alterações** às duas páginas desta sessão (escritas à mão já a
+bater certo com o que os scripts gerariam); `sincronizar_nav.py` fez uma
+correcção cosmética não relacionada em `noticias.html` (indentação do
+bloco NAV gerado pelo pipeline diário, whitespace apenas).
+
+**Ambiente de sandbox desta sessão**: `playwright`/`beautifulsoup4`/`lxml`/
+`feedparser`/`pytest`/`playwright-stealth`/`ruff` não estavam instalados —
+instalados nesta sessão (mesmo workaround já documentado para o
+`sgmllib3k` do `feedparser`: `install_layout`/`setuptools` do sistema
+falha a compilar, contornado extraindo `sgmllib.py` do tarball para
+`site-packages` à mão); browsers Chromium reaproveitados de
+`/opt/pw-browsers` via `PLAYWRIGHT_BROWSERS_PATH`. Suite completa:
+**2382 passed, 4 skipped, 0 failed** (mesmos 4 skips estruturais da
+allow-list, confirmados a bater certo elemento a elemento com
+`tests/skips_permitidos.json`) — zero regressões nas páginas tocadas
+(`bolsa-de-estudo-ensino-superior.html`) nem na página nova. `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados por esta sessão). Trabalho feito na branch
+`claude/calendario-escolar-apoios-tsgjcp` (designada pelo ambiente remoto
+desta sessão, per instrução do harness — a REGRA ABSOLUTA — GIT deste
+ficheiro assume sessões locais em `main`; esta sessão remota opera sob a
+designação de branch fornecida pelo ambiente, não uma branch criada por
+iniciativa própria).*

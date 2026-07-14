@@ -100,7 +100,7 @@ fact-check feito ainda):
 | **Auto-update do carimbo "Verificado a"** (`REVALIDACAO_CARIMBO_HABILITADA`) | ≥14 relatórios shadow consecutivos com simulações correctas (zero falsos elegíveis) **e** fontes correspondentes maioritariamente `OK` — decisão do Nuno, nunca do Claude Code | `shadow_history/*.md` + **`python scripts/validar_carimbos_elegiveis.py`** (sessão manual, só leitura — valida o dia: exit 0 = conta para a contagem; contagem iniciada a **2026-07-11, dia 1 validado**, com 9 avisos todos classificados como artefactos das correcções do scraper de 03/07 e 07/07) | Ligar a flag numa sessão manual dedicada, nunca de ânimo leve — ver CLAUDE.md **"REVALIDAÇÃO DE CARIMBO"** |
 | **Densidade da PSU na homepage** | "Quando o tema arrefecer" (sem data fixada) — julgamento do Nuno | Olhar à homepage / tráfego | Remover banner do topo + cartão de prazos (dos 6 pontos actuais que a PSU ocupa) — ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 1 |
 | **Backlog Habitação** (garantia crédito jovem, isenção IMT jovem, RSAA, 1.º Direito) | Nenhum — só quando houver prioridade dedicada | — | Fact-check + página nova, um apoio de cada vez — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** → Backlog |
-| **Novo sistema de ação social no ensino superior** (`bolsa-de-estudo-ensino-superior.html`) | Publicação em dre.pt do decreto-lei aprovado em Conselho de Ministros a 21/05/2026 (aplicável a partir de 2026/2027) — nenhuma fonte automática vigia isto, verificação manual/`WebSearch` em `dges.gov.pt`/dre.pt | dre.pt, dges.gov.pt (Code não tem scraper dedicado) | Reescrever a secção "O que muda a partir de 2026/2027" com os valores/fórmula reais do diploma publicado; actualizar `<title>`/description se um valor máximo concreto passar a existir (e nesse caso, cobrir em `tests/test_valores_ancora.py`) |
+| **Novo sistema de ação social no ensino superior** (`bolsa-de-estudo-ensino-superior.html`) | **Parcialmente resolvido em 2026-07-14**: diploma promulgado pelo PR a 7/07/2026, valores já actualizados na página (mínima ≈872€, média ≈2.660€, apoio residência 160€/mês, Bolsa de Incentivo 1.045€) — sourced do comunicado do Governo + Regulamento já publicado pela DGES/IES. Falta só: confirmar a citação exacta (número/data) do decreto-lei em dre.pt — acesso directo bloqueado nesta sessão | dre.pt (Code não tem scraper dedicado) | Confirmar a citação do decreto-lei em dre.pt quando o acesso for possível; actualizar a secção "O que muda" se algum valor for afinado por portaria de regulamentação |
 
 ### Automáticos (o sistema já avisa via Issue)
 
@@ -145,13 +145,6 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   confirmado em CI real** (só o caminho "cria/actualiza a Issue" foi
   verificado nesta sessão) — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE
   BRANCHES"**.
-- **2 páginas novas propostas para o cluster escolar** (decisão do Nuno,
-  nada implementado) — `calendario-escolar-apoios.html` (calendário único
-  de prazos ASE/bolsa mérito/MEGA/prova escolar) e
-  `bolsa-de-estudo-ensino-superior.html` (lacuna já admitida pelo próprio
-  `p/apoios-escolares.html` — bolsas DGES nunca cobertas) — ver
-  `ANALISE-CLUSTER-ESCOLAR.md` para o inventário completo e o raciocínio.
-
 ---
 
 ## 📅 DATAS FIXAS
@@ -161,7 +154,8 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 | **Janeiro** | Novo IAS (e valores derivados) | `abono-de-familia.html`, `rsi.html`, `complemento-solidario-idosos.html`, `subsidio-desemprego.html`, `subsidio-parental.html`, `amim.html` — Issue automática do scraper |
 | **Janeiro/Fevereiro** | Nova portaria de actualização da PSI | `prestacao-social-para-a-inclusao.html` — verificação manual/news dre.pt |
 | **Junho** (antes do prazo 31 jul) | Rever ano lectivo/prazo — não deve disparar antes de **junho de 2027** | `prova-escolar.html` — calendário anual |
-| **Julho, até publicação** | Datas do MEGA 2026/2027 (manuais escolares) — confirmado a 06/07/2026 que ainda não há anúncio (gov.pt, manuaisescolares.pt, IGeFE); vigilância automática alargada a `igefe.mec.pt` nesse mesmo dia (nova fonte `igefe_mega`, ver CLAUDE.md) | `manuais-escolares-mega.html` — Issue automática do scraper, agora com 2 fontes independentes (`dge.mec.pt` **e** `igefe.mec.pt`) sob a mesma chave de aviso — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
+| **Junho/Julho 2027** | Revisão anual do calendário e dos 2 despachos de prazo que mudam de ano para ano (vales MEGA, bolsa de estudo do ensino superior) | `calendario-escolar-apoios.html`, `manuais-escolares-mega.html`, `bolsa-de-estudo-ensino-superior.html` — `verificar_datas.py` confirmado a disparar sozinho em 2027 (padrão `data_mes_ano`/`ano_letivo`) |
+| **Junho 2027** | Próxima revisão sazonal do MEGA (datas de emissão 2026/2027 já publicadas e confirmadas a 13/07/2026: 3/10/13 ago) | `manuais-escolares-mega.html` — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
 | **Mensal (automático)** | Calendário de pagamentos — `calendario-mensal.yml` **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e publica o mês seguinte sozinho (dia 25/28) + vira a página no dia 1; agosto 2026 já foi obtido e publicado automaticamente (12/07). Só precisa de sessão manual se o scraper falhar (Issue `calendario-manual` com o erro) — ex.: prestação nova fora da allow-list `NOME_PARA_SLUG` | `calendario-pagamentos-seguranca-social.html` + `data/calendario_pagamentos.json` — ver CLAUDE.md **"CALENDÁRIO DE PAGAMENTOS"** e `docs/FONTE-CALENDARIO.md` |
 | **Agosto 2026** | Prazo PRR do decreto-lei da PSU | `prestacao-social-unica.html`, `psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html` — verificação manual/news dre.pt |
 | **Setembro** | Prazos ASE / Bolsa de Mérito | `acao-social-escolar.html`, `bolsa-de-merito.html` — calendário anual |
@@ -174,6 +168,17 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **`calendario-escolar-apoios.html`** — 2026-07-14, 7.ª página do cluster
+  `apoios-escolares` (proposta em `ANALISE-CLUSTER-ESCOLAR.md`), calendário
+  único de prazos julho-outubro (Prova Escolar, MEGA, ASE, bolsa de mérito,
+  bolsa de estudo do ensino superior, passe sub-23). No mesmo commit:
+  `bolsa-de-estudo-ensino-superior.html` actualizada com o novo sistema de
+  ação social (promulgado 7/07/2026) e o prazo 2026/2027 (14 ago-2 out, mais
+  tarde que em anos anteriores). Ver CLAUDE.md — entrada "Última revisão:
+  2026-07-14" (sessão `calendario-escolar-apoios`).
+- **Datas de emissão dos vales MEGA 2026/2027 confirmadas** — 2026-07-13
+  (3/10/13 ago), sentinela `mega_datas`/`igefe_mega`/`dge_manuais` a
+  confirmar `OK` desde então, zero Issues abertas — gatilho fechado.
 - **`como-pedir-niss.html`** — 2026-07-14, 1.ª página da Camada 3
   editorial ("Como fazer X no portal"), cluster `trabalho-rendimento`.
   Ver secção "🪪 CAMADA 3" acima e CLAUDE.md para o detalhe completo.
