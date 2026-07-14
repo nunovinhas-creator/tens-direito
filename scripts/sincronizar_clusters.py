@@ -362,7 +362,7 @@ def artigos_relacionados(
 
 def render_relacionados(clusters: List[Cluster], cluster: Cluster, slug_atual: str) -> str:
     """Secção final com dois blocos separados — irmãos do cluster
-    ('Outros artigos deste cluster') e páginas de clusters
+    ('Artigos relacionados') e páginas de clusters
     relacionados[] ('Pode também interessar') — seguindo a mesma
     ordem/limite de artigos_relacionados(), só reparte a exibição."""
     itens = artigos_relacionados(clusters, cluster, slug_atual)
@@ -374,7 +374,7 @@ def render_relacionados(clusters: List[Cluster], cluster: Cluster, slug_atual: s
 
     blocos = ['    <div class="cluster-relacionados">']
     if irmaos:
-        blocos.append('      <h2>Outros artigos deste cluster</h2>')
+        blocos.append('      <h2>Artigos relacionados</h2>')
         blocos.append('      <ul>')
         blocos += _lista(irmaos)
         blocos.append('      </ul>')

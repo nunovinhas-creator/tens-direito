@@ -6263,3 +6263,20 @@ esta sessão — página evergreen sem scraper próprio, sem revalidação
 automática de carimbo). Suite completa `pytest tests/` confirmada a
 correr sem regressões antes do commit (ver resultado exacto no commit
 desta sessão, se necessário reconfirmar via CI real no push).*
+
+---
+
+*Última revisão: 2026-07-14 — texto do bloco de relacionados renomeado:
+"Outros artigos deste cluster" → "Artigos relacionados" (mais natural em
+PT-PT e melhor para SEO). Alterado na fonte (`render_relacionados()` em
+`scripts/sincronizar_clusters.py` — sem isto a próxima sincronização
+reverteria os HTML), nos 26 artigos publicados que têm o bloco
+`RELACIONADOS` e nas 2 asserções de `tests/test_sincronizar_clusters.py`
+que fixavam a string antiga. Só o texto do `<h2>` visível mudou — zero
+alterações a classes CSS, ids, atributos, JS, URLs, meta tags ou JSON-LD
+(confirmado pelo diff: 26 ficheiros × 1 linha, sempre a mesma troca).
+Idempotência reconfirmada (`sincronizar_clusters.py --dry-run` = 0
+alterações após a mudança; pesquisa global sem nenhuma ocorrência antiga
+fora desta secção histórica de 2026-07-02, que se mantém intocada pela
+regra de nunca reescrever entradas de revisão passadas). 801 testes dos
+ficheiros afectados a passar, ruff limpo.*

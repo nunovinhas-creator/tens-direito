@@ -330,7 +330,7 @@ def test_render_relacionados_separa_irmaos_de_cross_cluster(tmp_path):
 
     html = render_relacionados(clusters, cluster_a, "artigo-1.html")
 
-    pos_titulo_irmaos = html.index("Outros artigos deste cluster")
+    pos_titulo_irmaos = html.index("Artigos relacionados")
     pos_artigo2 = html.index("Artigo 2")
     pos_titulo_cross = html.index("Pode também interessar")
     pos_artigo3 = html.index("Artigo 3")
@@ -347,7 +347,7 @@ def test_render_relacionados_omite_cabecalho_sem_itens(tmp_path):
 
     html = render_relacionados(clusters, cluster_b, "artigo-3.html")
 
-    assert "Outros artigos deste cluster" not in html
+    assert "Artigos relacionados" not in html
     assert "Pode também interessar" not in html
     assert "/noticias.html" in html
 
