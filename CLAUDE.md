@@ -407,6 +407,7 @@ para esses três casos.
 | `documentos/pedido-declaracao-comprovativo-prestacoes.html` | Pedido de declaração/comprovativo de prestações | 6 jul. 2026 |
 | `calendario-pagamentos-seguranca-social.html` | Calendário de Pagamentos da Segurança Social | 12 jul. 2026 |
 | `pagamento-apos-deferimento.html` | Pedido deferido: quando cai o primeiro pagamento | 12 jul. 2026 |
+| `como-pedir-niss.html` | Como pedir o NISS 2026 | 14 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -5812,3 +5813,122 @@ critical/serious nas 5 páginas). `ruff check scripts/ tests/ --select
 E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
 esta sessão).*
+
+---
+
+*Última revisão: 2026-07-14 — nova página `como-pedir-niss.html`, cluster
+`trabalho-rendimento`, 1.ª página da nova Camada 3 editorial ("Como fazer X
+no portal") — ver `ROADMAP.md` → "🪪 CAMADA 3" para o índice e os próximos
+candidatos (`declaração de não dívida`, `primeiro acesso à SSD`, `mudar
+morada no CC`). É evergreen puro, sem sazonalidade, e o passo mais a
+montante de qualquer apoio do site — sem NISS não há Segurança Social
+Direta, apoios nem simuladores.
+
+**Fact-check via `WebSearch`** (`WebFetch` continua completamente bloqueado
+nesta sessão — 403 em qualquer domínio, mesma limitação documentada em
+todas as sessões anteriores; triangulação feita só por `WebSearch`, várias
+queries independentes por facto): confirmado sem divergências o
+pré-fact-check fornecido — NISS atribuído automaticamente com o Cartão de
+Cidadão (verso do cartão); quem pede (estrangeiros sem CC, cidadãos com
+Bilhete de Identidade vitalício, menores sem CC através de quem exerce
+responsabilidades parentais); formulário "Pedido de NISS – Cidadão
+Estrangeiro ou Cidadão Nacional sem obrigatoriedade de ter Cartão de
+Cidadão", online e gratuito; documentos por perfil (estrangeiros: 3 tipos —
+identificação, situação de trabalho, autorização de residência; UE/EEE/
+Suíça: só documento de identificação civil do país de origem); pedido pela
+entidade empregadora como representante legal, só depois de contrato de
+trabalho celebrado, com a comunicação do vínculo na SSD sempre obrigatória
+à parte; levantamento presencial (próprio, advogado com cédula + procuração
+forense original, ou terceiro com procuração original/Mod. PA-12),
+agendamento opcional via SIGA/SigaApp ou 210 548 888 / 300 088 888 (dias
+úteis, 9h–18h, gratuito); consulta do NISS já atribuído (verso do CC; SSD →
+Perfil → Dados pessoais, entrada possível com Chave Móvel Digital sem saber
+o número); NISS único e vitalício, nunca expira; base legal Lei n.º 4/2007,
+de 16 de janeiro, e Lei n.º 110/2009, de 16 de setembro, na redação atual.
+
+**Ponto ⚠️ resolvido — carta registada vs. email, não é contradição, são
+dois serviços diferentes**: triangulado por 4 fontes independentes
+(gov.pt — página de serviço oficial do pedido de NISS —, seg-social.pt,
+DECO PROteste, CGD Saldo Positivo) que o pedido **isolado** de NISS (o
+formulário "Pedido de NISS – Cidadão Estrangeiro ou Cidadão Nacional sem
+obrigatoriedade de Cartão de Cidadão", o caso coberto por esta página) é
+sempre notificado por **carta registada** para a morada indicada no
+formulário, a avisar que o NISS já pode ser levantado presencialmente —
+nunca por email. As menções a "email" encontradas nalgumas fontes
+secundárias (CGD, e-konomista) dizem respeito a um serviço **diferente**:
+o balcão único de NIF + NISS + n.º de utente do SNS para estrangeiros,
+gerido pela AIMA nos Espaços Cidadão (passaporte + Chave Móvel Digital
+activada, presencial), que de facto notifica por email + área reservada do
+ePortugal + app gov.pt. A página documenta os dois canais distintamente,
+com o contraste explícito na secção "Pedir NIF + NISS + n.º de utente
+juntos", em vez de escrever algo vago que cobrisse ambos por preguiça.
+
+**Prazo**: confirmado que o gov.pt não define nenhum prazo legal para a
+atribuição — a página nunca apresenta um número de dias como regra, só um
+aviso a desencorajar confiança em estimativas de fóruns/intermediários e a
+remeter para contacto directo com a Segurança Social em caso de urgência.
+
+**Estrutura**: resposta rápida (reaproveita `.resposta-direta`, 45
+palavras) + tabela de desambiguação por situação (tenho CC / sou
+estrangeiro / BI vitalício / é para o meu filho / a empresa trata / preciso
+também de NIF e utente) + `HowTo` de 6 passos + secção dedicada ao balcão
+único AIMA + secção "Já tenho NISS mas não sei qual é" + `.checklist-final`
+(5 itens) + FAQ de 8 perguntas (`<details>` + `FAQPage`, 1:1) — os dois
+blocos da FASE 1 de `MELHORIAS-SPEC.md` (`.resposta-rapida`/
+`.checklist-final`) incluídos por serem obrigatórios em qualquer artigo de
+conteúdo novo, mesmo padrão de `assistencia-familia-filhos.html`.
+
+**Integração**: `data/clusters.json` (7.ª página do cluster
+`trabalho-rendimento`, `tipo: "artigo"`); `scripts/sincronizar_clusters.py`
+corrido com sucesso — actualizou automaticamente `index.html`
+(`ATUALIZACOES:HOME`) e `p/trabalho-rendimento.html` (`PILLAR-LISTA`,
+"4 guias · 3 simuladores"); os blocos `CLUSTER-BADGE`/`RELACIONADOS` da
+própria página nova foram escritos à mão seguindo exactamente o formato do
+script — confirmado **0 alterações** ao correr o script sobre o ficheiro
+já escrito (idempotência provada antes do commit, não só depois).
+`sincronizar_nav.py`, `inserir_botao_partilhar.py`,
+`adicionar_canonicas.py`, `adicionar_autoria_artigos.py` e
+`adicionar_article_jsonld.py` (`DATAS_PUBLICACAO` ganhou a entrada
+`"como-pedir-niss.html": "2026-07-14"`) confirmados todos a **0
+alterações** pelo mesmo motivo — os 4 blocos JSON-LD, a nav, o botão de
+partilha e a canónica já nasceram correctos. `scripts/gerar_og_images.py
+--write` gerou a imagem própria (`assets/img/og/como-pedir-niss.jpg`,
+1200×630, confirmado pelo cabeçalho JPEG real, chip "Trabalho e
+Rendimento" herdado de `data/clusters.json`). `sitemap.xml` (com
+`lastmod`) e `scripts/pesquisa.js` actualizados manualmente.
+
+**Cross-links** (passo 7 da tarefa — avaliados um a um, nunca inseridos
+por rotina): `subsidio-desemprego.html` (inscrição no IEFP/SSD exige NISS),
+`abono-de-familia.html` (pedido para pais/filhos estrangeiros),
+`pagamento-apos-deferimento.html` (NISS é pré-requisito de qualquer
+requerimento) e `simuladores.html` (depois de simular, pedir a sério exige
+NISS) — todos via o mesmo padrão `aviso-info`/caixa azul já usado no resto
+do site para este tipo de nota, nunca inventado um componente novo. A
+página nova, por sua vez, linka de volta para `pagamento-apos-deferimento.html`
+e `simuladores.html`.
+
+**Canário de valores-âncora**: não aplicável — esta página não usa nenhum
+valor legal em € ou % no `<title>`/meta description (é puramente
+procedimental), por isso `tests/test_valores_ancora.py` não precisou de
+nova entrada; confirmado explicitamente antes do commit, não assumido por
+omissão.
+
+**Ambiente de sandbox desta sessão** (nota operacional, sem relação com o
+conteúdo publicado): `playwright`, `beautifulsoup4` e `lxml` não estavam
+instalados neste sandbox — instalados nesta sessão (`pip install`, browsers
+Chromium já pré-instalados em `/opt/pw-browsers`, reaproveitados via
+`executable_path`); `feedparser` continuava a falhar por causa do
+`sgmllib3k` (mesmo bug de `install_layout`/`setuptools` já documentado em
+sessões anteriores) — corrigido com o mesmo workaround já registado
+(extrair `sgmllib.py` do tarball para `site-packages` à mão). Com o
+ambiente completo, a suite completa correu **duas vezes** para confirmar:
+1.ª corrida trancou 1 falha real mas irrelevante ao conteúdo
+(`test_dre_psu_pesquisa.py`, `bs4.exceptions.FeatureNotFound: lxml` — o
+parser ainda não estava instalado nesse momento); instalado `lxml` e
+reconfirmado **2356 passed, 4 skipped, 0 failed** na 2.ª corrida completa,
+igual ao guardrail de skips (`scripts/verificar_skips_permitidos.py`
+confirma os 4 skips reais a bater certo, elemento a elemento, com a
+allow-list). `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados por esta sessão — página evergreen sem
+scraper próprio, sem revalidação automática de carimbo).*

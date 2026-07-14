@@ -91,6 +91,7 @@ DATAS_PUBLICACAO = {
     "baixa-medica-subsidio-doenca.html": "2026-07-05",
     "bolsa-de-estudo-ensino-superior.html": "2026-07-06",
     "assistencia-familia-filhos.html": "2026-07-11",
+    "como-pedir-niss.html": "2026-07-14",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

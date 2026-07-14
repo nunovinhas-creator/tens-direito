@@ -67,6 +67,29 @@ que são de facto o mesmo sistema.
 
 ---
 
+## 🪪 CAMADA 3 — "COMO FAZER X NO PORTAL" — ESTADO (arrancou 2026-07-14)
+
+Ver CLAUDE.md → entrada "Última revisão: 2026-07-14" (sessão
+`como-pedir-niss.html`) para o detalhe completo (fact-check, resolução do
+ponto ⚠️ carta registada vs. email, estrutura, integração).
+
+Primeira página desta camada editorial: `como-pedir-niss.html` (cluster
+`trabalho-rendimento`) — guia evergreen sobre como pedir o Número de
+Identificação da Segurança Social, o passo mais a montante de qualquer
+apoio do site (sem NISS não há Segurança Social Direta nem simuladores).
+
+**Candidatos seguintes, registados sem prioridade nem prazo** (mesmo
+padrão de outras listas de backlog neste ficheiro — nenhum tem
+fact-check feito ainda):
+
+| Página candidata | Porquê |
+|---|---|
+| `como-pedir-declaracao-nao-divida.html` | Certidão de não dívida à Segurança Social/Finanças — pedida constantemente para candidaturas a apoios, arrendamento, concursos públicos |
+| `primeiro-acesso-seguranca-social-direta.html` | Registo/activação da conta SSD (password, Chave Móvel Digital, cartão de cidadão + leitor) — pré-requisito prático de quase todos os guias do site |
+| `como-mudar-morada-cartao-cidadao.html` | Actualização de morada no CC/SSD — afecta elegibilidade a vários apoios (ex.: abono, RSI) e é uma dúvida recorrente nos artigos já publicados |
+
+---
+
 ## 🔔 À ESPERA DE UM SINAL
 
 ### Manuais (só o Nuno vê o sinal — o sistema não avisa)
@@ -151,6 +174,9 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **`como-pedir-niss.html`** — 2026-07-14, 1.ª página da Camada 3
+  editorial ("Como fazer X no portal"), cluster `trabalho-rendimento`.
+  Ver secção "🪪 CAMADA 3" acima e CLAUDE.md para o detalhe completo.
 - **Auditoria completa (Fase 2) de `simulador-subsidio-doenca.html`** —
   2026-07-06. Valores reconfirmados sem divergências (zero correcções de
   código); 8 golden tests novos (fronteiras 30/31 e 365/366, piso
