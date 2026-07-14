@@ -79,6 +79,11 @@
     "pagina": "cuidador-informal.html",
     "titulo": "Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir"
   },
+  "declaracao-situacao-contributiva": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "declaracao-situacao-contributiva.html",
+    "titulo": "Declaração de situação contributiva: certidão de não dívida 2026"
+  },
   "documentos": {
     "chip": "Gerador de documentos",
     "pagina": "documentos.html",

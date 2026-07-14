@@ -409,6 +409,7 @@ para esses três casos.
 | `pagamento-apos-deferimento.html` | Pedido deferido: quando cai o primeiro pagamento | 12 jul. 2026 |
 | `como-pedir-niss.html` | Como pedir o NISS 2026 | 14 jul. 2026 |
 | `calendario-escolar-apoios.html` | Calendário de Apoios Escolares 2026/2027 | 14 jul. 2026 |
+| `declaracao-situacao-contributiva.html` | Declaração de situação contributiva: certidão de não dívida 2026 | 14 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -6121,3 +6122,144 @@ validador de conteúdo (`validar-conteudo.yml`) não se aplica a estes dois
 ficheiros (só HTML). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False` em `scripts/decisao_datas.py`, inalterados por esta
 sessão. `git branch --show-current` = `main` confirmado no fim.*
+
+---
+
+*Última revisão: 2026-07-14 (sessão `declaracao-situacao-contributiva`) —
+nova página `declaracao-situacao-contributiva.html`, cluster
+`trabalho-rendimento`, 2.ª página da Camada 3 editorial ("Como fazer X no
+portal" — ver ROADMAP.md → "🪪 CAMADA 3"). É o documento popularmente
+conhecido como "certidão de não dívida à Segurança Social".
+
+**Fact-check via `WebSearch`** (`WebFetch` continua completamente bloqueado
+nesta sessão — 403 em qualquer domínio, mesma limitação documentada em
+todas as sessões anteriores): confirmados sem divergências os 11 pontos do
+pré-fact-check fornecido — nome oficial "Declaração da situação
+contributiva" (seg-social.pt) vs. designação popular "certidão de não
+dívida"; as 3 vias de situação regularizada (sem dívidas; dívida com
+pagamento em prestações autorizado e cumprido; dívida reclamada/recorrida/
+impugnada judicialmente com garantia prestada) — fora destas, a declaração
+é emitida na mesma, com os valores discriminados; os 3 canais de pedido
+(online SSD: Conta-corrente → Situação Contributiva → Obter declaração de
+situação contributiva; correio: formulário RC3042-DGSS ao Centro Distrital
+da morada; presencial); grátis, validade 4 meses; prazo de emissão na hora
+quando regularizado online, até 10 dias úteis quando "Em análise", em
+papel, ou pedido pelo Ministério Público; janela de 72 horas para um
+pagamento se reflectir no sistema; código de verificação de autenticidade
+no fim do PDF, confirmável na área de verificação da SSD; consentimento de
+consulta a entidades públicas (nunca privadas — nunca um banco ou
+senhorio) com início/fim definidos pelo próprio, informação consultada
+válida até 6 meses; quem pode pedir (o próprio, representante legal,
+entidades públicas autorizadas, qualquer credor — que só vê o n.º de meses
+em dívida, nunca valores — ou o Ministério Público).
+
+**Ponto ⚠️ da nuance crítica confirmado tal e qual o pré-fact-check
+antecipava**: quem nunca trabalhou (por conta de outrem ou independente),
+mesmo tendo NISS atribuído, não consegue pedir a declaração pela Segurança
+Social Direta — o campo de início de actividade é obrigatório e, nesse
+caso, nunca existiu; o pedido tem de ser feito presencialmente, com o
+RC3042 preenchido. É o ângulo diferenciador da página (secção dedicada
+"Nunca trabalhei — e agora?", com o exemplo real de uma candidatura a
+bolsa/apoio).
+
+**Ponto da certidão da AT resolvido, não deixado em aberto**: triangulado
+por 3 fontes secundárias independentes (CGD Saldo Positivo, Doutor
+Finanças, CRN Contabilidade) que a certidão equivalente das Finanças
+(Certidão de Dívida e Não Dívida) passou a ter **também validade de 4
+meses desde 1 de julho de 2025** — antes eram 3 meses. A secção "Serve
+também para as Finanças?" desambigua as duas entidades/documentos e cita
+esse facto, com o caminho no Portal das Finanças (Certidões → Certidão de
+Dívida e Não Dívida) confirmado por 2 fontes tertiárias independentes.
+Como a fonte directa é secundária (nunca confirmada em
+`portaldasfinancas.gov.pt` — bloqueado nesta sessão como qualquer outro
+domínio), a página nunca apresenta esse valor como se fosse tão certo
+quanto os factos confirmados directamente em seg-social.pt/gov.pt — frase
+formulada com essa cautela.
+
+Estrutura: resposta rápida + resumo rápido (3 bullets) + tabela de
+desambiguação (5 situações, incluindo cross-link para
+`documentos/pedido-declaracao-comprovativo-prestacoes.html` — documento
+diferente, para comprovar uma prestação específica, não a situação
+contributiva) + "Quem pode pedir" + passo-a-passo `HowTo` (6 passos) + "E
+se eu tiver dívidas?" (as 3 vias + janela de 72h) + "A alternativa sem
+papel: consentimento de consulta" + "Nunca trabalhei — e agora?" +
+`.checklist-final` (5 itens) + FAQ de 8 perguntas (`<details>` + JSON-LD
+`FAQPage`, 1:1, confirmado programaticamente) + "Serve também para as
+Finanças?" + `RELACIONADOS` do cluster. JSON-LD: `FAQPage` + `HowTo` (6
+passos) + `BreadcrumbList` + `Article` — os 4 blocos confirmados como JSON
+válido antes do commit.
+
+**Cross-links avaliados um a um, nunca inseridos por rotina**:
+`como-pedir-niss.html` (aviso-info existente estendido — depois de teres o
+NISS, uma candidatura pode pedir-te esta declaração),
+`bolsa-de-estudo-ensino-superior.html` (nota condicional no card
+"Documentos necessários" — "se algum elemento do agregado tiver
+rendimentos de trabalho, a instituição **pode** também pedir..." — nunca
+afirmado como requisito confirmado, porque a página da bolsa não documenta
+esse requisito explicitamente; frase deliberadamente condicional para não
+inventar um facto), `documentos/pedido-declaracao-comprovativo-prestacoes.html`
+(o card "O que saber sobre este pedido" ganhou o link para o guia novo —
+esse gerador já cobria o pedido por escrito da mesma declaração, é o par
+natural "como funciona" ↔ "gera a carta").
+
+**Canário de valores-âncora — decisão de não cobrir, registada**: nem o
+`<title>` nem a meta description desta página têm nenhum valor legal em €
+ou % (só a duração "4 meses", que é uma validade administrativa, não um
+valor legal derivado de fórmula nem uma Portaria) — fora do âmbito da
+regra 11 de "REGRAS DE CONTEÚDO"/`tests/test_valores_ancora.py`, por isso
+nenhuma entrada nova foi adicionada a esse ficheiro. Ano "2026" no
+`<title>`/description é o ano corrente, sem excepção necessária em
+`tests/test_anos_metadados.py`.
+
+**`scripts/urls_criticas.txt` — decisão de não adicionar**: mesma decisão
+já tomada para `como-pedir-niss.html` na sessão anterior (publicada no
+mesmo dia) — é um artigo de conteúdo normal, não uma página de referência
+agregadora cross-cluster como o calendário de pagamentos ou o calendário
+escolar.
+
+Integração completa: `data/clusters.json` (8.ª página do cluster
+`trabalho-rendimento`, `tipo: "artigo"`), `sitemap.xml` (com `lastmod`),
+`scripts/pesquisa.js`, `scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO`). `scripts/sincronizar_clusters.py` corrido com
+sucesso — actualizou automaticamente `index.html` (`ATUALIZACOES:HOME`) e
+`p/trabalho-rendimento.html` (`PILLAR-LISTA`); os blocos
+`CLUSTER-BADGE`/`RELACIONADOS` da própria página nova (escritos à mão)
+confirmados **idênticos** ao que o script geraria — idempotência provada
+antes do commit (2.ª corrida = zero alterações). `scripts/sincronizar_nav.py`,
+`scripts/adicionar_canonicas.py`, `scripts/adicionar_autoria_artigos.py`,
+`scripts/adicionar_article_jsonld.py` e `scripts/inserir_botao_partilhar.py`
+confirmados todos a **zero alterações** — a página já nasceu com nav,
+canónica, autoria, `Article` JSON-LD e botão de partilha correctos.
+`scripts/gerar_og_images.py --write` gerou a imagem própria
+(`assets/img/og/declaracao-situacao-contributiva.jpg`, 1200×630 confirmado
+pelo cabeçalho JPEG real).
+
+**Ambiente de sandbox desta sessão**: `playwright`, `beautifulsoup4`,
+`lxml`, `pytest`, `ruff` e `playwright-stealth` não estavam instalados —
+instalados nesta sessão; `feedparser` continuava a falhar por causa do
+`sgmllib3k` (mesmo bug de `install_layout`/`setuptools` do sistema já
+documentado em várias sessões anteriores) — corrigido com o mesmo
+workaround já registado (extrair `sgmllib.py` do tarball para
+`site-packages` à mão). Browsers Chromium reaproveitados de
+`/opt/pw-browsers` via `PLAYWRIGHT_BROWSERS_PATH` (já pré-instalados,
+nenhum download novo).
+
+Verificado: `detectar_alertas()` real sobre a página nova confirma **zero
+falsos positivos** (nenhuma data/valor a disparar `data-expirada`); os 4
+blocos JSON-LD válidos (`FAQPage` com 8 perguntas 1:1 com os `<details>`
+visíveis, `HowTo` com 6 passos); `tests/test_acessibilidade.py` confirma
+zero violações critical/serious nas 4 páginas tocadas
+(`declaracao-situacao-contributiva.html`, `como-pedir-niss.html`,
+`bolsa-de-estudo-ensino-superior.html`,
+`documentos/pedido-declaracao-comprovativo-prestacoes.html`);
+`tests/test_higiene_indexacao.py`/`test_breadcrumb_coerencia.py`/
+`test_nav_coerencia.py`/`test_pesquisa_indice.py`/`test_og_image.py`/
+`test_sincronizar_clusters.py`/`test_valores_ancora.py`/
+`test_anos_metadados.py` confirmados sem regressões (1199 passed, 3
+skipped nesse subconjunto). `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão — página evergreen sem scraper próprio, sem revalidação
+automática de carimbo). Suite completa `pytest tests/` confirmada a
+correr sem regressões antes do commit (ver resultado exacto no commit
+desta sessão, se necessário reconfirmar via CI real no push).*

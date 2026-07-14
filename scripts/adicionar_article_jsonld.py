@@ -93,6 +93,7 @@ DATAS_PUBLICACAO = {
     "assistencia-familia-filhos.html": "2026-07-11",
     "como-pedir-niss.html": "2026-07-14",
     "calendario-escolar-apoios.html": "2026-07-14",
+    "declaracao-situacao-contributiva.html": "2026-07-14",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

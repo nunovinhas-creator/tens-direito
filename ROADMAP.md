@@ -70,13 +70,16 @@ que são de facto o mesmo sistema.
 ## 🪪 CAMADA 3 — "COMO FAZER X NO PORTAL" — ESTADO (arrancou 2026-07-14)
 
 Ver CLAUDE.md → entrada "Última revisão: 2026-07-14" (sessão
-`como-pedir-niss.html`) para o detalhe completo (fact-check, resolução do
-ponto ⚠️ carta registada vs. email, estrutura, integração).
+`como-pedir-niss.html`) e a entrada seguinte (sessão
+`declaracao-situacao-contributiva`) para o detalhe completo de cada
+página (fact-check, estrutura, integração).
 
-Primeira página desta camada editorial: `como-pedir-niss.html` (cluster
-`trabalho-rendimento`) — guia evergreen sobre como pedir o Número de
-Identificação da Segurança Social, o passo mais a montante de qualquer
-apoio do site (sem NISS não há Segurança Social Direta nem simuladores).
+**Publicadas (2 de N):**
+
+| Página | Publicada | Nota |
+|---|---|---|
+| `como-pedir-niss.html` | 14 jul. 2026 | Guia evergreen sobre como pedir o Número de Identificação da Segurança Social — o passo mais a montante de qualquer apoio do site (sem NISS não há Segurança Social Direta nem simuladores) |
+| `declaracao-situacao-contributiva.html` | 14 jul. 2026 | "Certidão de não dívida à Segurança Social" — nuance diferenciadora: quem nunca trabalhou não consegue pedi-la online, só ao balcão; desambiguada da certidão equivalente das Finanças |
 
 **Candidatos seguintes, registados sem prioridade nem prazo** (mesmo
 padrão de outras listas de backlog neste ficheiro — nenhum tem
@@ -84,7 +87,6 @@ fact-check feito ainda):
 
 | Página candidata | Porquê |
 |---|---|
-| `como-pedir-declaracao-nao-divida.html` | Certidão de não dívida à Segurança Social/Finanças — pedida constantemente para candidaturas a apoios, arrendamento, concursos públicos |
 | `primeiro-acesso-seguranca-social-direta.html` | Registo/activação da conta SSD (password, Chave Móvel Digital, cartão de cidadão + leitor) — pré-requisito prático de quase todos os guias do site |
 | `como-mudar-morada-cartao-cidadao.html` | Actualização de morada no CC/SSD — afecta elegibilidade a vários apoios (ex.: abono, RSI) e é uma dúvida recorrente nos artigos já publicados |
 
@@ -168,6 +170,10 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **`declaracao-situacao-contributiva.html`** — 2026-07-14, 2.ª página da
+  Camada 3 editorial, cluster `trabalho-rendimento`. "Certidão de não
+  dívida à Segurança Social" — ver secção "🪪 CAMADA 3" acima e CLAUDE.md
+  para o detalhe completo.
 - **`calendario-escolar-apoios.html`** — 2026-07-14, 7.ª página do cluster
   `apoios-escolares` (proposta em `ANALISE-CLUSTER-ESCOLAR.md`), calendário
   único de prazos julho-outubro (Prova Escolar, MEGA, ASE, bolsa de mérito,
