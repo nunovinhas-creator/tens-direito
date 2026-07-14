@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **13 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **14 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -55,6 +55,8 @@ Actualizado automaticamente a partir do repositório em **13 de julho de 2026**.
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
 | [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
+| [`simulador-rsi.html`](simulador-rsi.html) | Simulador do RSI 2026 |
+| [`simulador-subsidio-desemprego.html`](simulador-subsidio-desemprego.html) | Simulador do Subsídio de Desemprego 2026 |
 | [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
@@ -373,6 +375,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 13 de julho de 2026 às 10:38 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 14 de julho de 2026 às 09:23 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

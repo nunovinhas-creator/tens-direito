@@ -2,41 +2,41 @@
   "dge_ase": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "dge_manuais": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "dre_psu": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "iefp_desemprego": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "igefe_mega": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "mega_datas": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "seg_social_abono": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   },
   "seg_social_rsi": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-07-13"
+    "ultima_ok": "2026-07-14"
   }
 }
