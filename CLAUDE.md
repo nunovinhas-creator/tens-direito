@@ -623,6 +623,69 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 
 ---
 
+## LINGUAGEM PARA O UTILIZADOR
+
+Política editorial permanente (2026-07-14, na sequência da auditoria de
+linguagem para baixa literacia digital — ver a entrada "Última revisão:
+2026-07-14" que aplicou as correcções). O objectivo é que **qualquer
+pessoa consiga usar o site, independentemente do nível de escolaridade ou
+de literacia digital**. Aplica-se a todo o texto visível ao utilizador —
+corpo dos artigos, títulos, botões, mensagens (sucesso/erro/aviso),
+rótulos de campos, `placeholder` e `aria-label` — nunca a `scripts/`,
+workflows, `CLAUDE.md` ou outros docs internos.
+
+### Regras
+
+1. **Português europeu simples.** Todo o texto visível é escrito em PT-PT
+   claro e directo — nunca PT-BR (regra 1 de "REGRAS DE CONTEÚDO"), nunca
+   frases que soem a tradução literal do inglês.
+2. **Anglicismos só quando não há alternativa natural.** Preferir sempre a
+   palavra portuguesa quando ela é igualmente clara: "navegador" (não
+   "browser"), "palavra-passe" (não "password"), "descarregar" (não
+   "download"), "iniciar sessão" (não "fazer login"), "página de
+   simuladores" (não "hub"). Excepção: anglicismos plenamente
+   estabelecidos em PT-PT e usados pelos próprios portais do Estado
+   ("online", "site", "email", "app") — substituí-los pioraria a
+   naturalidade, mantêm-se.
+3. **Sem linguagem técnica de desenvolvimento no texto visível.** Termos
+   como "cluster", "pipeline", "cache", "fallback", "área de
+   transferência", "desagregação", "shadow mode" são jargão interno —
+   nunca aparecem numa página. Descrever a funcionalidade por aquilo que
+   ela faz ("mostra cada parcela do cálculo", "já a podes colar"), não
+   pelo termo técnico.
+4. **Siglas explicadas na primeira ocorrência da página.** Escrever o
+   nome por extenso a primeira vez, com a sigla entre parênteses —
+   "Chave Móvel Digital (CMD)", "Remuneração de Referência (RR)",
+   "Certificado de Incapacidade Temporária (CIT)" — e só depois usar a
+   sigla à solta. Uma checklist ou secção que possa ser lida isolada
+   repete o nome por extenso.
+5. **Termos oficiais pouco conhecidos vêm com explicação simples.** Os
+   nomes legais das prestações e dos actos mantêm-se (é por eles que as
+   pessoas pesquisam e é o que está nas cartas oficiais), mas emparelhados
+   com o nome popular ou uma glosa curta: "Declaração de Situação
+   Contributiva (a certidão de não dívida)", "deferido (aprovado)",
+   "remuneração ilíquida (o salário bruto, antes dos descontos)". Nunca
+   substituir o termo oficial — acrescentar a explicação ao lado.
+6. **Consistência terminológica obrigatória em todo o site.** O mesmo
+   conceito usa sempre a mesma palavra em todas as páginas — nunca
+   "navegador" numa página e "browser" noutra. Antes de introduzir um
+   termo novo, confirmar como o resto do site já lhe chama.
+
+### Checklist antes de publicar uma página nova
+
+Além da "CHECKLIST OBRIGATÓRIA ANTES DE QUALQUER COMMIT" (que continua a
+aplicar-se por inteiro), qualquer página nova de conteúdo confirma:
+
+- [ ] Linguagem simples — uma pessoa com baixa literacia digital percebe
+- [ ] Português europeu, sem frases que soem a tradução literal do inglês
+- [ ] Sem anglicismos desnecessários (ver regra 2 acima)
+- [ ] Siglas explicadas por extenso na primeira ocorrência
+- [ ] Termos legais/oficiais pouco conhecidos acompanhados de explicação simples
+- [ ] Botões e mensagens (sucesso/erro/aviso) em linguagem clara e accionável
+- [ ] Consistência terminológica com o resto do site
+
+---
+
 ## ESTRUTURA HTML OBRIGATÓRIA POR PÁGINA
 
 Ordem no `<head>`:
