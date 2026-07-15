@@ -2381,5 +2381,27 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-07-15",
+    "saude_feeds": {
+      "abono_familia": "MORTO",
+      "subsidio_desemprego": "MORTO",
+      "rsi": "MORTO",
+      "psu_pensoes": "MORTO",
+      "acao_social_escolar": "MORTO",
+      "cuidador_informal": "MORTO",
+      "porta65_arrendamento": "MORTO",
+      "irs_fiscalidade": "MORTO",
+      "ias_valor_referencia": "MORTO",
+      "calendario_pagamentos_seg_social": "MORTO",
+      "habitacao_arrendamento": "MORTO",
+      "salario_minimo": "MORTO",
+      "csi_idosos": "MORTO"
+    },
+    "candidatos_por_feed": {},
+    "fora_da_janela_por_feed": {},
+    "candidatos": [],
+    "vencedores": []
   }
 ]

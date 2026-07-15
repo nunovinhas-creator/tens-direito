@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **14 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **15 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -29,10 +29,13 @@ Actualizado automaticamente a partir do repositório em **14 de julho de 2026**.
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
+| [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — julho de 2026 |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
+| [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
+| [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
@@ -375,6 +378,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 14 de julho de 2026 às 09:23 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 15 de julho de 2026 às 09:29 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
