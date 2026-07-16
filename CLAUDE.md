@@ -3586,7 +3586,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-07-15*
+*Última revisão automática: 2026-07-16*
 
 ---
 
