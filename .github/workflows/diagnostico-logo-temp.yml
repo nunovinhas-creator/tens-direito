@@ -1,0 +1,15 @@
+name: Diagnóstico logo-nvlabs.png (temporário)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl -sI ao PNG
+        run: |
+          echo "== PNG =="
+          curl -sSI https://tensdireito.com/assets/img/logo-nvlabs.png
+          echo "== robots.txt =="
+          curl -sS https://tensdireito.com/robots.txt
