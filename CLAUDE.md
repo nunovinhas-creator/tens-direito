@@ -6614,3 +6614,23 @@ implicações RGPD (mesmo tratamento de `privacidade.html`): a palavra
 "anónimas" foi mantida por consistência com o texto anterior, mas a redação
 legal exacta é decisão dele. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` não tocados. Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-16 — correcção pontual ao JSON-LD `Organization` da
+NV Labs em `sobre.html`: `url` estava a apontar para `sobre.html` (a própria
+página institucional), corrigido para a raiz do site
+(`https://tensdireito.com/`) — o `url` de uma `Organization` representa a
+entidade, não a página onde é descrita; o `AboutPage.url` continua
+correctamente `sobre.html` (é a página). Pedido também um campo `logo`
+(`assets/img/logo-nvlabs.png`, 512×512) — **não adicionado**: o ficheiro não
+existe no repositório (só há `favicon.svg`, ícone do site, não logótipo da
+NV Labs); adicioná-lo seria uma referência inventada que a Google tentaria
+buscar e receberia 404, piorando a validação estruturada em vez de a
+melhorar — contra a regra "nunca inventar factos/URLs". Adiado por decisão
+do Nuno; gatilho registado: se um logo real da NV Labs for criado (ex.: pelo
+mesmo método de `scripts/gerar_og_images.py`, Chromium real a partir da
+marca existente), acrescentar o campo `logo` (`ImageObject` com
+`url`/`width`/`height`) ao bloco `Organization`. `tests/test_sobre_jsonld.py`
+reconfirmado sem regressão (nenhum teste fixava o `url` antigo). `ruff` não
+aplicável (zero `.py` alterados).*
