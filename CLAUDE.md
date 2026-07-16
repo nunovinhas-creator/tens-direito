@@ -6586,3 +6586,31 @@ só adição do bloco no `<head>`). Passo manual do Nuno: validar no Rich
 Results Test / Search Console depois do deploy. Suite completa + `ruff` limpos.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` inalterados
 (`False`). Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-16 — copy do banner de consentimento reescrita para
+aumentar a taxa de aceitação, **por meios legítimos apenas** (RGPD). Contexto:
+diagnóstico com o Nuno (Network + Console em produção) confirmou que os
+eventos GA4 da Sessão 1 estão **correctos e deployed** — só não aparecem no
+GA4 porque, em `denied` (banner por aceitar), o Consent Mode v2 envia o
+`page_view` como ping de modelação mas **não** envia os eventos personalizados
+como hits reais (`gtag('event',...)` manual só gerou `collect` depois de
+forçar `analytics_storage:'granted'`). Não era bug — era estado de
+consentimento. Para melhorar o baseline de conversão, o único lever ético é a
+taxa de aceitação: `assets/js/consentimento.js` — texto do banner passou de
+"Usamos cookies apenas para estatísticas anónimas…" para uma mensagem com
+enquadramento de confiança ("Este site é gratuito e independente… nunca para
+publicidade e nunca vendemos os teus dados. Só guardamos cookies se
+aceitares, e podes mudar quando quiseres."). **Zero dark patterns**: os botões
+"Aceitar"/"Rejeitar" mantêm os rótulos exactos (exigidos por
+`tests/test_consentimento.py`), ambos a **um clique** e igualmente
+alcançáveis — recusar continua tão fácil como aceitar (requisito RGPD);
+banner não-bloqueante, sem nag, sem pré-selecção. Verificado: 132 testes de
+`test_consentimento.py` a passar (comportamento de consentimento intacto),
+axe sem violações com o banner visível, 0px de overflow a 375px, rótulos dos
+botões confirmados. **Sinalizado para revisão do Nuno** — é copy com
+implicações RGPD (mesmo tratamento de `privacidade.html`): a palavra
+"anónimas" foi mantida por consistência com o texto anterior, mas a redação
+legal exacta é decisão dele. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` não tocados. Trabalho directo em `main`.*

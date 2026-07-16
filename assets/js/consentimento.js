@@ -139,8 +139,14 @@
 
     var texto = document.createElement('p');
     texto.className = 'td-consent-texto';
+    var intro = document.createElement('strong');
+    intro.textContent = 'Este site é gratuito e independente.';
+    texto.appendChild(intro);
     texto.appendChild(document.createTextNode(
-      'Usamos cookies apenas para estatísticas anónimas de visitas (Google Analytics) — e só se aceitares. Sem aceitação, nenhum cookie de análise é colocado. '
+      ' Usamos apenas estatísticas de visitas anónimas (Google Analytics) para ' +
+      'melhorar as páginas e saber que apoios são mais procurados — nunca para ' +
+      'publicidade e nunca vendemos os teus dados. Só guardamos cookies se ' +
+      'aceitares, e podes mudar quando quiseres. '
     ));
     var link = document.createElement('a');
     link.href = '/privacidade.html';
