@@ -1713,6 +1713,73 @@ revisão no fim deste ficheiro.
 
 ---
 
+## MEDIÇÃO DE CONVERSÃO — EVENTOS GA4
+
+Instrumentação de conversão (2026-07-16, sessão de medição — sem qualquer
+alteração de layout/conteúdo/Schema). Objectivo: ter baseline fiável de
+conversão para, em meados de agosto, decidir a simplificação da homepage. Os
+eventos foram acrescentados **nos JS já existentes de cada funcionalidade**,
+nunca num ficheiro global novo — menos superfície nova, nenhum `eventos.js`
+partilhado criado.
+
+**Padrão obrigatório de qualquer evento novo**: guarda `typeof gtag ===
+'function'` antes de chamar (o gtag.js carrega sempre com Consent Mode v2
+avançado; em `denied` os eventos seguem como pings sem cookies — comportamento
+correcto, nunca contornar). **Nenhum parâmetro transporta dados introduzidos
+pelo utilizador** — só o facto de a acção ter terminado (mais, quando o
+simulador o determina, um veredicto de elegibilidade, que é uma conclusão do
+simulador, nunca um valor introduzido).
+
+| Evento | Onde | Parâmetros | Notas |
+|---|---|---|---|
+| `simulacao_concluida` | inline nos 6 simuladores publicados (abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia); **omitido** em subsidio_doenca e rsi — não têm veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). `simulador-psu.html` fica de fora (noindex, não publicado). |
+| `partilha_clique` | `assets/js/share.js`, nos dois pontos de sucesso (Web Share API e cópia para a área de transferência) | `pagina` (pathname) | Nunca no fallback da caixa manual (falha de cópia) nem em cancelamento (AbortError). Nunca envia o título. |
+| `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
+| `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
+
+**`documento_gerado` — deliberadamente NÃO implementado** (decisão do Nuno
+nesta sessão): o gerador de documentos tem a invariante dura, documentada e
+testada, de **zero pedidos de rede depois do load**
+(`tests/test_gerador_documentos.py::test_zero_pedidos_de_rede_ao_interagir_com_o_gerador`),
+que sustenta a promessa "os dados que preenches nunca saem do teu
+dispositivo". Um evento GA4 é um pedido de rede (mesmo o ping sem cookies em
+`denied`), por isso instrumentar o gerador quebraria essa garantia. Fica sem
+medição por escolha consciente — a privacidade do gerador vale mais do que o
+baseline deste evento. O comentário em `gerador-documentos.js` e o teste de
+rede-zero mantêm-se intactos; `tests/test_eventos_ga4.py::test_gerador_documentos_nunca_dispara_gtag`
+tranca essa decisão.
+
+**Testes**: `tests/test_eventos_ga4.py` (asserções sobre o fonte, portáteis,
+sem Playwright — guarda `typeof gtag`, slug/parâmetro certos, e um varrimento
+global anti-dados-pessoais com denylist de tokens de input/DOM) +
+`tests/test_share_js.py` (5 testes funcionais Chromium para `partilha_clique`:
+dispara no clipboard e no Web Share, nunca em cancelamento nem no fallback
+manual, e corre sem gtag definido).
+
+### HEADERS HTTP — LIMITAÇÃO ACEITE
+
+O GitHub Pages não permite headers HTTP personalizados (CSP, X-Frame-Options,
+Permissions-Policy, etc.). Decisão registada: **ACEITAR** esta limitação — o
+site é estático, sem autenticação e sem formulários que recolham dados
+pessoais (o gerador de documentos corre 100% no browser, ver secção "GERADOR
+DE DOCUMENTOS"). Alternativas avaliadas e **rejeitadas**: meta-CSP no `<head>`
+(cobertura parcial — não substitui os headers reais, e arriscava partir o
+gtag.js/consentimento) e Cloudflare à frente do Pages (introduz um serviço
+externo, contra a regra "zero serviços externos novos"). **Reavaliar apenas
+se o site passar a recolher dados** (login, formulários com dados pessoais no
+servidor, pagamentos).
+
+### PASSO MANUAL PARA O NUNO — key events no GA4
+
+Os eventos disparam sozinhos, mas marcá-los como **key events** (conversões)
+não é possível por código — é na interface do GA4 (Admin → Events → marcar
+como key event). Marcar: `simulacao_concluida`, `comecar_aqui_percurso` (o
+evento final, `etapa: 'fim'`) e — quando/se instrumentado — `documento_gerado`
+(hoje não existe, ver acima). `partilha_clique` e `cal_home_clique` são úteis
+como micro-conversões, opcional marcá-los.
+
+---
+
 ## AUTO-ACTUALIZAÇÃO DESTE FICHEIRO
 
 Sempre que houver mudança significativa, actualizar o CLAUDE.md no mesmo commit.
@@ -6377,3 +6444,44 @@ limpo. Não alterado por decisão da auditoria: "online"/"site"/"email"/
 "app"/"submeter candidatura", títulos oficiais, "Checklist" (achado
 opcional, não aplicado). AUTO_UPDATE_HABILITADO/REVALIDACAO_CARIMBO_
 HABILITADA não tocados.*
+
+---
+
+*Última revisão: 2026-07-16 — Sessão 1 (medição de conversão): instrumentação
+de eventos GA4 para criar baseline antes de qualquer optimização — **zero
+alterações de layout, homepage, Schema.org ou conteúdo**, só medição +
+documentação. Nova secção "MEDIÇÃO DE CONVERSÃO — EVENTOS GA4" com a tabela
+completa. 4 eventos implementados nos JS já existentes de cada
+funcionalidade (nenhum `eventos.js` global criado): `simulacao_concluida`
+(inline nos 6 simuladores publicados, a par do `calc_resultado` existente —
+`elegivel` só onde há veredicto binário limpo: abono/ase/csi/subsidio_desemprego;
+omitido em subsidio_doenca e rsi por não terem esse veredicto), `partilha_clique`
+(`share.js`, nos dois pontos de sucesso — Web Share e clipboard —, `pagina`=pathname,
+nunca no fallback manual nem em cancelamento), `comecar_aqui_percurso`
+(`comecar-aqui.html`, início na 1.ª escolha + fim com `destino` recomendado) e
+`cal_home_clique` (`index.html`, clique na barra `.cal-topo`). Todos com guarda
+`typeof gtag === 'function'`; nenhum transporta dados do utilizador.
+
+**`documento_gerado` deliberadamente NÃO feito** (decisão do Nuno via
+AskUserQuestion): quebraria a invariante dura, documentada e testada, de
+zero pedidos de rede do gerador de documentos ("os dados nunca saem do teu
+dispositivo") — um ping GA4, mesmo cookieless em `denied`, é um pedido de
+rede. `test_zero_pedidos_de_rede_ao_interagir_com_o_gerador` fica intacto;
+novo `test_gerador_documentos_nunca_dispara_gtag` tranca a decisão.
+
+Documentação (só texto): nota "HEADERS HTTP — LIMITAÇÃO ACEITE" (GitHub Pages
+não permite headers personalizados; ACEITAR — site estático sem dados
+pessoais; meta-CSP e Cloudflare avaliados e rejeitados; reavaliar só se
+passar a recolher dados) e o lembrete do passo manual do Nuno (marcar
+`simulacao_concluida` e `comecar_aqui_percurso` final como key events no GA4 —
+não é possível por código).
+
+Testes: `tests/test_eventos_ga4.py` (novo, 26 casos — asserções sobre o fonte,
+portáteis sem Playwright: guarda `typeof gtag`, slug/parâmetro certos,
+varrimento global anti-dados-pessoais) + 5 testes funcionais Chromium novos em
+`tests/test_share_js.py`. Nenhuma lógica de cálculo dos simuladores tocada
+(golden tests reconfirmados sem regressão). Suite completa + `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpos.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`
+(inalterados — não é scraper). Trabalho na branch
+`claude/ga4-conversion-events-cxq9io` (designada pelo ambiente remoto).*

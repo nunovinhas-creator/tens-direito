@@ -836,5 +836,22 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
   })();
   </script>
 
+  <script>
+  // Evento de conversão GA4 no clique da barra fixa do calendário. Só
+  // regista o clique — nenhum dado do utilizador. Guarda typeof gtag
+  // (Consent Mode v2 avançado: o gtag.js carrega sempre; em 'denied' segue
+  // como ping sem cookies). O GA4 usa sendBeacon por omissão, por isso o
+  // evento sobrevive à navegação para a página do calendário.
+  (function () {
+    var barra = document.querySelector('a.cal-topo');
+    if (!barra) return;
+    barra.addEventListener('click', function () {
+      if (typeof gtag === 'function') {
+        gtag('event', 'cal_home_clique');
+      }
+    });
+  })();
+  </script>
+
 </body>
 </html>

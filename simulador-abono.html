@@ -519,6 +519,7 @@
 
       if (typeof gtag === 'function') {
         gtag('event', 'calc_resultado', { calculadora: 'abono' });
+        gtag('event', 'simulacao_concluida', { simulador: 'abono', elegivel: r.escalao !== 5 });
       }
     }
 

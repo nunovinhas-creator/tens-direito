@@ -37,6 +37,18 @@
     return document.title || "Tens Direito";
   }
 
+  function registarPartilha() {
+    // Evento de conversão GA4 — só o pathname da página, nunca dados do
+    // utilizador nem o título. Guarda typeof gtag: o gtag.js carrega
+    // sempre (Consent Mode v2 avançado); em 'denied' segue como ping sem
+    // cookies. Disparado apenas quando a partilha é concluída com sucesso
+    // (Web Share API ou cópia para a área de transferência) — nunca no
+    // fallback da caixa manual, que é uma falha de cópia.
+    if (typeof gtag === "function") {
+      gtag("event", "partilha_clique", { pagina: window.location.pathname });
+    }
+  }
+
   function removerSeExistir(id) {
     var existente = document.getElementById(id);
     if (existente) {
@@ -123,6 +135,7 @@
       navigator.clipboard.writeText(url).then(
         function () {
           mostrarFeedback(MENSAGEM_SUCESSO);
+          registarPartilha();
         },
         function () {
           mostrarCaixaManual(url);
@@ -138,14 +151,20 @@
     var titulo = obterTitulo();
 
     if (navigator.share) {
-      navigator.share({ title: titulo, url: url }).catch(function (erro) {
-        // Utilizador cancelou a partilha nativa — não é uma falha, não
-        // mostrar nenhum fallback.
-        if (erro && erro.name === "AbortError") {
-          return;
+      navigator.share({ title: titulo, url: url }).then(
+        function () {
+          // Partilha nativa concluída com sucesso.
+          registarPartilha();
+        },
+        function (erro) {
+          // Utilizador cancelou a partilha nativa — não é uma falha, não
+          // mostrar nenhum fallback.
+          if (erro && erro.name === "AbortError") {
+            return;
+          }
+          copiarParaAreaTransferencia(url);
         }
-        copiarParaAreaTransferencia(url);
-      });
+      );
       return;
     }
 

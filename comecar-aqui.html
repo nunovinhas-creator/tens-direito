@@ -322,6 +322,7 @@ footer a{color:#5C6770}
   <script>
     var respostas = {};
     var passoAtual = 1;
+    var percursoIniciado = false;
 
     var RESULTADOS = {
       'familia-bebes': [
@@ -368,6 +369,16 @@ footer a{color:#5C6770}
     function escolher(passo, valor) {
       respostas['p' + passo] = valor;
 
+      // Início do percurso guiado — só na primeira escolha. Serve para
+      // medir a taxa de conclusão do funil (início vs. recomendação final).
+      // Não transporta nenhuma resposta do utilizador.
+      if (!percursoIniciado) {
+        percursoIniciado = true;
+        if (typeof gtag === 'function') {
+          gtag('event', 'comecar_aqui_percurso', { etapa: 'inicio' });
+        }
+      }
+
       if (passo === 1) {
         document.getElementById('barra').style.width = '33%';
         document.getElementById('passo-1').classList.remove('active');
@@ -409,6 +420,14 @@ footer a{color:#5C6770}
       }
 
       document.getElementById('resultados').classList.add('active');
+
+      // Fim do percurso — o utilizador chegou a uma recomendação. destino é
+      // o pathname do apoio recomendado (o primeiro card), ou a página de
+      // guias quando não há recomendação específica. Nunca dados pessoais.
+      if (typeof gtag === 'function') {
+        var destino = cards.length ? cards[0].url : '/#guias-de-apoios';
+        gtag('event', 'comecar_aqui_percurso', { etapa: 'fim', destino: destino });
+      }
     }
 
     function reiniciar() {

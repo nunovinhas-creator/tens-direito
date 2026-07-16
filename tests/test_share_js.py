@@ -223,6 +223,98 @@ def test_caixa_manual_fecha_no_botao_fechar(pagina):
     assert pagina.query_selector("#partilhar-manual-overlay") is None
 
 
+# ── Evento de conversão GA4 (partilha_clique) ────────────────────────────
+
+def test_partilha_clique_dispara_no_sucesso_do_clipboard(pagina):
+    pagina.evaluate("""
+        () => {
+            window.__eventos = [];
+            window.gtag = function () { window.__eventos.push(Array.from(arguments)); };
+            navigator.share = undefined;
+            navigator.clipboard = { writeText: () => Promise.resolve() };
+        }
+    """)
+    pagina.click(".botao-partilhar")
+    pagina.wait_for_timeout(100)
+
+    eventos = pagina.evaluate("window.__eventos")
+    partilha = [e for e in eventos if e[0] == "event" and e[1] == "partilha_clique"]
+    assert len(partilha) == 1
+    params = partilha[0][2]
+    assert params["pagina"] == pagina.evaluate("window.location.pathname")
+    # Só o pathname — nunca o título nem outros dados.
+    assert list(params.keys()) == ["pagina"]
+
+
+def test_partilha_clique_dispara_no_sucesso_do_web_share(pagina):
+    pagina.evaluate("""
+        () => {
+            window.__eventos = [];
+            window.gtag = function () { window.__eventos.push(Array.from(arguments)); };
+            navigator.share = () => Promise.resolve();
+        }
+    """)
+    pagina.click(".botao-partilhar")
+    pagina.wait_for_timeout(100)
+
+    eventos = pagina.evaluate("window.__eventos")
+    partilha = [e for e in eventos if e[0] == "event" and e[1] == "partilha_clique"]
+    assert len(partilha) == 1
+
+
+def test_partilha_clique_nao_dispara_quando_utilizador_cancela(pagina):
+    pagina.evaluate("""
+        () => {
+            window.__eventos = [];
+            window.gtag = function () { window.__eventos.push(Array.from(arguments)); };
+            navigator.share = () => {
+                const erro = new Error('cancelado');
+                erro.name = 'AbortError';
+                return Promise.reject(erro);
+            };
+        }
+    """)
+    pagina.click(".botao-partilhar")
+    pagina.wait_for_timeout(100)
+
+    eventos = pagina.evaluate("window.__eventos")
+    partilha = [e for e in eventos if e[0] == "event" and e[1] == "partilha_clique"]
+    assert partilha == []
+
+
+def test_partilha_clique_nao_dispara_no_fallback_manual(pagina):
+    pagina.evaluate("""
+        () => {
+            window.__eventos = [];
+            window.gtag = function () { window.__eventos.push(Array.from(arguments)); };
+            navigator.share = undefined;
+            navigator.clipboard = { writeText: () => Promise.reject(new Error('negado')) };
+        }
+    """)
+    pagina.click(".botao-partilhar")
+    pagina.wait_for_timeout(100)
+
+    # A caixa manual apareceu (cópia falhou) — nenhum evento de partilha.
+    assert pagina.query_selector("#partilhar-manual-overlay") is not None
+    eventos = pagina.evaluate("window.__eventos")
+    partilha = [e for e in eventos if e[0] == "event" and e[1] == "partilha_clique"]
+    assert partilha == []
+
+
+def test_partilha_sem_gtag_nao_rebenta(pagina):
+    # Guarda typeof gtag: sem gtag definido, a partilha corre na mesma.
+    pagina.evaluate("""
+        () => {
+            window.gtag = undefined;
+            navigator.share = undefined;
+            navigator.clipboard = { writeText: () => Promise.resolve() };
+        }
+    """)
+    pagina.click(".botao-partilhar")
+    pagina.wait_for_timeout(100)
+    assert pagina.query_selector("#partilhar-feedback") is not None
+
+
 # ── Acessibilidade ───────────────────────────────────────────────────────
 
 def test_botao_tem_aria_label_e_texto_visivel(pagina):
