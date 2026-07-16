@@ -96,6 +96,22 @@ depender de uma sessão estar logada. Uma branch com trabalho por integrar nunca
 é apagada — fica registada numa Issue única até alguém a trazer para `main` ou
 a apagar manualmente. Ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES".
 
+**Excepção única e deliberada — workflows de diagnóstico (2026-07-16):**
+workflows de diagnóstico (permanentes OU temporários) nunca são commitados em
+`main`. Vão sempre para branch própria, com trigger `on: push` limitado a essa
+branch. Corre-se, lê-se o output, apaga-se a branch. Razão: `workflow_dispatch`
+exige o ficheiro em `main`; `on: push` numa branch dispensa isso e evita que
+uma limpeza falhada deixe um workflow órfão a correr em `main` — um erro que
+pareceria sucesso. Esta é a única excepção à regra "NUNCA criar branches"
+deste ficheiro — nenhuma outra tarefa a herda por analogia. Substitui o
+padrão usado em sessões anteriores (documentado em várias entradas de revisão
+mais abaixo neste ficheiro: `diagnostico-dre-psu-temp.yml`,
+`diagnostico-fontes-temp.yml`, `diagnostico-igefe-temp.yml`,
+`diagnostico-calendario-temp.yml`, `diagnostico-logo-temp.yml` — todos
+committed directamente em `main` e apagados no fim); essas entradas ficam
+como estavam escritas nessa altura, sem reescrever o passado, mas o padrão
+delas já não é o que se segue daqui para a frente.
+
 ---
 
 ## O QUE É ESTE PROJECTO
