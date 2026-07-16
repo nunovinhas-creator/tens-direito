@@ -6,8 +6,11 @@ Todos os testes isolam o sistema de ficheiros com `tmp_path` e um
 clusters.json de teste — nunca tocam nos ficheiros reais do repositório.
 """
 import json
+import re
 import sys
 from pathlib import Path
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
@@ -21,6 +24,8 @@ from sincronizar_clusters import (
     extrair_verificado_em,
     render_atualizacoes_home,
 )
+
+RAIZ = Path(__file__).parent.parent
 
 _CLUSTERS_TESTE = {
     "clusters": [
@@ -78,6 +83,22 @@ _ARTIGO_SEM_MARCADORES = """<!DOCTYPE html>
 </html>
 """
 
+_PILLAR_COM_MARCADORES = """<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <title>Cluster A</title>
+  <!-- PILLAR-JSONLD:INICIO -->
+  <!-- PILLAR-JSONLD:FIM -->
+</head>
+<body>
+  <ul>
+    <!-- PILLAR-LISTA:INICIO -->
+    <!-- PILLAR-LISTA:FIM -->
+  </ul>
+</body>
+</html>
+"""
+
 _HOME_COM_MARCADOR = """<!DOCTYPE html>
 <html lang="pt">
 <body>
@@ -128,10 +149,7 @@ def test_injeta_badge_e_relacionados_num_artigo_membro(tmp_path):
 
 def test_injeta_lista_numa_pillar_page(tmp_path):
     clusters = _clusters(tmp_path)
-    caminho = _escrever(
-        tmp_path, "p/cluster-a.html",
-        "<html><body><ul><!-- PILLAR-LISTA:INICIO -->\n<!-- PILLAR-LISTA:FIM --></ul></body></html>",
-    )
+    caminho = _escrever(tmp_path, "p/cluster-a.html", _PILLAR_COM_MARCADORES)
 
     resultado = processar_pagina(caminho, clusters, raiz=tmp_path)
 
@@ -139,6 +157,82 @@ def test_injeta_lista_numa_pillar_page(tmp_path):
     conteudo = caminho.read_text(encoding="utf-8")
     assert "<li><a href=\"/artigo-1.html\">Artigo 1</a></li>" in conteudo
     assert "<li><a href=\"/artigo-2.html\">Artigo 2</a></li>" in conteudo
+
+
+def _extrair_pillar_jsonld(conteudo):
+    m = re.search(r"<!-- PILLAR-JSONLD:INICIO -->(.*?)<!-- PILLAR-JSONLD:FIM -->", conteudo, re.DOTALL)
+    assert m, "marcador PILLAR-JSONLD não encontrado"
+    bloco = re.search(r'<script type="application/ld\+json">(.*?)</script>', m.group(1), re.DOTALL)
+    assert bloco, "sem <script> JSON-LD dentro do marcador"
+    return json.loads(bloco.group(1).strip())
+
+
+def test_injeta_jsonld_collectionpage_itemlist_numa_pillar(tmp_path):
+    clusters = _clusters(tmp_path)
+    caminho = _escrever(tmp_path, "p/cluster-a.html", _PILLAR_COM_MARCADORES)
+
+    resultado = processar_pagina(caminho, clusters, raiz=tmp_path)
+
+    assert resultado.alterado is True
+    d = _extrair_pillar_jsonld(caminho.read_text(encoding="utf-8"))
+    assert d["@type"] == "CollectionPage"
+    assert d["@id"] == "https://tensdireito.com/p/cluster-a.html#collection"
+    assert d["url"] == "https://tensdireito.com/p/cluster-a.html"
+    assert d["isPartOf"]["@id"] == "https://tensdireito.com/#website"
+    il = d["mainEntity"]
+    assert il["@type"] == "ItemList"
+    # 1:1 com clusters.json: ordem, position sequencial, url absoluto
+    assert il["numberOfItems"] == 2
+    assert [it["position"] for it in il["itemListElement"]] == [1, 2]
+    assert [it["url"] for it in il["itemListElement"]] == [
+        "https://tensdireito.com/artigo-1.html",
+        "https://tensdireito.com/artigo-2.html",
+    ]
+    assert [it["name"] for it in il["itemListElement"]] == ["Artigo 1", "Artigo 2"]
+    assert all(it["url"].startswith("https://tensdireito.com/") for it in il["itemListElement"])
+
+
+def test_pillar_jsonld_idempotente(tmp_path):
+    clusters = _clusters(tmp_path)
+    caminho = _escrever(tmp_path, "p/cluster-a.html", _PILLAR_COM_MARCADORES)
+
+    processar_pagina(caminho, clusters, raiz=tmp_path)
+    primeiro = caminho.read_text(encoding="utf-8")
+    r2 = processar_pagina(caminho, clusters, raiz=tmp_path)
+
+    assert r2.alterado is False
+    assert caminho.read_text(encoding="utf-8") == primeiro
+
+
+def test_pillar_sem_marcador_jsonld_e_reportada_sem_escrever(tmp_path):
+    clusters = _clusters(tmp_path)
+    # PILLAR-LISTA presente mas PILLAR-JSONLD em falta → reportado, nada escrito.
+    html = "<html><head></head><body><ul><!-- PILLAR-LISTA:INICIO -->\n<!-- PILLAR-LISTA:FIM --></ul></body></html>"
+    caminho = _escrever(tmp_path, "p/cluster-a.html", html)
+
+    resultado = processar_pagina(caminho, clusters, raiz=tmp_path)
+
+    assert resultado.alterado is False
+    assert "PILLAR-JSONLD" in resultado.motivo
+    assert caminho.read_text(encoding="utf-8") == html
+
+
+# ── PILLAR-JSONLD sobre os ficheiros REAIS (guarda contra drift) ──────────
+
+_CLUSTERS_REAIS = carregar_clusters()
+
+
+@pytest.mark.parametrize("cluster", _CLUSTERS_REAIS, ids=[c.id for c in _CLUSTERS_REAIS])
+def test_pillar_jsonld_real_bate_com_clusters_json(cluster):
+    caminho = RAIZ / cluster.pillar.lstrip("/")
+    d = _extrair_pillar_jsonld(caminho.read_text(encoding="utf-8"))
+    itens = d["mainEntity"]["itemListElement"]
+    assert d["mainEntity"]["numberOfItems"] == len(cluster.paginas)
+    assert [it["position"] for it in itens] == list(range(1, len(cluster.paginas) + 1))
+    assert [it["url"] for it in itens] == [
+        f"https://tensdireito.com/{p.slug}" for p in cluster.paginas
+    ]
+    assert [it["name"] for it in itens] == [p.titulo for p in cluster.paginas]
 
 
 def test_injeta_cartoes_na_home(tmp_path):

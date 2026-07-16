@@ -18,6 +18,8 @@ preservado):
                                           relacionados, num artigo
     <!-- PILLAR-LISTA:INICIO/FIM -->      lista de artigos do cluster,
                                           numa pillar page
+    <!-- PILLAR-JSONLD:INICIO/FIM -->     JSON-LD CollectionPage + ItemList
+                                          da pillar page (no <head>)
 
 Idempotente: correr duas vezes seguidas produz ficheiros byte a byte
 idênticos. Nunca escreve fora dos marcadores; se uma página deveria ter
@@ -44,6 +46,7 @@ from typing import List, Optional, Tuple
 
 RAIZ = Path(__file__).resolve().parent.parent
 CLUSTERS_JSON = RAIZ / "data" / "clusters.json"
+DOMINIO = "https://tensdireito.com"
 
 # Páginas fora do sistema de clusters — nunca tocadas por este script.
 EXCLUIDAS = {
@@ -105,6 +108,7 @@ MARCADOR_ATUALIZACOES = ("ATUALIZACOES:HOME:INICIO", "ATUALIZACOES:HOME:FIM")
 MARCADOR_BADGE = ("CLUSTER-BADGE:INICIO", "CLUSTER-BADGE:FIM")
 MARCADOR_RELACIONADOS = ("RELACIONADOS:INICIO", "RELACIONADOS:FIM")
 MARCADOR_PILLAR_LISTA = ("PILLAR-LISTA:INICIO", "PILLAR-LISTA:FIM")
+MARCADOR_PILLAR_JSONLD = ("PILLAR-JSONLD:INICIO", "PILLAR-JSONLD:FIM")
 
 MAX_RELACIONADOS = 4
 MAX_ATUALIZACOES = 4
@@ -319,6 +323,40 @@ def render_pillar_lista(cluster: Cluster) -> str:
     return "\n".join(itens)
 
 
+def render_pillar_jsonld(cluster: Cluster) -> str:
+    """Bloco JSON-LD CollectionPage + ItemList da pillar page, gerado a
+    partir de data/clusters.json (fonte única). O ItemList lista as páginas
+    do cluster, por ordem, com URL absoluto e `position` sequencial; a
+    CollectionPage é o tipo desta página como colecção e amarra-se ao
+    WebSite único (`isPartOf`, mesmo @id da homepage). Determinístico
+    (`json.dumps` estável) — idempotente por construção."""
+    itens = [
+        {
+            "@type": "ListItem",
+            "position": i,
+            "url": f"{DOMINIO}/{p.slug}",
+            "name": p.titulo,
+        }
+        for i, p in enumerate(cluster.paginas, start=1)
+    ]
+    dados = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": f"{DOMINIO}{cluster.pillar}#collection",
+        "url": f"{DOMINIO}{cluster.pillar}",
+        "name": cluster.nome,
+        "isPartOf": {"@id": f"{DOMINIO}/#website"},
+        "mainEntity": {
+            "@type": "ItemList",
+            "numberOfItems": len(cluster.paginas),
+            "itemListElement": itens,
+        },
+    }
+    corpo = json.dumps(dados, ensure_ascii=False, indent=2)
+    corpo_indentado = "\n".join("  " + linha for linha in corpo.split("\n"))
+    return f'  <script type="application/ld+json">\n{corpo_indentado}\n  </script>'
+
+
 def render_badge(cluster: Cluster, titulo_pagina: str) -> str:
     breadcrumb = (
         '    <nav class="breadcrumb-visivel" aria-label="Breadcrumb">'
@@ -455,6 +493,12 @@ def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAI
         novo = _substituir_bloco(conteudo, MARCADOR_PILLAR_LISTA, render_pillar_lista(pillar))
         if novo is None:
             faltam.append("PILLAR-LISTA")
+        else:
+            conteudo = novo
+
+        novo = _substituir_bloco(conteudo, MARCADOR_PILLAR_JSONLD, render_pillar_jsonld(pillar))
+        if novo is None:
+            faltam.append("PILLAR-JSONLD")
         else:
             conteudo = novo
 

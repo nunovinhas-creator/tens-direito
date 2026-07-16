@@ -31,9 +31,20 @@ def _jsonld_blocks(caminho: Path):
 
 # ── sobre.html — JSON-LD (excepção à regra "institucionais sem JSON-LD") ──
 
-def test_sobre_tem_aboutpage_organization_website():
+def test_sobre_tem_aboutpage_e_organization():
+    # O WebSite mudou-se para a homepage (2026-07-16) — o site tem UM único
+    # WebSite, com @id, na index.html. sobre.html fica com AboutPage +
+    # Organization (a entidade NV Labs continua a ser resolvível aqui).
     tipos = {b["@type"] for b in _jsonld_blocks(RAIZ / "sobre.html")}
-    assert {"AboutPage", "Organization", "WebSite"} <= tipos
+    assert {"AboutPage", "Organization"} <= tipos
+
+
+def test_sobre_ja_nao_tem_website():
+    tipos = {b["@type"] for b in _jsonld_blocks(RAIZ / "sobre.html")}
+    assert "WebSite" not in tipos, (
+        "só pode existir um WebSite no site (na homepage) — nunca dois com "
+        "@id diferentes"
+    )
 
 
 def test_sobre_organization_e_a_nv_labs_sem_sameas_github():
@@ -52,10 +63,18 @@ def test_sobre_aboutpage_referencia_a_organization():
     assert about["mainEntity"]["@id"] == ID_NVLABS
 
 
-def test_sobre_website_publisher_referencia_a_organization():
-    blocos = _jsonld_blocks(RAIZ / "sobre.html")
+def test_homepage_website_tem_id_e_publisher_a_organization():
+    # O WebSite único do site vive na homepage e amarra o grafo à entidade
+    # NV Labs (definida em sobre.html) por @id, mais o SearchAction real
+    # (?pesquisa=, lido em index.html no DOMContentLoaded).
+    blocos = _jsonld_blocks(RAIZ / "index.html")
     website = next(b for b in blocos if b["@type"] == "WebSite")
+    assert website["@id"] == "https://tensdireito.com/#website"
     assert website["publisher"]["@id"] == ID_NVLABS
+    accao = website["potentialAction"]
+    assert accao["@type"] == "SearchAction"
+    assert "{search_term_string}" in accao["target"]["urlTemplate"]
+    assert "?pesquisa=" in accao["target"]["urlTemplate"]
 
 
 def test_sobre_tem_seccoes_ancoradas_nvlabs_e_metodo():

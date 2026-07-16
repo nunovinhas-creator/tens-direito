@@ -738,6 +738,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    - `<!-- CLUSTER-BADGE:INICIO/FIM -->` — breadcrumb visível + "este artigo pertence ao guia X", num artigo
    - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
    - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
+   - `<!-- PILLAR-JSONLD:INICIO/FIM -->` — JSON-LD `CollectionPage` + `ItemList` da pillar page (no `<head>`), gerado por `render_pillar_jsonld()` (ver secção "SCHEMA.ORG — GRAFO DO SITE")
    Também corre `validar_consistencia()`: reporta páginas do JSON sem
    ficheiro, pillars por criar, e ficheiros HTML sem entrada no JSON
    (fora da lista `EXCLUIDAS`: `index.html`, `noticias.html`,
@@ -1777,6 +1778,75 @@ como key event). Marcar: `simulacao_concluida`, `comecar_aqui_percurso` (o
 evento final, `etapa: 'fim'`) e — quando/se instrumentado — `documento_gerado`
 (hoje não existe, ver acima). `partilha_clique` e `cal_home_clique` são úteis
 como micro-conversões, opcional marcá-los.
+
+---
+
+## SCHEMA.ORG — GRAFO DO SITE (WebSite + CollectionPage)
+
+Intervenção cirúrgica de 2026-07-16 (Sessão 2 — só JSON-LD ao nível do
+site; o JSON-LD dos artigos, `FAQPage`/`HowTo`/`BreadcrumbList`/`Article`,
+está correcto e **não foi tocado**). O défice era ao nível do grafo do
+site, não dos artigos.
+
+### WebSite único, na homepage
+
+- O bloco `WebSite` vive **só** em `index.html`, com `@id`
+  `https://tensdireito.com/#website`, `publisher` a referenciar a
+  `Organization` da NV Labs por `@id`
+  (`https://tensdireito.com/sobre.html#nvlabs`, definida em `sobre.html`) e
+  o `potentialAction` `SearchAction`.
+- **SearchAction — target verificado, não inventado**: o `urlTemplate` é
+  `https://tensdireito.com/?pesquisa={search_term_string}`. Verificado
+  primeiro (regra da tarefa: "o SearchAction só é válido se existir um URL
+  com parâmetro de query"): `index.html` **já** lê `?pesquisa=` no
+  `DOMContentLoaded` (`URLSearchParams`) e injecta o termo no campo de
+  pesquisa do hero, disparando o dropdown de resultados via `pesquisa.js`.
+  Não foi preciso criar página de pesquisa dedicada nem tocar na homepage
+  além do bloco `WebSite` — o handler `?pesquisa=` já existia em produção.
+- **Decisão da Tarefa 1, ponto 3 — opção (a)**: o `WebSite` que vivia em
+  `sobre.html` (sem `@id`) foi **removido**; passa a haver um único
+  `WebSite` no site, na homepage, com `@id`. Nunca dois `WebSite` com
+  `@id` diferentes. `sobre.html` mantém `AboutPage` + `Organization` (a
+  entidade NV Labs continua resolvível lá). `tests/test_sobre_jsonld.py`
+  actualizado (validava 3 blocos em `sobre.html`; agora valida 2 lá +
+  o `WebSite` com `@id`/`publisher`/`SearchAction` na `index.html`).
+- Cuidado de manutenção: o `pipeline-diario.yml` (Step 6, `sed`)
+  actualiza o campo `"dateModified"` deste bloco `WebSite` em `index.html`
+  — a linha foi preservada intacta, o `sed` continua a funcionar.
+
+### CollectionPage + ItemList nas 6 pillar pages
+
+- Gerado a partir de `data/clusters.json` (fonte única) por
+  `render_pillar_jsonld()` em `scripts/sincronizar_clusters.py`, injectado
+  no `<head>` de cada pillar entre `<!-- PILLAR-JSONLD:INICIO/FIM -->`.
+  **Nunca escrito à mão** — divergiria do JSON na primeira sincronização.
+  Idempotente (`json.dumps` estável; 2.ª corrida = zero alterações),
+  `--dry-run` funciona.
+- Estrutura: `CollectionPage` (`@id` `<pillar>#collection`, `url`,
+  `name` = nome do cluster, `isPartOf` → `@id` do `WebSite` único) com
+  `mainEntity` = `ItemList` cujos `itemListElement` são as páginas do
+  cluster, `position` sequencial (1..N) e `url` absoluto — 1:1 com
+  `clusters.json`, incluindo simuladores (`tipo: "ferramenta"`), tal como
+  o `PILLAR-LISTA`. As 6 pillars: as 5 em `p/*.html` + `prestacao-social-unica.html`
+  (pillar em raiz). Cada pillar fica com `Article` + `FAQPage` +
+  `BreadcrumbList` + `CollectionPage` — sem duplicar tipos (não havia
+  `WebPage`/`CollectionPage` antes).
+- Testes: `tests/test_sincronizar_clusters.py` estendido — injecção,
+  idempotência do novo bloco, 1:1 `ItemList`↔`clusters.json` (unidade em
+  `tmp_path` **e** guarda sobre os 6 pillars reais), e pillar com
+  `PILLAR-LISTA` mas sem `PILLAR-JSONLD` é reportada sem escrever (a
+  presença dos dois marcadores passa a ser obrigatória numa pillar).
+  `test_breadcrumb_coerencia.py` reconfirmado sem regressão.
+
+### PASSO MANUAL PARA O NUNO — validar depois do deploy
+
+Depois do deploy, validar no **Rich Results Test**
+(search.google.com/test/rich-results) e/ou no **Search Console** (relatório
+de dados estruturados): a homepage (`WebSite` + `SearchAction` — a
+sitelinks searchbox) e uma ou duas pillar pages (`CollectionPage` +
+`ItemList`). Não é possível validar por código contra a Google — a
+validação local é estrutural (JSON real, `@id` coerentes, `position`
+sequencial, URLs absolutos).
 
 ---
 
@@ -6485,3 +6555,34 @@ scripts/ tests/ --select E,F,W --ignore E501 .` limpos.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False`
 (inalterados — não é scraper). Trabalho na branch
 `claude/ga4-conversion-events-cxq9io` (designada pelo ambiente remoto).*
+
+---
+
+*Última revisão: 2026-07-16 — Sessão 2 (Schema.org cirúrgico): três
+intervenções ao nível do grafo do site, **sem tocar no JSON-LD dos artigos**
+(está correcto) nem adicionar tipos especulativos — ver nova secção
+"SCHEMA.ORG — GRAFO DO SITE". (1) `WebSite` consolidado na homepage: ganhou
+`@id` (`https://tensdireito.com/#website`) e `publisher` → `Organization` da
+NV Labs por `@id`; o `SearchAction` já existia e o seu target
+(`?pesquisa={search_term_string}`) foi **verificado** — `index.html` já lê
+`?pesquisa=` no `DOMContentLoaded` e corre a pesquisa do hero, por isso não
+foi preciso página de pesquisa nova nem tocar na homepage além deste bloco.
+Decisão da Tarefa 1 ponto 3 = **opção (a)**: `WebSite` removido de
+`sobre.html` (fica só `AboutPage` + `Organization`) — um único `WebSite` no
+site, nunca dois com `@id` diferentes. A linha `"dateModified"` do bloco
+(actualizada pelo `sed` do pipeline, Step 6) foi preservada intacta. (2)
+`CollectionPage` + `ItemList` nas 6 pillar pages (5 em `p/*.html` +
+`prestacao-social-unica.html`), gerado de `data/clusters.json` por
+`render_pillar_jsonld()` em `scripts/sincronizar_clusters.py`, novo marcador
+`<!-- PILLAR-JSONLD:INICIO/FIM -->` no `<head>` — idempotente, `--dry-run` ok,
+1:1 com o JSON (`position` sequencial, URLs absolutos, `isPartOf` → `@id` do
+`WebSite`); nunca escrito à mão. (3) Testes: `test_sincronizar_clusters.py`
+estendido (injecção, idempotência, 1:1 em `tmp_path` e sobre os 6 pillars
+reais, marcador em falta reportado sem escrever), `test_sobre_jsonld.py`
+actualizado (WebSite mudou de `sobre.html` para a homepage),
+`test_breadcrumb_coerencia.py` sem regressão. Todo o JSON-LD tocado validado
+como JSON real; diff cirúrgico (index.html +2 linhas, sobre.html −9, pillars
+só adição do bloco no `<head>`). Passo manual do Nuno: validar no Rich
+Results Test / Search Console depois do deploy. Suite completa + `ruff` limpos.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` inalterados
+(`False`). Trabalho directo em `main`.*
