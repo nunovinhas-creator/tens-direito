@@ -94,6 +94,9 @@ DATAS_PUBLICACAO = {
     "como-pedir-niss.html": "2026-07-14",
     "calendario-escolar-apoios.html": "2026-07-14",
     "declaracao-situacao-contributiva.html": "2026-07-14",
+    "senha-seguranca-social-direta.html": "2026-07-17",
+    "iban-seguranca-social.html": "2026-07-17",
+    "chave-movel-digital.html": "2026-07-17",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

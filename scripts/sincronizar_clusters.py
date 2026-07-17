@@ -153,6 +153,11 @@ class Cluster:
     pillar: str
     paginas: List[Pagina]
     relacionados: List[str]
+    # Clusters utilitários (ex.: "Como Pedir") não são um "apoio" — ficam
+    # de fora do dropdown "Apoios" da nav e dos cartões de "Guias de
+    # Apoios"/"Guias principais" da homepage, mas continuam com pillar,
+    # PILLAR-LISTA, PILLAR-JSONLD, CLUSTER-BADGE e RELACIONADOS normais.
+    oculta_em_apoios: bool = False
 
 
 @dataclass(frozen=True)
@@ -171,6 +176,7 @@ def carregar_clusters(caminho: Path = CLUSTERS_JSON) -> List[Cluster]:
             id=c["id"], nome=c["nome"], descricao_curta=c["descricao_curta"],
             icone=c["icone"], pillar=c["pillar"], paginas=paginas,
             relacionados=list(c.get("relacionados", [])),
+            oculta_em_apoios=bool(c.get("oculta_em_apoios", False)),
         ))
     return clusters
 
@@ -222,6 +228,8 @@ def contagem_str(cluster: Cluster) -> str:
 def render_home_cards(clusters: List[Cluster]) -> str:
     cartoes = []
     for c in clusters:
+        if c.oculta_em_apoios:
+            continue
         contagem = contagem_str(c)
         cartoes.append(
             f'      <a href="{c.pillar}" class="apoio-card">\n'
@@ -241,6 +249,8 @@ def render_destaques_home(clusters: List[Cluster]) -> str:
     do plano de reorganização."""
     cartoes = []
     for c in clusters:
+        if c.oculta_em_apoios:
+            continue
         for p in c.paginas:
             if not p.destaque:
                 continue

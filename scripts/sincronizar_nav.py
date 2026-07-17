@@ -64,12 +64,14 @@ class Resultado:
 
 
 def render_dropdown_apoios(clusters: List[Cluster]) -> str:
-    itens = [f'            <a href="{c.pillar}" role="menuitem">{c.nome}</a>' for c in clusters]
+    # Clusters oculta_em_apoios (ex.: "Como Pedir") não são um apoio —
+    # têm o seu próprio link fora do dropdown (ver render_nav()).
+    itens = [f'            <a href="{c.pillar}" role="menuitem">{c.nome}</a>' for c in clusters if not c.oculta_em_apoios]
     return "\n".join(itens)
 
 
 def render_mobile_apoios(clusters: List[Cluster]) -> str:
-    itens = [f'    <a href="{c.pillar}" class="nav-mobile-sub">{c.nome}</a>' for c in clusters]
+    itens = [f'    <a href="{c.pillar}" class="nav-mobile-sub">{c.nome}</a>' for c in clusters if not c.oculta_em_apoios]
     return "\n".join(itens)
 
 
@@ -95,6 +97,7 @@ def render_nav(clusters: List[Cluster]) -> str:
         <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
         <a href="/simuladores.html">🧮 Simuladores</a>
         <a href="/documentos.html">📄 Documentos</a>
+        <a href="/p/como-pedir.html">🔑 Como Pedir</a>
         <a href="/noticias.html">Notícias</a>
       </div>
 
@@ -125,6 +128,7 @@ def render_nav(clusters: List[Cluster]) -> str:
       <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
       <a href="/simuladores.html">🧮 Simuladores</a>
       <a href="/documentos.html">📄 Documentos</a>
+      <a href="/p/como-pedir.html">🔑 Como Pedir</a>
       <a href="/noticias.html">Notícias</a>
     </div>
   </div>"""
