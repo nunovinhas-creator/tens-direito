@@ -70,6 +70,26 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Acordeão "Apoios" do menu móvel: abre sozinho quando a página actual
+  // pertence a esse grupo (progressive enhancement — sem JS fica fechado,
+  // mas o <details> nativo continua a abrir/fechar ao toque). Numa pillar
+  // page o pathname coincide com um link do acordeão; num artigo usa-se o
+  // link "pertence ao guia" já presente no DOM estático (CLUSTER-BADGE).
+  var acordeao = document.getElementById('navMobileApoios');
+  if (acordeao) {
+    var guiaAtual = document.querySelector('.pertence-guia a');
+    var pillarAtual = guiaAtual ? guiaAtual.getAttribute('href') : null;
+    acordeao.querySelectorAll('a').forEach(function (link) {
+      var href = link.getAttribute('href');
+      if (href === location.pathname) {
+        link.classList.add('nav-ativo');
+        acordeao.open = true;
+      } else if (pillarAtual && href === pillarAtual) {
+        acordeao.open = true;
+      }
+    });
+  }
+
   ['resultados-pesquisa-nav', 'resultados-pesquisa-nav-movel'].forEach(function (idResultados) {
     var idCampo = idResultados.replace('resultados-pesquisa', 'campo-pesquisa');
     document.addEventListener('click', function (e) {

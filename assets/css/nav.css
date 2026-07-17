@@ -259,22 +259,23 @@ main p a,
   border-bottom: 2px solid #0F766E;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 999;
-  padding: 1rem 1.5rem;
+  padding: 0.85rem 1.5rem 1rem;
   display: none;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.4rem;
   max-height: calc(100vh - 60px);
   overflow-y: auto;
 }
 
 .nav-mobile-menu.aberto { display: flex; }
 
+/* Linhas do menu: ~52px de altura, área de toque nunca abaixo de 48px. */
 .nav-mobile-menu a {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: 48px;
   box-sizing: border-box;
-  padding: 0.75rem 0;
+  padding: 0.15rem 0;
   font-size: 1rem;
   font-weight: 600;
   color: #0F172A;
@@ -285,20 +286,70 @@ main p a,
 .nav-mobile-menu a:last-child { border-bottom: none; }
 .nav-mobile-menu a:hover { color: #0D9488; }
 
-.nav-mobile-label {
-  display: block;
-  padding: 0.75rem 0 0.1rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #6B7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+/* Grelha 2×2 de ferramentas no topo do menu móvel. */
+.nav-mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding-bottom: 0.35rem;
 }
+
+.nav-mobile-menu a.nav-mobile-card {
+  min-height: 48px;
+  padding: 0.4rem 0.7rem;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  background: #F0FDF9;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+}
+
+.nav-mobile-card-icone { font-size: 1.15rem; line-height: 1; }
+
+.nav-mobile-menu a.nav-mobile-destaque { color: #0F766E; font-weight: 700; }
+
+/* Acordeão "Apoios" — <details>/<summary> nativo, funciona sem JS. */
+.nav-mobile-acordeao { border-bottom: 1px solid #E5E7EB; }
+
+.nav-mobile-acordeao summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 48px;
+  padding: 0.15rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0F172A;
+  cursor: pointer;
+  list-style: none;
+}
+
+.nav-mobile-acordeao summary::-webkit-details-marker { display: none; }
+
+.nav-mobile-acordeao summary::after {
+  content: '▾';
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #6B7280;
+  transition: transform 0.15s ease;
+}
+
+.nav-mobile-acordeao[open] summary::after { transform: rotate(-180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-mobile-acordeao summary::after { transition: none; }
+}
+
+/* Link da página actual dentro do acordeão (marcado por nav.js) —
+   cor + peso, nunca só a cor (WCAG 1.4.1). */
+.nav-mobile-menu a.nav-ativo { color: #0F766E; font-weight: 700; }
 
 .nav-mobile-sub {
   padding-left: 1.25rem !important;
   font-size: 0.95rem !important;
 }
+
+.nav-mobile-acordeao .nav-mobile-sub:last-child { border-bottom: none; }
 
 .nav-search-movel input {
   width: 100%;
