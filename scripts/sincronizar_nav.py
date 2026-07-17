@@ -122,13 +122,17 @@ def render_nav(clusters: List[Cluster]) -> str:
           oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
         <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
       </div>
-      <span class="nav-mobile-label">Apoios</span>
+      <div class="nav-mobile-grid">
+        <a href="/calendario-pagamentos-seguranca-social.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📅</span><span>Calendário</span></a>
+        <a href="/simuladores.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🧮</span><span>Simuladores</span></a>
+        <a href="/documentos.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📄</span><span>Documentos</span></a>
+        <a href="/p/como-pedir.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🔑</span><span>Como Pedir</span></a>
+      </div>
+      <a href="/comecar-aqui.html" class="nav-mobile-destaque">Começa aqui</a>
+      <details class="nav-mobile-acordeao" id="navMobileApoios">
+        <summary><span aria-hidden="true">📋</span> Apoios</summary>
 {render_mobile_apoios(clusters)}
-      <a href="/comecar-aqui.html">Começa aqui</a>
-      <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
-      <a href="/simuladores.html">🧮 Simuladores</a>
-      <a href="/documentos.html">📄 Documentos</a>
-      <a href="/p/como-pedir.html">🔑 Como Pedir</a>
+      </details>
       <a href="/noticias.html">Notícias</a>
     </div>
   </div>"""
