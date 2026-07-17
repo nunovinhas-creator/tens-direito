@@ -117,3 +117,21 @@ jobs:
           name: report-testes
           path: report-testes.xml
           retention-days: 14
+
+  canario-urls-como-pedir:
+    name: Canário de URLs Oficiais (Como Pedir)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar dependências
+        run: pip install requests
+      - name: Verificar URLs oficiais citadas nos guias "Como Pedir"
+        # Só corre num runner real — o sandbox de desenvolvimento não tem
+        # acesso à internet completo (ver CLAUDE.md, "SEG-SOCIAL — ESTRATÉGIA
+        # DE FETCH"). Falha vermelho se algum URL de data/urls_como_pedir.json
+        # deixar de responder 200 (com retry, nunca por uma falha transitória
+        # isolada) — nunca mascarado como sucesso.
+        run: python scripts/verificar_urls_como_pedir.py

@@ -1,0 +1,19 @@
+{
+  "senha-seguranca-social-direta.html": [
+    {"url": "https://www.seg-social.pt", "descricao": "Segurança Social Direta — registo e recuperação de senha"}
+  ],
+  "iban-seguranca-social.html": [
+    {"url": "https://www.seg-social.pt", "descricao": "Segurança Social Direta — registo e alteração de IBAN"}
+  ],
+  "chave-movel-digital.html": [
+    {"url": "https://www.autenticacao.gov.pt", "descricao": "Autenticação Gov — Chave Móvel Digital"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Ativar a Chave Móvel Digital\""}
+  ],
+  "como-pedir-niss.html": [
+    {"url": "https://www.seg-social.pt", "descricao": "Instituto da Segurança Social"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Pedir o NISS\""}
+  ],
+  "declaracao-situacao-contributiva.html": [
+    {"url": "https://www.seg-social.pt", "descricao": "Segurança Social Direta — declaração de situação contributiva"}
+  ]
+}

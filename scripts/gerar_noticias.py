@@ -252,6 +252,7 @@ CLUSTER_KEYWORDS = {
     "idosos-incapacidade-cuidadores": ["csi", "complemento solidário", "cuidador informal", "amim", "incapacidade multiuso"],
     "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção", "salário mínimo"],
     "habitacao": ["porta 65", "apoio ao arrendamento", "apoio à renda", "arrendamento", "ihru"],
+    "como-pedir": ["chave móvel digital", "cartão de cidadão", "niss", "segurança social direta", "iban"],
 }
 
 MESES_PT = [
