@@ -3,9 +3,18 @@ name: Integridade do Código
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
     - cron: '0 8 * * 1'  # semanal segunda 08:00
   workflow_dispatch:
+
+# Em PRs, pushes sucessivos cancelam o run obsoleto anterior (não faz
+# sentido gastar minutos a validar um commit já substituído). Em main/
+# schedule/dispatch nunca cancela — cada run vai até ao fim.
+concurrency:
+  group: integridade-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
 
@@ -120,6 +129,12 @@ jobs:
 
   canario-urls-como-pedir:
     name: Canário de URLs Oficiais (Como Pedir)
+    # Nunca corre em pull_request: este job valida o mundo exterior
+    # (seg-social.pt/gov.pt respondem 200?), não o código do PR. Em PRs
+    # com muitos pushes, marteladas repetidas nos portais oficiais são
+    # desnecessárias e arriscam flakiness/rate-limit. Mantém-se em push
+    # a main + schedule + workflow_dispatch.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
