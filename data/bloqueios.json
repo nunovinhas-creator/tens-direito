@@ -103,5 +103,14 @@
       "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
     ],
     "chars_uteis": 0
+  },
+  {
+    "slug": "iefp_desemprego",
+    "url": "https://www.iefp.pt/subsidio-desemprego",
+    "data": "2026-07-17T08:13:55.680578+00:00",
+    "motivos": [
+      "texto_util=92<min=500"
+    ],
+    "chars_uteis": 92
   }
 ]

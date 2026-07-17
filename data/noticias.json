@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-13",
+      "titulo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe",
+      "fonte_nome": "4gnews",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNbU1FVlV6QnQxUXZvRC14U2R3anZsakZWTVBaQ25FUDVLRjZETjdlNjByYTRBT2dVZS13cEVrNFVzanNyM1VodWV6TkFXanE4ZGVkcy1WalRNVG13VktsRnlTUWxqYjJGcVlHeEVfUERyYTFxRHZ2RmJRMmQ2UXlDdnRaX212ejN3NjBJZVVwLVktUEJkc0hfYkxwMHJIaF9pSGRwZWpZQTlrT09uekRTbUg5aG1Zckk?oc=5",
+      "resumo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe 4gnews",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-07-09",
       "titulo": "Mexidas no arrendamento. Tudo o que muda com o programa \"Construir Portugal\"",
       "fonte_nome": "Diário de Notícias",
