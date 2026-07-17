@@ -96,6 +96,15 @@ depender de uma sessão estar logada. Uma branch com trabalho por integrar nunca
 é apagada — fica registada numa Issue única até alguém a trazer para `main` ou
 a apagar manualmente. Ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES".
 
+**Protocolo de fim de sessão — sessões remotas em branch designada
+(2026-07-17):** o resumo final de qualquer sessão remota que trabalhe numa
+branch designada pelo ambiente termina OBRIGATORIAMENTE com o estado de
+integração explícito — "PR: #nn (aberto|merged)" ou "SEM PR — branch não
+integrada" — para que "feito e enviado" nunca se confunda com "em produção".
+Motivo real (2026-07-17): a sessão do menu móvel terminou com o trabalho
+apenas na branch, e a sessão seguinte partiu do princípio errado de que já
+estava integrado em main.
+
 **Excepção única e deliberada — workflows de diagnóstico (2026-07-16):**
 workflows de diagnóstico (permanentes OU temporários) nunca são commitados em
 `main`. Vão sempre para branch própria, com trigger `on: push` limitado a essa
