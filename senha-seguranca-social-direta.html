@@ -61,6 +61,14 @@
       },
       {
         "@type": "Question",
+        "name": "Porque me pedem um segundo código sempre que entro?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Desde 16 de maio de 2026, entrar com NISS + senha exige sempre um segundo código de validação, enviado por SMS ou email para os contactos registados — é a autenticação de dois fatores (2FA), obrigatória para reforçar a segurança do acesso. Quem entra com a Chave Móvel Digital está dispensado deste segundo código."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Posso entrar na Segurança Social Direta sem senha própria?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -93,14 +101,14 @@
       {
         "@type": "HowToStep",
         "position": 3,
-        "name": "Indica o NISS e a data de nascimento",
-        "text": "São os dois dados que confirmam a tua identidade perante o sistema."
+        "name": "Indica o NISS e os dados de identificação pedidos no formulário",
+        "text": "Confirmam a tua identidade perante o sistema — o conjunto exacto de campos pode variar."
       },
       {
         "@type": "HowToStep",
         "position": 4,
         "name": "Regista um email e um número de telemóvel",
-        "text": "São os dois canais possíveis para receberes o código de verificação e, no futuro, recuperares a senha se a esqueceres."
+        "text": "São os canais para receberes o código de verificação e, no futuro, recuperares a senha; são também os contactos usados na autenticação de dois fatores sempre que entrares, obrigatória desde 16/05/2026."
       },
       {
         "@type": "HowToStep",
@@ -301,8 +309,8 @@ footer a{color:#5C6770}
 
       <div class="resposta-direta resposta-rapida">
         <span class="resposta-rapida-label">⚡ Resposta rápida</span>
-        <p class="resposta-rapida-texto">Nunca te registaste? Entra em seg-social.pt, escolhe "Efetuar registo" e usa o NISS + data de nascimento — o código chega por SMS ou email em minutos ("Senha na Hora"). Esqueceste a senha? Usa "Esqueceu-se da senha?" na mesma página para a repor.</p>
-        <span class="resposta-rapida-tempo">📖 Leitura completa: 6 min</span>
+        <p class="resposta-rapida-texto">Nunca te registaste? Entra em seg-social.pt, escolhe "Efetuar registo" e usa o NISS + data de nascimento — o código chega por SMS ou email em minutos ("Senha na Hora"). Esqueceste a senha? Usa "Esqueceu-se da senha?" na mesma página para a repor. Desde 16/05/2026, entrar com NISS + senha pede sempre um segundo código por SMS ou email — quem usa a Chave Móvel Digital fica dispensado.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 7 min</span>
       </div>
     </div>
   </header>
@@ -325,11 +333,14 @@ footer a{color:#5C6770}
       <ol>
         <li><span><strong>Acede à página de entrada</strong> da Segurança Social Direta, em seg-social.pt, e escolhe "Efetuar registo".</span></li>
         <li><span><strong>Aceita os termos e condições</strong> do serviço.</span></li>
-        <li><span><strong>Indica o teu NISS e data de nascimento</strong> — são os dados que confirmam a tua identidade.</span></li>
-        <li><span><strong>Regista um email e um número de telemóvel</strong> — são os dois canais possíveis para receberes o código e, mais tarde, recuperares a senha.</span></li>
+        <li><span><strong>Indica o teu NISS e os dados de identificação pedidos no formulário</strong> — confirmam a tua identidade perante o sistema (o conjunto exacto de campos pode variar).</span></li>
+        <li><span><strong>Regista um email e um número de telemóvel</strong> — são os canais para receberes o código do registo e, mais tarde, para recuperares a senha; são também os contactos usados na autenticação de dois fatores sempre que entrares (ver secção seguinte).</span></li>
         <li><span><strong>Escolhe SMS ou email</strong> para receber o código de verificação, introdu-lo e valida-o. Com o registo online ("Senha na Hora"), costuma chegar em poucos minutos.</span></li>
         <li><span><strong>Define a tua senha</strong> de acesso — confirma-a e já podes entrar na conta.</span></li>
       </ol>
+      <div class="aviso-info">
+        Não tens email nem telemóvel para registar? Tanto no registo como na recuperação, a única opção é "Por carta" — a Segurança Social envia uma carta-pin, com prazo habitual de cerca de 8 dias úteis.
+      </div>
     </div>
 
     <!-- REQUISITOS -->
@@ -343,13 +354,25 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
+    <!-- 2FA -->
+    <div class="card">
+      <span class="badge">Obrigatório desde 16/05/2026</span>
+      <h2>Autenticação de dois fatores (obrigatória desde 16/05/2026)</h2>
+      <p>Desde 16 de maio de 2026 (a data prevista inicialmente, 12 de maio, foi adiada), entrar na Segurança Social Direta com NISS + senha passou a exigir sempre um segundo código de validação, enviado por SMS ou email para os contactos que tens registados — mesmo com a senha certa.</p>
+      <p>Depois de ativares a autenticação de dois fatores, passa também a ser possível iniciar sessão com o teu email em vez do NISS.</p>
+      <p><strong>Quem entra com a Chave Móvel Digital está dispensado</strong> deste segundo código — é uma das vantagens de a usar em vez da senha própria (ver secção seguinte).</p>
+      <div class="aviso-info">
+        Não recebeste o código? Confirma que o email e o telemóvel registados na Segurança Social Direta estão certos e que tens rede, e pede um código novo antes de contactares o apoio técnico.
+      </div>
+    </div>
+
     <!-- RECUPERAR -->
     <div class="card">
       <span class="badge">Já tenho conta</span>
       <h2>Esqueci a senha — como a recupero</h2>
       <p>Na mesma página de entrada, usa a opção "Esqueceu-se da senha?". Indicas de novo o NISS e a data de nascimento, escolhes o canal para receber o código de confirmação (SMS, email ou, em alternativa, carta pelo correio) e defines uma senha nova.</p>
       <div class="aviso-info">
-        A opção "por carta" existe, mas demora mais — sempre que possível, escolhe SMS ou email para uma recuperação quase imediata.
+        A opção "por carta" (carta-pin, prazo habitual de cerca de 8 dias úteis) fica reservada a quem não tem email nem telemóvel registados — sempre que possível, escolhe SMS ou email para uma recuperação quase imediata.
       </div>
     </div>
 
@@ -397,6 +420,14 @@ footer a{color:#5C6770}
         <div class="resposta">
           <p>Não. A funcionalidade "Esqueceu-se da senha?", na página de entrada da Segurança Social Direta, permite recuperá-la a qualquer momento — voltas a confirmar o NISS e a data de nascimento, escolhes o canal para receber o código (SMS, email ou carta) e defines uma senha nova.</p>
           <p class="fonte-inline">Verificado 17/07/2026 — seg-social.pt</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Porque me pedem um segundo código sempre que entro?</summary>
+        <div class="resposta">
+          <p>Desde 16 de maio de 2026, entrar com NISS + senha exige sempre um segundo código de validação, enviado por SMS ou email para os contactos registados — é a autenticação de dois fatores (2FA), obrigatória para reforçar a segurança do acesso. Quem entra com a Chave Móvel Digital está dispensado deste segundo código.</p>
+          <p class="fonte-inline">Verificado 17/07/2026 — seg-social.pt, imprensa (maio de 2026)</p>
         </div>
       </details>
 
