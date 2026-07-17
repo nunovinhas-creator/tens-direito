@@ -59,13 +59,18 @@
     "pagina": "calendario-pagamentos-seguranca-social.html",
     "titulo": "Calendário de Pagamentos da Segurança Social"
   },
+  "chave-movel-digital": {
+    "chip": "Como Pedir",
+    "pagina": "chave-movel-digital.html",
+    "titulo": "Como ativar a Chave Móvel Digital"
+  },
   "comecar-aqui": {
     "chip": null,
     "pagina": "comecar-aqui.html",
     "titulo": "Começa aqui"
   },
   "como-pedir-niss": {
-    "chip": "Trabalho e Rendimento",
+    "chip": "Como Pedir",
     "pagina": "como-pedir-niss.html",
     "titulo": "Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão"
   },
@@ -80,7 +85,7 @@
     "titulo": "Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir"
   },
   "declaracao-situacao-contributiva": {
-    "chip": "Trabalho e Rendimento",
+    "chip": "Como Pedir",
     "pagina": "declaracao-situacao-contributiva.html",
     "titulo": "Declaração de situação contributiva: certidão de não dívida 2026"
   },
@@ -154,6 +159,11 @@
     "pagina": "fontes.html",
     "titulo": "Fontes Oficiais"
   },
+  "iban-seguranca-social": {
+    "chip": "Como Pedir",
+    "pagina": "iban-seguranca-social.html",
+    "titulo": "Como alterar o IBAN na Segurança Social"
+  },
   "index": {
     "chip": null,
     "pagina": "index.html",
@@ -173,6 +183,11 @@
     "chip": "Apoios Escolares",
     "pagina": "p/apoios-escolares.html",
     "titulo": "Apoios Escolares em Portugal 2026/2027 — Guia Completo"
+  },
+  "p-como-pedir": {
+    "chip": "Como Pedir",
+    "pagina": "p/como-pedir.html",
+    "titulo": "Como Pedir — Documentos, Senhas e Certidões"
   },
   "p-familia": {
     "chip": "Família e Crianças",
@@ -258,6 +273,11 @@
     "chip": "Trabalho e Rendimento",
     "pagina": "rsi.html",
     "titulo": "RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção"
+  },
+  "senha-seguranca-social-direta": {
+    "chip": "Como Pedir",
+    "pagina": "senha-seguranca-social-direta.html",
+    "titulo": "Como pedir (e recuperar) a senha da Segurança Social Direta"
   },
   "simulador-abono": {
     "chip": "Família e Crianças",
