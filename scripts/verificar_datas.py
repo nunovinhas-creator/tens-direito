@@ -82,6 +82,20 @@ MARCADORES_HISTORICOS = [
     # do seu próprio marcador). "exist(?:e|ia|iam)" para não apanhar um
     # "antes de" genérico sem relação com uma regra revogada.
     r"exist(?:e|ia|iam)\s+antes\s+de\b",
+    # Data de emissão de um documento, usada para delimitar uma geração/
+    # modelo — facto técnico permanente, nunca "expira" (achado ao corrigir
+    # renovar-cartao-cidadao.html, 2026-07-18: "cartões com MRZ mas sem chip
+    # de contacto, emitidos até 10 de junho de 2024"). Cobre "emitido(s)
+    # entre/até/a partir de" — confirmado sem colisão com nenhum outro match
+    # real de data no resto do site antes de aplicar.
+    r"\bemitidos?\s+(?:entre|at[ée]|a\s+partir\s+de)\b",
+    # Citação de quando uma notícia circulou ou um esclarecimento oficial foi
+    # emitido — evento de imprensa datado, permanentemente no passado, nunca
+    # um prazo a rever (mesma família de "revisão urgente" acima; achado no
+    # mesmo commit: "circularam notícias em dezembro de 2025", "esclarecimento
+    # de 30/12/2025").
+    r"circularam\s+not[íi]cias",
+    r"esclarecimento\s+(?:oficial\s+)?de\s+\d",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

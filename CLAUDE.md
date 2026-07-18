@@ -1918,7 +1918,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
 | `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |
 | `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega prazos de 6 páginas do cluster, revisão obrigatória sempre que qualquer um desses prazos mudar |
-| `renovar-cartao-cidadao.html` | Após 3 de agosto de 2026 (prazo de renovação obrigatória dos cartões sem MRZ, Regulamento (UE) 2025/1208) — `verificar_datas.py` confirmado a **não** disparar em 2026 (padrão `data_mes_ano` sobre "3 de agosto de 2026" fica `OK` enquanto o ano corrente é 2026) mas a disparar em 2027 nos meses 1/7/8/9 — comportamento desejado, mesma lógica de `prova-escolar.html`/`calendario-escolar-apoios.html`: força rever o aviso "Prazo a não perder" (secção "Quando renovar") depois de a data passar, para o actualizar ou remover | Revisão obrigatória depois de 3 de agosto de 2026 — confirmar se a secção "Preciso de renovar antes do prazo?" ainda faz sentido ou se passa a nota histórica |
+| `renovar-cartao-cidadao.html` | Nota de verificação para **3 de agosto de 2031** — prazo-limite real remanescente (cartões com MRZ mas sem chip de contacto, emitidos até 10/06/2024; Regulamento (UE) 2025/1208). Corrigido a 2026-07-18: o prazo de 3/08/2026 **não** se aplica ao Cartão de Cidadão normal (tem MRZ desde 2007) — só afecta duas excepções raras (CC do Tratado de Porto Seguro, BI vitalício), conforme esclarecimento oficial do IRN de 30/12/2025. `verificar_datas.py` continua a disparar em 2027 nos meses 1/7/8/9 (o texto ainda cita "2026") — sem acção obrigatória nessa altura, só confirmar que a secção "Preciso de renovar antes do prazo?" continua correcta | Sem gatilho de acção — nota de contexto, a rever se saírem novos esclarecimentos oficiais do IRN antes de 2031 |
 
 **`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06,
 actualizada 2026-07-06)**: a lacuna de vigilância identificada na sessão
@@ -6787,3 +6787,78 @@ esta sessão). Trabalho na branch
 `claude/cartao-cidadao-renewal-guide-i861no` (designada pelo ambiente
 remoto desta sessão) — **SEM PR, branch não integrada em `main`** (protocolo
 de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
+
+---
+
+*Última revisão: 2026-07-18 (sessão seguinte, revisão cruzada +
+correcção factual) — duas tarefas sobre o cluster "Como Pedir". 1)
+Revisão cruzada dos 3 guias novos (`alterar-morada.html`,
+`renovar-cartao-cidadao.html`, `numero-utente-sns.html`): fact-check
+via `WebSearch` sem divergências nos preços do CC, prazo de 60
+dias/coima de alteração de morada e nos números de utente; corrigida
+uma divergência de texto entre o `<summary>` visível e a pergunta do
+`FAQPage` JSON-LD em `renovar-cartao-cidadao.html`; adicionados os 3
+cross-links em falta entre as páginas (o mecanismo automático
+`RELACIONADOS`, limitado aos 4 primeiros irmãos do cluster, nunca os
+cobriria — são as páginas #6/#7/#8 de 8); registado em `ROADMAP.md` o
+gatilho pós-3-agosto-2026 que já existia em `CLAUDE.md` mas faltava no
+índice único. Sinalizada, sem editar, uma dúvida sobre o alcance exacto
+do prazo de 2031 para confirmação manual do Nuno. 2) **Correcção
+factual da mesma dúvida**, com fonte primária via imprensa
+(esclarecimento oficial do IRN de 30/12/2025): o prazo de "3 de agosto
+de 2026" do callout "Prazo a não perder" **nunca se aplicou** ao Cartão
+de Cidadão normal — o CC português tem MRZ desde 2007, e a categoria
+"sem MRZ" só afecta duas excepções raras (Cartão de Cidadão de cidadãos
+brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de
+Identidade vitalício, emissão cessada a 31/12/2018); a linha "emitido
+entre 13 de agosto de 2021 e 9 de junho de 2024" da categoria
+"MRZ mas sem chip de contacto" também estava incorrecta — o intervalo
+certo é "emitido até 10 de junho de 2024", o prazo real remanescente é
+3 de agosto de 2031. Corrigidos, em `renovar-cartao-cidadao.html`: o
+callout do hero (de `.aviso-atencao` alarmista para `.aviso-info` com
+"✅ Esclarecimento oficial"), a lista de 3 categorias da secção "Preciso
+de renovar antes do prazo?", a pergunta/resposta correspondente no
+`FAQPage` JSON-LD e no `<summary>` visível (mantidos idênticos entre
+si), e a entrada de "PÁGINAS COM DATAS SAZONAIS" logo acima —
+despromovida de "revisão obrigatória pós-3-agosto-2026" para "nota de
+verificação para 3 de agosto de 2031, sem gatilho de acção" (mesma
+mudança espelhada em `ROADMAP.md`). Regulamento (UE) 2025/1208 mantido
+como referência correcta (substitui o quadro de 2019). Nenhum outro
+facto da página tocado — os preços, prazos de renovação e passo a
+passo permanecem exactamente como estavam, já confirmados na revisão
+anterior.
+
+**Achado lateral durante a verificação, corrigido no mesmo commit**: ao
+testar `verificar_datas.detectar_alertas()` sobre o texto corrigido,
+descoberto um falso positivo real e **pré-existente** (já presente
+desde a criação da página, 2026-07-18, antes de qualquer edição desta
+sessão) — as datas "13 de agosto de 2021"/"9 de junho de 2024" da
+categoria "MRZ mas sem chip de contacto" nunca tinham marcador de
+supressão, disparando `data_mes_ano` já em julho de 2026 (o mês
+corrente), não só em 2027. As novas datas históricas desta correcção
+("dezembro de 2025", "30/12/2025") agravavam o mesmo problema.
+`MARCADORES_HISTORICOS` (`scripts/verificar_datas.py`) ganhou 3
+marcadores novos, cada um ancorado à ocorrência real que o motivou,
+mesmo padrão das correcções #51/#52/#53 já documentadas: datas de
+emissão de documento (`emitidos? entre/até/a partir de`), citações de
+quando uma notícia circulou (`circularam notícias`), e citações de
+quando um esclarecimento oficial foi emitido (`esclarecimento
+(oficial) de \d`) — confirmado sem colisão com nenhum outro match de
+data no resto do site antes de aplicar (grep dedicado + varrimento real
+de `manuais-escolares-mega.html`, o único outro ficheiro com "emitidos
+entre/até/a partir de"). Confirmado por varrimento site-wide real
+(`detectar_alertas()`, 70 páginas, mês 7/2026): **0 alertas**, nenhum
+falso positivo residual. O disparo em 2027 que persiste (tipo
+`data_numerica`) é o mecanismo universal e desejado de qualquer página
+do site — o carimbo "Verificado a 18/07/2026" envelhece como qualquer
+outro, força revisão anual, não é um bug.
+
+Verificado depois da correcção: os 4 blocos JSON-LD
+continuam válidos, o `FAQPage` continua 1:1 com os `<summary>`
+visíveis (8/8), zero overflow a 375px, zero erros de consola, 0
+violações de acessibilidade nas 3 páginas tocadas na sessão. Suite
+completa: **2655 passed, 4 skipped** (allow-list de skips confirmada
+elemento a elemento); `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
+Trabalho directo em `main` (commits `d50d81b` e o desta correcção).*
