@@ -65,16 +65,24 @@ def test_sobre_aboutpage_referencia_a_organization():
 
 def test_homepage_website_tem_id_e_publisher_a_organization():
     # O WebSite único do site vive na homepage e amarra o grafo à entidade
-    # NV Labs (definida em sobre.html) por @id, mais o SearchAction real
-    # (?pesquisa=, lido em index.html no DOMContentLoaded).
+    # NV Labs (definida em sobre.html) por @id.
     blocos = _jsonld_blocks(RAIZ / "index.html")
     website = next(b for b in blocos if b["@type"] == "WebSite")
     assert website["@id"] == "https://tensdireito.com/#website"
     assert website["publisher"]["@id"] == ID_NVLABS
-    accao = website["potentialAction"]
-    assert accao["@type"] == "SearchAction"
-    assert "{search_term_string}" in accao["target"]["urlTemplate"]
-    assert "?pesquisa=" in accao["target"]["urlTemplate"]
+
+
+def test_homepage_website_ja_nao_tem_searchaction():
+    # Removido a 2026-07-18 — a Google descontinuou a sitelinks search box
+    # (out/2024), o SearchAction só gerava uma URL fantasma
+    # (?pesquisa={search_term_string}) nos relatórios de cobertura do GSC
+    # ("Rastreada - atualmente não indexada"), sem função real. A pesquisa
+    # interna em si (`?pesquisa=`, lida por index.html no DOMContentLoaded,
+    # e `scripts/pesquisa.js`) continua a funcionar — só o markup
+    # estruturado, dirigido ao Google, é que saiu.
+    blocos = _jsonld_blocks(RAIZ / "index.html")
+    website = next(b for b in blocos if b["@type"] == "WebSite")
+    assert "potentialAction" not in website
 
 
 def test_sobre_tem_seccoes_ancoradas_nvlabs_e_metodo():

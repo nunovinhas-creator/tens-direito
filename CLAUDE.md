@@ -1824,23 +1824,31 @@ site, não dos artigos.
 - O bloco `WebSite` vive **só** em `index.html`, com `@id`
   `https://tensdireito.com/#website`, `publisher` a referenciar a
   `Organization` da NV Labs por `@id`
-  (`https://tensdireito.com/sobre.html#nvlabs`, definida em `sobre.html`) e
-  o `potentialAction` `SearchAction`.
-- **SearchAction — target verificado, não inventado**: o `urlTemplate` é
-  `https://tensdireito.com/?pesquisa={search_term_string}`. Verificado
-  primeiro (regra da tarefa: "o SearchAction só é válido se existir um URL
-  com parâmetro de query"): `index.html` **já** lê `?pesquisa=` no
-  `DOMContentLoaded` (`URLSearchParams`) e injecta o termo no campo de
-  pesquisa do hero, disparando o dropdown de resultados via `pesquisa.js`.
-  Não foi preciso criar página de pesquisa dedicada nem tocar na homepage
-  além do bloco `WebSite` — o handler `?pesquisa=` já existia em produção.
-- **Decisão da Tarefa 1, ponto 3 — opção (a)**: o `WebSite` que vivia em
-  `sobre.html` (sem `@id`) foi **removido**; passa a haver um único
-  `WebSite` no site, na homepage, com `@id`. Nunca dois `WebSite` com
-  `@id` diferentes. `sobre.html` mantém `AboutPage` + `Organization` (a
-  entidade NV Labs continua resolvível lá). `tests/test_sobre_jsonld.py`
-  actualizado (validava 3 blocos em `sobre.html`; agora valida 2 lá +
-  o `WebSite` com `@id`/`publisher`/`SearchAction` na `index.html`).
+  (`https://tensdireito.com/sobre.html#nvlabs`, definida em `sobre.html`).
+- **`potentialAction` (`SearchAction`) — adicionado a 2026-07-16, removido
+  a 2026-07-18.** Na altura, o `urlTemplate`
+  (`https://tensdireito.com/?pesquisa={search_term_string}`) foi verificado
+  contra um handler real (`index.html` lê `?pesquisa=` no
+  `DOMContentLoaded`, injecta o termo no campo de pesquisa do hero via
+  `pesquisa.js`) — nunca inventado. Removido depois de o GSC reportar
+  `https://tensdireito.com/?pesquisa={search_term_string}` como "Rastreada
+  — atualmente não indexada": a Google descontinuou a sitelinks search box
+  em outubro de 2024, por isso o markup deixou de ter função e só gerava
+  uma URL fantasma nos relatórios de cobertura. A funcionalidade de
+  pesquisa em si (`?pesquisa=`, `pesquisa.js`) **não foi tocada** — só o
+  `potentialAction` estruturado, dirigido ao Google, é que saiu; o
+  `canonical` da homepage (`https://tensdireito.com/`, sem query params)
+  já absorve qualquer variante `?pesquisa=...` que o Google tenha
+  rastreado. Nenhum script gera este bloco (é escrito à mão em
+  `index.html`, como sempre foi) — não havia origem a corrigir.
+- **Decisão da Tarefa 1, ponto 3 — opção (a)** (2026-07-16): o `WebSite`
+  que vivia em `sobre.html` (sem `@id`) foi **removido**; passa a haver um
+  único `WebSite` no site, na homepage, com `@id`. Nunca dois `WebSite`
+  com `@id` diferentes. `sobre.html` mantém `AboutPage` + `Organization`
+  (a entidade NV Labs continua resolvível lá). `tests/test_sobre_jsonld.py`
+  actualizado (validava 3 blocos em `sobre.html`; agora valida 2 lá + o
+  `WebSite` com `@id`/`publisher` na `index.html`, sem `potentialAction`
+  desde 2026-07-18).
 - Cuidado de manutenção: o `pipeline-diario.yml` (Step 6, `sed`)
   actualiza o campo `"dateModified"` deste bloco `WebSite` em `index.html`
   — a linha foi preservada intacta, o `sed` continua a funcionar.
@@ -1873,8 +1881,8 @@ site, não dos artigos.
 
 Depois do deploy, validar no **Rich Results Test**
 (search.google.com/test/rich-results) e/ou no **Search Console** (relatório
-de dados estruturados): a homepage (`WebSite` + `SearchAction` — a
-sitelinks searchbox) e uma ou duas pillar pages (`CollectionPage` +
+de dados estruturados): a homepage (`WebSite`, sem `SearchAction` desde
+2026-07-18) e uma ou duas pillar pages (`CollectionPage` +
 `ItemList`). Não é possível validar por código contra a Google — a
 validação local é estrutural (JSON real, `@id` coerentes, `position`
 sequencial, URLs absolutos).
@@ -6862,3 +6870,30 @@ elemento a elemento); `ruff check scripts/ tests/ --select E,F,W
 --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
 Trabalho directo em `main` (commits `d50d81b` e o desta correcção).*
+
+---
+
+*Última revisão: 2026-07-18 (sessão seguinte) — removido o
+`potentialAction` (`SearchAction`) do bloco `WebSite` JSON-LD de
+`index.html`, disparado pelo GSC a reportar
+`https://tensdireito.com/?pesquisa={search_term_string}` como "Rastreada
+— atualmente não indexada": a Google descontinuou a sitelinks search box
+em outubro de 2024, o markup já não tinha função e só gerava uma URL
+fantasma nos relatórios de cobertura. Confirmado antes de mexer: nenhum
+script gera este bloco (é escrito à mão em `index.html`, só validado por
+`tests/test_sobre_jsonld.py` — nada a corrigir "na origem" além do
+próprio HTML); a funcionalidade de pesquisa em si (`?pesquisa=`, lida no
+`DOMContentLoaded`, e `scripts/pesquisa.js`) é independente do markup e
+confirmada intacta com Chromium real (`?pesquisa=abono` continua a
+preencher o campo e a mostrar resultados); o `canonical` da homepage já
+apontava para `https://tensdireito.com/` sem query params, absorvendo
+qualquer variante `?pesquisa=...` rastreada — nada a corrigir aí. Secção
+"SCHEMA.ORG — GRAFO DO SITE" actualizada para reflectir o estado actual
+(histórico do porquê ter sido adicionado a 2026-07-16 preservado, não
+apagado); `tests/test_sobre_jsonld.py` — removida a asserção do
+`SearchAction`, nova `test_homepage_website_ja_nao_tem_searchaction`
+tranca a ausência. Suite completa + `verificar_skips_permitidos.py`
+confirmados antes do commit; `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+não é scraper). Trabalho directo em `main`.*
