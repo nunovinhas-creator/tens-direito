@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **17 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **18 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -31,6 +31,7 @@ Actualizado automaticamente a partir do repositório em **17 de julho de 2026**.
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — julho de 2026 |
+| [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
@@ -38,6 +39,7 @@ Actualizado automaticamente a partir do repositório em **17 de julho de 2026**.
 | [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
+| [`iban-seguranca-social.html`](iban-seguranca-social.html) | Como alterar o IBAN na Segurança Social |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
@@ -54,6 +56,7 @@ Actualizado automaticamente a partir do repositório em **17 de julho de 2026**.
 | [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: aprovado vs. por definir |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
+| [`senha-seguranca-social-direta.html`](senha-seguranca-social-direta.html) | Como pedir (e recuperar) a senha da Segurança Social Direta |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
@@ -268,6 +271,7 @@ tens-direito/
 │   ├── verificar_datas.py
 │   ├── verificar_injecao.py
 │   ├── verificar_skips_permitidos.py
+│   ├── verificar_urls_como_pedir.py
 │   ├── wayback_fallback.py
 └── *.html                  ← páginas estáticas publicadas
 ```
@@ -378,6 +382,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 17 de julho de 2026 às 09:15 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 18 de julho de 2026 às 08:54 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

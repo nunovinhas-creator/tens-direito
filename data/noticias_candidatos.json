@@ -1,57 +1,5 @@
 [
   {
-    "data": "2026-07-03",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15
-    },
-    "top_candidatos": [
-      {
-        "titulo": "Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais - Ekonomista",
-        "score": 5,
-        "data_iso": "2026-06-25",
-        "feed_nome": "psu_pensoes"
-      },
-      {
-        "titulo": "Prestação social única: reforma altera 13 apoios do Estado - dnoticias.pt",
-        "score": 5,
-        "data_iso": "2026-06-26",
-        "feed_nome": "psu_pensoes"
-      },
-      {
-        "titulo": "Apesar das promessas do Governo, atrasos nos apoios à renda persistem e deixam candidatos em desespero - SIC Notícias",
-        "score": 5,
-        "data_iso": "2026-04-15",
-        "feed_nome": "porta65_arrendamento"
-      }
-    ],
-    "rejeitados": [
-      {
-        "titulo": "Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais - Ekonomista",
-        "motivo": "antigo (antes de 2026-06-26, janela de 7 dias)"
-      }
-    ],
-    "vencedor": {
-      "titulo": "Prestação social única: reforma altera 13 apoios do Estado - dnoticias.pt",
-      "score": 5,
-      "motivo": "score=5"
-    }
-  },
-  {
     "data": "2026-07-04",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2567,5 +2515,72 @@
         "score": 2
       }
     ]
+  },
+  {
+    "data": "2026-07-18",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe - 4gnews",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-13",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-13"
+      },
+      {
+        "titulo": "Patrões alertam que há medidas por cumprir no acordo sobre salários, UGT quer reforço - Dinheiro Vivo",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-15",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": []
   }
 ]
