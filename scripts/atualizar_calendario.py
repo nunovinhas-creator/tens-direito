@@ -159,12 +159,29 @@ VISTA_PRESTACOES = [
 # está confirmado na lista: RSI (absorção total), pensão SOCIAL de velhice/
 # invalidez, subsídio SOCIAL de desemprego e subsídios sociais de
 # parentalidade — nunca nos respetivos regimes contributivos, que a PSU não
-# toca. CSI e PSI ficam deliberadamente de fora: o CSI está excluído da PSU
-# (confirmado em audição parlamentar) e a PSI ainda não tem a sua inclusão/
-# exclusão confirmada pelo decreto-lei — nunca afirmar o que ainda não está
-# fechado. Vive fora da zona regenerada só na força (é aplicada dentro de
+# toca. Vive fora da zona regenerada só na força (é aplicada dentro de
 # _seccao_por_prestacao, portanto SOBREVIVE à regeneração mensal — nunca um
 # add-on manual que a próxima corrida do workflow apagaria).
+#
+# CSI e PSI ficam deliberadamente de fora, por dois motivos distintos —
+# PENDÊNCIA FECHADA a 2026-07-18, nunca reabrir sem facto novo:
+# - CSI: exclusão EXPLÍCITA, confirmada pela Secretária de Estado em
+#   audição parlamentar.
+# - PSI (Prestação Social para a Inclusão, DL 126-A/2017): exclusão por
+#   OMISSÃO — a PSI simplesmente não consta da lista das 13 prestações
+#   fixada pela autorização legislativa (verificado 18/07/2026 via ECO +
+#   a proposta oficial do Governo + o Guia Prático do ISS da PSI), e o
+#   decreto-lei não pode alargar um perímetro que a autorização
+#   legislativa já fechou. Nunca escrever "a PSI foi excluída" (força
+#   probatória diferente do CSI) — é "não consta da lista".
+#   Nuance crítica a nunca confundir: a lista da PSU inclui a "pensão
+#   social de invalidez do regime especial de proteção na invalidez"
+#   (prestação #2 dos 13 apoios, ver `psu-lista-13-apoios.html`) — que é
+#   DISTINTA da PSI. A PSI substituiu essa pensão social de invalidez
+#   para novos requerentes desde 2017, mas é hoje um regime autónomo,
+#   nunca a mesma coisa. A nota da linha "pensoes" abaixo refere-se a essa
+#   pensão social (a prestação #2), nunca à PSI — o "psi" nunca deve
+#   ganhar entrada neste dicionário.
 PSU_NOTAS = {
     "rsi": (
         'Vai ser <a href="/prestacao-social-unica.html">integrado na '

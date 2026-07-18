@@ -2084,8 +2084,55 @@ Estas páginas mantêm-se inalteradas — os subsistemas/apoios são explicitame
 - `manuais-escolares-mega.html` — educação (excluído)
 - `passe-sub23.html` — transporte (excluído)
 - `complemento-solidario-idosos.html` — CSI explicitamente excluído (confirmado audição parlamentar)
+- `prestacao-social-para-a-inclusao.html` — PSI não consta da lista dos 13 apoios (exclusão por omissão, não explícita como o CSI — ver "PENDÊNCIA PSI vs PSU — FECHADA" abaixo)
 - `simulador-abono.html` — ferramenta abono (excluído)
 - `simulador-ase.html` — ferramenta ASE (excluído)
+
+### PENDÊNCIA PSI vs PSU — FECHADA (2026-07-18)
+
+A secção "PSI e a Prestação Social Única" de `prestacao-social-para-a-inclusao.html`
+tratava a exclusão da PSI como **provisória**, à espera do decreto-lei
+(ver o antigo item 9 do "Plano de acção" abaixo, e a entrada de revisão de
+2026-07-04 mais abaixo neste ficheiro). Facto novo, verificado pelo Nuno a
+18/07/2026 (lista oficial via ECO + proposta do Governo + Guia Prático do
+ISS da PSI): **a PSI não está entre as 13 prestações da PSU — e não é uma
+questão em aberto**. O perímetro da PSU foi fixado pela autorização
+legislativa promulgada a 17/07/2026 (ver "Estado" mais abaixo); o
+decreto-lei regulamenta os 13 apoios já listados, não pode alargar essa
+lista. Não é preciso esperar pelo decreto-lei para esta conclusão.
+
+**Diferença de força probatória, nunca escrever como sinónimos**: o CSI
+foi **explicitamente excluído** (confirmado pela Secretária de Estado em
+audição parlamentar); a PSI fica de fora **por omissão** — simplesmente
+não consta da lista oficial. Nunca escrever "a PSI foi excluída" — é
+"a PSI não consta da lista".
+
+**Nuance crítica, fonte real de confusão em sites de finanças pessoais**:
+a lista dos 13 apoios inclui a "pensão social de invalidez especial"
+(prestação #2, ver `psu-lista-13-apoios.html`) — prestação **distinta**
+da PSI. A PSI (Decreto-Lei n.º 126-A/2017) substituiu essa pensão social
+de invalidez para novos requerentes desde 2017, mas é hoje um regime
+autónomo, com o seu próprio diploma. As duas nunca são a mesma coisa.
+
+**Alterações aplicadas nesta sessão**: `prestacao-social-para-a-inclusao.html`
+(§7 reescrita com a certeza nova + a distinção de força probatória +
+aviso de desambiguação da pensão social de invalidez; FAQ "A PSI vai ser
+integrada na Prestação Social Única?" reescrita — a pergunta já existia
+com fraseado ligeiramente diferente, "vai ser absorvida", actualizada em
+vez de duplicada; corrigido de caminho um gap pré-existente e sem relação
+com esta sessão: a FAQ visível "A PSI conta como rendimento para o IRS?"
+não tinha par no `FAQPage` JSON-LD desde a publicação — descoberto ao
+verificar programaticamente a paridade 1:1, corrigido acrescentando-a;
+checklist final ajustada — já não sugere "acompanhar o decreto-lei", a
+questão está fechada); `psu-lista-13-apoios.html` (novo `.aviso-info`
+logo a seguir à lista dos 13 apoios, com a mesma desambiguação);
+`prestacao-social-unica.html` (secção "O que NÃO integra a PSU" ganhou um
+3.º parágrafo sobre a PSI, ao lado do CSI, com a mesma distinção de força
+probatória); `scripts/atualizar_calendario.py` (comentário junto a
+`PSU_NOTAS` reescrito para fechar a pendência de vez — "psi" nunca deve
+ganhar entrada nesse dicionário, com o raciocínio completo, para nenhuma
+sessão futura reabrir a dúvida por engano). `dateModified`/"Verificado a"
+avançados para 18/07/2026 nas 3 páginas HTML tocadas.
 
 ### Páginas com aviso PSU activo
 
@@ -2134,13 +2181,16 @@ confirmados — ver o Passo 5a de `.claude/commands/atualizar-cluster-psu.md`.
    (deixa de dizer "ainda não em vigor — aguarda decreto-lei") e correr
    `python scripts/sincronizar_clusters.py` para propagar a mudança ao cartão da
    homepage e a qualquer bloco "pertence ao guia" já injectado nos artigos do cluster
-9. Revalidar a secção "PSI e a Prestação Social Única" de
-   `prestacao-social-para-a-inclusao.html` contra a lista definitiva dos
-   13 apoios no diploma publicado, e actualizar `psu-lista-13-apoios.html`
-   e o cluster completo no mesmo commit — a página da PSI (publicada
-   4 jul 2026) regista hoje que a PSI **não consta** dessa lista, com a
-   ressalva explícita de que o decreto-lei ainda não tinha sido
-   publicado; essa afirmação só é definitiva depois deste passo
+9. ~~Revalidar a secção "PSI e a Prestação Social Única"~~ — **fechado a
+   2026-07-18, antes do decreto-lei** (ver "PENDÊNCIA PSI vs PSU —
+   FECHADA" acima): confirmado que a PSI não consta da lista dos 13
+   apoios porque o perímetro foi fixado pela autorização legislativa, não
+   pelo decreto-lei — este último não o pode alargar. Não é preciso
+   esperar pela publicação para esta conclusão específica. Continua
+   prudente, quando o decreto-lei sair, uma leitura rápida do texto
+   publicado só para confirmar que a lista dos 13 apoios em
+   `psu-lista-13-apoios.html` bate certo ao pormenor (nomes exactos,
+   ordem), mas já não é preciso revalidar SE a PSI entra ou não.
 
 ---
 
@@ -7072,3 +7122,52 @@ reconfirmados `False` (inalterados — nenhuma das duas flags tocada).
 `ROADMAP.md` não precisou de alteração — o gatilho automático mensal já
 estava documentado com precisão desde 2026-07-12. Trabalho directo em
 `main`.*
+
+---
+
+*Última revisão: 2026-07-18 (sessão seguinte) — resolvida a pendência
+PSI vs PSU, fechada antes do decreto-lei (ver nova secção "PENDÊNCIA PSI
+vs PSU — FECHADA" em "IMPACTO DA PSU" para o raciocínio completo). Factos
+verificados pelo Nuno (lista oficial via ECO + proposta do Governo + Guia
+Prático do ISS da PSI): a PSI não consta da lista dos 13 apoios da PSU —
+o perímetro foi fixado pela autorização legislativa promulgada a
+17/07/2026, o decreto-lei só regulamenta os 13 já listados, não os pode
+alargar. Diferente do CSI (exclusão explícita, confirmada em audição
+parlamentar), a PSI fica de fora por omissão — nunca escrever como
+sinónimos. Nuance central: a lista inclui a "pensão social de invalidez
+especial" (prestação #2), prestação distinta da PSI (que a substituiu só
+para novos requerentes desde 2017, DL 126-A/2017) — confusão real já
+detectada em sites de finanças pessoais.
+
+Alterações: `scripts/atualizar_calendario.py` (comentário junto a
+`PSU_NOTAS` reescrito, fechando a pendência que antes dizia "PSI ainda
+não tem inclusão/exclusão confirmada" — "psi" nunca deve ganhar entrada
+nesse dicionário; zero alteração de HTML gerado, confirmado por
+`--dry-run`); `psu-lista-13-apoios.html` (novo `.aviso-info` a seguir à
+lista dos 13 apoios com a desambiguação); `prestacao-social-unica.html`
+("O que NÃO integra a PSU" ganhou um parágrafo sobre a PSI, ao lado do
+CSI, com a distinção de força probatória); `prestacao-social-para-a-inclusao.html`
+(§7 reescrita — já não trata a exclusão como provisória à espera do
+decreto-lei; FAQ da PSU actualizada, não duplicada, apesar de o pedido
+sugerir uma pergunta "nova" — já existia uma quase-idêntica desde a
+publicação, actualizar em vez de duplicar evita conteúdo quase-repetido;
+checklist final deixou de sugerir "acompanhar o decreto-lei").
+
+**Achado lateral, pré-existente e sem relação com esta sessão**: a FAQ
+visível "A PSI conta como rendimento para o IRS?" não tinha par no
+`FAQPage` JSON-LD desde a publicação (4 jul 2026) — descoberto ao
+verificar programaticamente a paridade 1:1 (mesma disciplina já seguida
+em sessões anteriores para `psu-trabalho-social.html`). Corrigido
+acrescentando a pergunta em falta ao JSON-LD.
+
+Verificado antes do commit: `verificar_datas.detectar_alertas()` sem
+falsos positivos nas 3 páginas tocadas; os 3 blocos JSON-LD de cada
+página válidos (`json.loads`); paridade 1:1 FAQ↔JSON-LD confirmada nas 3
+(6/6, 6/6, 12/12); axe sem violações críticas/sérias; suíte de
+higiene/breadcrumb/nav/pesquisa/og/valores-âncora/anos/clusters/
+calendário (1380 testes) e suite completa confirmadas sem regressões.
+Suite completa: **2656 passed, 4 skipped** (allow-list inalterada);
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — nenhuma das duas flags tocada). Trabalho directo
+em `main`.*
