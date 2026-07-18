@@ -91,7 +91,8 @@
         {"slug": "chave-movel-digital.html", "titulo": "Como ativar a Chave Móvel Digital", "tipo": "artigo", "destaque": false},
         {"slug": "como-pedir-niss.html", "titulo": "Como pedir o NISS", "tipo": "artigo", "destaque": false},
         {"slug": "declaracao-situacao-contributiva.html", "titulo": "Declaração de situação contributiva", "tipo": "artigo", "destaque": false},
-        {"slug": "alterar-morada.html", "titulo": "Como alterar a morada no Cartão de Cidadão", "tipo": "artigo", "destaque": false}
+        {"slug": "alterar-morada.html", "titulo": "Como alterar a morada no Cartão de Cidadão", "tipo": "artigo", "destaque": false},
+        {"slug": "renovar-cartao-cidadao.html", "titulo": "Renovar o Cartão de Cidadão", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
     },

@@ -325,3 +325,33 @@ def test_assistencia_familia_percentagens_pos_loe2026():
     # A description promete "30 dias" e "2026" — canário do metadado.
     desc = _meta_description("assistencia-familia-filhos.html")
     assert "30 dias" in desc and "2026" in desc and "subsídio" in desc
+
+
+# ── Renovação do Cartão de Cidadão — preços administrativos (justica.gov.pt) ─
+# Valores fixos por Portaria/tabela de emolumentos do IRN, sem relação com
+# o IAS — canário de consistência entre title/meta description e o corpo
+# já fact-checked (mesmo padrão de abono/PSI/AMIM acima), não uma fórmula.
+
+
+def test_renovar_cc_title_bate_com_preco_online_do_corpo():
+    html = _ler("renovar-cartao-cidadao.html")
+    title = _title("renovar-cartao-cidadao.html")
+    assert _valores_eur(title) == [16.20], title
+    assert "<td>16,20 €</td>" in html, "preço online (25+) não encontrado na tabela do corpo"
+
+
+def test_renovar_cc_meta_description_bate_com_precos_do_corpo():
+    html = _ler("renovar-cartao-cidadao.html")
+    desc = _meta_description("renovar-cartao-cidadao.html")
+    valores = _valores_eur(desc)
+    assert 16.20 in valores and 18.0 in valores, desc
+    assert "<td>16,20 €</td>" in html
+    assert "<td>18,00 €</td>" in html
+
+
+def test_renovar_cc_precos_completos_por_idade_e_urgencia():
+    # Tabela completa (normal/urgente/muito urgente × ≥25 anos/<25 anos) —
+    # falha sozinho se algum valor for alterado sem rever a tabela inteira.
+    html = _ler("renovar-cartao-cidadao.html")
+    for valor in ("16,20 €", "18,00 €", "15,00 €", "33,00 €", "30,00 €", "53,00 €", "50,00 €"):
+        assert f"<td>{valor}</td>" in html, f"{valor} em falta na tabela de preços"

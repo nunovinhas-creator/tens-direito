@@ -20,5 +20,10 @@
     {"url": "https://www.autenticacao.gov.pt", "descricao": "Autenticação Gov — Alterar a morada do Cartão de Cidadão"},
     {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Alterar a morada do Cartão de Cidadão\""},
     {"url": "https://www.portaldasfinancas.gov.pt", "descricao": "Portal das Finanças — morada fiscal"}
+  ],
+  "renovar-cartao-cidadao.html": [
+    {"url": "https://justica.gov.pt", "descricao": "Justiça.gov.pt — Renovar o Cartão de Cidadão"},
+    {"url": "https://irn.justica.gov.pt", "descricao": "IRN — Cartão de Cidadão e validade"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Renovar o Cartão de Cidadão\""}
   ]
 }

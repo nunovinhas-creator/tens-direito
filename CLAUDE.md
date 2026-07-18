@@ -435,6 +435,12 @@ para esses três casos.
 | `como-pedir-niss.html` | Como pedir o NISS 2026 | 14 jul. 2026 |
 | `calendario-escolar-apoios.html` | Calendário de Apoios Escolares 2026/2027 | 14 jul. 2026 |
 | `declaracao-situacao-contributiva.html` | Declaração de situação contributiva: certidão de não dívida 2026 | 14 jul. 2026 |
+| `p/como-pedir.html` | Como Pedir — Documentos, Senhas e Certidões (pillar) | 17 jul. 2026 |
+| `senha-seguranca-social-direta.html` | Como pedir (e recuperar) a senha da Segurança Social Direta | 17 jul. 2026 |
+| `iban-seguranca-social.html` | Como alterar o IBAN na Segurança Social | 17 jul. 2026 |
+| `chave-movel-digital.html` | Como ativar a Chave Móvel Digital | 17 jul. 2026 |
+| `alterar-morada.html` | Como alterar a morada no Cartão de Cidadão | 18 jul. 2026 |
+| `renovar-cartao-cidadao.html` | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos | 18 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -1912,6 +1918,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
 | `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |
 | `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega prazos de 6 páginas do cluster, revisão obrigatória sempre que qualquer um desses prazos mudar |
+| `renovar-cartao-cidadao.html` | Após 3 de agosto de 2026 (prazo de renovação obrigatória dos cartões sem MRZ, Regulamento (UE) 2025/1208) — `verificar_datas.py` confirmado a **não** disparar em 2026 (padrão `data_mes_ano` sobre "3 de agosto de 2026" fica `OK` enquanto o ano corrente é 2026) mas a disparar em 2027 nos meses 1/7/8/9 — comportamento desejado, mesma lógica de `prova-escolar.html`/`calendario-escolar-apoios.html`: força rever o aviso "Prazo a não perder" (secção "Quando renovar") depois de a data passar, para o actualizar ou remover | Revisão obrigatória depois de 3 de agosto de 2026 — confirmar se a secção "Preciso de renovar antes do prazo?" ainda faz sentido ou se passa a nota histórica |
 
 **`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06,
 actualizada 2026-07-06)**: a lacuna de vigilância identificada na sessão
@@ -6659,3 +6666,124 @@ marca existente), acrescentar o campo `logo` (`ImageObject` com
 `url`/`width`/`height`) ao bloco `Organization`. `tests/test_sobre_jsonld.py`
 reconfirmado sem regressão (nenhum teste fixava o `url` antigo). `ruff` não
 aplicável (zero `.py` alterados).*
+
+---
+
+*Última revisão: 2026-07-18 — nova página `renovar-cartao-cidadao.html`,
+7.ª página do cluster `como-pedir`, activando o card "Renovar o Cartão de
+Cidadão" que estava marcado `Brevemente` em `p/como-pedir.html`. Fact-check
+via `WebSearch` (`WebFetch` continua bloqueado nesta sessão — 403 em
+`justica.gov.pt`/`gov.pt`, mesma limitação documentada em sessões
+anteriores; triangulado por múltiplas pesquisas independentes por facto,
+nunca uma fonte só) contra justica.gov.pt, irn.justica.gov.pt e gov.pt:
+preços (presencial 18,00 €/15,00 € consoante ≥25 ou <25 anos; online só a
+partir dos 25 anos, com desconto de 10% = 16,20 €; urgente 33,00 €/30,00 €;
+muito urgente, só Lisboa/Porto, 53,00 €/50,00 €; serviço externo +40,00 €
++40,00 € se entrega em casa); prazos (em média 7 dias úteis ao balcão, até
+30 dias com entrega em casa via CTT); renovação automática por carta com
+código PIN, 60 dias antes da caducidade, só para quem tem 25+ anos e não
+muda dados impressos; validade por idade (5 anos até aos 25, com recolha
+presencial obrigatória de biometria a cada renovação; 10 anos a partir dos
+25); janela de pedido de 6 meses antes da caducidade; cartão caducado só
+renova presencialmente.
+
+**Achado mais relevante da sessão, genuinamente urgente à data de
+publicação**: o Regulamento (UE) 2025/1208 (novas normas de segurança para
+documentos de identificação europeus) obriga a renovar **até 3 de agosto de
+2026** — a menos de 3 semanas da verificação — os Cartões de Cidadão sem
+zona de leitura ótica (MRZ, a faixa de caracteres no verso), mesmo que a
+validade impressa seja posterior; cartões com MRZ mas sem chip de contacto
+(emitidos entre 13 de agosto de 2021 e 9 de junho de 2024) só são válidos
+até 3 de agosto de 2031, também independentemente da validade impressa; só
+os cartões emitidos a partir de junho de 2024 seguem sempre a validade
+impressa. Triangulado por múltiplas fontes jornalísticas independentes mais
+o próprio aviso do IRN/gov.pt ("Cartão de Cidadão é válido até à data
+impressa no documento", que também confirma a excepção). Dado o carácter
+urgente e a origem só em fontes secundárias para o detalhe fino (o texto do
+Regulamento em si não foi acedido directamente), a página trata o facto com
+cautela — cita o Regulamento e a data, mas remete sempre para gov.pt/IRN
+para confirmação do caso concreto do leitor, nunca afirma categoricamente
+uma excepção não verificada em fonte primária.
+
+Estrutura pedida: `.resposta-rapida` (60 palavras exactas, dentro do
+limite) + secções "Quando renovar" (com o aviso do prazo de 2026/2031
+destacado, `.aviso-atencao`), "Renovação automática", "Renovação online",
+"Renovação presencial" (tabela de situações), "Preços e prazos" (tabela
+completa) + `.checklist-final` (6 itens) + FAQ de 8 perguntas (`<details>` +
+JSON-LD `FAQPage`, 1:1 confirmado) + `HowTo` (6 passos) + `BreadcrumbList` +
+`Article`. Copiada a estrutura base de `alterar-morada.html` (sibling mais
+recente do mesmo cluster `como-pedir`, publicada no dia anterior — melhor
+correspondência estrutural do que `amim.html`/`cuidador-informal.html`,
+sugeridas no pedido original mas de um padrão de página mais antigo) —
+`data-ga4` continua lido do atributo do `<script>` de `consentimento.js`,
+zero IDs hardcoded, mesmo padrão do resto do site.
+
+Integração: `data/clusters.json` (7.ª página do cluster `como-pedir`, sem
+alterar `oculta_em_apoios`), `scripts/sincronizar_clusters.py` corrido com
+sucesso — actualizou automaticamente `index.html` (`ATUALIZACOES:HOME`) e
+`p/como-pedir.html` (`PILLAR-LISTA` + `PILLAR-JSONLD`, `numberOfItems`
+6→7); os blocos `CLUSTER-BADGE`/`RELACIONADOS` da própria página nova
+(escritos à mão) confirmados **idênticos** ao que o script geraria —
+idempotência provada antes do commit (2.ª corrida de
+`sincronizar_clusters.py` = zero alterações). `scripts/sincronizar_nav.py`,
+`scripts/adicionar_canonicas.py`, `scripts/adicionar_autoria_artigos.py` e
+`scripts/inserir_botao_partilhar.py` confirmados todos a **zero
+alterações** — a página já nasceu com nav, canónica, autoria e botão de
+partilha correctos. `scripts/adicionar_article_jsonld.py` ganhou a entrada
+`"renovar-cartao-cidadao.html": "2026-07-18"` em `DATAS_PUBLICACAO` e
+confirmou o `Article` já escrito à mão como correcto. `scripts/
+gerar_og_images.py --write` gerou a imagem própria (1200×630, confirmado
+pelo cabeçalho JPEG real, chip "Como Pedir"). `sitemap.xml` e
+`scripts/pesquisa.js` actualizados manualmente. Card do hub
+`p/como-pedir.html` activado (badge `Brevemente` removido, link real para
+`/renovar-cartao-cidadao.html`).
+
+**Achado real, apanhado só pela suite completa (não pelos testes
+parametrizados sobre páginas reais que costumam cobrir uma página nova
+automaticamente)**: `tests/test_urls_como_pedir.py` — canário dedicado do
+cluster `como-pedir` (`data/urls_como_pedir.json`, verificado contra a rede
+só em CI via `scripts/verificar_urls_como_pedir.py`), criado numa sessão
+anterior sem qualquer menção neste ficheiro até agora — exige que **todo**
+artigo do cluster tenha pelo menos um URL oficial configurado; a página
+nova falhava por não ter entrada. Corrigido com 3 URLs de homepage (nunca
+subpaths não confirmados, mesma regra de sempre): `justica.gov.pt`,
+`irn.justica.gov.pt`, `gov.pt` — mesmo padrão (URLs de topo, não deep-links)
+já usado nas entradas existentes de `senha-seguranca-social-direta.html`/
+`chave-movel-digital.html`/`alterar-morada.html`.
+
+**Gap de documentação encontrado e parcialmente corrigido**: a criação do
+cluster `como-pedir` (Fase 1, `p/como-pedir.html` + `senha-seguranca-social-
+direta.html` + `iban-seguranca-social.html` + `chave-movel-digital.html` +
+`como-pedir-niss.html` + `declaracao-situacao-contributiva.html` +
+`alterar-morada.html`, publicadas entre 14 e 18 de julho de 2026, confirmado
+por `git log`) nunca tinha sido registada na tabela "PÁGINAS PUBLICADAS"
+deste ficheiro nem tinha entrada de "Última revisão" própria — corrigido só
+a tabela (5 linhas em falta acrescentadas com título e data reais, extraídos
+dos `<title>` publicados), sem reconstruir retroactivamente o resto do
+histórico dessas sessões (fora do âmbito desta tarefa). Nova linha em
+"PÁGINAS COM DATAS SAZONAIS": `renovar-cartao-cidadao.html` deve ser
+revista depois de 3 de agosto de 2026 — `verificar_datas.py` confirmado a
+**não** disparar em 2026 (padrão `data_mes_ano` sobre "3 de agosto de 2026"
+fica `OK` enquanto o ano corrente é 2026) mas a disparar em 2027 nos meses
+1/7/8/9, comportamento desejado (mesma lógica de `prova-escolar.html`/
+`calendario-escolar-apoios.html`) — força rever se o aviso "Prazo a não
+perder" ainda faz sentido depois da data passar.
+
+Verificado: 4 blocos JSON-LD válidos (`json.loads`), 8 perguntas FAQ
+1:1 entre `<details>` visíveis e JSON-LD, `.resposta-rapida` com
+exactamente 60 palavras, checklist com 6 itens ("0 de 6"), zero páginas
+órfãs (linkada do hub, do `RELACIONADOS` automático, e de 3 cross-links
+manuais). `html5validator`/`vnu.jar` não instalável neste sandbox (mesmo
+erro de build `install_layout`/`setuptools` do sistema, documentado em
+várias sessões anteriores) — validado por leitura estrutural (parse real
+via BeautifulSoup, sem erros) em vez de `vnu.jar`; validação HTML5 completa
+fica para o CI (`integridade.yml`), como já acontecia noutras sessões com a
+mesma limitação de sandbox. Suite completa: **2628 passed, 4 skipped, 0
+failed** (a falha real do canário de URLs foi corrigida antes desta
+contagem final, não escondida). `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados por
+esta sessão). Trabalho na branch
+`claude/cartao-cidadao-renewal-guide-i861no` (designada pelo ambiente
+remoto desta sessão) — **SEM PR, branch não integrada em `main`** (protocolo
+de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
