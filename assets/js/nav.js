@@ -90,6 +90,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Medição de conversão: clique nos cartões da grelha de ferramentas do
+  // menu móvel e no link "Começa aqui" — evento menu_tool_click, parâmetro
+  // tool_destino derivado SEMPRE do href do próprio cartão (basename sem
+  // ".html"), nunca um ID fixo por cartão e nunca dados do utilizador.
+  // O Measurement ID nunca aparece aqui — o gtag global é inicializado via
+  // data-ga4 pelo consentimento.js; guarda typeof gtag como nos restantes
+  // eventos (Consent Mode v2 trata do consentimento — zero lógica própria).
+  document.querySelectorAll('.nav-mobile-card, .nav-mobile-destaque').forEach(function (cartao) {
+    cartao.addEventListener('click', function () {
+      if (typeof gtag === 'function') {
+        var destino = (cartao.getAttribute('href') || '').split('/').pop().replace(/\.html$/, '');
+        gtag('event', 'menu_tool_click', { tool_destino: destino });
+      }
+    });
+  });
+
   ['resultados-pesquisa-nav', 'resultados-pesquisa-nav-movel'].forEach(function (idResultados) {
     var idCampo = idResultados.replace('resultados-pesquisa', 'campo-pesquisa');
     document.addEventListener('click', function (e) {
