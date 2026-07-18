@@ -1992,12 +1992,22 @@ desactualizada.
 
 ## IMPACTO DA PSU (Prestação Social Única)
 
-Estado: aprovada parlamento 25/06/2026.
+Estado: aprovada parlamento 25/06/2026. Autorização legislativa promulgada
+pelo Presidente da República a 17/07/2026 (válida por 120 dias) — dá ao
+Governo o poder de aprovar o decreto-lei em Conselho de Ministros. Mudança
+relevante face ao plano inicial do Executivo: os valores e as condições de
+acesso terão de ser fixados directamente pelo decreto-lei, e não por
+portaria como o Governo previa a princípio — mais escrutínio, com
+promulgação obrigatória do PR e possível apreciação parlamentar do próprio
+decreto-lei.
 Aguarda: decreto-lei com valores + publicação DR.
-Prazo PRR decreto-lei: 31 ago 2026.
+Prazo PRR decreto-lei: 31 ago 2026 (dentro da janela de 120 dias da
+autorização legislativa).
 Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado pelo decreto-lei).
 Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
-(5.ª página filha — ver "PÁGINAS PUBLICADAS").
+(5.ª página filha — ver "PÁGINAS PUBLICADAS"). As 6 páginas do cluster
+(pillar + 5 filhas) foram actualizadas a 18/07/2026 com a milestone da
+promulgação — ver entrada de revisão no fim deste ficheiro.
 
 **Sentinela automático (`dre_psu`) — CORRIGIDO DE VEZ a 2026-07-07
 (Issue #54), com o mecanismo confirmado num runner com browser
@@ -6897,3 +6907,74 @@ confirmados antes do commit; `ruff check scripts/ tests/ --select E,F,W
 --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
 não é scraper). Trabalho directo em `main`.*
+
+---
+
+*Última revisão: 2026-07-18 (sessão seguinte) — actualização de milestone
+do cluster PSU: o Presidente da República promulgou, a 17 de julho de
+2026, a autorização legislativa que permite ao Governo aprovar o
+decreto-lei da PSU. Factos confirmados via `WebSearch` antes de qualquer
+edição (PASSO 0 — Observador, ECO, Executive Digest, Jornal Económico,
+RTP, DN, sem divergências): autorização válida por 120 dias; valores e
+condições de acesso terão agora de ser fixados directamente pelo
+decreto-lei — **não** por portaria, como o Governo previa a princípio —
+o que sujeita o diploma a mais escrutínio (promulgação obrigatória do PR,
+possível apreciação parlamentar); prazo PRR de 31 ago 2026 mantém-se
+inalterado, dentro da janela dos 120 dias; regime transitório confirmado
+com isenção de IRS mantida para quem já recebe qualquer um dos 13 apoios.
+
+**Achado factual corrigido nesta sessão** (não introduzido por ela — a
+página `psu-quem-tem-direito.html` já dizia, desde 1 jul 2026, que o
+coeficiente CIT seria fixado por portaria separada do Valor de
+Referência): confirmado por triangulação que essa distinção deixou de
+ser verdade — ambos passam a ser fixados pelo mesmo decreto-lei. Corrigido
+nas 2 páginas onde a frase aparecia (`psu-quando-entra-em-vigor.html`,
+`psu-quem-tem-direito.html`).
+
+Actualizadas as 6 páginas do cluster (pillar + 5 filhas): badge/hero/
+alerta-crítico/timeline em `psu-quando-entra-em-vigor.html` (item novo de
+17 jul na timeline, 2 FAQs novas) e `prestacao-social-unica.html` (idem);
+reforço do regime transitório (isenção de IRS explícita) em todas as
+menções a "quem já recebe" das 6 páginas; FAQ nova sobre a promulgação
+em `psu-quem-tem-direito.html`, `psu-lista-13-apoios.html` e
+`psu-trabalho-social.html`; `psu-vs-abono-familia.html` só actualizada na
+célula "Estado em 2026" da tabela comparativa (a exclusão do Abono não é
+afectada por esta milestone). `dateModified` do `Article` JSON-LD e
+"Verificado a" avançados para 18/07/2026 nas 6 páginas.
+
+**Achado lateral corrigido, pré-existente e sem relação com a milestone**:
+`psu-trabalho-social.html` tinha uma pergunta visível ("Também posso ser
+chamado se não for eu a pedir a PSU?") sem par no `FAQPage` JSON-LD desde
+a publicação (3 jul 2026) — descoberto ao verificar programaticamente a
+paridade 1:1 entre `<details>` visíveis e `Question` do JSON-LD nas 6
+páginas tocadas (prática já seguida noutras sessões deste ficheiro).
+Corrigido acrescentando a pergunta em falta ao JSON-LD, já agora com a
+pergunta nova da promulgação a seguir.
+
+**Scraper `dre_psu` verificado, não alterado**: o padrão de detecção
+(`_detectar_decreto_psu()`, regex `\bdecreto[\s-]?lei\s+n`) já cobre
+qualquer decreto-lei nos resultados da pesquisa de frase exacta
+`"prestação social única"` — corrigido e testado numa sessão anterior
+(2026-07-07, Issue #54). `dre_psu` está em `SLUGS_MONITORIZADOS`
+(`gerir_estado_fontes.py`) e confirmado `OK` (`data/estado_fontes.json`,
+`ultima_ok: 2026-07-18`). `pipeline-diario.yml` corre por cron diário
+(`0 6 * * *`) sem data-limite — cobre a janela ago-nov 2026 (e qualquer
+mês seguinte) sem precisar de nenhuma alteração. Nada a corrigir aqui.
+
+Gatilho de alta prioridade reforçado em `ROADMAP.md` → "Automáticos": a
+linha "Decreto-lei da PSU publicado" passa a assinalar a janela de 120
+dias e a apontar, sem ambiguidade, para uma sessão imediata de valores +
+activação do `simulador-psu.html` assim que a Issue automática disparar.
+Corrigida também a contagem de páginas do cluster citada nessa linha (4→5
+filhas) e na linha "Agosto 2026" da tabela "DATAS FIXAS".
+
+Suite completa: **2656 passed, 4 skipped** (allow-list de skips
+confirmada elemento a elemento, sem alteração); os 4 blocos JSON-LD de
+cada uma das 6 páginas confirmados como JSON válido (`json.loads`) e a
+paridade 1:1 FAQ↔JSON-LD confirmada nas 6. `ruff check scripts/ tests/
+--select E,F,W --ignore E501 .` limpo (nenhum `.py` alterado nesta
+sessão). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados). Trabalho feito na branch
+`claude/psu-cluster-legislative-update-8rj5ca` (designada pelo ambiente
+remoto desta sessão) — **SEM PR, branch não integrada em `main`**
+(protocolo de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
