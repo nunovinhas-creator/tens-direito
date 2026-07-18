@@ -15,5 +15,10 @@
   ],
   "declaracao-situacao-contributiva.html": [
     {"url": "https://www.seg-social.pt", "descricao": "Segurança Social Direta — declaração de situação contributiva"}
+  ],
+  "alterar-morada.html": [
+    {"url": "https://www.autenticacao.gov.pt", "descricao": "Autenticação Gov — Alterar a morada do Cartão de Cidadão"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Alterar a morada do Cartão de Cidadão\""},
+    {"url": "https://www.portaldasfinancas.gov.pt", "descricao": "Portal das Finanças — morada fiscal"}
   ]
 }

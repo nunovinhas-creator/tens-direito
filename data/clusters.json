@@ -81,7 +81,7 @@
     {
       "id": "como-pedir",
       "nome": "Como Pedir",
-      "descricao_curta": "Guias passo a passo para pedir documentos e acessos digitais: senha da Segurança Social Direta, IBAN, Chave Móvel Digital, NISS e declaração de situação contributiva.",
+      "descricao_curta": "Guias passo a passo para pedir documentos e acessos digitais: senha da Segurança Social Direta, IBAN, Chave Móvel Digital, NISS, declaração de situação contributiva e alteração de morada.",
       "icone": "🔑",
       "pillar": "/p/como-pedir.html",
       "oculta_em_apoios": true,
@@ -90,7 +90,8 @@
         {"slug": "iban-seguranca-social.html", "titulo": "Como alterar o IBAN na Segurança Social", "tipo": "artigo", "destaque": false},
         {"slug": "chave-movel-digital.html", "titulo": "Como ativar a Chave Móvel Digital", "tipo": "artigo", "destaque": false},
         {"slug": "como-pedir-niss.html", "titulo": "Como pedir o NISS", "tipo": "artigo", "destaque": false},
-        {"slug": "declaracao-situacao-contributiva.html", "titulo": "Declaração de situação contributiva", "tipo": "artigo", "destaque": false}
+        {"slug": "declaracao-situacao-contributiva.html", "titulo": "Declaração de situação contributiva", "tipo": "artigo", "destaque": false},
+        {"slug": "alterar-morada.html", "titulo": "Como alterar a morada no Cartão de Cidadão", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
     },

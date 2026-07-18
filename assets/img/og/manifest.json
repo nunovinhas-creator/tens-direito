@@ -19,6 +19,11 @@
     "pagina": "acessibilidade.html",
     "titulo": "Acessibilidade"
   },
+  "alterar-morada": {
+    "chip": "Como Pedir",
+    "pagina": "alterar-morada.html",
+    "titulo": "Como alterar a morada no Cartão de Cidadão"
+  },
   "amim": {
     "chip": "Idosos, Incapacidade e Cuidadores",
     "pagina": "amim.html",
