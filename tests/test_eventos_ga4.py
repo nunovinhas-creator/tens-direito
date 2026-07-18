@@ -58,6 +58,7 @@ SIMULADORES = {
 # vivem — usado no varrimento global anti-dados-pessoais.
 EVENTOS_POR_FICHEIRO = {
     "assets/js/share.js": ["partilha_clique"],
+    "assets/js/nav.js": ["menu_tool_click"],
     "comecar-aqui.html": ["comecar_aqui_percurso"],
     "index.html": ["cal_home_clique"],
     **{ficheiro: ["simulacao_concluida"] for ficheiro in SIMULADORES},
@@ -196,6 +197,30 @@ def test_cal_home_clique_existe_e_guardado():
     indice, corpo = chamadas[0]
     assert _tem_guarda_antes(fonte, indice), "cal_home_clique sem guarda typeof gtag"
     assert not _sem_tokens_proibidos(corpo), corpo
+
+
+# ── menu_tool_click (grelha de ferramentas do menu móvel) ────────────────
+
+def test_menu_tool_click_existe_guardado_e_deriva_do_href():
+    fonte = _ler("assets/js/nav.js")
+    chamadas = _chamadas_evento(fonte, "menu_tool_click")
+    assert len(chamadas) == 1, "esperava exactamente uma definição do evento"
+    indice, corpo = chamadas[0]
+    assert _tem_guarda_antes(fonte, indice), "menu_tool_click sem guarda typeof gtag"
+    assert "tool_destino" in corpo, f"menu_tool_click sem parâmetro tool_destino: {corpo}"
+    assert not _sem_tokens_proibidos(corpo), corpo
+    # O destino deriva do href do próprio cartão (basename sem .html) —
+    # nunca um ID/slug fixo por cartão.
+    assert "getAttribute('href')" in fonte, "tool_destino deve derivar do href"
+
+
+def test_nav_js_nunca_contem_measurement_id():
+    # O Measurement ID vive só no atributo data-ga4 das páginas (lido pelo
+    # consentimento.js); o nav.js chama gtag('event', ...) e nada mais —
+    # qualquer G-XXXX hardcoded aqui contornaria essa fonte única.
+    fonte = _ler("assets/js/nav.js")
+    ids = re.findall(r"G-[A-Z0-9]+", fonte)
+    assert not ids, f"Measurement ID hardcoded em nav.js: {ids}"
 
 
 # ── o gerador de documentos NÃO instrumenta (invariante de rede-zero) ─────
