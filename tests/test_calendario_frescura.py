@@ -199,6 +199,76 @@ def test_validacao_rejeita_mes_duplicado():
     assert any("duplicado" in p for p in validar_dados(dados))
 
 
+# ── auditoria 2026-07-18: injector corre sempre + limites de plausibilidade ─
+#
+# Provam o CAMINHO DE FALHA (não só o feliz): a produção degrada server-side
+# quando o mês vira sem dados, e um dia implausível nunca é publicado às cegas.
+
+_SO_AGOSTO = {
+    "fonte_url": "https://www.seg-social.pt",
+    "meses": [{
+        "ano": 2026, "mes": 8,
+        "pagamentos": [
+            {"dia": 7, "prestacoes": ["pensoes"], "metodo": ["transferencia_bancaria"]},
+            {"dia": 28, "prestacoes": ["cuidador_informal"],
+             "metodo": ["transferencia_bancaria", "vale_de_correio"]},
+        ],
+    }],
+}
+
+
+def test_1_setembro_scraper_falhado_pagina_degrada_sem_tabela_de_agosto():
+    """1 de setembro, setembro ausente do JSON (scraper falhou e ninguém
+    preencheu), agosto presente mas já passado. O injector, correndo agora
+    em qualquer ramo com hoje=1 de setembro, TEM de degradar server-side —
+    nunca manter a tabela de agosto como se fosse a corrente (era a lacuna
+    crítica da auditoria)."""
+    corpo = render_corpo(_SO_AGOSTO, dt.date(2026, 9, 1))
+    assert "cal-degradado" in corpo
+    assert 'data-mes=""' in corpo
+    assert "agosto" not in corpo.lower(), "mês passado nunca renderizado"
+    assert "<table" not in corpo, "nenhuma tabela velha na página degradada"
+
+
+def test_25_agosto_injector_nao_degrada_e_e_idempotente_sobre_agosto(tmp_path):
+    """25 de agosto (mês-alvo do scraper = setembro, ainda ausente): o
+    injector corre na mesma, mas rende com hoje=agosto → agosto corrente,
+    NUNCA degradado. E, sobre uma página já sincronizada com agosto (corrida
+    de 1 de agosto), a 2.ª injecção não muda nada → zero commits espúrios."""
+    corpo = render_corpo(_SO_AGOSTO, dt.date(2026, 8, 25))
+    assert "cal-degradado" not in corpo
+    assert "Calendário de agosto de 2026" in corpo
+
+    pagina = tmp_path / "cal.html"
+    pagina.write_text(PAGINA.read_text(encoding="utf-8"), encoding="utf-8")
+    atualizar_pagina(_SO_AGOSTO, dt.date(2026, 8, 1), caminho=pagina, escrever=True)
+    apos_1ago = pagina.read_text(encoding="utf-8")
+    assert 'id="cal-corrente" data-mes="2026-08"' in apos_1ago
+    # A classe .cal-degradado existe sempre no CSS e no banner de aviso JS
+    # (fora da zona CAL:CORPO); a assinatura única do BLOCO degradado é o texto.
+    assert "Ainda não temos o calendário verificado" not in apos_1ago
+    mudou_25 = atualizar_pagina(_SO_AGOSTO, dt.date(2026, 8, 25),
+                                caminho=pagina, escrever=False)
+    assert not mudou_25, "injecção a 25 Ago sobre página já de agosto não deve mudar nada"
+
+
+def test_validacao_rejeita_dia_fora_do_intervalo_plausivel():
+    """Pensões no dia 25 é implausível (referência ~dia 8) — a validação
+    falha, o main() sai antes de escrever, JSON e HTML ficam intactos."""
+    dados = _base_valida()
+    dados["meses"][0]["pagamentos"][0]["dia"] = 25  # pensoes: intervalo [5-12]
+    problemas = validar_dados(dados)
+    assert any("intervalo plausível" in p for p in problemas), problemas
+
+
+def test_intervalos_plausiveis_cobrem_toda_a_allow_list_e_o_historico_real():
+    """Sem buracos: toda a prestação da allow-list tem intervalo, e todos os
+    meses reais já publicados passam (zero falsos positivos retroactivos)."""
+    from atualizar_calendario import DIAS_PLAUSIVEIS, PRESTACOES
+    assert set(PRESTACOES) == set(DIAS_PLAUSIVEIS)
+    assert validar_dados(carregar_dados()) == []
+
+
 # ── Fase 4: âncoras por prestação (verificação estática) ──────────────────
 
 ANCORAS_SPEC = [
