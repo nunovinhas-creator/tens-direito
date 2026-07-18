@@ -1743,6 +1743,30 @@ prestação (desemprego/doença/parental/abono/RSI/pensão/CSI) e
 cross-links nos dois sentidos com o calendário — ver a entrada de
 revisão no fim deste ficheiro.
 
+**Cross-link PSU (2026-07-18)** — nota não-alarmista junto às 4 linhas da
+tabela "Quando recebo a minha prestação?" cujo regime **não-contributivo**
+está confirmado na lista dos 13 apoios (RSI, pensão social de velhice/
+invalidez, subsídio social de desemprego, subsídios sociais de
+parentalidade): "🔄 Vai ser integrado na PSU — o pagamento continua normal
+até ao decreto-lei", com link à pillar `/prestacao-social-unica.html`.
+CSI e PSI ficam deliberadamente de fora — o CSI está excluído da PSU
+(confirmado em audição parlamentar) e a PSI ainda não tem a inclusão/
+exclusão confirmada pelo decreto-lei. Implementado em `PSU_NOTAS`
+(`scripts/atualizar_calendario.py`), aplicado dentro de
+`_seccao_por_prestacao()` — sobrevive a qualquer regeneração mensal do
+`calendario-mensal.yml`, nunca um add-on manual que a próxima corrida
+apagaria (mesmo princípio da REGRA DE OURO: nada de manual dentro de uma
+zona `CAL:CORPO:*`). Nova linha "Subsídios de parentalidade" acrescentada
+a `VISTA_PRESTACOES` — a batch `desemprego_doenca_parentalidade_acao_social_*`
+já pagava prestações de parentalidade mas não tinha linha própria na
+tabela (só desemprego/doença); ganhou também o cross-link recíproco em
+`subsidio-parental.html` (mesmo padrão "📅 Em que dia do mês é pago?" já
+usado nas outras 7 páginas de prestações). 6.ª FAQ acrescentada (JSON-LD +
+visível, paridade 1:1 confirmada) sobre mudança de IBAN, com link para
+`/iban-seguranca-social.html` (nav path verificado contra esse guia:
+Segurança Social Direta → Perfil → Conta Bancária — não inventado).
+`dateModified`/"Verificado a" avançados para 18/07/2026.
+
 ---
 
 ## MEDIÇÃO DE CONVERSÃO — EVENTOS GA4
@@ -6978,3 +7002,73 @@ reconfirmados `False` (inalterados). Trabalho feito na branch
 `claude/psu-cluster-legislative-update-8rj5ca` (designada pelo ambiente
 remoto desta sessão) — **SEM PR, branch não integrada em `main`**
 (protocolo de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
+
+---
+
+*Última revisão: 2026-07-18 (sessão seguinte) — pedido para criar
+`calendario-pagamentos-seguranca-social.html` como página nova; PASSO 0
+revelou que **já existe por inteiro** desde 2026-07-12 (JSON de dados,
+scraper, workflow mensal, canário de frescura próprio, agosto 2026 já
+raspado e publicado) — nada recriado, sessão tornou-se auditoria de gaps
+contra o novo pedido em vez de greenfield. Único gap real confirmado:
+**cross-link PSU inexistente** junto às prestações abrangidas (só havia o
+link genérico da nav) e **FAQ com 5 perguntas, pedido exigia ≥6** sem
+pergunta dedicada a mudança de IBAN. Corrigidos os dois, mais um terceiro
+achado durante a auditoria: a batch de pagamento "desemprego, doença,
+parentalidade e ação social" nunca tinha linha própria para parentalidade
+na tabela "Quando recebo a minha prestação?" (só desemprego/doença) — zero
+visibilidade para quem recebe um subsídio parental, apesar de a própria
+Segurança Social nomear a batch incluindo "parentalidade".
+
+Cuidado arquitectural central desta sessão: a zona `CAL:CORPO` da página é
+regenerada por `scripts/atualizar_calendario.py` a cada corrida do
+`calendario-mensal.yml` (dia 1, 25, 28) — qualquer adição manual dentro
+dela seria apagada silenciosamente na próxima regeneração. O cross-link
+PSU e a linha de parentalidade foram implementados **dentro do próprio
+gerador** (`PSU_NOTAS`, novo item em `VISTA_PRESTACOES`), nunca como
+edição manual do HTML — sobrevivem a qualquer regeneração futura, mesmo
+princípio da REGRA DE OURO aplicado a uma zona de página em vez de um
+ficheiro inteiro. A 6.ª FAQ e o `dateModified`/"Verificado a" vivem fora
+dessa zona, hand-editados em segurança.
+
+**Escopo do cross-link PSU, decidido por verificação, não por lista
+literal do pedido**: aplicado só às 4 linhas cujo regime não-contributivo
+está confirmado nos 13 apoios (RSI, pensão social, subsídio social de
+desemprego, subsídios sociais de parentalidade) — nunca aos respectivos
+regimes contributivos, que a PSU não toca. CSI ficou de fora apesar de o
+pedido dizer "CSI se aplicável": confirmado contra `prestacao-social-unica.html`
+que o CSI está **explicitamente excluído** da PSU (audição parlamentar) —
+"se aplicável" não se aplica. PSI também ficou de fora: a sua inclusão/
+exclusão na lista final continua por confirmar pelo decreto-lei (ver
+"IMPACTO DA PSU", plano de acção, ponto 9) — nunca afirmar o que ainda não
+está fechado.
+
+**Achado factual corrigido antes de publicar**: a 1.ª versão da FAQ do
+IBAN inventou um caminho de navegação errado ("Dados Pessoais → Dados
+Bancários") e um mecanismo não verificado (conversão automática para vale
+de correio ao falhar a transferência) — nenhum dos dois está confirmado
+em `iban-seguranca-social.html`. Corrigido para o caminho real e
+verificado nesse guia ("Segurança Social Direta → Perfil → Conta
+Bancária") e removida a alegação sem fonte.
+
+Cross-link recíproco acrescentado a `subsidio-parental.html` (mesmo
+padrão "📅 Em que dia do mês é pago?" já usado nas outras 7 páginas de
+prestações) — só fazia sentido depois de a linha "parentalidade-social"
+passar a existir na tabela.
+
+Verificado antes do commit: `verificar_datas.detectar_alertas()` sem
+falsos positivos nas 2 páginas tocadas; paridade 1:1 FAQ↔JSON-LD (6/6);
+JSON-LD válido; idempotência do gerador confirmada (2.ª corrida = zero
+alterações); axe sem violações críticas/sérias nas 2 páginas (incluindo o
+novo azul `#1E40AF` do `.cal-psu-nota`); 0px de overflow a 375px com
+Chromium real; zero erros JS; suíte dedicada
+(`test_calendario_frescura.py` + `test_scraper_calendario.py`, 36 testes)
+e os ficheiros de higiene/breadcrumb/nav/pesquisa/og/valores-ancora/anos/
+clusters (1344 testes) confirmados sem regressões antes da suite
+completa. Suite completa: **2656 passed, 4 skipped** (allow-list
+inalterada); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados — nenhuma das duas flags tocada).
+`ROADMAP.md` não precisou de alteração — o gatilho automático mensal já
+estava documentado com precisão desde 2026-07-12. Trabalho directo em
+`main`.*

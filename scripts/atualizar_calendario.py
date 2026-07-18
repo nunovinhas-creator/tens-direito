@@ -137,12 +137,56 @@ VISTA_PRESTACOES = [
      ["desemprego_doenca_parentalidade_acao_social_1",
       "desemprego_doenca_parentalidade_acao_social_2"],
      "/baixa-medica-subsidio-doenca.html"),
+    # Nova linha — a batch "desemprego_doenca_parentalidade_acao_social_*"
+    # também paga prestações de parentalidade, mas até aqui não tinha
+    # linha própria na tabela (só desemprego/doença) — visibilidade zero
+    # para quem recebe um subsídio parental. Mesmos 2 slugs dos dois de
+    # cima, nome próprio, guia próprio.
+    ("parentalidade-social", "Subsídios de parentalidade",
+     ["desemprego_doenca_parentalidade_acao_social_1",
+      "desemprego_doenca_parentalidade_acao_social_2"],
+     "/subsidio-parental.html"),
     ("rsi", "Rendimento Social de Inserção (RSI)", ["rsi"], "/rsi.html"),
     ("apoio-renda", "Apoio extraordinário à renda", ["apoio_renda"],
      "/apoio-extraordinario-renda.html"),
     ("cuidador-informal", "Subsídio de apoio ao cuidador informal",
      ["cuidador_informal"], "/cuidador-informal.html"),
 ]
+
+# Cross-link PSU (2026-07-18) — nota não-alarmista junto às prestações que
+# a Prestação Social Única vai mesmo absorver (ver CLAUDE.md "IMPACTO DA
+# PSU" → lista dos 13 apoios). Só nas 4 linhas cujo regime NÃO-contributivo
+# está confirmado na lista: RSI (absorção total), pensão SOCIAL de velhice/
+# invalidez, subsídio SOCIAL de desemprego e subsídios sociais de
+# parentalidade — nunca nos respetivos regimes contributivos, que a PSU não
+# toca. CSI e PSI ficam deliberadamente de fora: o CSI está excluído da PSU
+# (confirmado em audição parlamentar) e a PSI ainda não tem a sua inclusão/
+# exclusão confirmada pelo decreto-lei — nunca afirmar o que ainda não está
+# fechado. Vive fora da zona regenerada só na força (é aplicada dentro de
+# _seccao_por_prestacao, portanto SOBREVIVE à regeneração mensal — nunca um
+# add-on manual que a próxima corrida do workflow apagaria).
+PSU_NOTAS = {
+    "rsi": (
+        'Vai ser <a href="/prestacao-social-unica.html">integrado na '
+        "PSU</a> — o pagamento continua normal até ao decreto-lei."
+    ),
+    "pensoes": (
+        "Se é pensão social de velhice ou invalidez (não a pensão "
+        'contributiva), vai ser <a href="/prestacao-social-unica.html">'
+        "integrada na PSU</a> — o pagamento continua normal até ao "
+        "decreto-lei."
+    ),
+    "subsidio-desemprego": (
+        "Se é o subsídio social de desemprego (não o contributivo), vai "
+        'ser <a href="/prestacao-social-unica.html">integrado na PSU</a> '
+        "— o pagamento continua normal até ao decreto-lei."
+    ),
+    "parentalidade-social": (
+        "Os subsídios sociais de parentalidade (não os contributivos) "
+        'vão ser <a href="/prestacao-social-unica.html">integrados na '
+        "PSU</a> — o pagamento continua normal até ao decreto-lei."
+    ),
+}
 
 MESES_PT = [
     "", "janeiro", "fevereiro", "março", "abril", "maio", "junho",
@@ -320,6 +364,9 @@ def _seccao_por_prestacao(m: dict) -> str:
             nome_html += (
                 f'<br><a class="cal-guia" href="{html.escape(url)}">Ver o guia →</a>'
             )
+        nota_psu = PSU_NOTAS.get(anchor)
+        if nota_psu:
+            nome_html += f'<br><span class="cal-psu-nota">🔄 {nota_psu}</span>'
         linhas.append(
             f'      <tr id="{anchor}">\n'
             f'        <th scope="row">{nome_html}</th>\n'

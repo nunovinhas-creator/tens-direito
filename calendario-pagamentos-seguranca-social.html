@@ -50,7 +50,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-12",
-    "dateModified": "2026-07-12",
+    "dateModified": "2026-07-18",
     "mainEntityOfPage": "https://tensdireito.com/calendario-pagamentos-seguranca-social.html"
   }
   </script>
@@ -101,6 +101,14 @@
           "@type": "Answer",
           "text": "Não necessariamente. O calendário aplica-se às prestações já em pagamento regular; depois de um deferimento, o primeiro pagamento depende do momento em que o processamento fica concluído e pode não coincidir com a primeira data do mês. Acompanha o estado do teu processo e dos pagamentos na Segurança Social Direta."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Mudei de banco — como actualizo o IBAN para não atrasar o pagamento?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O IBAN actualiza-se na Segurança Social Direta, em Perfil → Conta Bancária, com um comprovativo de titularidade da nova conta — sem precisar de ir a um balcão, embora essa opção continue disponível. A alteração aplica-se automaticamente a todas as prestações que já recebes, não é preciso repetir o processo por prestação. Actualiza o IBAN assim que souberes que vai mudar, nunca depois da data de pagamento, para não arriscares um atraso."
+        }
       }
     ]
   }
@@ -130,6 +138,8 @@
     .cal-dia { font-weight: 700; color: #0F766E; font-size: 1.1rem; white-space: nowrap; }
     .cal-nota { display: block; margin-top: 0.3rem; font-size: 0.85rem; color: #5C6770; }
     .cal-guia { font-size: 0.85rem; font-weight: 600; color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
+    .cal-psu-nota { display: block; font-size: 0.8rem; font-weight: 500; color: #1E40AF; margin-top: 0.3rem; }
+    .cal-psu-nota a { color: #1E40AF; text-decoration: underline; text-underline-offset: 2px; }
     .cal-fonte-inline { font-size: 0.85rem; color: #5C6770; margin: 0.75rem 0 1.5rem; }
     .cal-fonte-inline a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
     .cal-destaque { background: #e6f4f1; border: 1px solid #b8e0d8; border-left: 5px solid #0F766E; border-radius: 8px; padding: 1rem 1.25rem; margin: 0 0 1.5rem; }
@@ -325,7 +335,7 @@
       </thead>
       <tbody>
       <tr id="pensoes">
-        <th scope="row">Pensões</th>
+        <th scope="row">Pensões<br><span class="cal-psu-nota">🔄 Se é pensão social de velhice ou invalidez (não a pensão contributiva), vai ser <a href="/prestacao-social-unica.html">integrada na PSU</a> — o pagamento continua normal até ao decreto-lei.</span></th>
         <td>8 de julho</td>
       </tr>
       <tr id="csi">
@@ -341,15 +351,19 @@
         <td>16 de julho</td>
       </tr>
       <tr id="subsidio-desemprego">
-        <th scope="row">Subsídio de desemprego<br><a class="cal-guia" href="/subsidio-desemprego.html">Ver o guia →</a></th>
+        <th scope="row">Subsídio de desemprego<br><a class="cal-guia" href="/subsidio-desemprego.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 Se é o subsídio social de desemprego (não o contributivo), vai ser <a href="/prestacao-social-unica.html">integrado na PSU</a> — o pagamento continua normal até ao decreto-lei.</span></th>
         <td>16 de julho (1.º pagamento) · 28 de julho (2.º pagamento)</td>
       </tr>
       <tr id="subsidio-doenca">
         <th scope="row">Subsídio de doença (baixa médica)<br><a class="cal-guia" href="/baixa-medica-subsidio-doenca.html">Ver o guia →</a></th>
         <td>16 de julho (1.º pagamento) · 28 de julho (2.º pagamento)</td>
       </tr>
+      <tr id="parentalidade-social">
+        <th scope="row">Subsídios de parentalidade<br><a class="cal-guia" href="/subsidio-parental.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 Os subsídios sociais de parentalidade (não os contributivos) vão ser <a href="/prestacao-social-unica.html">integrados na PSU</a> — o pagamento continua normal até ao decreto-lei.</span></th>
+        <td>16 de julho (1.º pagamento) · 28 de julho (2.º pagamento)</td>
+      </tr>
       <tr id="rsi">
-        <th scope="row">Rendimento Social de Inserção (RSI)<br><a class="cal-guia" href="/rsi.html">Ver o guia →</a></th>
+        <th scope="row">Rendimento Social de Inserção (RSI)<br><a class="cal-guia" href="/rsi.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 Vai ser <a href="/prestacao-social-unica.html">integrado na PSU</a> — o pagamento continua normal até ao decreto-lei.</span></th>
         <td>23 de julho</td>
       </tr>
       <tr id="apoio-renda">
@@ -445,10 +459,15 @@
     <p>Não necessariamente. O calendário aplica-se às prestações já em pagamento regular; depois de um deferimento, o primeiro pagamento depende do momento em que o processamento fica concluído e pode não coincidir com a primeira data do mês. Vê o guia <a href="/pagamento-apos-deferimento.html">pedido deferido: quando cai o primeiro pagamento</a> e acompanha o estado do teu processo na Segurança Social Direta.</p>
   </details>
 
+  <details class="zona-cinzenta">
+    <summary>Mudei de banco — como actualizo o IBAN para não atrasar o pagamento?</summary>
+    <p>O IBAN actualiza-se na Segurança Social Direta, em Perfil → Conta Bancária, com um comprovativo de titularidade da nova conta — sem precisar de ir a um balcão, embora essa opção continue disponível. A alteração aplica-se automaticamente a todas as prestações que já recebes, não é preciso repetir o processo por prestação. Actualiza o IBAN assim que souberes que vai mudar, nunca depois da data de pagamento, para não arriscares um atraso. Ver o guia completo: <a href="/iban-seguranca-social.html">como alterar o IBAN na Segurança Social</a>.</p>
+  </details>
+
   <div class="fonte-bloco">
     <strong>Fontes oficiais</strong><br>
     · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — notícia mensal "Datas de pagamento dos subsídios sociais e pensões" e página Calendário (Segurança Social Direta → Pagamentos)<br>
-    Verificado a 12/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
+    Verificado a 18/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
   </div>
 
   <div class="disclaimer">
