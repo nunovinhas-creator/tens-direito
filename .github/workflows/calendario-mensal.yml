@@ -70,16 +70,22 @@ jobs:
           python scripts/verificar_calendario_mensal.py \
             --relatorio "$RUNNER_TEMP/relatorio_calendario.md" $EXTRA
 
+      # A injecção corre SEMPRE, em qualquer ramo (dados_ok OU precisa_manual).
+      # Motivo (auditoria de 2026-07-18): o injector rende com base em `hoje` e
+      # degrada server-side (`_bloco_degradado`) quando o mês corrente não está
+      # no JSON. Gatear isto em `dados_ok` deixava a página presa ao último mês
+      # injectado quando o scraper falhasse ao virar do mês (ex.: 1 de setembro
+      # com setembro em falta mostrava agosto), com a honestidade a depender só
+      # da guarda JS. Correndo sempre, a produção degrada sozinha, mesmo sem JS.
+      # O teste do canário corre igualmente sempre — valida o output ANTES do
+      # commit também no ramo de falha (nunca commitar output não-inspeccionado).
       - name: Actualizar página (injecção idempotente)
-        if: steps.verificar.outputs.estado == 'dados_ok'
         run: python scripts/atualizar_calendario.py
 
       - name: Testes do calendário (canário de frescura)
-        if: steps.verificar.outputs.estado == 'dados_ok'
         run: python -m pytest tests/test_calendario_frescura.py -q
 
       - name: Guardrail — só os ficheiros do calendário podem mudar
-        if: steps.verificar.outputs.estado == 'dados_ok'
         run: |
           ALTERADOS=$(git status --porcelain | awk '{print $2}')
           ERRO=0
@@ -96,13 +102,12 @@ jobs:
 
       - name: Commit e push (se houver alterações)
         id: commit_push
-        if: steps.verificar.outputs.estado == 'dados_ok'
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html index.html
-            git commit -m "auto(calendario): página e barra da homepage sincronizadas com o mês ${{ steps.verificar.outputs.mes_alvo }}"
+            git commit -m "auto(calendario): sincronizar página e barra da homepage (alvo ${{ steps.verificar.outputs.mes_alvo }}, estado ${{ steps.verificar.outputs.estado }})"
             git pull --rebase origin main
             git push origin main
             echo "pushed=true" >> "$GITHUB_OUTPUT"

@@ -86,6 +86,34 @@ RESUMO_CURTO = {
     "subsidio_suspensao_atividade_cultural": "Suspensão de atividade cultural",
 }
 
+# Intervalo de dias plausível por prestação (min, max inclusive). Derivado
+# do padrão mensal ESTÁVEL da Segurança Social: cada prestação tem um dia de
+# referência fixo, que só se antecipa alguns dias quando calha a fim-de-semana
+# ou feriado (nunca é adiado). Calibrado com o histórico real deste JSON
+# (julho + agosto de 2026) mais margem para essa antecipação — todos os meses
+# reais passam (zero falsos positivos retroactivos, garantido por
+# tests/test_calendario_frescura.py). Um dia fora do intervalo (ex.: pensões
+# no dia 25) sinaliza um provável erro de leitura da fonte → falha a validação
+# → cai no ramo precisa_manual/Issue, nunca vai a produção às cegas. Manter em
+# sincronia com PRESTACOES: uma prestação nova entra primeiro na allow-list
+# (acto manual e revisto) e ganha aqui o seu intervalo.
+DIAS_PLAUSIVEIS = {
+    "doenca_profissional": (1, 8),
+    "apoio_renda": (3, 12),
+    "pensoes": (5, 12),
+    "csi": (5, 12),
+    "reembolso_despesas_funeral": (5, 12),
+    "psi": (5, 12),
+    "prestacoes_familiares": (12, 20),
+    "desemprego_doenca_parentalidade_acao_social_1": (12, 20),
+    "subsidio_suspensao_atividade_cultural": (16, 26),
+    "fgadm": (16, 26),
+    "rsi": (18, 28),
+    "fgs": (18, 28),
+    "desemprego_doenca_parentalidade_acao_social_2": (24, 31),
+    "cuidador_informal": (24, 31),
+}
+
 # Secção "Por prestação" — âncoras exigidas pela spec + guia interno.
 # (anchor, nome curto, slugs que contam, rótulo por slug quando há mais
 # de um, url do guia interno ou None)
@@ -167,6 +195,14 @@ def validar_dados(dados: dict) -> list[str]:
                             f"{ano}-{mes:02d} dia {dia}: prestação desconhecida "
                             f"'{s}' (fora da allow-list PRESTACOES)"
                         )
+                    elif s in DIAS_PLAUSIVEIS and isinstance(dia, int):
+                        lo, hi = DIAS_PLAUSIVEIS[s]
+                        if not (lo <= dia <= hi):
+                            problemas.append(
+                                f"{ano}-{mes:02d} dia {dia}: prestação '{s}' fora "
+                                f"do intervalo plausível [{lo}-{hi}] — provável erro "
+                                "de leitura da fonte, não publicar às cegas"
+                            )
             metodo = p.get("metodo")
             if not isinstance(metodo, list) or not metodo:
                 problemas.append(f"{ano}-{mes:02d} dia {dia}: 'metodo' vazio")
