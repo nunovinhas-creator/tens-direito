@@ -25,5 +25,9 @@
     {"url": "https://justica.gov.pt", "descricao": "Justiça.gov.pt — Renovar o Cartão de Cidadão"},
     {"url": "https://irn.justica.gov.pt", "descricao": "IRN — Cartão de Cidadão e validade"},
     {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Renovar o Cartão de Cidadão\""}
+  ],
+  "numero-utente-sns.html": [
+    {"url": "https://www.sns24.gov.pt", "descricao": "SNS 24 — portal e app"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Pedir o número de utente do SNS\""}
   ]
 }

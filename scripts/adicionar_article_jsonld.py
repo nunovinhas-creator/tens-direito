@@ -99,6 +99,7 @@ DATAS_PUBLICACAO = {
     "chave-movel-digital.html": "2026-07-17",
     "alterar-morada.html": "2026-07-18",
     "renovar-cartao-cidadao.html": "2026-07-18",
+    "numero-utente-sns.html": "2026-07-18",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

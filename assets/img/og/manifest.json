@@ -184,6 +184,11 @@
     "pagina": "noticias.html",
     "titulo": "Atualidades"
   },
+  "numero-utente-sns": {
+    "chip": "Como Pedir",
+    "pagina": "numero-utente-sns.html",
+    "titulo": "Número de utente do SNS: como pedir em 2026"
+  },
   "p-apoios-escolares": {
     "chip": "Apoios Escolares",
     "pagina": "p/apoios-escolares.html",
