@@ -93,7 +93,10 @@
         {"slug": "declaracao-situacao-contributiva.html", "titulo": "Declaração de situação contributiva", "tipo": "artigo", "destaque": false},
         {"slug": "alterar-morada.html", "titulo": "Como alterar a morada no Cartão de Cidadão", "tipo": "artigo", "destaque": false},
         {"slug": "renovar-cartao-cidadao.html", "titulo": "Renovar o Cartão de Cidadão", "tipo": "artigo", "destaque": false},
-        {"slug": "numero-utente-sns.html", "titulo": "Número de utente do SNS", "tipo": "artigo", "destaque": false}
+        {"slug": "numero-utente-sns.html", "titulo": "Número de utente do SNS", "tipo": "artigo", "destaque": false},
+        {"slug": "registo-criminal-online.html", "titulo": "Certificado do Registo Criminal Online", "tipo": "artigo", "destaque": false},
+        {"slug": "certidao-situacao-tributaria.html", "titulo": "Certidão de Situação Tributária", "tipo": "artigo", "destaque": false},
+        {"slug": "marcar-atendimento-seguranca-social.html", "titulo": "Marcar Atendimento na Segurança Social", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
     },
