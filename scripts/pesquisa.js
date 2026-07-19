@@ -101,7 +101,7 @@ var paginas = [
    cluster: 'como-pedir', clusterNome: 'Como Pedir', tipo: 'artigo'},
   {url: '/registo-criminal-online.html',
    titulo: 'Certificado do Registo Criminal Online 2026',
-   descricao: 'Como pedir o certificado do registo criminal: 5 € online com emissão imediata, ou 7 € presencial. Válido 3 meses. Autenticação, finalidades e idade mínima.',
+   descricao: 'Como pedir o certificado do registo criminal: 5 €, online (emissão imediata) ou presencial. Válido 3 meses. Autenticação, finalidades e idade mínima.',
    keywords: 'registo criminal certificado pedir online preço prazo validade justiça dgaj chave móvel digital finalidade',
    cluster: 'como-pedir', clusterNome: 'Como Pedir', tipo: 'artigo'},
   {url: '/certidao-situacao-tributaria.html',
