@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **18 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **19 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -23,6 +23,7 @@ Actualizado automaticamente a partir do repositório em **18 de julho de 2026**.
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de família 2026: escalões, valores e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
+| [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
 | [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
@@ -43,6 +44,7 @@ Actualizado automaticamente a partir do repositório em **18 de julho de 2026**.
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
+| [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir |
@@ -55,6 +57,7 @@ Actualizado automaticamente a partir do repositório em **18 de julho de 2026**.
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso aprovadas pela Assembleia da República |
 | [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: aprovado vs. por definir |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
+| [`renovar-cartao-cidadao.html`](renovar-cartao-cidadao.html) | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`senha-seguranca-social-direta.html`](senha-seguranca-social-direta.html) | Como pedir (e recuperar) a senha da Segurança Social Direta |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
@@ -252,6 +255,7 @@ tens-direito/
 │   ├── gerir_estado_feeds.py
 │   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
+│   ├── inventario_css_morto.py
 │   ├── limpar_css_morto_nav.py
 │   ├── migrar_consentimento.py
 │   ├── migrar_noticias.py
@@ -382,6 +386,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 18 de julho de 2026 às 08:54 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 19 de julho de 2026 às 09:32 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

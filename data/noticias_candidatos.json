@@ -1,148 +1,5 @@
 [
   {
-    "data": "2026-07-04",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 13,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 11,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 12,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de julho - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-01",
-        "score": 3,
-        "decisao": "vencedor",
-        "motivo": "score=3"
-      },
-      {
-        "titulo": "Prestação Social Única: o acordo e a oportunidade desta reforma - Expresso",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-06-30",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 - SAPO",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-06-28",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Governo está a rever abono e alarga pagamento automático a mais famílias - Diário de Notícias",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-07-01",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos - ECO",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-06-30",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Entrega do IRS termina hoje com 6 milhões de declarações já submetidas - dnoticias.pt",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-06-30",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Prazo para entregar declaração de IRS termina amanhã - Contas Poupança",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-06-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Declaração de IRS: amanhã é o último dia! Atenção às coimas - Pplware",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-06-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Segurança Social: revelado calendário de pagamentos para julho de 2026 - 4gnews",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-06-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Saiba em que datas vai receber as prestações sociais em julho - Pplware",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-06-28",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "já havia vencedor com score maior ou igual"
-      },
-      {
-        "titulo": "Ação social escolar: como pedir e quais os prazos de candidatura?? - Contas Connosco",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-06-29",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedor": {
-      "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de julho - Notícias ao Minuto",
-      "feed_nome": "calendario_pagamentos_seg_social",
-      "score": 3
-    }
-  },
-  {
     "data": "2026-07-05",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2518,6 +2375,73 @@
   },
   {
     "data": "2026-07-18",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe - 4gnews",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-13",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-13"
+      },
+      {
+        "titulo": "Patrões alertam que há medidas por cumprir no acordo sobre salários, UGT quer reforço - Dinheiro Vivo",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-15",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": []
+  },
+  {
+    "data": "2026-07-19",
     "saude_feeds": {
       "abono_familia": "OK",
       "subsidio_desemprego": "OK",
