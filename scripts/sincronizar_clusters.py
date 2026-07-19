@@ -100,6 +100,11 @@ EXCLUIDAS = {
     # cross-cluster (cobre desemprego, abono, RSI, pensão, CSI…, um por
     # cluster diferente), mesma categoria de comecar-aqui.html/calendário.
     "pagamento-apos-deferimento.html",
+    # Dados Abertos (FASE 3 da sessão de dados abertos, 2026-07-19) —
+    # página institucional/dataset (parâmetros legais + historial de
+    # observações), não pertence a nenhum cluster único, mesma categoria
+    # de acessibilidade.html/sobre.html.
+    "dados.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")

@@ -1,0 +1,37 @@
+{
+  "gerado_em": "2026-07-19",
+  "prestacoes": {
+    "csi": {
+      "valor_referencia_individual_anual": {
+        "descricao": "Valor de referência do CSI — pessoa isolada",
+        "unidade": "EUR/ano",
+        "valor": 8040,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 480-D/2025/1, de 30 de dezembro, art. 2.º n.º 1 (nos termos do art. 9.º n.º 1 do Decreto-Lei n.º 232/2005, de 29 de dezembro)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/480-d-2025-993056225",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c",
+        "verificado_em": "2026-07-19"
+      },
+      "valor_referencia_casal_anual": {
+        "descricao": "Valor de referência do CSI — casal / união de facto",
+        "unidade": "EUR/ano",
+        "valor": 14070,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Coeficiente de equivalência 1,75 × valor individual — art. 9.º n.º 2 do Decreto-Lei n.º 232/2005, na redação do Decreto-Lei n.º 35/2024, de 21 de maio; valor individual fixado pela Portaria n.º 480-D/2025/1",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/35-2024-865433933",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c",
+        "verificado_em": "2026-07-19"
+      },
+      "idade_minima_meses_totais": {
+        "descricao": "Idade normal de acesso ao CSI, em meses totais (66 anos e 9 meses em 2026 = 801 meses)",
+        "unidade": "meses",
+        "valor": 801,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 358/2024/1, de 30 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2026: 66 anos e 9 meses)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c",
+        "verificado_em": "2026-07-19"
+      }
+    }
+  }
+}

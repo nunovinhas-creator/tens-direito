@@ -355,3 +355,112 @@ def test_renovar_cc_precos_completos_por_idade_e_urgencia():
     html = _ler("renovar-cartao-cidadao.html")
     for valor in ("16,20 €", "18,00 €", "15,00 €", "33,00 €", "30,00 €", "53,00 €", "50,00 €"):
         assert f"<td>{valor}</td>" in html, f"{valor} em falta na tabela de preços"
+
+
+# ── FASE 2 — dados/parametros/*.yaml como fonte, padrão OpenFisca ──────────
+# (sessão de dados abertos, 2026-07-19). dados/parametros.json é gerado por
+# scripts/gerar_parametros_json.py a partir de dados/parametros/*.yaml —
+# este canário lê a MESMA fonte que os simuladores já migrados consomem em
+# runtime (via fetch), nunca uma cópia. Quando um simulador novo migrar
+# para este padrão, os seus valores ganham a mesma cobertura aqui.
+import json  # noqa: E402
+from datetime import date  # noqa: E402
+
+import yaml  # noqa: E402
+
+PARAMETROS_DIR = BASE_DIR / "dados" / "parametros"
+PARAMETROS_JSON = BASE_DIR / "dados" / "parametros.json"
+
+
+def test_csi_dados_parametros_json_bate_com_a_pagina_do_artigo():
+    """dados/parametros.json (consumido em runtime por simulador-csi.html)
+    tem de continuar a bater com os valores 2026 já fact-checked e
+    publicados em complemento-solidario-idosos.html — corrigir SEMPRE na
+    fonte (dados/parametros/csi.yaml + a própria página do artigo), nunca
+    só aqui, quando a lei mudar.
+
+    CORRECÇÃO PASSO 0 (2026-07-19): idade mínima passa a MESES TOTAIS
+    (801 = 66 anos e 9 meses) — nunca só anos completos (66), que dava
+    falso-elegível a alguém com, por exemplo, 66 anos e 3 meses.
+    `percentagem_rendimento_trabalho` foi removido (ver
+    test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao
+    mais abaixo) — trabalho passa a contar a 100%."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    csi = todos["prestacoes"]["csi"]
+    assert csi["valor_referencia_individual_anual"]["valor"] == 8040
+    assert csi["valor_referencia_casal_anual"]["valor"] == 14070
+    assert csi["idade_minima_meses_totais"]["valor"] == 801
+
+    artigo = _ler("complemento-solidario-idosos.html")
+    assert "8.040" in artigo
+    assert "14.070" in artigo
+    assert "66 anos e 9 meses" in artigo
+
+
+def test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao():
+    """Questão fechada com fonte primária (2026-07-19, mesmo dia): Guia
+    Prático 8002 do ISS, I.P. ("Complemento Solidário para Idosos",
+    v4.53, 21/05/2026), secção C1.1, lista os rendimentos considerados
+    sem nenhuma regra de 80% — rendimentos de trabalho contam a 100%
+    ("anuais brutos, antes dos descontos"). O parâmetro
+    percentagem_rendimento_trabalho nunca deve reaparecer no YAML (não
+    há nenhuma percentagem de redução a parametrizar quando a regra é
+    "sem redução"), e a string "80%" nunca deve voltar a aparecer em
+    nenhuma página do CSI — a 1.ª versão desta correcção só tinha
+    tocado no simulador; o artigo complemento-solidario-idosos.html
+    ainda afirmava 80% na sua tabela de rendimentos (facto de uma
+    sessão anterior) até ser corrigido no mesmo commit desta versão do
+    teste."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    assert "percentagem_rendimento_trabalho" not in todos["prestacoes"]["csi"]
+
+    for pagina in ("simulador-csi.html", "complemento-solidario-idosos.html"):
+        html = _ler(pagina)
+        # Exclui blocos <script> (comentários JS documentam a remoção —
+        # "removemos os 80%" é histórico legítimo para manutenção,
+        # nunca uma afirmação activa ao utilizador; JSON-LD já não tem
+        # "80%" desde a correcção, verificado por json.loads noutro
+        # teste). Só o conteúdo visível/HTML é que nunca pode voltar a
+        # mostrar "80%".
+        sem_scripts = re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", html, flags=re.IGNORECASE)
+        assert "80%" not in sem_scripts, f"{pagina}: '80%' reapareceu fora de <script> — questão fechada, não deve voltar sem novo facto"
+
+
+def test_dados_parametros_json_sincronizado_com_os_yaml():
+    """Rede de segurança contra editar um YAML e esquecer de correr
+    `python scripts/gerar_parametros_json.py` — mesma verificação que
+    `--check` faz, replicada aqui para aparecer na suite normal."""
+    import subprocess
+    import sys
+
+    resultado = subprocess.run(
+        [sys.executable, str(BASE_DIR / "scripts" / "gerar_parametros_json.py"), "--check"],
+        capture_output=True, text=True,
+    )
+    assert resultado.returncode == 0, (
+        "dados/parametros.json diverge de dados/parametros/*.yaml — correr "
+        f"`python scripts/gerar_parametros_json.py` para regenerar.\n{resultado.stdout}{resultado.stderr}"
+    )
+
+
+def test_nenhum_parametro_vigente_fica_sem_verificado_em():
+    """PASSO 0 (obrigatório para qualquer valor migrado para YAML): réplica
+    visível na suite de testes da guarda dura de
+    scripts/gerar_parametros_json.py::_valor_vigente — nenhum parâmetro
+    cuja vigência já começou pode ter 'verificado_em' vazio. Confirmado a
+    falhar de propósito nesta sessão (verificado_em esvaziado
+    manualmente, gerar_parametros_json.py rejeitou com ERRO, revertido)."""
+    hoje = date.today()
+    for ficheiro in sorted(PARAMETROS_DIR.glob("*.yaml")):
+        bruto = yaml.safe_load(ficheiro.read_text(encoding="utf-8")) or {}
+        for nome_parametro, definicao in bruto.items():
+            for entrada in definicao.get("valores", []):
+                vigencia = date.fromisoformat(str(entrada["vigencia_inicio"]))
+                if vigencia <= hoje:
+                    assert entrada.get("verificado_em"), (
+                        f"{ficheiro.name}:{nome_parametro} — vigência {vigencia} já "
+                        "começou mas 'verificado_em' está vazio (PASSO 0 não cumprido)"
+                    )
+                    assert entrada.get("referencia_legal") and entrada.get("fonte_url"), (
+                        f"{ficheiro.name}:{nome_parametro} — sem referencia_legal/fonte_url"
+                    )

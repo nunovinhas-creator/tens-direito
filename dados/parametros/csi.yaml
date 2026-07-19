@@ -1,0 +1,69 @@
+# FASE 2 (sessão de dados abertos, 2026-07-19) — Complemento Solidário
+# para Idosos (CSI), padrão OpenFisca de parâmetros com vigência.
+#
+# CORREÇÃO PASSO 0 (2026-07-19, mesma sessão): verificação inicial
+# migrou os valores de simulador-csi.html sem os revalidar contra a
+# fonte primária — os diplomas citados (DL n.º 126-A/2017) estavam
+# errados (é a lei base da PSI, nunca fixou valores de 2026). Corrigido
+# depois de verificação do Nuno contra fontes oficiais: DL n.º 126-A/2017
+# só é o diploma que cria a PSI — a lei base do CSI é sempre o
+# Decreto-Lei n.º 232/2005, de 29 de dezembro, com os valores/idade
+# fixados anualmente por portaria própria.
+#
+# QUESTÃO DOS 80% FECHADA (2026-07-19, mesmo dia): o Nuno encontrou a
+# fonte primária que faltava — Guia Prático 8002 do ISS, I.P.
+# ("Complemento Solidário para Idosos", v4.53, 21/05/2026), secção
+# C1.1, que lista os rendimentos considerados (trabalho dependente
+# bruto incl. subsídios de férias e Natal, trabalho independente,
+# capitais, prediais, incrementos patrimoniais, pensões e complementos,
+# património mobiliário/imobiliário excepto habitação própria) SEM
+# nenhuma regra de 80% — os rendimentos de trabalho contam a 100%
+# ("anuais brutos, antes dos descontos"), tal como já estava
+# implementado após a remoção do parâmetro. Nunca reintroduzido como
+# parâmetro numérico — não há nenhuma percentagem a parametrizar quando
+# a regra é "sem redução". `fonte_url_complementar` (Guia 8002) foi
+# acrescentado aos 3 parâmetros abaixo, a par dos diplomas no DRE, como
+# citação corroborante — não substitui `referencia_legal`/`fonte_url`
+# (que continuam a ser sempre o diploma legal, a fonte autoritativa).
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+valor_referencia_individual_anual:
+  descricao: "Valor de referência do CSI — pessoa isolada"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 8040
+      referencia_legal: "Portaria n.º 480-D/2025/1, de 30 de dezembro, art. 2.º n.º 1 (nos termos do art. 9.º n.º 1 do Decreto-Lei n.º 232/2005, de 29 de dezembro)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/480-d-2025-993056225"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c"
+      verificado_em: "2026-07-19"
+
+valor_referencia_casal_anual:
+  descricao: "Valor de referência do CSI — casal / união de facto"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 14070
+      referencia_legal: "Coeficiente de equivalência 1,75 × valor individual — art. 9.º n.º 2 do Decreto-Lei n.º 232/2005, na redação do Decreto-Lei n.º 35/2024, de 21 de maio; valor individual fixado pela Portaria n.º 480-D/2025/1"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/35-2024-865433933"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c"
+      verificado_em: "2026-07-19"
+
+# Idade mínima em MESES TOTAIS (nunca só anos completos) — correcção
+# substantiva: 66 anos e 9 meses = 66*12 + 9 = 801 meses. A versão
+# anterior simplificava para 66 anos completos, o que gerava falsos
+# positivos de elegibilidade (ex.: alguém com 66 anos e 3 meses NÃO tem
+# direito, mas o simulador antigo dizia que tinha). Esta idade muda
+# todos os anos por portaria própria — candidata a canary test em
+# tests/test_valores_ancora.py, mesmo padrão do IAS.
+idade_minima_meses_totais:
+  descricao: "Idade normal de acesso ao CSI, em meses totais (66 anos e 9 meses em 2026 = 801 meses)"
+  unidade: meses
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 801
+      referencia_legal: "Portaria n.º 358/2024/1, de 30 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2026: 66 anos e 9 meses)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c"
+      verificado_em: "2026-07-19"

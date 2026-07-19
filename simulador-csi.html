@@ -55,7 +55,7 @@
         "name": "Como é calculado o valor do CSI?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O CSI paga a diferença entre o valor de referência (8.040€/ano individual, 14.070€/ano casal em 2026) e os rendimentos anuais considerados do requerente (e do cônjuge, se casal). Os rendimentos de trabalho contam apenas a 80% do valor declarado; pensões e outros rendimentos contam a 100%."
+          "text": "O CSI paga a diferença entre o valor de referência (8.040€/ano individual, 14.070€/ano casal em 2026) e os rendimentos anuais considerados do requerente (e do cônjuge, se casal). Os rendimentos de trabalho e as pensões contam a 100% do valor declarado."
         }
       },
       {
@@ -150,6 +150,8 @@
     .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
     .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     .conjuge-grid { background: #F9FAFB; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; display: none; }
+    .idade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start; }
+    .idade-grid small { display: block; margin-top: 0.25rem; }
     .conjuge-grid.show { display: block; }
     .conjuge-titulo { font-weight: 600; color: var(--ink); font-size: 0.9rem; margin-bottom: 1rem; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
@@ -174,6 +176,7 @@
     .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
     .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
     .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.5; }
     .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
     .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
     .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
@@ -289,15 +292,28 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Valor de referência 2026</strong> — 8.040€/ano (individual) · 14.070€/ano (casal) · <strong>Verificado a 25/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/complemento-solidario-idosos.html">ver guia completo do CSI</a>
+      💡 <strong>Valor de referência 2026</strong> — 8.040€/ano (individual) · 14.070€/ano (casal) · <strong>Verificado a 19/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/complemento-solidario-idosos.html">ver guia completo do CSI</a>
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os parâmetros oficiais do CSI agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
     </div>
 
     <div class="calc-card">
       <form id="formCSI" onsubmit="calcularCSIFormulario(event)">
         <div class="form-group">
-          <label for="idade">A tua idade (anos)</label>
-          <input type="number" id="idade" inputmode="numeric" placeholder="70" min="0" max="120" step="1" required>
-          <small>Idade normal de acesso em 2026: 66 anos e 9 meses</small>
+          <label for="idadeAnos">A tua idade completa</label>
+          <div class="idade-grid">
+            <div>
+              <input type="number" id="idadeAnos" inputmode="numeric" placeholder="70" min="0" max="120" step="1" required aria-label="Anos">
+              <small>anos</small>
+            </div>
+            <div>
+              <input type="number" id="idadeMeses" inputmode="numeric" placeholder="0" min="0" max="11" step="1" value="0" aria-label="Meses adicionais">
+              <small>meses</small>
+            </div>
+          </div>
+          <small>Idade normal de acesso em 2026: 66 anos e 9 meses completos — indica os meses a mais desde o teu último aniversário.</small>
         </div>
 
         <div class="form-group">
@@ -317,7 +333,7 @@
         <div class="form-group">
           <label for="trabalhoRequerente">Rendimento anual de trabalho — teu (€)</label>
           <input type="number" id="trabalhoRequerente" inputmode="numeric" placeholder="0" min="0" step="10" value="0">
-          <small>Trabalho dependente ou independente, valor anual bruto (conta apenas 80%)</small>
+          <small>Trabalho dependente ou independente, valor anual bruto</small>
         </div>
 
         <div class="conjuge-grid" id="conjugeGrid">
@@ -329,12 +345,11 @@
           <div class="form-group">
             <label for="trabalhoConjuge">Rendimento anual de trabalho — cônjuge (€)</label>
             <input type="number" id="trabalhoConjuge" inputmode="numeric" placeholder="0" min="0" step="10" value="0">
-            <small>Conta apenas 80% do valor declarado</small>
           </div>
         </div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular CSI</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularCSI" disabled>🧮 Calcular CSI</button>
           <button type="reset" class="btn btn-secondary" onclick="limparResultado()">Limpar</button>
         </div>
       </form>
@@ -344,12 +359,12 @@
 
     <div class="formula-box">
       <h2>Como funciona o cálculo</h2>
-      <code>CSI anual = Valor de referência − (rendimento de pensões + 80% do rendimento de trabalho)</code>
+      <code>CSI anual = Valor de referência − (rendimento de pensões + rendimento de trabalho)</code>
       <ul>
-        <li>Valor de referência 2026: <strong>8.040€/ano</strong> (isolado) ou <strong>14.070€/ano</strong> (casal) — Decreto-Lei n.º 126-A/2017, valor de referência actualizado anualmente.</li>
+        <li>Valor de referência 2026: <strong>8.040€/ano</strong> (isolado) ou <strong>14.070€/ano</strong> (casal) — Portaria n.º 480-D/2025/1, de 30 de dezembro, nos termos do Decreto-Lei n.º 232/2005, actualizado anualmente.</li>
         <li>Pensões (nacionais ou estrangeiras) contam a <strong>100%</strong> do valor recebido.</li>
-        <li>Rendimentos de trabalho (dependente ou independente) contam apenas a <strong>80%</strong> do valor declarado.</li>
-        <li>Idade normal de acesso: <strong>66 anos e 9 meses</strong> em 2026 (excepção: pensionistas de invalidez do regime geral não sujeitos a reavaliação médica).</li>
+        <li>Rendimentos de trabalho (dependente ou independente) contam a <strong>100%</strong> do valor declarado, tal como as pensões.</li>
+        <li>Idade normal de acesso: <strong>66 anos e 9 meses completos</strong> (801 meses) em 2026 (excepção: pensionistas de invalidez do regime geral não sujeitos a reavaliação médica).</li>
         <li>O valor mensal é 1/12 da diferença anual.</li>
       </ul>
       <p style="font-size:0.85rem;color:var(--muted)">Não inclui: saldos bancários acima de 10.500€, outros imóveis (além da habitação própria) nem rendimentos fictícios sobre patrimônio — a Segurança Social considera estes factores no pedido real. Ver <a href="/complemento-solidario-idosos.html">guia completo do CSI</a> para o detalhe.</p>
@@ -361,7 +376,7 @@
       <details>
         <summary>Como é calculado o valor do CSI?</summary>
         <div class="faq-resposta">
-          O CSI paga a diferença entre o valor de referência (8.040€/ano individual, 14.070€/ano casal em 2026) e os rendimentos anuais considerados do requerente (e do cônjuge, se casal). Os rendimentos de trabalho contam apenas a 80% do valor declarado; pensões e outros rendimentos contam a 100%.
+          O CSI paga a diferença entre o valor de referência (8.040€/ano individual, 14.070€/ano casal em 2026) e os rendimentos anuais considerados do requerente (e do cônjuge, se casal). Os rendimentos de trabalho e as pensões contam a 100% do valor declarado.
         </div>
       </details>
 
@@ -395,7 +410,7 @@
     </section>
 
     <div class="disclaimer">
-      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 126-A/2017 e Decreto-Lei n.º 35/2024), mas podem conter erros ou omissões. Simulação indicativa. O valor final é determinado pela Segurança Social.
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 232/2005, Decreto-Lei n.º 35/2024 e Portaria n.º 480-D/2025/1), mas podem conter erros ou omissões. Simulação indicativa. O valor final é determinado pela Segurança Social.
     </div>
   </main>
 
@@ -416,58 +431,87 @@
   </footer>
 
   <script>
-    // ── PARAMETROS_CSI — fonte única de verdade da fórmula ──────────────────
-    // Cada valor tem "fonte" e "verificado_em" próprios — nunca um número
-    // solto no meio da lógica (mesmo padrão de PARAMETROS_PSU em
-    // simulador-psu.html). Valores já fact-checked e publicados em
-    // complemento-solidario-idosos.html (verificado 25/06/2026).
-    const PARAMETROS_CSI = {
-      valorReferenciaIndividual: {
-        valor: 8040,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, isolado',
-        verificado_em: '2026-06-25',
-      },
-      valorReferenciaCasal: {
-        valor: 14070,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, casal/união de facto',
-        verificado_em: '2026-06-25',
-      },
-      idadeMinimaAnos: {
-        valor: 66,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — idade normal de acesso (66 anos e 9 meses em 2026, simplificado a anos completos)',
-        verificado_em: '2026-06-25',
-      },
-      percentagemRendimentoTrabalho: {
-        valor: 0.8,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — rendimentos de trabalho contam a 80% do valor declarado',
-        verificado_em: '2026-06-25',
-      },
-    };
+    // ── PARAMETROS_CSI — carregado em runtime de /dados/parametros.json ─────
+    // FASE 2 da sessão de dados abertos (2026-07-19): a fonte de verdade
+    // deixou de ser este objecto JS inline e passou a
+    // dados/parametros/csi.yaml (padrão OpenFisca de parâmetros com
+    // vigência — nunca a biblioteca OpenFisca, só a convenção),
+    // consolidado em dados/parametros.json por
+    // scripts/gerar_parametros_json.py. Nunca calcula com valores em
+    // falta: se o fetch falhar, mostra um erro visível
+    // (#avisoParametrosErro) e mantém o botão de calcular desactivado —
+    // um estado de erro nunca pode parecer sucesso.
+    let PARAMETROS_CSI = null;
+
+    async function carregarParametrosCSI() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const csi = todos.prestacoes && todos.prestacoes.csi;
+        if (!csi) throw new Error("prestações.csi em falta em dados/parametros.json");
+        PARAMETROS_CSI = {
+          valorReferenciaIndividual: csi.valor_referencia_individual_anual,
+          valorReferenciaCasal: csi.valor_referencia_casal_anual,
+          idadeMinimaMesesTotais: csi.idade_minima_meses_totais,
+        };
+        const botao = document.getElementById('btnCalcularCSI');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosCSI(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosCSI(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularCSI');
+      if (botao) botao.disabled = true;
+      console.error('Simulador CSI: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosCSI);
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
     // Função pura, testada em tests/test_simulador_csi_calculo.py.
+    //
+    // CORRECÇÃO PASSO 0 (2026-07-19): rendimentos de trabalho passam a
+    // contar a 100% (igual às pensões) — o parâmetro
+    // percentagem_rendimento_trabalho (80%) foi removido de
+    // dados/parametros/csi.yaml. Questão fechada no mesmo dia com fonte
+    // primária: Guia Prático 8002 do ISS, I.P. (v4.53, 21/05/2026),
+    // secção C1.1, confirma que os rendimentos de trabalho contam
+    // sempre a 100% (bruto, antes dos descontos), sem nenhuma regra de
+    // 80%. Idade passa a ser
+    // comparada em MESES TOTAIS, nunca só anos completos — a versão
+    // anterior comparava só `idade >= 66`, o que dava falso-elegível a
+    // alguém com, por exemplo, 66 anos e 3 meses (que ainda não cumpre
+    // os 66 anos e 9 meses exigidos em 2026).
     function calcularCSI(params, input) {
       const situacaoCasal = input.situacao === 'casal';
       const valorReferencia = situacaoCasal
         ? params.valorReferenciaCasal.valor
         : params.valorReferenciaIndividual.valor;
 
-      const pctTrabalho = params.percentagemRendimentoTrabalho.valor;
-      const rendimentoRequerente = (input.pensoesRequerente || 0) + (input.trabalhoRequerente || 0) * pctTrabalho;
+      const rendimentoRequerente = (input.pensoesRequerente || 0) + (input.trabalhoRequerente || 0);
       const rendimentoConjuge = situacaoCasal
-        ? (input.pensoesConjuge || 0) + (input.trabalhoConjuge || 0) * pctTrabalho
+        ? (input.pensoesConjuge || 0) + (input.trabalhoConjuge || 0)
         : 0;
       const rendimentoConsiderado = rendimentoRequerente + rendimentoConjuge;
 
       const csiAnual = Math.max(0, valorReferencia - rendimentoConsiderado);
       const csiMensal = csiAnual / 12;
-      const idadeElegivel = (input.idade || 0) >= params.idadeMinimaAnos.valor;
+      const idadeTotalMeses = (input.idadeAnos || 0) * 12 + (input.idadeMeses || 0);
+      const idadeElegivel = idadeTotalMeses >= params.idadeMinimaMesesTotais.valor;
 
       return {
         valorReferencia,
         rendimentoConsiderado,
         csiAnual,
         csiMensal,
+        idadeTotalMeses,
         idadeElegivel,
         temDireito: idadeElegivel && csiAnual > 0,
       };
@@ -494,8 +538,14 @@
     function calcularCSIFormulario(e) {
       e.preventDefault();
 
+      if (!PARAMETROS_CSI) {
+        mostrarErroParametrosCSI(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
       const input = {
-        idade: parseInt(document.getElementById('idade').value, 10),
+        idadeAnos: parseInt(document.getElementById('idadeAnos').value, 10),
+        idadeMeses: parseInt(document.getElementById('idadeMeses').value, 10) || 0,
         situacao: document.getElementById('situacao').value,
         pensoesRequerente: parseFloat(document.getElementById('pensoesRequerente').value) || 0,
         trabalhoRequerente: parseFloat(document.getElementById('trabalhoRequerente').value) || 0,
@@ -511,7 +561,7 @@
         html = `<div class="resultado-card sem-direito">`;
         html += `<div class="resultado-titulo">Resultado da simulação</div>`;
         html += `<div class="resultado-valor">Ainda sem direito por idade</div>`;
-        html += `<div class="resultado-detalhe"><p>A idade normal de acesso ao CSI em 2026 é <strong>66 anos e 9 meses</strong>. Indicaste ${input.idade} anos.</p></div>`;
+        html += `<div class="resultado-detalhe"><p>A idade normal de acesso ao CSI em 2026 é <strong>66 anos e 9 meses</strong> (801 meses). Indicaste ${input.idadeAnos} anos e ${input.idadeMeses} meses (${r.idadeTotalMeses} meses).</p></div>`;
         html += `</div>`;
       } else if (!r.temDireito) {
         html = `<div class="resultado-card sem-direito">`;

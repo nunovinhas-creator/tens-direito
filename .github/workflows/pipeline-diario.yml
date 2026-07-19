@@ -67,6 +67,85 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
 
+      # ── Step 1c: Git scraping — historial auditável de observações ──────────
+      # FASE 1 da sessão de dados abertos (2026-07-19): dados/observacoes/,
+      # um ficheiro JSON por fonte monitorizada — o historial fica no
+      # `git log` desses ficheiros, nunca num array a crescer dentro do
+      # próprio JSON. scripts/registar_observacao.py só reescreve o
+      # ficheiro de uma fonte quando sha256_conteudo mudar face ao já
+      # registado.
+      #
+      # Regra de ruído: hash_conteudo já é calculado por
+      # scraper_playwright.py só sobre conteudo_extraido (título/
+      # parágrafos/itens já limpos de tags/scripts) — nunca sobre
+      # data_acesso, o URL final ou qualquer outro campo dinâmico; o HTML
+      # bruto (com timestamps/tokens CSRF/etc.) já foi descartado antes de
+      # chegar aqui. Por construção, o mesmo texto extraído produz sempre
+      # o mesmo hash, dia após dia — se esta garantia alguma vez falhar
+      # (commits diários na mesma fonte sem mudança real, 3+ dias
+      # seguidos), é sinal de que a extracção deixou de ser determinística
+      # e o bug está em scraper_playwright.py, não aqui.
+      #
+      # Um bloqueio nunca aparece como sucesso: data/scraped/<slug>_latest.json
+      # só é escrito pelo scraper para OK/OK_VIA_ARQUIVO (nunca BLOQUEADO —
+      # ver scraper_playwright._tratar_nao_ok); registar_observacao.py
+      # confirma isso de novo a partir de `status`, nunca assume OK.
+      #
+      # Um commit por fonte alterada (nunca um só commit a misturar várias
+      # fontes) — é essa granularidade que torna `git log -- dados/observacoes/<slug>.json`
+      # legível como historial de mudanças reais de cada fonte.
+      - name: Git scraping — registar observações auditáveis
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python3 scripts/registar_observacao.py
+          ALTERADOS=$(git status --porcelain -- dados/observacoes/ | awk '{print $2}')
+          if [ -z "$ALTERADOS" ]; then
+            echo "Nenhuma observação alterada — nada a commitar."
+          else
+            for f in $ALTERADOS; do
+              slug=$(basename "$f" .json)
+              DATE=$(date -u +%Y-%m-%d)
+              git add "$f"
+              git commit -m "dados: atualização ${slug} ${DATE}"
+              git pull --rebase origin main
+              git push
+              echo "Commit de observação publicado: ${slug}"
+            done
+          fi
+        env:
+          PYTHONUNBUFFERED: '1'
+
+      # ── Step 1d: Publicar base de dados aberta (JSON + SQLite) ───────────────
+      # FASES 2+3 da sessão de dados abertos (2026-07-19). Corre depois do
+      # Step 1c para que a tabela `historial` do SQLite reflicta o commit de
+      # observações de hoje (se algum). scripts/gerar_parametros_json.py
+      # falha (exit 1) sozinho se algum parâmetro em
+      # dados/parametros/*.yaml violar o PASSO 0 (vigência já iniciada sem
+      # verificado_em/referencia_legal/fonte_url) — nunca publica um valor
+      # não confirmado. gerar_base_dados.py é determinístico (nunca guarda
+      # um "gerado_em" dentro das tabelas), por isso só commita quando o
+      # conteúdo mudar de facto — nunca ruído diário.
+      - name: Publicar base de dados aberta (parâmetros + SQLite)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python3 scripts/gerar_parametros_json.py
+          python3 scripts/gerar_base_dados.py
+          ALTERADOS=$(git status --porcelain -- dados/parametros.json dados/tensdireito.db)
+          if [ -z "$ALTERADOS" ]; then
+            echo "Base de dados aberta sem alterações — nada a commitar."
+          else
+            git add dados/parametros.json dados/tensdireito.db
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "dados: publicar base de dados aberta ${DATE}"
+            git pull --rebase origin main
+            git push
+            echo "Base de dados aberta publicada."
+          fi
+        env:
+          PYTHONUNBUFFERED: '1'
+
       # ── Step 2: Detectar mudanças ────────────────────────────────────────────
       - name: Detectar mudanças e registar
         uses: actions/github-script@v7

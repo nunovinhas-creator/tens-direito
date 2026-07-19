@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados Abertos — Tens Direito</title>
+  <meta name="description" content="Historial auditável de observações de fontes oficiais e parâmetros legais dos apoios sociais, publicados como dados abertos: JSON, SQLite e explorador Datasette Lite.">
+  <meta property="og:title" content="Dados Abertos — Tens Direito">
+  <meta property="og:description" content="Historial auditável de observações de fontes oficiais e parâmetros legais dos apoios sociais, publicados como dados abertos: JSON, SQLite e explorador Datasette Lite.">
+  <meta property="og:url" content="https://tensdireito.com/dados.html">
+  <link rel="canonical" href="https://tensdireito.com/dados.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <meta property="og:image" content="https://tensdireito.com/assets/img/og/dados.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dados Abertos">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Tens Direito — Dados Abertos",
+    "description": "Historial auditável de observações extraídas diariamente de fontes oficiais portuguesas (Segurança Social, IEFP, DGE, Diário da República) e parâmetros legais (valores, vigências, referências legais) dos apoios sociais cobertos pelo Tens Direito.",
+    "url": "https://tensdireito.com/dados.html",
+    "sameAs": "https://tensdireito.com/dados.html",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "inLanguage": "pt-PT",
+    "creator": { "@id": "https://tensdireito.com/sobre.html#nvlabs" },
+    "isPartOf": { "@id": "https://tensdireito.com/#website" },
+    "distribution": [
+      {
+        "@type": "DataDownload",
+        "name": "Parâmetros legais consolidados (JSON)",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://tensdireito.com/dados/parametros.json"
+      },
+      {
+        "@type": "DataDownload",
+        "name": "Base de dados SQLite (parâmetros + historial de observações)",
+        "encodingFormat": "application/x-sqlite3",
+        "contentUrl": "https://tensdireito.com/dados/tensdireito.db"
+      }
+    ]
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f8f9fa; color: #212529; }
+header { background: #ffffff; border-bottom: 2px solid #0F766E; padding: 1rem 1.5rem; }
+nav { display: flex; align-items: center; gap: 1.5rem; max-width: 860px; margin: 0 auto; }
+.logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.logo-text { font-size: 1.4rem; font-weight: 700; }
+.logo-text span.tens { color: #0F172A; }
+.logo-text span.direito { color: #0D9488; }
+.hero { background: #0F766E; color: white; padding: 2.5rem 1.5rem; text-align: center; }
+.hero h1 { font-size: 1.8rem; }
+.hero p { margin-top: 0.5rem; font-size: 1rem; opacity: 0.95; }
+main { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
+.card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
+.card h2 { color: #0F766E; margin-bottom: 0.75rem; }
+.card p, .card li { line-height: 1.7; color: #495057; margin-bottom: 0.5rem; }
+.card ul { padding-left: 1.25rem; }
+.card a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
+.updated { font-size: 0.85rem; color: #5C6770; margin-bottom: 1rem; }
+footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; }
+.disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: #664d03; }
+.aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+.recursos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.75rem; }
+.recurso-item { border: 1px solid #E2E8F0; border-radius: 8px; padding: 1rem 1.1rem; }
+.recurso-item strong { display: block; margin-bottom: 0.35rem; color: #0F172A; }
+.recurso-item code { font-size: 0.82rem; background: #F1F5F9; padding: 0.15rem 0.4rem; border-radius: 4px; word-break: break-all; }
+.btn-datasette { display: inline-block; margin-top: 0.75rem; background: #0F766E; color: #fff; padding: 0.65rem 1.1rem; border-radius: 6px; text-decoration: none; font-weight: 600; }
+.btn-datasette:hover { background: #0D5D57; }
+table.exemplo { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.88rem; }
+table.exemplo th, table.exemplo td { border: 1px solid #E2E8F0; padding: 0.5rem 0.6rem; text-align: left; }
+table.exemplo th { background: #F1F5F9; }
+</style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/documentos.html">📄 Documentos</a>
+        <a href="/p/como-pedir.html">🔑 Como Pedir</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <div class="nav-mobile-grid">
+        <a href="/calendario-pagamentos-seguranca-social.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📅</span><span>Calendário</span></a>
+        <a href="/simuladores.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🧮</span><span>Simuladores</span></a>
+        <a href="/documentos.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📄</span><span>Documentos</span></a>
+        <a href="/p/como-pedir.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🔑</span><span>Como Pedir</span></a>
+      </div>
+      <a href="/comecar-aqui.html" class="nav-mobile-destaque">Começa aqui</a>
+      <details class="nav-mobile-acordeao" id="navMobileApoios">
+        <summary><span aria-hidden="true">📋</span> Apoios</summary>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      </details>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+  <header class="hero">
+    <h1>Dados Abertos</h1>
+    <p>O que o Tens Direito extrai das fontes oficiais, publicado — não só nas páginas, mas em bruto.</p>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+  </header>
+  <main id="main-content">
+    <div class="card">
+      <p class="updated">Verificado a 19 de julho de 2026</p>
+      <h2>O que é isto</h2>
+      <p>Cada guia deste site cita uma data de verificação e uma fonte oficial — mas até agora essa verificação só existia como texto numa página. Esta secção publica os próprios dados por trás desse texto, em três camadas:</p>
+      <ul>
+        <li><strong>Historial de observações</strong> — o conteúdo que o scraper diário extrai de cada fonte oficial (Segurança Social, IEFP, DGE, Diário da República), com hash e data. O historial de mudanças de cada fonte fica visível no <code>git log</code> público do repositório, uma linha por mudança substantiva real — nunca ruído diário.</li>
+        <li><strong>Parâmetros legais</strong> — valores, vigências e a referência legal exacta (portaria, decreto-lei) de cada apoio, separados da lógica de cálculo dos simuladores (mesma convenção do projecto OpenFisca — este site não usa a biblioteca OpenFisca, só o padrão de organizar os dados).</li>
+        <li><strong>Base de dados única</strong> — as duas camadas anteriores consolidadas num ficheiro SQLite, explorável no browser sem instalar nada.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Explorar no browser</h2>
+      <p>A base de dados corre inteiramente no teu browser via <a href="https://lite.datasette.io/" target="_blank" rel="noopener">Datasette Lite</a> (WebAssembly) — sem servidor nenhum a processar a tua pesquisa, sem instalação.</p>
+      <a class="btn-datasette" href="https://lite.datasette.io/?url=https://tensdireito.com/dados/tensdireito.db" target="_blank" rel="noopener">🔎 Abrir no Datasette Lite</a>
+      <p style="margin-top: 0.9rem;">Exemplo de tabela (<code>parametros</code>):</p>
+      <table class="exemplo">
+        <thead><tr><th>prestacao</th><th>parametro</th><th>valor</th><th>vigencia_inicio</th><th>verificado_em</th></tr></thead>
+        <tbody>
+          <tr><td>csi</td><td>valor_referencia_individual_anual</td><td>8040</td><td>2026-01-01</td><td>2026-06-25</td></tr>
+          <tr><td>csi</td><td>valor_referencia_casal_anual</td><td>14070</td><td>2026-01-01</td><td>2026-06-25</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Descarregar</h2>
+      <div class="recursos-grid">
+        <div class="recurso-item">
+          <strong>Parâmetros legais (JSON)</strong>
+          <p>Um valor vigente por parâmetro — o mesmo ficheiro que os simuladores já migrados consomem em runtime.</p>
+          <code>/dados/parametros.json</code><br>
+          <a href="/dados/parametros.json" download>⬇️ Descarregar</a>
+        </div>
+        <div class="recurso-item">
+          <strong>Base de dados (SQLite)</strong>
+          <p>Tabelas <code>parametros</code> (série temporal completa) e <code>historial</code> (derivado do git log).</p>
+          <code>/dados/tensdireito.db</code><br>
+          <a href="/dados/tensdireito.db" download>⬇️ Descarregar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Como é gerado</h2>
+      <p>Todos os dias, o pipeline automático raspa as fontes oficiais e — só quando o conteúdo extraído muda de facto — grava um ficheiro por fonte em <code>dados/observacoes/</code> e faz um commit dedicado por fonte alterada. Os parâmetros legais em <code>dados/parametros/*.yaml</code> continuam a ser curados manualmente, com fact-checking obrigatório contra a fonte oficial antes de qualquer valor entrar (mesma disciplina do resto do site) — nunca gerados automaticamente pelo scraper.</p>
+      <p class="aviso-info">💡 A fonte autoritativa de qualquer valor legal é sempre o diploma citado em <code>referencia_legal</code> (portaria, decreto-lei) — estes dados existem para auditoria e reutilização, nunca para substituir a leitura do próprio diploma em caso de dúvida.</p>
+    </div>
+
+    <div class="card">
+      <h2>Licença</h2>
+      <p>Os dados desta página estão disponíveis sob <a href="https://creativecommons.org/licenses/by/4.0/deed.pt" target="_blank" rel="noopener">Creative Commons Atribuição 4.0 (CC BY 4.0)</a> — podes usar, partilhar e adaptar, mesmo para fins comerciais, desde que atribuas a fonte ("tensdireito.com"). O conteúdo editorial das restantes páginas do site (texto dos guias) não está incluído nesta licença.</p>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. Estes dados são derivados de fontes oficiais mas não são um serviço oficial — em caso de dúvida, confirma sempre directamente com a Segurança Social ou o organismo competente.
+    </div>
+  </main>
+  <footer>
+    <p>tensdireito.com — Informação verificada para cidadãos portugueses</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+</body>
+</html>
