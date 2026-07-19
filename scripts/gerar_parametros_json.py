@@ -107,6 +107,11 @@ def consolidar(hoje: Optional[date] = None) -> dict:
                 "vigencia_inicio": str(vigente["vigencia_inicio"]),
                 "referencia_legal": vigente["referencia_legal"],
                 "fonte_url": vigente["fonte_url"],
+                # Opcional — citação corroborante além do diploma legal
+                # (ex.: um Guia Prático da Segurança Social). Nunca
+                # substitui referencia_legal/fonte_url, que continuam a
+                # ser sempre a fonte autoritativa.
+                "fonte_url_complementar": vigente.get("fonte_url_complementar"),
                 "verificado_em": str(vigente["verificado_em"]),
             }
         prestacoes[prestacao] = parametros_prestacao

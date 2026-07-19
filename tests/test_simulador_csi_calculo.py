@@ -182,13 +182,14 @@ def test_exemplo_pensao_5600_anuais_da_203_33_mes(pagina):
 
 # ── Rendimento de trabalho conta a 100% (correcção PASSO 0, 2026-07-19) ────
 # O parâmetro percentagem_rendimento_trabalho (80%) foi removido de
-# dados/parametros/csi.yaml por falta de citação legal primária
-# confirmada — nem a verificação do Nuno nem uma pesquisa independente
-# desta sessão encontraram base para os 80% especificamente para o CSI
-# (nota: o artigo publicado complemento-solidario-idosos.html continua a
-# afirmar 80% na tabela de rendimentos — discrepância registada no PR,
-# não resolvida aqui). Contar a 100% é a leitura conservadora: nunca
-# promete mais CSI do que a pessoa vai realmente receber.
+# dados/parametros/csi.yaml — questão fechada no mesmo dia com fonte
+# primária: Guia Prático 8002 do ISS, I.P. (v4.53, 21/05/2026), secção
+# C1.1, lista os rendimentos considerados sem nenhuma regra de 80% —
+# trabalho conta sempre a 100% ("bruto, antes dos descontos"). O
+# artigo complemento-solidario-idosos.html, que ainda afirmava 80% na
+# sua tabela de rendimentos, foi corrigido no mesmo commit — ver
+# tests/test_valores_ancora.py::test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao,
+# que tranca "80%" fora de todas as páginas do CSI.
 def test_rendimento_de_trabalho_conta_a_100_por_cento(pagina):
     r = _calcular(pagina, {
         "idadeAnos": 70, "idadeMeses": 0, "situacao": "isolado",

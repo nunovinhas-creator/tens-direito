@@ -47,7 +47,8 @@ def test_schema_tem_as_duas_tabelas(tmp_path):
         colunas_parametros = {c[1] for c in con.execute("PRAGMA table_info(parametros)")}
         assert colunas_parametros == {
             "prestacao", "parametro", "descricao", "unidade", "valor",
-            "vigencia_inicio", "referencia_legal", "fonte_url", "verificado_em",
+            "vigencia_inicio", "referencia_legal", "fonte_url",
+            "fonte_url_complementar", "verificado_em",
         }
         colunas_historial = {c[1] for c in con.execute("PRAGMA table_info(historial)")}
         assert colunas_historial == {"fonte", "commit_sha", "data_commit", "mensagem"}

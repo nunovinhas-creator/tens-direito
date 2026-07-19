@@ -480,9 +480,11 @@
     // CORRECÇÃO PASSO 0 (2026-07-19): rendimentos de trabalho passam a
     // contar a 100% (igual às pensões) — o parâmetro
     // percentagem_rendimento_trabalho (80%) foi removido de
-    // dados/parametros/csi.yaml por falta de citação legal primária
-    // confirmada; contar 100% é a leitura conservadora (nunca promete
-    // mais CSI do que a pessoa vai receber). Idade passa a ser
+    // dados/parametros/csi.yaml. Questão fechada no mesmo dia com fonte
+    // primária: Guia Prático 8002 do ISS, I.P. (v4.53, 21/05/2026),
+    // secção C1.1, confirma que os rendimentos de trabalho contam
+    // sempre a 100% (bruto, antes dos descontos), sem nenhuma regra de
+    // 80%. Idade passa a ser
     // comparada em MESES TOTAIS, nunca só anos completos — a versão
     // anterior comparava só `idade >= 66`, o que dava falso-elegível a
     // alguém com, por exemplo, 66 anos e 3 meses (que ainda não cumpre

@@ -398,15 +398,32 @@ def test_csi_dados_parametros_json_bate_com_a_pagina_do_artigo():
 
 
 def test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao():
-    """Tranca a remoção deliberada de 2026-07-19: nem a verificação
-    externa do Nuno nem uma pesquisa independente desta sessão
-    encontraram citação legal primária para os 80% especificamente no
-    CSI — o parâmetro nunca deve voltar sem essa confirmação. Nota
-    registada, não resolvida aqui: complemento-solidario-idosos.html
-    continua a afirmar 80% na sua tabela de rendimentos (facto
-    publicado antes desta correcção, por reconciliar à parte)."""
+    """Questão fechada com fonte primária (2026-07-19, mesmo dia): Guia
+    Prático 8002 do ISS, I.P. ("Complemento Solidário para Idosos",
+    v4.53, 21/05/2026), secção C1.1, lista os rendimentos considerados
+    sem nenhuma regra de 80% — rendimentos de trabalho contam a 100%
+    ("anuais brutos, antes dos descontos"). O parâmetro
+    percentagem_rendimento_trabalho nunca deve reaparecer no YAML (não
+    há nenhuma percentagem de redução a parametrizar quando a regra é
+    "sem redução"), e a string "80%" nunca deve voltar a aparecer em
+    nenhuma página do CSI — a 1.ª versão desta correcção só tinha
+    tocado no simulador; o artigo complemento-solidario-idosos.html
+    ainda afirmava 80% na sua tabela de rendimentos (facto de uma
+    sessão anterior) até ser corrigido no mesmo commit desta versão do
+    teste."""
     todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
     assert "percentagem_rendimento_trabalho" not in todos["prestacoes"]["csi"]
+
+    for pagina in ("simulador-csi.html", "complemento-solidario-idosos.html"):
+        html = _ler(pagina)
+        # Exclui blocos <script> (comentários JS documentam a remoção —
+        # "removemos os 80%" é histórico legítimo para manutenção,
+        # nunca uma afirmação activa ao utilizador; JSON-LD já não tem
+        # "80%" desde a correcção, verificado por json.loads noutro
+        # teste). Só o conteúdo visível/HTML é que nunca pode voltar a
+        # mostrar "80%".
+        sem_scripts = re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", html, flags=re.IGNORECASE)
+        assert "80%" not in sem_scripts, f"{pagina}: '80%' reapareceu fora de <script> — questão fechada, não deve voltar sem novo facto"
 
 
 def test_dados_parametros_json_sincronizado_com_os_yaml():

@@ -7592,3 +7592,49 @@ reaparece sem confirmação). Suite completa reconfirmada localmente
 sem regressões; `ruff` limpo. Push mantido no mesmo branch
 `claude/new-session-kmnkvb`, sem merge — o merge continua a ser feito
 manualmente pelo Nuno.*
+
+---
+
+*Fecho da questão dos 80% (2026-07-19, mesma sessão) — o Nuno encontrou
+a fonte primária que faltava: Guia Prático 8002 do ISS, I.P.
+("Complemento Solidário para Idosos", v4.53, 21/05/2026), secção C1.1,
+lista os rendimentos considerados (trabalho dependente bruto incl.
+subsídios de férias e Natal, trabalho independente, capitais,
+prediais, incrementos patrimoniais, pensões e complementos, património
+mobiliário/imobiliário excepto habitação própria) sem nenhuma regra de
+80% — confirma que o simulador (já corrigido para 100% na correcção
+anterior) estava certo; era o artigo publicado que estava errado.
+
+`complemento-solidario-idosos.html` corrigido: tabela "O que conta (e
+o que não conta) para o cálculo" alinhada com a categorização da
+secção C1.1 (trabalho dependente/independente separados, rótulos
+"rendimentos de capitais"/"rendimentos prediais"/"incrementos
+patrimoniais" a bater com a nomenclatura do Guia), 80% removido. O
+mesmo erro de diploma encontrado antes no simulador (DL n.º 126-A/2017
+citado como lei base do CSI — é a lei base da PSI) estava espalhado
+por 5 sítios adicionais neste artigo (nota da tabela, 3 citações
+`fonte-inline` de FAQ, bloco de fontes no fim da página) — todos
+corrigidos para Decreto-Lei n.º 232/2005, com o Guia Prático 8002
+acrescentado como fonte corroborante. `dateModified`/"Verificado a"
+avançados para 19/07/2026 (facto corrigido, não só cosmético).
+
+`dados/parametros/csi.yaml` ganhou `fonte_url_complementar` (opcional,
+nunca substitui `referencia_legal`/`fonte_url`) nos 3 parâmetros,
+apontando ao Guia Prático 8002 — propagado a `dados/parametros.json`
+(`gerar_parametros_json.py`) e à tabela `parametros` de
+`dados/tensdireito.db` (`gerar_base_dados.py`, nova coluna
+`fonte_url_complementar`). O parâmetro `percentagem_rendimento_trabalho`
+**não foi reintroduzido** — não há nenhuma percentagem de redução a
+parametrizar quando a regra confirmada é "sem redução, 100% bruto".
+
+Novo canário em `test_valores_ancora.py` (`test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao`,
+reescrito): "80%" nunca pode voltar a aparecer em nenhuma página do
+CSI (`simulador-csi.html`, `complemento-solidario-idosos.html`), fora
+de comentários `<script>` (documentação histórica legítima do que foi
+removido e porquê, nunca uma afirmação activa ao utilizador — achado
+real ao correr o teste pela 1.ª vez: a própria explicação em comentário
+JS continha a substring "80%", falso positivo corrigido restringindo o
+canário ao HTML/JSON-LD visível). Suite completa reconfirmada sem
+regressões; `ruff` limpo. Sem merge — mantido no mesmo branch
+`claude/new-session-kmnkvb`, revisão final e merge continuam a ser do
+Nuno.*

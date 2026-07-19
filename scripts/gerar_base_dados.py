@@ -62,6 +62,7 @@ def _ler_linhas_parametros() -> List[tuple]:
                     str(entrada.get("vigencia_inicio", "")),
                     entrada.get("referencia_legal", ""),
                     entrada.get("fonte_url", ""),
+                    entrada.get("fonte_url_complementar"),
                     str(entrada.get("verificado_em", "")),
                 ))
     # Ordem determinística: mesmo estado de ficheiros produz sempre a
@@ -134,20 +135,21 @@ def gerar(destino: Path = DESTINO_DB) -> dict:
         cur.execute(
             """
             CREATE TABLE parametros (
-                prestacao         TEXT NOT NULL,
-                parametro         TEXT NOT NULL,
-                descricao         TEXT,
-                unidade           TEXT,
-                valor             REAL,
-                vigencia_inicio   TEXT NOT NULL,
-                referencia_legal  TEXT,
-                fonte_url         TEXT,
-                verificado_em     TEXT
+                prestacao              TEXT NOT NULL,
+                parametro              TEXT NOT NULL,
+                descricao              TEXT,
+                unidade                TEXT,
+                valor                  REAL,
+                vigencia_inicio        TEXT NOT NULL,
+                referencia_legal       TEXT,
+                fonte_url              TEXT,
+                fonte_url_complementar TEXT,
+                verificado_em          TEXT
             )
             """
         )
         cur.executemany(
-            "INSERT INTO parametros VALUES (?,?,?,?,?,?,?,?,?)", linhas_parametros
+            "INSERT INTO parametros VALUES (?,?,?,?,?,?,?,?,?,?)", linhas_parametros
         )
 
         cur.execute(
