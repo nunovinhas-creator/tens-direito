@@ -7536,3 +7536,59 @@ job (canário de URLs oficiais externas) salta correctamente em eventos
 nenhuma das duas flags tocada; esta sessão não é scraper). Trabalho
 feito na branch `claude/new-session-kmnkvb` (designada pelo ambiente
 remoto desta sessão) — **PR: #69 (aberto, CI verde, ainda não merged)**.*
+
+---
+
+*Correcção PASSO 0 ao PR #69 (2026-07-19, mesma sessão) — o Nuno
+verificou os 4 valores de `dados/parametros/csi.yaml` contra fontes
+oficiais antes do merge e encontrou 3 problemas reais na 1.ª migração
+desta sessão: os diplomas citados estavam errados (Decreto-Lei n.º
+126-A/2017 é a lei base da PSI, nunca fixa valores do CSI de 2026 —
+substituído por Portaria n.º 480-D/2025/1 + Decreto-Lei n.º 232/2005
+para o valor individual, e Decreto-Lei n.º 35/2024 para o coeficiente
+1,75 do casal); a idade mínima estava simplificada a "66 anos"
+completos, um **bug real** — a idade normal de acesso em 2026 é 66
+anos e **9 meses** (Portaria n.º 358/2024/1), e comparar só anos dava
+falso-elegível a alguém com, por exemplo, 66 anos e 3 meses; e o
+parâmetro `percentagem_rendimento_trabalho` (80%) não tinha citação
+legal primária confirmada.
+
+Corrigido: `dados/parametros/csi.yaml` com as referências correctas
+(diplomas + URLs reais do diariodarepublica.pt, confirmados por
+`WebSearch` nesta sessão — nunca inventados); o parâmetro de idade
+passou de `idade_minima_anos` (valor 66) para `idade_minima_meses_totais`
+(valor 801 = 66×12+9) — correcção substantiva, não só de metadados.
+`simulador-csi.html` reescrito em conformidade: formulário ganhou um
+2.º campo (`idadeMeses`, 0-11) ao lado da idade em anos;
+`calcularCSI()` compara `idadeTotalMeses >= idadeMinimaMesesTotais`;
+rendimentos de trabalho passam a contar a 100% (percentagem_rendimento_trabalho
+removido — nem a verificação do Nuno nem uma pesquisa independente
+desta sessão via `WebSearch` encontraram base primária para os 80%
+especificamente no CSI). Todo o texto visível e JSON-LD do simulador
+que ainda citava "80%" ou o diploma errado foi actualizado a par
+(formula-box, FAQ visível + `FAQPage` JSON-LD, disclaimer de
+independência) — nunca deixado a descrever uma regra que o código já
+não aplica.
+
+**Discrepância encontrada e registada, não resolvida nesta correcção**:
+o artigo já publicado `complemento-solidario-idosos.html` (linha ~427)
+continua a afirmar "Rendimentos de trabalho dependente ou independente
+— 80% do valor declarado" na sua tabela de rendimentos, um facto
+fact-checked numa sessão anterior (25/06/2026). Nem a verificação do
+Nuno nem esta sessão confirmaram essa percentagem contra uma fonte
+primária — fica como uma inconsistência real entre o artigo e o
+simulador, sinalizada aqui para decisão numa sessão dedicada (confirmar
+a fonte do artigo, ou corrigi-lo também) — este ficheiro não foi
+tocado por não ter sido pedido e por estar fora do âmbito desta
+correcção específica ao PR.
+
+Golden tests reescritos com casos de fronteira reais em meses totais
+(66a8m = 800 meses, inelegível; 66a9m = 801 meses, elegível) e um teste
+de regressão de ponta-a-ponta (Chromium real, 66 anos e 3 meses tem de
+mostrar "Ainda sem direito por idade" na UI, não um resultado
+positivo). `tests/test_valores_ancora.py` actualizado com o mesmo
+raciocínio + um teste que tranca a remoção do parâmetro de 80% (nunca
+reaparece sem confirmação). Suite completa reconfirmada localmente
+sem regressões; `ruff` limpo. Push mantido no mesmo branch
+`claude/new-session-kmnkvb`, sem merge — o merge continua a ser feito
+manualmente pelo Nuno.*

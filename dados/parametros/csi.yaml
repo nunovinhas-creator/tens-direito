@@ -1,13 +1,22 @@
 # FASE 2 (sessão de dados abertos, 2026-07-19) — Complemento Solidário
 # para Idosos (CSI), padrão OpenFisca de parâmetros com vigência.
 #
-# PASSO 0 cumprido por migração, não por reverificação de raiz: os 4
-# valores abaixo já estavam fact-checked e publicados em
-# complemento-solidario-idosos.html (verificado 25/06/2026, com
-# `fonte`/`verificado_em` já anexados a cada um em
-# simulador-csi.html::PARAMETROS_CSI) — migrados aqui tal e qual, nunca
-# recalculados nem inventados. Consolidado em dados/parametros.json por
-# scripts/gerar_parametros_json.py.
+# CORREÇÃO PASSO 0 (2026-07-19, mesma sessão): verificação inicial
+# migrou os valores de simulador-csi.html sem os revalidar contra a
+# fonte primária — os diplomas citados (DL n.º 126-A/2017) estavam
+# errados (é a lei base da PSI, nunca fixou valores de 2026). Corrigido
+# depois de verificação do Nuno contra fontes oficiais: DL n.º 126-A/2017
+# só é o diploma que cria a PSI — a lei base do CSI é sempre o
+# Decreto-Lei n.º 232/2005, de 29 de dezembro, com os valores/idade
+# fixados anualmente por portaria própria. O parâmetro
+# percentagem_rendimento_trabalho foi removido — nem a verificação do
+# Nuno nem uma pesquisa independente desta sessão encontraram uma
+# citação primária para os 80% (ver nota no PR: o artigo publicado
+# complemento-solidario-idosos.html continua a afirmar 80% na tabela de
+# rendimentos, um facto por reconciliar à parte, fora do âmbito desta
+# correcção).
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
 
 valor_referencia_individual_anual:
   descricao: "Valor de referência do CSI — pessoa isolada"
@@ -15,9 +24,9 @@ valor_referencia_individual_anual:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 8040
-      referencia_legal: "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, isolado"
-      fonte_url: "https://www.seg-social.pt"
-      verificado_em: "2026-06-25"
+      referencia_legal: "Portaria n.º 480-D/2025/1, de 30 de dezembro, art. 2.º n.º 1 (nos termos do art. 9.º n.º 1 do Decreto-Lei n.º 232/2005, de 29 de dezembro)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/480-d-2025-993056225"
+      verificado_em: "2026-07-19"
 
 valor_referencia_casal_anual:
   descricao: "Valor de referência do CSI — casal / união de facto"
@@ -25,26 +34,23 @@ valor_referencia_casal_anual:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 14070
-      referencia_legal: "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, casal/união de facto"
-      fonte_url: "https://www.seg-social.pt"
-      verificado_em: "2026-06-25"
+      referencia_legal: "Coeficiente de equivalência 1,75 × valor individual — art. 9.º n.º 2 do Decreto-Lei n.º 232/2005, na redação do Decreto-Lei n.º 35/2024, de 21 de maio; valor individual fixado pela Portaria n.º 480-D/2025/1"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/35-2024-865433933"
+      verificado_em: "2026-07-19"
 
-idade_minima_anos:
-  descricao: "Idade normal de acesso ao CSI (66 anos e 9 meses em 2026, simplificado a anos completos no simulador)"
-  unidade: anos
+# Idade mínima em MESES TOTAIS (nunca só anos completos) — correcção
+# substantiva: 66 anos e 9 meses = 66*12 + 9 = 801 meses. A versão
+# anterior simplificava para 66 anos completos, o que gerava falsos
+# positivos de elegibilidade (ex.: alguém com 66 anos e 3 meses NÃO tem
+# direito, mas o simulador antigo dizia que tinha). Esta idade muda
+# todos os anos por portaria própria — candidata a canary test em
+# tests/test_valores_ancora.py, mesmo padrão do IAS.
+idade_minima_meses_totais:
+  descricao: "Idade normal de acesso ao CSI, em meses totais (66 anos e 9 meses em 2026 = 801 meses)"
+  unidade: meses
   valores:
     - vigencia_inicio: "2026-01-01"
-      valor: 66
-      referencia_legal: "Decreto-Lei n.º 126-A/2017 — idade normal de acesso"
-      fonte_url: "https://www.seg-social.pt"
-      verificado_em: "2026-06-25"
-
-percentagem_rendimento_trabalho:
-  descricao: "Percentagem do rendimento de trabalho considerada no cálculo do CSI"
-  unidade: fracao
-  valores:
-    - vigencia_inicio: "2026-01-01"
-      valor: 0.8
-      referencia_legal: "Decreto-Lei n.º 126-A/2017 — rendimentos de trabalho contam a 80% do valor declarado"
-      fonte_url: "https://www.seg-social.pt"
-      verificado_em: "2026-06-25"
+      valor: 801
+      referencia_legal: "Portaria n.º 358/2024/1, de 30 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2026: 66 anos e 9 meses)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090"
+      verificado_em: "2026-07-19"

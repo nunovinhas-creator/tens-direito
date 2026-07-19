@@ -7,36 +7,27 @@
         "unidade": "EUR/ano",
         "valor": 8040,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, isolado",
-        "fonte_url": "https://www.seg-social.pt",
-        "verificado_em": "2026-06-25"
+        "referencia_legal": "Portaria n.º 480-D/2025/1, de 30 de dezembro, art. 2.º n.º 1 (nos termos do art. 9.º n.º 1 do Decreto-Lei n.º 232/2005, de 29 de dezembro)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/480-d-2025-993056225",
+        "verificado_em": "2026-07-19"
       },
       "valor_referencia_casal_anual": {
         "descricao": "Valor de referência do CSI — casal / união de facto",
         "unidade": "EUR/ano",
         "valor": 14070,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, casal/união de facto",
-        "fonte_url": "https://www.seg-social.pt",
-        "verificado_em": "2026-06-25"
+        "referencia_legal": "Coeficiente de equivalência 1,75 × valor individual — art. 9.º n.º 2 do Decreto-Lei n.º 232/2005, na redação do Decreto-Lei n.º 35/2024, de 21 de maio; valor individual fixado pela Portaria n.º 480-D/2025/1",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/35-2024-865433933",
+        "verificado_em": "2026-07-19"
       },
-      "idade_minima_anos": {
-        "descricao": "Idade normal de acesso ao CSI (66 anos e 9 meses em 2026, simplificado a anos completos no simulador)",
-        "unidade": "anos",
-        "valor": 66,
+      "idade_minima_meses_totais": {
+        "descricao": "Idade normal de acesso ao CSI, em meses totais (66 anos e 9 meses em 2026 = 801 meses)",
+        "unidade": "meses",
+        "valor": 801,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Decreto-Lei n.º 126-A/2017 — idade normal de acesso",
-        "fonte_url": "https://www.seg-social.pt",
-        "verificado_em": "2026-06-25"
-      },
-      "percentagem_rendimento_trabalho": {
-        "descricao": "Percentagem do rendimento de trabalho considerada no cálculo do CSI",
-        "unidade": "fracao",
-        "valor": 0.8,
-        "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Decreto-Lei n.º 126-A/2017 — rendimentos de trabalho contam a 80% do valor declarado",
-        "fonte_url": "https://www.seg-social.pt",
-        "verificado_em": "2026-06-25"
+        "referencia_legal": "Portaria n.º 358/2024/1, de 30 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2026: 66 anos e 9 meses)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090",
+        "verificado_em": "2026-07-19"
       }
     }
   }

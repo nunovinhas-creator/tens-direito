@@ -377,17 +377,36 @@ def test_csi_dados_parametros_json_bate_com_a_pagina_do_artigo():
     tem de continuar a bater com os valores 2026 já fact-checked e
     publicados em complemento-solidario-idosos.html — corrigir SEMPRE na
     fonte (dados/parametros/csi.yaml + a própria página do artigo), nunca
-    só aqui, quando a lei mudar."""
+    só aqui, quando a lei mudar.
+
+    CORRECÇÃO PASSO 0 (2026-07-19): idade mínima passa a MESES TOTAIS
+    (801 = 66 anos e 9 meses) — nunca só anos completos (66), que dava
+    falso-elegível a alguém com, por exemplo, 66 anos e 3 meses.
+    `percentagem_rendimento_trabalho` foi removido (ver
+    test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao
+    mais abaixo) — trabalho passa a contar a 100%."""
     todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
     csi = todos["prestacoes"]["csi"]
     assert csi["valor_referencia_individual_anual"]["valor"] == 8040
     assert csi["valor_referencia_casal_anual"]["valor"] == 14070
-    assert csi["idade_minima_anos"]["valor"] == 66
-    assert csi["percentagem_rendimento_trabalho"]["valor"] == 0.8
+    assert csi["idade_minima_meses_totais"]["valor"] == 801
 
     artigo = _ler("complemento-solidario-idosos.html")
     assert "8.040" in artigo
     assert "14.070" in artigo
+    assert "66 anos e 9 meses" in artigo
+
+
+def test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao():
+    """Tranca a remoção deliberada de 2026-07-19: nem a verificação
+    externa do Nuno nem uma pesquisa independente desta sessão
+    encontraram citação legal primária para os 80% especificamente no
+    CSI — o parâmetro nunca deve voltar sem essa confirmação. Nota
+    registada, não resolvida aqui: complemento-solidario-idosos.html
+    continua a afirmar 80% na sua tabela de rendimentos (facto
+    publicado antes desta correcção, por reconciliar à parte)."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    assert "percentagem_rendimento_trabalho" not in todos["prestacoes"]["csi"]
 
 
 def test_dados_parametros_json_sincronizado_com_os_yaml():
