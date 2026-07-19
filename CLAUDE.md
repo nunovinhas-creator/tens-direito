@@ -7517,3 +7517,22 @@ Suite completa: **2656 passed, 4 skipped** (allow-list inalterada);
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados — nenhuma das duas flags tocada). Trabalho directo
 em `main`.*
+
+---
+
+*Última revisão: 2026-07-19 — infra-estrutura de dados abertos, 3 fases
+incrementais (git scraping/`dados/observacoes/`, parâmetros legais em
+YAML no padrão OpenFisca migrando o CSI, publicação SQLite +
+`dados.html` com Datasette Lite). Ver secção "DADOS ABERTOS — GIT
+SCRAPING, PARÂMETROS OPENFISCA E PUBLICAÇÃO (FASES 1-3)" para o detalhe
+completo. Suite local completa: **2702 passed, 4 skipped, 0 failed**
+(527s); `ruff check scripts/ tests/ --select E,F,W --ignore E501`
+limpo. **PR #69** (aberto contra `main`) — CI real ("Integridade do
+Código") confirmado verde nos 6 jobs aplicáveis (Suite de Testes,
+Ruff, pip-audit, Gitleaks, Validação HTML, Prompt Injection); o 7.º
+job (canário de URLs oficiais externas) salta correctamente em eventos
+`pull_request`, por desenho. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+nenhuma das duas flags tocada; esta sessão não é scraper). Trabalho
+feito na branch `claude/new-session-kmnkvb` (designada pelo ambiente
+remoto desta sessão) — **PR: #69 (aberto, CI verde, ainda não merged)**.*
