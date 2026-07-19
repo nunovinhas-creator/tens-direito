@@ -29,5 +29,17 @@
   "numero-utente-sns.html": [
     {"url": "https://www.sns24.gov.pt", "descricao": "SNS 24 — portal e app"},
     {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Pedir o número de utente do SNS\""}
+  ],
+  "registo-criminal-online.html": [
+    {"url": "https://registocriminal.justica.gov.pt", "descricao": "Registo Criminal Online — pedido e consulta do certificado"},
+    {"url": "https://justica.gov.pt", "descricao": "Justiça.gov.pt — Pedir e consultar registo criminal de pessoas"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Pedir o Registo Criminal de pessoas\""}
+  ],
+  "certidao-situacao-tributaria.html": [
+    {"url": "https://www.portaldasfinancas.gov.pt", "descricao": "Portal das Finanças — Certidões (Dívida e Não Dívida)"}
+  ],
+  "marcar-atendimento-seguranca-social.html": [
+    {"url": "https://www.seg-social.pt", "descricao": "Segurança Social Direta — atendimento por marcação (SIGA) e canal telefónico"},
+    {"url": "https://www.gov.pt", "descricao": "gov.pt — serviço \"Agendar atendimento pelo sistema SIGA\""}
   ]
 }

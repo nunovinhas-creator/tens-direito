@@ -64,6 +64,11 @@
     "pagina": "calendario-pagamentos-seguranca-social.html",
     "titulo": "Calendário de Pagamentos da Segurança Social"
   },
+  "certidao-situacao-tributaria": {
+    "chip": "Como Pedir",
+    "pagina": "certidao-situacao-tributaria.html",
+    "titulo": "Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças"
+  },
   "chave-movel-digital": {
     "chip": "Como Pedir",
     "pagina": "chave-movel-digital.html",
@@ -184,6 +189,11 @@
     "pagina": "manuais-escolares-mega.html",
     "titulo": "Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales"
   },
+  "marcar-atendimento-seguranca-social": {
+    "chip": "Como Pedir",
+    "pagina": "marcar-atendimento-seguranca-social.html",
+    "titulo": "Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial"
+  },
   "noticias": {
     "chip": null,
     "pagina": "noticias.html",
@@ -283,6 +293,11 @@
     "chip": "Prestação Social Única",
     "pagina": "psu-vs-abono-familia.html",
     "titulo": "PSU 2026 e Abono de Família: são apoios diferentes — não se confundem"
+  },
+  "registo-criminal-online": {
+    "chip": "Como Pedir",
+    "pagina": "registo-criminal-online.html",
+    "titulo": "Certificado do Registo Criminal Online 2026: preço, prazo e como pedir"
   },
   "renovar-cartao-cidadao": {
     "chip": "Como Pedir",
