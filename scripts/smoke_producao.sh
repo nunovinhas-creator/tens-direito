@@ -39,6 +39,12 @@ ESPERA_S=30
 # simulador novo for publicado.
 SIMULADORES=("/simulador-abono.html" "/simulador-ase.html" "/simulador-csi.html")
 
+# FASE 3 (sessão de dados abertos, 2026-07-19): além do 200, o JSON
+# consolidado tem mesmo de parsear como JSON válido — um 200 com corpo
+# truncado/corrompido (ex.: cache de CDN a meio de um deploy) nunca deve
+# passar despercebido só porque o status code estava certo.
+JSON_A_VALIDAR=("/dados/parametros.json")
+
 falhas=0
 
 e_simulador() {
@@ -46,6 +52,15 @@ e_simulador() {
   local s
   for s in "${SIMULADORES[@]}"; do
     [ "$caminho" = "$s" ] && return 0
+  done
+  return 1
+}
+
+e_json_a_validar() {
+  local caminho="$1"
+  local j
+  for j in "${JSON_A_VALIDAR[@]}"; do
+    [ "$caminho" = "$j" ] && return 0
   done
   return 1
 }
@@ -78,6 +93,24 @@ verificar_url() {
     echo "::error::${url} devolveu 200 mas o corpo não contém 'Verificado a' — pode estar a servir conteúdo errado ou desactualizado"
     rm -f "$corpo_ficheiro"
     return 1
+  fi
+
+  if e_json_a_validar "$caminho" && ! python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$corpo_ficheiro" 2>/dev/null; then
+    echo "::error::${url} devolveu 200 mas o corpo não parseia como JSON válido"
+    rm -f "$corpo_ficheiro"
+    return 1
+  fi
+
+  # dados/tensdireito.db (FASE 3): confirma que o GitHub Pages serve o
+  # ficheiro com CORS aberto, condição necessária para o Datasette Lite o
+  # conseguir ler directamente no browser de outro domínio. Nunca falha o
+  # smoke test por isto — só ::warning:: — porque isto é uma confirmação
+  # de comportamento da plataforma, não do nosso código, e um cabeçalho
+  # ausente não significa que a página em si esteja quebrada.
+  if [ "$caminho" = "/dados/tensdireito.db" ]; then
+    if ! curl -sS -A "$USER_AGENT" -I "$url" 2>/dev/null | grep -qi "^access-control-allow-origin:"; then
+      echo "::warning::${url} não devolveu Access-Control-Allow-Origin — confirmar manualmente se o Datasette Lite consegue mesmo ler o ficheiro"
+    fi
   fi
 
   echo "OK  ${url} (${http_code})"

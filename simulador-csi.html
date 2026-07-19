@@ -174,6 +174,7 @@
     .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
     .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
     .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.5; }
     .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
     .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
     .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
@@ -292,6 +293,10 @@
       💡 <strong>Valor de referência 2026</strong> — 8.040€/ano (individual) · 14.070€/ano (casal) · <strong>Verificado a 25/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/complemento-solidario-idosos.html">ver guia completo do CSI</a>
     </div>
 
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os parâmetros oficiais do CSI agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
+    </div>
+
     <div class="calc-card">
       <form id="formCSI" onsubmit="calcularCSIFormulario(event)">
         <div class="form-group">
@@ -334,7 +339,7 @@
         </div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular CSI</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularCSI" disabled>🧮 Calcular CSI</button>
           <button type="reset" class="btn btn-secondary" onclick="limparResultado()">Limpar</button>
         </div>
       </form>
@@ -416,33 +421,49 @@
   </footer>
 
   <script>
-    // ── PARAMETROS_CSI — fonte única de verdade da fórmula ──────────────────
-    // Cada valor tem "fonte" e "verificado_em" próprios — nunca um número
-    // solto no meio da lógica (mesmo padrão de PARAMETROS_PSU em
-    // simulador-psu.html). Valores já fact-checked e publicados em
-    // complemento-solidario-idosos.html (verificado 25/06/2026).
-    const PARAMETROS_CSI = {
-      valorReferenciaIndividual: {
-        valor: 8040,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, isolado',
-        verificado_em: '2026-06-25',
-      },
-      valorReferenciaCasal: {
-        valor: 14070,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, casal/união de facto',
-        verificado_em: '2026-06-25',
-      },
-      idadeMinimaAnos: {
-        valor: 66,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — idade normal de acesso (66 anos e 9 meses em 2026, simplificado a anos completos)',
-        verificado_em: '2026-06-25',
-      },
-      percentagemRendimentoTrabalho: {
-        valor: 0.8,
-        fonte: 'Decreto-Lei n.º 126-A/2017 — rendimentos de trabalho contam a 80% do valor declarado',
-        verificado_em: '2026-06-25',
-      },
-    };
+    // ── PARAMETROS_CSI — carregado em runtime de /dados/parametros.json ─────
+    // FASE 2 da sessão de dados abertos (2026-07-19): a fonte de verdade
+    // deixou de ser este objecto JS inline e passou a
+    // dados/parametros/csi.yaml (padrão OpenFisca de parâmetros com
+    // vigência — nunca a biblioteca OpenFisca, só a convenção),
+    // consolidado em dados/parametros.json por
+    // scripts/gerar_parametros_json.py. Nunca calcula com valores em
+    // falta: se o fetch falhar, mostra um erro visível
+    // (#avisoParametrosErro) e mantém o botão de calcular desactivado —
+    // um estado de erro nunca pode parecer sucesso.
+    let PARAMETROS_CSI = null;
+
+    async function carregarParametrosCSI() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const csi = todos.prestacoes && todos.prestacoes.csi;
+        if (!csi) throw new Error("prestações.csi em falta em dados/parametros.json");
+        PARAMETROS_CSI = {
+          valorReferenciaIndividual: csi.valor_referencia_individual_anual,
+          valorReferenciaCasal: csi.valor_referencia_casal_anual,
+          idadeMinimaAnos: csi.idade_minima_anos,
+          percentagemRendimentoTrabalho: csi.percentagem_rendimento_trabalho,
+        };
+        const botao = document.getElementById('btnCalcularCSI');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosCSI(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosCSI(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularCSI');
+      if (botao) botao.disabled = true;
+      console.error('Simulador CSI: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosCSI);
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
     // Função pura, testada em tests/test_simulador_csi_calculo.py.
@@ -493,6 +514,11 @@
 
     function calcularCSIFormulario(e) {
       e.preventDefault();
+
+      if (!PARAMETROS_CSI) {
+        mostrarErroParametrosCSI(new Error('parâmetros ainda não carregados'));
+        return;
+      }
 
       const input = {
         idade: parseInt(document.getElementById('idade').value, 10),

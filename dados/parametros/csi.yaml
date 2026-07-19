@@ -1,0 +1,50 @@
+# FASE 2 (sessão de dados abertos, 2026-07-19) — Complemento Solidário
+# para Idosos (CSI), padrão OpenFisca de parâmetros com vigência.
+#
+# PASSO 0 cumprido por migração, não por reverificação de raiz: os 4
+# valores abaixo já estavam fact-checked e publicados em
+# complemento-solidario-idosos.html (verificado 25/06/2026, com
+# `fonte`/`verificado_em` já anexados a cada um em
+# simulador-csi.html::PARAMETROS_CSI) — migrados aqui tal e qual, nunca
+# recalculados nem inventados. Consolidado em dados/parametros.json por
+# scripts/gerar_parametros_json.py.
+
+valor_referencia_individual_anual:
+  descricao: "Valor de referência do CSI — pessoa isolada"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 8040
+      referencia_legal: "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, isolado"
+      fonte_url: "https://www.seg-social.pt"
+      verificado_em: "2026-06-25"
+
+valor_referencia_casal_anual:
+  descricao: "Valor de referência do CSI — casal / união de facto"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 14070
+      referencia_legal: "Decreto-Lei n.º 126-A/2017 — valor de referência CSI 2026, casal/união de facto"
+      fonte_url: "https://www.seg-social.pt"
+      verificado_em: "2026-06-25"
+
+idade_minima_anos:
+  descricao: "Idade normal de acesso ao CSI (66 anos e 9 meses em 2026, simplificado a anos completos no simulador)"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 66
+      referencia_legal: "Decreto-Lei n.º 126-A/2017 — idade normal de acesso"
+      fonte_url: "https://www.seg-social.pt"
+      verificado_em: "2026-06-25"
+
+percentagem_rendimento_trabalho:
+  descricao: "Percentagem do rendimento de trabalho considerada no cálculo do CSI"
+  unidade: fracao
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.8
+      referencia_legal: "Decreto-Lei n.º 126-A/2017 — rendimentos de trabalho contam a 80% do valor declarado"
+      fonte_url: "https://www.seg-social.pt"
+      verificado_em: "2026-06-25"

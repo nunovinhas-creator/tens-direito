@@ -1,0 +1,19 @@
+{
+  "fonte": "dre_psu",
+  "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
+  "data_extracao": "2026-07-07T11:12:22.472898+00:00",
+  "sha256_conteudo": "34205c1ac925c2d86676ca2ec296bb6acaac8c50586d49cabb27f4dbb438edac",
+  "estado": "OK",
+  "valores_extraidos": {
+    "titulo": "Resultados de Pesquisa: \"prestação social única\"",
+    "paragrafos": [
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07",
+      "Trabalho, Solidariedade e Segurança Social - Gabinete da Ministra do Trabalho, Solidariedade e Segurança Social"
+    ],
+    "itens_lista": [
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07"
+    ]
+  }
+}

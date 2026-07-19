@@ -355,3 +355,76 @@ def test_renovar_cc_precos_completos_por_idade_e_urgencia():
     html = _ler("renovar-cartao-cidadao.html")
     for valor in ("16,20 €", "18,00 €", "15,00 €", "33,00 €", "30,00 €", "53,00 €", "50,00 €"):
         assert f"<td>{valor}</td>" in html, f"{valor} em falta na tabela de preços"
+
+
+# ── FASE 2 — dados/parametros/*.yaml como fonte, padrão OpenFisca ──────────
+# (sessão de dados abertos, 2026-07-19). dados/parametros.json é gerado por
+# scripts/gerar_parametros_json.py a partir de dados/parametros/*.yaml —
+# este canário lê a MESMA fonte que os simuladores já migrados consomem em
+# runtime (via fetch), nunca uma cópia. Quando um simulador novo migrar
+# para este padrão, os seus valores ganham a mesma cobertura aqui.
+import json  # noqa: E402
+from datetime import date  # noqa: E402
+
+import yaml  # noqa: E402
+
+PARAMETROS_DIR = BASE_DIR / "dados" / "parametros"
+PARAMETROS_JSON = BASE_DIR / "dados" / "parametros.json"
+
+
+def test_csi_dados_parametros_json_bate_com_a_pagina_do_artigo():
+    """dados/parametros.json (consumido em runtime por simulador-csi.html)
+    tem de continuar a bater com os valores 2026 já fact-checked e
+    publicados em complemento-solidario-idosos.html — corrigir SEMPRE na
+    fonte (dados/parametros/csi.yaml + a própria página do artigo), nunca
+    só aqui, quando a lei mudar."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    csi = todos["prestacoes"]["csi"]
+    assert csi["valor_referencia_individual_anual"]["valor"] == 8040
+    assert csi["valor_referencia_casal_anual"]["valor"] == 14070
+    assert csi["idade_minima_anos"]["valor"] == 66
+    assert csi["percentagem_rendimento_trabalho"]["valor"] == 0.8
+
+    artigo = _ler("complemento-solidario-idosos.html")
+    assert "8.040" in artigo
+    assert "14.070" in artigo
+
+
+def test_dados_parametros_json_sincronizado_com_os_yaml():
+    """Rede de segurança contra editar um YAML e esquecer de correr
+    `python scripts/gerar_parametros_json.py` — mesma verificação que
+    `--check` faz, replicada aqui para aparecer na suite normal."""
+    import subprocess
+    import sys
+
+    resultado = subprocess.run(
+        [sys.executable, str(BASE_DIR / "scripts" / "gerar_parametros_json.py"), "--check"],
+        capture_output=True, text=True,
+    )
+    assert resultado.returncode == 0, (
+        "dados/parametros.json diverge de dados/parametros/*.yaml — correr "
+        f"`python scripts/gerar_parametros_json.py` para regenerar.\n{resultado.stdout}{resultado.stderr}"
+    )
+
+
+def test_nenhum_parametro_vigente_fica_sem_verificado_em():
+    """PASSO 0 (obrigatório para qualquer valor migrado para YAML): réplica
+    visível na suite de testes da guarda dura de
+    scripts/gerar_parametros_json.py::_valor_vigente — nenhum parâmetro
+    cuja vigência já começou pode ter 'verificado_em' vazio. Confirmado a
+    falhar de propósito nesta sessão (verificado_em esvaziado
+    manualmente, gerar_parametros_json.py rejeitou com ERRO, revertido)."""
+    hoje = date.today()
+    for ficheiro in sorted(PARAMETROS_DIR.glob("*.yaml")):
+        bruto = yaml.safe_load(ficheiro.read_text(encoding="utf-8")) or {}
+        for nome_parametro, definicao in bruto.items():
+            for entrada in definicao.get("valores", []):
+                vigencia = date.fromisoformat(str(entrada["vigencia_inicio"]))
+                if vigencia <= hoje:
+                    assert entrada.get("verificado_em"), (
+                        f"{ficheiro.name}:{nome_parametro} — vigência {vigencia} já "
+                        "começou mas 'verificado_em' está vazio (PASSO 0 não cumprido)"
+                    )
+                    assert entrada.get("referencia_legal") and entrada.get("fonte_url"), (
+                        f"{ficheiro.name}:{nome_parametro} — sem referencia_legal/fonte_url"
+                    )

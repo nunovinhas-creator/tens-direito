@@ -89,6 +89,11 @@
     "pagina": "cuidador-informal.html",
     "titulo": "Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir"
   },
+  "dados": {
+    "chip": null,
+    "pagina": "dados.html",
+    "titulo": "Dados Abertos"
+  },
   "declaracao-situacao-contributiva": {
     "chip": "Como Pedir",
     "pagina": "declaracao-situacao-contributiva.html",

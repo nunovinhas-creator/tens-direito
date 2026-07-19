@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Procura padrões de prompt injection em conteúdo importado de fontes
-externas — scraper (`data/scraped/`), outros dados (`data/*.json`) e
-relatórios do Shadow Mode (`shadow_history/`).
+externas — scraper (`data/scraped/`), outros dados (`data/*.json`),
+relatórios do Shadow Mode (`shadow_history/`) e o historial auditável de
+observações (`dados/observacoes/` — FASE 1 da sessão de dados abertos,
+2026-07-19: cópia do mesmo `conteudo_extraido` que já vive em
+`data/scraped/`, mesma categoria de conteúdo externo).
 
 Guardrail permanente: o pipeline ingere conteúdo externo todos os dias
 (scraper Playwright, feeds RSS). Este script nunca executa nem
@@ -20,7 +23,7 @@ from typing import List, Tuple
 RAIZ = Path(__file__).resolve().parent.parent
 
 # Directórios onde entra conteúdo de fontes externas (scraper, RSS).
-DIRETORIOS_A_VERIFICAR = ["data", "shadow_history"]
+DIRETORIOS_A_VERIFICAR = ["data", "shadow_history", "dados"]
 
 # Frases multi-palavra, não palavras soltas — para não gerar falsos
 # positivos com vocabulário legítimo em português (ex.: "instrução",
@@ -78,7 +81,8 @@ def procurar_padroes_suspeitos(raiz: Path = RAIZ) -> List[Tuple[str, str]]:
 def main() -> int:
     ocorrencias = procurar_padroes_suspeitos(RAIZ)
     if not ocorrencias:
-        print("OK — nenhum padrão de prompt injection encontrado em data/ ou shadow_history/.")
+        lista_dirs = "/, ".join(DIRETORIOS_A_VERIFICAR) + "/"
+        print(f"OK — nenhum padrão de prompt injection encontrado em {lista_dirs}.")
         return 0
 
     print("ERRO CRÍTICO: padrões de prompt injection encontrados em conteúdo importado:")

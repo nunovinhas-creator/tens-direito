@@ -20,3 +20,6 @@
 /calendario-pagamentos-seguranca-social.html
 /calendario-escolar-apoios.html
 /p/como-pedir.html
+/dados.html
+/dados/parametros.json
+/dados/tensdireito.db
