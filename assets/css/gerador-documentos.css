@@ -16,32 +16,6 @@
   line-height: 1.6;
 }
 
-.gerador-aviso-formulario {
-  background: #FEF3C7;
-  border-left: 4px solid #F59E0B;
-  padding: 1rem 1.25rem;
-  border-radius: 0 6px 6px 0;
-  margin-bottom: 1.5rem;
-  font-size: 0.92rem;
-  color: #92400E;
-  line-height: 1.6;
-}
-
-.gerador-aviso-formulario a {
-  color: #b45309;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
-.gerador-card {
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 4px 12px rgba(0, 0, 0, .06);
-  margin-bottom: 2rem;
-}
-
 .gerador-form-group {
   margin-bottom: 1.5rem;
 }
@@ -194,6 +168,5 @@
 }
 
 @media (max-width: 700px) {
-  .gerador-card { padding: 1.25rem; }
   .gerador-btn-grupo, .gerador-acoes { flex-direction: column; align-items: stretch; }
 }

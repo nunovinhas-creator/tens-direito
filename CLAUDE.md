@@ -519,6 +519,7 @@ tens-direito/
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
 │   ├── limpar_css_morto_nav.py ← inventário/remoção de CSS morto da nav antiga (idempotente, --check p/ CI)
+│   ├── inventario_css_morto.py ← generaliza o script acima a TODO o CSS do site (externo + inline), idempotente, `--check`/`--csv` disponíveis, não wired ao CI (ver "LIMPEZA DE CSS MORTO — SITE INTEIRO")
 │   ├── verificar_injecao.py  ← guardrail: prompt injection em data/ e shadow_history/ (integridade.yml)
 │   ├── gerir_estado_fontes.py ← máquina de estados de fontes bloqueadas (Step 1b do pipeline)
 │   ├── wayback_fallback.py   ← fallback Wayback Machine, puro, sem I/O próprio (fetch_json injectado)
@@ -920,6 +921,140 @@ ponto acima) — JSON-LD inválido em `simulador-ase.html` e OG
 tags/disclaimer em falta nas páginas institucionais — **foram
 corrigidos na Fase 5** — ver secção "PÁGINAS INSTITUCIONAIS" e o
 commit de correcções da Fase 5.
+
+---
+
+## LIMPEZA DE CSS MORTO — SITE INTEIRO (2026-07-18)
+
+Generaliza `limpar_css_morto_nav.py` (só cobria a família de tokens da nav
+antiga, ver secção anterior) a **todo** o CSS do site: os 6 ficheiros de
+`assets/css/*.css` e o `<style>` inline de cada uma das 70 páginas servidas
+(raiz + `p/` + `documentos/`) — ~19KB de CSS externo + ~329KB de CSS
+inline. Objectivo: reduzir ao que é usado, sem alterar um único pixel do
+que renderiza. Conservador por desenho: um seletor só é removido se
+**provado morto nas 3 camadas** — nunca por suspeita.
+
+### `scripts/inventario_css_morto.py` — as 3 camadas de uso
+
+Para cada classe/id exigido por um seletor, todas as camadas seguintes são
+verificadas antes de declarar morto — encontrar o token numa só já chega
+para manter a regra:
+
+1. **HTML estático** das 70 páginas (`class=`/`id=` reais).
+2. **JavaScript** — duas sub-camadas: mutações reais (`classList.add/
+   toggle`, `class=`/`className=` atribuído por string) E uma verificação
+   **permissiva de texto** — qualquer identificador-tipo-classe presente
+   em qualquer ponto do ficheiro (`assets/js/*.js`, `scripts/pesquisa.js`,
+   `<script>` inline de cada página) conta como usado. Esta 2.ª sub-camada
+   foi necessária durante a sessão: `cor: 'escalo-1'` (dados do simulador
+   de abono) e `tagCor: 'verde'` (dados do quiz de `comecar-aqui.html`)
+   são strings literais guardadas num objecto de dados, nunca escritas
+   como `classList.add('literal')` nem `class="literal"` — só aparecem
+   depois de concatenadas/interpoladas em runtime. Sem esta camada, ambas
+   ficariam como falsos-MORTO.
+3. **Python** — mesmo princípio: qualquer identificador-tipo-classe
+   presente em `scripts/*.py` conta como usado (ex.: `className:
+   "gerador-form-group"` num objecto passado ao helper `elemento()` de
+   `gerador-documentos.js` não é uma mutação `.className =`, é uma chave
+   de objecto — só a verificação de texto ampla apanha isto).
+
+Mais um mecanismo de **prefixos dinâmicos** (JS template literals `` `${var}`
+`` e f-strings Python `{var}` dentro de `class="..."`) para o caso em que
+a classe nunca aparece como string completa em lado nenhum — ex.:
+`class="cat-badge cat-{item.categoria}"` em `scripts/gerar_noticias.py`
+(as 6 categorias reais — `cat-apoios`/`cat-educacao`/`cat-emprego`/
+`cat-habitacao`/`cat-fiscal`/`cat-legislacao` — já estavam de qualquer
+forma presentes em `noticias.html` real, gerado pelo pipeline, por isso
+esta sessão nunca precisou do mecanismo de facto — ficou como rede de
+segurança para uma categoria nova sem notícia ainda publicada). Um token
+que só bate com um prefixo dinâmico fica **AMBIGUO**, nunca removido.
+
+Três categorias, nunca duas: **USADO** (confirmado nalguma camada) /
+**AMBIGUO** (só prefixo dinâmico — fica, com justificação) /
+**MORTO-CONFIRMADO** (ausente das 3 camadas E de qualquer prefixo
+dinâmico — só estas são removidas). Um seletor sem classe/id exigido
+(tag/pseudo/atributo puro — `body`, `:root`, `[data-mes]`, `a:hover`) é
+sempre USADO por desenho, nunca há prova suficiente para o remover. Uma
+regra com seletores separados por vírgula só é removível se **todos**
+forem MORTO-CONFIRMADO.
+
+### Bug apanhado antes de qualquer commit — colapso de whitespace global
+
+A 1.ª versão da função de remoção reaproveitava a normalização de linhas
+em branco de `limpar_css_morto_nav.py` mas aplicava-a ao texto **inteiro**
+da fonte (`re.sub(...)` sobre toda a página), em vez de restrita ao
+interior do `<style>` como o script original fazia. Confirmado por
+`git diff` antes do commit: uma linha em branco do **corpo HTML** de
+`rsi.html` (nada a ver com CSS) tinha sido apagada. Corrigido isolando o
+colapso ao interior de cada `<style>` para fontes inline (CSS externo
+continua a colapsar o ficheiro inteiro, que já é só CSS) — `git diff`
+confirmado depois só a tocar nas linhas `<style>` removidas.
+
+### Resultado desta sessão
+
+Inventário: 3770 regras / 3921 seletores nas 76 fontes. Depois de afinar
+as camadas JS/Python (1.ª passagem tinha 45 falsos-MORTO — quase todos
+`.gerador-*` do gerador de documentos e `.resultado-card.escalo-N` do
+simulador de abono, ambos por causa exactamente das duas lacunas
+descritas acima): **9 selectores / 10 regras genuinamente mortas**, 1470
+bytes removidos em 5 ficheiros —
+
+- `assets/css/gerador-documentos.css`: `.gerador-aviso-formulario`
+  (+ `a`) e `.gerador-card` (+ variante `@media`) — nunca usadas por
+  nenhuma das 12 páginas do gerador (confirmado por grep dedicado antes
+  de remover; provavelmente resíduo de uma iteração de design anterior à
+  implementação actual).
+- `index.html`: `.apoio-card.em-breve`, `.apoio-card .badge-breve`,
+  `.apoio-card .link-aviso` — estilos de placeholder "em breve" de uma
+  fase anterior do site (todos os `.apoio-card` reais de hoje são links
+  simples, sem sub-elementos de aviso).
+- `baixa-medica-subsidio-doenca.html` e `subsidio-desemprego.html`:
+  `.aviso-ss` — superado por `.aviso-info` (mesmas cores/borda,
+  introduzida depois), nunca usada em nenhuma das duas páginas.
+- `rsi.html`: `.aviso-valores` — nunca referenciada no corpo da página.
+
+Zero AMBIGUOS por resolver nesta sessão (a lista ficou vazia depois das
+duas camadas de texto — nada por justificar/deixar para trás).
+
+### Baseline visual — zero diferenças
+
+Screenshots Chromium reais (375px e 1200px) de 10 páginas representativas
+(`index`, pillar PSU, cluster Família, calendário, simulador de abono,
+hub Como Pedir, `comecar-aqui`, uma página do gerador de documentos,
+`noticias`, `404`) antes e depois da remoção, comparadas pixel-a-pixel
+(`PIL.ImageChops.difference`, `bbox()` teria apanhado qualquer diferença,
+por mínima que fosse): **20/20 capturas idênticas byte-a-byte** — zero
+diferença visual, confirmando que as 10 regras removidas eram mesmo
+inertes.
+
+### Guardrail — decisão de não adicionar ao CI (Fase 4)
+
+`--check` funciona (exit ≠ 0 se sobrar alguma regra morta removível,
+confirmado a passar depois da remoção) e a remoção é idempotente (2.ª
+corrida = zero alterações). **Decisão desta sessão: não adicionar ao
+CI**, pelo mesmo motivo por que `limpar_css_morto_nav.py --check` (a sua
+irmã, já existente antes desta sessão) nunca foi ligado a
+`integridade.yml` apesar do comentário "p/ CI" no ficheiro — a
+verificação de texto ampla das camadas JS/Python é deliberadamente
+permissiva para nunca remover algo em uso (prioridade correcta), mas
+isso significa que um padrão de construção de classe genuinamente novo
+(uma variável cujo valor nunca aparece como substring em lado nenhum do
+JS/Python, só computado em runtime a partir de dados externos) escaparia
+às 3 camadas e apareceria como MORTO-CONFIRMADO por engano — um falso
+positivo que partiria o CI por uma razão que não é responsabilidade de
+quem fez o commit a resolver. Mesma lição já registada por esta sessão
+para os dois casos reais encontrados (`escalo-N`, `tagCor`) — a lista de
+padrões dinâmicos nunca pode ser assumida completa. `--check`/`--csv`
+ficam disponíveis para verificação manual periódica (mesmo padrão da
+irmã) — correr `python scripts/inventario_css_morto.py` (sem flags) numa
+sessão dedicada, nunca como gate automático.
+
+Suite completa + `scripts/verificar_skips_permitidos.py` + axe-core
+reconfirmados sem regressões (ver entrada de revisão no fim deste
+ficheiro para os números exactos); `ruff check scripts/
+inventario_css_morto.py --select E,F,W --ignore E501` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados
+(script não tem relação com o Shadow Mode).
 
 ---
 
