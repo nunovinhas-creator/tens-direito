@@ -108,6 +108,23 @@ Motivo real (2026-07-17): a sessão do menu móvel terminou com o trabalho
 apenas na branch, e a sessão seguinte partiu do princípio errado de que já
 estava integrado em main.
 
+**Arranque de sessão (handoff) (2026-07-20):** guarda simétrica ao
+protocolo de fim de sessão acima — para o erro de 2026-07-17 nunca se
+repetir na direcção inversa (a sessão seguinte a assumir "integrado" sem
+verificar). Antes de qualquer trabalho novo:
+
+- Verificar o estado de integração da sessão anterior:
+  `git log --oneline -5 main` e comparar com o último resumo relevante
+  no `ROADMAP.md` (secção "✅ CONCLUÍDO RECENTEMENTE" ou equivalente).
+- Se o `ROADMAP.md` (ou a última entrada de revisão do `CLAUDE.md`)
+  indicar uma branch "SEM PR — branch não integrada" que ainda não
+  aparece em `main`: **PARAR e reportar ao utilizador antes de começar
+  trabalho novo** — nunca presumir que entretanto foi integrada.
+- Nunca construir trabalho novo sobre o pressuposto de que a branch da
+  sessão anterior foi integrada sem o confirmar em `git` — o resumo de
+  uma sessão descreve a intenção registada nessa altura, não o estado
+  actual do repositório.
+
 **Excepção única e deliberada — workflows de diagnóstico (2026-07-16):**
 workflows de diagnóstico (permanentes OU temporários) nunca são commitados em
 `main`. Vão sempre para branch própria, com trigger `on: push` limitado a essa
@@ -484,6 +501,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Página nova de prestação com valores anuais? `<title>`/description devem incluir o ano corrente; qualquer ano civil anterior citado tem de ter excepção explícita em `tests/test_anos_metadados.py` — ver secção "CANÁRIO DE ANOS EM METADADOS"
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
 - [ ] Commit e push directamente para `main`
+- [ ] Se o ambiente desta sessão impôs uma branch designada (`claude/<nome>`, imposta de fora do repositório — ver "REGRA ABSOLUTA — GIT" → "Protocolo de fim de sessão"), este último passo é substituído pelo protocolo de reporte de lá: terminar com o estado de integração explícito ("PR: #nn (aberto|merged)" ou "SEM PR — branch não integrada"), nunca com um commit/push directo a `main` que não é possível fazer. É uma imposição externa do harness, nunca uma flexibilização desta regra — a checklist não foi violada, só a via de chegada a `main` é diferente
 
 ---
 
