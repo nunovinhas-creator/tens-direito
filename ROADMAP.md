@@ -101,7 +101,7 @@ fact-check feito ainda):
 | **Autobaixa** (`autobaixa.html`) | Nuno confirma no Google Search Console que `baixa-medica-subsidio-doenca.html` acumula impressões relevantes para "autobaixa"/"autodeclaração de doença" — **sem limiar numérico fixado**, é julgamento do Nuno | Google Search Console (Code não tem acesso) | Criar `autobaixa.html` (6 passos: reaproveitar secção 8, pilar mantém versão resumida, evitar canibalização SEO, cross-links, cluster `trabalho-rendimento`, checklist completa) — ver CLAUDE.md **"GATILHO AUTOBAIXA"** |
 | **Auto-update do carimbo "Verificado a"** (`REVALIDACAO_CARIMBO_HABILITADA`) | ≥14 relatórios shadow consecutivos com simulações correctas (zero falsos elegíveis) **e** fontes correspondentes maioritariamente `OK` — decisão do Nuno, nunca do Claude Code | `shadow_history/*.md` + **`python scripts/validar_carimbos_elegiveis.py`** (sessão manual, só leitura — valida o dia: exit 0 = conta para a contagem; contagem iniciada a **2026-07-11, dia 1 validado**, com 9 avisos todos classificados como artefactos das correcções do scraper de 03/07 e 07/07) | Ligar a flag numa sessão manual dedicada, nunca de ânimo leve — ver CLAUDE.md **"REVALIDAÇÃO DE CARIMBO"** |
 | **Densidade da PSU na homepage** | "Quando o tema arrefecer" (sem data fixada) — julgamento do Nuno | Olhar à homepage / tráfego | Remover banner do topo + cartão de prazos (dos 6 pontos actuais que a PSU ocupa) — ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 1 |
-| **Backlog Habitação** — ~~garantia crédito jovem~~ e ~~isenção IMT jovem~~ concluídos 2026-07-20 (Sessão 1); faltam RSAA (Regime Simplificado de Arrendamento Acessível), 1.º Direito (IHRU) e a dedução de rendas em IRS (Sessão 3 do plano) | Nenhum — só quando houver prioridade dedicada | — | Fact-check + página nova, um apoio de cada vez — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** → Backlog. Simulador de IMT Jovem (Sessão 2) e watchlist automática DRE para PAER/garantia/RSAA (Sessão 3) também por fazer |
+| **Backlog Habitação** — ~~garantia crédito jovem~~, ~~isenção IMT jovem~~ (Sessão 1) e ~~simulador de IMT Jovem~~ (Sessão 2, 2026-07-20) concluídos; faltam RSAA (Regime Simplificado de Arrendamento Acessível), 1.º Direito (IHRU), a dedução de rendas em IRS e a watchlist automática DRE (Sessão 3 do plano) | Nenhum — só quando houver prioridade dedicada | — | Fact-check + página nova, um apoio de cada vez — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** → Backlog |
 | **Novo sistema de ação social no ensino superior — publicação em DR ainda por confirmar** (`bolsa-de-estudo-ensino-superior.html`) | **Estado a 2026-07-14** (não fechado): o diploma foi promulgado pelo PR a 7/07/2026 (confirmado por 6+ fontes jornalísticas independentes) — mas esta sessão **não confirmou** a publicação em Diário da República nem a citação exacta (número/data) do decreto-lei; acesso directo a dre.pt bloqueado em 2 sessões seguidas. A página já reflecte os valores comunicados pelo Governo/DGES-IES (mínima ≈872€, média ≈2.660€, apoio residência 160€/mês, Bolsa de Incentivo 1.045€) com nota explícita dessa lacuna — **nunca afirmar que "já é lei" sem essa confirmação** | dre.pt (Code não tem scraper dedicado; tentar `WebSearch` por "Decreto-Lei n.º" + "ação social" + "ensino superior" + o ano, ou pedir ao Nuno para confirmar directamente) | 1) Confirmar a citação exacta do decreto-lei publicado; 2) verificar os valores já publicados na página contra o texto real do diploma (não assumir que o comunicado do Governo bate certo com o texto final); 3) citar o número do decreto-lei na página (`fonte-bloco` + JSON-LD se aplicável); 4) só depois disso — nunca antes — cobrir os valores (872€/2.660€/160€/1.045€) em `tests/test_valores_ancora.py`, como canário de consistência (não há fórmula IAS-derivada, mesma categoria do abono/PSI) |
 
 ### Automáticos (o sistema já avisa via Issue)
@@ -184,6 +184,24 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Cluster Habitação — Sessão 2 (correcção IMT Jovem + simulador)** —
+  2026-07-20. (1) Correcção factual de `imt-jovem.html`: limites das
+  Regiões Autónomas (25% acima do Continente — isenção total até
+  413.174€, parcial até 826.228€ em 2026; Lei n.º 21/90 + Ofício
+  Circulado n.º 40129/2026) em nota junto à tabela + FAQ nova, e a
+  exclusão de terrenos para construção (informação vinculativa da AT,
+  out. 2025) como erro comum novo — ambos parametrizados em
+  `dados/parametros/habitacao.yaml`, com canário RA = Continente×1,25.
+  (2) `simulador-imt-jovem.html` (7.º simulador): tabela geral de IMT
+  2026 (HPP, Continente) parametrizada no YAML (15 parâmetros, incl. IS
+  0,8%), fetch de `/dados/parametros.json` em runtime (padrão CSI),
+  checklist de elegibilidade (inelegível nunca vê poupança), VPT, 27
+  testes novos. Tabela RA deliberadamente fora do simulador (parcelas a
+  abater RA não confirmadas de forma conclusiva) — só Continente, com
+  aviso. `/simulador-imt-jovem.html` no smoke test (urls_criticas +
+  array SIMULADORES). Sessão 3 (RSAA, 1.º Direito, dedução de rendas,
+  watchlist DRE) continua por fazer — ver "Backlog Habitação".
 
 - **Cluster Habitação — Sessão 1 (`imt-jovem.html` +
   `garantia-publica-credito-habitacao.html`)** — 2026-07-20. Fecha a

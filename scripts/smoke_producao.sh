@@ -37,7 +37,7 @@ ESPERA_S=30
 # Páginas de simulador — a verificação extra de conteúdo só se aplica
 # a estas (as restantes só precisam do 200). Acrescentar aqui se um
 # simulador novo for publicado.
-SIMULADORES=("/simulador-abono.html" "/simulador-ase.html" "/simulador-csi.html")
+SIMULADORES=("/simulador-abono.html" "/simulador-ase.html" "/simulador-csi.html" "/simulador-imt-jovem.html")
 
 # FASE 3 (sessão de dados abertos, 2026-07-19): além do 200, o JSON
 # consolidado tem mesmo de parsear como JSON válido — um 200 com corpo

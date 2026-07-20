@@ -12,6 +12,7 @@
 /simulador-abono.html
 /simulador-ase.html
 /simulador-csi.html
+/simulador-imt-jovem.html
 /sitemap.xml
 /abono-de-familia.html
 /rsi.html

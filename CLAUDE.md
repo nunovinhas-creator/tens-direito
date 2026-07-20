@@ -446,6 +446,7 @@ para esses três casos.
 | `renovar-cartao-cidadao.html` | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos | 18 jul. 2026 |
 | `imt-jovem.html` | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa | 20 jul. 2026 |
 | `garantia-publica-credito-habitacao.html` | Garantia Pública 2026: crédito habitação jovem até 100% | 20 jul. 2026 |
+| `simulador-imt-jovem.html` | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa | 20 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -2401,9 +2402,11 @@ como fonte, mesmo sem acesso directo — mesmo padrão já usado no site
 para fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E
 APROVADAS").
 
-**Regra de dados (20 jul 2026)**: qualquer valor legal do IMT Jovem ou
-da Garantia Pública (limiares em €, percentagens, prazos, idades) vem
-SEMPRE de `dados/parametros/habitacao.yaml` (padrão OpenFisca, mesmo
+**Regra de dados (20 jul 2026, reforçada na Sessão 2)**: qualquer valor
+legal do IMT Jovem ou da Garantia Pública (limiares em €, percentagens,
+prazos, idades — **incluindo os limites das Regiões Autónomas e a
+tabela geral de IMT** de habitação própria e permanente, escalões/taxas/
+parcelas a abater) vem SEMPRE de `dados/parametros/habitacao.yaml` (padrão OpenFisca, mesmo
 princípio de `csi.yaml`/`subsidio-doenca.yaml`/`abono.yaml`) —
 consolidado em `dados/parametros.json` por
 `scripts/gerar_parametros_json.py`. Nunca escrever um destes valores
@@ -2470,7 +2473,7 @@ de IMT jovem** publicadas a 20 jul 2026 (ver acima) — saem desta lista:
 | Regime Simplificado de Arrendamento Acessível (RSAA) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Benefício fiscal para **senhorios** que praticam rendas moderadas (IRS reduzido a 10%, ou isenção total abaixo de 20% da mediana do concelho) — não é apoio directo ao inquilino, ângulo de página diferente dos outros artigos deste cluster. Sessão 3 do plano "Expansão do Cluster Habitação" — nota de caixa informativa em `deducao-rendas-irs.html`, sem página própria imediata |
 | 1.º Direito — Programa de Apoio ao Acesso à Habitação | Vivo — programa PRR, gerido pelos municípios (Estratégia Local de Habitação), alterado por DL n.º 44/2025 (mar 2025) | Não é candidatura directa do cidadão ao IHRU — passa pela câmara municipal; ângulo de página diferente (processo institucional, não formulário pessoal). Sessão 3 do plano |
 | Dedução de rendas em IRS (900€ em 2026, 1.000€ a partir de 2027) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Foco no inquilino, não no senhorio; passo crítico é a comunicação do contrato à AT (desde 1 ago 2025 o próprio inquilino pode comunicar se o senhorio não o fez). Sessão 3 do plano |
-| Simulador de IMT Jovem (`simulador-imt-jovem.html`) | Dados já em `dados/parametros/habitacao.yaml` — falta só a UI/lógica de cálculo | Sessão 2 do plano "Expansão do Cluster Habitação" — inclui a tabela geral de IMT (sem isenção) para a comparação "com/sem isenção", ainda por verificar por completo |
+| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído 2026-07-20 (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
 | Watchlist automática DRE (revogação do PAER, prorrogação/alteração da garantia pública, regulamentação do RSAA) | Não implementada | Sessão 3 do plano — mesmo padrão do sentinela `dre_psu` (ver "IMPACTO DA PSU") |
 
 ---
@@ -7912,3 +7915,100 @@ do mesmo plano ficam registadas em `ROADMAP.md` → "Backlog Habitação",
 por fazer. Trabalho feito na branch `claude/new-session-vbrhmd`
 (designada pelo ambiente remoto desta sessão) — **SEM PR — branch não
 integrada em `main`**.*
+
+---
+
+*Última revisão: 2026-07-20 — Sessão 2 (revista) do plano "Expansão do
+Cluster Habitação": correcção do IMT Jovem (Regiões Autónomas + exclusão
+de terrenos) + `simulador-imt-jovem.html`, 7.º simulador do site. Três
+commits atómicos, a correcção factual ANTES do simulador (regra da
+própria spec — se a sessão morresse a meio, a correcção já estava
+publicada).
+
+**PASSO 0** (WebFetch/curl continuam bloqueados nesta sessão — 403 na
+proxy para qualquer domínio externo, incluindo os PDFs oficiais do
+Ofício Circulado; triangulação `WebSearch` por ≥2 fontes independentes
+por facto): (a) limites do IMT Jovem nas **Regiões Autónomas** 25% acima
+do Continente (Lei n.º 21/90, de 4 de agosto; tabelas práticas no Ofício
+Circulado n.º 40129/2026, de 6 de janeiro) — isenção total até
+**413.174€**, parcial até **826.228€**; divergência de arredondamento
+entre fontes secundárias (826.227 vs 826.228) resolvida pelo padrão de
+arredondamento das próprias tabelas práticas (meio-euro para cima,
+confirmado pelo 1.º escalão RA publicado: 132.933€ = 132.932,50€
+arredondado); (b) **terrenos para construção excluídos** do IMT Jovem,
+mesmo com construção em curso à data da escritura — informação
+vinculativa da AT (out. 2025, PIV_29556), triangulada por
+eco.sapo.pt/idealista/JN/supercasa; (c) **tabela geral de IMT 2026**
+(HPP, Continente) confirmada por triangulação E por auto-consistência
+matemática — cada parcela a abater deriva exactamente dos limites
+(trancado por teste); a tabela geral das RA (parcelas a abater) NÃO
+ficou conclusiva — pelo fallback previsto na própria spec, o simulador
+cobre só o Continente, com aviso visível + link à nota RA do guia;
+(d) 330.539/660.982/8% reconfirmados, sem divergências.
+
+**Commit 1 (correcção)**: `dados/parametros/habitacao.yaml` +3
+parâmetros (2 limites RA + exclusão de terrenos, esta como parâmetro de
+texto, mesmo precedente de `garantia_prazo_contrato_limite`);
+`imt-jovem.html` com nota RA junto à tabela de escalões, erro comum novo
+(terrenos) e FAQ nova (paridade 1:1 visível↔JSON-LD confirmada
+programaticamente); 3 golden tests novos em `test_valores_ancora.py`,
+incluindo o canário **RA = Continente × 1,25 arredondado** — se a
+actualização anual dos escalões esquecer os valores RA, falha sozinho.
+**Falso positivo apanhado antes do commit** (nunca depois de uma Issue
+falsa existir): "informação vinculativa divulgada em outubro de 2025"
+disparava `data_mes_ano` já em julho/agosto de 2026 — novo marcador
+`informa[çc][ãa]o\s+vinculativa` em `MARCADORES_HISTORICOS`
+(`verificar_datas.py`), âncora estreita confirmada sem colisão por grep,
+com regressão sobre o HTML real + guarda anti-sobre-supressão em
+`test_verificar_datas.py`.
+
+**Commit 2 (simulador)**: tabela geral 2026 parametrizada no YAML (15
+parâmetros novos, incl. Imposto do Selo 0,8% — verba 1.1; os limites dos
+escalões de 7%/8% são, por construção legal do art. 9.º-A, os próprios
+limites do IMT Jovem — reutilizados, nunca duplicados);
+`simulador-imt-jovem.html` no padrão actual do CSI (fetch de
+`/dados/parametros.json`, botão nasce `disabled`, erro visível se o
+fetch falhar — nunca calcula com valores em falta); checklist de
+elegibilidade com 3 condições — **um inelegível nunca vê valores de
+poupança** (decisão da spec, verificada de ponta a ponta com Chromium
+real, não só na função pura); VPT opcional (base = maior entre preço e
+VPT, com aviso); desagregação IMT/IS com/sem isenção + poupança total;
+`formatarEuro` PT determinística (nunca `toLocaleString`, cujo separador
+de milhares varia com a versão de ICU). **Validação cruzada**: a tabela
+verificada reproduz ao cêntimo o exemplo já publicado no guia desde a
+Sessão 1 (340.000€ → 832,57€ vs 16.156,65€, poupança 15.324,08€) —
+trancado por golden test que também exige que o artigo continue a
+publicar os três números. 27 testes novos
+(`tests/test_simulador_imt_jovem_calculo.py`): casos-âncora da spec
+(250.000€ → 0€/0€; 400.000€ → 8%×69.461 = 5.556,88€; 700.000€ → 6%
+única = 42.000€), fronteiras exactas de todos os escalões (330.539/
+330.540, 660.982/660.983, 106.346/106.347, 1.150.853/1.150.854),
+coerência interna das parcelas a abater, checklist incompleta
+(parametrizado pelas 3 condições), VPT, e runtime real com `http.server`
+(fetch sucesso/falha, bypass do `disabled` nunca produz resultado).
+
+**Commit 3 (integração)**: 7.º card em `simuladores.html`
+("Seis"→"Sete", `hasPart` JSON-LD, descriptions) e na secção de
+simuladores do `index.html`; links bidireccionais simulador ↔
+`imt-jovem.html` ↔ `garantia-publica-credito-habitacao.html` (CTA no
+card "Quanto poupas" do guia; o `RELACIONADOS` automático de
+`sincronizar_clusters.py` já cobria o resto — `clusters.json` ganhou a
+ferramenta no cluster `habitacao`, "4 guias · 1 simulador");
+`/simulador-imt-jovem.html` em `scripts/urls_criticas.txt` E no array
+`SIMULADORES` de `scripts/smoke_producao.sh` (verificação de conteúdo
+real em produção — lição da Sessão 1, o falso-verde do CDN), smoke
+confirmado localmente contra `http.server` via override `DOMINIO`;
+sitemap, `pesquisa.js`, og-image própria, `test_eventos_ga4.py` (7.º
+simulador, slug `imt_jovem`, `elegivel` como veredicto binário limpo).
+Regra de dados do cluster Habitação reforçada (valores de IMT vêm
+SEMPRE do YAML, **incluindo RA e tabela geral**).
+
+Verificado: axe 0 violações nas páginas tocadas, 0px de overflow a
+375px no simulador novo (Chromium real), zero erros JS, JSON-LD válido,
+`detectar_alertas()` sem falsos positivos em nenhum mês de 2026. Suite
+completa + guardrail de skips + ruff — ver resultado exacto no commit
+final desta sessão. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sem relação com esta sessão). Trabalho feito na branch
+`claude/imt-jovem-correcao-simulador-73xpd7` (designada pelo ambiente
+remoto desta sessão) — **SEM PR — branch não integrada em `main`**.*
