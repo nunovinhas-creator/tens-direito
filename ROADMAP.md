@@ -232,6 +232,22 @@ PSU"**.
   propagação e reverificar em 24h** (pedir ao Nuno para recarregar
   `p/habitacao.html` sem cache, ou verificar de novo nesta janela) —
   nenhuma acção de código necessária enquanto isso não for confirmado.
+  **Lacuna do canary fechada no mesmo dia**: `/p/habitacao.html`,
+  `/imt-jovem.html` e `/garantia-publica-credito-habitacao.html`
+  acrescentadas a `scripts/urls_criticas.txt` — é exactamente esta
+  ausência que explicava o smoke test do push de integração nunca ter
+  apanhado o hub directamente. Verificado localmente (`curl` real a
+  `tensdireito.com` bloqueado nesta sessão — mesma limitação de proxy
+  já documentada — substituído por `http.server` local a servir os
+  ficheiros reais do repositório, mesmo padrão já usado nas sessões que
+  criaram este script): as 3 URLs novas respondem 200.
+  **Sem verificação de conteúdo necessária nas 3** —
+  `scripts/smoke_producao.sh` só faz verificação de conteúdo extra para
+  `SIMULADORES`/`JSON_A_VALIDAR` (arrays explícitos no script);
+  `p/habitacao.html` cai fora de ambos, por isso o smoke test nunca
+  vai reprovar por a secção "Comprar" ainda não ter propagado no CDN —
+  só confirma 200. Não foi preciso nenhum commit em duas fases nem
+  lógica nova no script; só a lista de URLs mudou.
 - **`declaracao-situacao-contributiva.html`** — 2026-07-14, 2.ª página da
   Camada 3 editorial, cluster `trabalho-rendimento`. "Certidão de não
   dívida à Segurança Social" — ver secção "🪪 CAMADA 3" acima e CLAUDE.md

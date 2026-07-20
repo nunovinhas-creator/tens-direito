@@ -23,3 +23,6 @@
 /dados.html
 /dados/parametros.json
 /dados/tensdireito.db
+/p/habitacao.html
+/imt-jovem.html
+/garantia-publica-credito-habitacao.html
