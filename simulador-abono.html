@@ -63,7 +63,7 @@
         "name": "O que é a Garantia para a Infância?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.631,94€ anuais, o abono é garantido em pelo menos 127,33€/mês por criança, mesmo que o cálculo normal seja inferior."
+          "text": "Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.495,37€ anuais (0,35 × IAS de 2024 × 14), o abono é garantido em pelo menos 127,33€/mês por criança, mesmo que o cálculo normal seja inferior."
         }
       },
       {
@@ -72,6 +72,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Famílias monoparentais (um único encarregado de educação) recebem uma majoração de 50% sobre o valor base do abono calculado."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador considera todas as regras especiais do abono?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Este simulador aplica sempre o cenário de pedidos novos em 2026 (rendimentos de 2025) — manutenções/renovações e reavaliações têm limites de escalão ligeiramente diferentes. Também não modela o acréscimo para agregados com 2 ou mais crianças até 36 meses, a majoração de 35% para grávidas, o regime das crianças institucionalizadas, o duplicado de setembro, a isenção para trabalhadores-estudantes, o limite de património mobiliário, nem a fórmula de rendimentos de trabalhadores independentes."
         }
       },
       {
@@ -116,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-06"
+    "dateModified": "2026-07-19"
   }
   </script>
 
@@ -187,6 +195,7 @@
     .resultado-detalhe strong { font-weight: 700; }
     .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
     .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.88rem; color: #92400E; line-height: 1.5; }
     .faq-section { margin-top: 3rem; }
     .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
     details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
@@ -297,7 +306,15 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026 · IAS: 537,13€ · <strong>Verificado a 24/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
+      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026, cenário de pedidos novos (rendimentos de 2025) · <strong>Verificado a 19/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a>
+    </div>
+
+    <div id="avisoCarregandoParametros" class="info-box" role="status">
+      ⏳ A carregar valores oficiais…
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os valores oficiais do abono agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
     </div>
 
     <div class="calc-card">
@@ -330,7 +347,7 @@
         <div class="criancas-list" id="criancasList"></div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular abono</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularAbono" disabled>🧮 Calcular abono</button>
           <button type="reset" class="btn btn-secondary">Limpar</button>
         </div>
       </form>
@@ -351,7 +368,7 @@
       <details>
         <summary>O que é a Garantia para a Infância?</summary>
         <div class="faq-resposta">
-          Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.631,94€ anuais, o abono é garantido em pelo menos <strong>127,33€/mês por criança</strong>, mesmo que o cálculo normal seja inferior. Isto assegura um piso mínimo.
+          Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.495,37€ anuais (0,35 × IAS de 2024 × 14), o abono é garantido em pelo menos <strong>127,33€/mês por criança</strong>, mesmo que o cálculo normal seja inferior. Isto assegura um piso mínimo.
         </div>
       </details>
 
@@ -359,6 +376,13 @@
         <summary>Como é a majoração por monoparentalidade?</summary>
         <div class="faq-resposta">
           Famílias monoparentais (um único encarregado de educação) recebem uma majoração de <strong>50% sobre o valor base</strong> do abono calculado. Isto aplica-se a cada criança do agregado.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador considera todas as regras especiais do abono?</summary>
+        <div class="faq-resposta">
+          Não. Este simulador aplica sempre o cenário de <strong>pedidos novos em 2026</strong> (rendimentos de 2025) — se o teu caso for uma manutenção/renovação (rendimentos de 2024) ou uma reavaliação (rendimentos de 2026), os limites de escalão são ligeiramente diferentes. Também não modela o acréscimo para agregados com 2 ou mais crianças até 36 meses, a majoração de 35% para grávidas, o regime das crianças institucionalizadas, o duplicado de setembro, a isenção para trabalhadores-estudantes, o limite de património mobiliário, nem a fórmula de rendimentos de trabalhadores independentes. Consulta o <a href="/abono-de-familia.html">guia completo do abono de família</a> para estas regras.
         </div>
       </details>
 
@@ -399,23 +423,79 @@
   </footer>
 
   <script>
-    // ── CONFIG — fonte única de verdade da fórmula ───────────────────────────
-    // Cada valor tem a fonte (diploma) citada em comentário — nunca um número
-    // solto no meio da lógica. Valores fact-checked e publicados em
-    // abono-de-familia.html (verificado 24/06/2026).
-    const CONFIG = {
-      verificado: '2026-06-24',
-      ias2026: 537.13, // Portaria n.º 480-A/2025/1, de 30 dez 2025 — https://dre.pt
-      garantiaInfancia: 127.33, // Portaria n.º 60/2026/1 — mínimo garantido no 1.º escalão
-      limiteGarantia: 2631.94, // Portaria n.º 60/2026/1 — 0,35 × IAS × 14, limite de RR anual
-      escaloes: [
-        { id: 1, limite: 3657.50, valores: { a36: 190.98, a72: 75.13, mais72: 75.13 }, cor: 'escalo-1', nome: '1.º escalão' }, // Portaria n.º 60/2026/1
-        { id: 2, limite: 7315.00, valores: { a36: 161.65, a72: 75.13, mais72: 75.13 }, cor: 'escalo-2', nome: '2.º escalão' }, // Portaria n.º 60/2026/1
-        { id: 3, limite: 12435.50, valores: { a36: 132.07, a72: 59.33, mais72: 54.35 }, cor: 'escalo-3', nome: '3.º escalão' }, // Portaria n.º 60/2026/1
-        { id: 4, limite: 18287.50, valores: { a36: 88.43, a72: 44.77, mais72: 0 }, cor: 'escalo-4', nome: '4.º escalão' }, // Portaria n.º 60/2026/1 — >72 meses sem direito
-        { id: 5, limite: Infinity, valores: { a36: 0, a72: 0, mais72: 0 }, cor: 'escalo-5', nome: 'Sem direito' }, // acima do limite do 4.º escalão
-      ],
-    };
+    // ── PARAMETROS_ABONO — carregado em runtime de /dados/parametros.json ───
+    // Sessão "Parâmetros YAML + auditoria factual" (2026-07-19, Commit 2): a
+    // fonte de verdade deixou de ser um objecto JS inline (CONFIG) e passou
+    // a dados/parametros/abono.yaml (padrão OpenFisca de parâmetros com
+    // vigência, mesmo princípio de dados/parametros/csi.yaml e
+    // dados/parametros/subsidio-doenca.yaml), consolidado em
+    // dados/parametros.json por scripts/gerar_parametros_json.py. Nunca
+    // calcula com valores em falta: se o fetch falhar, mostra um erro
+    // visível (#avisoParametrosErro) e mantém o botão de calcular
+    // desactivado.
+    //
+    // Este simulador aplica sempre o cenário (b) — pedidos NOVOS em 2026,
+    // rendimentos de 2025 (IAS 2025 = 522,50€) — declarado explicitamente
+    // na UI. Os cenários (a) manutenção/pedidos de 2025 (rendimentos de
+    // 2024) e (c) reavaliações em 2026 (rendimentos de 2026) têm limites de
+    // escalão diferentes, documentados em dados/parametros/abono.yaml e na
+    // tabela comparativa de abono-de-familia.html, mas não simulados aqui.
+    //
+    // CORRECÇÃO REAL DA AUDITORIA (2026-07-19): o limite de elegibilidade
+    // da Garantia para a Infância estava calculado com o IAS do ano
+    // corrente (0,35 × 537,13€ × 14 = 2.631,94€) — o Guia Prático 4001 do
+    // ISS, I.P., v4.80, de 30/06/2026, fixa este cálculo sempre com o IAS
+    // de 2024 (509,26€): 0,35 × 509,26€ × 14 = 2.495,37€. Corrigido aqui e
+    // em abono-de-familia.html.
+    let PARAMETROS_ABONO = null;
+
+    async function carregarParametrosAbono() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const ab = todos.prestacoes && todos.prestacoes.abono;
+        if (!ab) throw new Error("prestações.abono em falta em dados/parametros.json");
+        PARAMETROS_ABONO = {
+          garantiaInfancia: ab.garantia_infancia_valor_mensal.valor,
+          limiteGarantia: ab.garantia_infancia_limite_rr_anual.valor,
+          majoracaoMonoparentalFracao: ab.majoracao_monoparental_fracao.valor,
+          escaloes: [
+            { id: 1, limite: ab.escalao1_limite_cenario_pedidos_novos_2026.valor,
+              valores: { a36: ab.escalao1_valor_ate_36_meses.valor, a72: ab.escalao1_valor_37_a_72_meses.valor, mais72: ab.escalao1_valor_mais_72_meses.valor },
+              cor: 'escalo-1', nome: '1.º escalão' },
+            { id: 2, limite: ab.escalao2_limite_cenario_pedidos_novos_2026.valor,
+              valores: { a36: ab.escalao2_valor_ate_36_meses.valor, a72: ab.escalao2_valor_37_a_72_meses.valor, mais72: ab.escalao2_valor_mais_72_meses.valor },
+              cor: 'escalo-2', nome: '2.º escalão' },
+            { id: 3, limite: ab.escalao3_limite_cenario_pedidos_novos_2026.valor,
+              valores: { a36: ab.escalao3_valor_ate_36_meses.valor, a72: ab.escalao3_valor_37_a_72_meses.valor, mais72: ab.escalao3_valor_mais_72_meses.valor },
+              cor: 'escalo-3', nome: '3.º escalão' },
+            { id: 4, limite: ab.escalao4_limite_cenario_pedidos_novos_2026.valor,
+              valores: { a36: ab.escalao4_valor_ate_36_meses.valor, a72: ab.escalao4_valor_37_a_72_meses.valor, mais72: ab.escalao4_valor_mais_72_meses.valor },
+              cor: 'escalo-4', nome: '4.º escalão' },
+            { id: 5, limite: Infinity, valores: { a36: 0, a72: 0, mais72: 0 }, cor: 'escalo-5', nome: 'Sem direito' }, // acima do limite do 4.º escalão — sentinela, não um parâmetro legal
+          ],
+        };
+        document.getElementById('avisoCarregandoParametros').style.display = 'none';
+        const botao = document.getElementById('btnCalcularAbono');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosAbono(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosAbono(erro) {
+      document.getElementById('avisoCarregandoParametros').style.display = 'none';
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularAbono');
+      if (botao) botao.disabled = true;
+      console.error('Simulador de abono: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosAbono);
 
     function atualizarCriancas() {
       const num = parseInt(document.getElementById('numCriancas').value);
@@ -469,7 +549,7 @@
         }
       }
 
-      const majoracao = monoparental ? valorBase * 0.5 : 0;
+      const majoracao = monoparental ? valorBase * config.majoracaoMonoparentalFracao : 0;
       const valorTotal = valorBase + majoracao;
 
       return {
@@ -482,6 +562,11 @@
     function calcularAbono(e) {
       e.preventDefault();
 
+      if (!PARAMETROS_ABONO) {
+        mostrarErroParametrosAbono(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
       const rendimento = parseFloat(document.getElementById('rendimento').value);
       const numCriancas = parseInt(document.getElementById('numCriancas').value);
       const monoparental = document.getElementById('monoparental').value === 'sim';
@@ -491,7 +576,7 @@
         idadesMeses.push(parseInt(document.getElementById(`idade${i}`).value));
       }
 
-      const r = calcularAbonoValor(CONFIG, { rendimentoAnual: rendimento, numCriancas, idadesMeses, monoparental });
+      const r = calcularAbonoValor(PARAMETROS_ABONO, { rendimentoAnual: rendimento, numCriancas, idadesMeses, monoparental });
       const resultDiv = document.getElementById('resultado');
 
       let html = `<div class="resultado-card ${r.cor}">`;

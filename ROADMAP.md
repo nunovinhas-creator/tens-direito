@@ -136,6 +136,20 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Variante clara de `clusters.css`** — se um dia se quiser dar
   breadcrumb/relacionados também aos simuladores, sem forçar hero escuro —
   ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 2.
+- **Migração do ASE para parâmetros YAML (Commit 3 da sessão "Parâmetros
+  YAML + auditoria factual", 2026-07-19)** — ⛔ **bloqueado**: exige o
+  despacho anual da DGEstE (Ministério da Educação) com os escalões ASE
+  do ano lectivo 2026/2027, ainda não fornecido/verificado pelo Nuno.
+  Quando disponível: `dados/parametros/ase.yaml` deve **referenciar os
+  escalões do abono** (A↔1.º, B↔2.º) em vez de duplicar limiares —
+  dependência explícita para que uma actualização do abono nunca deixe o
+  ASE inconsistente — mais auditoria de `simulador-ase.html` e
+  `acao-social-escolar.html` contra o despacho. Commits 1 (subsídio de
+  doença) e 2 (abono de família) desta sessão concluídos — ver CLAUDE.md
+  **"DADOS ABERTOS"** e a entrada de revisão "Última revisão: 2026-07-19"
+  (sessão "Parâmetros YAML + auditoria factual") para o detalhe completo,
+  incluindo as 2 correcções factuais reais encontradas (piso do subsídio
+  de doença RMMG-não-IAS; limite da Garantia para a Infância IAS-2024).
 - **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
   para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
   com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca

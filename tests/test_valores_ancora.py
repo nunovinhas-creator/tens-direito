@@ -80,7 +80,12 @@ def _percentagens(texto: str) -> list:
 # ── IAS 2026 ─────────────────────────────────────────────────────────────────
 
 def test_ias_2026_simulador_abono():
-    assert _valor_js(_ler("simulador-abono.html"), "ias2026") == IAS_2026
+    # Migrado para ler dados/parametros.json na sessão de 2026-07-19 —
+    # PARAMETROS_ABONO deixou de ser um objecto JS inline (CONFIG); o
+    # helper _param_abono() está definido mais abaixo, na secção
+    # "Abono de família".
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    assert todos["prestacoes"]["abono"]["ias_2026"]["valor"] == IAS_2026
 
 
 def test_ias_2026_simulador_ase():
@@ -93,7 +98,15 @@ def test_ias_2026_visivel_no_texto():
     # o erro corrigido nesta sessão) — passa a ser calculado sobre a
     # RMMG 2026 (920€), sem relação nenhuma com o IAS. Ver
     # test_piso_diario_minimo_baseado_na_rmmg_nunca_no_ias mais abaixo.
-    for pagina in ("simulador-abono.html", "simulador-ase.html"):
+    #
+    # simulador-abono.html saiu desta lista na mesma sessão: o simulador
+    # aplica sempre o cenário (b) — pedidos novos, indexado ao IAS de
+    # 2025 (522,50€) — e a Garantia para a Infância usa sempre o IAS de
+    # 2024 (509,26€, corrigido nesta sessão); o IAS 2026 (537,13€) deixou
+    # de ser um valor funcionalmente relevante nesta página. Continua
+    # coberto como dado aberto (ias_2026 em dados/parametros/abono.yaml,
+    # ver test_ias_2026_simulador_abono acima).
+    for pagina in ("simulador-ase.html",):
         assert "537,13" in _ler(pagina), f"{pagina}: IAS 2026 (537,13€) não visível no texto"
 
 
