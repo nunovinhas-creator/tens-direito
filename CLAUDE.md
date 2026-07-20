@@ -444,6 +444,8 @@ para esses três casos.
 | `chave-movel-digital.html` | Como ativar a Chave Móvel Digital | 17 jul. 2026 |
 | `alterar-morada.html` | Como alterar a morada no Cartão de Cidadão | 18 jul. 2026 |
 | `renovar-cartao-cidadao.html` | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos | 18 jul. 2026 |
+| `imt-jovem.html` | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa | 20 jul. 2026 |
+| `garantia-publica-credito-habitacao.html` | Garantia Pública 2026: crédito habitação jovem até 100% | 20 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -2384,15 +2386,31 @@ reintroduzir sem um facto novo e confirmado.
 ## CLUSTER HABITAÇÃO
 
 Criado a 3 jul 2026 — pillar `p/habitacao.html` + 2 artigos-filho
-(`porta-65.html`, `apoio-extraordinario-renda.html`), sexto cluster do
-site. Fact-check prévio obrigatório (bloqueante, ver "REGRAS DE
-CONTEÚDO") feito via `WebSearch` nesta sessão — `WebFetch` está
-completamente bloqueado neste ambiente de sessão (403 em qualquer URL,
-incluindo domínios fora de `.gov.pt`, ex.: `en.wikipedia.org` — não é
-um bloqueio específico a portais oficiais, é o próprio `WebFetch` que
-não funciona nesta sessão). As páginas citam sempre a URL oficial como
-fonte, mesmo sem acesso directo — mesmo padrão já usado no site para
-fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E APROVADAS").
+(`porta-65.html`, `apoio-extraordinario-renda.html`). Expandido a 20 jul
+2026 (Sessão 1 do plano "Expansão do Cluster Habitação") com mais 2
+artigos-filho de compra (`imt-jovem.html`,
+`garantia-publica-credito-habitacao.html`) — 4 páginas no total, sexto
+cluster do site, reorganizado em duas secções no hub: 🏠 Arrendar / 🔑
+Comprar. Fact-check prévio obrigatório (bloqueante, ver "REGRAS DE
+CONTEÚDO") feito via `WebSearch` em todas as sessões — `WebFetch`
+está completamente bloqueado neste ambiente de sessão (403 em qualquer
+URL, incluindo domínios fora de `.gov.pt`, ex.: `en.wikipedia.org` —
+não é um bloqueio específico a portais oficiais, é o próprio `WebFetch`
+que não funciona nesta sessão). As páginas citam sempre a URL oficial
+como fonte, mesmo sem acesso directo — mesmo padrão já usado no site
+para fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E
+APROVADAS").
+
+**Regra de dados (20 jul 2026)**: qualquer valor legal do IMT Jovem ou
+da Garantia Pública (limiares em €, percentagens, prazos, idades) vem
+SEMPRE de `dados/parametros/habitacao.yaml` (padrão OpenFisca, mesmo
+princípio de `csi.yaml`/`subsidio-doenca.yaml`/`abono.yaml`) —
+consolidado em `dados/parametros.json` por
+`scripts/gerar_parametros_json.py`. Nunca escrever um destes valores
+directamente numa página nova sem primeiro confirmar (ou acrescentar)
+a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
+`verificado_em` — é o que `tests/test_valores_ancora.py` verifica
+(secção "Cluster Habitação").
 
 ### Estado real verificado (jul 2026)
 
@@ -2416,18 +2434,44 @@ fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E APROVADAS").
   à data de verificação (3 jul 2026)**. Por isso `apoio-extraordinario-renda.html`
   não é um guia de candidatura — é uma página "estado actual +
   alternativas", apontando para o Porta 65.
+- **IMT Jovem** (`imt-jovem.html`, publicada 20 jul 2026): isenção total
+  de IMT e Imposto do Selo até **330.539€** (2026), parcial (8% sobre o
+  excedente) até **660.982€** — em 2025 eram 324.058€/648.022€, sobem
+  todos os anos com a actualização geral dos escalões de IMT (+2% em
+  2026, Lei n.º 73-A/2025, Orçamento do Estado). Condições: até 35 anos
+  à data da escritura, não-dependente em IRS, sem propriedade nos
+  últimos 3 anos, 1.ª habitação própria e permanente; perde-se se não
+  afectar o imóvel em 6 meses ou não manter o destino por 6 anos.
+  Herança **indivisa** não exclui a isenção; herança **partilhada**
+  (mesmo uma quota pequena) exclui. Base legal: Lei n.º 30-A/2024, DL
+  n.º 48-A/2024 (regime), DL n.º 48-D/2024 (emolumentos de registo).
+- **Garantia Pública no crédito habitação** (`garantia-publica-credito-habitacao.html`,
+  publicada 20 jul 2026): o Estado garante até **15%** do valor de
+  aquisição (imóvel até **450.000€**), permitindo financiamento até
+  100% sem entrada, para 18-35 anos (ambos os titulares, se forem
+  dois) com rendimento até ao 8.º escalão de IRS (**86.634€/ano** em
+  2026). Duração da garantia: 10 anos. **Prazo-limite: contratos
+  celebrados até 31 de dezembro de 2026**, sem prorrogação confirmada
+  (2 reforços de dotação já anunciados, o mais recente +750M€ em abr
+  2026, elevando o total a ~2,3 mil milhões — não é o mesmo que
+  prorrogar o prazo). Não há candidatura ao Estado — pede-se
+  directamente ao banco, que continua a decidir livremente. Acumulável
+  com o IMT Jovem. Base legal: DL n.º 44/2024, Portaria n.º
+  236-A/2024/1.
 
 ### Backlog — outros apoios de habitação vivos em 2026 (sem página ainda)
 
 Registados por pedido explícito da sessão — **não criar páginas agora**,
-só quando houver prioridade dedicada:
+só quando houver prioridade dedicada. **Garantia pública** e **isenção
+de IMT jovem** publicadas a 20 jul 2026 (ver acima) — saem desta lista:
 
 | Apoio | Estado confirmado (jul 2026) | Nota |
 |---|---|---|
-| Garantia pública para crédito habitação jovem | Vivo — contratos até final de 2026, cobre até 15% do valor da transacção | Permite financiamento a 100% em vez do limite geral de 90% |
-| Isenção de IMT/Imposto do Selo para jovens (até 35 anos) | Vivo — limites actualizados no OE2026 (+2%); isenção total até 330.539€, parcial até 660.982€ (2026) | Acumulável com a garantia pública |
-| Regime Simplificado de Arrendamento Acessível (RSAA) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Benefício fiscal para **senhorios** que praticam rendas moderadas (IRS reduzido a 10%, ou isenção total abaixo de 20% da mediana do concelho) — não é apoio directo ao inquilino, ângulo de página diferente dos outros dois artigos deste cluster |
-| 1.º Direito — Programa de Apoio ao Acesso à Habitação | Vivo — programa PRR, gerido pelos municípios (Estratégia Local de Habitação), alterado por DL n.º 44/2025 (mar 2025) | Não é candidatura directa do cidadão ao IHRU — passa pela câmara municipal; ângulo de página diferente (processo institucional, não formulário pessoal) |
+| Regime Simplificado de Arrendamento Acessível (RSAA) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Benefício fiscal para **senhorios** que praticam rendas moderadas (IRS reduzido a 10%, ou isenção total abaixo de 20% da mediana do concelho) — não é apoio directo ao inquilino, ângulo de página diferente dos outros artigos deste cluster. Sessão 3 do plano "Expansão do Cluster Habitação" — nota de caixa informativa em `deducao-rendas-irs.html`, sem página própria imediata |
+| 1.º Direito — Programa de Apoio ao Acesso à Habitação | Vivo — programa PRR, gerido pelos municípios (Estratégia Local de Habitação), alterado por DL n.º 44/2025 (mar 2025) | Não é candidatura directa do cidadão ao IHRU — passa pela câmara municipal; ângulo de página diferente (processo institucional, não formulário pessoal). Sessão 3 do plano |
+| Dedução de rendas em IRS (900€ em 2026, 1.000€ a partir de 2027) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Foco no inquilino, não no senhorio; passo crítico é a comunicação do contrato à AT (desde 1 ago 2025 o próprio inquilino pode comunicar se o senhorio não o fez). Sessão 3 do plano |
+| Simulador de IMT Jovem (`simulador-imt-jovem.html`) | Dados já em `dados/parametros/habitacao.yaml` — falta só a UI/lógica de cálculo | Sessão 2 do plano "Expansão do Cluster Habitação" — inclui a tabela geral de IMT (sem isenção) para a comparação "com/sem isenção", ainda por verificar por completo |
+| Watchlist automática DRE (revogação do PAER, prorrogação/alteração da garantia pública, regulamentação do RSAA) | Não implementada | Sessão 3 do plano — mesmo padrão do sentinela `dre_psu` (ver "IMPACTO DA PSU") |
 
 ---
 
@@ -7753,3 +7797,118 @@ não tocados (`False`, inalterados — nenhuma das duas flags tem relação
 com esta sessão). Trabalho feito no branch `claude/new-session-5pczn8`
 (designado pelo ambiente remoto desta sessão) — **SEM PR aberto ainda
 neste ponto do trabalho** (ver fecho de sessão para o estado final).*
+
+---
+
+*Última revisão: 2026-07-20 — Sessão 1 do plano "Expansão do Cluster
+Habitação" (documento externo fornecido nesta sessão, 3 sessões
+planeadas — 1: dados + IMT Jovem + Garantia Pública + hub; 2: simulador
+de IMT Jovem; 3: RSAA + 1.º Direito + dedução de rendas + watchlist).
+Executada só a Sessão 1, ponto a ponto do prompt: PASSO 0 (verificação
+factual via `WebSearch` — `WebFetch`/`curl` continuam bloqueados nesta
+sessão, 403 via proxy, mesma limitação documentada em várias sessões
+anteriores) confirmou sem divergências os valores 2026 do IMT Jovem
+(330.539€/660.982€/8%, Lei n.º 73-A/2025 + DL n.º 48-A/2024 + DL n.º
+48-D/2024) e da Garantia Pública (15%/450.000€/10 anos/18-35 anos/
+86.634€, DL n.º 44/2024 + Portaria n.º 236-A/2024/1) — nenhum valor do
+prompt precisou de correcção, ao contrário do que aconteceu nas
+migrações anteriores de CSI/subsídio de doença/abono para este mesmo
+padrão. Achado adicional confirmado via `WebSearch`, não estava no
+prompt original: a mecânica exacta da isenção parcial (8% de IMT + 0,8%
+de Imposto do Selo, ambos só sobre o excedente acima de 330.539€) e um
+exemplo real publicado (casa de 340.000€ → 832,57€ pago em vez de
+16.156,65€, poupança de 15.324,08€) — usado como exemplo sourced na
+página em vez de recalcular a tabela geral de IMT (não verificada por
+completo nesta sessão, fica para a Sessão 2, que constrói o simulador).
+Nuance real também confirmada (não estava no prompt): herança
+**indivisa** não exclui a isenção do IMT Jovem, herança **partilhada**
+exclui — mesmo com uma quota pequena.
+
+`dados/parametros/habitacao.yaml` novo (padrão OpenFisca, mesmo
+princípio de `csi.yaml`/`subsidio-doenca.yaml`/`abono.yaml`, 13
+parâmetros com `referencia_legal`/`fonte_url`/`verificado_em` — inclui
+a data-limite da garantia pública como parâmetro de tipo `data`, não só
+valores numéricos), consolidado em `dados/parametros.json` por
+`scripts/gerar_parametros_json.py` (guarda dura do PASSO 0 confirmada a
+passar). `imt-jovem.html` e `garantia-publica-credito-habitacao.html`
+publicadas — estrutura completa (resposta-rápida + resumo-rápido +
+checklist-final + `HowTo`+`FAQPage`+`BreadcrumbList`+`Article` JSON-LD),
+integradas no cluster `habitacao` (`data/clusters.json`, `sitemap.xml`,
+`scripts/pesquisa.js`, imagem OG própria via `gerar_og_images.py`,
+`fontes.html` com os 4 diplomas novos). `p/habitacao.html` reorganizado
+em duas secções (🏠 Arrendar / 🔑 Comprar — `<h2>` novos, `.apoio-mini`
+passou de `<h2>` para `<h3>` para manter a hierarquia de cabeçalhos
+correcta), FAQ e meta description actualizadas para reflectir os 4
+apoios; `dateModified` avançado para 20/07/2026.
+
+`scripts/sincronizar_clusters.py`/`sincronizar_nav.py`/
+`inserir_botao_partilhar.py`/`adicionar_canonicas.py`/
+`adicionar_autoria_artigos.py`/`adicionar_article_jsonld.py` corridos
+sobre o repositório inteiro — as duas páginas novas já nasceram com os
+blocos `CLUSTER-BADGE`/`RELACIONADOS`/nav/canónica/autoria/`Article`
+correctos, escritos à mão a seguir exactamente ao padrão dos scripts
+(idempotência confirmada: 0 alterações a qualquer uma das duas páginas
+em qualquer um dos scripts, só `p/habitacao.html`/`porta-65.html`/
+`apoio-extraordinario-renda.html`/`index.html` regeneraram o
+`RELACIONADOS`/`ATUALIZACOES:HOME` automaticamente).
+
+8 golden tests novos em `tests/test_valores_ancora.py` (secção "Cluster
+Habitação"): `_valores_eur_inteiros()` novo (os limiares deste cluster
+são sempre inteiros, ao contrário dos valores já cobertos por
+`_valores_eur()`, sempre com 2 casas decimais) — cobre os valores em
+`<title>`/meta description das 2 páginas novas contra
+`dados/parametros.json`, mais consistência com o corpo de cada página e
+com o resumo do hub. Um teste falhou na 1.ª corrida
+(`test_garantia_publica_prazo_e_condicoes_no_corpo_batem_com_o_yaml` —
+a duração de "10 anos" da garantia nunca tinha sido escrita no corpo
+visível da página, só no YAML/JSON-LD) — corrigido acrescentando a
+frase em falta ao corpo, não enfraquecendo o teste.
+
+Ambiente de sandbox desta sessão: `beautifulsoup4`/`lxml`/`playwright`/
+`playwright-stealth`/`jsonschema`/`pytest`/`ruff` não estavam
+instalados — instalados nesta sessão; `feedparser` continuava a falhar
+por causa do `sgmllib3k` (mesmo bug de `install_layout`/`setuptools` do
+sistema, documentado em várias sessões anteriores) — corrigido com o
+mesmo workaround já registado (extrair `sgmllib.py` do tarball para
+`site-packages` à mão). Browsers Chromium pré-instalados em
+`/opt/pw-browsers` (revisão 1194) reaproveitados via
+`PLAYWRIGHT_BROWSERS_PATH` pelos scripts/testes que já têm o fallback
+de localização documentado (`gerar_og_images.py::_localizar_chromium`,
+`tests/test_acessibilidade.py`).
+
+Suite completa local: **2857 passed, 4 skipped, 0 failed** (523s) — os
+4 skips a bater certo elemento a elemento com a allow-list
+(`scripts/verificar_skips_permitidos.py`, exit 0); `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo; confirmado por
+inspecção estrutural (`BeautifulSoup`, `json.loads` sobre os 8 blocos
+JSON-LD das 2 páginas novas + `p/habitacao.html`) sem HTML5validator
+disponível neste sandbox (mesmo erro de build do `setuptools` do
+sistema já documentado — validação HTML5 completa fica para o CI, como
+já acontecia noutras sessões com a mesma limitação); zero links
+internos partidos; hierarquia de cabeçalhos confirmada sem saltos nas 3
+páginas tocadas. `test_acessibilidade.py`/`test_higiene_indexacao.py`/
+`test_breadcrumb_coerencia.py`/`test_nav_coerencia.py`/
+`test_og_image.py` (todos parametrizados sobre as páginas reais)
+cobriram as 2 páginas novas automaticamente dentro da suite completa —
+0 violações axe.
+
+**Decisão registada, não implementada**: o ponto 1.6 do prompt pedia
+para "adicionar as novas URLs ao sistema de canary de URLs (padrão Como
+Pedir)" — investigado e confirmado que `data/urls_como_pedir.json` +
+`tests/test_urls_como_pedir.py` é um mecanismo desenhado especificamente
+para o cluster `como-pedir` (nome literal), sem equivalente genérico
+para outros clusters no repositório; estender essa infra-estrutura ao
+cluster Habitação seria inventar um mecanismo fora do âmbito para que
+foi construído — não implementado. `scripts/urls_criticas.txt` (smoke
+test) também não foi tocado, seguindo o precedente já estabelecido de
+só incluir páginas de referência/agregadoras (calendário, hub), nunca
+artigos de guia individuais.
+
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados por esta sessão — nenhuma das duas flags tem
+relação com este trabalho). Sessões 2 (simulador de IMT Jovem) e 3
+(RSAA, 1.º Direito, dedução de rendas em IRS, watchlist automática DRE)
+do mesmo plano ficam registadas em `ROADMAP.md` → "Backlog Habitação",
+por fazer. Trabalho feito na branch `claude/new-session-vbrhmd`
+(designada pelo ambiente remoto desta sessão) — **SEM PR — branch não
+integrada em `main`**.*
