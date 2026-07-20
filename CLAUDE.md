@@ -8110,3 +8110,57 @@ e **Limpar Branches Órfãs** (`29759483642`). Branch local apagada
 `limpar-branches.yml`, mesmo padrão da Sessão 1.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados
 por esta sessão de integração.*
+
+---
+
+*Última revisão: 2026-07-20 — Cluster Habitação, Sessão 3 (fecho):
+dedução de rendas em IRS, 1.º Direito, auditoria ao Porta 65 e watchlist
+DRE — ver secção "CLUSTER HABITAÇÃO" para o detalhe completo. PASSO 0
+(`WebSearch`; `WebFetch`/`curl` continuam bloqueados nesta sessão para
+domínios externos) corrigiu a premissa do prompt: o Decreto-Lei n.º
+97/2026, de 20 de maio, **já estava publicado** (não pendente) — sobe a
+dedução de rendas para 900€/2026 e 1.000€/2027 (a declaração entregue em
+2026, sobre rendimentos de 2025, usa ainda 700€) e cria o RSAA; o PAER
+confirmado em vigor, sem revogação publicada; a fusão "produto único"
+(Porta 65/Porta 65+/PAER/Arrendar para Subarrendar) é só uma intenção
+anunciada, sem diploma; distinta do Fundo de Emergência para a
+Habitação (aprovado em Conselho de Ministros a 9/07/2026, também sem
+confirmação de publicação em DR).
+
+2 páginas novas (`deducao-rendas-irs.html`, `primeiro-direito.html`),
+`porta-65.html` auditado, `p/habitacao.html` reorganizado em 3 secções,
+`fontes.html` +3 diplomas, `dados/parametros/habitacao.yaml` +1
+parâmetro (`deducao_rendas_irs_limite_eur`, 3 vigências). Watchlist DRE
+nova — `dre_habitacao_paer`/`dre_habitacao_garantia` em
+`scraper_playwright.py` (mesmo mecanismo `pesquisa_interactiva` do
+`dre_psu`, lógica de detecção generalizada em
+`_detectar_decreto_lei_generico`, `_detectar_decreto_psu` intocado por
+compatibilidade com `tests/test_dre_psu_pesquisa.py`) + Issues dedicadas
+em `pipeline-diario.yml` — **nunca calibrada contra um runner real
+nesta sessão**, a 1.ª corrida real do pipeline confirma os
+`min_chars_uteis`.
+
+**Achado corrigido antes do commit, não deixado no diff**: a 1.ª escrita
+de `data/clusters.json` (via `json.dump(..., indent=2)`) reformatou o
+ficheiro inteiro (310 inserções/52 remoções, todas as restantes
+entradas de outros clusters, não só a de Habitação) — apanhado por
+revisão do `git diff --stat` antes do commit, revertido e reaplicado com
+uma edição cirúrgica de texto que preserva o estilo compacto original
+(4 inserções, 1 alteração). Todos os outros diffs revistos manualmente
+ficheiro a ficheiro antes do commit (idempotência de
+`sincronizar_clusters.py`/`sincronizar_nav.py`/`adicionar_canonicas.py`/
+`adicionar_autoria_artigos.py`/`adicionar_article_jsonld.py`/
+`inserir_botao_partilhar.py` confirmada — 0 alterações, as 2 páginas
+novas já nasceram correctas).
+
+Suite completa local: **2986 passed, 4 skipped** (552,65s) —
+`scripts/verificar_skips_permitidos.py` confirma os 4 skips a bater
+certo, elemento a elemento, com `tests/skips_permitidos.json` (mesma
+allow-list de sempre, nenhum skip novo). `ruff check scripts/ tests/
+--select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sem relação com esta sessão). Trabalho feito na branch
+`claude/habitacao-rendas-primeiro-direito-bwvyvx` (designada pelo
+ambiente remoto desta sessão) — commit `3c85832`, push feito para a
+branch remota — **SEM PR — branch não integrada em `main`** (protocolo
+de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
