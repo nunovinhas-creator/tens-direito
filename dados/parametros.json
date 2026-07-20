@@ -1,6 +1,288 @@
 {
-  "gerado_em": "2026-07-19",
+  "gerado_em": "2026-07-20",
   "prestacoes": {
+    "abono": {
+      "escalao1_limite_cenario_pedidos_novos_2026": {
+        "descricao": "Limite de RR anual do 1.º escalão — cenário (b) pedidos novos em 2026, rendimentos de 2025",
+        "unidade": "EUR/ano",
+        "valor": 3657.5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_limite_cenario_pedidos_novos_2026": {
+        "descricao": "Limite de RR anual do 2.º escalão — cenário (b) pedidos novos em 2026, rendimentos de 2025",
+        "unidade": "EUR/ano",
+        "valor": 7315.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_limite_cenario_pedidos_novos_2026": {
+        "descricao": "Limite de RR anual do 3.º escalão — cenário (b) pedidos novos em 2026, rendimentos de 2025",
+        "unidade": "EUR/ano",
+        "valor": 12435.5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_limite_cenario_pedidos_novos_2026": {
+        "descricao": "Limite de RR anual do 4.º escalão — cenário (b) pedidos novos em 2026, rendimentos de 2025",
+        "unidade": "EUR/ano",
+        "valor": 18287.5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao1_limite_cenario_manutencao_2025": {
+        "descricao": "Limite de RR anual do 1.º escalão — cenário (a) manutenção/pedidos de 2025, rendimentos de 2024",
+        "unidade": "EUR/ano",
+        "valor": 3564.82,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_limite_cenario_manutencao_2025": {
+        "descricao": "Limite de RR anual do 2.º escalão — cenário (a) manutenção/pedidos de 2025, rendimentos de 2024",
+        "unidade": "EUR/ano",
+        "valor": 7129.64,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_limite_cenario_manutencao_2025": {
+        "descricao": "Limite de RR anual do 3.º escalão — cenário (a) manutenção/pedidos de 2025, rendimentos de 2024",
+        "unidade": "EUR/ano",
+        "valor": 12120.36,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_limite_cenario_manutencao_2025": {
+        "descricao": "Limite de RR anual do 4.º escalão — cenário (a) manutenção/pedidos de 2025, rendimentos de 2024",
+        "unidade": "EUR/ano",
+        "valor": 17824.1,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao1_limite_cenario_reavaliacao_2026": {
+        "descricao": "Limite de RR anual do 1.º escalão — cenário (c) reavaliações em 2026, rendimentos de 2026",
+        "unidade": "EUR/ano",
+        "valor": 3759.91,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_limite_cenario_reavaliacao_2026": {
+        "descricao": "Limite de RR anual do 2.º escalão — cenário (c) reavaliações em 2026, rendimentos de 2026",
+        "unidade": "EUR/ano",
+        "valor": 7519.82,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_limite_cenario_reavaliacao_2026": {
+        "descricao": "Limite de RR anual do 3.º escalão — cenário (c) reavaliações em 2026, rendimentos de 2026",
+        "unidade": "EUR/ano",
+        "valor": 12783.69,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_limite_cenario_reavaliacao_2026": {
+        "descricao": "Limite de RR anual do 4.º escalão — cenário (c) reavaliações em 2026, rendimentos de 2026",
+        "unidade": "EUR/ano",
+        "valor": 18799.55,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao1_valor_ate_36_meses": {
+        "descricao": "Valor mensal do 1.º escalão — criança até 36 meses",
+        "unidade": "EUR/mês",
+        "valor": 190.98,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao1_valor_37_a_72_meses": {
+        "descricao": "Valor mensal do 1.º escalão — criança de 37 a 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 75.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao1_valor_mais_72_meses": {
+        "descricao": "Valor mensal do 1.º escalão — criança com mais de 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 75.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_valor_ate_36_meses": {
+        "descricao": "Valor mensal do 2.º escalão — criança até 36 meses",
+        "unidade": "EUR/mês",
+        "valor": 161.65,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_valor_37_a_72_meses": {
+        "descricao": "Valor mensal do 2.º escalão — criança de 37 a 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 75.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao2_valor_mais_72_meses": {
+        "descricao": "Valor mensal do 2.º escalão — criança com mais de 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 75.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_valor_ate_36_meses": {
+        "descricao": "Valor mensal do 3.º escalão — criança até 36 meses",
+        "unidade": "EUR/mês",
+        "valor": 132.07,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_valor_37_a_72_meses": {
+        "descricao": "Valor mensal do 3.º escalão — criança de 37 a 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 59.33,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao3_valor_mais_72_meses": {
+        "descricao": "Valor mensal do 3.º escalão — criança com mais de 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 54.35,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_valor_ate_36_meses": {
+        "descricao": "Valor mensal do 4.º escalão — criança até 36 meses",
+        "unidade": "EUR/mês",
+        "valor": 88.43,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_valor_37_a_72_meses": {
+        "descricao": "Valor mensal do 4.º escalão — criança de 37 a 72 meses",
+        "unidade": "EUR/mês",
+        "valor": 44.77,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "escalao4_valor_mais_72_meses": {
+        "descricao": "Valor mensal do 4.º escalão — criança com mais de 72 meses (sem direito)",
+        "unidade": "EUR/mês",
+        "valor": 0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro — crianças do 4.º escalão perdem o direito ao completar 72 meses",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "garantia_infancia_valor_mensal": {
+        "descricao": "Valor mínimo mensal garantido por criança, no 1.º escalão, quando abaixo do limite de RR",
+        "unidade": "EUR/mês",
+        "valor": 127.33,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 60/2026/1, de 5 de fevereiro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "garantia_infancia_limite_rr_anual": {
+        "descricao": "Limite de RR anual (1.º escalão) abaixo do qual se aplica a Garantia para a Infância — 0,35 × IAS 2024 × 14 (o Guia Prático fixa este cálculo sempre com o IAS de 2024, nunca actualizado para o ano corrente)",
+        "unidade": "EUR/ano",
+        "valor": 2495.37,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "0,35 × IAS 2024 (509,26€) × 14 — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026 (CORRIGE um limite anterior calculado com o IAS 2026, 2.631,94€, que não corresponde ao Guia Prático)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "majoracao_monoparental_fracao": {
+        "descricao": "Majoração sobre o valor base do abono para famílias monoparentais (1.º a 3.º escalão sempre; 4.º escalão só até <72 meses — já garantido pelo valor 0 de escalao4_valor_mais_72_meses)",
+        "unidade": "fracção (0-1)",
+        "valor": 0.5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 176/2003, na redação do Decreto-Lei n.º 56/2022 — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "ias_2026": {
+        "descricao": "Indexante dos Apoios Sociais (IAS) 2026",
+        "unidade": "EUR/mês",
+        "valor": 537.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 480-A/2025/1, de 30 de dezembro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      }
+    },
     "csi": {
       "valor_referencia_individual_anual": {
         "descricao": "Valor de referência do CSI — pessoa isolada",
@@ -30,6 +312,158 @@
         "referencia_legal": "Portaria n.º 358/2024/1, de 30 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2026: 66 anos e 9 meses)",
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090",
         "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c",
+        "verificado_em": "2026-07-19"
+      }
+    },
+    "subsidio-doenca": {
+      "taxa_escalao_ate_30_dias": {
+        "descricao": "Percentagem da RR diária paga — baixa até 30 dias",
+        "unidade": "fracção (0-1)",
+        "valor": 0.55,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "taxa_escalao_31_a_90_dias": {
+        "descricao": "Percentagem da RR diária paga — baixa de 31 a 90 dias",
+        "unidade": "fracção (0-1)",
+        "valor": 0.6,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "taxa_escalao_91_a_365_dias": {
+        "descricao": "Percentagem da RR diária paga — baixa de 91 a 365 dias",
+        "unidade": "fracção (0-1)",
+        "valor": 0.7,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "taxa_escalao_mais_365_dias": {
+        "descricao": "Percentagem da RR diária paga — baixa com mais de 365 dias",
+        "unidade": "fracção (0-1)",
+        "valor": 0.75,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "taxa_tuberculose_ate_2_familiares": {
+        "descricao": "Percentagem da RR diária paga — tuberculose, até 2 familiares a cargo",
+        "unidade": "fracção (0-1)",
+        "valor": 0.8,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, regime especial da tuberculose — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "taxa_tuberculose_mais_2_familiares": {
+        "descricao": "Percentagem da RR diária paga — tuberculose, mais de 2 familiares a cargo",
+        "unidade": "fracção (0-1)",
+        "valor": 1.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, regime especial da tuberculose — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "majoracao_pontos_percentuais": {
+        "descricao": "Acréscimo em pontos percentuais nos escalões de 55%/60%, quando RR ≤ limite_rr_mensal_para_majoracao ou condição familiar",
+        "unidade": "pontos percentuais (fracção)",
+        "valor": 0.05,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 337/2004, de 31 de março, art. 5.º; Decreto-Lei n.º 28/2004, art. 17.º n.º 1 al. b) e c)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "limite_rr_mensal_para_majoracao": {
+        "descricao": "Limiar de RR mensal (€) que activa a majoração automática de +5pp",
+        "unidade": "EUR/mês",
+        "valor": 500.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 337/2004, de 31 de março, art. 5.º",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "dias_espera_conta_outrem": {
+        "descricao": "Dias de espera (não pagos) — trabalhador por conta de outrem, regime geral",
+        "unidade": "dias",
+        "valor": 3,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 4.º dia",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "dias_espera_independente": {
+        "descricao": "Dias de espera (não pagos) — trabalhador independente",
+        "unidade": "dias",
+        "valor": 10,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 11.º dia",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "dias_espera_seguro_social_voluntario": {
+        "descricao": "Dias de espera (não pagos) — seguro social voluntário/marítimos/bolseiros",
+        "unidade": "dias",
+        "valor": 30,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 31.º dia",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "teto_duracao_conta_outrem_dias": {
+        "descricao": "Duração máxima do subsídio — trabalhador por conta de outrem",
+        "unidade": "dias",
+        "valor": 1095,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — 3 anos",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "teto_duracao_independente_ssv_dias": {
+        "descricao": "Duração máxima do subsídio — trabalhadores independentes, bolseiros e seguro social voluntário",
+        "unidade": "dias",
+        "valor": 365,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — 1 ano",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "remuneracao_minima_mensal_garantida_2026": {
+        "descricao": "Remuneração Mínima Mensal Garantida (RMMG/salário mínimo) 2026 — base do piso diário mínimo do subsídio de doença",
+        "unidade": "EUR/mês",
+        "valor": 920.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 139/2025 — Remuneração Mínima Mensal Garantida para 2026",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-19"
+      },
+      "piso_diario_minimo": {
+        "descricao": "Valor mínimo garantido por dia pago — 30% da RMMG 2026 ÷ 30, excepto se a RR diária da pessoa for inferior (recebe a sua RR, nunca um valor superior ao que realmente ganha); o valor pago nunca pode ultrapassar a RR líquida (após descontos SS+IRS), não calculável neste simulador",
+        "unidade": "EUR/dia",
+        "valor": 9.2,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "30% × Remuneração Mínima Mensal Garantida 2026 (920 €) ÷ 30 — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026 (CORRIGE um piso anterior calculado sobre o IAS, 5,37 €, que não corresponde ao Guia Prático)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
         "verificado_em": "2026-07-19"
       }
     }

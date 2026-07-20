@@ -3362,9 +3362,13 @@ sessões anteriores.
 
 ### O que fica registado para o futuro, sem prazo
 
-1. Migrar `simulador-abono.html`/`simulador-ase.html`/
+1. ~~Migrar `simulador-abono.html`/`simulador-ase.html`/
    `simulador-subsidio-doenca.html` para o padrão de parâmetros YAML +
-   fetch, um por commit, mesmo padrão do CSI.
+   fetch, um por commit, mesmo padrão do CSI.~~ **`simulador-subsidio-doenca.html`
+   e `simulador-abono.html` migrados a 2026-07-19** (sessão "Parâmetros
+   YAML + auditoria factual") — ver essa entrada de revisão. `simulador-ase.html`
+   continua por migrar, bloqueado à espera do despacho anual da DGEstE
+   (ver ROADMAP.md).
 2. Confirmar em produção real (depois do deploy) que o Datasette Lite
    abre `dados/tensdireito.db` sem erro de CORS — não verificável do
    sandbox desta sessão.
@@ -7638,3 +7642,114 @@ canário ao HTML/JSON-LD visível). Suite completa reconfirmada sem
 regressões; `ruff` limpo. Sem merge — mantido no mesmo branch
 `claude/new-session-kmnkvb`, revisão final e merge continuam a ser do
 Nuno.*
+
+---
+
+*Última revisão: 2026-07-19 (sessão seguinte, "Parâmetros YAML +
+auditoria factual") — Commits 1 e 2 do plano de migração: subsídio de
+doença e abono de família passam para o padrão OpenFisca de
+`dados/parametros/*.yaml`, mesmo princípio do CSI. Commit 3 (ASE)
+**bloqueado** — exige o despacho anual da DGEstE com os escalões
+2026/2027, ainda não fornecido/verificado pelo Nuno; registado como
+pendência em `ROADMAP.md`, sem qualquer alteração a `simulador-ase.html`
+nem `acao-social-escolar.html` nesta sessão.
+
+**Cada prestação tratada como pacote completo**: YAML de parâmetros
+(fonte primária citada — Guia Prático 5001/4001 do ISS, I.P., PDFs
+oficiais já lidos pelo Nuno antes desta sessão, PASSO 0 cumprido) →
+migração do simulador para `fetch('/dados/parametros.json')` em runtime
+(nunca calcula com valores em falta — botão nasce `disabled`, estado de
+carregamento visível "⏳ A carregar valores oficiais…", `#avisoParametrosErro`
+se o fetch falhar) → auditoria das páginas publicadas dessa prestação
+contra os mesmos dados verificados, com qualquer divergência corrigida
+no mesmo commit (mesmo precedente do erro dos "80%" do CSI).
+
+**Commit 1 — subsídio de doença**: `dados/parametros/subsidio-doenca.yaml`
+(15 parâmetros: percentagens por escalão, tuberculose, majoração,
+dias de espera, tectos de duração, piso diário mínimo). **Correcção real
+encontrada**: o piso diário estava calculado sobre o IAS (30% × 537,13€ ÷
+30 = 5,37€) — o Guia Prático 5001 (v4.55, 14/07/2026) fixa-o sobre a
+Remuneração Mínima Mensal Garantida 2026 (920€, DL n.º 139/2025): 30% ×
+920€ ÷ 30 = 9,20€. Um segundo piso (300€/325€ mensais quando a RR
+mensal excedia 500€, marcado ⚠️B em sessões anteriores como
+"interpretação conservadora" sem fonte primária confirmada) foi
+**removido** — o Guia Prático descreve só um piso único, com a excepção
+central desta correcção: se a RR diária da pessoa já for inferior a
+esse piso, recebe a sua própria RR diária, nunca um valor superior ao
+que realmente ganha (`aplicarPiso()`, nova função pura). Aplicado
+uniformemente aos 4 escalões e à tuberculose. `baixa-medica-subsidio-doenca.html`
+corrigida nos mesmos pontos (resumo rápido, secção "Garantia mínima" —
+antes "Duas garantias mínimas" com o piso 300/325 já removido, JSON-LD
+FAQ, fonte-bloco) — "5,37"/"300 €"/"325 €" nunca mais aparecem fora de
+comentários `<script>` (trancado por
+`tests/test_valores_ancora.py::test_piso_300_325_nunca_reaparece_sem_confirmacao`).
+Não modelado, declarado na UI: prazo de garantia de 6 meses, índice de
+profissionalidade de 12 dias, tecto de 100% da RR líquida (após
+descontos) — já correctamente documentados no artigo, sem divergência
+encontrada aí. `tests/test_simulador_subsidio_doenca_calculo.py`
+reescrito (29 testes): casos golden recalculados à mão para o piso
+9,20€ (incluindo o caso central `test_rr_diaria_abaixo_do_piso_paga_a_propria_rr_nunca_o_piso`,
+salário=90€ → paga exactamente a RR diária de 3,00€, nunca 9,20€ nem
+1,80€) e 2 testes de runtime real (fetch sucesso/falha) com
+`http.server`, mesmo padrão do CSI.
+
+**Commit 2 — abono de família**: `dados/parametros/abono.yaml` (17
+parâmetros: 12 limites de RR por escalão × 3 cenários — nome do
+parâmetro sufixado com o cenário, já que o esquema flat de
+`gerar_parametros_json.py` não suporta agrupamento nativo —, 12 valores
+mensais por idade, Garantia para a Infância ×2, majoração
+monoparental, IAS 2026 de referência). Armadilha estrutural confirmada:
+há **três cenários simultâneos** (a: manutenção/pedidos de 2025,
+rendimentos de 2024, IAS 509,26€; b: pedidos novos em 2026, rendimentos
+de 2025, IAS 522,50€ — cenário simulado por omissão, declarado
+explicitamente na UI e na FAQ nova "Este simulador considera todas as
+regras especiais do abono?"; c: reavaliações em 2026, rendimentos de
+2026, IAS 537,13€) — os limites de RR por escalão mudam consoante o
+cenário, os valores mensais por idade não. **Correcção real
+encontrada**: o limite de elegibilidade da Garantia para a Infância
+estava calculado com o IAS do ano corrente (0,35 × 537,13€ × 14 =
+2.631,94€) — o Guia Prático 4001 (v4.80, 30/06/2026) fixa este cálculo
+sempre com o IAS de 2024 (509,26€), nunca actualizado: 0,35 × 509,26€ ×
+14 = 2.495,37€. Corrigido no simulador e em `abono-de-familia.html`
+(JSON-LD FAQ + visível). **2.ª correcção real, encontrada só na
+auditoria do artigo** (a tabela de acréscimos por família numerosa
+nunca foi consumida pelo simulador — só documentada no artigo): a linha
+do 4.º escalão, 2 crianças ≤36 meses, tinha "+ 39,28€" (total 127,71€)
+— o valor correcto, confirmado pelos dados verificados desta sessão, é
+"+ 9,28€" (total 97,71€); "127,71"/"39,28" confirmados ausentes de todo
+o repositório depois da correcção. A tabela de RR por escalão (secção
+"Como se calculam os escalões") estava incompleta/enganadora por
+mostrar só o cenário (b) — reescrita como tabela comparativa dos 3
+cenários lado a lado, por instrução explícita da tarefa ("ATENÇÃO
+ESPECIAL"). Não modelado, declarado na UI: cenários (a)/(c), acréscimo
+por família numerosa, majoração pré-natal de 35%, crianças
+institucionalizadas, duplicado de setembro, isenção trabalhador-estudante,
+património mobiliário, fórmula de rendimentos de independentes.
+`0.5` hardcoded na majoração monoparental substituído por
+`majoracaoMonoparentalFracao` fetched. `tests/test_simulador_abono_calculo.py`
+reescrito (14 testes): golden tests recalculados a partir de
+`dados/parametros.json`, novo `test_limite_garantia_infancia_corrigido_2495_37_nunca_2631_94`
+(RR=2.500€ — entre os dois limites, só elegível para a Garantia com o
+valor antigo/errado — prova a correcção por regressão directa) e 2
+testes de runtime real.
+
+**`gerar_base_dados.py` apanhou as 2 prestações novas automaticamente**
+(glob genérico sobre `dados/parametros/*.yaml`, sem alteração de
+código — invariante 6 do prompt da sessão confirmada sem intervenção).
+`dados/parametros.json`: 3 prestações, 46 parâmetros. Nenhuma URL
+específica de Guia Prático foi inventada — `fonte_url` usa sempre a
+homepage `https://dre.pt` (regra "nunca inventar subpaths de portais
+oficiais"), com o Guia Prático citado por nome/versão/data dentro de
+`referencia_legal` para rastreabilidade, nunca como link fabricado.
+
+Verificado antes de cada commit: `verificar_datas.detectar_alertas()`
+sem falsos positivos nas 4 páginas tocadas em nenhum mês de 2026; os 4
+blocos JSON-LD de cada página válidos (`json.loads`); paridade
+visível↔JSON-LD das FAQs mantida nos dois simuladores (6/6); axe sem
+violações críticas/sérias nas 4 páginas; `ruff check scripts/ tests/
+--select E,F,W --ignore E501 .` limpo; suite completa reconfirmada sem
+regressões. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+não tocados (`False`, inalterados — nenhuma das duas flags tem relação
+com esta sessão). Trabalho feito no branch `claude/new-session-5pczn8`
+(designado pelo ambiente remoto desta sessão) — **SEM PR aberto ainda
+neste ponto do trabalho** (ver fecho de sessão para o estado final).*

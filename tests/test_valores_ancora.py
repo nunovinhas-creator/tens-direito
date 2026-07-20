@@ -80,7 +80,12 @@ def _percentagens(texto: str) -> list:
 # ── IAS 2026 ─────────────────────────────────────────────────────────────────
 
 def test_ias_2026_simulador_abono():
-    assert _valor_js(_ler("simulador-abono.html"), "ias2026") == IAS_2026
+    # Migrado para ler dados/parametros.json na sessão de 2026-07-19 —
+    # PARAMETROS_ABONO deixou de ser um objecto JS inline (CONFIG); o
+    # helper _param_abono() está definido mais abaixo, na secção
+    # "Abono de família".
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    assert todos["prestacoes"]["abono"]["ias_2026"]["valor"] == IAS_2026
 
 
 def test_ias_2026_simulador_ase():
@@ -88,37 +93,87 @@ def test_ias_2026_simulador_ase():
 
 
 def test_ias_2026_visivel_no_texto():
-    for pagina in ("simulador-abono.html", "simulador-ase.html", "simulador-subsidio-doenca.html"):
+    # simulador-subsidio-doenca.html saiu desta lista na sessão de
+    # 2026-07-19: o piso diário deixou de ser calculado sobre o IAS (era
+    # o erro corrigido nesta sessão) — passa a ser calculado sobre a
+    # RMMG 2026 (920€), sem relação nenhuma com o IAS. Ver
+    # test_piso_diario_minimo_baseado_na_rmmg_nunca_no_ias mais abaixo.
+    #
+    # simulador-abono.html saiu desta lista na mesma sessão: o simulador
+    # aplica sempre o cenário (b) — pedidos novos, indexado ao IAS de
+    # 2025 (522,50€) — e a Garantia para a Infância usa sempre o IAS de
+    # 2024 (509,26€, corrigido nesta sessão); o IAS 2026 (537,13€) deixou
+    # de ser um valor funcionalmente relevante nesta página. Continua
+    # coberto como dado aberto (ias_2026 em dados/parametros/abono.yaml,
+    # ver test_ias_2026_simulador_abono acima).
+    for pagina in ("simulador-ase.html",):
         assert "537,13" in _ler(pagina), f"{pagina}: IAS 2026 (537,13€) não visível no texto"
 
 
-# ── Subsídio de doença — percentagens por escalão ───────────────────────────
+# ── Subsídio de doença — percentagens/piso, lidos de dados/parametros.json ──
+# Sessão "Parâmetros YAML + auditoria factual" (2026-07-19, Commit 1): o
+# simulador deixou de ter PARAMETROS_SUBSIDIO_DOENCA como objecto JS inline —
+# passa a ler de dados/parametros.json (gerado de
+# dados/parametros/subsidio-doenca.yaml), mesmo padrão já usado pelo CSI
+# nesta mesma sessão. Estes testes leem a MESMA fonte que o simulador
+# consome em runtime, nunca uma cópia.
+#
+# CORRECÇÃO REAL DA AUDITORIA: o piso diário estava calculado sobre o IAS
+# (5,37€ = 30% × 537,13€ ÷ 30) — o Guia Prático 5001 do ISS, I.P. (v4.55,
+# 14/07/2026) fixa-o sobre a RMMG 2026 (920€): 30% × 920€ ÷ 30 = 9,20€. O
+# segundo piso (300€/325€ mensais, ⚠️B) nunca teve confirmação de fonte
+# primária e foi removido — ver dados/parametros/subsidio-doenca.yaml.
+
+import json as _json_pisos  # noqa: E402 (nome local para não colidir com o import json mais abaixo no ficheiro)
+
+_PARAMETROS_JSON_PATH = BASE_DIR / "dados" / "parametros.json"
+
+
+def _param_subsidio_doenca(nome: str):
+    todos = _json_pisos.loads(_PARAMETROS_JSON_PATH.read_text(encoding="utf-8"))
+    return todos["prestacoes"]["subsidio-doenca"][nome]["valor"]
+
 
 def test_percentagens_escalao_subsidio_doenca():
-    html = _ler("simulador-subsidio-doenca.html")
-    assert _valor_js(html, "taxaEscalao1") == 0.55
-    assert _valor_js(html, "taxaEscalao2") == 0.60
-    assert _valor_js(html, "taxaEscalao3") == 0.70
-    assert _valor_js(html, "taxaEscalao4") == 0.75
+    assert _param_subsidio_doenca("taxa_escalao_ate_30_dias") == 0.55
+    assert _param_subsidio_doenca("taxa_escalao_31_a_90_dias") == 0.60
+    assert _param_subsidio_doenca("taxa_escalao_91_a_365_dias") == 0.70
+    assert _param_subsidio_doenca("taxa_escalao_mais_365_dias") == 0.75
 
 
 def test_percentagens_tuberculose():
-    html = _ler("simulador-subsidio-doenca.html")
-    assert _valor_js(html, "taxaTuberculoseAte2Familiares") == 0.80
-    assert _valor_js(html, "taxaTuberculoseMais2Familiares") == 1.00
+    assert _param_subsidio_doenca("taxa_tuberculose_ate_2_familiares") == 0.80
+    assert _param_subsidio_doenca("taxa_tuberculose_mais_2_familiares") == 1.00
 
 
-# ── Subsídio de doença — pisos mínimos ───────────────────────────────────────
+# ── Subsídio de doença — piso diário mínimo ─────────────────────────────────
 
-def test_piso_diario_universal():
-    assert _valor_js(_ler("simulador-subsidio-doenca.html"), "pisoDiarioUniversal") == 5.37
+def test_piso_diario_minimo_baseado_na_rmmg_nunca_no_ias():
+    """O piso é 30% da RMMG 2026 (920€) ÷ 30 = 9,20€ — nunca 30% do IAS
+    (que daria 5,37€, o valor errado corrigido nesta sessão)."""
+    assert _param_subsidio_doenca("remuneracao_minima_mensal_garantida_2026") == 920.00
+    piso = _param_subsidio_doenca("piso_diario_minimo")
+    assert abs(piso - round(0.30 * 920.00 / 30, 2)) < 1e-9
+    assert piso == 9.20
 
 
-def test_pisos_proporcionais_300_325():
-    html = _ler("simulador-subsidio-doenca.html")
-    # 300€/mês ÷ 30 e 325€/mês ÷ 30 — ver CLAUDE.md "GATILHO AUTOBAIXA" (⚠️B)
-    assert abs(_valor_js(html, "pisoDiarioProporcionalTaxa55") - 300 / 30) < 1e-9
-    assert abs(_valor_js(html, "pisoDiarioProporcionalTaxa60") - 325 / 30) < 1e-9
+def test_piso_300_325_nunca_reaparece_sem_confirmacao():
+    """O piso de 300€/325€ mensais (⚠️B) nunca teve confirmação de fonte
+    primária — removido nesta sessão. Nunca deve reaparecer em
+    dados/parametros/subsidio-doenca.yaml sem uma citação legal primária
+    nova, mesmo padrão de
+    test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao
+    para o CSI."""
+    todos = _json_pisos.loads(_PARAMETROS_JSON_PATH.read_text(encoding="utf-8"))
+    sd = todos["prestacoes"]["subsidio-doenca"]
+    assert "piso_diario_proporcional_taxa_55" not in sd
+    assert "piso_diario_proporcional_taxa_60" not in sd
+
+    for pagina in ("simulador-subsidio-doenca.html", "baixa-medica-subsidio-doenca.html"):
+        html = _ler(pagina)
+        sem_scripts = re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", html, flags=re.IGNORECASE)
+        for valor in ("300 €", "325 €", "300€", "325€", "5,37"):
+            assert valor not in sem_scripts, f"{pagina}: {valor!r} reapareceu fora de <script> — questão fechada"
 
 
 # ── TITLE/META DESCRIPTION — valores legais em metadados (2026-07-06) ───────
@@ -229,10 +284,12 @@ def test_subsidio_desemprego_meta_description_percentagem_bate_com_o_corpo():
 # ── Subsídio de doença — dias de espera ──────────────────────────────────────
 
 def test_dias_de_espera_por_vinculo():
-    html = _ler("simulador-subsidio-doenca.html")
-    assert _valor_js(html, "diasEsperaContaOutrem") == 3
-    assert _valor_js(html, "diasEsperaIndependente") == 10
-    assert _valor_js(html, "diasEsperaSeguroSocialVoluntario") == 30
+    # Migrado para ler dados/parametros.json na sessão de 2026-07-19 —
+    # PARAMETROS_SUBSIDIO_DOENCA deixou de ser um objecto JS inline
+    # (ver _param_subsidio_doenca() mais acima).
+    assert _param_subsidio_doenca("dias_espera_conta_outrem") == 3
+    assert _param_subsidio_doenca("dias_espera_independente") == 10
+    assert _param_subsidio_doenca("dias_espera_seguro_social_voluntario") == 30
 
 
 # ── Cartão Europeu de Estacionamento (secção "Bónus", 2026-07-11) ────────────

@@ -5,10 +5,28 @@ Testes da mecânica de cálculo do simulador de subsídio de doença
 do HTML real, nunca uma cópia à parte (mesma filosofia de
 test_simulador_csi_calculo.py/test_simulador_psu_calculo.py).
 
-Os valores de PARAMETROS_SUBSIDIO_DOENCA usados aqui SÃO os valores de
-produção (55%/60%/70%/75%, IAS 5,37€/dia, dias de espera 3/10/30,
-tetos 1095/365) — já fact-checked e publicados em
-baixa-medica-subsidio-doenca.html (verificado 05/07/2026).
+Sessão "Parâmetros YAML + auditoria factual" (2026-07-19, Commit 1):
+PARAMETROS_SUBSIDIO_DOENCA deixou de ser um objecto JS inline — passa a
+ser carregado em runtime de /dados/parametros.json (gerado de
+dados/parametros/subsidio-doenca.yaml), mesmo padrão do CSI. Os golden
+tests da mecânica pura (`calcularSubsidioDoenca`) constroem `params`
+directamente a partir de dados/parametros.json (a "nova fonte"), nunca
+de um `PARAMETROS_SUBSIDIO_DOENCA` global da página — a função continua
+pura, testável sem depender de fetch/rede. O comportamento de runtime
+(fetch com sucesso/falha, nunca calcular com valores em falta) tem os
+seus próprios testes mais abaixo, servidos por um http.server real
+(nunca file://).
+
+CORRECÇÃO REAL DA AUDITORIA (2026-07-19), contra a fonte primária — Guia
+Prático 5001 do ISS, I.P., v4.55, de 14/07/2026 (PDF oficial lido pelo
+Nuno): o piso diário mínimo estava calculado sobre o IAS (30% ×
+537,13€ ÷ 30 = 5,37€) — o Guia Prático fixa-o sobre a Remuneração
+Mínima Mensal Garantida (RMMG) 2026: 30% × 920€ ÷ 30 = 9,20€. O segundo
+piso (300€/325€ mensais quando a RR mensal era superior a 500€, ⚠️B)
+nunca teve confirmação de fonte primária e foi removido — o Guia
+Prático descreve só um piso diário único, com uma excepção: se a RR
+diária da pessoa for inferior a esse piso, recebe a sua própria RR
+diária, nunca um valor superior ao que realmente ganha.
 
 Todos os casos golden estão calculados à mão nos comentários — se um
 resultado divergir 1 cêntimo, investigar arredondamento antes de mexer
@@ -23,8 +41,12 @@ Se o Chromium do Playwright não estiver disponível no ambiente onde os
 testes correm, o módulo inteiro é ignorado (skip) em vez de falhar.
 """
 import glob
+import http.server
+import json
 import os
 import re
+import socket
+import threading
 from pathlib import Path
 
 import pytest
@@ -32,6 +54,7 @@ import pytest
 RAIZ = Path(__file__).parent.parent
 SIMULADOR_HTML = (RAIZ / "simulador-subsidio-doenca.html").read_text(encoding="utf-8")
 ARTIGO_HTML = (RAIZ / "baixa-medica-subsidio-doenca.html").read_text(encoding="utf-8")
+PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
 
 
 def _extrair_script_inline(texto: str, marcador: str, nome_ficheiro: str) -> str:
@@ -42,6 +65,30 @@ def _extrair_script_inline(texto: str, marcador: str, nome_ficheiro: str) -> str
 
 
 CALCULO_JS = _extrair_script_inline(SIMULADOR_HTML, "function calcularSubsidioDoenca", "simulador-subsidio-doenca.html")
+
+
+def _parametros_subsidio_doenca_de_producao() -> dict:
+    """Lê dados/parametros.json (a "nova fonte") e monta o mesmo formato
+    que PARAMETROS_SUBSIDIO_DOENCA tinha em runtime — nunca valores
+    hardcoded aqui."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    sd = todos["prestacoes"]["subsidio-doenca"]
+    return {
+        "taxaEscalao1": sd["taxa_escalao_ate_30_dias"],
+        "taxaEscalao2": sd["taxa_escalao_31_a_90_dias"],
+        "taxaEscalao3": sd["taxa_escalao_91_a_365_dias"],
+        "taxaEscalao4": sd["taxa_escalao_mais_365_dias"],
+        "taxaTuberculoseAte2Familiares": sd["taxa_tuberculose_ate_2_familiares"],
+        "taxaTuberculoseMais2Familiares": sd["taxa_tuberculose_mais_2_familiares"],
+        "diasEsperaContaOutrem": sd["dias_espera_conta_outrem"],
+        "diasEsperaIndependente": sd["dias_espera_independente"],
+        "diasEsperaSeguroSocialVoluntario": sd["dias_espera_seguro_social_voluntario"],
+        "tetoDuracaoContaOutrem": sd["teto_duracao_conta_outrem_dias"],
+        "tetoDuracaoIndependenteSSV": sd["teto_duracao_independente_ssv_dias"],
+        "majoracaoPontosPercentuais": sd["majoracao_pontos_percentuais"],
+        "limiteRRParaMajoracao": sd["limite_rr_mensal_para_majoracao"],
+        "pisoDiarioMinimo": sd["piso_diario_minimo"],
+    }
 
 
 def _localizar_chromium():
@@ -92,7 +139,7 @@ def _calcular(pagina, entrada):
     entrada_completa.update(entrada)
     return pagina.evaluate(
         "([params, entrada]) => calcularSubsidioDoenca(params, entrada)",
-        [pagina.evaluate("PARAMETROS_SUBSIDIO_DOENCA"), entrada_completa],
+        [_parametros_subsidio_doenca_de_producao(), entrada_completa],
     )
 
 
@@ -101,7 +148,9 @@ def test_caso1_1400_100_dias_conta_outrem_bate_com_o_artigo(pagina):
     # RR diária = 46,666667€. Dias 1-3: espera. Dias 4-30 (27d) a 55% =
     # 693,00. Dias 31-90 (60d) a 60% = 1.680,00. Dias 91-100 (10d) a 70%
     # = 326,67. Total = 2.699,67€ — exemplo publicado em
-    # baixa-medica-subsidio-doenca.html.
+    # baixa-medica-subsidio-doenca.html. RR diária (46,67€) está bem
+    # acima do piso (9,20€) em todos os escalões — o piso nunca morde
+    # neste caso, com ou sem a correcção desta sessão.
     r = _calcular(pagina, {"salario": 1400, "duracaoDias": 100, "vinculo": "conta_outrem"})
     assert round(r["totalGeral"], 2) == 2699.67
     assert r["diasEspera"] == 3
@@ -138,30 +187,46 @@ def test_caso3_1400_91_dias_fronteira_90_91(pagina):
     assert round(r["totalGeral"], 2) == 2405.67
 
 
-# ── Caso 4 — majoração automática por RR ≤ 500€ + piso 5,37€ exercitado ─────
-def test_caso4_450_30_dias_majoracao_automatica(pagina):
+# ── Caso 4 — majoração automática por RR ≤ 500€, piso 9,20€ a morder ───────
+def test_caso4_450_30_dias_majoracao_automatica_piso_920_morde(pagina):
     # RR mensal = 450€ ≤ 500€ → majoração automática (55% -> 60%).
-    # RR diária = 15,00€; 60% × 15,00 = 9,00€/dia — acima do piso
-    # universal de 5,37€ (o piso não morde a este salário, mas o
-    # caminho de código que o aplica é exercitado: max(9.00, 5.37)==9.00).
+    # RR diária = 15,00€; 60% × 15,00 = 9,00€/dia — ABAIXO do novo piso
+    # de 9,20€ (RMMG), mas a RR diária (15,00€) é maior que o piso, por
+    # isso o piso eleva o valor pago para 9,20€ (não para a RR diária).
+    # Dias 4-30 (27 dias) × 9,20€ = 248,40€.
     r = _calcular(pagina, {"salario": 450, "duracaoDias": 30, "vinculo": "conta_outrem"})
     assert r["majoracaoAplicavel"] is True
     assert r["diasPagos"] == 27
-    assert round(r["desagregacao"][0]["valorDia"], 2) == 9.00
-    assert round(r["totalGeral"], 2) == 243.00
+    assert round(r["desagregacao"][0]["valorDia"], 2) == 9.20
+    assert round(r["totalGeral"], 2) == 248.40
 
 
-# ── Caso 5 — zona onde o piso 300€/325€ morde ───────────────────────────────
-def test_caso5_510_60_dias_piso_300_325_morde(pagina):
-    # RR mensal = 510€ > 500€ (sem majoração). RR diária = 17,00€.
-    # Escalão 55%: 17,00×0,55=9,35€ < piso 300÷30=10,00€ -> usa 10,00€.
-    # Escalão 60%: 17,00×0,60=10,20€ < piso 325÷30=10,8333€ -> usa 10,8333€.
-    # Total = 27×10,00 + 30×10,8333 = 270,00 + 325,00 = 595,00€.
-    r = _calcular(pagina, {"salario": 510, "duracaoDias": 60, "vinculo": "conta_outrem"})
+# ── Caso 5 — piso 9,20€ morde sem majoração (RR > 500€) ─────────────────────
+def test_caso5_501_10_dias_piso_920_morde_sem_majoracao(pagina):
+    # RR mensal = 501€ > 500€ (sem majoração automática). RR diária =
+    # 16,70€. Escalão 55%: 16,70×0,55 = 9,185€ < piso 9,20€ → usa
+    # 9,20€ (a RR diária, 16,70€, é maior que o piso — recebe o piso,
+    # não a RR). Dias 4-10 (7 dias) × 9,20€ = 64,40€.
+    r = _calcular(pagina, {"salario": 501, "duracaoDias": 10, "vinculo": "conta_outrem"})
     assert r["majoracaoAplicavel"] is False
-    assert round(r["desagregacao"][0]["valorDia"], 4) == 10.00
-    assert round(r["desagregacao"][1]["valorDia"], 4) == 10.8333
-    assert round(r["totalGeral"], 2) == 595.00
+    assert round(r["desagregacao"][0]["valorDia"], 4) == 9.20
+    assert round(r["totalGeral"], 2) == 64.40
+
+
+# ── Caso novo — RR diária abaixo do piso: paga-se a RR, nunca o piso ────────
+def test_rr_diaria_abaixo_do_piso_paga_a_propria_rr_nunca_o_piso(pagina):
+    # Caso central da correcção desta sessão: salário=90€ → RR diária =
+    # 3,00€ (bem abaixo do piso de 9,20€). RR mensal=90€≤500€ →
+    # majoração automática (taxa=0,60). 0,60×3,00=1,80€ — mas a RR
+    # diária (3,00€) já é inferior ao piso, por isso NUNCA se aplica o
+    # piso (que pagaria mais do que a pessoa realmente ganha): o valor
+    # pago é exactamente a RR diária, 3,00€ — nem 1,80€ (taxa×RR sem
+    # piso), nem 9,20€ (o piso, que seria um erro). Dias 4-10 (7 dias)
+    # × 3,00€ = 21,00€.
+    r = _calcular(pagina, {"salario": 90, "duracaoDias": 10, "vinculo": "conta_outrem"})
+    assert r["majoracaoAplicavel"] is True
+    assert round(r["desagregacao"][0]["valorDia"], 2) == 3.00
+    assert round(r["totalGeral"], 2) == 21.00
 
 
 # ── Caso 6 — independente: 10 dias de espera ────────────────────────────────
@@ -297,25 +362,12 @@ def test_teto_exactamente_no_limite_nao_dispara_aviso(pagina):
     assert r["tetoDuracao"] == 1095
 
 
-# ── Piso universal (5,37€/dia) a morder de facto — RR muito baixa ──────────
-
-def test_piso_universal_5_37_morde_com_rr_muito_baixa(pagina):
-    # RR mensal=100€ (≤500€ → majoração automática 55%→60%). RR diária=
-    # 3,3333€; 60%×3,3333=2,00€/dia < piso universal 5,37€ → usa 5,37€.
-    # Dias 4-10 (7d, dentro do escalão de 30 dias) × 5,37 = 37,59€.
-    r = _calcular(pagina, {"salario": 100, "duracaoDias": 10, "vinculo": "conta_outrem"})
-    assert r["majoracaoAplicavel"] is True
-    assert r["diasPagos"] == 7
-    assert round(r["desagregacao"][0]["valorDia"], 2) == 5.37
-    assert round(r["totalGeral"], 2) == 37.59
-
-
 # ── Majoração via checkbox (nunca só automática por RR≤500€) ────────────────
 
 def test_majoracao_via_checkbox_com_rr_acima_de_500(pagina):
     # RR mensal=3.000€ (>500€, sem majoração automática), mas
     # majoracaoFamiliar=True activa-a na mesma. RR diária=100,00€;
-    # taxa=0,55+0,05=0,60; valorDia=60,00€ (piso 300/325 não morde).
+    # taxa=0,55+0,05=0,60; valorDia=60,00€ (bem acima do piso de 9,20€).
     # Dias 4-10 (7d) × 60,00 = 420,00€.
     r = _calcular(pagina, {
         "salario": 3000, "duracaoDias": 10, "vinculo": "conta_outrem",
@@ -349,6 +401,29 @@ def test_seguro_social_voluntario_30_dias_espera(pagina):
     assert round(r["totalGeral"], 2) == 140.00
 
 
+# ── Estado de produção nunca inventa valores ────────────────────────────────
+
+def test_parametros_producao_tem_todos_os_valores_confirmados(pagina):
+    params = _parametros_subsidio_doenca_de_producao()
+    assert params["taxaEscalao1"]["valor"] == 0.55
+    assert params["taxaEscalao4"]["valor"] == 0.75
+    assert params["pisoDiarioMinimo"]["valor"] == 9.20
+    for chave in params:
+        assert params[chave]["verificado_em"], f"{chave} sem verificado_em"
+        assert params[chave]["referencia_legal"], f"{chave} sem referencia_legal"
+        assert params[chave]["fonte_url"], f"{chave} sem fonte_url"
+
+
+def test_piso_300_325_nao_existe_por_falta_de_confirmacao(pagina):
+    """Tranca a remoção deliberada (2026-07-19): o piso de 300€/325€
+    mensais nunca teve confirmação de fonte primária — nunca deve
+    reaparecer sem uma citação legal primária nova."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    sd = todos["prestacoes"]["subsidio-doenca"]
+    assert "piso_diario_proporcional_taxa_55" not in sd
+    assert "piso_diario_proporcional_taxa_60" not in sd
+
+
 # ── Coerência artigo ↔ simulador ─────────────────────────────────────────────
 
 def test_gravidez_de_risco_fora_do_ambito_coerente_com_o_artigo():
@@ -363,12 +438,12 @@ def test_gravidez_de_risco_fora_do_ambito_coerente_com_o_artigo():
         assert facto in ARTIGO_HTML, f"'{facto}' não encontrado no artigo"
 
 
-def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
+def test_coerencia_artigo_simulador_constantes_de_producao():
     """Se um dia o artigo for actualizado sem o simulador (ou
-    vice-versa), este teste é a rede — reimporta os PARAMETROS reais do
-    simulador e confirma que batem certo com os factos publicados em
-    baixa-medica-subsidio-doenca.html."""
-    params = pagina.evaluate("PARAMETROS_SUBSIDIO_DOENCA")
+    vice-versa), este teste é a rede — lê os parâmetros reais de
+    dados/parametros.json e confirma que batem certo com os factos
+    publicados em baixa-medica-subsidio-doenca.html."""
+    params = _parametros_subsidio_doenca_de_producao()
 
     assert params["taxaEscalao1"]["valor"] == 0.55
     assert params["taxaEscalao2"]["valor"] == 0.60
@@ -382,14 +457,87 @@ def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     assert params["tetoDuracaoContaOutrem"]["valor"] == 1095
     assert params["tetoDuracaoIndependenteSSV"]["valor"] == 365
     assert params["majoracaoPontosPercentuais"]["valor"] == 0.05
-    assert params["limiteRRParaMajoracaoOuPiso"]["valor"] == 500
-    assert params["pisoDiarioUniversal"]["valor"] == 5.37
+    assert params["limiteRRParaMajoracao"]["valor"] == 500
+    assert params["pisoDiarioMinimo"]["valor"] == 9.20
 
     # As mesmas constantes têm de aparecer no corpo do artigo publicado
-    # — nunca só no simulador.
-    for valor_esperado in ["55%", "60%", "70%", "75%", "80%", "100%", "5,37", "300", "325", "1095", "365"]:
+    # — nunca só no simulador. "5,37"/"300"/"325" nunca devem reaparecer
+    # (ver test_valores_ancora.py::test_piso_300_325_nunca_reaparece_sem_confirmacao).
+    for valor_esperado in ["55%", "60%", "70%", "75%", "80%", "100%", "9,20", "1095", "365"]:
         assert valor_esperado in ARTIGO_HTML, f"'{valor_esperado}' não encontrado no artigo publicado"
 
     for chave in params:
         assert params[chave]["verificado_em"] is not None, f"{chave} sem verificado_em"
-        assert params[chave]["fonte"], f"{chave} sem fonte"
+        assert params[chave]["referencia_legal"], f"{chave} sem referencia_legal"
+
+
+# ── Runtime real: fetch de /dados/parametros.json (sucesso e falha) ────────
+# Servido por um http.server real (nunca file://, mesmo padrão de
+# test_simulador_csi_calculo.py) — só assim
+# `fetch('/dados/parametros.json')` resolve como um pedido relativo real.
+def _porta_livre() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+@pytest.fixture(scope="module")
+def servidor():
+    porta = _porta_livre()
+    handler = lambda *a, **kw: http.server.SimpleHTTPRequestHandler(*a, directory=str(RAIZ), **kw)  # noqa: E731
+    httpd = http.server.ThreadingHTTPServer(("127.0.0.1", porta), handler)
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{porta}"
+    httpd.shutdown()
+    thread.join(timeout=5)
+
+
+@pytest.fixture()
+def pagina_real(servidor):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=_CHROMIUM_PATH)
+        page = browser.new_page()
+        yield page, servidor
+        browser.close()
+
+
+def test_runtime_fetch_com_sucesso_activa_o_botao_e_calcula(pagina_real):
+    page, servidor = pagina_real
+    page.goto(f"{servidor}/simulador-subsidio-doenca.html")
+    page.wait_for_function(
+        "document.getElementById('btnCalcularSubsidioDoenca').disabled === false", timeout=5000
+    )
+    assert page.evaluate("document.getElementById('avisoParametrosErro').style.display") != "block"
+
+    page.fill("#salario", "1400")
+    page.fill("#duracaoDias", "100")
+    page.select_option("#vinculo", "conta_outrem")
+    page.click("#btnCalcularSubsidioDoenca")
+    page.wait_for_selector("#resultado.show", timeout=5000)
+    texto = page.inner_text("#resultado")
+    assert "2.699,67" in texto or "2699.67" in texto  # mesmo exemplo do golden test
+
+
+def test_runtime_fetch_com_falha_bloqueia_o_botao_e_nunca_calcula(pagina_real):
+    page, servidor = pagina_real
+    page.route("**/dados/parametros.json", lambda route: route.abort())
+    page.goto(f"{servidor}/simulador-subsidio-doenca.html")
+    page.wait_for_function(
+        "document.getElementById('avisoParametrosErro').style.display === 'block'", timeout=5000
+    )
+    assert page.evaluate("document.getElementById('btnCalcularSubsidioDoenca').disabled") is True
+    assert page.evaluate("document.getElementById('avisoCarregandoParametros').style.display") == "none"
+    assert page.evaluate(
+        "window.PARAMETROS_SUBSIDIO_DOENCA === null || typeof window.PARAMETROS_SUBSIDIO_DOENCA === 'undefined'"
+    ) or page.evaluate("PARAMETROS_SUBSIDIO_DOENCA") is None
+
+    # Mesmo tentando submeter directamente via JS (bypass do disabled do
+    # browser), a guarda em calcularSubsidioDoencaFormulario() nunca deixa
+    # o resultado aparecer sem parâmetros carregados.
+    page.evaluate("document.getElementById('btnCalcularSubsidioDoenca').removeAttribute('disabled')")
+    page.fill("#salario", "1400")
+    page.fill("#duracaoDias", "10")
+    page.click("#btnCalcularSubsidioDoenca")
+    page.wait_for_timeout(300)
+    assert "show" not in (page.get_attribute("#resultado", "class") or "")
