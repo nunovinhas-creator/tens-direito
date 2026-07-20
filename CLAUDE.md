@@ -8205,6 +8205,28 @@ total), incluindo uma fixture com os dados reais devolvidos por esta
 corrida — nunca reescrita à mão. Suite completa local reconfirmada:
 **2994 passed, 4 skipped** (allow-list de skips confirmada elemento a
 elemento); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
-limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
-reconfirmados `False` (inalterados). Trabalho directo em `main`, sem
-branch nova.*
+limpo. Correcção pushada para `main` (commit `c77d416`); os 4
+workflows disparados confirmados `success` via API por `head_sha`
+exacto (Integridade do Código, Validar Conteúdo HTML, Verificação de
+Produção, Limpar Branches Órfãs).
+
+**2.ª corrida real, pós-correcção**: disparado novo `workflow_dispatch`
+para confirmar a correcção contra dados reais. `_detectar_decreto_lei_generico`
+confirmou-se correcto (`achou=False`, nenhuma linha nova escrita em
+`avisos.log`) — mas a Issue #74 foi recriada na mesma, por um **segundo
+bug, distinto e separado** do primeiro: o passo JS "Abrir Issues" filtra
+`avisos.log` por dia calendário (`l.startsWith(hoje)`), não por corrida
+específica — como as 2 corridas de teste aconteceram no mesmo dia UTC, a
+linha antiga da 1.ª corrida (anterior à correcção) foi "reencontrada"
+pela 2.ª. **Nunca acontece no cron diário normal** (uma corrida/dia) —
+só se manifesta com múltiplos `workflow_dispatch` manuais no mesmo dia,
+exactamente esta calibração. Issue #74 fechada com a mesma explicação
+completa. Gap registado em ROADMAP.md, deliberadamente não corrigido
+nesta sessão (baixa prioridade, mesma categoria do gap MUDOU já
+documentado para o MEGA) — corrigir exigiria filtrar por timestamp de
+início da corrida em vez de por dia, numa lógica de Issues partilhada
+por várias outras watchlists (MEGA, PSU, Garantia Pública), risco
+desproporcionado face ao benefício de um cenário que só a calibração
+manual desta sessão produziu. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
+Trabalho directo em `main`, sem branch nova.*
