@@ -17,6 +17,7 @@ import hashlib
 import json
 import logging
 import random
+import re
 import sys
 import time
 from dataclasses import dataclass
@@ -373,6 +374,12 @@ FONTES_PLAYWRIGHT = [
             "chave_aviso": "dre_habitacao_paer_decreto_detectado",
             "mensagem_log": "%s: DECRETO-LEI sobre o Apoio Extraordinário à Renda detectado em "
                              "DRE — confirmar se revoga/substitui o PAER!\n%s",
+            # Corte de recência (achado real na 1.ª corrida do pipeline,
+            # 2026-07-20): a pesquisa devolve sempre o diploma fundador do
+            # PAER (DL n.º 20-B/2023) e as suas alterações já conhecidas —
+            # sem isto, dispararia todos os dias. Só conta "novo" um item
+            # datado a partir da activação desta watchlist.
+            "desde": "2026-07-20",
         },
     },
     {
@@ -400,6 +407,10 @@ FONTES_PLAYWRIGHT = [
             "chave_aviso": "dre_habitacao_garantia_decreto_detectado",
             "mensagem_log": "%s: DECRETO-LEI que cita o DL 44/2024 (Garantia Pública) detectado em "
                              "DRE — confirmar se altera/prorroga o prazo!\n%s",
+            # Mesmo corte de recência do dre_habitacao_paer — mesma
+            # precaução, mesmo que a 1.ª corrida real (2026-07-20) tenha
+            # devolvido zero resultados para esta fonte.
+            "desde": "2026-07-20",
         },
     },
 ]
@@ -676,7 +687,8 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     deteccao = fonte.get("detectar_decreto_lei")
     if deteccao:
         achou = _detectar_decreto_lei_generico(
-            slug, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"]
+            slug, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+            data_minima=deteccao.get("desde"),
         )
         if not achou:
             log.info("%s: nenhum Decreto-Lei novo detectado na pesquisa (%s)",
@@ -685,8 +697,22 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
     return resultado
 
 
+_PADRAO_DATA_FINAL_ITEM = re.compile(r"(\d{4}-\d{2}-\d{2})\s*$")
+
+
+def _data_item(texto: str) -> str | None:
+    """Extrai a data ISO (AAAA-MM-DD) do fim de uma entrada de resultado do
+    DRE — ex.: "Decreto-Lei n.º 130/2023 - Diário da República n.º
+    248/2023, Série I de 2023-12-27" → "2023-12-27". `None` se não houver
+    data reconhecível (nunca assumido "recente" nem "antigo" por omissão —
+    ver `_detectar_decreto_lei_generico`)."""
+    m = _PADRAO_DATA_FINAL_ITEM.search(texto)
+    return m.group(1) if m else None
+
+
 def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
-                                    mensagem_log: str) -> bool:
+                                    mensagem_log: str,
+                                    data_minima: str | None = None) -> bool:
     """Detecta um Decreto-Lei entre os resultados de uma pesquisa de frase
     exacta no DRE (mecanismo `pesquisa_interactiva`, ver `_obter_html_pesquisa`).
 
@@ -703,11 +729,39 @@ def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
     Verificação por item, deliberadamente — nunca sobre todo o texto
     concatenado, que dispararia com um decreto-lei num resultado e o
     termo pesquisado noutro resultado sem relação (falso positivo latente
-    já visto nas Issues #55/#56 do MEGA)."""
+    já visto nas Issues #55/#56 do MEGA).
+
+    `data_minima` (Issue real, 1.ª corrida do pipeline após a activação
+    da watchlist do cluster Habitação, 2026-07-20): a suposição original
+    de que "qualquer Decreto-Lei nos resultados é sinal de novidade" só
+    vale para uma lei que ainda não existe (dre_psu — a PSU literalmente
+    não tem diploma nenhum antes do decreto-lei que a cria). Para uma
+    watchlist sobre uma lei já em vigor há anos (PAER, Garantia Pública),
+    a pesquisa de frase exacta encontra sempre o(s) diploma(s) fundador(es)
+    e as suas alterações já conhecidas — confirmado num runner real: a
+    pesquisa por "apoio extraordinário à renda" devolveu correctamente o
+    DL n.º 20-B/2023 (o diploma fundador do PAER) e as suas alterações de
+    2023-2025, todas já contabilizadas no fact-check desta sessão, gerando
+    uma Issue falsa que dispararia todos os dias sem excepção. Corrigido
+    com um corte de recência: só conta como "novo" um item cuja data (o
+    "de AAAA-MM-DD" no fim de cada entrada de `itens_lista`) seja
+    `>= data_minima`. Um item sem data reconhecível NUNCA é descartado
+    silenciosamente (mesmo invariante "nenhum estado de erro pode parecer
+    sucesso") — conta sempre como potencial sinal, para nunca esconder um
+    Decreto-Lei genuinamente novo só porque o DRE mudou o formato da
+    entrada."""
     import re as _re
     padrao = _re.compile(r"\bdecreto[\s-]?lei\s+n", _re.IGNORECASE)
     candidatos = [conteudo.get("titulo", "")] + list(conteudo.get("itens_lista", []))
-    achados = [t for t in candidatos if t and padrao.search(t)]
+    achados_brutos = [t for t in candidatos if t and padrao.search(t)]
+    if data_minima:
+        achados = []
+        for t in achados_brutos:
+            data_t = _data_item(t)
+            if data_t is None or data_t >= data_minima:
+                achados.append(t)
+    else:
+        achados = achados_brutos
     if not achados:
         return False
     excertos_txt = "\n".join(f"- {t[:300]}" for t in achados[:5])

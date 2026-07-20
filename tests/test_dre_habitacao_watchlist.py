@@ -84,6 +84,20 @@ def test_ambas_as_fontes_tem_deteccao_configurada_com_chave_e_mensagem():
         assert "%s" in deteccao["mensagem_log"]
 
 
+def test_ambas_as_fontes_tem_corte_de_recencia_desde_a_activacao():
+    """Achado real na 1.ª corrida do pipeline (2026-07-20): sem corte de
+    recência, a pesquisa por 'apoio extraordinário à renda' encontra
+    sempre o diploma fundador do PAER (DL 20-B/2023) e as suas alterações
+    já conhecidas — dispararia todos os dias. Ver
+    _detectar_decreto_lei_generico."""
+    for slug in NOVOS_SLUGS:
+        fonte = _fonte_playwright(slug)
+        assert fonte["detectar_decreto_lei"].get("desde") == "2026-07-20", (
+            f"{slug}: sem corte de recência 'desde' — repetirá o falso "
+            f"positivo real da Issue criada em 2026-07-20"
+        )
+
+
 def test_dre_psu_continua_a_usar_o_mecanismo_antigo_intocado():
     """dre_psu NUNCA foi migrado para 'detectar_decreto_lei' — mantém
     'detectar_decreto_lei_psu': True e o caminho de código próprio em
@@ -175,6 +189,111 @@ def test_conteudo_vazio_nunca_dispara(monkeypatch):
     )
     assert achou is False
     assert capturados == []
+
+
+# ── 3b. Corte de recência — regressão do falso positivo real (2026-07-20) ──
+
+
+# Fixture real: dre_habitacao_paer_latest.json capturado na 1.ª corrida
+# real do pipeline (workflow_dispatch, 2026-07-20T18:22:24Z) — a pesquisa
+# de frase exacta funcionou (devolveu o diploma fundador do PAER e as
+# suas alterações), mas SEM corte de recência isto criava uma Issue
+# falsa todos os dias. Nunca reescrito à mão — cópia fiel do
+# `itens_lista` real devolvido pelo DRE.
+_ITENS_REAIS_PAER_2026_07_20 = [
+    "Decreto-Lei n.º 130/2023 - Diário da República n.º 248/2023, Série I de 2023-12-27",
+    "Decreto-Lei n.º 103-B/2023 - Diário da República n.º 217/2023, 1º Suplemento, Série I de 2023-11-09",
+    "Decreto Legislativo Regional n.º 27/2025/A - Diário da República n.º 250/2025, Série I de 2025-12-30",
+    "Decreto-Lei n.º 13-A/2025 - Diário da República n.º 48/2025, Suplemento, Série I de 2025-03-10",
+    "Decreto-Lei n.º 105/2026 - Diário da República n.º 101/2026, Série I de 2026-05-26",
+    "Lei n.º 73-A/2025 - Diário da República n.º 250/2025, Suplemento, Série I de 2025-12-30",
+    "Regulamento n.º 576/2021 - Diário da República n.º 121/2021, Série II de 2021-06-24",
+    "Regulamento n.º 275/2025 - Diário da República n.º 39/2025, Série II de 2025-02-25",
+    "Regulamento n.º 791/2023 - Diário da República n.º 140/2023, Série II de 2023-07-20",
+]
+
+
+def test_regressao_paer_pesquisa_real_2026_07_20_nunca_mais_dispara(monkeypatch):
+    """A Issue real criada em 2026-07-20 (dre_habitacao_paer) nunca deve
+    voltar a acontecer para este mesmo conjunto de resultados — todos os
+    diplomas são anteriores à activação da watchlist (2026-07-20)."""
+    capturados = _avisos_capturados(monkeypatch)
+    conteudo = {
+        "titulo": 'Resultados de Pesquisa: "apoio extraordinário à renda"',
+        "itens_lista": _ITENS_REAIS_PAER_2026_07_20,
+        "paragrafos": _ITENS_REAIS_PAER_2026_07_20,
+    }
+    deteccao = _fonte_playwright("dre_habitacao_paer")["detectar_decreto_lei"]
+    achou = sp._detectar_decreto_lei_generico(
+        "dre_habitacao_paer", conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is False
+    assert capturados == []
+
+
+def test_decreto_lei_genuinamente_novo_dispara_mesmo_misturado_com_antigos(monkeypatch):
+    """O corte de recência nunca esconde um decreto-lei genuinamente novo
+    só porque aparece ao lado de diplomas antigos na mesma pesquisa."""
+    capturados = _avisos_capturados(monkeypatch)
+    conteudo = {
+        "titulo": "",
+        "itens_lista": _ITENS_REAIS_PAER_2026_07_20 + [
+            "Decreto-Lei n.º 200/2026 - Diário da República n.º 210/2026, Série I de 2026-08-15",
+        ],
+        "paragrafos": ["Revoga o Decreto-Lei n.º 20-B/2023 e cria um novo regime de apoio à renda."],
+    }
+    deteccao = _fonte_playwright("dre_habitacao_paer")["detectar_decreto_lei"]
+    achou = sp._detectar_decreto_lei_generico(
+        "dre_habitacao_paer", conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is True
+    assert len(capturados) == 1
+    assert "Decreto-Lei n.º 200/2026" in capturados[0][1]
+    # nenhum diploma antigo deve ter entrado nos excertos reportados
+    for antigo in ("130/2023", "103-B/2023", "105/2026"):
+        assert antigo not in capturados[0][1]
+
+
+def test_item_sem_data_reconhecivel_nunca_e_descartado_em_silencio(monkeypatch):
+    """Invariante 'nenhum estado de erro pode parecer sucesso': um item
+    cujo formato mudou (sem data ISO no fim) conta sempre como potencial
+    sinal, nunca é silenciosamente ignorado só por não bater com o
+    padrão de data esperado."""
+    capturados = _avisos_capturados(monkeypatch)
+    conteudo = {
+        "titulo": "",
+        "itens_lista": ["Decreto-Lei n.º 999/2026 - formato inesperado, sem data reconhecível"],
+        "paragrafos": [],
+    }
+    deteccao = _fonte_playwright("dre_habitacao_paer")["detectar_decreto_lei"]
+    achou = sp._detectar_decreto_lei_generico(
+        "dre_habitacao_paer", conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is True
+    assert len(capturados) == 1
+
+
+def test_data_item_extrai_a_data_iso_do_fim_da_entrada():
+    assert sp._data_item(
+        "Decreto-Lei n.º 130/2023 - Diário da República n.º 248/2023, Série I de 2023-12-27"
+    ) == "2023-12-27"
+    assert sp._data_item("sem data nenhuma aqui") is None
+
+
+def test_sem_data_minima_comportamento_identico_ao_original_dre_psu(monkeypatch):
+    """Sem `data_minima` (omissão, caso do dre_psu), o corte de recência
+    nunca se aplica — comportamento 100% inalterado do mecanismo
+    original, mesmo com diplomas "antigos" nos resultados."""
+    capturados = _avisos_capturados(monkeypatch)
+    achou = sp._detectar_decreto_lei_generico(
+        "dre_psu", {"titulo": "", "itens_lista": _ITENS_REAIS_PAER_2026_07_20, "paragrafos": []},
+        "dre_psu_decreto_detectado", "%s: teste\n%s",
+    )
+    assert achou is True
+    assert len(capturados) == 1
 
 
 # ── 4. Integração com a máquina de estados de fontes bloqueadas ────────

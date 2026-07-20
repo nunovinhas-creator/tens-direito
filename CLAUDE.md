@@ -2538,7 +2538,7 @@ O plano de 3 sessões está **concluído** — registo mantido para memória:
 | ~~1.º Direito~~ | **Concluído (Sessão 3)** — `primeiro-direito.html` | Ver "Estado real verificado" acima |
 | ~~Dedução de rendas em IRS~~ | **Concluído (Sessão 3)** — `deducao-rendas-irs.html` | Ver "Estado real verificado" acima |
 | ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
-| ~~Watchlist automática DRE~~ | **Concluído (Sessão 3)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. **Nunca calibrado contra um runner real** (`WebFetch`/`curl` bloqueados nesta sessão) — a 1.ª corrida real do pipeline confirma os `min_chars_uteis`; ver ROADMAP.md → "Automáticos" para as 2 entradas novas | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
+| ~~Watchlist automática DRE~~ | **Concluído e calibrado contra um runner real (2026-07-20, sessão de integração)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. A 1.ª corrida real (`workflow_dispatch`) confirmou um falso positivo genuíno em `dre_habitacao_paer`: a pesquisa de frase exacta funcionou correctamente e devolveu o DL n.º 20-B/2023 (diploma fundador do PAER, confirmado por `WebSearch`) e as suas alterações já conhecidas (2023-2025) — sem corte de recência, isto criaria a mesma Issue todos os dias, porque a suposição original ("qualquer Decreto-Lei nos resultados é sinal de novidade", válida para o `dre_psu` porque a PSU ainda não tem diploma nenhum) não se aplica a uma lei já em vigor há anos. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só conta "novo" um item datado a partir da activação da watchlist; um item sem data reconhecível nunca é descartado em silêncio (mesmo invariante "nenhum estado de erro pode parecer sucesso"). `dre_psu` confirmado 100% inalterado (sem corte de recência, testado). Issue #73 fechada com a explicação. `dre_habitacao_garantia` devolveu zero resultados na 1.ª corrida (comportamento seguro, nunca disparou) — causa por investigar sem prioridade. 6 testes de regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no total), incluindo fixture com os dados reais desta corrida; ver ROADMAP.md → "Automáticos" | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
 
 **Registado para o futuro, sem prazo, sem decisão tomada**: nova tabela
 de rendas máximas de referência do Porta 65 (publicação anual, fora do
@@ -8164,3 +8164,47 @@ sem relação com esta sessão). Trabalho feito na branch
 ambiente remoto desta sessão) — commit `3c85832`, push feito para a
 branch remota — **SEM PR — branch não integrada em `main`** (protocolo
 de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
+
+---
+
+*Última revisão: 2026-07-20 (sessão de handoff/integração) — protocolo de
+arranque aplicado: `claude/habitacao-rendas-primeiro-direito-bwvyvx`
+confirmada com exactamente os 2 commits esperados (`3c85832`, `64e51bd`)
+e `main` sem avanço conflituante desde a base. Integrada por
+fast-forward directo (sem PR), depois de CI local reconfirmada no estado
+final (suite completa, ruff, `verificar_datas`,
+`verificar_skips_permitidos.py`, `gerar_parametros_json.py --check`). Os
+4 workflows disparados pelo push confirmados `success` via API (por
+`head_sha` exacto, nunca assumido pelo "run mais recente"): Integridade
+do Código (7 jobs), Validar Conteúdo HTML, Verificação de Produção
+(Smoke Test — confirma `imt-jovem.html`/`garantia-publica-credito-
+habitacao.html`/`deducao-rendas-irs.html`/`primeiro-direito.html` a
+servir conteúdo real em produção), Limpar Branches Órfãs.
+
+**FASE 3 — calibração da watchlist DRE contra um runner real**: disparado
+`workflow_dispatch` de `pipeline-diario.yml` em `main`. `dre_habitacao_paer`
+produziu um **falso positivo genuíno** — a pesquisa de frase exacta
+funcionou (não é o bug do índice-inteiro do `dre_psu` original), mas
+devolveu correctamente o DL n.º 20-B/2023 (confirmado por `WebSearch`
+como o diploma fundador do PAER) e as suas alterações já conhecidas
+(2023-2025), criando a Issue #73. Causa raiz: a suposição de
+`_detectar_decreto_lei_generico` ("qualquer Decreto-Lei nos resultados é
+sinal de novidade") só vale para uma lei que ainda não existe (`dre_psu`)
+— para uma lei já em vigor há anos, dispararia todos os dias. Corrigido
+com um corte de recência (`data_minima`/`"desde": "2026-07-20"`,
+`scripts/scraper_playwright.py`) — só conta como "novo" um item datado a
+partir da activação da watchlist; um item sem data reconhecível nunca é
+descartado em silêncio. `dre_psu` confirmado 100% inalterado (sem corte
+de recência, testado explicitamente). `dre_habitacao_garantia` devolveu
+zero resultados na 1.ª corrida — comportamento seguro (nunca disparou),
+causa (talvez a pontuação "n.º" a quebrar a tokenização de pesquisa do
+DRE) registada em ROADMAP.md sem prioridade enquanto continuar a falhar
+em segurança. Issue #73 fechada com a explicação completa. 6 testes de
+regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no
+total), incluindo uma fixture com os dados reais devolvidos por esta
+corrida — nunca reescrita à mão. Suite completa local reconfirmada:
+**2994 passed, 4 skipped** (allow-list de skips confirmada elemento a
+elemento); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
+limpo. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados). Trabalho directo em `main`, sem
+branch nova.*
