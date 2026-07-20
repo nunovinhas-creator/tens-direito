@@ -104,6 +104,11 @@
     "pagina": "declaracao-situacao-contributiva.html",
     "titulo": "Declaração de situação contributiva: certidão de não dívida 2026"
   },
+  "deducao-rendas-irs": {
+    "chip": "Habitação",
+    "pagina": "deducao-rendas-irs.html",
+    "titulo": "Dedução de rendas no IRS 2026: até 900 € por ano"
+  },
   "documentos": {
     "chip": "Gerador de documentos",
     "pagina": "documentos.html",
@@ -268,6 +273,11 @@
     "chip": "Prestação Social Única",
     "pagina": "prestacao-social-unica.html",
     "titulo": "Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor"
+  },
+  "primeiro-direito": {
+    "chip": "Habitação",
+    "pagina": "primeiro-direito.html",
+    "titulo": "1.º Direito 2026: apoio a quem vive em habitação indigna"
   },
   "privacidade": {
     "chip": null,

@@ -625,6 +625,16 @@
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
         "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
         "verificado_em": "2026-07-20"
+      },
+      "deducao_rendas_irs_limite_eur": {
+        "descricao": "Dedução à colecta de IRS das rendas pagas pelo inquilino — limite anual geral",
+        "unidade": "EUR/ano",
+        "valor": 900,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 97/2026, de 20 de maio — limite aplicável às rendas pagas em 2026 (declaração a entregar em 2027)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/97-2026-1124493227",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
       }
     },
     "subsidio-doenca": {

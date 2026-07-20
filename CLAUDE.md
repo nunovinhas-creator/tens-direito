@@ -464,6 +464,8 @@ para esses três casos.
 | `imt-jovem.html` | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa | 20 jul. 2026 |
 | `garantia-publica-credito-habitacao.html` | Garantia Pública 2026: crédito habitação jovem até 100% | 20 jul. 2026 |
 | `simulador-imt-jovem.html` | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa | 20 jul. 2026 |
+| `deducao-rendas-irs.html` | Dedução de rendas no IRS 2026: até 900 € por ano | 20 jul. 2026 |
+| `primeiro-direito.html` | 1.º Direito 2026: apoio a quem vive em habitação indigna | 20 jul. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -2408,17 +2410,20 @@ Criado a 3 jul 2026 — pillar `p/habitacao.html` + 2 artigos-filho
 (`porta-65.html`, `apoio-extraordinario-renda.html`). Expandido a 20 jul
 2026 (Sessão 1 do plano "Expansão do Cluster Habitação") com mais 2
 artigos-filho de compra (`imt-jovem.html`,
-`garantia-publica-credito-habitacao.html`) — 4 páginas no total, sexto
-cluster do site, reorganizado em duas secções no hub: 🏠 Arrendar / 🔑
-Comprar. Fact-check prévio obrigatório (bloqueante, ver "REGRAS DE
-CONTEÚDO") feito via `WebSearch` em todas as sessões — `WebFetch`
-está completamente bloqueado neste ambiente de sessão (403 em qualquer
-URL, incluindo domínios fora de `.gov.pt`, ex.: `en.wikipedia.org` —
-não é um bloqueio específico a portais oficiais, é o próprio `WebFetch`
-que não funciona nesta sessão). As páginas citam sempre a URL oficial
-como fonte, mesmo sem acesso directo — mesmo padrão já usado no site
-para fontes que devolvem 403 a bots (ver "FONTES VERIFICADAS E
-APROVADAS").
+`garantia-publica-credito-habitacao.html`), e fechado no mesmo dia
+(Sessão 3) com mais 2 artigos-filho — um de arrendamento
+(`deducao-rendas-irs.html`) e um de carência habitacional
+(`primeiro-direito.html`) — **7 páginas no total** (+ hub + simulador),
+sexto cluster do site, reorganizado em três secções no hub: 🏠 Arrendar
+/ 🔑 Comprar / 🏚️ Situações de carência. Fact-check prévio obrigatório
+(bloqueante, ver "REGRAS DE CONTEÚDO") feito via `WebSearch` em todas as
+sessões — `WebFetch` está completamente bloqueado neste ambiente de
+sessão (403 em qualquer URL, incluindo domínios fora de `.gov.pt`, ex.:
+`en.wikipedia.org` — não é um bloqueio específico a portais oficiais, é
+o próprio `WebFetch` que não funciona nesta sessão). As páginas citam
+sempre a URL oficial como fonte, mesmo sem acesso directo — mesmo
+padrão já usado no site para fontes que devolvem 403 a bots (ver
+"FONTES VERIFICADAS E APROVADAS").
 
 **Regra de dados (20 jul 2026, reforçada na Sessão 2)**: qualquer valor
 legal do IMT Jovem ou da Garantia Pública (limiares em €, percentagens,
@@ -2452,9 +2457,52 @@ a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
   jul 2026). Provedoria de Justiça denunciou irregularidades graves em
   ago 2025 (~mil queixas); Governo anunciou em fev 2026 a intenção de
   revogar e substituir por novo programa — **ainda não publicado em DR
-  à data de verificação (3 jul 2026)**. Por isso `apoio-extraordinario-renda.html`
-  não é um guia de candidatura — é uma página "estado actual +
-  alternativas", apontando para o Porta 65.
+  à data de verificação (20 jul 2026, reconfirmado na Sessão 3)**. Por
+  isso `apoio-extraordinario-renda.html` não é um guia de candidatura —
+  é uma página "estado actual + alternativas", apontando para o Porta 65.
+  **Reforma "produto único" (Sessão 3, 20 jul 2026)**: o Governo
+  manifestou intenção de fundir Porta 65/Porta 65+/PAER/Arrendar para
+  Subarrendar num único produto — confirmado só como intenção anunciada,
+  **sem** projecto de lei nem consulta pública publicados; nota de
+  watchlist não-alarmista acrescentada a `porta-65.html`. Distinta da
+  reforma mais ampla do arrendamento aprovada em Conselho de Ministros a
+  9/07/2026 ("Construir Portugal" — antecipação do fim do controlo de
+  rendas em contratos novos, novas regras para contratos pré-1990,
+  despejo ao fim de 2 meses de renda em atraso) e do **Fundo de
+  Emergência para a Habitação** (FEH, criado no mesmo Conselho de
+  Ministros — apoio automático em 10 dias para despejados por
+  incapacidade de pagar renda ou vítimas de violência doméstica, até
+  2.300€/mês) — **também só aprovado em CM, não confirmado publicado em
+  DR** à data de verificação; `primeiro-direito.html` menciona-o com essa
+  ressalva explícita, nunca como recurso já disponível.
+- **Dedução de rendas no IRS** (`deducao-rendas-irs.html`, publicada
+  20 jul 2026, Sessão 3): Decreto-Lei n.º 97/2026, de 20 de maio —
+  **já publicado**, com efeitos desde 1 de janeiro de 2026 (excepto o
+  IVA a 6%, desde 1 jul 2026). Sobe o limite de dedução (15% das rendas
+  pagas) de **700€** (regime anterior, ainda o limite da declaração
+  entregue em 2026, sobre rendimentos de 2025) para **900€** nas rendas
+  de 2026 (declaração de 2027) e **1.000€** a partir de 2027 — ponto de
+  maior confusão pública, por isso tratado com uma tabela de cronologia
+  dedicada. Condição: contrato comunicado à Autoridade Tributária —
+  desde 1 ago 2025 o inquilino pode comunicá-lo (função «Comunicação de
+  Locatário ou Sublocatário», Portaria n.º 106/2025/1) se o senhorio não
+  o fizer no prazo. Mesmo diploma cria o **Regime Simplificado de
+  Arrendamento Acessível (RSAA)**, efeitos desde 1 set 2026 — isenção de
+  IRS/IRC para senhorios com rendas até 80% da mediana do concelho;
+  benefício do senhorio, não do inquilino, tratado como nota breve.
+- **1.º Direito** (`primeiro-direito.html`, publicada 20 jul 2026,
+  Sessão 3): DL n.º 37/2018 alterado por DL n.º 44/2025 (27 mar 2025,
+  alarga o âmbito + regime especial de comparticipação). Gerido pelo
+  IHRU, mas **candidatura nunca directa** — passa sempre pelo município,
+  no âmbito de uma Estratégia Local de Habitação (ELH) já aprovada;
+  circuito família → município → IHRU. 4 tipologias de carência
+  habitacional: precariedade, insalubridade/insegurança, sobrelotação,
+  inadequação. Elegibilidade: rendimento médio mensal <4×IAS (2026:
+  2.148,52€) e património mobiliário <60×IAS (2026: 32.227,80€) —
+  mesma fórmula já usada no RSI, sem YAML próprio (valores só no corpo,
+  nunca em title/meta, validados contra o `IAS_2026` do canário). Página
+  gere expectativas explicitamente: programa estrutural, resposta em
+  meses/anos, nunca uma resposta de emergência.
 - **IMT Jovem** (`imt-jovem.html`, publicada 20 jul 2026): isenção total
   de IMT e Imposto do Selo até **330.539€** (2026), parcial (8% sobre o
   excedente) até **660.982€** — em 2025 eram 324.058€/648.022€, sobem
@@ -2480,19 +2528,22 @@ a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
   com o IMT Jovem. Base legal: DL n.º 44/2024, Portaria n.º
   236-A/2024/1.
 
-### Backlog — outros apoios de habitação vivos em 2026 (sem página ainda)
+### Backlog — histórico (plano "Expansão do Cluster Habitação" fechado a 20 jul 2026)
 
-Registados por pedido explícito da sessão — **não criar páginas agora**,
-só quando houver prioridade dedicada. **Garantia pública** e **isenção
-de IMT jovem** publicadas a 20 jul 2026 (ver acima) — saem desta lista:
+O plano de 3 sessões está **concluído** — registo mantido para memória:
 
-| Apoio | Estado confirmado (jul 2026) | Nota |
+| Apoio/tarefa | Estado | Nota |
 |---|---|---|
-| Regime Simplificado de Arrendamento Acessível (RSAA) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Benefício fiscal para **senhorios** que praticam rendas moderadas (IRS reduzido a 10%, ou isenção total abaixo de 20% da mediana do concelho) — não é apoio directo ao inquilino, ângulo de página diferente dos outros artigos deste cluster. Sessão 3 do plano "Expansão do Cluster Habitação" — nota de caixa informativa em `deducao-rendas-irs.html`, sem página própria imediata |
-| 1.º Direito — Programa de Apoio ao Acesso à Habitação | Vivo — programa PRR, gerido pelos municípios (Estratégia Local de Habitação), alterado por DL n.º 44/2025 (mar 2025) | Não é candidatura directa do cidadão ao IHRU — passa pela câmara municipal; ângulo de página diferente (processo institucional, não formulário pessoal). Sessão 3 do plano |
-| Dedução de rendas em IRS (900€ em 2026, 1.000€ a partir de 2027) | Vivo — Decreto-Lei n.º 97/2026, de 20 mai | Foco no inquilino, não no senhorio; passo crítico é a comunicação do contrato à AT (desde 1 ago 2025 o próprio inquilino pode comunicar se o senhorio não o fez). Sessão 3 do plano |
-| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído 2026-07-20 (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
-| Watchlist automática DRE (revogação do PAER, prorrogação/alteração da garantia pública, regulamentação do RSAA) | Não implementada | Sessão 3 do plano — mesmo padrão do sentinela `dre_psu` (ver "IMPACTO DA PSU") |
+| ~~Regime Simplificado de Arrendamento Acessível (RSAA)~~ | **Concluído (Sessão 3)** — nota de caixa em `deducao-rendas-irs.html`, sem página própria dedicada (benefício do senhorio, não do inquilino — fora do foco do cluster) | Ver "Estado real verificado" acima |
+| ~~1.º Direito~~ | **Concluído (Sessão 3)** — `primeiro-direito.html` | Ver "Estado real verificado" acima |
+| ~~Dedução de rendas em IRS~~ | **Concluído (Sessão 3)** — `deducao-rendas-irs.html` | Ver "Estado real verificado" acima |
+| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
+| ~~Watchlist automática DRE~~ | **Concluído (Sessão 3)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. **Nunca calibrado contra um runner real** (`WebFetch`/`curl` bloqueados nesta sessão) — a 1.ª corrida real do pipeline confirma os `min_chars_uteis`; ver ROADMAP.md → "Automáticos" para as 2 entradas novas | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
+
+**Registado para o futuro, sem prazo, sem decisão tomada**: nova tabela
+de rendas máximas de referência do Porta 65 (publicação anual, fora do
+alcance da watchlist DRE — é um PDF administrativo, não um decreto-lei;
+ver ROADMAP.md → "À espera de um sinal").
 
 ---
 

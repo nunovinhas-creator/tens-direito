@@ -27,3 +27,5 @@
 /p/habitacao.html
 /imt-jovem.html
 /garantia-publica-credito-habitacao.html
+/deducao-rendas-irs.html
+/primeiro-direito.html

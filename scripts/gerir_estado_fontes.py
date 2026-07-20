@@ -44,6 +44,10 @@ SLUGS_MONITORIZADOS = (
     "igefe_mega",
     "iefp_desemprego",
     "dre_psu",
+    # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — mesma
+    # máquina de estados de fontes bloqueadas do dre_psu.
+    "dre_habitacao_paer",
+    "dre_habitacao_garantia",
 )
 
 

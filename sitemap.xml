@@ -300,7 +300,13 @@
     <loc>https://tensdireito.com/porta-65.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <lastmod>2026-07-03</lastmod>
+    <lastmod>2026-07-20</lastmod>
+  </url>
+  <url>
+    <loc>https://tensdireito.com/deducao-rendas-irs.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-07-20</lastmod>
   </url>
   <url>
     <loc>https://tensdireito.com/apoio-extraordinario-renda.html</loc>
@@ -318,6 +324,12 @@
     <loc>https://tensdireito.com/garantia-publica-credito-habitacao.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2026-07-20</lastmod>
+  </url>
+  <url>
+    <loc>https://tensdireito.com/primeiro-direito.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
     <lastmod>2026-07-20</lastmod>
   </url>
   <url>

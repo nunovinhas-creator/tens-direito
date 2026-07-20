@@ -654,3 +654,81 @@ def test_nenhum_parametro_vigente_fica_sem_verificado_em():
                     assert entrada.get("referencia_legal") and entrada.get("fonte_url"), (
                         f"{ficheiro.name}:{nome_parametro} — sem referencia_legal/fonte_url"
                     )
+
+
+# ── Cluster Habitação — Dedução de rendas em IRS (Sessão 3, 2026-07-20) ──
+# dados/parametros/habitacao.yaml continua a ser a fonte única — o valor
+# "vigente" (900€) tem de bater com o title/description; o histórico
+# completo (700€/900€/1.000€) tem de bater com a tabela de cronologia do
+# corpo, para nunca divergir do YAML nem ficar "solto" em texto.
+
+def _valores_eur_inteiros_sem_milhares(texto: str) -> list:
+    """Como `_valores_eur_inteiros()`, mas também apanha valores inteiros
+    SEM separador de milhares (ex.: "900 €", "700€") — necessário para a
+    Dedução de Rendas (Sessão 3, 2026-07-20), cujos valores atravessam a
+    fronteira dos 1.000€ (700/900/1.000). O `(?<!,)` continua a proteger
+    contra apanhar a parte inteira de um valor decimal tipo "900,00 €"."""
+    return [
+        int(bruto.replace(".", ""))
+        for bruto in re.findall(r"(?<!,)\b(\d{1,3}(?:\.\d{3})*)\s?€", texto)
+    ]
+
+
+def _valores_deducao_rendas_por_ano(nome: str):
+    """Lê os 3 valores da lista `valores` do YAML directamente (não só o
+    vigente), indexados por `vigencia_inicio`, para comparar com a tabela
+    de cronologia da página."""
+    bruto = yaml.safe_load((PARAMETROS_DIR / "habitacao.yaml").read_text(encoding="utf-8"))
+    return {
+        entrada["vigencia_inicio"]: entrada["valor"]
+        for entrada in bruto[nome]["valores"]
+    }
+
+
+def test_deducao_rendas_title_e_description_mostram_o_valor_vigente_900():
+    pagina = "deducao-rendas-irs.html"
+    assert _valores_eur_inteiros_sem_milhares(_title(pagina)) == [_param_habitacao("deducao_rendas_irs_limite_eur")], _title(pagina)
+    assert _param_habitacao("deducao_rendas_irs_limite_eur") in _valores_eur_inteiros_sem_milhares(_meta_description(pagina))
+
+
+def test_deducao_rendas_og_tags_espelham_title_e_description():
+    pagina = "deducao-rendas-irs.html"
+    assert _meta_og(pagina, "og:title") == _title(pagina)
+    assert _meta_og(pagina, "og:description") == _meta_description(pagina)
+
+
+def test_deducao_rendas_cronologia_completa_no_corpo_bate_com_o_yaml():
+    """Os 3 valores da cronologia (700€ regime anterior, 900€ desde 2026,
+    1.000€ desde 2027) têm de aparecer todos no corpo da página, exactamente
+    como estão no YAML — nunca hardcoded de memória à parte da fonte única."""
+    html = _ler("deducao-rendas-irs.html")
+    valores = _valores_deducao_rendas_por_ano("deducao_rendas_irs_limite_eur")
+    for vigencia, valor in valores.items():
+        formatado = f"{valor:,}".replace(",", ".")  # 1000 -> "1.000", 900 -> "900"
+        assert f"{formatado} €" in html or f"{formatado}€" in html, (
+            f"valor {formatado}€ (vigência {vigencia}) da cronologia ausente do corpo de deducao-rendas-irs.html"
+        )
+
+
+def test_primeiro_direito_limites_4x_e_60x_ias_batem_com_o_ias_2026():
+    """1.º Direito (Sessão 3): os limiares de rendimento (4×IAS) e
+    património (60×IAS) não têm YAML próprio (não aparecem em title/meta
+    description, só no corpo) — mas têm de bater sempre com o IAS_2026 já
+    afirmado no topo deste ficheiro, nunca hardcoded à parte."""
+    html = _ler("primeiro-direito.html")
+    rendimento = round(4 * IAS_2026, 2)
+    patrimonio = round(60 * IAS_2026, 2)
+    rendimento_fmt = f"{rendimento:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    patrimonio_fmt = f"{patrimonio:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    assert rendimento_fmt in html, f"limiar de rendimento {rendimento_fmt}€ (4×IAS) ausente de primeiro-direito.html"
+    assert patrimonio_fmt in html, f"limiar de património {patrimonio_fmt}€ (60×IAS) ausente de primeiro-direito.html"
+
+
+def test_deducao_rendas_nunca_afirma_900_como_ja_utilizavel_na_declaracao_2026():
+    """Invariante central desta página: nunca pode ler-se como se os 900€
+    já se aplicassem à declaração entregue em 2026 (rendimentos de 2025,
+    que continuam a usar 700€) — nenhum estado pendente/futuro pode
+    parecer já consumado na declaração actual."""
+    html = _ler("deducao-rendas-irs.html")
+    assert "700" in html, "limite antigo (700€) ausente — a página tem de mostrar a cronologia completa"
+    assert "2027" in html, "ano da declaração em que os 900€ passam a aplicar-se ausente"

@@ -101,7 +101,7 @@ fact-check feito ainda):
 | **Autobaixa** (`autobaixa.html`) | Nuno confirma no Google Search Console que `baixa-medica-subsidio-doenca.html` acumula impressões relevantes para "autobaixa"/"autodeclaração de doença" — **sem limiar numérico fixado**, é julgamento do Nuno | Google Search Console (Code não tem acesso) | Criar `autobaixa.html` (6 passos: reaproveitar secção 8, pilar mantém versão resumida, evitar canibalização SEO, cross-links, cluster `trabalho-rendimento`, checklist completa) — ver CLAUDE.md **"GATILHO AUTOBAIXA"** |
 | **Auto-update do carimbo "Verificado a"** (`REVALIDACAO_CARIMBO_HABILITADA`) | ≥14 relatórios shadow consecutivos com simulações correctas (zero falsos elegíveis) **e** fontes correspondentes maioritariamente `OK` — decisão do Nuno, nunca do Claude Code | `shadow_history/*.md` + **`python scripts/validar_carimbos_elegiveis.py`** (sessão manual, só leitura — valida o dia: exit 0 = conta para a contagem; contagem iniciada a **2026-07-11, dia 1 validado**, com 9 avisos todos classificados como artefactos das correcções do scraper de 03/07 e 07/07) | Ligar a flag numa sessão manual dedicada, nunca de ânimo leve — ver CLAUDE.md **"REVALIDAÇÃO DE CARIMBO"** |
 | **Densidade da PSU na homepage** | "Quando o tema arrefecer" (sem data fixada) — julgamento do Nuno | Olhar à homepage / tráfego | Remover banner do topo + cartão de prazos (dos 6 pontos actuais que a PSU ocupa) — ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 1 |
-| **Backlog Habitação** — ~~garantia crédito jovem~~, ~~isenção IMT jovem~~ (Sessão 1) e ~~simulador de IMT Jovem~~ (Sessão 2, 2026-07-20) concluídos; faltam RSAA (Regime Simplificado de Arrendamento Acessível), 1.º Direito (IHRU), a dedução de rendas em IRS e a watchlist automática DRE (Sessão 3 do plano) | Nenhum — só quando houver prioridade dedicada | — | Fact-check + página nova, um apoio de cada vez — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** → Backlog |
+| **Nova tabela de rendas máximas de referência do Porta 65** | Publicação anual, tipicamente no fim do ano, de um novo PDF `RendasMaximas_AAAA.pdf` no Portal da Habitação — não é um decreto-lei, por isso fora do alcance da watchlist DRE (`dre_habitacao_paer`/`dre_habitacao_garantia`) | portaldahabitacao.pt (verificação manual — sem scraper dedicado) | Confirmar a tabela do ano novo e actualizar `porta-65.html` se algum valor citado no corpo mudar — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
 | **Novo sistema de ação social no ensino superior — publicação em DR ainda por confirmar** (`bolsa-de-estudo-ensino-superior.html`) | **Estado a 2026-07-14** (não fechado): o diploma foi promulgado pelo PR a 7/07/2026 (confirmado por 6+ fontes jornalísticas independentes) — mas esta sessão **não confirmou** a publicação em Diário da República nem a citação exacta (número/data) do decreto-lei; acesso directo a dre.pt bloqueado em 2 sessões seguidas. A página já reflecte os valores comunicados pelo Governo/DGES-IES (mínima ≈872€, média ≈2.660€, apoio residência 160€/mês, Bolsa de Incentivo 1.045€) com nota explícita dessa lacuna — **nunca afirmar que "já é lei" sem essa confirmação** | dre.pt (Code não tem scraper dedicado; tentar `WebSearch` por "Decreto-Lei n.º" + "ação social" + "ensino superior" + o ano, ou pedir ao Nuno para confirmar directamente) | 1) Confirmar a citação exacta do decreto-lei publicado; 2) verificar os valores já publicados na página contra o texto real do diploma (não assumir que o comunicado do Governo bate certo com o texto final); 3) citar o número do decreto-lei na página (`fonte-bloco` + JSON-LD se aplicável); 4) só depois disso — nunca antes — cobrir os valores (872€/2.660€/160€/1.045€) em `tests/test_valores_ancora.py`, como canário de consistência (não há fórmula IAS-derivada, mesma categoria do abono/PSI) |
 
 ### Automáticos (o sistema já avisa via Issue)
@@ -111,6 +111,8 @@ fact-check feito ainda):
 | **Decreto-lei da PSU publicado — ALTA PRIORIDADE, gatilho aproximando-se** | Publicação em dre.pt do decreto-lei da PSU (prazo PRR: 31 ago 2026). **Milestone intermédia já cumprida a 2026-07-17**: o PR promulgou a autorização legislativa que permite ao Governo aprovar o decreto-lei — válida só 120 dias (janela ~ago-nov 2026) — e o diploma final terá de fixar valores e condições directamente (já não por portaria), ficando sujeito a nova promulgação do PR e possível apreciação parlamentar. Isto reduz a margem de tempo real até ao gatilho seguinte | `dre_psu` — **corrigido a 2026-07-07** (Issue #54): pesquisa interactiva de frase exacta no diariodarepublica.pt, com âncora que prova filtragem real; Issue automática ao detectar um Decreto-Lei nos resultados (ver CLAUDE.md "IMPACTO DA PSU" → nota do sentinela). Confirmado `OK` e monitorizado diariamente (`data/estado_fontes.json`, `ultima_ok: 2026-07-18`) — cron diário sem data-limite, cobre a janela ago-nov sozinho | Correr `/atualizar-cluster-psu` — sessão imediata de valores + activação do simulador PSU assim que a Issue disparar (9 passos: actualizar as 5 páginas do cluster, criar `como-pedir-psu.html` + `calendario-pagamentos-psu.html`, publicar `simulador-psu.html`, transformar `rsi.html`, actualizar avisos em subsídio desemprego/parental, nunca apagar páginas antigas, reduzir densidade da PSU depois, actualizar `data/clusters.json`, revalidar a lista dos 13 apoios em `prestacao-social-para-a-inclusao.html`) — ver CLAUDE.md **"IMPACTO DA PSU"** → "Plano de acção" |
 | **Data/valor expirado numa página** | `verificar_datas.py` (Shadow Mode + pipeline) detecta um padrão não suprimido | Issues `data-expirada` (fecho automático se corrigido) | Rever a página assinalada — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** |
 | **Fonte do scraper bloqueada 3 dias seguidos** | `data/estado_fontes.json` regista o 3.º dia consecutivo `BLOQUEADO` (inclui `dre_psu` desde 2026-07-05, agora que "conteúdo suspeito" conta como bloqueio) | Issues `fonte-bloqueada` (fecho automático ao recuperar) | Investigar/corrigir o scraper para essa fonte — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** e **"AUDITORIA DE INFRAESTRUTURA"** achado 1 |
+| **Revogação do PAER / reforma "produto único" do arrendamento — watchlist nova (Sessão 3, 2026-07-20)** | `dre_habitacao_paer` — pesquisa de frase exacta `"apoio extraordinário à renda"` no diariodarepublica.pt, mesmo mecanismo do `dre_psu`; dispara quando um Decreto-Lei aparecer nos resultados. **Nunca calibrado contra um runner real nesta sessão** (WebFetch/curl bloqueados) — a 1.ª corrida real do pipeline confirma o `min_chars_uteis` | Issue `🏠 Decreto-lei sobre o PAER detectado em DRE` (label `verificar`, dedup automático) | Confirmar se revoga/substitui o PAER isoladamente ou é a fusão "produto único" (Porta 65/Porta 65+/PAER/Arrendar para Subarrendar); actualizar `apoio-extraordinario-renda.html` sempre, `porta-65.html`/`primeiro-direito.html`/`p/habitacao.html` se for a fusão — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
+| **Alteração/prorrogação da Garantia Pública (DL 44/2024) — watchlist nova (Sessão 3, 2026-07-20)** | `dre_habitacao_garantia` — pesquisa de frase exacta `"Decreto-Lei n.º 44/2024"`, mesmo mecanismo; crítico perto do prazo actual, 31/12/2026. **Nunca calibrado contra um runner real nesta sessão** | Issue `🔑 Decreto-lei que cita o DL 44/2024 (Garantia Pública) detectado em DRE` (label `verificar`, dedup automático) | Confirmar o que muda (prazo, percentagem, valor do imóvel); se for o prazo, actualizar `garantia_prazo_contrato_limite` em `dados/parametros/habitacao.yaml` + `garantia-publica-credito-habitacao.html` — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
 | **Feed de notícias morto 3 dias seguidos** | `data/estado_feeds.json` regista o 3.º dia consecutivo `MORTO` | Issues `feed-morto` (fecho automático ao recuperar) | Substituir/reparar o feed — ver CLAUDE.md **"FRESCURA DA HOMEPAGE"** → "Fontes RSS" |
 | **Branch remota com commits únicos** | `limpar-branches.yml` (push a main, cron diário `0 5 * * *`, manual) encontra uma branch != `main` não totalmente integrada | Issue única `🌿 Branches órfãs por integrar` (fecho automático quando a lista fica vazia) | Trazer o trabalho para `main` (commit directo, nunca PR) ou apagar a branch manualmente — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE BRANCHES"** |
 
@@ -184,6 +186,68 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Cluster Habitação — Sessão 3 (fecho: dedução de rendas, 1.º Direito,
+  auditoria Porta 65, watchlist DRE)** — 2026-07-20. Fecha o "Backlog
+  Habitação". PASSO 0 confirmou por `WebSearch` (`WebFetch`/`curl`
+  continuam bloqueados nesta sessão): o Decreto-Lei n.º 97/2026, de 20
+  de maio, já está **publicado** (não pendente, ao contrário do que o
+  prompt admitia como hipótese) — sobe a dedução de rendas no IRS para
+  900€/2026 e 1.000€/2027 (a declaração entregue em 2026, sobre
+  rendimentos de 2025, usa ainda 700€) e cria o RSAA, com efeitos desde
+  1 set. 2026; o PAER continua em vigor, revogação **não** publicada; o
+  1.º Direito (DL 37/2018 + DL 44/2025) confirmado com candidatura
+  sempre via município (Estratégia Local de Habitação); a reforma
+  "produto único" (fusão Porta 65/Porta 65+/PAER/Arrendar para
+  Subarrendar) é só uma intenção anunciada, sem projecto de lei
+  publicado — distinta do Fundo de Emergência para a Habitação (FEH,
+  aprovado em Conselho de Ministros a 9/07/2026, não confirmado
+  publicado em DRE), que também não é apresentado como recurso já
+  disponível.
+
+  2 páginas novas (`deducao-rendas-irs.html`, `primeiro-direito.html`),
+  ambas com FAQPage+HowTo+BreadcrumbList+Article,
+  `.resposta-rapida`+`.checklist-final`; `dados/parametros/habitacao.yaml`
+  ganhou `deducao_rendas_irs_limite_eur` (3 vigências: 700/2023,
+  900/2026, 1000/2027) com 4 golden tests novos (incl. um que tranca a
+  cronologia nunca poder ler-se como "900€ já em vigor na declaração de
+  2026"); os limiares do 1.º Direito (4×IAS/60×IAS) validados contra o
+  `IAS_2026` já afirmado no canário, sem YAML próprio (não aparecem em
+  title/meta). `porta-65.html` auditado: aviso de transição para quem
+  vai comprar casa (cancelar o Porta 65), confirmação da tabela de
+  rendas máximas 2026, e nota de watchlist não-alarmista sobre o
+  "produto único" — 2 FAQs novas, paridade visível↔JSON-LD mantida.
+  `p/habitacao.html` reorganizado em 3 secções (🏠 Arrendar / 🔑 Comprar
+  / 🏚️ Situações de carência), `fontes.html` +3 diplomas
+  (DL 37/2018, DL 44/2025, DL 97/2026). `data/clusters.json` actualizado
+  (7 páginas + hub + simulador) — `sincronizar_clusters.py`,
+  `sincronizar_nav.py`, `adicionar_canonicas.py`,
+  `adicionar_autoria_artigos.py`, `adicionar_article_jsonld.py`,
+  `inserir_botao_partilhar.py` confirmados idempotentes (0 alterações,
+  páginas já nasceram correctas), `gerar_og_images.py --write` gerou as
+  2 imagens novas.
+
+  Watchlist DRE nova (`scripts/scraper_playwright.py`): duas fontes
+  Playwright (`dre_habitacao_paer`, `dre_habitacao_garantia`), mesmo
+  mecanismo `pesquisa_interactiva` já provado do `dre_psu` — lógica de
+  detecção generalizada em `_detectar_decreto_lei_generico`
+  (`_detectar_decreto_psu` mantido intocado como wrapper fino, por
+  compatibilidade com `tests/test_dre_psu_pesquisa.py`). Ambas
+  monitorizadas em `SLUGS_MONITORIZADOS` (máquina de estados
+  fonte-bloqueada) e com blocos de Issue dedicados em
+  `pipeline-diario.yml` (dedup por título, mesmo padrão MEGA/PSU — só
+  linhas de `avisos.log` de hoje, corrigindo de origem o bug de linha
+  antiga reencontrada já documentado para as Issues #55-#58). **Nunca
+  calibrado contra um runner real nesta sessão** — ver as duas linhas
+  novas em "Automáticos" acima; a 1.ª corrida real do pipeline confirma
+  os `min_chars_uteis`. 12 testes novos em
+  `tests/test_dre_habitacao_watchlist.py`.
+
+  `scripts/urls_criticas.txt` ganhou as 2 páginas novas (smoke test de
+  produção). Nenhum canário de URLs dedicado (mesmo padrão de
+  `data/urls_como_pedir.json`) foi criado — decisão já registada na
+  Sessão 1, reconfirmada: infra-estrutura específica ao cluster
+  `como-pedir`, sem equivalente genérico no repositório.
 
 - **Cluster Habitação — Sessão 2 (correcção IMT Jovem + simulador)** —
   2026-07-20. (1) Correcção factual de `imt-jovem.html`: limites das

@@ -407,3 +407,39 @@ garantia_prazo_contrato_limite:
       fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267"
       fonte_url_complementar: "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914"
       verificado_em: "2026-07-20"
+
+# DEDUÇÃO DE RENDAS EM IRS (Sessão 3, 2026-07-20) — Decreto-Lei n.º 97/2026,
+# de 20 de maio (Conselho de Ministros de 27 de março; promulgado — ver
+# público.pt 12/05/2026 — e PUBLICADO em Diário da República a 20 de maio de
+# 2026, confirmado via WebSearch; PASSO 0 desta sessão descartou a hipótese
+# de que a medida ainda aguardava publicação). Efeitos da generalidade do
+# diploma desde 1 de janeiro de 2026 (excepto o IVA a 6%, desde 1 de julho de
+# 2026 — sem relação com esta página). O limite de dedução SOBE em dois
+# patamares: 900€ para rendas de 2026 (a usar na declaração entregue em
+# 2027) e 1.000€ a partir de 2027. Cronologia confirmada por triangulação
+# (Doutor Finanças, DECO PROteste, CRN-Contabilidade): a declaração
+# ENTREGUE em 2026 (rendimentos de 2025) usa AINDA o limite antigo, 700€ —
+# nunca os 900€, que só se aplicam a rendas pagas a partir de 1 jan 2026.
+# Condição confirmada: a dedução só é válida com o contrato comunicado à AT
+# — o inquilino pode comunicá-lo desde 1 de agosto de 2025 (Portaria n.º
+# 106/2025/1, de 13 de março) se o senhorio não o fizer dentro do prazo
+# (fim do mês seguinte ao início do contrato).
+deducao_rendas_irs_limite_eur:
+  descricao: "Dedução à colecta de IRS das rendas pagas pelo inquilino — limite anual geral"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2023-01-01"
+      valor: 700
+      referencia_legal: "Regime anterior ao Decreto-Lei n.º 97/2026 — limite aplicável às rendas pagas até 31 de dezembro de 2025 (declaração entregue em 2026)"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-07-20"
+    - vigencia_inicio: "2026-01-01"
+      valor: 900
+      referencia_legal: "Decreto-Lei n.º 97/2026, de 20 de maio — limite aplicável às rendas pagas em 2026 (declaração a entregar em 2027)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/97-2026-1124493227"
+      verificado_em: "2026-07-20"
+    - vigencia_inicio: "2027-01-01"
+      valor: 1000
+      referencia_legal: "Decreto-Lei n.º 97/2026, de 20 de maio — limite aplicável às rendas pagas a partir de 2027"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/97-2026-1124493227"
+      verificado_em: "2026-07-20"

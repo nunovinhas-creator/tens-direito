@@ -101,6 +101,33 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         min_chars_uteis=1500,
         ancora_conteudo=('"prestação social única"',),
     ),
+    # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — mesmo
+    # mecanismo de pesquisa de frase exacta do dre_psu, nunca calibrado
+    # contra um runner real nesta sessão (WebFetch/curl bloqueados para
+    # domínios externos, mesma limitação documentada em várias sessões
+    # anteriores) — a 1.ª corrida real do pipeline é que confirma os
+    # min_chars_uteis; um valor de 1500 (igual ao dre_psu, mesmo tipo de
+    # pesquisa de frase exacta no mesmo site) é o ponto de partida honesto,
+    # não um número calibrado. Cobre os gatilhos 1+2 da watchlist (revogação
+    # do PAER e a eventual reforma "produto único" que o funda com outros
+    # apoios — qualquer diploma que reforme ou revogue o PAER tem de
+    # referir o seu nome oficial na ementa para ser juridicamente válido).
+    "dre_habitacao_paer": FonteConfig(
+        nome="DRE — Pesquisa Apoio Extraordinário à Renda / reforma do arrendamento",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"apoio extraordinário à renda"',),
+    ),
+    # Gatilho 3 da watchlist — prorrogação ou alteração da Garantia
+    # Pública (DL 44/2024), crítico perto do prazo de 31/12/2026 já
+    # registado em dados/parametros/habitacao.yaml. Pesquisa pela citação
+    # do próprio diploma — qualquer decreto-lei que o altere ou prorrogue
+    # tem de o citar na ementa, mais robusto do que pesquisar pelo nome
+    # popular da medida (que pode variar).
+    "dre_habitacao_garantia": FonteConfig(
+        nome="DRE — Pesquisa alteração/prorrogação da Garantia Pública (DL 44/2024)",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"Decreto-Lei n.º 44/2024"',),
+    ),
 }
 
 # Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
@@ -145,6 +172,13 @@ _PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
     # provados contra o backend real (extra_http_headers chegou a provocar
     # um erro 500 genuíno no portal da Segurança Social).
     "dre_psu": PerfilBrowser(stealth=False, headers_custom=False),
+    # Mesmo perfil do dre_psu — mesmo site (diariodarepublica.pt), mesma
+    # precaução contra o erro 500 real já confirmado com extra_http_headers
+    # noutro domínio da Segurança Social (ver "SEG-SOCIAL — ESTRATÉGIA DE
+    # FETCH" no CLAUDE.md) — nunca acrescentar um componente de contexto
+    # não provado contra um backend que já se sabe sensível a headers.
+    "dre_habitacao_paer": PerfilBrowser(stealth=False, headers_custom=False),
+    "dre_habitacao_garantia": PerfilBrowser(stealth=False, headers_custom=False),
 }
 
 
@@ -311,6 +345,62 @@ FONTES_PLAYWRIGHT = [
             "listas": "a[href*='/dr/detalhe/']",
         },
         "detectar_decreto_lei_psu": True,
+    },
+    {
+        "slug": "dre_habitacao_paer",
+        # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — vigiar a
+        # revogação/reestruturação do Apoio Extraordinário à Renda (PAER)
+        # e uma eventual reforma "produto único" que o funda com Porta 65/
+        # Porta 65+/Arrendar para Subarrendar (o Governo manifestou essa
+        # intenção sem projecto de lei publicado à data de verificação —
+        # ver primeiro-direito.html/porta-65.html). Mesmo mecanismo do
+        # dre_psu (pesquisa_interactiva, frase exacta entre aspas) — nunca
+        # calibrado contra um runner real nesta sessão (WebFetch/curl
+        # bloqueados para domínios externos); a 1.ª corrida do pipeline
+        # confirma o min_chars_uteis real.
+        "url": "https://diariodarepublica.pt/dr/home",
+        "nota": "DRE — vigiar revogação do PAER ou reforma dos apoios ao arrendamento",
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"apoio extraordinário à renda"',
+        },
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
+        },
+        "detectar_decreto_lei": {
+            "chave_aviso": "dre_habitacao_paer_decreto_detectado",
+            "mensagem_log": "%s: DECRETO-LEI sobre o Apoio Extraordinário à Renda detectado em "
+                             "DRE — confirmar se revoga/substitui o PAER!\n%s",
+        },
+    },
+    {
+        "slug": "dre_habitacao_garantia",
+        # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — vigiar
+        # prorrogação ou alteração da Garantia Pública no crédito
+        # habitação (DL 44/2024), crítico perto do prazo actual de
+        # 31/12/2026 (dados/parametros/habitacao.yaml). Pesquisa pela
+        # citação do próprio diploma — qualquer decreto-lei que o altere
+        # tem de o citar na ementa. Mesmo mecanismo do dre_psu, mesma
+        # ressalva de calibração (nunca testado contra um runner real
+        # nesta sessão).
+        "url": "https://diariodarepublica.pt/dr/home",
+        "nota": "DRE — vigiar alteração/prorrogação da Garantia Pública (DL 44/2024, prazo actual: 31 dez 2026)",
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"Decreto-Lei n.º 44/2024"',
+        },
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
+        },
+        "detectar_decreto_lei": {
+            "chave_aviso": "dre_habitacao_garantia_decreto_detectado",
+            "mensagem_log": "%s: DECRETO-LEI que cita o DL 44/2024 (Garantia Pública) detectado em "
+                             "DRE — confirmar se altera/prorroga o prazo!\n%s",
+        },
     },
 ]
 
@@ -578,25 +668,42 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
             log.info("%s: decreto-lei PSU ainda não publicado em DRE "
                      "(pesquisa de frase exacta sem nenhum Decreto-Lei nos resultados)", slug)
 
+    # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — mesmo
+    # mecanismo genérico acima, config por fonte em "detectar_decreto_lei"
+    # (dict com chave_aviso/mensagem_log), nunca hardcoded ao slug como
+    # o bloco da PSU acima (histórico, mantido por compatibilidade com os
+    # testes existentes).
+    deteccao = fonte.get("detectar_decreto_lei")
+    if deteccao:
+        achou = _detectar_decreto_lei_generico(
+            slug, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"]
+        )
+        if not achou:
+            log.info("%s: nenhum Decreto-Lei novo detectado na pesquisa (%s)",
+                      slug, deteccao["chave_aviso"])
+
     return resultado
 
 
-def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
-    """Detecta um Decreto-Lei entre os resultados da pesquisa de frase
-    exacta '"prestação social única"'.
+def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
+                                    mensagem_log: str) -> bool:
+    """Detecta um Decreto-Lei entre os resultados de uma pesquisa de frase
+    exacta no DRE (mecanismo `pesquisa_interactiva`, ver `_obter_html_pesquisa`).
 
-    Como a pesquisa usa aspas (frase exacta no Elasticsearch do DRE —
-    confirmado num runner real: 2 resultados vs 12.651 sem aspas), TODOS
-    os resultados extraídos dizem já respeito à frase — basta o título de
-    um resultado (itens_lista: um <a href="/dr/detalhe/..."> por acto) ser
-    um Decreto-Lei para haver sinal real.
+    Generalização (Sessão 3, 2026-07-20 — watchlist do cluster Habitação)
+    da lógica original de `_detectar_decreto_psu` — mesmo princípio,
+    reutilizável por qualquer fonte que use pesquisa de frase exacta:
+    como a pesquisa usa aspas (frase exacta no Elasticsearch do DRE —
+    confirmado num runner real para dre_psu: 2 resultados vs 12.651 sem
+    aspas), TODOS os resultados extraídos dizem já respeito à frase —
+    basta o título de um resultado (itens_lista: um
+    <a href="/dr/detalhe/..."> por acto) ser um Decreto-Lei para haver
+    sinal real.
 
-    Verificação por item, deliberadamente — a versão anterior fazia
-    `decreto.lei\\b.*\\bpresta` sobre TODO o texto concatenado, o que
-    dispararia com um decreto-lei qualquer num resultado e "prestação"
-    noutro resultado sem relação (falso positivo latente que nunca se
-    manifestou só porque a fonte antiga nunca extraiu conteúdo — mesma
-    lição das Issues #55/#56 do MEGA)."""
+    Verificação por item, deliberadamente — nunca sobre todo o texto
+    concatenado, que dispararia com um decreto-lei num resultado e o
+    termo pesquisado noutro resultado sem relação (falso positivo latente
+    já visto nas Issues #55/#56 do MEGA)."""
     import re as _re
     padrao = _re.compile(r"\bdecreto[\s-]?lei\s+n", _re.IGNORECASE)
     candidatos = [conteudo.get("titulo", "")] + list(conteudo.get("itens_lista", []))
@@ -604,12 +711,20 @@ def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
     if not achados:
         return False
     excertos_txt = "\n".join(f"- {t[:300]}" for t in achados[:5])
-    _registar_aviso(slug, f"dre_psu_decreto_detectado:{excertos_txt[:500]}")
-    log.warning(
-        "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
-        slug, excertos_txt,
-    )
+    _registar_aviso(slug, f"{chave_aviso}:{excertos_txt[:500]}")
+    log.warning(mensagem_log, slug, excertos_txt)
     return True
+
+
+def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
+    """Detecta o decreto-lei da PSU — ver `_detectar_decreto_lei_generico`
+    para o mecanismo completo. Mantido como função própria (em vez de só
+    uma chamada inline) porque `tests/test_dre_psu_pesquisa.py` a importa
+    directamente por nome."""
+    return _detectar_decreto_lei_generico(
+        slug, conteudo, "dre_psu_decreto_detectado",
+        "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
+    )
 
 
 # ── Guardar resultado ──────────────────────────────────────────────────────────
