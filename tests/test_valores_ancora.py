@@ -500,6 +500,100 @@ def test_dados_parametros_json_sincronizado_com_os_yaml():
     )
 
 
+def _valores_eur_inteiros(texto: str) -> list:
+    """Extrai valores em euros SEM casas decimais, formato PT de milhares
+    (ex.: "330.539 €", "86.634€") — os limiares do cluster Habitação
+    (Sessão 1, 2026-07-20) são sempre inteiros, ao contrário dos valores
+    já cobertos por `_valores_eur()` (sempre com 2 casas decimais).
+    Nunca confunde os dois formatos: o `\\d{2}` final de `_valores_eur`
+    não bate com um euro inteiro, e este regex exige que NÃO haja vírgula
+    a seguir aos milhares."""
+    return [
+        int(bruto.replace(".", ""))
+        for bruto in re.findall(r"(?<!,)\b(\d{1,3}(?:\.\d{3})+)\s?€", texto)
+    ]
+
+
+# ── Cluster Habitação — IMT Jovem e Garantia Pública (Sessão 1, 2026-07-20) ──
+# dados/parametros/habitacao.yaml é a fonte única destes valores — nunca
+# hardcoded de memória nas páginas. `_valores_eur_inteiros()` extrai os
+# limiares em euros directamente do title/meta description reais; o
+# canário falha sozinho se algum valor for editado numa página sem
+# actualizar o YAML (ou vice-versa), forçando revisão consciente.
+
+_HABITACAO = None
+
+
+def _param_habitacao(nome: str):
+    global _HABITACAO
+    if _HABITACAO is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _HABITACAO = todos["prestacoes"]["habitacao"]
+    return _HABITACAO[nome]["valor"]
+
+
+def test_imt_jovem_title_valor_isencao_total():
+    title = _title("imt-jovem.html")
+    assert _valores_eur_inteiros(title) == [_param_habitacao("imt_isencao_total_limite_eur")], title
+
+
+def test_imt_jovem_meta_description_isencao_total_e_parcial():
+    desc = _meta_description("imt-jovem.html")
+    valores = _valores_eur_inteiros(desc)
+    assert _param_habitacao("imt_isencao_total_limite_eur") in valores, desc
+    assert _param_habitacao("imt_isencao_parcial_limite_eur") in valores, desc
+    assert _param_habitacao("imt_taxa_sobre_excedente_pct") in _percentagens(desc), desc
+
+
+def test_imt_jovem_og_tags_espelham_title_e_description():
+    assert _meta_og("imt-jovem.html", "og:title") == _title("imt-jovem.html")
+    assert _meta_og("imt-jovem.html", "og:description") == _meta_description("imt-jovem.html")
+
+
+def test_imt_jovem_escaloes_2026_no_corpo_batem_com_o_yaml():
+    html = _ler("imt-jovem.html")
+    total = _param_habitacao("imt_isencao_total_limite_eur")
+    parcial = _param_habitacao("imt_isencao_parcial_limite_eur")
+    # Formata como PT (milhares com ponto) para comparar com o texto real.
+    assert f"{total:,}".replace(",", ".") in html
+    assert f"{parcial:,}".replace(",", ".") in html
+    assert f"{_param_habitacao('imt_prazo_afetacao_meses')} meses" in html
+    assert f"{_param_habitacao('imt_prazo_manutencao_anos')} anos" in html
+
+
+def test_garantia_publica_meta_description_percentagem_e_valor_imovel():
+    desc = _meta_description("garantia-publica-credito-habitacao.html")
+    assert _param_habitacao("garantia_percentagem_max_pct") in _percentagens(desc), desc
+    assert _param_habitacao("garantia_valor_imovel_max_eur") in _valores_eur_inteiros(desc), desc
+
+
+def test_garantia_publica_og_tags_espelham_title_e_description():
+    pagina = "garantia-publica-credito-habitacao.html"
+    assert _meta_og(pagina, "og:title") == _title(pagina)
+    assert _meta_og(pagina, "og:description") == _meta_description(pagina)
+
+
+def test_garantia_publica_prazo_e_condicoes_no_corpo_batem_com_o_yaml():
+    html = _ler("garantia-publica-credito-habitacao.html")
+    prazo = _param_habitacao("garantia_prazo_contrato_limite")  # "2026-12-31"
+    ano, mes, dia = prazo.split("-")
+    assert f"{int(dia)} de dezembro de {ano}" in html, f"prazo {prazo} não encontrado por extenso no corpo"
+    assert f"{_param_habitacao('garantia_idade_minima_anos')} e {_param_habitacao('garantia_idade_maxima_anos')} anos" in html
+    assert f"{_param_habitacao('garantia_duracao_anos')} anos" in html
+    rendimento = _param_habitacao("garantia_rendimento_max_anual_eur")
+    assert f"{rendimento:,}".replace(",", ".") in html
+
+
+def test_habitacao_pillar_menciona_os_mesmos_limiares_das_paginas_filhas():
+    """p/habitacao.html (hub reorganizado nesta sessão) nunca pode
+    divergir dos valores publicados em imt-jovem.html/
+    garantia-publica-credito-habitacao.html — canário de consistência
+    entre o resumo do hub e o detalhe de cada guia."""
+    pillar = _ler("p/habitacao.html")
+    assert f"{_param_habitacao('imt_isencao_total_limite_eur'):,}".replace(",", ".") in pillar
+    assert _param_habitacao("garantia_percentagem_max_pct") in _percentagens(pillar)
+
+
 def test_nenhum_parametro_vigente_fica_sem_verificado_em():
     """PASSO 0 (obrigatório para qualquer valor migrado para YAML): réplica
     visível na suite de testes da guarda dura de

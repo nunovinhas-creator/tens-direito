@@ -103,12 +103,14 @@
     {
       "id": "habitacao",
       "nome": "Habitação",
-      "descricao_curta": "Porta 65 Jovem e apoio à renda — os apoios ao arrendamento em vigor em 2026.",
+      "descricao_curta": "Arrendar (Porta 65) ou comprar (IMT Jovem, Garantia Pública) — os apoios à habitação em vigor em 2026.",
       "icone": "🏠",
       "pillar": "/p/habitacao.html",
       "paginas": [
         {"slug": "porta-65.html", "titulo": "Porta 65 Jovem e Porta 65+", "tipo": "artigo", "destaque": true, "emoji": "🏠", "desc": "Apoio ao arrendamento para jovens até 35 anos. Candidaturas contínuas, sem prazo."},
-        {"slug": "apoio-extraordinario-renda.html", "titulo": "Apoio Extraordinário à Renda: o que aconteceu e alternativas", "tipo": "artigo", "destaque": false}
+        {"slug": "apoio-extraordinario-renda.html", "titulo": "Apoio Extraordinário à Renda: o que aconteceu e alternativas", "tipo": "artigo", "destaque": false},
+        {"slug": "imt-jovem.html", "titulo": "IMT Jovem 2026: isenção na compra da primeira casa", "tipo": "artigo", "destaque": false},
+        {"slug": "garantia-publica-credito-habitacao.html", "titulo": "Garantia Pública no Crédito Habitação Jovem 2026", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
     }

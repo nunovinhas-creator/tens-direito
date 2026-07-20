@@ -315,6 +315,138 @@
         "verificado_em": "2026-07-19"
       }
     },
+    "habitacao": {
+      "imt_isencao_total_limite_eur": {
+        "descricao": "IMT Jovem — valor de aquisição até ao qual há isenção TOTAL de IMT e Imposto do Selo",
+        "unidade": "EUR",
+        "valor": 330539,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 73-A/2025, de 30 de dezembro (Orçamento do Estado 2026) — actualização anual (+2%) dos escalões de IMT, nos termos do art. 9.º-A do CIMT (Decreto-Lei n.º 48-A/2024)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_isencao_parcial_limite_eur": {
+        "descricao": "IMT Jovem — acima deste valor de aquisição deixa de haver qualquer isenção (só paga IMT/IS pela tabela geral)",
+        "unidade": "EUR",
+        "valor": 660982,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 73-A/2025, de 30 de dezembro (Orçamento do Estado 2026) — actualização anual (+2%) dos escalões de IMT, nos termos do art. 9.º-A do CIMT (Decreto-Lei n.º 48-A/2024)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_taxa_sobre_excedente_pct": {
+        "descricao": "IMT Jovem — taxa aplicada apenas à parte do valor de aquisição que excede o limite de isenção total, no escalão de isenção parcial",
+        "unidade": "%",
+        "valor": 8,
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Decreto-Lei n.º 48-A/2024, de 25 de julho, art. 1.º (aditamento do art. 9.º-A ao CIMT)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_idade_maxima_anos": {
+        "descricao": "IMT Jovem — idade máxima (inclusive) à data da escritura",
+        "unidade": "anos",
+        "valor": 35,
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Decreto-Lei n.º 48-A/2024, de 25 de julho, art. 1.º (aditamento do art. 9.º-A ao CIMT)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_prazo_afetacao_meses": {
+        "descricao": "IMT Jovem — prazo para afectar o imóvel a habitação própria e permanente, sob pena de perda da isenção",
+        "unidade": "meses",
+        "valor": 6,
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Decreto-Lei n.º 48-A/2024, de 25 de julho, art. 1.º (aditamento do art. 9.º-A ao CIMT)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_prazo_manutencao_anos": {
+        "descricao": "IMT Jovem — prazo mínimo de manutenção do imóvel como habitação própria e permanente, sob pena de perda da isenção (salvo excepções legais: venda, alteração do agregado, mudança de local de trabalho a mais de 100 km)",
+        "unidade": "anos",
+        "valor": 6,
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Decreto-Lei n.º 48-A/2024, de 25 de julho, art. 1.º (aditamento do art. 9.º-A ao CIMT)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_idade_minima_anos": {
+        "descricao": "Garantia Pública — idade mínima (inclusive) de cada titular do crédito",
+        "unidade": "anos",
+        "valor": 18,
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_idade_maxima_anos": {
+        "descricao": "Garantia Pública — idade máxima (inclusive) de cada titular do crédito — num crédito com dois titulares, AMBOS têm de cumprir o requisito de idade",
+        "unidade": "anos",
+        "valor": 35,
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_rendimento_max_anual_eur": {
+        "descricao": "Garantia Pública — limite de rendimento anual, correspondente ao valor máximo do 8.º escalão de IRS em vigor no ano (actualiza todos os anos com os escalões de IRS)",
+        "unidade": "EUR/ano",
+        "valor": 86634,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, art. 3.º — limite = valor máximo do 8.º escalão de IRS, actualizado anualmente pela lei do Orçamento do Estado (Lei n.º 73-A/2025, de 30 de dezembro, para 2026)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_valor_imovel_max_eur": {
+        "descricao": "Garantia Pública — valor máximo de aquisição do imóvel elegível",
+        "unidade": "EUR",
+        "valor": 450000,
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_percentagem_max_pct": {
+        "descricao": "Garantia Pública — percentagem máxima do valor de aquisição garantida pelo Estado (permite, na prática, financiamento até 100%, sem entrada)",
+        "unidade": "%",
+        "valor": 15,
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_duracao_anos": {
+        "descricao": "Garantia Pública — duração da garantia do Estado, a contar da data do contrato de crédito",
+        "unidade": "anos",
+        "valor": 10,
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      },
+      "garantia_prazo_contrato_limite": {
+        "descricao": "Garantia Pública — data-limite para celebração do contrato de crédito (formato ISO AAAA-MM-DD); sem prorrogação confirmada em Diário da República à data de verificação",
+        "unidade": "data",
+        "valor": "2026-12-31",
+        "vigencia_inicio": "2024-09-30",
+        "referencia_legal": "Decreto-Lei n.º 44/2024, de 10 de julho, regulamentado pela Portaria n.º 236-A/2024/1, de 27 de setembro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
+        "verificado_em": "2026-07-20"
+      }
+    },
     "subsidio-doenca": {
       "taxa_escalao_ate_30_dias": {
         "descricao": "Percentagem da RR diária paga — baixa até 30 dias",

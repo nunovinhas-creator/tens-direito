@@ -174,10 +174,20 @@
     "pagina": "fontes.html",
     "titulo": "Fontes Oficiais"
   },
+  "garantia-publica-credito-habitacao": {
+    "chip": "Habitação",
+    "pagina": "garantia-publica-credito-habitacao.html",
+    "titulo": "Garantia Pública 2026: crédito habitação jovem até 100%"
+  },
   "iban-seguranca-social": {
     "chip": "Como Pedir",
     "pagina": "iban-seguranca-social.html",
     "titulo": "Como alterar o IBAN na Segurança Social"
+  },
+  "imt-jovem": {
+    "chip": "Habitação",
+    "pagina": "imt-jovem.html",
+    "titulo": "IMT Jovem 2026: isenção até 330.539 € na 1.ª casa"
   },
   "index": {
     "chip": null,
