@@ -43,7 +43,7 @@ TOKENS_PROIBIDOS = [
     "dataNascimento",
 ]
 
-# Os 6 simuladores publicados e o slug esperado em cada um. simulador-psu.html
+# Os 7 simuladores publicados e o slug esperado em cada um. simulador-psu.html
 # está deliberadamente fora (noindex, não publicado, sem calc_resultado).
 SIMULADORES = {
     "simulador-abono.html": "abono",
@@ -52,6 +52,7 @@ SIMULADORES = {
     "simulador-subsidio-doenca.html": "subsidio_doenca",
     "simulador-rsi.html": "rsi",
     "simulador-subsidio-desemprego.html": "subsidio_desemprego",
+    "simulador-imt-jovem.html": "imt_jovem",
 }
 
 # Todos os eventos de conversão introduzidos nesta sessão, por ficheiro onde

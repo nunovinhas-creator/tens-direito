@@ -110,7 +110,8 @@
         {"slug": "porta-65.html", "titulo": "Porta 65 Jovem e Porta 65+", "tipo": "artigo", "destaque": true, "emoji": "🏠", "desc": "Apoio ao arrendamento para jovens até 35 anos. Candidaturas contínuas, sem prazo."},
         {"slug": "apoio-extraordinario-renda.html", "titulo": "Apoio Extraordinário à Renda: o que aconteceu e alternativas", "tipo": "artigo", "destaque": false},
         {"slug": "imt-jovem.html", "titulo": "IMT Jovem 2026: isenção na compra da primeira casa", "tipo": "artigo", "destaque": false},
-        {"slug": "garantia-publica-credito-habitacao.html", "titulo": "Garantia Pública no Crédito Habitação Jovem 2026", "tipo": "artigo", "destaque": false}
+        {"slug": "garantia-publica-credito-habitacao.html", "titulo": "Garantia Pública no Crédito Habitação Jovem 2026", "tipo": "artigo", "destaque": false},
+        {"slug": "simulador-imt-jovem.html", "titulo": "Simulador de IMT Jovem", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
     }

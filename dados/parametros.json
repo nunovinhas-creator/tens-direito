@@ -406,6 +406,156 @@
         "fonte_url_complementar": "https://eco.sapo.pt/2025/10/07/isencao-de-imt-para-jovens-exclui-terrenos-para-construcao/",
         "verificado_em": "2026-07-20"
       },
+      "imt_geral_hpp_limite_isento_eur": {
+        "descricao": "Tabela geral de IMT (habitação própria e permanente, Continente) — 1.º escalão: até este valor não há IMT",
+        "unidade": "EUR",
+        "valor": 106346,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc2_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — limite superior do 2.º escalão (taxa marginal de 2%)",
+        "unidade": "EUR",
+        "valor": 145470,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc2_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa marginal do 2.º escalão",
+        "unidade": "%",
+        "valor": 2,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc2_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — parcela a abater do 2.º escalão",
+        "unidade": "EUR",
+        "valor": 2126.92,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Tabelas práticas da AT — Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2% × 106.346€)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc3_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — limite superior do 3.º escalão (taxa marginal de 5%)",
+        "unidade": "EUR",
+        "valor": 198347,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc3_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa marginal do 3.º escalão",
+        "unidade": "%",
+        "valor": 5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc3_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — parcela a abater do 3.º escalão",
+        "unidade": "EUR",
+        "valor": 6491.02,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Tabelas práticas da AT — Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2.126,92€ + 145.470€ × 3%)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc4_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa marginal do 4.º escalão (limite superior = imt_isencao_total_limite_eur, por construção legal do art. 9.º-A)",
+        "unidade": "%",
+        "valor": 7,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc4_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — parcela a abater do 4.º escalão",
+        "unidade": "EUR",
+        "valor": 10457.96,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Tabelas práticas da AT — Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 6.491,02€ + 198.347€ × 2%); confirmado também por exemplo publicado (250.000€ × 7% − 10.457,96€)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc5_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa marginal do 5.º escalão (limite superior = imt_isencao_parcial_limite_eur, por construção legal do art. 9.º-A; coincide com imt_taxa_sobre_excedente_pct, porque a taxa de 8% da isenção parcial É a taxa marginal deste escalão)",
+        "unidade": "%",
+        "valor": 8,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc5_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — parcela a abater do 5.º escalão",
+        "unidade": "EUR",
+        "valor": 13763.35,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Tabelas práticas da AT — Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 10.457,96€ + 330.539€ × 1%); confirmado também por exemplo publicado (350.000€ × 8% − 13.763,35€)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc6_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — limite superior do 6.º escalão (taxa única de 6% sobre o valor total, sem parcela a abater)",
+        "unidade": "EUR",
+        "valor": 1150853,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc6_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa ÚNICA do 6.º escalão (aplica-se ao valor total, sem parcela a abater)",
+        "unidade": "%",
+        "valor": 6,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_esc7_taxa_pct": {
+        "descricao": "Tabela geral de IMT (HPP, Continente) — taxa ÚNICA do último escalão (acima do limite do 6.º escalão; aplica-se ao valor total, sem parcela a abater)",
+        "unidade": "%",
+        "valor": 7.5,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 17.º, n.º 1, al. a) do CIMT (taxas estáveis; só os limites dos escalões são actualizados anualmente)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
+      "is_aquisicao_taxa_pct": {
+        "descricao": "Imposto do Selo da AQUISIÇÃO de imóveis (verba 1.1 da Tabela Geral do Imposto do Selo) — 0,8% sobre o maior entre o preço e o VPT; no IMT Jovem, a isenção parcial aplica esta taxa só ao excedente acima do limite de isenção total (cenário confirmado na Sessão 1 e já publicado em imt-jovem.html)",
+        "unidade": "%",
+        "valor": 0.8,
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Verba 1.1 da Tabela Geral do Imposto do Selo (Código do Imposto do Selo); isenção jovem aditada ao CIS pelo Decreto-Lei n.º 48-A/2024, de 25 de julho",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-20"
+      },
       "garantia_idade_minima_anos": {
         "descricao": "Garantia Pública — idade mínima (inclusive) de cada titular do crédito",
         "unidade": "anos",

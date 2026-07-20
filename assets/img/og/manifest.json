@@ -339,6 +339,11 @@
     "pagina": "simulador-csi.html",
     "titulo": "Simulador do Complemento Solidário para Idosos (CSI) 2026"
   },
+  "simulador-imt-jovem": {
+    "chip": "Habitação",
+    "pagina": "simulador-imt-jovem.html",
+    "titulo": "Simulador de IMT Jovem 2026 — quanto poupas na primeira casa"
+  },
   "simulador-psu": {
     "chip": null,
     "pagina": "simulador-psu.html",

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador de IMT Jovem 2026 — quanto poupas na primeira casa</title>
+  <meta name="description" content="Calcula o IMT e o Imposto do Selo da primeira casa com a isenção jovem, compara com a tabela geral e vê quanto poupas. Cálculos no navegador, sem envio de dados.">
+  <meta property="og:title" content="Simulador de IMT Jovem 2026 — quanto poupas na primeira casa">
+  <meta property="og:description" content="Calcula o IMT e o Imposto do Selo da primeira casa com a isenção jovem, compara com a tabela geral e vê quanto poupas. Cálculos no navegador, sem envio de dados.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-imt-jovem.html">
+  <link rel="canonical" href="https://tensdireito.com/simulador-imt-jovem.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <meta property="og:image" content="https://tensdireito.com/assets/img/og/simulador-imt-jovem.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Simulador de IMT Jovem 2026 — quanto poupas na primeira casa">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador de IMT Jovem 2026 — quanto poupas na primeira casa",
+    "url": "https://tensdireito.com/simulador-imt-jovem.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Como é calculado o IMT com a isenção jovem?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Até 330.539 € (2026, Continente) não pagas nada de IMT nem de Imposto do Selo da compra. Entre 330.539 € e 660.982 €, pagas 8% de IMT e 0,8% de Imposto do Selo só sobre a parte que excede os 330.539 €. Acima de 660.982 € não há isenção — aplica-se a tabela geral. O imposto é sempre calculado sobre o maior entre o preço de compra e o Valor Patrimonial Tributário (VPT)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que acontece se o VPT for maior do que o preço de compra?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O imposto é calculado sobre o VPT, não sobre o preço. A lei manda usar sempre o maior dos dois valores — comprar barato não reduz o imposto se o VPT do imóvel for mais alto. Este simulador faz o mesmo: se preencheres um VPT superior ao preço, o cálculo usa o VPT e avisa-te disso."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador serve para os Açores e a Madeira?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Este simulador usa os escalões do Continente. Nas Regiões Autónomas os limites são 25% mais altos — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso o resultado aqui é conservador para quem compra nos Açores ou na Madeira. Vê a nota sobre as Regiões Autónomas no guia do IMT Jovem e confirma o teu caso no Portal das Finanças."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comprar um terreno para construir a casa conta para a isenção?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que a compra de terreno para construção está excluída do IMT Jovem — mesmo que a construção da casa já esteja em curso à data da escritura. A isenção só cobre prédios urbanos ou frações destinados a habitação."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Este simulador é apenas uma estimativa educativa. A liquidação oficial é sempre feita pela Autoridade Tributária, na declaração Modelo 1 do IMT, antes da escritura — normalmente tratada pelo notário, solicitador ou banco. O valor final pode diferir, por exemplo por regras municipais ou situações particulares do imóvel."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador de IMT Jovem", "item": "https://tensdireito.com/simulador-imt-jovem.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador de IMT Jovem 2026 — quanto poupas na primeira casa",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-imt-jovem.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-07-20",
+    "dateModified": "2026-07-20"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .form-group input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .checklist-elegibilidade { background: #F9FAFB; border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+    .checklist-elegibilidade .titulo { font-weight: 700; color: var(--ink); font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .checklist-elegibilidade label { display: flex; gap: 0.65rem; align-items: flex-start; font-size: 0.92rem; color: var(--ink); padding: 0.45rem 0; cursor: pointer; line-height: 1.5; }
+    .checklist-elegibilidade input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--teal); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .resultado-card { border-radius: var(--radius); padding: 2rem; color: var(--white); margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+    .resultado-card.com-direito { background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .resultado-card.sem-direito { background: linear-gradient(135deg, var(--red) 0%, #991b1b 100%); }
+    .resultado-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; opacity: 0.95; }
+    .resultado-valor { font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0; }
+    .resultado-detalhe { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    .resultado-detalhe p { margin-bottom: 0.5rem; }
+    .resultado-detalhe strong { font-weight: 700; }
+    .desagregacao-wrap { overflow-x: auto; margin-top: 1rem; }
+    .desagregacao-wrap table { width: 100%; border-collapse: collapse; font-size: 0.88rem; color: var(--white); }
+    .desagregacao-wrap th, .desagregacao-wrap td { padding: 0.5rem 0.65rem; text-align: right; border-bottom: 1px solid rgba(255,255,255,.25); }
+    .desagregacao-wrap th:first-child, .desagregacao-wrap td:first-child { text-align: left; }
+    .desagregacao-wrap thead th { font-weight: 700; border-bottom: 2px solid rgba(255,255,255,.45); }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .aviso-info a { color: #1D4ED8; text-decoration: underline; font-weight: 600; }
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.5; }
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
+    .formula-box ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .formula-box li { margin-bottom: 0.4rem; }
+    .formula-box a { color: var(--teal); text-decoration: underline; }
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .faq-resposta a { color: var(--teal); text-decoration: underline; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .resultado-valor { font-size: 1.8rem; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/documentos.html">📄 Documentos</a>
+        <a href="/p/como-pedir.html">🔑 Como Pedir</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <div class="nav-mobile-grid">
+        <a href="/calendario-pagamentos-seguranca-social.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📅</span><span>Calendário</span></a>
+        <a href="/simuladores.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🧮</span><span>Simuladores</span></a>
+        <a href="/documentos.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📄</span><span>Documentos</span></a>
+        <a href="/p/como-pedir.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🔑</span><span>Como Pedir</span></a>
+      </div>
+      <a href="/comecar-aqui.html" class="nav-mobile-destaque">Começa aqui</a>
+      <details class="nav-mobile-acordeao" id="navMobileApoios">
+        <summary><span aria-hidden="true">📋</span> Apoios</summary>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+      </details>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <header class="hero">
+    <p style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem;"><a href="/" style="color:#6B7280;text-decoration:underline;">Início</a> › <a href="/simuladores.html" style="color:#6B7280;text-decoration:underline;">Simuladores</a> › IMT Jovem</p>
+    <h1>Simulador de IMT Jovem 2026 — quanto poupas na primeira casa</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">Compara o que pagas de IMT e Imposto do Selo com e sem a isenção jovem. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+  </header>
+
+  <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Isenção total até 330.539 €</strong> (2026, Continente) · parcial até 660.982 € · <strong>Verificado a 20/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/imt-jovem.html">ver guia completo do IMT Jovem</a>
+    </div>
+
+    <div class="aviso-info" id="avisoRegiao">
+      🏝️ Este simulador usa os escalões do <strong>Continente</strong>. Nos <strong>Açores e na Madeira</strong> os limites são 25% mais altos (isenção total até 413.174 €, parcial até 826.228 € em 2026) — o resultado aqui é conservador para quem compra nas Regiões Autónomas. <a href="/imt-jovem.html">Vê a nota sobre as Regiões Autónomas no guia</a>.
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os valores oficiais dos escalões de IMT agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
+    </div>
+
+    <div class="calc-card">
+      <form id="formIMTJovem" onsubmit="calcularIMTJovemFormulario(event)">
+        <div class="form-group">
+          <label for="valorCompra">Valor de compra da casa (€)</label>
+          <input type="number" id="valorCompra" inputmode="numeric" placeholder="250000" min="1" step="1" required>
+          <small>O preço acordado na escritura ou no contrato-promessa</small>
+        </div>
+
+        <div class="form-group">
+          <label for="vpt">Valor Patrimonial Tributário — VPT (€, opcional)</label>
+          <input type="number" id="vpt" inputmode="numeric" placeholder="0" min="0" step="1">
+          <small>Está na caderneta predial do imóvel. Se for superior ao preço, o imposto é calculado sobre o VPT — este simulador faz o mesmo.</small>
+        </div>
+
+        <div class="checklist-elegibilidade">
+          <div class="titulo">Confirma as condições de elegibilidade</div>
+          <label><input type="checkbox" id="chkIdade"><span>Tenho 35 anos ou menos à data da escritura</span></label>
+          <label><input type="checkbox" id="chkNaoDependente"><span>Não sou dependente em IRS no ano da compra</span></label>
+          <label><input type="checkbox" id="chkSemPropriedade"><span>Não fui proprietário nem coproprietário de imóvel habitacional nos últimos 3 anos (inclui heranças já partilhadas e doações)</span></label>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary" id="btnCalcularIMTJovem" disabled>🧮 Calcular poupança</button>
+          <button type="reset" class="btn btn-secondary" onclick="limparResultado()">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado" aria-live="polite"></div>
+
+    <div class="formula-box">
+      <h2>Como funciona o cálculo</h2>
+      <code>Base = maior entre preço de compra e VPT<br>
+Até 330.539 € → IMT 0 € e Imposto do Selo 0 €<br>
+330.539 € a 660.982 € → 8% de IMT + 0,8% de Imposto do Selo, só sobre o excedente<br>
+Acima de 660.982 € → tabela geral de IMT, sem isenção</code>
+      <ul>
+        <li>A coluna "sem isenção" usa a <strong>tabela geral de IMT 2026</strong> para habitação própria e permanente no Continente (taxas marginais de 2% a 8% com parcela a abater; taxa única de 6% acima de 660.982 € e de 7,5% acima de 1.150.853 €) — art. 17.º do CIMT, tabelas práticas da AT (Ofício Circulado n.º 40129/2026).</li>
+        <li>O Imposto do Selo da compra é <strong>0,8%</strong> da mesma base; com a isenção parcial, aplica-se só ao excedente.</li>
+        <li>Não inclui: os limites 25% mais altos dos <strong>Açores e da Madeira</strong> (ver aviso acima), o Imposto do Selo do <strong>crédito habitação</strong> (0,6% do capital financiado, sempre devido), emolumentos de registo, nem a compra de <strong>terrenos para construção</strong> — excluída do IMT Jovem por informação vinculativa da AT.</li>
+        <li>A isenção pede-se na declaração <strong>Modelo 1 do IMT, antes da escritura</strong> — ver o <a href="/imt-jovem.html">guia completo do IMT Jovem</a>.</li>
+      </ul>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Como é calculado o IMT com a isenção jovem?</summary>
+        <div class="faq-resposta">
+          Até 330.539 € (2026, Continente) não pagas nada de IMT nem de Imposto do Selo da compra. Entre 330.539 € e 660.982 €, pagas 8% de IMT e 0,8% de Imposto do Selo só sobre a parte que excede os 330.539 €. Acima de 660.982 € não há isenção — aplica-se a tabela geral. O imposto é sempre calculado sobre o maior entre o preço de compra e o Valor Patrimonial Tributário (VPT).
+        </div>
+      </details>
+
+      <details>
+        <summary>O que acontece se o VPT for maior do que o preço de compra?</summary>
+        <div class="faq-resposta">
+          O imposto é calculado sobre o VPT, não sobre o preço. A lei manda usar sempre o <strong>maior</strong> dos dois valores — comprar barato não reduz o imposto se o VPT do imóvel for mais alto. Este simulador faz o mesmo: se preencheres um VPT superior ao preço, o cálculo usa o VPT e avisa-te disso.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador serve para os Açores e a Madeira?</summary>
+        <div class="faq-resposta">
+          Este simulador usa os escalões do Continente. Nas Regiões Autónomas os limites são <strong>25% mais altos</strong> — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso o resultado aqui é conservador para quem compra nos Açores ou na Madeira. Vê a <a href="/imt-jovem.html">nota sobre as Regiões Autónomas no guia</a> e confirma o teu caso no Portal das Finanças.
+        </div>
+      </details>
+
+      <details>
+        <summary>Comprar um terreno para construir a casa conta para a isenção?</summary>
+        <div class="faq-resposta">
+          Não. A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que a compra de terreno para construção está <strong>excluída</strong> do IMT Jovem — mesmo que a construção da casa já esteja em curso à data da escritura. A isenção só cobre prédios urbanos ou frações destinados a habitação.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. Este simulador é apenas uma <strong>estimativa educativa</strong>. A liquidação oficial é sempre feita pela Autoridade Tributária, na declaração Modelo 1 do IMT, antes da escritura — normalmente tratada pelo notário, solicitador ou banco. O valor final pode diferir, por exemplo por regras municipais ou situações particulares do imóvel.
+        </div>
+      </details>
+    </section>
+
+    <div class="aviso-info">
+      🔑 Vais pedir crédito habitação? Vê também a <a href="/garantia-publica-credito-habitacao.html">Garantia Pública no crédito habitação jovem</a> — financiamento até 100%, sem entrada, acumulável com o IMT Jovem.
+    </div>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 48-A/2024, art. 9.º-A e 17.º do CIMT, Lei n.º 73-A/2025 e tabelas práticas da AT), mas podem conter erros ou omissões. Simulação indicativa. A liquidação oficial é determinada pela Autoridade Tributária, na declaração Modelo 1 do IMT, antes da escritura.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ── PARAMETROS_IMT_JOVEM — carregado em runtime de /dados/parametros.json ──
+    // Mesmo padrão do simulador do CSI (FASE 2 da sessão de dados abertos,
+    // 2026-07-19): a fonte de verdade é dados/parametros/habitacao.yaml
+    // (padrão OpenFisca de parâmetros com vigência), consolidado em
+    // dados/parametros.json por scripts/gerar_parametros_json.py. Nunca
+    // calcula com valores em falta: se o fetch falhar, mostra um erro
+    // visível (#avisoParametrosErro) e mantém o botão desactivado — um
+    // estado de erro nunca pode parecer sucesso.
+    //
+    // Cobertura regional: SÓ CONTINENTE, por decisão do PASSO 0 da Sessão 2
+    // (2026-07-20) — os limites do IMT Jovem nas Regiões Autónomas estão
+    // confirmados (413.174€/826.228€, no YAML e na página do guia), mas as
+    // parcelas a abater da tabela geral RA não foram confirmadas de forma
+    // conclusiva contra as tabelas práticas oficiais; sem a coluna "sem
+    // isenção" verificada, o selector de região ficaria a comparar contra
+    // números não confirmados. O aviso #avisoRegiao explica isto ao
+    // utilizador, com link para a nota RA do guia.
+    let PARAMETROS_IMT_JOVEM = null;
+
+    async function carregarParametrosIMTJovem() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const hab = todos.prestacoes && todos.prestacoes.habitacao;
+        if (!hab) throw new Error("prestações.habitacao em falta em dados/parametros.json");
+        PARAMETROS_IMT_JOVEM = {
+          // Limites da isenção jovem (Continente) — por construção legal
+          // (art. 9.º-A remete para os escalões do art. 17.º), são também
+          // os limites superiores dos escalões de 7% e 8% da tabela geral.
+          isencaoTotalLimite: hab.imt_isencao_total_limite_eur,
+          isencaoParcialLimite: hab.imt_isencao_parcial_limite_eur,
+          taxaExcedente: hab.imt_taxa_sobre_excedente_pct,
+          // Tabela geral de IMT (HPP, Continente) — coluna "sem isenção"
+          limiteIsento: hab.imt_geral_hpp_limite_isento_eur,
+          esc2Limite: hab.imt_geral_hpp_esc2_limite_eur,
+          esc2Taxa: hab.imt_geral_hpp_esc2_taxa_pct,
+          esc2Abater: hab.imt_geral_hpp_esc2_abater_eur,
+          esc3Limite: hab.imt_geral_hpp_esc3_limite_eur,
+          esc3Taxa: hab.imt_geral_hpp_esc3_taxa_pct,
+          esc3Abater: hab.imt_geral_hpp_esc3_abater_eur,
+          esc4Taxa: hab.imt_geral_hpp_esc4_taxa_pct,
+          esc4Abater: hab.imt_geral_hpp_esc4_abater_eur,
+          esc5Taxa: hab.imt_geral_hpp_esc5_taxa_pct,
+          esc5Abater: hab.imt_geral_hpp_esc5_abater_eur,
+          esc6Limite: hab.imt_geral_hpp_esc6_limite_eur,
+          esc6Taxa: hab.imt_geral_hpp_esc6_taxa_pct,
+          esc7Taxa: hab.imt_geral_hpp_esc7_taxa_pct,
+          // Imposto do Selo da aquisição (verba 1.1)
+          isTaxa: hab.is_aquisicao_taxa_pct,
+        };
+        const botao = document.getElementById('btnCalcularIMTJovem');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosIMTJovem(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosIMTJovem(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularIMTJovem');
+      if (botao) botao.disabled = true;
+      console.error('Simulador IMT Jovem: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosIMTJovem);
+
+    // ── Mecânica de cálculo — funções puras, nunca tocam no DOM ────────────
+    // Testadas em tests/test_simulador_imt_jovem_calculo.py (golden tests
+    // calculados à mão a partir da tabela verificada no PASSO 0).
+    function arredondarCentimos(v) {
+      return Math.round(v * 100) / 100;
+    }
+
+    // Tabela geral de IMT 2026 (habitação própria e permanente, Continente):
+    // escalões marginais com parcela a abater até 660.982€; taxa ÚNICA sobre
+    // o valor total nos dois últimos escalões (6% até 1.150.853€, 7,5% acima)
+    // — sem parcela a abater nesses dois, por desenho da própria tabela.
+    function calcularIMTGeral(params, base) {
+      if (base <= params.limiteIsento.valor) return 0;
+      if (base <= params.esc2Limite.valor) {
+        return arredondarCentimos(base * params.esc2Taxa.valor / 100 - params.esc2Abater.valor);
+      }
+      if (base <= params.esc3Limite.valor) {
+        return arredondarCentimos(base * params.esc3Taxa.valor / 100 - params.esc3Abater.valor);
+      }
+      if (base <= params.isencaoTotalLimite.valor) {
+        return arredondarCentimos(base * params.esc4Taxa.valor / 100 - params.esc4Abater.valor);
+      }
+      if (base <= params.isencaoParcialLimite.valor) {
+        return arredondarCentimos(base * params.esc5Taxa.valor / 100 - params.esc5Abater.valor);
+      }
+      if (base <= params.esc6Limite.valor) {
+        return arredondarCentimos(base * params.esc6Taxa.valor / 100);
+      }
+      return arredondarCentimos(base * params.esc7Taxa.valor / 100);
+    }
+
+    function calcularIMTJovem(params, input) {
+      const elegivel = !!(input.temIdade && input.naoDependente && input.semPropriedade);
+      const valorCompra = input.valorCompra || 0;
+      const vpt = input.vpt || 0;
+      // A lei manda tributar sempre o MAIOR entre o preço e o VPT.
+      const usouVPT = vpt > valorCompra;
+      const base = Math.max(valorCompra, vpt);
+
+      const imtSemIsencao = calcularIMTGeral(params, base);
+      const isSemIsencao = arredondarCentimos(base * params.isTaxa.valor / 100);
+
+      let escalao;
+      let excedente = 0;
+      let imtComIsencao;
+      let isComIsencao;
+      if (base <= params.isencaoTotalLimite.valor) {
+        escalao = 'total';
+        imtComIsencao = 0;
+        isComIsencao = 0;
+      } else if (base <= params.isencaoParcialLimite.valor) {
+        escalao = 'parcial';
+        excedente = arredondarCentimos(base - params.isencaoTotalLimite.valor);
+        imtComIsencao = arredondarCentimos(excedente * params.taxaExcedente.valor / 100);
+        // Cenário confirmado na Sessão 1 (já publicado em imt-jovem.html):
+        // o Imposto do Selo da isenção parcial aplica-se SÓ ao excedente.
+        isComIsencao = arredondarCentimos(excedente * params.isTaxa.valor / 100);
+      } else {
+        escalao = 'sem_isencao';
+        imtComIsencao = imtSemIsencao;
+        isComIsencao = isSemIsencao;
+      }
+
+      return {
+        elegivel,
+        base,
+        usouVPT,
+        escalao,
+        excedente,
+        imtComIsencao,
+        isComIsencao,
+        imtSemIsencao,
+        isSemIsencao,
+        poupancaIMT: arredondarCentimos(imtSemIsencao - imtComIsencao),
+        poupancaIS: arredondarCentimos(isSemIsencao - isComIsencao),
+        poupancaTotal: arredondarCentimos(
+          (imtSemIsencao - imtComIsencao) + (isSemIsencao - isComIsencao)
+        ),
+      };
+    }
+
+    // Formatação PT determinística (milhares com ponto, decimais com
+    // vírgula) — nunca toLocaleString, cujo separador de milhares varia
+    // com a versão de ICU do navegador; elimina também o "-0,00".
+    function formatarEuro(v) {
+      const n = Math.abs(v) < 0.005 ? 0 : v;
+      const partes = n.toFixed(2).split('.');
+      const inteiro = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      return inteiro + ',' + partes[1] + ' €';
+    }
+
+    // ── Ligação ao formulário ───────────────────────────────────────────────
+    function limparResultado() {
+      const resultDiv = document.getElementById('resultado');
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+    }
+
+    function calcularIMTJovemFormulario(e) {
+      e.preventDefault();
+
+      if (!PARAMETROS_IMT_JOVEM) {
+        mostrarErroParametrosIMTJovem(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
+      const input = {
+        valorCompra: parseFloat(document.getElementById('valorCompra').value) || 0,
+        vpt: parseFloat(document.getElementById('vpt').value) || 0,
+        temIdade: document.getElementById('chkIdade').checked,
+        naoDependente: document.getElementById('chkNaoDependente').checked,
+        semPropriedade: document.getElementById('chkSemPropriedade').checked,
+      };
+
+      const r = calcularIMTJovem(PARAMETROS_IMT_JOVEM, input);
+      const resultDiv = document.getElementById('resultado');
+
+      let html;
+      if (!r.elegivel) {
+        // NUNCA mostrar valores de poupança a um inelegível — decisão
+        // explícita da spec desta sessão, verificada por teste real.
+        html = `<div class="resultado-card sem-direito">`;
+        html += `<div class="resultado-titulo">Resultado da simulação</div>`;
+        html += `<div class="resultado-valor">Sem direito à isenção</div>`;
+        html += `<div class="resultado-detalhe">`;
+        html += `<p>A isenção do IMT Jovem exige as <strong>três condições em simultâneo</strong>: até 35 anos à data da escritura, não seres dependente em IRS no ano da compra, e não teres sido proprietário ou coproprietário de imóvel habitacional nos últimos 3 anos (uma herança já partilhada conta como propriedade).</p>`;
+        html += `<p>Se alguma não se aplica a ti, pagas o IMT e o Imposto do Selo pela tabela geral. Vê as condições em detalhe no <a href="/imt-jovem.html" style="color:#fff;text-decoration:underline;font-weight:600;">guia completo do IMT Jovem</a>.</p>`;
+        html += `</div></div>`;
+      } else {
+        const titulo = r.escalao === 'total'
+          ? 'Isenção total — não pagas nada'
+          : (r.escalao === 'parcial' ? 'Isenção parcial' : 'Sem isenção neste valor');
+        html = `<div class="resultado-card com-direito">`;
+        html += `<div class="resultado-titulo">${titulo}</div>`;
+        html += `<div class="resultado-valor">Poupas ${formatarEuro(r.poupancaTotal)}</div>`;
+        html += `<div class="resultado-detalhe">`;
+        if (r.usouVPT) {
+          html += `<p>⚠️ O VPT que indicaste (${formatarEuro(r.base)}) é superior ao preço de compra — o imposto é calculado sobre o <strong>maior</strong> dos dois valores, por isso o cálculo usa o VPT.</p>`;
+        }
+        if (r.escalao === 'parcial') {
+          html += `<p>Pagas imposto só sobre o excedente de ${formatarEuro(r.excedente)} acima do limite de isenção total.</p>`;
+        }
+        if (r.escalao === 'sem_isencao') {
+          html += `<p>Acima do limite de isenção parcial não há qualquer benefício — pagas o IMT e o Imposto do Selo pela tabela geral, como qualquer comprador.</p>`;
+        }
+        html += `<div class="desagregacao-wrap"><table>`;
+        html += `<thead><tr><th>Imposto</th><th>Com isenção jovem</th><th>Sem isenção</th><th>Poupança</th></tr></thead>`;
+        html += `<tbody>`;
+        html += `<tr><td>IMT</td><td>${formatarEuro(r.imtComIsencao)}</td><td>${formatarEuro(r.imtSemIsencao)}</td><td>${formatarEuro(r.poupancaIMT)}</td></tr>`;
+        html += `<tr><td>Imposto do Selo (compra, 0,8%)</td><td>${formatarEuro(r.isComIsencao)}</td><td>${formatarEuro(r.isSemIsencao)}</td><td>${formatarEuro(r.poupancaIS)}</td></tr>`;
+        html += `<tr><td><strong>Total</strong></td><td><strong>${formatarEuro(arredondarCentimos(r.imtComIsencao + r.isComIsencao))}</strong></td><td><strong>${formatarEuro(arredondarCentimos(r.imtSemIsencao + r.isSemIsencao))}</strong></td><td><strong>${formatarEuro(r.poupancaTotal)}</strong></td></tr>`;
+        html += `</tbody></table></div>`;
+        html += `</div></div>`;
+      }
+
+      html += `<p style="font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-top: 1rem;">💡 Valor indicativo — a liquidação oficial é sempre da Autoridade Tributária. A isenção pede-se com a declaração <strong>Modelo 1 do IMT, antes da escritura</strong> — vê como no <a href="/imt-jovem.html" style="color: #0F766E; font-weight: 600;">guia completo do IMT Jovem</a>.</p>`;
+
+      resultDiv.innerHTML = html;
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'imt_jovem' });
+        gtag('event', 'simulacao_concluida', { simulador: 'imt_jovem', elegivel: r.elegivel });
+      }
+    }
+  </script>
+
+</body>
+</html>
