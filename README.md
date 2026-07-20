@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **19 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **20 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -32,17 +32,22 @@ Actualizado automaticamente a partir do repositório em **19 de julho de 2026**.
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — julho de 2026 |
+| [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
+| [`dados.html`](dados.html) | Dados Abertos — Tens Direito |
 | [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
+| [`garantia-publica-credito-habitacao.html`](garantia-publica-credito-habitacao.html) | Garantia Pública 2026: crédito habitação jovem até 100% |
 | [`iban-seguranca-social.html`](iban-seguranca-social.html) | Como alterar o IBAN na Segurança Social |
+| [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
+| [`marcar-atendimento-seguranca-social.html`](marcar-atendimento-seguranca-social.html) | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
@@ -57,6 +62,7 @@ Actualizado automaticamente a partir do repositório em **19 de julho de 2026**.
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso aprovadas pela Assembleia da República |
 | [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: aprovado vs. por definir |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
+| [`registo-criminal-online.html`](registo-criminal-online.html) | Certificado do Registo Criminal Online 2026: preço, prazo e como pedir |
 | [`renovar-cartao-cidadao.html`](renovar-cartao-cidadao.html) | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
 | [`senha-seguranca-social-direta.html`](senha-seguranca-social-direta.html) | Como pedir (e recuperar) a senha da Segurança Social Direta |
@@ -249,9 +255,11 @@ tens-direito/
 │   ├── classificar_datas.py
 │   ├── decisao_datas.py
 │   ├── extrair_valores.py
+│   ├── gerar_base_dados.py
 │   ├── gerar_noticias.py
 │   ├── gerar_og_images.py
 │   ├── gerar_pagina.py
+│   ├── gerar_parametros_json.py
 │   ├── gerir_estado_feeds.py
 │   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
@@ -260,6 +268,7 @@ tens-direito/
 │   ├── migrar_consentimento.py
 │   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
+│   ├── registar_observacao.py
 │   ├── run_shadow_daily.py
 │   ├── scraper_calendario.py
 │   ├── scraper_fontes.py
@@ -386,6 +395,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 19 de julho de 2026 às 09:32 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 20 de julho de 2026 às 11:16 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
