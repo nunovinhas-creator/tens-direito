@@ -214,6 +214,24 @@ PSU"**.
   deployment` bem-sucedido (publicou exactamente a árvore do commit
   `5e1ab7a`, que contém os dois ficheiros estáticos) e no smoke test
   às páginas críticas também verde.
+  **Verificação pós-deploy (mesmo dia, sessão seguinte)** — o Nuno
+  reportou o hub (`p/habitacao.html`) em produção a parecer a versão
+  antiga (sem "Comprar"/IMT Jovem/Garantia Pública). Confirmado por
+  esta sessão, directamente contra o repositório (não assumido): `git
+  log` mostra `5e1ab7a` (e `a026d4a`, o commit seguinte) em `main`;
+  `git show main:p/habitacao.html` já tem a secção "🔑 Comprar" e os
+  links para as 2 páginas novas; `imt-jovem.html`,
+  `garantia-publica-credito-habitacao.html` e
+  `dados/parametros/habitacao.yaml` confirmados no `git ls-tree` de
+  `main`. **`main` e o deploy publicado estão correctos** — não é um
+  problema de merge nem de conteúdo. Causa mais provável: cache do CDN
+  do GitHub Pages a servir uma cópia antiga da página (`p/habitacao.html`
+  não está em `scripts/urls_criticas.txt`, por isso o smoke test que
+  correu no push nunca a verificou directamente — só confirmou que o
+  deploy em si teve sucesso, via outras páginas). **Aguardar
+  propagação e reverificar em 24h** (pedir ao Nuno para recarregar
+  `p/habitacao.html` sem cache, ou verificar de novo nesta janela) —
+  nenhuma acção de código necessária enquanto isso não for confirmado.
 - **`declaracao-situacao-contributiva.html`** — 2026-07-14, 2.ª página da
   Camada 3 editorial, cluster `trabalho-rendimento`. "Certidão de não
   dívida à Segurança Social" — ver secção "🪪 CAMADA 3" acima e CLAUDE.md
