@@ -376,6 +376,36 @@
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-20"
       },
+      "imt_ra_isencao_total_limite_eur": {
+        "descricao": "IMT Jovem — Regiões Autónomas (Açores e Madeira): valor de aquisição até ao qual há isenção TOTAL de IMT e Imposto do Selo (limites do Continente elevados em 25%)",
+        "unidade": "EUR",
+        "valor": 413174,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 9.º-A do CIMT (Decreto-Lei n.º 48-A/2024); tabelas práticas 2026 no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_ra_isencao_parcial_limite_eur": {
+        "descricao": "IMT Jovem — Regiões Autónomas (Açores e Madeira): acima deste valor de aquisição deixa de haver qualquer isenção (limites do Continente elevados em 25%)",
+        "unidade": "EUR",
+        "valor": 826228,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 9.º-A do CIMT (Decreto-Lei n.º 48-A/2024); tabelas práticas 2026 no Ofício Circulado n.º 40129/2026, de 6 de janeiro — arredondamento ao euro, meio-euro para cima (826.227,50€ → 826.228€), consistente com o 1.º escalão RA publicado (132.933€)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-07-20"
+      },
+      "imt_exclusao_terrenos": {
+        "descricao": "IMT Jovem — exclusão: a compra de terreno para construção NÃO beneficia da isenção, mesmo com construção da habitação já em curso à data da escritura (só prédios urbanos ou frações destinados a habitação)",
+        "unidade": "texto",
+        "valor": "terrenos para construção excluídos do benefício (informação vinculativa da AT, outubro de 2025)",
+        "vigencia_inicio": "2024-08-01",
+        "referencia_legal": "Informação vinculativa da AT — ficha doutrinária sobre o art. 9.º-A do CIMT, divulgada em outubro de 2025: um terreno para construção não é, no momento da aquisição, um prédio destinado a habitação, sendo irrelevante que a construção já esteja iniciada",
+        "fonte_url": "https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/informacoes_vinculativas/patrimonio/cimt/Documents/PIV_29556.pdf",
+        "fonte_url_complementar": "https://eco.sapo.pt/2025/10/07/isencao-de-imt-para-jovens-exclui-terrenos-para-construcao/",
+        "verificado_em": "2026-07-20"
+      },
       "garantia_idade_minima_anos": {
         "descricao": "Garantia Pública — idade mínima (inclusive) de cada titular do crédito",
         "unidade": "anos",

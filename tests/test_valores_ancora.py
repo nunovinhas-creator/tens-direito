@@ -561,6 +561,45 @@ def test_imt_jovem_escaloes_2026_no_corpo_batem_com_o_yaml():
     assert f"{_param_habitacao('imt_prazo_manutencao_anos')} anos" in html
 
 
+def test_imt_jovem_limites_regioes_autonomas_no_corpo_batem_com_o_yaml():
+    """Sessão 2 (2026-07-20): os limites do IMT Jovem nas Regiões
+    Autónomas (413.174€/826.228€) vêm do YAML, nunca duplicados — a
+    página tem de os mostrar exactamente como estão em
+    dados/parametros.json (nota RA junto à tabela + FAQ)."""
+    html = _ler("imt-jovem.html")
+    total_ra = _param_habitacao("imt_ra_isencao_total_limite_eur")
+    parcial_ra = _param_habitacao("imt_ra_isencao_parcial_limite_eur")
+    assert f"{total_ra:,}".replace(",", ".") in html, "limite RA de isenção total ausente da página"
+    assert f"{parcial_ra:,}".replace(",", ".") in html, "limite RA de isenção parcial ausente da página"
+
+
+def test_imt_jovem_limites_ra_sao_25_por_cento_acima_do_continente():
+    """Canário de coerência interna: os limites RA são, por lei (Lei
+    n.º 21/90), os do Continente elevados em 25%, com arredondamento ao
+    euro (meio-euro para cima — padrão das tabelas práticas da AT,
+    confirmado no PASSO 0 pelo 1.º escalão RA publicado, 132.933€). Se a
+    actualização anual dos escalões do Continente for aplicada ao YAML e
+    os valores RA ficarem esquecidos, este teste falha sozinho."""
+    import math
+    for continente, ra in [
+        ("imt_isencao_total_limite_eur", "imt_ra_isencao_total_limite_eur"),
+        ("imt_isencao_parcial_limite_eur", "imt_ra_isencao_parcial_limite_eur"),
+    ]:
+        esperado = math.floor(_param_habitacao(continente) * 1.25 + 0.5)
+        assert _param_habitacao(ra) == esperado, (
+            f"{ra}={_param_habitacao(ra)} ≠ {continente}×1,25 arredondado ({esperado})"
+        )
+
+
+def test_imt_jovem_exclusao_de_terrenos_presente_na_pagina():
+    """A exclusão de terrenos para construção (informação vinculativa da
+    AT, out. 2025) está registada no YAML e tem de estar visível na
+    página — erro comum real de quem compra lote para construir."""
+    html = _ler("imt-jovem.html")
+    assert "terreno para constru" in html.lower(), "exclusão de terrenos ausente de imt-jovem.html"
+    assert "informação vinculativa" in html.lower(), "referência à informação vinculativa da AT ausente"
+
+
 def test_garantia_publica_meta_description_percentagem_e_valor_imovel():
     desc = _meta_description("garantia-publica-credito-habitacao.html")
     assert _param_habitacao("garantia_percentagem_max_pct") in _percentagens(desc), desc

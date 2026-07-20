@@ -96,6 +96,15 @@ MARCADORES_HISTORICOS = [
     # de 30/12/2025").
     r"circularam\s+not[íi]cias",
     r"esclarecimento\s+(?:oficial\s+)?de\s+\d",
+    # Citação de uma informação vinculativa da AT (ficha doutrinária) e da
+    # data em que foi divulgada — doutrina administrativa datada,
+    # permanentemente no passado, nunca um prazo a rever (achado na Sessão 2
+    # do cluster Habitação, 2026-07-20, imt-jovem.html: "informação
+    # vinculativa divulgada em outubro de 2025" sobre a exclusão de terrenos
+    # do IMT Jovem). Âncora estreita — a expressão só aparece em citações de
+    # doutrina fiscal, nunca junto a um prazo corrente; confirmado por grep
+    # sem colisão com nenhum outro match de data no site antes de aplicar.
+    r"informa[çc][ãa]o\s+vinculativa",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

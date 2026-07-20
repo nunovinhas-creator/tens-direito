@@ -464,6 +464,27 @@ def test_pillar_habitacao_real_nao_gera_alerta():
     assert detectar_alertas(html, "p/habitacao.html", ANO, MES) is None
 
 
+# ── Marcador "informação vinculativa" (Sessão 2 Habitação, 2026-07-20) ──
+# imt-jovem.html ganhou a exclusão de terrenos com a citação "informação
+# vinculativa divulgada em outubro de 2025" — doutrina administrativa
+# datada, permanentemente no passado. Sem o marcador, `data_mes_ano`
+# disparava logo em julho/agosto de 2026 (confirmado com o HTML real
+# ANTES de adicionar o marcador, nunca depois de uma Issue falsa existir).
+
+
+def test_imt_jovem_real_nao_gera_alerta_informacao_vinculativa():
+    html = _ler_pagina_real("imt-jovem.html")
+    for mes in (7, 8):
+        assert detectar_alertas(html, "imt-jovem.html", 2026, mes) is None
+
+
+def test_marcador_informacao_vinculativa_nao_suprime_data_sem_relacao():
+    # Guarda anti-sobre-supressão: uma data antiga genuína SEM a citação
+    # de doutrina fiscal por perto continua a disparar normalmente.
+    conteudo = "<p>O prazo de candidatura terminou em outubro de 2025.</p>"
+    assert detectar_alertas(conteudo, "sintetica.html", 2026, 7) is not None
+
+
 def test_todas_as_paginas_de_p_e_documentos_reais_sem_alerta():
     # Estado trancado no dia em que a recursividade foi ligada: zero
     # alertas nas 17 páginas de p/ e documentos/. Se uma passar a
