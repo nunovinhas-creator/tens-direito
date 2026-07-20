@@ -108,7 +108,7 @@ jobs:
               DATE=$(date -u +%Y-%m-%d)
               git add "$f"
               git commit -m "dados: atualização ${slug} ${DATE}"
-              git pull --rebase origin main
+              git pull --rebase --autostash origin main
               git push
               echo "Commit de observação publicado: ${slug}"
             done
@@ -139,7 +139,7 @@ jobs:
             git add dados/parametros.json dados/tensdireito.db
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "dados: publicar base de dados aberta ${DATE}"
-            git pull --rebase origin main
+            git pull --rebase --autostash origin main
             git push
             echo "Base de dados aberta publicada."
           fi
@@ -701,7 +701,7 @@ jobs:
           else
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "auto: pipeline diário ${DATE}"
-            git pull --rebase origin main
+            git pull --rebase --autostash origin main
             git push
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
