@@ -2343,5 +2343,64 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-07-20",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Patrões alertam que há medidas por cumprir no acordo sobre salários, UGT quer reforço - Dinheiro Vivo",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-15",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": []
   }
 ]
