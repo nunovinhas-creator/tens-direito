@@ -200,6 +200,20 @@ PSU"**.
   (simulador de IMT Jovem) e 3 (RSAA, 1.º Direito, dedução de rendas em
   IRS, watchlist automática) do mesmo plano ficam para sessões
   seguintes — ver linha "Backlog Habitação" abaixo.
+  **Sessão 1 integrada em `main` a 2026-07-20** — fast-forward directo
+  (`d7abbbb..5e1ab7a`, sem PR, branch `claude/new-session-vbrhmd`
+  apagada automaticamente pelo `limpar-branches.yml` no mesmo push).
+  Confirmado no push real a `main`, os 4 workflows: `Integridade do
+  Código` (suite completa + ruff + gitleaks + pip-audit), `Validar
+  Conteúdo HTML`, `pages build and deployment` e `Verificação de
+  Produção (Smoke Test)` — todos `success`. `/imt-jovem.html` e
+  `/garantia-publica-credito-habitacao.html` não foram confirmadas por
+  pedido HTTP directo (`curl`/`WebFetch` a `tensdireito.com` bloqueados
+  nesta sessão, 403 via proxy — mesma limitação documentada em várias
+  sessões anteriores) — confiança assente no `pages build and
+  deployment` bem-sucedido (publicou exactamente a árvore do commit
+  `5e1ab7a`, que contém os dois ficheiros estáticos) e no smoke test
+  às páginas críticas também verde.
 - **`declaracao-situacao-contributiva.html`** — 2026-07-14, 2.ª página da
   Camada 3 editorial, cluster `trabalho-rendimento`. "Certidão de não
   dívida à Segurança Social" — ver secção "🪪 CAMADA 3" acima e CLAUDE.md
