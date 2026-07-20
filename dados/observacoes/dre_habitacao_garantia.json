@@ -1,0 +1,14 @@
+{
+  "fonte": "dre_habitacao_garantia",
+  "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
+  "data_extracao": "2026-07-20T18:22:31.771604+00:00",
+  "sha256_conteudo": "4c2a385012799c6d133591bdeb87e1206d149f1d8a58f830be8269ba303f2ca7",
+  "estado": "OK",
+  "valores_extraidos": {
+    "titulo": "",
+    "paragrafos": [
+      "- Certifique-se de que nenhuma palavra contém erros ortográficos. - Tente utilizar outras palavras-chave. - Tente palavras-chave mais gerais."
+    ],
+    "itens_lista": []
+  }
+}
