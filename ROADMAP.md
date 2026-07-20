@@ -249,6 +249,22 @@ PSU"**.
   Sessão 1, reconfirmada: infra-estrutura específica ao cluster
   `como-pedir`, sem equivalente genérico no repositório.
 
+  **Integrada em `main` a 2026-07-20** (sessão de handoff/integração
+  separada, protocolo da secção "REGRA ABSOLUTA — GIT" do CLAUDE.md):
+  fast-forward directo de `claude/habitacao-rendas-primeiro-direito-bwvyvx`
+  (`3c85832`→`64e51bd`) para `main`, sem PR, sem conflitos (main não tinha
+  avançado desde a base). CI local reconfirmada no estado final antes do
+  merge (suite completa, ruff, `verificar_datas`,
+  `verificar_skips_permitidos.py`, `gerar_parametros_json.py --check`).
+  Push a `main` disparou os 4 workflows — todos confirmados `success` via
+  API (por `head_sha` exacto, nunca assumido pelo "run mais recente"):
+  **Integridade do Código** (7 jobs, incl. "Suite de Testes (pytest)"),
+  **Validar Conteúdo HTML**, **Verificação de Produção (Smoke Test)** —
+  confirma as 2 páginas novas + `imt-jovem.html`/`garantia-publica-
+  credito-habitacao.html` a servir conteúdo real em produção — e
+  **Limpar Branches Órfãs**. Branch local apagada; a remota cai sozinha
+  no próximo push via `limpar-branches.yml`.
+
 - **Cluster Habitação — Sessão 2 (correcção IMT Jovem + simulador)** —
   2026-07-20. (1) Correcção factual de `imt-jovem.html`: limites das
   Regiões Autónomas (25% acima do Continente — isenção total até
