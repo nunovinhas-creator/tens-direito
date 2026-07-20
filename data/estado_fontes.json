@@ -9,6 +9,16 @@
     "estado": "OK",
     "ultima_ok": "2026-07-20"
   },
+  "dre_habitacao_garantia": {
+    "dias_consecutivos_bloqueado": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-20"
+  },
+  "dre_habitacao_paer": {
+    "dias_consecutivos_bloqueado": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-07-20"
+  },
   "dre_psu": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",

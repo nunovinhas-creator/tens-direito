@@ -40,6 +40,7 @@ Actualizado automaticamente a partir do repositório em **20 de julho de 2026**.
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
 | [`dados.html`](dados.html) | Dados Abertos — Tens Direito |
 | [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
+| [`deducao-rendas-irs.html`](deducao-rendas-irs.html) | Dedução de rendas no IRS 2026: até 900 € por ano |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
 | [`garantia-publica-credito-habitacao.html`](garantia-publica-credito-habitacao.html) | Garantia Pública 2026: crédito habitação jovem até 100% |
@@ -55,6 +56,7 @@ Actualizado automaticamente a partir do repositório em **20 de julho de 2026**.
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem e Porta 65+ 2026: quem tem direito e como pedir |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | Prestação Social para a Inclusão (PSI) 2026: Guia Completo | Tens Direito |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
+| [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
 | [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — quem tem de fazer e como |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
@@ -69,6 +71,7 @@ Actualizado automaticamente a partir do repositório em **20 de julho de 2026**.
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
+| [`simulador-imt-jovem.html`](simulador-imt-jovem.html) | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa |
 | [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
 | [`simulador-rsi.html`](simulador-rsi.html) | Simulador do RSI 2026 |
 | [`simulador-subsidio-desemprego.html`](simulador-subsidio-desemprego.html) | Simulador do Subsídio de Desemprego 2026 |
@@ -395,6 +398,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 20 de julho de 2026 às 11:16 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 20 de julho de 2026 às 19:22 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
