@@ -1,0 +1,175 @@
+# Sessão "Parâmetros YAML + auditoria factual" (2026-07-19) — Commit 1.
+#
+# Fonte primária: Guia Prático 5001 do ISS, I.P. ("Subsídio de Doença"),
+# v4.55, de 14/07/2026 — PDF oficial lido integralmente pelo Nuno (PASSO 0
+# já cumprido antes desta sessão; os valores abaixo não foram
+# re-pesquisados, só migrados para este formato e auditados contra as
+# páginas publicadas). Regime: Decreto-Lei n.º 28/2004, de 4 de fevereiro,
+# na redação atual, + Portaria n.º 337/2004, de 31 de março.
+#
+# CORRECÇÃO REAL ENCONTRADA NA AUDITORIA (2026-07-19): o piso diário
+# mínimo estava a ser calculado sobre o IAS (30% × 537,13 € ÷ 30 = 5,37 €)
+# — mas o Guia Prático 5001 fixa-o sobre a Remuneração Mínima Mensal
+# Garantida (RMMG), não o IAS: 30% × 920 € ÷ 30 = 9,20 €. Além disso, o
+# simulador tinha um SEGUNDO piso (300 €/325 € por mês, convertido em
+# 10,00 €/10,8333 €/dia) para quando a RR mensal fosse superior a 500 € —
+# esse mecanismo nunca esteve confirmado em fonte primária (as sessões
+# anteriores citavam-no como "interpretação conservadora" de uma fonte
+# secundária, ⚠️B em CLAUDE.md) e o Guia Prático 5001 não o confirma —
+# descreve só UM piso diário unificado (9,20 €), com uma excepção: se a
+# RR diária da pessoa for inferior a esse piso, recebe a sua própria RR
+# diária (nunca um valor artificialmente superior ao que realmente
+# ganha). O piso 300/325 € foi removido — nunca reintroduzir sem uma
+# citação de fonte primária nova.
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+taxa_escalao_ate_30_dias:
+  descricao: "Percentagem da RR diária paga — baixa até 30 dias"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.55
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+taxa_escalao_31_a_90_dias:
+  descricao: "Percentagem da RR diária paga — baixa de 31 a 90 dias"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.60
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+taxa_escalao_91_a_365_dias:
+  descricao: "Percentagem da RR diária paga — baixa de 91 a 365 dias"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.70
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+taxa_escalao_mais_365_dias:
+  descricao: "Percentagem da RR diária paga — baixa com mais de 365 dias"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.75
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, art. 17.º, na redação atual — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+taxa_tuberculose_ate_2_familiares:
+  descricao: "Percentagem da RR diária paga — tuberculose, até 2 familiares a cargo"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.80
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, regime especial da tuberculose — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+taxa_tuberculose_mais_2_familiares:
+  descricao: "Percentagem da RR diária paga — tuberculose, mais de 2 familiares a cargo"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1.00
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, regime especial da tuberculose — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+majoracao_pontos_percentuais:
+  descricao: "Acréscimo em pontos percentuais nos escalões de 55%/60%, quando RR ≤ limite_rr_mensal_para_majoracao ou condição familiar"
+  unidade: "pontos percentuais (fracção)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.05
+      referencia_legal: "Portaria n.º 337/2004, de 31 de março, art. 5.º; Decreto-Lei n.º 28/2004, art. 17.º n.º 1 al. b) e c)"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+limite_rr_mensal_para_majoracao:
+  descricao: "Limiar de RR mensal (€) que activa a majoração automática de +5pp"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 500.00
+      referencia_legal: "Portaria n.º 337/2004, de 31 de março, art. 5.º"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+dias_espera_conta_outrem:
+  descricao: "Dias de espera (não pagos) — trabalhador por conta de outrem, regime geral"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 3
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 4.º dia"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+dias_espera_independente:
+  descricao: "Dias de espera (não pagos) — trabalhador independente"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 10
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 11.º dia"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+dias_espera_seguro_social_voluntario:
+  descricao: "Dias de espera (não pagos) — seguro social voluntário/marítimos/bolseiros"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 30
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — pago a partir do 31.º dia"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+teto_duracao_conta_outrem_dias:
+  descricao: "Duração máxima do subsídio — trabalhador por conta de outrem"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1095
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — 3 anos"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+teto_duracao_independente_ssv_dias:
+  descricao: "Duração máxima do subsídio — trabalhadores independentes, bolseiros e seguro social voluntário"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 365
+      referencia_legal: "Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual — 1 ano"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+remuneracao_minima_mensal_garantida_2026:
+  descricao: "Remuneração Mínima Mensal Garantida (RMMG/salário mínimo) 2026 — base do piso diário mínimo do subsídio de doença"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 920.00
+      referencia_legal: "Decreto-Lei n.º 139/2025 — Remuneração Mínima Mensal Garantida para 2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"
+
+piso_diario_minimo:
+  descricao: "Valor mínimo garantido por dia pago — 30% da RMMG 2026 ÷ 30, excepto se a RR diária da pessoa for inferior (recebe a sua RR, nunca um valor superior ao que realmente ganha); o valor pago nunca pode ultrapassar a RR líquida (após descontos SS+IRS), não calculável neste simulador"
+  unidade: EUR/dia
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 9.20
+      referencia_legal: "30% × Remuneração Mínima Mensal Garantida 2026 (920 €) ÷ 30 — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026 (CORRIGE um piso anterior calculado sobre o IAS, 5,37 €, que não corresponde ao Guia Prático)"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-19"

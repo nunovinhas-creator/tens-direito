@@ -40,7 +40,7 @@
         "name": "Quanto recebo de subsídio de doença em 2026?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Entre 55% e 75% da tua remuneração de referência (RR), consoante a duração da baixa: 55% até 30 dias, 60% de 31 a 90 dias, 70% de 91 a 365 dias e 75% a partir de 365 dias. Há uma majoração de +5 pontos percentuais nos escalões de 55%/60% se a RR for igual ou inferior a 500€ ou o agregado tiver 3 ou mais descendentes até 16 anos (24 com abono). Existem ainda duas garantias mínimas: 5,37€/dia (30% do IAS 2026) em qualquer caso, e um mínimo de 300€ ou 325€/mês quando a RR é superior a 500€."
+          "text": "Entre 55% e 75% da tua remuneração de referência (RR), consoante a duração da baixa: 55% até 30 dias, 60% de 31 a 90 dias, 70% de 91 a 365 dias e 75% a partir de 365 dias. Há uma majoração de +5 pontos percentuais nos escalões de 55%/60% se a RR for igual ou inferior a 500€ ou o agregado tiver 3 ou mais descendentes até 16 anos (24 com abono). Há também um piso diário mínimo de 9,20€ (30% da Remuneração Mínima Mensal Garantida de 2026), excepto se a tua RR diária for inferior a esse valor — nesse caso recebes a tua própria RR."
         }
       },
       {
@@ -195,7 +195,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-05",
-    "dateModified": "2026-07-06"
+    "dateModified": "2026-07-19"
   }
   </script>
 
@@ -372,12 +372,12 @@ footer a{color:#5C6770}
     <div class="resumo-rapido" role="note" aria-label="Resumo rápido">
       <ul>
         <li>✅ <strong>Quem tem direito:</strong> Poderás ter direito SE tiveres um Certificado de Incapacidade Temporária (CIT) e pelo menos 6 meses de registo de remunerações na Segurança Social.</li>
-        <li>💶 <strong>Valor em 2026:</strong> Entre 55% e 75% da tua remuneração de referência, consoante a duração da baixa, com um mínimo garantido de 5,37 €/dia.</li>
+        <li>💶 <strong>Valor em 2026:</strong> Entre 55% e 75% da tua remuneração de referência, consoante a duração da baixa, com um mínimo garantido de 9,20 €/dia.</li>
         <li>📝 <strong>Como pedir:</strong> Consulta médica (família, urgência, privado ou social) → CIT electrónico → entrega ao empregador em 5 dias úteis. Para até 3 dias, existe a autodeclaração no SNS24 — mas essa não paga subsídio.</li>
       </ul>
     </div>
 
-    <p class="verif">Verificado a 06/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · <a href="https://www.sns24.gov.pt" style="color:#0F766E">sns24.gov.pt</a> · Base legal: Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual · Portaria n.º 11/2024, de 18 de janeiro · Decreto-Lei n.º 8/2024 e Decreto-Lei n.º 2/2024, de 5 de janeiro · IAS 2026: 537,13 €</p>
+    <p class="verif">Verificado a 19/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · <a href="https://www.sns24.gov.pt" style="color:#0F766E">sns24.gov.pt</a> · Base legal: Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redação atual · Portaria n.º 337/2004, de 31 de março · Portaria n.º 11/2024, de 18 de janeiro · Decreto-Lei n.º 8/2024 e Decreto-Lei n.º 2/2024, de 5 de janeiro · Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026</p>
 
     <!-- DESAMBIGUAÇÃO -->
     <div class="card">
@@ -474,10 +474,10 @@ footer a{color:#5C6770}
         <li>Descendente que beneficie da bonificação por deficiência do abono de família</li>
       </ul>
 
-      <h3>Duas garantias mínimas</h3>
+      <h3>Garantia mínima</h3>
       <ul>
-        <li><strong>Mínimo universal:</strong> 5,37 €/dia (30% do IAS 2026, fixado em 537,13 € pela Portaria n.º 480-A/2025/1), ou 100% da RR líquida se esta for inferior</li>
-        <li><strong>Quando a RR é superior a 500 €:</strong> o subsídio calculado às taxas de 55% ou 60% nunca pode ser inferior a 300 €/mês ou 325 €/mês, respectivamente — segundo o Guia Prático do ISS sobre o subsídio de doença</li>
+        <li><strong>Piso diário:</strong> 9,20 €/dia (30% da Remuneração Mínima Mensal Garantida de 2026, fixada em 920,00 € pelo Decreto-Lei n.º 139/2025) — <strong>excepto se a tua RR diária for inferior a esse valor</strong>, caso em que recebes a tua própria RR, nunca um valor superior ao que realmente ganhas</li>
+        <li><strong>Máximo:</strong> o valor pago nunca pode ultrapassar 100% da tua remuneração de referência líquida (depois de descontos para a Segurança Social e IRS)</li>
       </ul>
       <p style="margin-top:.75rem;font-size:.9rem;color:#5C6770;">Usa o <a href="/simulador-subsidio-doenca.html">simulador de subsídio de doença</a> para estimares o teu caso, com cada parcela do cálculo escalão a escalão — ou segue o exemplo de cálculo acima.</p>
     </div>
@@ -725,11 +725,12 @@ footer a{color:#5C6770}
 
     <!-- FONTE -->
     <div class="fonte-bloco">
-      <strong>Fontes verificadas — 06 julho 2026</strong><br>
+      <strong>Fontes verificadas — 19 julho 2026</strong><br>
       · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — Instituto da Segurança Social<br>
       · <a href="https://www.sns24.gov.pt" target="_blank" rel="noopener">sns24.gov.pt</a> — Serviço Nacional de Saúde<br>
-      · <a href="https://dre.pt" target="_blank" rel="noopener">dre.pt</a> — Decreto-Lei n.º 28/2004, de 4 de fevereiro (regime jurídico de protecção na doença), na redação atual · Portaria n.º 11/2024, de 18 de janeiro · Decreto-Lei n.º 8/2024, de 5 de janeiro · Decreto-Lei n.º 2/2024, de 5 de janeiro<br>
-      · IAS 2026: 537,13 € (Portaria n.º 480-A/2025/1)
+      · <a href="https://dre.pt" target="_blank" rel="noopener">dre.pt</a> — Decreto-Lei n.º 28/2004, de 4 de fevereiro (regime jurídico de protecção na doença), na redação atual · Portaria n.º 337/2004, de 31 de março · Portaria n.º 11/2024, de 18 de janeiro · Decreto-Lei n.º 8/2024, de 5 de janeiro · Decreto-Lei n.º 2/2024, de 5 de janeiro<br>
+      · Remuneração Mínima Mensal Garantida 2026: 920,00 € (Decreto-Lei n.º 139/2025) — base do piso diário mínimo do subsídio de doença<br>
+      · Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026
     </div>
 
     <div class="disclaimer">

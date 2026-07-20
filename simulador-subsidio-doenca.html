@@ -14,7 +14,7 @@
   <meta name="robots" content="index, follow">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <title>Simulador de Subsídio de Doença 2026</title>
-  <meta name="description" content="Calculadora online do subsídio de doença 2026. Simula a estimativa por escalão (55% a 75%), dias de espera, majoração e pisos mínimos. Cálculos no browser, sem envio de dados.">
+  <meta name="description" content="Calculadora online do subsídio de doença 2026. Simula a estimativa por escalão (55% a 75%), dias de espera, majoração e piso mínimo. Cálculos no browser, sem envio de dados.">
   <meta property="og:title" content="Simulador de Subsídio de Doença 2026">
   <meta property="og:description" content="Calculadora online do subsídio de doença 2026, com desagregação por escalão. Cálculos cliente-side, privados.">
   <meta property="og:url" content="https://tensdireito.com/simulador-subsidio-doenca.html">
@@ -71,7 +71,7 @@
         "name": "Este simulador considera a majoração e os pisos mínimos?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a remuneração de referência é igual ou inferior a 500€/mês ou assinalas uma condição familiar, o piso universal de 5,37€/dia, e o piso de 300€/325€ mensais (aplicado aqui como piso diário proporcional — interpretação conservadora, pode não reflectir exactamente a prática da Segurança Social para períodos parciais)."
+          "text": "Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a remuneração de referência é igual ou inferior a 500€/mês ou assinalas uma condição familiar, e um piso diário mínimo de 9,20€ (30% da Remuneração Mínima Mensal Garantida de 2026) — excepto se a tua RR diária for inferior a esse valor, caso em que recebes a tua própria RR, nunca um valor superior ao que realmente ganhas."
         }
       },
       {
@@ -124,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-05",
-    "dateModified": "2026-07-06"
+    "dateModified": "2026-07-19"
   }
   </script>
 
@@ -302,7 +302,15 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Valores 2026</strong> — escalões de 55% a 75%, IAS 537,13€ · <strong>Verificado a 06/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/baixa-medica-subsidio-doenca.html">ver guia completo da baixa médica</a>
+      💡 <strong>Valores 2026</strong> — escalões de 55% a 75%, piso diário 9,20€ · <strong>Verificado a 19/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/baixa-medica-subsidio-doenca.html">ver guia completo da baixa médica</a>
+    </div>
+
+    <div id="avisoCarregandoParametros" class="info-box" role="status">
+      ⏳ A carregar valores oficiais…
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os valores oficiais do subsídio de doença agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
     </div>
 
     <div class="calc-card">
@@ -359,7 +367,7 @@
         </div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular subsídio</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularSubsidioDoenca" disabled>🧮 Calcular subsídio</button>
           <button type="reset" class="btn btn-secondary" onclick="limparResultado()">Limpar</button>
         </div>
       </form>
@@ -374,9 +382,9 @@
         <li><strong>Escalões</strong> (contados desde o dia 1 da incapacidade — os dias de espera consomem escalão): 55% até 30 dias · 60% de 31 a 90 · 70% de 91 a 365 · 75% a partir de 365.</li>
         <li><strong>Dias de espera</strong> (não pagos): 3 dias — conta de outrem · 10 dias — independente · 30 dias — seguro social voluntário. Zero dias em internamento, cirurgia de ambulatório ou tuberculose.</li>
         <li><strong>Majoração de +5pp</strong> nos escalões de 55%/60%, se a RR for ≤ 500€/mês ou assinalares uma condição familiar.</li>
-        <li><strong>Piso universal:</strong> 5,37€/dia (30% do IAS 2026), sujeito a um limite de 100% da remuneração de referência líquida que este simulador não calcula.</li>
-        <li><strong>Piso de 300€/325€</strong> quando a RR mensal é superior a 500€, nos escalões de 55%/60% — aplicado aqui como piso diário proporcional (300÷30 e 325÷30). É uma interpretação conservadora: as fontes públicas não especificam com clareza como este piso se aplica a períodos parciais.</li>
+        <li><strong>Piso diário mínimo:</strong> 9,20€ (30% da Remuneração Mínima Mensal Garantida de 2026, 920€), excepto se a tua RR diária for inferior a esse valor — nesse caso recebes a tua própria RR, nunca um valor superior ao que realmente ganhas. O valor pago nunca pode ultrapassar a tua remuneração líquida (depois de descontos), que este simulador não calcula.</li>
         <li><strong>Duração máxima:</strong> 1095 dias (conta de outrem) · 365 dias (independente e seguro social voluntário) · sem limite definido (tuberculose).</li>
+        <li><strong>Não modelado:</strong> este simulador não verifica o prazo de garantia (6 meses de descontos) nem o índice de profissionalidade (12 dias de registo de remunerações nos primeiros 4 dos últimos 6 meses) — assume que já os cumpres. Ver o <a href="/baixa-medica-subsidio-doenca.html">guia completo da baixa médica</a> para confirmar as condições de acesso.</li>
       </ul>
       <p style="font-size:0.85rem;color:var(--muted)">Os dias de espera nunca são pagos pela Segurança Social, seja qual for a duração da baixa — não há retroactividade, mesmo que a baixa se prolongue por meses ou anos. Este simulador nunca paga esses dias, excepto nas excepções legais já listadas. Ver <a href="/baixa-medica-subsidio-doenca.html">guia completo da baixa médica</a> para o detalhe.</p>
     </div>
@@ -401,7 +409,7 @@
       <details>
         <summary>Este simulador considera a majoração e os pisos mínimos?</summary>
         <div class="faq-resposta">
-          Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a RR é igual ou inferior a 500€/mês ou assinalas uma condição familiar, o piso universal de 5,37€/dia, e o piso de 300€/325€ mensais (aplicado como piso diário proporcional — interpretação conservadora).
+          Sim. Aplica a majoração de +5 pontos percentuais nos escalões de 55%/60% quando a RR é igual ou inferior a 500€/mês ou assinalas uma condição familiar, e um piso diário mínimo de 9,20€ (30% da Remuneração Mínima Mensal Garantida de 2026) — excepto se a tua RR diária for inferior a esse valor, caso em que recebes a tua própria RR.
         </div>
       </details>
 
@@ -449,66 +457,87 @@
   </footer>
 
   <script>
-    // ── PARAMETROS_SUBSIDIO_DOENCA — fonte única de verdade da fórmula ──────
-    // Cada valor tem "fonte" e "verificado_em" próprios (mesmo padrão de
-    // PARAMETROS_CSI em simulador-csi.html). Valores já fact-checked e
-    // publicados em baixa-medica-subsidio-doenca.html (verificado 05/07/2026),
-    // reconfirmados por WebSearch contra seg-social.pt/subsidio-de-doenca
-    // numa 2.ª auditoria completa (06/07/2026, "Fase 2") — percentagens
-    // (55/60/70/75%, 80/100% tuberculose), majoração de +5pp, dias de espera
-    // (3/10/30), tectos de duração (1095/365/sem limite), prazo de garantia
-    // (6 meses), piso universal (5,37€/dia), IAS 2026 (537,13€) e o
-    // tratamento de gravidez de risco (prestação distinta, fora do âmbito
-    // deste simulador — ver FAQ) confirmados sem divergências.
-    // Ponto ⚠️A (retroatividade dos dias de espera) — FECHADO em 06/07/2026:
-    // confirmado (Nuno) que NÃO existe qualquer retroatividade — os dias de
-    // espera nunca são pagos pela Segurança Social, seja qual for a duração
-    // da baixa, e representam sempre uma perda efectiva de rendimento. Uma
-    // pesquisa desta mesma sessão já tinha mostrado sinais divergentes: a
-    // alegação de retroactividade aparecia só em agregadores secundários de
-    // baixa fiabilidade (mesma categoria já rejeitada em 05/07/2026), nunca
-    // em resultados mais restritos ("dias de espera... sem rendimento", sem
-    // menção a retroactividade) — consistente com o texto do próprio
-    // Decreto-Lei n.º 28/2004, que só prevê retroactividade por atraso no
-    // envio do CIT aos serviços (art. 34.º), nunca por duração da baixa. A
-    // versão conservadora já implementada (nunca paga os dias de espera,
-    // salvo as 3 excepções legais) está confirmada como a versão correcta —
-    // nenhuma alteração de código necessária.
-    // Ponto ⚠️B (piso 300€/325€ em períodos parciais): reconfirmado em
-    // 06/07/2026 — a formulação encontrada (sempre em fontes secundárias,
-    // nunca o texto directo do Guia Prático) descreve o piso como "o valor
-    // do subsídio resultante da aplicação da majoração a uma remuneração de
-    // referência de 500€" — o que confirma matematicamente os valores já
-    // usados (60%×500€=300€; 65%×500€=325€) e mostra que a conversão para
-    // piso diário (÷30) usada aqui é consistente com o mesmo método
-    // (RR mensal = RR diária × 30) já usado no resto do código. Continua
-    // sem confirmação directa de uma fonte primária sobre a aplicação a
-    // períodos parciais — mantida a mesma interpretação conservadora,
-    // agora com citação mais forte.
-    // Ponto ⚠️A fechado, ⚠️B ainda em aberto — ambos documentados em
-    // detalhe no CLAUDE.md; este simulador implementa sempre a versão
-    // conservadora enquanto ⚠️B não tiver confirmação directa.
-    const PARAMETROS_SUBSIDIO_DOENCA = {
-      taxaEscalao1: { valor: 0.55, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — até 30 dias', verificado_em: '2026-07-06' },
-      taxaEscalao2: { valor: 0.60, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 31 a 90 dias', verificado_em: '2026-07-06' },
-      taxaEscalao3: { valor: 0.70, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — 91 a 365 dias', verificado_em: '2026-07-06' },
-      taxaEscalao4: { valor: 0.75, fonte: 'Decreto-Lei n.º 28/2004, na redação atual — mais de 365 dias', verificado_em: '2026-07-06' },
-      taxaTuberculoseAte2Familiares: { valor: 0.80, fonte: 'Tuberculose, até 2 familiares a cargo', verificado_em: '2026-07-06' },
-      taxaTuberculoseMais2Familiares: { valor: 1.00, fonte: 'Tuberculose, mais de 2 familiares a cargo', verificado_em: '2026-07-06' },
-      diasEsperaContaOutrem: { valor: 3, fonte: 'Regime geral — pago a partir do 4.º dia', verificado_em: '2026-07-06' },
-      diasEsperaIndependente: { valor: 10, fonte: 'Trabalhadores independentes — pago a partir do 11.º dia', verificado_em: '2026-07-06' },
-      diasEsperaSeguroSocialVoluntario: { valor: 30, fonte: 'Seguro social voluntário — pago a partir do 31.º dia', verificado_em: '2026-07-06' },
-      tetoDuracaoContaOutrem: { valor: 1095, fonte: 'Regime geral — 3 anos', verificado_em: '2026-07-06' },
-      tetoDuracaoIndependenteSSV: { valor: 365, fonte: 'Independentes e seguro social voluntário — 1 ano', verificado_em: '2026-07-06' },
-      majoracaoPontosPercentuais: { valor: 0.05, fonte: 'Majoração nos escalões de 55%/60%, RR ≤ 500€ ou condição familiar', verificado_em: '2026-07-06' },
-      limiteRRParaMajoracaoOuPiso: { valor: 500, fonte: 'Limiar de RR mensal que separa a majoração automática (≤500€) do piso 300€/325€ (>500€)', verificado_em: '2026-07-06' },
-      pisoDiarioUniversal: { valor: 5.37, fonte: '30% do IAS 2026 (537,13€), Portaria n.º 480-A/2025/1 — sujeito a limite de 100% da RR líquida, não calculável aqui', verificado_em: '2026-07-06' },
-      pisoDiarioProporcionalTaxa55: { valor: 10.00, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 55% não pode ser inferior a 300€/mês; aplicado aqui como piso diário 300÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-06' },
-      pisoDiarioProporcionalTaxa60: { valor: 10.8333333333, fonte: 'seg-social.pt/subsidio-de-doenca — quando a RR mensal é superior a 500€, o valor resultante da taxa de 60% não pode ser inferior a 325€/mês; aplicado aqui como piso diário 325÷30 (interpretação conservadora, ⚠️B — as fontes não especificam a aplicação a períodos parciais)', verificado_em: '2026-07-06' },
-    };
+    // ── PARAMETROS_SUBSIDIO_DOENCA — carregado em runtime de /dados/parametros.json ──
+    // Sessão "Parâmetros YAML + auditoria factual" (2026-07-19, Commit 1): a
+    // fonte de verdade deixou de ser um objecto JS inline e passou a
+    // dados/parametros/subsidio-doenca.yaml (padrão OpenFisca de parâmetros
+    // com vigência, mesmo princípio de dados/parametros/csi.yaml),
+    // consolidado em dados/parametros.json por
+    // scripts/gerar_parametros_json.py. Nunca calcula com valores em falta:
+    // se o fetch falhar, mostra um erro visível (#avisoParametrosErro) e
+    // mantém o botão de calcular desactivado — um estado de erro nunca pode
+    // parecer sucesso.
+    //
+    // CORRECÇÃO REAL DA AUDITORIA (2026-07-19), contra a fonte primária —
+    // Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026 (PDF oficial
+    // lido pelo Nuno): o piso diário mínimo estava calculado sobre o IAS
+    // (30% × 537,13€ ÷ 30 = 5,37€) — o Guia Prático fixa-o sobre a
+    // Remuneração Mínima Mensal Garantida (RMMG), não o IAS: 30% × 920€ ÷
+    // 30 = 9,20€. O segundo piso, de 300€/325€ mensais quando a RR mensal
+    // era superior a 500€ (⚠️B, nunca confirmado em fonte primária — só
+    // "interpretação conservadora" de fontes secundárias, ver histórico em
+    // CLAUDE.md), foi removido — o Guia Prático descreve só um piso diário
+    // único, com uma excepção: se a RR diária da pessoa for inferior a esse
+    // piso, recebe a sua própria RR diária, nunca um valor superior ao que
+    // realmente ganha (implementada em `aplicarPiso()` abaixo).
+    let PARAMETROS_SUBSIDIO_DOENCA = null;
+
+    async function carregarParametrosSubsidioDoenca() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const sd = todos.prestacoes && todos.prestacoes['subsidio-doenca'];
+        if (!sd) throw new Error("prestações['subsidio-doenca'] em falta em dados/parametros.json");
+        PARAMETROS_SUBSIDIO_DOENCA = {
+          taxaEscalao1: sd.taxa_escalao_ate_30_dias,
+          taxaEscalao2: sd.taxa_escalao_31_a_90_dias,
+          taxaEscalao3: sd.taxa_escalao_91_a_365_dias,
+          taxaEscalao4: sd.taxa_escalao_mais_365_dias,
+          taxaTuberculoseAte2Familiares: sd.taxa_tuberculose_ate_2_familiares,
+          taxaTuberculoseMais2Familiares: sd.taxa_tuberculose_mais_2_familiares,
+          diasEsperaContaOutrem: sd.dias_espera_conta_outrem,
+          diasEsperaIndependente: sd.dias_espera_independente,
+          diasEsperaSeguroSocialVoluntario: sd.dias_espera_seguro_social_voluntario,
+          tetoDuracaoContaOutrem: sd.teto_duracao_conta_outrem_dias,
+          tetoDuracaoIndependenteSSV: sd.teto_duracao_independente_ssv_dias,
+          majoracaoPontosPercentuais: sd.majoracao_pontos_percentuais,
+          limiteRRParaMajoracao: sd.limite_rr_mensal_para_majoracao,
+          pisoDiarioMinimo: sd.piso_diario_minimo,
+        };
+        document.getElementById('avisoCarregandoParametros').style.display = 'none';
+        const botao = document.getElementById('btnCalcularSubsidioDoenca');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosSubsidioDoenca(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosSubsidioDoenca(erro) {
+      document.getElementById('avisoCarregandoParametros').style.display = 'none';
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularSubsidioDoenca');
+      if (botao) botao.disabled = true;
+      console.error('Simulador de subsídio de doença: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosSubsidioDoenca);
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
     // Função pura, testada em tests/test_simulador_subsidio_doenca_calculo.py.
+    //
+    // aplicarPiso(): nunca topa o valor pago acima do que a pessoa
+    // realmente ganha — se a RR diária já for inferior ao piso, paga-se a
+    // própria RR diária (não o piso). Só quando a RR diária é igual ou
+    // superior ao piso é que o valor calculado é elevado até ao piso.
+    function aplicarPiso(valorCalculado, rrDiaria, piso) {
+      if (rrDiaria < piso) return rrDiaria;
+      return Math.max(valorCalculado, piso);
+    }
+
     function calcularSubsidioDoenca(params, input) {
       const salario = input.salario || 0;
       const rrDiaria = (salario * 6) / 180;
@@ -539,8 +568,7 @@
       const duracaoExcedeTeto = tetoDuracao !== null && duracaoInput > tetoDuracao;
       const duracaoEfetiva = tetoDuracao !== null ? Math.min(duracaoInput, tetoDuracao) : duracaoInput;
 
-      const majoracaoAplicavel = rrMensal <= params.limiteRRParaMajoracaoOuPiso.valor || majoracaoFamiliar;
-      const pisoAplicavel = rrMensal > params.limiteRRParaMajoracaoOuPiso.valor;
+      const majoracaoAplicavel = rrMensal <= params.limiteRRParaMajoracao.valor || majoracaoFamiliar;
 
       const desagregacao = [];
       let totalGeral = 0;
@@ -556,14 +584,14 @@
 
       if (situacao === 'tuberculose') {
         const taxa = familiares > 2 ? params.taxaTuberculoseMais2Familiares.valor : params.taxaTuberculoseAte2Familiares.valor;
-        const valorDia = Math.max(taxa * rrDiaria, params.pisoDiarioUniversal.valor);
+        const valorDia = aplicarPiso(taxa * rrDiaria, rrDiaria, params.pisoDiarioMinimo.valor);
         acumular('Tuberculose', taxa, duracaoEfetiva, valorDia);
       } else {
         const tiers = [
-          { inicio: 1, fim: 30, taxaBase: params.taxaEscalao1.valor, majoravel: true, pisoDiario: params.pisoDiarioProporcionalTaxa55.valor },
-          { inicio: 31, fim: 90, taxaBase: params.taxaEscalao2.valor, majoravel: true, pisoDiario: params.pisoDiarioProporcionalTaxa60.valor },
-          { inicio: 91, fim: 365, taxaBase: params.taxaEscalao3.valor, majoravel: false, pisoDiario: null },
-          { inicio: 366, fim: Infinity, taxaBase: params.taxaEscalao4.valor, majoravel: false, pisoDiario: null },
+          { inicio: 1, fim: 30, taxaBase: params.taxaEscalao1.valor, majoravel: true },
+          { inicio: 31, fim: 90, taxaBase: params.taxaEscalao2.valor, majoravel: true },
+          { inicio: 91, fim: 365, taxaBase: params.taxaEscalao3.valor, majoravel: false },
+          { inicio: 366, fim: Infinity, taxaBase: params.taxaEscalao4.valor, majoravel: false },
         ];
 
         for (let i = 0; i < tiers.length; i++) {
@@ -576,11 +604,7 @@
           let taxa = tier.taxaBase;
           if (tier.majoravel && majoracaoAplicavel) taxa += params.majoracaoPontosPercentuais.valor;
 
-          let valorDia = taxa * rrDiaria;
-          valorDia = Math.max(valorDia, params.pisoDiarioUniversal.valor);
-          if (tier.pisoDiario !== null && pisoAplicavel) {
-            valorDia = Math.max(valorDia, tier.pisoDiario);
-          }
+          const valorDia = aplicarPiso(taxa * rrDiaria, rrDiaria, params.pisoDiarioMinimo.valor);
 
           const rotulo = tier.fim === Infinity ? (tier.inicio + '+ dias') : (tier.inicio + '–' + tier.fim + ' dias');
           acumular(rotulo, taxa, dias, valorDia);
@@ -622,6 +646,11 @@
 
     function calcularSubsidioDoencaFormulario(e) {
       e.preventDefault();
+
+      if (!PARAMETROS_SUBSIDIO_DOENCA) {
+        mostrarErroParametrosSubsidioDoenca(new Error('parâmetros ainda não carregados'));
+        return;
+      }
 
       const input = {
         salario: parseFloat(document.getElementById('salario').value) || 0,
