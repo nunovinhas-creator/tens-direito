@@ -202,6 +202,20 @@ PSU"**.
   aviso. `/simulador-imt-jovem.html` no smoke test (urls_criticas +
   array SIMULADORES). Sessão 3 (RSAA, 1.º Direito, dedução de rendas,
   watchlist DRE) continua por fazer — ver "Backlog Habitação".
+  **Sessão 2 integrada em `main` a 2026-07-20** — fast-forward directo
+  (`aca7e50..edc6191`, sem PR, branch `claude/imt-jovem-correcao-
+  simulador-73xpd7` apagada localmente após o merge; a remota cai via
+  `limpar-branches.yml` no próximo push, mesmo padrão da Sessão 1).
+  CI local completa reconfirmada no estado final da branch antes do
+  merge (suite 2917 passed/4 skipped, ruff, `verificar_datas.py` sem
+  falsos positivos nas páginas tocadas, `verificar_skips_permitidos.py`
+  4/4, `gerar_parametros_json.py --check` sincronizado). Push a `main`
+  disparou os 4 workflows — os 4 confirmados `success` no commit
+  `edc6191`: **Integridade do Código**, **Validar Conteúdo HTML**,
+  **Verificação de Produção (Smoke Test)** — log real confirmado com
+  `OK https://tensdireito.com/simulador-imt-jovem.html (200)` dentro do
+  array `SIMULADORES`, que exige também `"Verificado a"` no corpo, não
+  só o status — e **Limpar Branches Órfãs**.
 
 - **Cluster Habitação — Sessão 1 (`imt-jovem.html` +
   `garantia-publica-credito-habitacao.html`)** — 2026-07-20. Fecha a

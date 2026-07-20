@@ -8012,3 +8012,32 @@ final desta sessão. `AUTO_UPDATE_HABILITADO`/
 sem relação com esta sessão). Trabalho feito na branch
 `claude/imt-jovem-correcao-simulador-73xpd7` (designada pelo ambiente
 remoto desta sessão) — **SEM PR — branch não integrada em `main`**.*
+
+---
+
+*Integração (2026-07-20, sessão de integração separada) — a Sessão 2 do
+plano "Expansão do Cluster Habitação" (entrada de revisão anterior) foi
+integrada em `main` por fast-forward directo (`aca7e50..edc6191`, sem
+PR). Verificação antes do merge: `git fetch` confirmou a branch
+`claude/imt-jovem-correcao-simulador-73xpd7` com exactamente os 3
+commits esperados (`3463449`/`0488a6b`/`edc6191`) e `main` sem avanço
+desde a base (`aca7e50`), por isso sem necessidade de rebase. CI local
+completa reconfirmada no estado final da branch: suite **2917 passed, 4
+skipped** (~10 min), `ruff check scripts/ tests/ --select E,F,W --ignore
+E501 .` limpo, `verificar_datas.detectar_alertas()` sem falsos positivos
+nas 5 páginas tocadas (meses 7-12/2026), `verificar_skips_permitidos.py`
+4/4 (allow-list confirmada elemento a elemento), `gerar_parametros_json.py
+--check` sincronizado. Push a `main` disparou os 4 workflows, todos
+confirmados `success` no commit `edc6191` via API (não assumidos pelo
+"run mais recente" — cada run verificado pelo `head_sha` exacto):
+**Integridade do Código** (`29759483795`), **Validar Conteúdo HTML**
+(`29759483640`), **Verificação de Produção — Smoke Test**
+(`29759483198`, log real confirmado via `get_job_logs` —
+`OK https://tensdireito.com/simulador-imt-jovem.html (200)`, dentro do
+array `SIMULADORES` que exige também `"Verificado a"` no corpo, não só o
+status; "=== Todas as páginas críticas responderam correctamente ==="),
+e **Limpar Branches Órfãs** (`29759483642`). Branch local apagada
+(`git branch -d`); a remota cai sozinha no próximo push via
+`limpar-branches.yml`, mesmo padrão da Sessão 1.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados
+por esta sessão de integração.*
