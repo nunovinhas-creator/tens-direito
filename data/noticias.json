@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-21",
+      "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal",
+      "fonte_nome": "Rádio Festival",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQUlJBZHowSGxNcmZlNHkxY1ZDUm9uUWFGNHJ6X0I5T092TUM4OXllQW9UTHJvclRlWWF4dk9ZYkNWaFdJMVFIZ3FYR2ZoNENObVAwODdqOE5rU1N2bVhvT28zajBaWUlpTFFHRUhfcXVRWjhDWS1nSnh4UTkzTmVtbnB1ZXVOY1hOaWoxTFplNDk2TkxQSGZmbG9vRlpxeWpMZDBUTjhLSjZjVjA?oc=5",
+      "resumo": "Apoios ao desemprego atingem mínimos do último ano em Portugal Rádio Festival",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-07-13",
       "titulo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe",
       "fonte_nome": "4gnews",
