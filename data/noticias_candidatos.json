@@ -1,110 +1,5 @@
 [
   {
-    "data": "2026-07-08",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 12,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de julho - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-01",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-01"
-      },
-      {
-        "titulo": "Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? - ECO",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-07",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=emprego"
-      },
-      {
-        "titulo": "Governo está a rever abono e alarga pagamento automático a mais famílias - Diário de Notícias",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-07-01",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-01"
-      },
-      {
-        "titulo": "Reformados recebem pensões a dobrar a partir de quarta-feira - Jornal de Notícias",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-05",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-05"
-      },
-      {
-        "titulo": "Primeiro pagamento de julho da Segurança Social chega hoje à conta: veja quem recebe e o restante calendário - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-03",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-03"
-      },
-      {
-        "titulo": "Candidaturas à Ação Social Escolar em Amares decorrem até 12 de julho - O Amarense – Jornal",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-07-07",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? - ECO",
-        "feed_nome": "subsidio_desemprego",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-07-09",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1361,6 +1256,100 @@
         "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival",
         "feed_nome": "subsidio_desemprego",
         "score": 3
+      }
+    ]
+  },
+  {
+    "data": "2026-07-23",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 13,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-21",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-21"
+      },
+      {
+        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-21",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-07-22",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=apoios"
+      },
+      {
+        "titulo": "Salário mínimo vai subir em 2027? A resposta da ministra do Trabalho - SIC Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
+      },
+      {
+        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
+        "feed_nome": "psu_pensoes",
+        "score": 2
       }
     ]
   }
