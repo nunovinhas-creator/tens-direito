@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-24",
+      "titulo": "CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo",
+      "fonte_nome": "Expresso",
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQeTRtRmFDOW0wMjAyckFJd24tU3hvVG1Udmpzc2plR2ozYnJtM19DRlVUYTV5bUpKNG1OR2o5NUtHWDdQRVYtNGxtNjFJS25qX3kxRkpheE1VeHZja3Aya3Y3R29Tb3hIVk1xSVJ5X3RoQUhyM2NRS1I3RUFkd3c3YUlrUkxRTm52dF9QR085N2M5V0JXSEs3YmJrdDhfVTZwa3dVa1J4ZjZJYkdfZXptMnJsRGo1YmYtNnc4QnlFcTRzSHJTWW5wY3pXak92bzgtMWJyWFpxb1BjV1VY?oc=5",
+      "resumo": "CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo Expresso",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-07-23",
       "titulo": "Pagamentos da Segurança Social agendados para agosto",
       "fonte_nome": "diariOnline Região Sul",
