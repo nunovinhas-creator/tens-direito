@@ -4,8 +4,8 @@
     "url": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 96,
-    "data": "2026-07-25"
+    "n_entradas": 98,
+    "data": "2026-07-26"
   },
   {
     "nome": "subsidio_desemprego",
@@ -13,7 +13,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "rsi",
@@ -21,7 +21,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "psu_pensoes",
@@ -29,23 +29,23 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "acao_social_escolar",
     "url": "https://news.google.com/rss/search?q=a%C3%A7%C3%A3o+social+escolar+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 76,
-    "data": "2026-07-25"
+    "n_entradas": 77,
+    "data": "2026-07-26"
   },
   {
     "nome": "cuidador_informal",
     "url": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 52,
-    "data": "2026-07-25"
+    "n_entradas": 53,
+    "data": "2026-07-26"
   },
   {
     "nome": "porta65_arrendamento",
@@ -53,15 +53,15 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 79,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "irs_fiscalidade",
     "url": "https://news.google.com/rss/search?q=IRS+declara%C3%A7%C3%A3o+de+rendimentos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 97,
-    "data": "2026-07-25"
+    "n_entradas": 98,
+    "data": "2026-07-26"
   },
   {
     "nome": "ias_valor_referencia",
@@ -69,7 +69,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 48,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "calendario_pagamentos_seg_social",
@@ -77,7 +77,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "habitacao_arrendamento",
@@ -85,7 +85,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 78,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "salario_minimo",
@@ -93,7 +93,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   },
   {
     "nome": "csi_idosos",
@@ -101,6 +101,6 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 86,
-    "data": "2026-07-25"
+    "data": "2026-07-26"
   }
 ]

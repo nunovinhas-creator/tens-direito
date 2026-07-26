@@ -1,94 +1,5 @@
 [
   {
-    "data": "2026-07-11",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 13,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Arrendamento: Governo aprova reforma para aumentar a oferta de habitação - XXV Governo Constitucional",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-07-09",
-        "score": 3,
-        "decisao": "vencedor",
-        "motivo": "score=3, categoria=habitacao"
-      },
-      {
-        "titulo": "Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? - ECO",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-07",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-07"
-      },
-      {
-        "titulo": "Mexidas no arrendamento. Tudo o que muda com o programa \"Construir Portugal\" - Diário de Notícias",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-07-09",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'habitacao' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Candidaturas à Ação Social Escolar em Amares decorrem até 12 de julho - O Amarense",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-07-07",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Arrendamento: Governo aprova reforma para aumentar a oferta de habitação - XXV Governo Constitucional",
-        "feed_nome": "habitacao_arrendamento",
-        "score": 3
-      }
-    ]
-  },
-  {
     "data": "2026-07-12",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1364,6 +1275,153 @@
     "vencedores": [
       {
         "titulo": "CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo - Expresso",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-07-26",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 14,
+      "subsidio_desemprego": 13,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 11,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-21",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-21"
+      },
+      {
+        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-21",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-21"
+      },
+      {
+        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-07-22",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-22"
+      },
+      {
+        "titulo": "Material escolar: os apoios que existem para além dos manuais (e como pedir) - Leak.pt",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-07-25",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=educacao"
+      },
+      {
+        "titulo": "Pagamentos da Segurança Social agendados para agosto - diariOnline Região Sul",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-23",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-23"
+      },
+      {
+        "titulo": "Os abonos de família e de regresso às aulas vão ser aumentados em 2027 - contacto.lu",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-07-21",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Patrões descartam salário mínimo acima de 970 euros em 2027 - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-24",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo - Expresso",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-24",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Salário mínimo vai subir em 2027? A resposta da ministra do Trabalho - SIC Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Secretário de Estado vai mais longe que ministra e defende subida do salário mínimo acima do acordo - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Material escolar: os apoios que existem para além dos manuais (e como pedir) - Leak.pt",
+        "feed_nome": "acao_social_escolar",
+        "score": 2
+      },
+      {
+        "titulo": "Os abonos de família e de regresso às aulas vão ser aumentados em 2027 - contacto.lu",
+        "feed_nome": "abono_familia",
+        "score": 1
+      },
+      {
+        "titulo": "Patrões descartam salário mínimo acima de 970 euros em 2027 - ECO",
         "feed_nome": "salario_minimo",
         "score": 1
       }
