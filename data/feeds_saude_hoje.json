@@ -4,8 +4,8 @@
     "url": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 98,
-    "data": "2026-07-26"
+    "n_entradas": 91,
+    "data": "2026-07-27"
   },
   {
     "nome": "subsidio_desemprego",
@@ -13,7 +13,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "rsi",
@@ -21,7 +21,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "psu_pensoes",
@@ -29,7 +29,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "acao_social_escolar",
@@ -37,15 +37,15 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 77,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "cuidador_informal",
     "url": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 53,
-    "data": "2026-07-26"
+    "n_entradas": 56,
+    "data": "2026-07-27"
   },
   {
     "nome": "porta65_arrendamento",
@@ -53,7 +53,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 79,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "irs_fiscalidade",
@@ -61,7 +61,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 98,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "ias_valor_referencia",
@@ -69,7 +69,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 48,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "calendario_pagamentos_seg_social",
@@ -77,7 +77,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "habitacao_arrendamento",
@@ -85,7 +85,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 78,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "salario_minimo",
@@ -93,14 +93,14 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-07-26"
+    "data": "2026-07-27"
   },
   {
     "nome": "csi_idosos",
     "url": "https://news.google.com/rss/search?q=complemento+solid%C3%A1rio+para+idosos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 86,
-    "data": "2026-07-26"
+    "n_entradas": 87,
+    "data": "2026-07-27"
   }
 ]

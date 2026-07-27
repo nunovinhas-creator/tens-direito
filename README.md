@@ -14,13 +14,13 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **26 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **27 de julho de 2026**.
 
 ### Páginas publicadas
 
 | Ficheiro | Título |
 |---|---|
-| [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: Escalões, Valores, Simulador e Como Pedir — Tens Direito |
+| [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: escalões e valores (até 190,98€) |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
@@ -54,11 +54,11 @@ Actualizado automaticamente a partir do repositório em **26 de julho de 2026**.
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: Candidaturas, Quem Tem Direito e Como Concorrer — Tens Direito |
-| [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | Prestação Social para a Inclusão (PSI) 2026: Valor, Quem Tem Direito e Como Pedir — Tens Direito |
+| [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | PSI 2026: valor 333,64€, quem tem direito e como pedir |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
 | [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
-| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: Prazo, Como Fazer e Quem É Obrigado — Tens Direito |
+| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — como fazer online |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
 | [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: o que já foi aprovado e o que ainda falta decidir |
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso aprovadas pela Assembleia da República |
@@ -398,6 +398,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 26 de julho de 2026 às 09:27 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 27 de julho de 2026 às 11:15 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
