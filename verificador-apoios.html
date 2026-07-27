@@ -89,6 +89,30 @@
           "@type": "Answer",
           "text": "Não. É apenas uma estimativa educativa e não vinculativa. Confirma sempre a tua situação no simulador oficial da Segurança Social ou junto da secretaria da escola."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Até quando me posso candidatar à ASE e à Bolsa de Mérito?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Em ambos, até 30 de setembro. A ASE renova automaticamente se já beneficiavas no ano anterior e não houve mudança de escalão; a Bolsa de Mérito exige nova candidatura todos os anos, com boletim e comprovativo de notas fornecidos pela escola."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quando abrem os manuais escolares gratuitos (MEGA)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Os vales 2026/2027 são disponibilizados de forma faseada por ano de escolaridade: 3 de agosto (1.º ao 4.º ano), 10 de agosto (5.º ao 9.º ano) e 13 de agosto (10.º ao 12.º ano). O programa é universal, não depende do escalão ASE nem do rendimento do agregado."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Se recebo abono, tenho automaticamente direito à ASE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. São apoios diferentes, com critérios próprios. A ASE depende do rendimento mensal per capita do agregado (Escalão A até 268,57 €/mês, Escalão B até 537,13 €/mês) e exige candidatura própria nos serviços administrativos da escola — receber o abono não garante nem substitui a candidatura à ASE."
+        }
       }
     ]
   }
@@ -355,6 +379,11 @@
 
     <div id="resultado" class="resultado" aria-live="polite"></div>
 
+    <div class="calc-card">
+      <h2 style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:0.75rem;">Como funciona esta ferramenta</h2>
+      <p>Este verificador estima só o <strong>Abono de Família</strong> — com a mesma fórmula e os mesmos parâmetros oficiais do simulador dedicado, nunca um número inventado. Para a ASE, o MEGA e a Bolsa de Mérito, aponta sempre para o guia ou simulador respetivo, porque dependem de critérios que este formulário não recolhe (rendimento per capita, ano de escolaridade exacto, notas, calendário da escola). Todos os prazos e critérios mostrados vêm de fontes oficiais, verificadas e datadas — nunca de memória.</p>
+    </div>
+
     <section class="faq-section">
       <h2>Perguntas frequentes</h2>
 
@@ -390,6 +419,27 @@
         <summary>Este verificador é vinculativo?</summary>
         <div class="faq-resposta">
           Não. É apenas uma <strong>estimativa educativa</strong> e não vinculativa. Confirma sempre a tua situação no simulador oficial da Segurança Social ou junto da secretaria da escola.
+        </div>
+      </details>
+
+      <details>
+        <summary>Até quando me posso candidatar à ASE e à Bolsa de Mérito?</summary>
+        <div class="faq-resposta">
+          Em ambos, até <strong>30 de setembro</strong>. A <a href="/acao-social-escolar.html">ASE</a> renova automaticamente se já beneficiavas no ano anterior e não houve mudança de escalão; a <a href="/bolsa-de-merito.html">Bolsa de Mérito</a> exige nova candidatura todos os anos, com boletim e comprovativo de notas fornecidos pela escola.
+        </div>
+      </details>
+
+      <details>
+        <summary>Quando abrem os manuais escolares gratuitos (MEGA)?</summary>
+        <div class="faq-resposta">
+          Os vales 2026/2027 são disponibilizados de forma faseada por ano de escolaridade: <strong>3 de agosto</strong> (1.º ao 4.º ano), <strong>10 de agosto</strong> (5.º ao 9.º ano) e <strong>13 de agosto</strong> (10.º ao 12.º ano) — ver o <a href="/manuais-escolares-mega.html">guia completo do MEGA</a>. O programa é universal, não depende do escalão ASE nem do rendimento do agregado.
+        </div>
+      </details>
+
+      <details>
+        <summary>Se recebo abono, tenho automaticamente direito à ASE?</summary>
+        <div class="faq-resposta">
+          Não. São apoios diferentes, com critérios próprios. A <a href="/acao-social-escolar.html">ASE</a> depende do rendimento mensal per capita do agregado (Escalão A até 268,57 €/mês, Escalão B até 537,13 €/mês) e exige candidatura própria nos serviços administrativos da escola — receber o abono não garante nem substitui a candidatura à ASE.
         </div>
       </details>
     </section>
@@ -583,19 +633,19 @@
       if (temIdadeEscolar) {
         ponteiros.push({
           titulo: 'Ação Social Escolar (ASE)',
-          texto: 'Poderás também ter direito a apoios da Ação Social Escolar — refeições, material escolar e transportes, consoante o escalão. Confirma no simulador ou no guia.',
+          texto: 'Poderás também ter direito a apoios da Ação Social Escolar — refeições, material escolar e transportes, consoante o escalão. Candidaturas até 30 de setembro. O escalão depende do rendimento per capita: Escalão A até 268,57 €/mês, Escalão B até 537,13 €/mês. Confirma no simulador ou no guia.',
           links: [['/simulador-ase.html', 'Simular ASE →'], ['/acao-social-escolar.html', 'Ver o guia completo →']],
         });
         ponteiros.push({
           titulo: 'Manuais Escolares Gratuitos (MEGA)',
-          texto: 'Podes também verificar se há direito aos manuais escolares gratuitos do programa MEGA.',
+          texto: 'Podes também verificar se há direito aos manuais escolares gratuitos do programa MEGA. Os vales 2026/2027 abrem de forma faseada: 3 de agosto (1.º ao 4.º ano), 10 de agosto (5.º ao 9.º ano), 13 de agosto (10.º ao 12.º ano). É universal — todos os alunos do ensino público, independentemente do escalão.',
           links: [['/manuais-escolares-mega.html', 'Ver o guia completo →']],
         });
       }
       if (temIdadeSecundario) {
         ponteiros.push({
           titulo: 'Bolsa de Mérito',
-          texto: 'Se tens um jovem no ensino secundário com boas notas, poderá haver direito à Bolsa de Mérito.',
+          texto: 'Se tens um jovem no ensino secundário com boas notas, poderá haver direito à Bolsa de Mérito. Candidaturas até 30 de setembro, para alunos do 10.º ao 12.º com média igual ou superior a 14 valores e escalão ASE A ou B.',
           links: [['/bolsa-de-merito.html', 'Ver o guia completo →']],
         });
       }

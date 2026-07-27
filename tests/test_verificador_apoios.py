@@ -116,16 +116,62 @@ def test_disclaimer_de_rodape_do_resultado_presente():
 
 # ── Nenhum ponteiro (ASE/MEGA/bolsa) apresenta valor calculado ────────────
 
-def test_ponteiros_nunca_tem_simbolo_de_euro_ou_percentagem():
-    """Os cartões-ponteiro (ASE/MEGA/Bolsa de Mérito) nunca podem conter
-    um valor estimado — só o cartão do abono (calculado) usa €/%."""
+def test_ponteiros_podem_citar_factos_estaticos_mas_nunca_um_valor_calculado():
+    """Os cartões-ponteiro (ASE/MEGA/Bolsa de Mérito) podem citar factos
+    ESTÁTICOS e datados (ex.: limiares de escalão, prazos — sourced de
+    acao-social-escolar.html/bolsa-de-merito.html/manuais-escolares-mega.html,
+    ver sessão "enriquece verificador") — mas nunca um valor CALCULADO a
+    partir do que o utilizador indicou no formulário (nunca interpolação
+    de `r.*`/PARAMETROS_ABONO nem de qualquer variável computada em
+    runtime). Só o cartão do abono usa esse tipo de valor dinâmico."""
     m = re.search(r"function renderResultadoVerificador[\s\S]*?\n    \}\n", VERIFICADOR_JS_INLINE)
     assert m, "não encontrei renderResultadoVerificador() no JS do verificador"
     corpo = m.group(0)
     bloco_ponteiros = re.search(r"const ponteiros = \[\];([\s\S]*?)if \(ponteiros\.length", corpo)
     assert bloco_ponteiros, "não encontrei a construção da lista de ponteiros"
-    assert "€" not in bloco_ponteiros.group(1)
-    assert "%" not in bloco_ponteiros.group(1)
+    texto_ponteiros = bloco_ponteiros.group(1)
+    assert "${" not in texto_ponteiros, (
+        "encontrei um template literal interpolado dentro dos textos dos ponteiros — "
+        "isso seria um valor calculado em runtime, nunca permitido aqui"
+    )
+    # \br\. (nunca uma substring solta — "escolar.html" tem "r." mas não é
+    # o objecto de resultado `r`) apanha leituras reais tipo r.valorTotal/r.escalao.
+    assert not re.search(r"\br\.\w+", texto_ponteiros), (
+        "os ponteiros nunca podem ler o resultado calculado do abono (r.*)"
+    )
+    assert "PARAMETROS_ABONO" not in texto_ponteiros
+    assert "formatarEuro" not in texto_ponteiros
+
+
+def test_ponteiros_valores_ase_batem_com_a_pagina_de_origem():
+    """Os limiares de escalão da ASE citados no ponteiro (268,57 €/537,13 €)
+    têm de bater sempre com os mesmos valores já publicados e datados em
+    acao-social-escolar.html — nunca divergir da fonte de onde vieram."""
+    origem = (RAIZ / "acao-social-escolar.html").read_text(encoding="utf-8")
+    assert "268,57" in origem
+    assert "537,13" in origem
+    assert "268,57" in VERIFICADOR_HTML
+    assert "537,13" in VERIFICADOR_HTML
+
+
+def test_ponteiros_datas_mega_batem_com_a_pagina_de_origem():
+    """As datas faseadas dos vales MEGA citadas no ponteiro/FAQ têm de
+    bater sempre com as mesmas datas já publicadas e datadas em
+    manuais-escolares-mega.html."""
+    origem = (RAIZ / "manuais-escolares-mega.html").read_text(encoding="utf-8")
+    for data in ("3 de agosto", "10 de agosto", "13 de agosto"):
+        assert data in origem, f"{data!r} não está em manuais-escolares-mega.html"
+        assert data in VERIFICADOR_HTML, f"{data!r} não está em verificador-apoios.html"
+
+
+def test_ponteiros_valor_1306_da_bolsa_de_merito_nunca_e_trazido():
+    """A página de origem (bolsa-de-merito.html) marca explicitamente o
+    valor 1.306,25 € como desactualizado ('para 2026/2027 será atualizado
+    após publicação do despacho') — este valor nunca pode aparecer no
+    verificador, precisamente porque a fonte não o dá como confirmado
+    para o ano corrente."""
+    assert "1.306,25" not in VERIFICADOR_HTML
+    assert "1306,25" not in VERIFICADOR_HTML
 
 
 # ── Nenhum valor legal hardcoded — tudo vem de dados/parametros.json ──────
