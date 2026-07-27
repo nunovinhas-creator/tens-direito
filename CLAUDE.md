@@ -8321,3 +8321,48 @@ que o stop-hook sugira o oposto — perguntar, não decidir por ele.
 `False` (inalterados — sessão sem relação com scraper/Shadow Mode).
 PR: sem PR — dois pushes directos a `main`, ambos confirmados `Verified`
 e integrados.*
+
+---
+
+*Última revisão: 2026-07-27 (sessão seguinte) — corrigida discrepância de
+data em `bolsa-de-merito.html`: o `<meta name="description">`/`og:description`
+diziam "Verificado a 30/06/2026", enquanto o corpo (FAQ JSON-LD,
+`.nota-tabela`, 3× `.fonte-inline`, fonte-bloco final) e o `dateModified`
+do `Article` JSON-LD diziam "24/06/2026". Investigação via `git log -S`
+sobre o histórico completo (clone estava raso, `git fetch --unshallow`
+necessário primeiro — mesma limitação já documentada na entrada anterior
+deste ficheiro) identificou a causa: o commit `39ee747` (2026-06-30,
+"título e descrições para 2026/2027, sem valor hardcoded") reescreveu só
+`<title>`/meta description/`og:*`/`BreadcrumbList`/H1 para o ano lectivo
+2026/2027 — e, nesse mesmo gesto, carimbou a meta description com a data
+do próprio commit em vez de manter a data do fact-check original. Nunca
+tocou no resto da página. A data real do fact-check é **24/06/2026**
+(commits `16c5943`/`832fcf5`/`53dc565`/`67ff952`, todos desse dia,
+"factos verificados"/"long-tail FAQ ... com fontes verificadas") —
+confirmada por 6 ocorrências independentes espalhadas por 4 commits,
+contra 1 única ocorrência isolada de "30/06/2026" num commit que nunca
+re-verificou nenhum facto. Corrigidas as 2 metas para "24/06/2026";
+`sincronizar_clusters.extrair_verificado_em()` (usada em
+`ATUALIZACOES:HOME`) já usava a última ocorrência do ficheiro (linha do
+fonte-bloco final, sempre 24/06/2026) — a homepage nunca foi afectada por
+este bug.
+
+**Gap de canário confirmado, não fechado nesta sessão**: nenhum teste
+valida que todas as ocorrências de "Verificado a"/`dateModified` numa
+página batem certo entre si — `test_valores_ancora.py` só tem canários
+pontuais por página (ex. abono/PSI/AMIM), e `test_anos_metadados.py`
+só apanha anos civis anteriores ao corrente, cego a duas datas do mesmo
+ano civil a divergirem entre si (exactamente este caso). Registado para
+uma sessão futura: um teste genérico, parametrizado sobre as páginas
+reais, que extraia todas as datas "Verificado a"/`dateModified` de cada
+página e falhe se não forem todas iguais.
+
+14 testes relevantes (`test_higiene_indexacao.py`/`test_valores_ancora.py`/
+`test_anos_metadados.py`/`test_breadcrumb_coerencia.py`, filtrados a
+`bolsa`) confirmados a passar; os 4 blocos JSON-LD da página confirmados
+válidos (`json.loads`). `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sem relação com esta sessão). Trabalho feito na branch
+`claude/bolsa-merito-date-discrepancy-ya5nm0` (designada pelo ambiente
+remoto desta sessão) — **SEM PR — branch não integrada em `main`**
+(protocolo de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
