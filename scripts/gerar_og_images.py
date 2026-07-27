@@ -167,6 +167,7 @@ def _mapa_chips() -> dict[str, str]:
     for doc in sorted((RAIZ / "documentos").glob("*.html")):
         mapa[f"documentos/{doc.name}"] = "Gerador de documentos"
     mapa["simuladores.html"] = "Simuladores e calculadoras"
+    mapa["verificador-apoios.html"] = "Simuladores e calculadoras"
     return mapa
 
 

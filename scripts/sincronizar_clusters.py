@@ -105,6 +105,13 @@ EXCLUIDAS = {
     # observações), não pertence a nenhum cluster único, mesma categoria
     # de acessibilidade.html/sobre.html.
     "dados.html",
+    # Verificador de Apoios (2026-07-27) — ferramenta cross-cluster que
+    # aponta para apoios de vários clusters diferentes (abono/família,
+    # apoios-escolares), mesma categoria de simuladores.html/
+    # comecar-aqui.html. Só calcula o abono (via assets/js/calc-apoios.js,
+    # partilhado com simulador-abono.html); os restantes apoios são
+    # ponteiros condicionais, sem cluster único a atribuir.
+    "verificador-apoios.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")

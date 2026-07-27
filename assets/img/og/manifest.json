@@ -393,5 +393,10 @@
     "chip": "Família e Crianças",
     "pagina": "subsidio-parental.html",
     "titulo": "Licença parental 2026: dias, valores e como pedir o subsídio parental"
+  },
+  "verificador-apoios": {
+    "chip": "Simuladores e calculadoras",
+    "pagina": "verificador-apoios.html",
+    "titulo": "Vê a que apoios podes ser elegível — abono, ASE e bolsas"
   }
 }
