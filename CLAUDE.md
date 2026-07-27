@@ -8230,3 +8230,94 @@ desproporcionado face ao benefício de um cenário que só a calibração
 manual desta sessão produziu. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados).
 Trabalho directo em `main`, sem branch nova.*
+
+---
+
+*Última revisão: 2026-07-27 — auditoria de AI-extractability (AI Overviews/
+assistentes) nas 7 páginas prioritárias + 3 correcções aplicadas. Auditoria
+inicial (só leitura): resposta extraível do 1.º parágrafo pós-H1, `FAQPage`
+JSON-LD e outros schemas — 5/7 já tinham resposta directa e citável
+(`prova-escolar.html`, `abono-de-familia.html`,
+`manuais-escolares-mega.html`, `baixa-medica-subsidio-doenca.html`,
+`porta-65.html`); 2/7 marcadas ⚠️ parcial:
+`prestacao-social-para-a-inclusao.html` (parágrafo era um índice do
+conteúdo, não uma resposta — valor da PSI só numa badge separada) e
+`calendario-pagamentos-seguranca-social.html` (parágrafo sem nenhuma
+data/padrão específico). `FAQPage`/`BreadcrumbList` presentes nas 7, zero
+falhas de schema nessa frente.
+
+**Correcção 1 — `prestacao-social-para-a-inclusao.html`**: `.resposta-
+direta` reescrita para resposta autónoma e citável (incapacidade ≥60%,
+333,64€/mês componente base, até 670€/mês complemento, retroativos a
+janeiro, acumula com trabalho e pensão de invalidez) — valores todos já
+publicados no corpo do artigo, badge `.valor-destaque` mantida intacta.
+
+**Correcção 2 — `datePublished` malformado**: `abono-de-familia.html` e
+`manuais-escolares-mega.html` tinham `datePublished` em ISO parcial
+("2026-06") no `Article` JSON-LD — inválido, risco de o Google ignorar o
+schema. Achado de ambiente: o clone estava **raso** (`shallow`, só desde
+2026-07-19) — `git log --diff-filter=A` não encontrava nada antes disso;
+`git fetch --unshallow` recuperou o histórico completo até junho e
+permitiu confirmar a data real de criação de cada página com confiança
+total, sem recorrer a fallback: `abono-de-familia.html` → commit
+`cbed7be`, **2026-06-23**; `manuais-escolares-mega.html` → commit
+`1259543`, **2026-06-24** — ambas batem com "jun. 2026" já registado na
+tabela "PÁGINAS PUBLICADAS". `dateModified` intocado nos dois.
+
+**Correcção 3 — `calendario-pagamentos-seguranca-social.html`, em duas
+tentativas**: a 1.ª proposta de texto ("pensões início / abono+RSI+
+desemprego fim do mês") foi verificada contra os dados reais de
+`#cal-destaque`/`#cal-dados` (julho e agosto) e **não batia certo** —
+abono é pago a meio do mês (dia 14-16), não perto do fim, e o subsídio de
+desemprego tem 2 pagamentos (meio + fim), não só um no fim; não publicado,
+reportado o padrão real ao Nuno em vez de deixar um facto errado passar
+(mesmo princípio de "INVARIANTE — nenhum estado de erro pode parecer
+sucesso"). A 2.ª proposta ("pensões início / abono meio / RSI perto do
+fim / desemprego dois pagamentos meio+fim") foi verificada outra vez
+contra os dois meses e bateu certo em todos os pontos — aplicada como
+commit separado (`71602e2`), sem `--amend` sobre o commit anterior.
+
+**Testes**: `test_valores_ancora.py` (48), `test_higiene_indexacao.py`,
+`test_anos_metadados.py`, `test_breadcrumb_coerencia.py`,
+`test_sobre_jsonld.py` para as correcções 1+2 — 694 passed, 0 falhas.
+`test_valores_ancora.py` + `test_calendario_frescura.py` +
+`test_nav_coerencia.py` para a correcção 3 — Playwright instalado neste
+sandbox (só faltava o pacote Python; o Chromium já estava pré-cacheado em
+`/opt/pw-browsers`) para não deixar as 6 verificações funcionais do
+calendário por correr — **630 passed, 0 skipped, 0 falhas**. JSON-LD dos
+4 ficheiros tocados validado com `json.loads` — todos válidos.
+
+**Git — dois commits, ambos directos em `main`, sem PR**: `0eba858`
+(correcções 1+2) e `71602e2` (correcção 3), cada um pedido explicitamente
+pelo Nuno via `git push origin main`, cada um um fast-forward puro a
+partir do tip real de `origin/main` (sem force, sem merge commit).
+
+**Achado de ambiente — assinatura de commits**: o stop-hook local
+(`~/.claude/stop-hook-git-check.sh`) assinalou os dois commits como
+potencialmente "Unverified" (`%G?` = N localmente) mesmo com
+`user.email`/`user.name` já correctos — a causa é
+`gpg.ssh.allowedSignersFile` não estar configurado neste sandbox para
+*verificação* local, não uma falta de assinatura real: `git cat-file -p`
+confirmou um bloco `gpgsig` SSH válido nos dois commits desde a criação.
+Para `0eba858`, corrigido com `git commit --amend --no-edit --reset-author`
+(sugestão do próprio hook). Para `71602e2`, o Nuno pediu explicitamente
+para **não** amendar nem mexer na assinatura — dado o conflito directo
+com a sugestão do hook, usado `AskUserQuestion` em vez de decidir
+unilateralmente; o Nuno escolheu deixar como estava. Confirmado depois
+por screenshot real do GitHub (mobile): commit `71602e2` mostra badge
+verde **"Verified"** e `6/6` checks — prova que a assinatura já estava
+correcta sem qualquer amend, e que a ferramenta MCP `get_commit` e o
+`WebFetch` à página HTML não conseguem confirmar isto de forma fiável (a
+1.ª omite o campo `verification` da resposta, o 2.º perde a badge na
+conversão para markdown; `api.github.com` está bloqueado pela política de
+rede desta sessão, 403). **Lição para sessões futuras**: `%G?` local "N"
+neste sandbox não é prova de commit não assinado — só prova que a
+verificação local está mal configurada; confirmar sempre no GitHub real
+antes de assumir que um amend é necessário, e nunca fazer amend/
+reset-author quando o utilizador pediu explicitamente o contrário, mesmo
+que o stop-hook sugira o oposto — perguntar, não decidir por ele.
+
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem relação com scraper/Shadow Mode).
+PR: sem PR — dois pushes directos a `main`, ambos confirmados `Verified`
+e integrados.*
