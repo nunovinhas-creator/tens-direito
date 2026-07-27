@@ -46,16 +46,16 @@ import pytest
 RAIZ = Path(__file__).parent.parent
 SIMULADOR_HTML = (RAIZ / "simulador-abono.html").read_text(encoding="utf-8")
 PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
+CALC_APOIOS_JS = RAIZ / "assets" / "js" / "calc-apoios.js"
 
 
-def _extrair_script_inline(marcador: str) -> str:
-    for m in re.finditer(r"<script>([\s\S]*?)</script>", SIMULADOR_HTML):
-        if marcador in m.group(1):
-            return m.group(1)
-    raise AssertionError(f"Não encontrei nenhum <script> inline com '{marcador}' em simulador-abono.html")
-
-
-CALCULO_JS = _extrair_script_inline("function calcularAbonoValor")
+# calcularAbonoValor/getEscalao/getValorPorIdade foram extraídas para
+# assets/js/calc-apoios.js (script partilhado, fundação do verificador
+# multi-apoio, 2026-07-27) — deixaram de viver inline em simulador-abono.html,
+# por isso o JS real a testar passa a ser lido directamente do ficheiro
+# partilhado, nunca uma cópia (mesma filosofia de sempre, só a fonte real
+# mudou de sítio).
+CALCULO_JS = CALC_APOIOS_JS.read_text(encoding="utf-8")
 
 
 def _parametros_abono_de_producao() -> dict:

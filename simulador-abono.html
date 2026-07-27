@@ -422,6 +422,7 @@
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
 
+  <script src="/assets/js/calc-apoios.js"></script>
   <script>
     // ── PARAMETROS_ABONO — carregado em runtime de /dados/parametros.json ───
     // Sessão "Parâmetros YAML + auditoria factual" (2026-07-19, Commit 2): a
@@ -515,48 +516,10 @@
     }
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
-    // Funções puras, testadas em tests/test_simulador_abono_calculo.py.
-    function getEscalao(config, rr) {
-      for (const escalao of config.escaloes) {
-        if (rr <= escalao.limite) return escalao;
-      }
-      return config.escaloes[config.escaloes.length - 1];
-    }
-
-    function getValorPorIdade(escalaoObj, idadesMeses) {
-      if (escalaoObj.id === 5) return 0;
-      let valor = 0;
-      idadesMeses.forEach(idade => {
-        if (idade <= 36) valor += escalaoObj.valores.a36;
-        else if (idade <= 72) valor += escalaoObj.valores.a72;
-        else valor += escalaoObj.valores.mais72;
-      });
-      return valor;
-    }
-
-    function calcularAbonoValor(config, input) {
-      const { rendimentoAnual, numCriancas, idadesMeses, monoparental } = input;
-      const rr = rendimentoAnual / (numCriancas + 1);
-      const escalaoObj = getEscalao(config, rr);
-      let valorBase = getValorPorIdade(escalaoObj, idadesMeses);
-
-      let garantiaAplicada = false;
-      if (escalaoObj.id === 1 && rr < config.limiteGarantia) {
-        const minimo = config.garantiaInfancia * numCriancas;
-        if (minimo > valorBase) {
-          valorBase = minimo;
-          garantiaAplicada = true;
-        }
-      }
-
-      const majoracao = monoparental ? valorBase * config.majoracaoMonoparentalFracao : 0;
-      const valorTotal = valorBase + majoracao;
-
-      return {
-        rr, escalao: escalaoObj.id, nomeEscalao: escalaoObj.nome, cor: escalaoObj.cor,
-        valorBase, majoracao, valorTotal, garantiaAplicada,
-      };
-    }
+    // getEscalao/getValorPorIdade/calcularAbonoValor vivem agora em
+    // assets/js/calc-apoios.js (script partilhado, carregado antes deste
+    // <script> — ver <script src> no <head> do fluxo desta página),
+    // testadas em tests/test_simulador_abono_calculo.py.
 
     // ── Ligação ao formulário (não testada directamente — só calcularAbonoValor) ──
     function calcularAbono(e) {
