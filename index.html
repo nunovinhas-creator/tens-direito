@@ -145,6 +145,8 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .apoio-card .tag-verif { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--teal); background: var(--teal-light); padding: 0.2rem 0.55rem; border-radius: 20px; display: inline-block; margin-bottom: 0.75rem; }
 .apoio-card .link-ver { font-size: 0.875rem; font-weight: 700; color: var(--teal); display: inline-flex; align-items: center; gap: 0.25rem; margin-top: auto; }
 .apoio-card .link-ver:hover { color: var(--teal-dark); }
+.apoio-card-destaque { border: 2px solid var(--teal); background: var(--teal-light); }
+.apoio-card-destaque .tag-destaque { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white); background: var(--teal); padding: 0.2rem 0.55rem; border-radius: 20px; display: inline-block; margin-bottom: 0.75rem; }
 .hero-search { max-width: 480px; margin: 0 auto 1.25rem; }
 .hero-search form { display: flex; align-items: center; background: var(--white); border: 2px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; gap: 0.5rem; box-shadow: var(--shadow); }
 .hero-search form:focus-within { border-color: #0F766E; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
@@ -370,6 +372,13 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     </div>
 
     <div class="apoios-grid">
+      <a href="/verificador-apoios.html" class="apoio-card apoio-card-destaque">
+        <div class="emoji">🔎</div>
+        <h3>Verificador de Apoios</h3>
+        <p class="desc">Não sabes por onde começar? Responde a 4 perguntas e vê a que apoios podes ser elegível — abono calculado, mais indicações para ASE, MEGA e Bolsa de Mérito.</p>
+        <span class="tag-destaque">Começa por aqui</span>
+        <span class="link-ver">→ Ver apoios</span>
+      </a>
       <a href="/simulador-abono.html" class="apoio-card">
         <div class="emoji">👶</div>
         <h3>Simulador de Abono de Família</h3>
