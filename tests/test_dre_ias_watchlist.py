@@ -267,14 +267,17 @@ def test_portaria_do_ias_genuinamente_nova_dispara_mesmo_misturada_com_antigas(m
         assert antiga not in capturados[0][1]
 
 
-def test_item_sem_data_reconhecivel_nunca_e_descartado_em_silencio(monkeypatch):
-    """Invariante 'nenhum estado de erro pode parecer sucesso': um item
-    cujo formato mudou (sem data ISO no fim) conta sempre como potencial
-    sinal, nunca é silenciosamente ignorado."""
+def test_item_sem_data_nem_ano_reconhecivel_nunca_e_descartado_em_silencio(monkeypatch):
+    """Invariante 'nenhum estado de erro pode parecer sucesso' — nível 3
+    da hierarquia (salvaguarda final). Um item cujo formato mudou tão
+    radicalmente que nem sequer o ano do número do próprio acto é
+    reconhecível ('n.º .../AAAA') conta sempre como potencial sinal,
+    nunca é silenciosamente ignorado. Distinto do nível 2 (ano
+    reconhecível) — este caso não tem "/AAAA" nenhum a seguir a "n.º"."""
     capturados = _avisos_capturados(monkeypatch)
     conteudo = {
         "titulo": "",
-        "itens_lista": ["Portaria n.º 999/2027 - formato inesperado, sem data reconhecível"],
+        "itens_lista": ["Portaria n.º XPTO — formato totalmente novo do DRE, sem número nem data"],
         "paragrafos": [],
     }
     deteccao = _fonte_playwright(SLUG)["detectar_portaria"]
@@ -284,6 +287,141 @@ def test_item_sem_data_reconhecivel_nunca_e_descartado_em_silencio(monkeypatch):
     )
     assert achou is True
     assert len(capturados) == 1
+
+
+# ── 3c. Fallback de ano do número do acto — nível 2 da hierarquia ──────
+#
+# Achado real num runner (2026-07-28, run 30337389407): a pesquisa por
+# "indexante dos apoios sociais" devolve consistentemente Portarias
+# antigas e genuínas (2012, 2019, 2023 — confirmado via WebSearch, não
+# são lixo/duplicados) cujo texto no DRE NUNCA inclui o sufixo de data
+# completo — só o próprio número do acto. Sem este nível 2, ficavam
+# presas no nível 3 (salvaguarda) para sempre, disparando a Issue todos
+# os dias — o mesmo pesadelo do PAER (Issue #73), só que por ausência de
+# data em vez de ausência de corte de recência.
+
+
+def test_ano_do_numero_antigo_sem_data_e_excluido():
+    """Regressão do achado real: um item SEM data completa mas com ano
+    antigo embutido no próprio número ('Portaria n.º 257/2012') tem de
+    ser EXCLUÍDO pelo nível 2 — nunca fica preso na salvaguarda do nível
+    3 só porque falta a data completa. String real capturada no
+    diagnóstico (run 30337389407), nunca reescrita à mão."""
+    assert sp._data_item("Portaria n.º 257/2012") is None  # confirma que cai para o nível 2
+    assert sp._ano_item("Portaria n.º 257/2012") == "2012"
+
+    conteudo = {
+        "titulo": "",
+        "itens_lista": ["Portaria n.º 257/2012"],
+        "paragrafos": [],
+    }
+    deteccao = _fonte_playwright(SLUG)["detectar_portaria"]
+    achou = sp._detectar_portaria_generico(
+        SLUG, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is False, (
+        "REGRESSÃO CRÍTICA: uma Portaria antiga sem data completa mas "
+        "com ano reconhecível no número (2012) disparou o sentinela — "
+        "o fallback de ano (nível 2) não está a excluir correctamente"
+    )
+
+
+def test_ano_do_numero_no_ano_de_ativacao_ou_posterior_e_mantido(monkeypatch):
+    """Espelho do teste anterior: um item SEM data completa mas com ano
+    >= ao ano de activação (2026) tem de ser MANTIDO como sinal — nunca
+    esconder um acto do próprio ano de activação ou posterior só porque
+    falta a data completa."""
+    capturados = _avisos_capturados(monkeypatch)
+    assert sp._data_item("Portaria n.º 5/2026") is None
+    assert sp._ano_item("Portaria n.º 5/2026") == "2026"
+
+    conteudo = {
+        "titulo": "",
+        "itens_lista": ["Portaria n.º 5/2026"],
+        "paragrafos": [],
+    }
+    deteccao = _fonte_playwright(SLUG)["detectar_portaria"]
+    achou = sp._detectar_portaria_generico(
+        SLUG, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is True
+    assert len(capturados) == 1
+
+
+def test_nivel_1_data_completa_ganha_sempre_que_presente(monkeypatch):
+    """A hierarquia nunca é substituição — a data completa (nível 1)
+    decide sozinha quando presente, mesmo que o ano do número (nível 2)
+    daria um resultado diferente. Aqui a data completa é antiga
+    (2020-01-31) mas o ano do número seria 2020 também — caso de
+    controlo simples para confirmar que o nível 1 é sempre tentado
+    primeiro e nunca ignorado."""
+    capturados = _avisos_capturados(monkeypatch)
+    texto = "Portaria n.º 27/2020 - Diário da República n.º 22/2020, Série I de 2020-01-31"
+    assert sp._data_item(texto) == "2020-01-31"  # nível 1 encontra a data completa
+
+    conteudo = {"titulo": "", "itens_lista": [texto], "paragrafos": []}
+    deteccao = _fonte_playwright(SLUG)["detectar_portaria"]
+    achou = sp._detectar_portaria_generico(
+        SLUG, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is False
+    assert capturados == []
+
+
+# Fixture real: os 28 itens_lista devolvidos pela pesquisa real
+# "indexante dos apoios sociais" no run 30337389407 (2026-07-28) —
+# inclui os 3 casos reais sem data completa (257/2012, 214/2019,
+# 187/2023) que motivaram o nível 2. Nunca reescrita à mão.
+_ITENS_REAIS_IAS_2026_07_28 = [
+    "Portaria n.º 27/2020 - Diário da República n.º 22/2020, Série I de 2020-01-31",
+    "Portaria n.º 4/2017 - Diário da República n.º 2/2017, Série I de 2017-01-03",
+    "Portaria n.º 24/2019 - Diário da República n.º 12/2019, Série I de 2019-01-17",
+    "Portaria n.º 21/2018 - Diário da República n.º 13/2018, Série I de 2018-01-18",
+    "Portaria n.º 421/2023 - Diário da República n.º 237/2023, Série I de 2023-12-11",
+    "Portaria n.º 480-A/2025/1 - Diário da República n.º 250/2025, Suplemento, Série I de 2025-12-30",
+    "Portaria n.º 6-B/2025/1 - Diário da República n.º 3/2025, Suplemento, Série I de 2025-01-06",
+    "Portaria n.º 298/2022 - Diário da República n.º 241/2022, Série I de 2022-12-16",
+    "Portaria n.º 294/2021 - Diário da República n.º 239/2021, Série I de 2021-12-13",
+    "Portaria n.º 106/2007 - Diário da República n.º 16/2007, Série I de 2007-01-23",
+    "Resolução da Assembleia da República n.º 97/2017 - Diário da República n.º 108/2017, Série I de 2017-06-05",
+    "Decreto-Lei n.º 323/2009 - Diário da República n.º 248/2009, Série I de 2009-12-24",
+    "Portaria n.º 1514/2008 - Diário da República n.º 248/2008, Série I de 2008-12-24",
+    "Resolução da Assembleia da República n.º 45/2009 - Diário da República n.º 125/2009, Série I de 2009-07-01",
+    "Portaria n.º 9/2008 - Diário da República n.º 2/2008, Série I de 2008-01-03",
+    "Decreto-Lei n.º 1/2016 - Diário da República n.º 3/2016, Série I de 2016-01-06",
+    "Lei n.º 13/2003",
+    "Portaria n.º 257/2012",
+    "Portaria n.º 333/2025/1 - Diário da República n.º 193/2025, Série I de 2025-10-07",
+    "Portaria n.º 214/2019",
+    "Decreto-Lei n.º 50-B/2024 - Diário da República n.º 163/2024, Suplemento, Série I de 2024-08-23",
+    "Lei n.º 54/2018 - Diário da República n.º 159/2018, Série I de 2018-08-20",
+    "Portaria n.º 390/2023 - Diário da República n.º 227/2023, Série I de 2023-11-23",
+    "Portaria n.º 187/2023",
+    "Lei n.º 24/2023 - Diário da República n.º 103/2023, Série I de 2023-05-29",
+    "Lei n.º 19/2022",
+    "Portaria n.º 256/2014 - Diário da República n.º 238/2014, Série I de 2014-12-10",
+    "Decreto-Lei n.º 28/2023 - Diário da República n.º 83/2023, Série I de 2023-04-28",
+]
+
+
+def test_regressao_resultado_real_2026_07_28_nunca_mais_dispara():
+    """A pesquisa real do run 30337389407 (2026-07-28) gerava achou=True
+    ANTES desta correcção, por causa dos 3 itens sem data completa. Com
+    o nível 2 (fallback de ano), os 28 itens reais nunca mais disparam."""
+    conteudo = {
+        "titulo": 'Resultados de Pesquisa: "indexante dos apoios sociais"',
+        "itens_lista": _ITENS_REAIS_IAS_2026_07_28,
+        "paragrafos": _ITENS_REAIS_IAS_2026_07_28,
+    }
+    deteccao = _fonte_playwright(SLUG)["detectar_portaria"]
+    achou = sp._detectar_portaria_generico(
+        SLUG, conteudo, deteccao["chave_aviso"], deteccao["mensagem_log"],
+        data_minima=deteccao["desde"],
+    )
+    assert achou is False
 
 
 # ── 4. Núcleo partilhado — regressão dos sentinelas de decreto-lei ─────

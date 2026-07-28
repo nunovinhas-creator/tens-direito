@@ -789,6 +789,34 @@ def _data_item(texto: str) -> str | None:
     return m.group(1) if m else None
 
 
+# Ano embutido no próprio número do acto ("Portaria n.º 257/2012" → "2012")
+# — fallback de nível 2 do corte de recência, achado real num runner
+# (2026-07-28, calibração do sentinela dre_ias): a pesquisa por
+# "indexante dos apoios sociais" devolve consistentemente actos antigos
+# e genuínos (ex.: Portaria n.º 257/2012 — RSI, Portaria n.º 214/2019 —
+# Programa Regressar, Portaria n.º 187/2023 — actualização IAS) cujo
+# texto no DRE nunca inclui o sufixo "Diário da República n.º .../..., Série
+# I de AAAA-MM-DD" — só o próprio número do acto. `_data_item` devolve
+# sempre `None` para estes, e sem este fallback ficavam presos no nível
+# 3 (salvaguarda "nunca descartar") para sempre, disparando a Issue todos
+# os dias — o mesmo pesadelo do PAER (Issue #73), só que por ausência de
+# data em vez de ausência de corte de recência. Confirmado via WebSearch
+# que os 3 são actos reais, não lixo/duplicados — o ano do próprio número
+# é a única informação temporal disponível para eles.
+_PADRAO_ANO_NUMERO_ATO = re.compile(r"n\.?[ºo]\s*[\w\-]*\/(\d{4})", re.IGNORECASE)
+
+
+def _ano_item(texto: str) -> str | None:
+    """Extrai o ano embutido no número do próprio acto (ex.: "Portaria
+    n.º 257/2012" → "2012"; "Portaria n.º 480-A/2025/1 - ..." → "2025",
+    o primeiro ano a seguir ao número, antes de qualquer sufixo de
+    suplemento/série). `None` se o próprio número não seguir o padrão
+    "n.º .../AAAA" (formato totalmente inesperado — ver o nível 3 da
+    hierarquia em `_detectar_item_juridico_generico`)."""
+    m = _PADRAO_ANO_NUMERO_ATO.search(texto)
+    return m.group(1) if m else None
+
+
 _PADRAO_DECRETO_LEI = re.compile(r"\bdecreto[\s-]?lei\s+n", re.IGNORECASE)
 _PADRAO_PORTARIA = re.compile(r"\bportaria\s+n", re.IGNORECASE)
 
@@ -831,24 +859,59 @@ def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str
     dre_habitacao_paer: a pesquisa por "apoio extraordinário à renda"
     devolveu correctamente o DL n.º 20-B/2023 (o diploma fundador do
     PAER) e as suas alterações de 2023-2025, gerando uma Issue falsa que
-    dispararia todos os dias sem excepção. Corrigido com um corte de
-    recência: só conta como "novo" um item cuja data (o "de AAAA-MM-DD"
-    no fim de cada entrada de `itens_lista`) seja `>= data_minima`. Um
-    item sem data reconhecível NUNCA é descartado silenciosamente (mesmo
-    invariante "nenhum estado de erro pode parecer sucesso") — conta
-    sempre como potencial sinal, para nunca esconder um acto
-    genuinamente novo só porque o DRE mudou o formato da entrada. Por
-    isto é OBRIGATÓRIO desde o primeiro commit de qualquer watchlist
-    nova sobre um acto já existente — nunca uma correcção a aplicar
-    depois de uma Issue falsa já ter sido criada."""
+    dispararia todos os dias sem excepção.
+
+    Corte de recência com hierarquia de 3 níveis (nível 2 acrescentado em
+    2026-07-28, calibração do sentinela dre_ias — ver `_ano_item`), nunca
+    uma substituição do nível anterior, sempre uma cascata:
+
+    1. Data completa (`_data_item` — "de AAAA-MM-DD" no fim da entrada).
+       Se existir, decide sozinha: `>= data_minima` inclui, senão exclui.
+       Ganha sempre que está presente — os outros níveis nem são
+       tentados.
+    2. Só se a data completa faltar: ano embutido no próprio número do
+       acto (`_ano_item` — "n.º XXX/AAAA" → "AAAA"). Achado real: a
+       pesquisa por "indexante dos apoios sociais" devolve
+       consistentemente Portarias antigas e genuínas (2012, 2019, 2023)
+       cujo texto no DRE nunca inclui o sufixo de data — sem este nível,
+       ficavam presas no nível 3 para sempre, disparando a Issue todos
+       os dias (mesmo pesadelo do PAER, só que por ausência de data em
+       vez de ausência de corte). Regra: `ano_item < ano(data_minima)`
+       exclui (é antigo); `>= ano(data_minima)` mantém como sinal —
+       nunca esconde um acto do próprio ano de activação ou posterior,
+       mesmo sem a data exacta.
+    3. Salvaguarda final, só se NEM a data completa NEM o ano do número
+       forem extraíveis (formato totalmente inesperado): mantém sempre
+       como potencial sinal (mesmo invariante "nenhum estado de erro
+       pode parecer sucesso") — nunca esconde um acto genuinamente novo
+       só porque o DRE mudou o formato da entrada de uma forma que nem
+       sequer o próprio número do acto é reconhecível.
+
+    O corte de recência (níveis 2+3 dependem de `data_minima` estar
+    presente) é OBRIGATÓRIO desde o primeiro commit de qualquer
+    watchlist nova sobre um acto já existente — nunca uma correcção a
+    aplicar depois de uma Issue falsa já ter sido criada."""
     candidatos = [conteudo.get("titulo", "")] + list(conteudo.get("itens_lista", []))
     achados_brutos = [t for t in candidatos if t and padrao.search(t)]
     if data_minima:
         achados = []
+        ano_minimo = data_minima[:4]
         for t in achados_brutos:
             data_t = _data_item(t)
-            if data_t is None or data_t >= data_minima:
-                achados.append(t)
+            if data_t is not None:
+                # Nível 1 — data completa, decide sozinha.
+                if data_t >= data_minima:
+                    achados.append(t)
+                continue
+            ano_t = _ano_item(t)
+            if ano_t is not None:
+                # Nível 2 — ano do número do acto, só sem data completa.
+                if ano_t >= ano_minimo:
+                    achados.append(t)
+                continue
+            # Nível 3 — salvaguarda: nem data nem ano reconhecíveis,
+            # nunca descartado em silêncio.
+            achados.append(t)
     else:
         achados = achados_brutos
     if not achados:
