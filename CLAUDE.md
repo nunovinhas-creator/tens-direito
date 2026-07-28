@@ -2179,13 +2179,32 @@ desactualizada.
 ## IMPACTO DA PSU (Prestação Social Única)
 
 Estado: aprovada parlamento 25/06/2026. Autorização legislativa promulgada
-pelo Presidente da República a 17/07/2026 (válida por 120 dias) — dá ao
-Governo o poder de aprovar o decreto-lei em Conselho de Ministros. Mudança
-relevante face ao plano inicial do Executivo: os valores e as condições de
-acesso terão de ser fixados directamente pelo decreto-lei, e não por
-portaria como o Governo previa a princípio — mais escrutínio, com
-promulgação obrigatória do PR e possível apreciação parlamentar do próprio
-decreto-lei.
+pelo Presidente da República a 17/07/2026 (válida por 120 dias) e **publicada
+em Diário da República a 27/07/2026 como Lei n.º 36/2026** (referendada pelo
+Primeiro-Ministro a 20/07/2026) — dá ao Governo o poder de aprovar o
+decreto-lei em Conselho de Ministros. Mudança relevante face ao plano inicial
+do Executivo: os valores e as condições de acesso terão de ser fixados
+directamente pelo decreto-lei, e não por portaria como o Governo previa a
+princípio — mais escrutínio, com promulgação obrigatória do PR e possível
+apreciação parlamentar do próprio decreto-lei.
+
+O texto integral da Lei n.º 36/2026 (artigos 1.º a 3.º) confirma, ao
+pormenor, o que o site já documentava e acrescenta factos novos — ver
+entrada de revisão de 28/07/2026 no fim deste ficheiro para o detalhe
+completo. Resumo: a lista dos 13 apoios (artigo 1.º/2) bate certo com a
+soma das 8 alíneas legais (a alínea dos subsídios de parentalidade
+desdobra-se em 6 apoios distintos); o mecanismo de dispensa das actividades
+de solidariedade social para incapacidade ≥80% (com avaliação individual
+entre 60%-79%) está agora confirmado por lei, não só por proposta do
+Governo; despedimento por facto imputável ao trabalhador não impede acesso
+à PSU (sem prejuízo de condições específicas por componente); as
+ponderações de "adultos equivalentes" têm de ser diferenciadas entre
+adultos 18+ e crianças/jovens (valores exactos ainda por fixar pelo
+decreto-lei — nunca assumir que são iguais); "apoios à habitação com
+caráter de regularidade" entram nos rendimentos considerados; e a lei
+prevê revisão do CSI em 90 dias para não deixar ninguém excluído com a
+extinção da pensão social de velhice.
+
 Aguarda: decreto-lei com valores + publicação DR.
 Prazo PRR decreto-lei: 31 ago 2026 (dentro da janela de 120 dias da
 autorização legislativa).
@@ -2193,7 +2212,8 @@ Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado
 Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
 (5.ª página filha — ver "PÁGINAS PUBLICADAS"). As 6 páginas do cluster
 (pillar + 5 filhas) foram actualizadas a 18/07/2026 com a milestone da
-promulgação — ver entrada de revisão no fim deste ficheiro.
+promulgação, e de novo a 28/07/2026 com a publicação da Lei n.º 36/2026 em
+DR — ver entradas de revisão no fim deste ficheiro.
 
 **Sentinela automático (`dre_psu`) — CORRIGIDO DE VEZ a 2026-07-07
 (Issue #54), com o mecanismo confirmado num runner com browser
@@ -8366,3 +8386,90 @@ sem relação com esta sessão). Trabalho feito na branch
 `claude/bolsa-merito-date-discrepancy-ya5nm0` (designada pelo ambiente
 remoto desta sessão) — **SEM PR — branch não integrada em `main`**
 (protocolo de fim de sessão desta secção "REGRA ABSOLUTA — GIT").*
+
+---
+
+*Última revisão: 2026-07-28 — Lei n.º 36/2026, de 27 de julho (a autorização
+legislativa da PSU), publicada em Diário da República — texto integral
+fornecido pelo Nuno (colado a partir do PDF oficial de dre.pt), tratado como
+fonte primária directa, sem necessidade de `WebSearch`/`WebFetch`. Confirmado
+antes de qualquer edição que **não existe** nenhuma Issue aberta
+"decreto-lei PSU detectado em DRE" (`mcp__github__list_issues`/
+`search_issues`, ambas vazias) — correcto, porque isto é uma Lei, não um
+Decreto-Lei, e o sentinela `dre_psu` só dispara para "Decreto-Lei"; por isso
+o skill `/atualizar-cluster-psu` (desenhado para o cenário do decreto-lei
+com valores) não se aplicava tal e qual — tratado como sessão de actualização
+de conteúdo do cluster, com o mesmo rigor de confirmação prévia (resumo
+completo apresentado ao Nuno via `AskUserQuestion` antes de qualquer
+ficheiro tocado, com 3 afinações de redacção pedidas e aplicadas).
+
+Actualizadas as 6 páginas do cluster (`prestacao-social-unica.html` +
+`psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html`,
+`psu-vs-abono-familia.html`, `psu-lista-13-apoios.html`,
+`psu-trabalho-social.html`) e esta secção "IMPACTO DA PSU". **Nenhum valor
+em €, nenhuma data de entrada em vigor e nenhuma activação do
+`simulador-psu.html` foram tocados** — a Lei n.º 36/2026 é a autorização
+legislativa, não o decreto-lei com valores, que continua por publicar
+(prazo PRR 31 ago 2026).
+
+Factos novos confirmados pelo texto legal e aplicados:
+
+1. **Novo marco na timeline**: até agora só se sabia "promulgada a
+   17/07/2026" — agora sabe-se que foi **publicada em Diário da República a
+   27/07/2026, como Lei n.º 36/2026** (referendada pelo PM a 20/07/2026).
+   Timelines de `psu-quando-entra-em-vigor.html` e `prestacao-social-unica.html`
+   ganharam esta 4.ª entrada; badges das 6 páginas actualizados de
+   "Autorização legislativa promulgada" para "Confirmado na lei de
+   autorização" (framing pedido explicitamente pelo Nuno — nunca "decreto-lei",
+   que ainda não existe).
+2. **Lista dos 13 apoios validada ao pormenor**: o artigo 1.º/2 da lei tem 8
+   alíneas, uma das quais (subsídios sociais de parentalidade) desdobra-se em
+   6 apoios distintos — a soma bate exactamente 13, confirmando a lista já
+   publicada em `psu-lista-13-apoios.html`. Sourcing upgradado de "audição
+   parlamentar"/notícias para o texto legal directo, sem alterar a lista em
+   si.
+3. **Mecanismo de trabalho social confirmado por lei, não só proposto**: o
+   limiar de dispensa das actividades de solidariedade social — automática
+   para incapacidade certificada ≥80%, avaliação individual entre 60% e 79%
+   — está agora no artigo 2.º/j) da Lei n.º 36/2026. Termo legal exacto
+   usado: **"dispensa das atividades"** (nunca "isenção geral", precisão
+   pedida pelo Nuno). A disputa PS/PSD sobre a obrigatoriedade da
+   participação em si **continua por resolver** — a lei confirma o mecanismo
+   e os limiares, não a palavra "obrigatório".
+4. **Facto novo**: despedimento por facto imputável ao trabalhador não
+   determina impedimento de acesso à PSU (artigo 2.º/d/vi) — acrescentado
+   com o caveat exigido pelo próprio texto legal ("sem prejuízo de condições
+   específicas que se apliquem a cada componente da prestação"), em
+   `psu-quem-tem-direito.html` e `prestacao-social-unica.html`.
+5. **Facto novo**: "apoios à habitação com caráter de regularidade" entram
+   na lista de rendimentos considerados (artigo 2.º/l/ii) — acrescentado a
+   `prestacao-social-unica.html`.
+6. **Correcção, não só adição — ponderações de "adultos equivalentes"**: o
+   site apresentava "cada adulto extra = 0,5; cada menor = 0,5" como se
+   fosse fórmula fechada. O texto legal (artigo 2.º/m) exige **ponderações
+   diferenciadas** entre "restantes adultos equivalentes a partir dos 18
+   anos" e "crianças e jovens" — ou seja, não têm de valer o mesmo — em
+   regime "não globalmente mais desfavorável" do que o actual, sem fixar
+   nenhum valor numérico. Por instrução explícita do Nuno, a correcção
+   nunca afirma qual categoria (adultos ou crianças) fica com o peso maior
+   — só que serão diferentes e que os valores exactos ficam para o
+   decreto-lei. Aplicado em `psu-quem-tem-direito.html` (secção "Cálculo" +
+   FAQ) e `prestacao-social-unica.html` (secção "Como se calcula").
+7. **Facto novo**: a lei prevê revisão do CSI num prazo de 90 dias (artigo
+   2.º/u), para garantir que ninguém fica excluído com a extinção da pensão
+   social de velhice — acrescentado a `prestacao-social-unica.html` ("O que
+   NÃO integra a PSU") e `psu-lista-13-apoios.html` ("Fora da PSU"), reforça
+   sem alterar a conclusão já fechada de que o CSI se mantém autónomo (ver
+   "PENDÊNCIA PSI vs PSU — FECHADA", 2026-07-18).
+
+Confirmado por grep final que nenhuma das 6 páginas ficou com o carimbo
+antigo `2026-07-18`/"18 de julho de 2026" por actualizar — todas passaram a
+`dateModified`/"Verificado a" 28 de julho de 2026. Nenhum HTML fora do
+cluster PSU tocado; `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+não tocados (sessão de conteúdo manual, sem relação com scraper/Shadow
+Mode). Suite de testes **não corrida nesta sessão** — o Nuno pediu
+explicitamente para parar aqui para revisão do diff, sem commit, push nem
+merge; trabalho feito directamente no working tree da branch
+`claude/lei-36-2026-psu-eregk2` (designada pelo ambiente remoto desta
+sessão) — **SEM commit, SEM push — a aguardar revisão do Nuno antes de
+qualquer passo de integração.***
