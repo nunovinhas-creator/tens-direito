@@ -55,6 +55,8 @@
     .aguarda-box strong { display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
     .aguarda-box p { margin-bottom: 0.5rem; }
     .aguarda-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .erro-parametros { background: #FEE2E2; border-left: 4px solid #DC2626; border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; color: #7F1D1D; display: none; }
+    .erro-parametros strong { display: block; margin-bottom: 0.35rem; }
     .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; opacity: 0.6; }
     .calc-card fieldset { border: none; }
     .form-group { margin-bottom: 1.5rem; }
@@ -181,9 +183,14 @@
   </header>
 
   <main id="main-content">
+    <div id="avisoParametrosErroPSU" class="erro-parametros" role="alert">
+      <strong>⚠️ Não foi possível carregar os parâmetros oficiais</strong>
+      <p>Tenta recarregar a página. Se o problema persistir, os dados podem estar temporariamente indisponíveis.</p>
+    </div>
+
     <div class="aguarda-box">
       <strong>⏳ Simulação ainda indisponível</strong>
-      <p>Esta calculadora só pode dar um valor real depois de o Governo publicar o decreto-lei da PSU com o Valor de Referência, o valor máximo e o coeficiente da Componente de Incentivo ao Trabalho (CIT). Prazo PRR: 31 de agosto de 2026.</p>
+      <p>Esta calculadora só pode dar um valor real depois de o Governo publicar o decreto-lei da PSU com o Valor de Referência, o valor máximo, o coeficiente da Componente de Incentivo ao Trabalho (CIT) e as ponderações do agregado. Prazo PRR: 31 de agosto de 2026.</p>
       <p>Até lá, este simulador mostra a estrutura da fórmula aprovada — sem nenhum número inventado. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a> para o calendário completo.</p>
     </div>
 
@@ -252,7 +259,7 @@
       <details>
         <summary>Os "Adultos Equivalentes" e o limite de patrimônio já estão confirmados?</summary>
         <div class="faq-resposta">
-          Sim — esses dois parâmetros já constam da lei de autorização aprovada a 25 de junho de 2026, por isso já estão preenchidos na tabela acima. O que falta são os valores em euros (Valor de Referência, valor máximo) e o coeficiente exacto da CIT.
+          Só em parte. O requerente conta sempre como 1 adulto equivalente, e o limite de património (60 × IAS) já consta da Lei n.º 36/2026 — esses dois já estão confirmados. Os pesos dos restantes adultos e das crianças/jovens do agregado ainda não: a lei exige que sejam diferenciados entre si, mas não fixa nenhum valor. Isso, o Valor de Referência, o valor máximo e o coeficiente exacto da CIT ficam todos para o decreto-lei.
         </div>
       </details>
     </section>
@@ -279,50 +286,76 @@
   </footer>
 
   <script>
-    // ── PARAMETROS_PSU — fonte única de verdade da fórmula ──────────────────
-    // Estado do simulador: 'AGUARDA_DECRETO' até ao decreto-lei do Governo
-    // ser publicado e os valores confirmados manualmente numa sessão
-    // dedicada (ver .claude/commands/atualizar-cluster-psu.md). NUNCA mudar
-    // para 'ATIVO' sem essa confirmação — cada parâmetro tem "fonte" e
-    // "verificado_em" próprios, nunca um número solto no meio da lógica.
-    const ESTADO_SIMULADOR = 'AGUARDA_DECRETO';
+    // ── PARAMETROS_PSU — carregado em runtime de /dados/parametros.json,
+    // consolidado por scripts/gerar_parametros_json.py a partir de
+    // dados/parametros/psu.yaml (padrão OpenFisca, mesmo dos outros
+    // simuladores já migrados — csi/subsidio-doenca/abono). Nunca calcula
+    // com valores em falta: 3 estados possíveis —
+    //   1) fetch falhado → aviso de erro visível, formulário desactivado;
+    //   2) fetch OK mas valor_referencia_mensal ainda null → estado normal
+    //      actual, "aguarda decreto-lei" visível, formulário desactivado;
+    //   3) fetch OK e valor_referencia_mensal preenchido → formulário
+    //      activa.
+    // ESTADO_SIMULADOR reflecte SEMPRE o que veio do JSON — nunca um
+    // `const` fixo a decorar manualmente numa sessão futura (ver
+    // .claude/commands/atualizar-cluster-psu.md, Passo 5a: preencher o
+    // YAML numa sessão de confirmação continua a ser manual; o que deixa
+    // de ser manual é sincronizar esta página com esse preenchimento).
+    let PARAMETROS_PSU = null;
+    let ESTADO_SIMULADOR = 'AGUARDA_DECRETO';
 
-    const PARAMETROS_PSU = {
-      valorReferencia: {
-        valor: null,
-        fonte: 'decreto-lei do Governo (ainda não publicado)',
-        verificado_em: null,
-      },
-      valorMaximo: {
-        valor: null,
-        fonte: 'decreto-lei do Governo (ainda não publicado)',
-        verificado_em: null,
-      },
-      coeficienteCIT: {
-        valor: null,
-        min: 0.5,
-        max: 1,
-        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026 (intervalo 0,5–1); valor exacto por portaria (ainda não publicada)',
-        verificado_em: '2026-07-03',
-      },
-      majoracaoParentalidade: {
-        valor: null,
-        fonte: 'decreto-lei do Governo (ainda não publicado)',
-        verificado_em: null,
-      },
-      adultosEquivalentes: {
-        requerente: 1,
-        outroAdulto: 0.5,
-        menorAte25: 0.5,
-        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026',
-        verificado_em: '2026-07-03',
-      },
-      limitePatrimonio: {
-        multiplicadorIAS: 60,
-        fonte: 'texto aprovado na Assembleia da República, 25 jun 2026 (acordo PS-PSD de 24 jun)',
-        verificado_em: '2026-07-03',
-      },
-    };
+    async function carregarParametrosPSU() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const psu = todos.prestacoes && todos.prestacoes.psu;
+        if (!psu) throw new Error('prestações.psu em falta em dados/parametros.json');
+
+        PARAMETROS_PSU = {
+          valorReferencia: psu.valor_referencia_mensal,
+          valorMaximo: psu.valor_maximo_mensal,
+          coeficienteCIT: psu.coeficiente_cit,
+          majoracaoParentalidade: psu.majoracao_parentalidade_mensal,
+          adultosEquivalentes: {
+            requerente: 1,
+            outroAdulto: psu.ponderacao_outro_adulto.valor,
+            menorAte25: psu.ponderacao_menor_ate_25.valor,
+          },
+          limitePatrimonio: {
+            multiplicadorIAS: psu.limite_patrimonio_multiplicador_ias.valor,
+          },
+        };
+        ESTADO_SIMULADOR = PARAMETROS_PSU.valorReferencia.valor !== null ? 'ATIVO' : 'AGUARDA_DECRETO';
+        renderTabelaParametros(psu);
+        aplicarEstadoFormulario();
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosPSU();
+        console.error('Simulador PSU: falha a carregar parâmetros oficiais —', erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosPSU() {
+      const aviso = document.getElementById('avisoParametrosErroPSU');
+      if (aviso) aviso.style.display = 'block';
+      const corpo = document.getElementById('tabelaParametros');
+      if (corpo) corpo.innerHTML = '<tr><td colspan="3">⚠️ Não foi possível carregar os parâmetros oficiais.</td></tr>';
+    }
+
+    function aplicarEstadoFormulario() {
+      const fieldset = document.querySelector('.calc-card fieldset');
+      const botao = document.querySelector('#formPSU button[type="submit"]');
+      const aguardaBox = document.querySelector('.aguarda-box');
+      const activo = ESTADO_SIMULADOR === 'ATIVO';
+      if (fieldset) fieldset.disabled = !activo;
+      if (botao) {
+        botao.disabled = !activo;
+        botao.textContent = activo ? '🧮 Calcular PSU' : '🧮 Simulação indisponível';
+      }
+      if (aguardaBox) aguardaBox.style.display = activo ? 'none' : 'block';
+    }
 
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
     // Testada com parâmetros FICTÍCIOS em tests/test_simulador_psu_calculo.py
@@ -347,7 +380,7 @@
     }
 
     function calcularPSU(parametros, input) {
-      if (parametros.valorReferencia.valor === null) {
+      if (!parametros || parametros.valorReferencia.valor === null) {
         return { estado: 'AGUARDA_DECRETO' };
       }
       const adultosEquivalentes = calcularAdultosEquivalentes(parametros, input.numAdultos, input.numMenoresAte25);
@@ -364,28 +397,33 @@
       return { estado: 'ATIVO', valor, adultosEquivalentes, cit, majoracao };
     }
 
-    // ── Renderização da tabela de parâmetros (sempre corre, mesmo em AGUARDA_DECRETO) ──
-    function renderTabelaParametros() {
+    // ── Renderização da tabela de parâmetros — corre depois do fetch, com os
+    // 7 parâmetros reais de dados/parametros.json (um por chave do YAML,
+    // 1:1, nunca um agrupamento inventado) mais a constante estrutural
+    // "requerente" ──────────────────────────────────────────────────────
+    function renderTabelaParametros(psu) {
       const linhas = [
-        ['Valor de Referência', PARAMETROS_PSU.valorReferencia],
-        ['Valor máximo', PARAMETROS_PSU.valorMaximo],
-        ['Coeficiente CIT', PARAMETROS_PSU.coeficienteCIT],
-        ['Majoração parentalidade', PARAMETROS_PSU.majoracaoParentalidade],
-        ['Adultos equivalentes', PARAMETROS_PSU.adultosEquivalentes],
-        ['Limite de patrimônio', PARAMETROS_PSU.limitePatrimonio],
+        ['Requerente (adulto equivalente)', { valor: 1, referencia_legal: 'estrutural — definição da fórmula, nunca muda' }],
+        ['Valor de Referência', psu.valor_referencia_mensal],
+        ['Valor máximo', psu.valor_maximo_mensal],
+        ['Coeficiente CIT', psu.coeficiente_cit],
+        ['Majoração parentalidade', psu.majoracao_parentalidade_mensal],
+        ['Ponderação — outro adulto (18+)', psu.ponderacao_outro_adulto],
+        ['Ponderação — criança/jovem', psu.ponderacao_menor_ate_25],
+        ['Limite de património (× IAS)', psu.limite_patrimonio_multiplicador_ias],
       ];
       const corpo = document.getElementById('tabelaParametros');
       if (!corpo) return;
       corpo.innerHTML = linhas.map(([nome, p]) => {
-        const confirmado = p.valor !== undefined ? p.valor !== null : true;
+        const confirmado = p.valor !== null;
         const estadoHtml = confirmado
           ? '<span class="confirmado">✓ confirmado</span>'
           : '<span class="pendente">⏳ pendente</span>';
-        return `<tr><td>${nome}</td><td>${estadoHtml}</td><td>${p.fonte}</td></tr>`;
+        return `<tr><td>${nome}</td><td>${estadoHtml}</td><td>${p.referencia_legal}</td></tr>`;
       }).join('');
     }
 
-    renderTabelaParametros();
+    document.addEventListener('DOMContentLoaded', carregarParametrosPSU);
   </script>
 
 </body>
