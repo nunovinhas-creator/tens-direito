@@ -48,6 +48,8 @@ SLUGS_MONITORIZADOS = (
     # máquina de estados de fontes bloqueadas do dre_psu.
     "dre_habitacao_paer",
     "dre_habitacao_garantia",
+    # Sentinela do IAS (2026-07-28) — mesma máquina de estados.
+    "dre_ias",
 )
 
 

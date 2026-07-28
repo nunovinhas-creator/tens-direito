@@ -129,6 +129,26 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         min_chars_uteis=1500,
         ancora_conteudo=('"Decreto-Lei n.º 44/2024"',),
     ),
+    # Sentinela de SINAL para a Portaria anual que fixa o IAS (Indexante
+    # dos Apoios Sociais) — 2026-07-28. Mesmo mecanismo de pesquisa de
+    # frase exacta do dre_psu/dre_habitacao_* (pesquisa_interactiva,
+    # frase entre aspas — o DRE guarda o termo de pesquisa num cookie de
+    # sessão, nenhum parâmetro de URL filtra em navegação directa). O
+    # termo é a frase que a própria Portaria usa para se identificar
+    # ("fixa o valor do indexante dos apoios sociais para..."). Nunca
+    # extrai nem escreve nenhum valor de IAS — é só sinal para revisão
+    # MANUAL, nunca um provider de valor (ver source_adapter.py, peça
+    # morta, e a decisão de não a usar). Nunca calibrado contra um
+    # runner real nesta sessão (WebFetch/curl bloqueados para domínios
+    # externos) — a 1.ª corrida real do pipeline confirma o
+    # min_chars_uteis; 1500 (igual ao dre_psu/dre_habitacao_*, mesmo
+    # tipo de pesquisa de frase exacta no mesmo site) é o ponto de
+    # partida honesto, não um número calibrado.
+    "dre_ias": FonteConfig(
+        nome="DRE — Pesquisa Portaria do IAS",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"indexante dos apoios sociais"',),
+    ),
 }
 
 # Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
@@ -180,6 +200,12 @@ _PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
     # não provado contra um backend que já se sabe sensível a headers.
     "dre_habitacao_paer": PerfilBrowser(stealth=False, headers_custom=False),
     "dre_habitacao_garantia": PerfilBrowser(stealth=False, headers_custom=False),
+    # dre_ias: mesmo site (diariodarepublica.pt), mesmo mecanismo de
+    # pesquisa interactiva — herda a calibração provada do dre_psu sem
+    # qualquer alteração (extra_http_headers já provocou um erro 500
+    # real no backend da Segurança Social noutro domínio; nunca
+    # acrescentar esse componente a uma fonte nova sem prova própria).
+    "dre_ias": PerfilBrowser(stealth=False, headers_custom=False),
 }
 
 
@@ -411,6 +437,44 @@ FONTES_PLAYWRIGHT = [
             # precaução, mesmo que a 1.ª corrida real (2026-07-20) tenha
             # devolvido zero resultados para esta fonte.
             "desde": "2026-07-20",
+        },
+    },
+    {
+        "slug": "dre_ias",
+        # Sentinela de SINAL (2026-07-28) — vigiar a publicação de uma
+        # nova Portaria que fixa o IAS (Indexante dos Apoios Sociais),
+        # base de cálculo de várias prestações (abono, subsídio de
+        # doença, CSI, IMT Jovem/Garantia Pública em Habitação, ASE por
+        # derivação 50%/100% do IAS). Nunca extrai nem escreve nenhum
+        # valor — só avisa para revisão MANUAL dos YAML de parâmetros
+        # (ver "detectar_portaria" abaixo e o bloco de Issue em
+        # pipeline-diario.yml). Mesmo mecanismo do dre_psu/dre_habitacao_*
+        # (pesquisa_interactiva, frase exacta entre aspas — o DRE guarda
+        # o termo de pesquisa num cookie de sessão, nenhum parâmetro de
+        # URL filtra em navegação directa).
+        "url": "https://diariodarepublica.pt/dr/home",
+        "nota": "DRE — vigiar nova Portaria do IAS (revisão MANUAL de dados/parametros/*.yaml)",
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"indexante dos apoios sociais"',
+        },
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
+        },
+        "detectar_portaria": {
+            "chave_aviso": "dre_ias_portaria_detectada",
+            "mensagem_log": "%s: Nova PORTARIA do IAS detectada em DRE — rever valores MANUALMENTE!\n%s",
+            # Corte de recência OBRIGATÓRIO desde o 1.º commit — a
+            # Portaria do IAS existe todos os anos desde 2006 (nunca uma
+            # "correcção a fazer depois": a mesma lição já custou uma
+            # Issue falsa real em dre_habitacao_paer, Issue #73,
+            # 2026-07-20 — sem isto, a pesquisa de frase exacta encontra
+            # sempre as Portarias antigas do IAS e dispara todos os
+            # dias). Só conta como "nova" uma Portaria datada a partir da
+            # activação desta watchlist.
+            "desde": "2026-07-28",
         },
     },
 ]
@@ -694,6 +758,21 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
             log.info("%s: nenhum Decreto-Lei novo detectado na pesquisa (%s)",
                       slug, deteccao["chave_aviso"])
 
+    # Sentinela do IAS (2026-07-28) — mesmo mecanismo genérico acima
+    # (config por fonte em "detectar_portaria"), só que procura uma
+    # Portaria nova em vez de um Decreto-Lei. Nunca extrai nem escreve
+    # nenhum valor de IAS — só regista o sinal para revisão MANUAL (ver
+    # o bloco de Issue correspondente em pipeline-diario.yml).
+    deteccao_portaria = fonte.get("detectar_portaria")
+    if deteccao_portaria:
+        achou = _detectar_portaria_generico(
+            slug, conteudo, deteccao_portaria["chave_aviso"], deteccao_portaria["mensagem_log"],
+            data_minima=deteccao_portaria.get("desde"),
+        )
+        if not achou:
+            log.info("%s: nenhuma Portaria nova detectada na pesquisa (%s)",
+                      slug, deteccao_portaria["chave_aviso"])
+
     return resultado
 
 
@@ -710,48 +789,58 @@ def _data_item(texto: str) -> str | None:
     return m.group(1) if m else None
 
 
-def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
-                                    mensagem_log: str,
-                                    data_minima: str | None = None) -> bool:
-    """Detecta um Decreto-Lei entre os resultados de uma pesquisa de frase
-    exacta no DRE (mecanismo `pesquisa_interactiva`, ver `_obter_html_pesquisa`).
+_PADRAO_DECRETO_LEI = re.compile(r"\bdecreto[\s-]?lei\s+n", re.IGNORECASE)
+_PADRAO_PORTARIA = re.compile(r"\bportaria\s+n", re.IGNORECASE)
 
-    Generalização (Sessão 3, 2026-07-20 — watchlist do cluster Habitação)
-    da lógica original de `_detectar_decreto_psu` — mesmo princípio,
-    reutilizável por qualquer fonte que use pesquisa de frase exacta:
-    como a pesquisa usa aspas (frase exacta no Elasticsearch do DRE —
-    confirmado num runner real para dre_psu: 2 resultados vs 12.651 sem
-    aspas), TODOS os resultados extraídos dizem já respeito à frase —
-    basta o título de um resultado (itens_lista: um
-    <a href="/dr/detalhe/..."> por acto) ser um Decreto-Lei para haver
-    sinal real.
+
+def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str,
+                                      mensagem_log: str, padrao: re.Pattern,
+                                      data_minima: str | None = None) -> bool:
+    """Núcleo partilhado de detecção entre os resultados de uma pesquisa de
+    frase exacta no DRE (mecanismo `pesquisa_interactiva`, ver
+    `_obter_html_pesquisa`). `padrao` decide QUE tipo de acto conta como
+    sinal (Decreto-Lei para `_detectar_decreto_lei_generico`, Portaria
+    para `_detectar_portaria_generico` — sentinela do IAS, 2026-07-28) —
+    o resto da lógica (verificação por item, corte de recência) é
+    idêntico e reutilizado sem duplicação.
+
+    Generalização (Sessão 3, 2026-07-20 — watchlist do cluster Habitação;
+    estendida em 2026-07-28 para o sentinela do IAS) da lógica original
+    de `_detectar_decreto_psu` — mesmo princípio, reutilizável por
+    qualquer fonte que use pesquisa de frase exacta: como a pesquisa usa
+    aspas (frase exacta no Elasticsearch do DRE — confirmado num runner
+    real para dre_psu: 2 resultados vs 12.651 sem aspas), TODOS os
+    resultados extraídos dizem já respeito à frase — basta o título de
+    um resultado (itens_lista: um <a href="/dr/detalhe/..."> por acto)
+    bater com `padrao` para haver sinal real.
 
     Verificação por item, deliberadamente — nunca sobre todo o texto
-    concatenado, que dispararia com um decreto-lei num resultado e o
-    termo pesquisado noutro resultado sem relação (falso positivo latente
-    já visto nas Issues #55/#56 do MEGA).
+    concatenado, que dispararia com um acto do tipo certo num resultado e
+    o termo pesquisado noutro resultado sem relação (falso positivo
+    latente já visto nas Issues #55/#56 do MEGA).
 
     `data_minima` (Issue real, 1.ª corrida do pipeline após a activação
-    da watchlist do cluster Habitação, 2026-07-20): a suposição original
-    de que "qualquer Decreto-Lei nos resultados é sinal de novidade" só
-    vale para uma lei que ainda não existe (dre_psu — a PSU literalmente
-    não tem diploma nenhum antes do decreto-lei que a cria). Para uma
-    watchlist sobre uma lei já em vigor há anos (PAER, Garantia Pública),
-    a pesquisa de frase exacta encontra sempre o(s) diploma(s) fundador(es)
-    e as suas alterações já conhecidas — confirmado num runner real: a
-    pesquisa por "apoio extraordinário à renda" devolveu correctamente o
-    DL n.º 20-B/2023 (o diploma fundador do PAER) e as suas alterações de
-    2023-2025, todas já contabilizadas no fact-check desta sessão, gerando
-    uma Issue falsa que dispararia todos os dias sem excepção. Corrigido
-    com um corte de recência: só conta como "novo" um item cuja data (o
-    "de AAAA-MM-DD" no fim de cada entrada de `itens_lista`) seja
-    `>= data_minima`. Um item sem data reconhecível NUNCA é descartado
-    silenciosamente (mesmo invariante "nenhum estado de erro pode parecer
-    sucesso") — conta sempre como potencial sinal, para nunca esconder um
-    Decreto-Lei genuinamente novo só porque o DRE mudou o formato da
-    entrada."""
-    import re as _re
-    padrao = _re.compile(r"\bdecreto[\s-]?lei\s+n", _re.IGNORECASE)
+    da watchlist do cluster Habitação, 2026-07-20 — Issue #73): a
+    suposição original de que "qualquer acto do tipo certo nos resultados
+    é sinal de novidade" só vale para algo que ainda não existe (dre_psu
+    — a PSU literalmente não tem diploma nenhum antes do decreto-lei que
+    a cria). Para uma watchlist sobre um acto que já existe todos os anos
+    (PAER, Garantia Pública, e a Portaria do IAS — publicada anualmente
+    desde 2006), a pesquisa de frase exacta encontra sempre o(s)
+    diploma(s) anterior(es) — confirmado num runner real para
+    dre_habitacao_paer: a pesquisa por "apoio extraordinário à renda"
+    devolveu correctamente o DL n.º 20-B/2023 (o diploma fundador do
+    PAER) e as suas alterações de 2023-2025, gerando uma Issue falsa que
+    dispararia todos os dias sem excepção. Corrigido com um corte de
+    recência: só conta como "novo" um item cuja data (o "de AAAA-MM-DD"
+    no fim de cada entrada de `itens_lista`) seja `>= data_minima`. Um
+    item sem data reconhecível NUNCA é descartado silenciosamente (mesmo
+    invariante "nenhum estado de erro pode parecer sucesso") — conta
+    sempre como potencial sinal, para nunca esconder um acto
+    genuinamente novo só porque o DRE mudou o formato da entrada. Por
+    isto é OBRIGATÓRIO desde o primeiro commit de qualquer watchlist
+    nova sobre um acto já existente — nunca uma correcção a aplicar
+    depois de uma Issue falsa já ter sido criada."""
     candidatos = [conteudo.get("titulo", "")] + list(conteudo.get("itens_lista", []))
     achados_brutos = [t for t in candidatos if t and padrao.search(t)]
     if data_minima:
@@ -768,6 +857,41 @@ def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
     _registar_aviso(slug, f"{chave_aviso}:{excertos_txt[:500]}")
     log.warning(mensagem_log, slug, excertos_txt)
     return True
+
+
+def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
+                                    mensagem_log: str,
+                                    data_minima: str | None = None) -> bool:
+    """Detecta um Decreto-Lei entre os resultados de uma pesquisa de frase
+    exacta no DRE — thin wrapper de `_detectar_item_juridico_generico`
+    com `padrao=_PADRAO_DECRETO_LEI`. Assinatura e comportamento 100%
+    inalterados face à versão anterior a 2026-07-28 (a generalização foi
+    só do núcleo interno, para o sentinela do IAS poder reutilizá-lo com
+    um padrão diferente — ver `_detectar_portaria_generico`) — mantida
+    por compatibilidade com `tests/test_dre_habitacao_watchlist.py` e
+    `_detectar_decreto_psu`, que a chamam directamente por nome."""
+    return _detectar_item_juridico_generico(
+        slug, conteudo, chave_aviso, mensagem_log, _PADRAO_DECRETO_LEI,
+        data_minima=data_minima,
+    )
+
+
+def _detectar_portaria_generico(slug: str, conteudo: dict, chave_aviso: str,
+                                 mensagem_log: str,
+                                 data_minima: str | None = None) -> bool:
+    """Detecta uma Portaria entre os resultados de uma pesquisa de frase
+    exacta no DRE — mesmo mecanismo de `_detectar_decreto_lei_generico`,
+    thin wrapper de `_detectar_item_juridico_generico` com
+    `padrao=_PADRAO_PORTARIA`. Sentinela do IAS (2026-07-28): a Portaria
+    anual que fixa o Indexante dos Apoios Sociais é o único acto que
+    interessa aqui — nunca um Decreto-Lei nem um Despacho, que a pesquisa
+    de frase exacta por "indexante dos apoios sociais" também pode
+    devolver (ex.: um Despacho que actualiza um valor derivado do IAS
+    sem ser a própria Portaria de fixação)."""
+    return _detectar_item_juridico_generico(
+        slug, conteudo, chave_aviso, mensagem_log, _PADRAO_PORTARIA,
+        data_minima=data_minima,
+    )
 
 
 def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:

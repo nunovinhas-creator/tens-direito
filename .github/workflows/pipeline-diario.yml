@@ -172,6 +172,7 @@ jobs:
               'dre_psu': 'https://diariodarepublica.pt/dr/home',
               'dre_habitacao_paer': 'https://diariodarepublica.pt/dr/home',
               'dre_habitacao_garantia': 'https://diariodarepublica.pt/dr/home',
+              'dre_ias': 'https://diariodarepublica.pt/dr/home',
             };
 
             const mudancas = [];
@@ -1258,6 +1259,62 @@ jobs:
                     labels: ['verificar', 'fonte-alterada'],
                   });
                   console.log('Issue Garantia Pública (DL 44/2024) criada.');
+                }
+              }
+
+              // Issue específica: nova Portaria do IAS detectada em DRE
+              // (sentinela de SINAL, 2026-07-28 — mesmo cuidado do bloco
+              // MEGA/PSU/PAER/Garantia acima, só linhas de hoje). Nunca
+              // extrai nem altera nenhum valor de IAS — só avisa para
+              // revisão MANUAL.
+              const linha_ias = avisos_hoje.find(l => l.includes('dre_ias_portaria_detectada'));
+              if (linha_ias) {
+                const existing_ias = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'verificar',
+                });
+                const duplicate_ias = existing_ias.data.find(i => i.title.includes('Portaria do IAS') && i.title.includes('DRE'));
+                if (!duplicate_ias) {
+                  const match_ias = linha_ias.match(/dre_ias_portaria_detectada:(.*)$/);
+                  const excertos_ias = match_ias ? match_ias[1].trim() : '(ver data/scraped/dre_ias_latest.json)';
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `💶 Nova Portaria do IAS detectada em DRE`,
+                    body: [
+                      `## 💶 Nova Portaria do IAS (Indexante dos Apoios Sociais) detectada automaticamente em dre.pt`,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte monitorizada:** https://diariodarepublica.pt (pesquisa de frase exacta: \"indexante dos apoios sociais\")`,
+                      ``,
+                      `### Excertos detectados`,
+                      `\`\`\``,
+                      excertos_ias,
+                      `\`\`\``,
+                      ``,
+                      `### Este sinal NUNCA extrai nem altera nenhum valor — é só um aviso`,
+                      `Confirmar manualmente o número/data da Portaria e o novo valor do IAS em https://dre.pt antes de tocar em qualquer ficheiro.`,
+                      ``,
+                      `### Páginas/YAMLs a rever MANUALMENTE (por ordem)`,
+                      `1. \`dados/parametros/abono.yaml\` — limites de RR por escalão e Garantia para a Infância (fixados sobre o IAS de anos anteriores, nunca o corrente — confirmar qual vigência se aplica antes de editar)`,
+                      `2. \`dados/parametros/subsidio-doenca.yaml\` — piso diário (fixado sobre a RMMG, não o IAS — confirmar se a Portaria também altera a RMMG antes de mexer aqui)`,
+                      `3. \`dados/parametros/csi.yaml\` — valor de referência e limite do complemento`,
+                      `4. \`dados/parametros/habitacao.yaml\` — limiares de IMT Jovem/Garantia Pública derivados do IAS`,
+                      `5. Depois de editar os YAML: correr \`python scripts/gerar_parametros_json.py\` e \`python scripts/gerar_base_dados.py\``,
+                      `6. \`simulador-ase.html\`/\`acao-social-escolar.html\` — escalões derivados do IAS (50%/100%), ainda não migrados para o padrão YAML (ver CLAUDE.md \"DADOS ABERTOS\", commit 3 bloqueado à espera do despacho anual da DGEstE)`,
+                      `7. \`tests/test_valores_ancora.py\` — o novo valor do IAS tem de substituir a constante \`IAS_2026 = 537.13\` (e o nome da constante, se o ano mudar) — este canário cobre \"537,13€\" em vários \`<title>\`/meta description; falha sozinho enquanto não for actualizado`,
+                      `8. Actualizar a data de verificação em todas as páginas tocadas`,
+                      `9. Fechar esta issue após actualização completa`,
+                      ``,
+                      `### Contexto`,
+                      `- Este sentinela é um SINAL, nunca um provider de valor — nenhum script extrai ou escreve automaticamente o novo valor do IAS em lado nenhum`,
+                      `- Ver CLAUDE.md secção "DADOS ABERTOS — GIT SCRAPING, PARÂMETROS OPENFISCA E PUBLICAÇÃO (FASES 1-3)"`,
+                    ].join('\n'),
+                    labels: ['verificar', 'fonte-alterada'],
+                  });
+                  console.log('Issue Portaria do IAS criada.');
                 }
               }
             } catch(_) {}
