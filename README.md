@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **27 de julho de 2026**.
+Actualizado automaticamente a partir do repositório em **28 de julho de 2026**.
 
 ### Páginas publicadas
 
@@ -80,6 +80,7 @@ Actualizado automaticamente a partir do repositório em **27 de julho de 2026**.
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor até 1.342,83€ e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
+| [`verificador-apoios.html`](verificador-apoios.html) | Vê a que apoios podes ser elegível — abono, ASE e bolsas |
 
 <!-- END:ESTADO -->
 
@@ -398,6 +399,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 27 de julho de 2026 às 11:15 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 28 de julho de 2026 às 09:53 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

@@ -28,6 +28,15 @@
       "cluster_id": "trabalho-rendimento"
     },
     {
+      "data_iso": "2026-07-24",
+      "titulo": "Apoio extraordinário à renda: quem tem direito e como pedir?",
+      "fonte_nome": "DECO PROteste",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNWElGNkNPV2cyRGNPTTh2Nko5U3d3VkRWUW96am1Sa2dHZ3Y5Z2VyUTJzbnZsNHFxX241OXUzajhFSnVsa3pLVlhLT1ZfMmtiTGd5djljSlg4OVdibUhmckh3RzVmRnk1eVV1QnR6bVJhRlEtMUxOaVRPczk1aHdmY3hSNnhoZThUcFA2eDZiM2RGZjRFNUhPN0dQTmlkZERBY1c2OWJXUjF3TU9DYVpiSEtDNjE?oc=5",
+      "resumo": "Apoio extraordinário à renda: quem tem direito e como pedir? DECO PROteste",
+      "categoria": "habitacao",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-07-23",
       "titulo": "Pagamentos da Segurança Social agendados para agosto",
       "fonte_nome": "diariOnline Região Sul",
@@ -35,6 +44,15 @@
       "resumo": "Pagamentos da Segurança Social agendados para agosto diariOnline Região Sul",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-07-23",
+      "titulo": "Como funciona a atribuição automática do abono de família pré-natal?",
+      "fonte_nome": "Doutor Finanças",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPbkFPeWEtekU1VHZPRUl4RllPdjU2VGFzOVB3bVJKSlpqSjdoZFp4NDlrRGtQUThpX3NDbDFyOE4xc0w4dy12bFBOSzBXV244cUpSTktROTV1eTFGR3FYNHBsTW1GYnhZa0lYcTR4MllFUGVGdGd3N0xXSE9pVm9JRnIxVEhLeURFcFRMel9mWkZoT01YbFNfdXBfNFhhUEk5Y1VETmxJVlluLVZyZnFNM095U0JCaHhqOUhYS3V1ODU1VjQtaGtJazdPa2ZyRTkzdXhNSVVRYw?oc=5",
+      "resumo": "Como funciona a atribuição automática do abono de família pré-natal? Doutor Finanças",
+      "categoria": "apoios",
+      "cluster_id": "familia"
     },
     {
       "data_iso": "2026-07-22",
