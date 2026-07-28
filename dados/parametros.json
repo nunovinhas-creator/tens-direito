@@ -637,6 +637,78 @@
         "verificado_em": "2026-07-20"
       }
     },
+    "psu": {
+      "limite_patrimonio_multiplicador_ias": {
+        "descricao": "PSU — limite de património (bens móveis e bens móveis sujeitos a registo), em múltiplos do IAS",
+        "unidade": "× IAS",
+        "valor": 60,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea d), subalínea v)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "valor_referencia_mensal": {
+        "descricao": "PSU — Valor de Referência (montante base da fórmula)",
+        "unidade": "EUR/mês",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea d), subalínea iv) — fixado por referência ao IAS, sem multiplicador definido; valor exacto reservado ao decreto-lei do Governo, ainda não publicado (prazo PRR: 31 ago 2026)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "valor_maximo_mensal": {
+        "descricao": "PSU — valor máximo da prestação, em acumulação com rendimentos/outras prestações",
+        "unidade": "EUR/mês",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea n) — valor a definir por decreto-lei do Governo, ainda não publicado (prazo PRR: 31 ago 2026)",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "majoracao_parentalidade_mensal": {
+        "descricao": "PSU — majoração por parentalidade, componente do montante global",
+        "unidade": "EUR/mês",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea o) — valor a definir por decreto-lei do Governo, ainda não publicado",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "coeficiente_cit": {
+        "descricao": "PSU — coeficiente da Componente de Incentivo ao Trabalho (CIT)",
+        "unidade": "ratio",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alíneas o) e p) — confirma a existência e o mecanismo da CIT, mas não fixa nenhum valor numérico nem intervalo; valor exacto reservado ao decreto-lei do Governo, ainda não publicado",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "ponderacao_outro_adulto": {
+        "descricao": "PSU — peso de cada adulto do agregado (18+) além do requerente, no cálculo de adultos equivalentes",
+        "unidade": "ratio",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea m) — exige ponderações diferenciadas entre adultos 18+ e crianças/jovens, em regime não globalmente mais desfavorável do que o actual, sem fixar valores; a definir por decreto-lei",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      },
+      "ponderacao_menor_ate_25": {
+        "descricao": "PSU — peso de cada criança/jovem do agregado, no cálculo de adultos equivalentes",
+        "unidade": "ratio",
+        "valor": null,
+        "vigencia_inicio": "2026-06-25",
+        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea m) — exige ponderações diferenciadas entre adultos 18+ e crianças/jovens, em regime não globalmente mais desfavorável do que o actual, sem fixar valores; a definir por decreto-lei",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-28"
+      }
+    },
     "subsidio-doenca": {
       "taxa_escalao_ate_30_dias": {
         "descricao": "Percentagem da RR diária paga — baixa até 30 dias",

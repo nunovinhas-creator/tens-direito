@@ -732,3 +732,77 @@ def test_deducao_rendas_nunca_afirma_900_como_ja_utilizavel_na_declaracao_2026()
     html = _ler("deducao-rendas-irs.html")
     assert "700" in html, "limite antigo (700€) ausente — a página tem de mostrar a cronologia completa"
     assert "2027" in html, "ano da declaração em que os 900€ passam a aplicar-se ausente"
+
+
+# ── PSU — Lei n.º 36/2026 (autorização legislativa), dados/parametros/psu.yaml
+# (sessão de 2026-07-28, migração para o padrão OpenFisca). Ao contrário das
+# outras prestações já migradas, a PSU tem só 1 parâmetro confirmado
+# (limite de património, 60×IAS) — os restantes 6 ficam `valor: null` até
+# ao decreto-lei do Governo (prazo PRR: 31 ago 2026). Os dois testes abaixo
+# cobrem as duas metades desse estado: o valor confirmado é validado pela
+# fórmula real (recalculada, nunca hardcoded), e os pendentes são
+# trancados como pendentes — "null" aqui não é ausência de teste, é a
+# afirmação activa de "ainda não sabemos, e é assim mesmo que deve estar".
+
+_PSU = None
+
+
+def _param_psu(nome: str):
+    global _PSU
+    if _PSU is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _PSU = todos["prestacoes"]["psu"]
+    return _PSU[nome]["valor"]
+
+
+def test_psu_limite_patrimonio_60x_ias():
+    """O único parâmetro da PSU já confirmado por lei (Lei n.º 36/2026,
+    artigo 2.º/d/v) é o multiplicador do limite de património — nunca o
+    valor em euros em si, que depende do IAS de cada ano. Recalcula
+    multiplicador × IAS_2026 (nunca hardcoda "32.227,80") e confirma que
+    bate com o que já está publicado em psu-quem-tem-direito.html e
+    prestacao-social-unica.html. Se o IAS mudar (Portaria de janeiro) sem
+    ninguém rever estas páginas, este teste fica vermelho sozinho — mesmo
+    princípio dos outros canários IAS-derivados deste ficheiro."""
+    multiplicador = _param_psu("limite_patrimonio_multiplicador_ias")
+    assert multiplicador == 60, "o multiplicador confirmado pela Lei n.º 36/2026 é 60× IAS — mudou sem rever a fonte legal?"
+    limite = round(multiplicador * IAS_2026, 2)
+    limite_fmt = f"{limite:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    assert limite_fmt == "32.227,80", f"60 × IAS_2026 deveria dar 32.227,80 €, deu {limite_fmt} €"
+
+    for pagina in ("psu-quem-tem-direito.html", "prestacao-social-unica.html"):
+        html = _ler(pagina)
+        assert limite_fmt in html, f"{pagina}: limite de património {limite_fmt} € (60 × IAS) ausente do corpo"
+
+
+def test_psu_parametros_ainda_pendentes():
+    """A PSU tem 6 parâmetros deliberadamente `null` em
+    dados/parametros/psu.yaml — a Lei n.º 36/2026 (autorização
+    legislativa) confirma que existem (Valor de Referência, valor
+    máximo, majoração de parentalidade, coeficiente CIT, ponderação de
+    outro adulto, ponderação de menor) mas não fixa nenhum valor
+    numérico; isso fica para o decreto-lei do Governo (ainda não
+    publicado, prazo PRR: 31 ago 2026).
+
+    Este teste afirma esse estado pendente como CORRECTO, não como uma
+    lacuna — falhar aqui (ficar vermelho) é o sinal de que alguém
+    preencheu um valor sem passar pela sessão de confirmação exigida.
+    Nunca "corrigir" este teste sem antes confirmar a fonte primária
+    (o decreto-lei publicado) e sem seguir o Passo 4 de
+    .claude/commands/atualizar-cluster-psu.md (confirmação obrigatória
+    antes de tocar em ficheiros)."""
+    pendentes = [
+        "valor_referencia_mensal",
+        "valor_maximo_mensal",
+        "majoracao_parentalidade_mensal",
+        "coeficiente_cit",
+        "ponderacao_outro_adulto",
+        "ponderacao_menor_ate_25",
+    ]
+    for chave in pendentes:
+        assert _param_psu(chave) is None, (
+            f"dados/parametros/psu.yaml: '{chave}' deixou de ser null. Se o decreto-lei da PSU já "
+            "foi publicado com este valor, confirma a fonte primária e segue o Passo 4 de "
+            ".claude/commands/atualizar-cluster-psu.md antes de actualizar este teste — nunca "
+            "silenciar esta asserção sem essa confirmação."
+        )
