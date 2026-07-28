@@ -163,6 +163,31 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   confirmado em CI real** (só o caminho "cria/actualiza a Issue" foi
   verificado nesta sessão) — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE
   BRANCHES"**.
+- **Refactor de `artigos_relacionados()`** (`scripts/sincronizar_clusters.py:395`,
+  `MAX_RELACIONADOS = 4`) — percorre `cluster.paginas` sempre pela mesma
+  ordem, por isso qualquer página na posição ≥5 do seu cluster nunca
+  aparece no bloco `RELACIONADOS` de nenhum irmão. Achado na auditoria de
+  ligação interna de 2026-07-28 (Search Console: 11 páginas "Detetada —
+  não indexada"): `calendario-escolar-apoios.html` (posição 7/8),
+  `registo-criminal-online.html` (9/11) e `primeiro-direito.html` (6/7)
+  ficavam sem nenhum link de corpo vindo de irmãos, por esta causa
+  estrutural — corrigido nessa sessão só com links editoriais pontuais,
+  não com este refactor. Candidato: rotação determinística (ex.: por
+  posição do artigo de origem, não sempre os 4 primeiros) para que
+  clusters com 5+ páginas deixem de ter uma "cauda" invisível. Sem
+  prazo — só afecta clusters grandes (`como-pedir`, `habitacao`,
+  `apoios-escolares`, `trabalho-rendimento`), não o resto do site.
+- **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
+  `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
+  2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no
+  corpo) mas não resolveu o inbound contextual DOS hubs (hoje: nav
+  boilerplate + breadcrumbs dos filhos + 1 card na homepage, zero prosa
+  editorial de fora do próprio cluster). Se, ao fim de ~2 semanas, estes 3
+  hubs continuarem em "Detetada — não indexada" no Search Console, o
+  próximo lever é um link contextual de subida — do artigo-filho com mais
+  tráfego de cada cluster para o respectivo hub, com âncora descritiva
+  (ex.: "guia completo de Família e Crianças"), não mais um card
+  genérico.
 ---
 
 ## 📅 DATAS FIXAS
