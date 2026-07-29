@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-28",
+      "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOLTMwbUNLOExtd21fYUs0RFE2TWl0VkY4a1VhcG14ek5mMEtkS1VJcDZaMnZnLUJqNVI0UkFjR1huNGdERVdtcjF0NzJRUDNaVmJNMmpwMi0zS2JFbVR5WVJwU2xOWXpXUmRIVm5IS0lnVVhXUFA0V3dpTGhjN19PWnFINHRJQWZLR3pNU1BCdjFCVmxTQ3dIdG9PZHZaSk1pZGJneXdIYk9hU2tETUswMGx1UXBNME1YSzVEWTExU1FsOG5QelozbG9UR3F5WXFk?oc=5",
+      "resumo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-07-27",
+      "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em agosto",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQMk43YTJNbmwteDMxcnNLYVM1bGxwRVg2T3FUMl9OT1Q5b1ZFcUJ0cnJKR1pDQXhuRVdJUUN3bF9XaTQtd19Ob015a0c0Y1FaUHhQMzc0NWtiNlRKaHlZRVl6bTdiRjhpX3ZELVVFRmFJdmlfN3FvYU9NWllEVzl0bm5STVJvSnoxNzRWeE5FTzNfbTlPSXJTSjRaa3ZVUjAzS3Q5Q1loRXNzNW1hSlczX252MnVMdzhoWGNz?oc=5",
+      "resumo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em agosto Notícias ao Minuto",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-07-25",
       "titulo": "Material escolar: os apoios que existem para além dos manuais (e como pedir)",
       "fonte_nome": "Leak.pt",
