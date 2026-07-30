@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-29",
+      "titulo": "Patrões do turismo avisam: salário mínimo acima de 970 euros exige medidas para competitividade das empresas",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNd1A3LTlKcF85ZWZmN2k5T2hPQzNpMS1LdDlDS3pQWkdhYldMYU9CSFlqbnBDNUZKSVpBRjhoV1ItMzdISkMtSFVmaVVmWUZROThzVU5GV3JjSU1sMkdpNllJMHF0Q2FWQlhKZkZJNVlianZ1SzB3T1NYcjFWTzVOS3FiQko5Ulo4WDJuQmlvVDA3UmIzVm1aQnpHYjFfbjZRdUxTdFd2TWJBcVQxWkJEbk9lLW12U2ZfOVVQc0JvOGdrMDVQWGk2RW9PV29KdDFCQV9jWUJ3?oc=5",
+      "resumo": "Patrões do turismo avisam: salário mínimo acima de 970 euros exige medidas para competitividade das empresas ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-07-29",
+      "titulo": "DREM divulga as estatísticas do rendimento para 2024 baseadas na declaração de IRS",
+      "fonte_nome": "dnoticias.pt",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQzZBb2hJOWF1a0MwOWh3WVZYYTVRLW50cEJiLXhVV2pNZ19FRXRaVUVERUZlQmFKdUNERWxHb0NpMWV1X1VwU3ZsS0E4NTVEVGY1VEJoMHp5U3VkRWVwcGNySm1OZWdwXzl2SDZNUXZjcWFkWHZ0REtRR2hOMU5RYUtPZkJ5cGZ4QVBLTk1xX1BfMW42ZWUtYjd0NGlCeEJVczdZZXRfXzBRU1htQVdMTUl4cTRJeFhXM1lrTzZiYVNNWm8?oc=5",
+      "resumo": "DREM divulga as estatísticas do rendimento para 2024 baseadas na declaração de IRS dnoticias.pt",
+      "categoria": "educacao",
+      "cluster_id": "apoios-escolares"
+    },
+    {
       "data_iso": "2026-07-28",
       "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão",
       "fonte_nome": "ECO",
@@ -8,6 +26,15 @@
       "resumo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão ECO",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-07-27",
+      "titulo": "Recebe apoios da Segurança Social? Veja o calendário de pagamentos do mês de agosto",
+      "fonte_nome": "executivedigest.sapo.pt",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNcUZwQ1A1OS1WTzhLU1RYcUVwbnc5cnZRaUpsUlpQMGRob1lUZlVRTHMwSTRIaW5XR210S2RfRklrUDNlNS1yenBxOXNienA1SmpBOHI4WUkyYXBYYWZfVjYxeFV4WjdpRlZ6cHNFUzY2b09CenkzeTh1a1hLMzVmdVVIYS16ZVRnSVlSN2gyZHNLZ1VnaDY5TWtWbTBDdHhvN3Q5cUVBVmFEVVkzSjBsOTdMS1pvQQ?oc=5",
+      "resumo": "Recebe apoios da Segurança Social? Veja o calendário de pagamentos do mês de agosto executivedigest.sapo.pt",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-07-27",
