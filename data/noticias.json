@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-07-31",
+      "titulo": "Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOYVJ3ZHhRVFBybGlBWlduNW5rNlloRHF0UWVfc014NEhkTWNGTjBCc3RmS3RPa3FpNUFzMWIzRHhhT2RaNVlvUW1LVE9EUmJCYm1iWGJfNTUydkc4QnpGM0xJdGFqZllaY0kyaHNVbzJVWlpmQXZkM2QybUtIa0ZwTXRoeDRZNHNxWEhEQjQ0MmFTNGpJWUdVYmhGLWI1X05PeHZCdFlkSjA?oc=5",
+      "resumo": "Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-07-30",
+      "titulo": "PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxNb3ZmQWJ0bWd5NWxUblRFaWM3Zm9BeWNxYUdpdGhoQW1PeGZnNXN6ZHNjTkY1cXVKTWFqTUt6d3oxYmFkZGhtSjlPRnVFY2x0YjRlRERBVUtVbXRNVzhERnRqSWtBOHlSZkNmcnh0TzBqM2tIY0M5TjdMNXM5WFR4X0taTVI4ZkEtV2VPRV9lbzRFMFVNOTgzTi1yVHowWXYweHEyV3lhd0dxOG9zMVJVUjBuOXFNSlNJWUR4dzR1aU5qOXBTNFVDSlpEenJoYkpubHVURXllNDRFdi1oejRDYmF6RzhodjJmV21WdWpQZkdYdFBVU3JHZA?oc=5",
+      "resumo": "PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros CNN Portugal",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-07-29",
       "titulo": "Patrões do turismo avisam: salário mínimo acima de 970 euros exige medidas para competitividade das empresas",
       "fonte_nome": "ECO",
