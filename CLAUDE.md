@@ -8337,6 +8337,18 @@ antes de assumir que um amend é necessário, e nunca fazer amend/
 reset-author quando o utilizador pediu explicitamente o contrário, mesmo
 que o stop-hook sugira o oposto — perguntar, não decidir por ele.
 
+**Repetição confirmada (2026-08-02, sessão de auditoria do cluster
+PSU)**: o mesmo padrão reapareceu no commit `a199527` (correcção da
+ponderação de adultos equivalentes em `psu-quando-entra-em-vigor.html`)
+— `git cat-file -p` confirmou de novo um bloco `gpgsig` SSH válido,
+`user.email`/`user.name` já correctos (`noreply@anthropic.com`/`Claude`),
+e o mesmo `gpg.ssh.allowedSignersFile needs to be configured...` como
+única causa do "N" local. Seguida a lição já registada acima: **não**
+amendado — o commit ficou local (sem push nesta sessão), por isso não
+foi possível confirmar no GitHub real ainda; a verificação real fica
+para quando/se for feito push, mesmo protocolo de "perguntar, não
+decidir por ele" já estabelecido nesta secção.
+
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados — sessão sem relação com scraper/Shadow Mode).
 PR: sem PR — dois pushes directos a `main`, ambos confirmados `Verified`
@@ -8468,8 +8480,59 @@ antigo `2026-07-18`/"18 de julho de 2026" por actualizar — todas passaram a
 cluster PSU tocado; `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 não tocados (sessão de conteúdo manual, sem relação com scraper/Shadow
 Mode). Suite de testes **não corrida nesta sessão** — o Nuno pediu
-explicitamente para parar aqui para revisão do diff, sem commit, push nem
-merge; trabalho feito directamente no working tree da branch
+explicitamente para parar aqui para revisão do diff antes de qualquer
+commit; trabalho feito directamente no working tree da branch
 `claude/lei-36-2026-psu-eregk2` (designada pelo ambiente remoto desta
-sessão) — **SEM commit, SEM push — a aguardar revisão do Nuno antes de
-qualquer passo de integração.***
+sessão). **Actualização (mesmo dia, revisto e aprovado pelo Nuno)**:
+integrado em `main` — commit `e44819d`, **PR #78** ("feat: cluster PSU
+actualizado com a Lei n.º 36/2026 (autorização legislativa publicada em
+DR)"), 28/07/2026 18:08. PR: #78 (merged).*
+
+---
+
+*Última revisão: 2026-07-28 (mesmo dia, sessão seguinte — PR #80, entrada
+retroactiva registada em 2026-08-02 numa auditoria do cluster PSU que
+encontrou esta lacuna) — fecha uma dívida de documentação: este commit
+(`3af4a75`, 19:20, "feat: PSU passa a seguir o padrão OpenFisca de
+parâmetros (psu.yaml)") alterou `scripts/`/`tests/`/`dados/` sem nunca
+ganhar entrada própria aqui, apesar dos triggers obrigatórios da secção
+"AUTO-ACTUALIZAÇÃO DESTE FICHEIRO". Fecha a lacuna identificada em
+diagnóstico: a PSU era a única prestação do cluster já com página própria
+sem `dados/parametros/*.yaml` — os placeholders viviam só no objecto
+`PARAMETROS_PSU` embutido em `simulador-psu.html`.
+
+Novo `dados/parametros/psu.yaml` — 7 parâmetros, mesmo padrão de
+`csi.yaml`/`habitacao.yaml`: `limite_patrimonio_multiplicador_ias` = **60**,
+confirmado pela Lei n.º 36/2026 (artigo 2.º/d/v). Os restantes 6
+(`valor_referencia_mensal`, `valor_maximo_mensal`,
+`majoracao_parentalidade_mensal`, `coeficiente_cit`,
+`ponderacao_outro_adulto`, `ponderacao_menor_ate_25`) ficam `valor: null`
+— pendentes do decreto-lei (prazo PRR: 31 ago 2026), com
+`vigencia_inicio` ancorada a 2026-06-25 (aprovação da lei de autorização
+em votação final global).
+
+**Correcção no mesmo commit**: o coeficiente CIT tinha, desde 3 jul 2026,
+um "intervalo 0,5–1" atribuído ao "texto aprovado na Assembleia da
+República" — nunca confirmado no texto real da Lei n.º 36/2026 (artigo
+2.º/o/p só confirmam a existência da CIT, sem fixar número). Removido de
+`simulador-psu.html`, `psu-quando-entra-em-vigor.html` e
+`psu-quem-tem-direito.html`; `coeficiente_cit` fica inteiramente
+pendente, sem min/max.
+
+`simulador-psu.html` migrado para `fetch('/dados/parametros.json')`,
+mesmo padrão de `simulador-csi.html`. `ESTADO_SIMULADOR` passa a dinâmico
+(3 estados: fetch falhado → erro visível; fetch OK + `null` → aguarda
+decreto-lei; fetch OK + preenchido → formulário activa) em vez de um
+`const` fixo a decorar manualmente. `calcularPSU()` ganhou guarda contra
+`parametros===null` (antes assumia que só o `.valor` aninhado podia ser
+`null`).
+
+`tests/test_valores_ancora.py` ganhou 2 testes-âncora novos:
+`test_psu_limite_patrimonio_60x_ias` (recalcula 60×IAS, nunca hardcoded,
+confirma contra o corpo de `psu-quem-tem-direito.html`/
+`prestacao-social-unica.html`) e `test_psu_parametros_ainda_pendentes`
+(tranca os 6 `null` como estado esperado — falha se algum for preenchido
+sem passar pelo Passo 4 de `.claude/commands/atualizar-cluster-psu.md`).
+
+Sem alteração a nenhum valor publicado nas páginas HTML além da remoção
+do intervalo do CIT já descrita. PR: #80 (merged).*
