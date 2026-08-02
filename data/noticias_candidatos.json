@@ -1,72 +1,5 @@
 [
   {
-    "data": "2026-07-18",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 14,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe - 4gnews",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-13",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-13"
-      },
-      {
-        "titulo": "Patrões alertam que há medidas por cumprir no acordo sobre salários, UGT quer reforço - Dinheiro Vivo",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-15",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": []
-  },
-  {
     "data": "2026-07-19",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1886,6 +1819,175 @@
         "titulo": "Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo - ECO",
         "feed_nome": "salario_minimo",
         "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-08-02",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 13,
+      "psu_pensoes": 12,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 11,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 13,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em agosto - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-27",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-27"
+      },
+      {
+        "titulo": "Recebe apoios da Segurança Social? Veja o calendário de pagamentos do mês de agosto - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-27",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-27"
+      },
+      {
+        "titulo": "Majoração do subsídio de desemprego: Segurança Social passa a avisar automaticamente - Ekonomista",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-07-28",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-28"
+      },
+      {
+        "titulo": "PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros - CNN Portugal",
+        "feed_nome": "rsi",
+        "data_iso": "2026-07-30",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-30"
+      },
+      {
+        "titulo": "Prestação Social Única vai ter valor de referência de 268 euros - Diário de Notícias",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-07-30",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=apoios"
+      },
+      {
+        "titulo": "Despedidos por justa causa mantêm acesso à futura Prestação Social Única - Jornal SOL",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-07-27",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "GOVERNO CRIA PRESTAÇÃO SOCIAL ÚNICA COM VALOR DE 268,6 EUROS - jornalonline.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-07-30",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Porto, Lisboa e Setúbal concentram maior número de beneficiários do RSI - Diário do Distrito",
+        "feed_nome": "rsi",
+        "data_iso": "2026-07-30",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social divulga calendário de pagamentos de agosto: vê todas as datas - 4gnews",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-31",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social: pagamentos no mês de agosto de 2026 - pplware.sapo.pt",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-31",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-28",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-28"
+      },
+      {
+        "titulo": "Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-07-31",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-07-31"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos chega a mais 105 mil pessoas - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Notícias de Coimbra",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Prestação Social Única vai ter valor de referência de 268 euros - Diário de Notícias",
+        "feed_nome": "psu_pensoes",
+        "score": 2
       }
     ]
   }
