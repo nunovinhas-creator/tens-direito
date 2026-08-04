@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-04",
+      "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPXzRmNmlfczZ2TGw1OFBSb3FEaVAyNHJLeGJZQnJRQXhYOFhKUFNYRDVFXzhVN0FnZ2xHeVlZaHlnaHFrZG5YSUtwUEtRMzB6eWdWRUdReVdZc2U5Xy1TYUNMMHlwMU8xSk1yLXVvQU1RYU5fa1dOZW9hcUg5T21nQzU0c3l1ZkJQQUVPTHJzbDJleTFVMy1RS0luam04aUplWXN6YlBMRURmdTFa?oc=5",
+      "resumo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o Notícias ao Minuto",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-03",
       "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto",
       "fonte_nome": "noticiasaominuto.com",
@@ -8,6 +17,15 @@
       "resumo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto noticiasaominuto.com",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-03",
+      "titulo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros",
+      "fonte_nome": "Doutor Finanças",
+      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQU1RMX2UxV3NqNlZidDY1aGRhWVZORVcwQXFlQnBFdU5nTm55b0ozWXFmVGFyV0pROXdxa3k1a2JEQTU0MUNxbFpnbEZVUGRBQ185Q2RmQTNGbTJpTU1HTU5KQi1TVHJBaF83Q3d6WElYMWxEeWVTM19hLTZ0QkZfckM3UmgwQVh0VmlSSFV2ZnFiQkVubHVSbnQ5V1g1NElUZ2xDMG5Jd1Y4UE1XR0x3cWNvTy10MDd2ZzBBdFZVVU1CNWs3QW5SekR6WGU3ZTJnN1ZwX0NMY3VfZnhpdkJBOFh1TUVrSXFCMDBlTA?oc=5",
+      "resumo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros Doutor Finanças",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
     },
     {
       "data_iso": "2026-08-01",

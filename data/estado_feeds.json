@@ -2,66 +2,66 @@
   "abono_familia": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "acao_social_escolar": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "calendario_pagamentos_seg_social": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "csi_idosos": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "cuidador_informal": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "habitacao_arrendamento": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "ias_valor_referencia": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "irs_fiscalidade": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "porta65_arrendamento": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "psu_pensoes": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "rsi": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "salario_minimo": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   },
   "subsidio_desemprego": {
     "dias_consecutivos_morto": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-03"
+    "ultima_ok": "2026-08-04"
   }
 }
