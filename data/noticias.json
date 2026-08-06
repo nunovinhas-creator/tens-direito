@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-08-04",
+      "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento?",
+      "fonte_nome": "Jornal Económico",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPaHB2SGNCenowQWFFNFNfcUl1bjR1dmZLRXZLYW10N2sxdFR0Z0FTY1lqZHRSTW0wWF9BQlVlaW5CQVlsbC0tV3k5UjJoZl84WUVFOFgteTItYTFvc0tYNk5YeWRXanhfU1hncFZXd1pFTzNETmh5LXJOTk5lZnhQQkJ0Z3NLZi1TZGxjQw?oc=5",
+      "resumo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? Jornal Económico",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-04",
       "titulo": "Governo admite erro no site da Segurança Social sobre subsídio de desemprego",
       "fonte_nome": "Jornal SOL",
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNT25lYXI5bGQyb0ZrbVZMamtxc0YyckY0emtHVVZ4MXkyUFdmM3Ffb2gwSHU0TG0tOGdQR0hVdE5VV0pjUzZ1bVN4SzNRc2NPdjl2Mll1LVI2VFFMQ21jSDJ6Tzk5SUt4NndLZjlybXROTnlxRUZMM1IyclFmUTZVZ1cxNzlNUkVLRTlYQWg2VHlUVDNqRVEyOXEyNVUwemQ0dWpGTlVieEx1X2dBS3ZNcUhHQnZuWFBKLUZnVi16MmtpZy01SnZRTWQ0UWZHcG01Y0J6Tkt3eHc4R2d0WHBTdw?oc=5",
@@ -71,6 +80,15 @@
       "resumo": "PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros CNN Portugal",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-07-30",
+      "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Agosto de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNampMY1ZfeHQ5MmVBZnZ0RjcwOVh0S05CR0ttSW5ISU5uZ3V3T2RtanJJT3Z1eTBoZUtjMllCNFQtNlZKUzdQSDE4Zk5saktveUJZTDFqZUR5V1BuZ085VG0zc2YyeVJmMjVfNDNSYXFhM2ljYllSdzhVVWM3R0VzR2FzNEpZT1ZLaGRKdGpxNzdqQnM0aXBmQXpUUXdoYlNFdWhkUzdoYVdvUm10V0E?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Agosto de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-07-29",
