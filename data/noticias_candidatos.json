@@ -1,99 +1,5 @@
 [
   {
-    "data": "2026-07-23",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 13,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 14,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-21",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-21"
-      },
-      {
-        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-21",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=emprego"
-      },
-      {
-        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-22",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Salário mínimo vai subir em 2027? A resposta da ministra do Trabalho - SIC Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-21",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
-        "feed_nome": "subsidio_desemprego",
-        "score": 2
-      },
-      {
-        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
-        "feed_nome": "psu_pensoes",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-07-24",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2431,6 +2337,188 @@
         "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Agosto de 2026 - Economia e Finanças",
         "feed_nome": "psu_pensoes",
         "score": 2
+      }
+    ]
+  },
+  {
+    "data": "2026-08-07",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 12,
+      "subsidio_desemprego": 13,
+      "rsi": 15,
+      "psu_pensoes": 13,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 12,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14,
+      "csi_idosos": 11
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros - Doutor Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-03",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-03"
+      },
+      {
+        "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-04",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-04"
+      },
+      {
+        "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - Jornal Económico",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-04",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-04"
+      },
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-03",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-03"
+      },
+      {
+        "titulo": "Governo reconhece erro nos guias sobre subsídio de desemprego - SIC Notícias",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-04",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "abono de família - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-06",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Reforma do abono de família. Se voltasse atrás, Corinne Cahen faria tudo outra vez - contacto.lu",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de Familia - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social: pagamentos no mês de agosto de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-31",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social divulga calendário de pagamentos de agosto: vê todas as datas - 4gnews",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-07-31",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos passa a abranger mais 105 mil pessoas em pouco mais de dois anos - XXV Governo Constitucional",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Público",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Mais de 5 mil idosos com complemento solidário - dnoticias.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-04",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Notícias de Coimbra",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Governo reconhece erro nos guias sobre subsídio de desemprego - SIC Notícias",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
+      },
+      {
+        "titulo": "abono de família - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "score": 1
       }
     ]
   }
