@@ -1,94 +1,5 @@
 [
   {
-    "data": "2026-07-24",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 13,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 14,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-21",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-21"
-      },
-      {
-        "titulo": "Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-21",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-21"
-      },
-      {
-        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-22",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-22"
-      },
-      {
-        "titulo": "Pagamentos da Segurança Social agendados para agosto - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-23",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Pagamentos da Segurança Social agendados para agosto - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-07-25",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2519,6 +2430,212 @@
         "titulo": "abono de família - CNN Portugal",
         "feed_nome": "abono_familia",
         "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-08-08",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 11,
+      "subsidio_desemprego": 12,
+      "rsi": 15,
+      "psu_pensoes": 11,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 13,
+      "csi_idosos": 11
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros - Doutor Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-03",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-03"
+      },
+      {
+        "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-07",
+        "score": 4,
+        "decisao": "vencedor",
+        "motivo": "score=4, categoria=apoios"
+      },
+      {
+        "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-04",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-04"
+      },
+      {
+        "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - jornaleconomico.sapo.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-04",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-03",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Governo reconhece erro nos guias sobre subsídio de desemprego - SIC Notícias",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-04",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-04"
+      },
+      {
+        "titulo": "Guia do subsídio de desemprego teve erro durante um ano e meio - Jornal de Notícias",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-04",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma - ECO",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-07",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "abono de família - cnnportugal.iol.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Reforma do abono de família. Se voltasse atrás, Corinne Cahen faria tudo outra vez - contacto.lu",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de Familia - cnnportugal.iol.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de Família - cnnportugal.iol.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - jornaleconomico.sapo.pt",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos passa a abranger mais 105 mil pessoas em pouco mais de dois anos - XXV Governo Constitucional",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Público",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Mais de 5 mil idosos com complemento solidário - dnoticias.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-04",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Notícias de Coimbra",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salários mínimos para a época 2026/27 - Sindicato dos Jogadores",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-07",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios",
+        "feed_nome": "psu_pensoes",
+        "score": 4
+      },
+      {
+        "titulo": "Guia do subsídio de desemprego teve erro durante um ano e meio - Jornal de Notícias",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
       }
     ]
   }

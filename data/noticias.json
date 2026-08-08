@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-07",
+      "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo",
+      "fonte_nome": "Jornal de Negócios",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNOFlXaVhaUkVSMWhfempyeW11cXRCOWVpU283bDVaRUlWczdEZ3RQMDRxeExlWmVOUUtqZDY0QUZQZGN5UTdhVTFsZzhwX3N4dTQtaDJNTC01TXcwUm9weWdDRlFzV3FFNmxSeW1RRHRVOGl5M3hsQmh5RDJVTnVabzNrV0Z0bk5xV0RUT09Sd3ptRmQxWUVYMEk3WjRzWVN2YVJxNDdHc21JSUhQeFNEQ0EtT24xRURpWFRxazJIbnpfMWZoM1o2dndfcmIxY19jOHV2Q3VpLVBjSU1lZHhKMGltUUo1a1HSAeIBQVVfeXFMTThkWl84UEE2RkJmYjhDcnU2LVZiYWtaTEE4d2RJbDBSUTRhNUVwaDhicG9qRjh5dXQ5TlRUNUthUnhaT2xFMWt1OUNwYm5TZGdRZWVFeFRheTNONUl0bTVrY3d0Y1Y0TzFoVFpEWXVfT0V5TjFSQi03b2lOQXp1QzI2WG9iVE9JQi1qVXVBeFh5OGg2TGp3TUdyZGFaQTIzS3VoVG5DdjZtVEJRTF9nbjJwT05UWEpESjJYMGhQVVptRUJHU3R0UU5mbF9SQWVqa1dPN2U3S0F2Y0dqOTlGSmQzQQ?oc=5",
+      "resumo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo Jornal de Negócios",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-08-06",
       "titulo": "abono de família",
       "fonte_nome": "CNN Portugal",
@@ -17,6 +26,15 @@
       "resumo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? Jornal Económico",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-04",
+      "titulo": "Guia do subsídio de desemprego teve erro durante um ano e meio",
+      "fonte_nome": "Jornal de Notícias",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQQVo2SHF0bUlza3hfNDVIanBlSEQ1REcxc08yWVZ6QlBYM3VCcnkzQXFtU19sZTQ0enlzbC0tb2N1UVhzZjJFbDZKZWMzbHlxbXV2TF9uRUVPSjJ6bV9XUnA1dlZLZjNzLWN6RzdFSUg0RHdOREhGaTUyRTBYa3dhTk14Wk5RQmNvLTh2UV9pbjRGemh4SFEtRzJkNG0tM1lyODVaODZINUbSAZgBQVVfeXFMTnJXcEdpS1lPQXZDeUMxMk1YZHc5U0lBR3p0SFgta05Nbjc4Q0dRS2NrVXVRdDF4cGZ1OGRKZDdIQVczLTNfeF80OWpVWUJZMERkN1JSNkVOLXAtT0V2aHZrMnFCSEVFN1o0YTlieDBwUjNVZEI0TVN6MThSM21ycktTNTJBQjUzbDJVdlAtamlaRkxfM29SVlY?oc=5",
+      "resumo": "Guia do subsídio de desemprego teve erro durante um ano e meio Jornal de Notícias",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
     },
     {
       "data_iso": "2026-08-04",
