@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-08",
+      "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única",
+      "fonte_nome": "RTP",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNalMzMDFOWVJTaTY3UlNjWkdhNGV3dGZhZ3JVeFJIMWo4c0RsSjB3TnZPNHFQVXhESE01VGhzS19ENkZPV2swSWEwTjJRN1ZQS0JnR0F5UVQ1UTlvN0JudHNZeXpUd2lRNkVjOXpvZ0daTTRIeDM5ZTd4dkRHZndnNVJURVctV0RuN3EtbndyUElpYkVIbXc5RUZubnRXU1h2eFBWYWVBUi14S3BheVhIRnpqamRmcTBlN1JwcXFhb1FxUQ?oc=5",
+      "resumo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única RTP",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-08-07",
       "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo",
       "fonte_nome": "Jornal de Negócios",
@@ -8,6 +17,15 @@
       "resumo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo Jornal de Negócios",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-07",
+      "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal",
+      "fonte_nome": "Jornal Económico",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRVJPc1Z1OHIwbHFrYVBubDJhLS1fLXE2U2ZGWlpaTUF2MS12XzcybHBvenVyc2MwcTlWMUhmUkp0dFhpQ0ZUOHdSVVdUa1lLNkdmNk5tWkJOb3lDNzNxSm9YdFZnYVFLdl9FZlNIS3pOWEV5Y1AxVlJNMC1pQ0FobUgwejQwTWFVa3Q3eDlSRjUxTXJWazhqYTdiYTVfRlRLZlk4S0VrUDVOdDBpU0ZXZ05fWUJPNGRXUThCcGVPWk5iWGQ1WFBKRkx1cTdiY1ZvUkE?oc=5",
+      "resumo": "Maioria da UE aumentou salário mínimo mais do que Portugal Jornal Económico",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
     },
     {
       "data_iso": "2026-08-06",

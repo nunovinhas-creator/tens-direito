@@ -4196,7 +4196,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-08-08*
+*Última revisão automática: 2026-08-09*
 
 ---
 
