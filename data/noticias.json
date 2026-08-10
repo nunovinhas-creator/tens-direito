@@ -1,11 +1,29 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-10",
+      "titulo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%)",
+      "fonte_nome": "Human Resources Portugal",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNbU9pOGFPZW1vOUFXeWV6Q1hCMF9QZGNRbGdxUEgyVVVHTEltLXIwZ2lxYWJCRG9WaEU2blhhUFVYTDBoY3VLQU1wdWlTcjAwMDltamxzSWJQcC0xU2Jtc1B0X251aHBEVlN0bEczMUNXdXctNzhGeFJIRDlrQWFEV3h5VWxFSi1uV3lOLUR6VmlRNVdBQXV3Wjl3YS1nNXU5WUpVQ0FxdFhxdw?oc=5",
+      "resumo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%) Human Resources Portugal",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-08",
       "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única",
       "fonte_nome": "RTP",
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNalMzMDFOWVJTaTY3UlNjWkdhNGV3dGZhZ3JVeFJIMWo4c0RsSjB3TnZPNHFQVXhESE01VGhzS19ENkZPV2swSWEwTjJRN1ZQS0JnR0F5UVQ1UTlvN0JudHNZeXpUd2lRNkVjOXpvZ0daTTRIeDM5ZTd4dkRHZndnNVJURVctV0RuN3EtbndyUElpYkVIbXc5RUZubnRXU1h2eFBWYWVBUi14S3BheVhIRnpqamRmcTBlN1JwcXFhb1FxUQ?oc=5",
       "resumo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única RTP",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-07",
+      "titulo": "Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQNVFpM1F5WW1Cdjc1bUVESllrS2oxeEpEWjdHeDNmMnVSZ2NFQ2JkX3RfOXhrTERiMDc1TGZRYXFWdE1GX2JCb093LWVyZjdqYzdIMUpTSzV4UENKZjJoODZRZl94NmRPc3N1dnNaU3pOb3JvMUlOSUtuNElHSEwxdUJMa2xlV2o4dnZRYmt2Q3FWTk94ZTZhcUdqaTBCbVZub0hsT2djUUw0dVhRM2ZBUnl3YVRsWW9pbnRYZkEyT2J5Mko4UkRkbXoxUG1OakN0SXk2Zw?oc=5",
+      "resumo": "Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma ECO",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
     },
