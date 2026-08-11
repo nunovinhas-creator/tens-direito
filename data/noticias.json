@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-11",
+      "titulo": "Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300",
+      "fonte_nome": "eco.sapo.pt",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNSkEwQXBISV9jWFNvYlBUR2Q3eUFCLV9tVnJ3cUNUZXljUFFsOEl2WUxacXk0V2l2eWRWZzk5cldyY0lSN2Q4V3Z0T055QVVPUTA1NW5xUjM2azl5NDUtVGVmZVJ0NVJpQVRyTEFDcE9uTUpxdmU5bzJOOGNnSTdReno5Yy1YNWcyWHZYa3FsYkpWbUlGaFdzbmFrOEZOZmFweW5n?oc=5",
+      "resumo": "Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300 eco.sapo.pt",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-10",
       "titulo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%)",
       "fonte_nome": "Human Resources Portugal",
@@ -15,6 +24,15 @@
       "fonte_nome": "RTP",
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNalMzMDFOWVJTaTY3UlNjWkdhNGV3dGZhZ3JVeFJIMWo4c0RsSjB3TnZPNHFQVXhESE01VGhzS19ENkZPV2swSWEwTjJRN1ZQS0JnR0F5UVQ1UTlvN0JudHNZeXpUd2lRNkVjOXpvZ0daTTRIeDM5ZTd4dkRHZndnNVJURVctV0RuN3EtbndyUElpYkVIbXc5RUZubnRXU1h2eFBWYWVBUi14S3BheVhIRnpqamRmcTBlN1JwcXFhb1FxUQ?oc=5",
       "resumo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única RTP",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-08",
+      "titulo": "Chega considera que há caminho para andar com Governo sobre prestação social única",
+      "fonte_nome": "RTP",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNUXBZQjJYZ09lMmt6ckRFTmt3dGc4QkREdnByNXpJT0FQbUg5X1E5eVlzc0g0NEQ5RF9rdE9jbXF6UG1EcWxqVGJlaUMxT0ktOS1qMFg4UXA3d085VjZ4ajU4Rk9lU1hVM0lXdGVVclNaMTJnVnVtYl9kTXFJQTZaSkw4a1V4TjRwRlVaQjhzUnpZOVYxWW5MdnJFS01ST1hrZHM2RldhSnFzUzVMU2JNTFRFSWotQnkwRmZtZ1RRaXJDSmd1Mkxj?oc=5",
+      "resumo": "Chega considera que há caminho para andar com Governo sobre prestação social única RTP",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
     },
