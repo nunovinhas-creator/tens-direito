@@ -11,12 +11,39 @@
     },
     {
       "data_iso": "2026-08-10",
+      "titulo": "Subsídio de desemprego cortado a mais de seis mil pessoas em 2024",
+      "fonte_nome": "Rádio Comercial",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOS2cxQjVpUjBkRUFRTzUtYzNzWFVkeGVRTGNlR0pMaVFWWXJQOU1kNGdBQ0x2MERPckFOTzBxU0RfeG92WXJwQW45dnZlNTR6MkZVdEVxaTJuWl9jY2lDY01kU0RmN2tfaHlnYWtsbUNLdUpTa08yU1phbndWRm01Z3QyazBrTkMtNFJkdmlNVGdmMThUX05ta1VYTGhuUEtaVW9kcE5lMlJDLTg?oc=5",
+      "resumo": "Subsídio de desemprego cortado a mais de seis mil pessoas em 2024 Rádio Comercial",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-10",
+      "titulo": "O desemprego aumentou em quase 58,000 pessoas em setembro.",
+      "fonte_nome": "portugalresident.com",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOUko0T3RaY0pQSGV5UmRKcmJZb0M2dzlkdEtkVEotakh0VkhXNUtPczdaS01ObGE4RDh5UkZ0UHhTcHJtdF9JX1RnaU0wZzB6WHRDXzJabHNtZndnakpjZ3lBQlJNU0p4bjV1ak9wd1hPOTZ2cHdBYkdTdGN5MHFKeXVrQXFXUHZGd0o0dlpMYklVbUNjc2x6djdn?oc=5",
+      "resumo": "O desemprego aumentou em quase 58,000 pessoas em setembro. portugalresident.com",
+      "categoria": "educacao",
+      "cluster_id": "apoios-escolares"
+    },
+    {
+      "data_iso": "2026-08-10",
       "titulo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%)",
       "fonte_nome": "Human Resources Portugal",
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNbU9pOGFPZW1vOUFXeWV6Q1hCMF9QZGNRbGdxUEgyVVVHTEltLXIwZ2lxYWJCRG9WaEU2blhhUFVYTDBoY3VLQU1wdWlTcjAwMDltamxzSWJQcC0xU2Jtc1B0X251aHBEVlN0bEczMUNXdXctNzhGeFJIRDlrQWFEV3h5VWxFSi1uV3lOLUR6VmlRNVdBQXV3Wjl3YS1nNXU5WUpVQ0FxdFhxdw?oc=5",
       "resumo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%) Human Resources Portugal",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-10",
+      "titulo": "Atribuição do abono de família pré-natal passa a poder ser feita de forma automática",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPR2NVSnVCUmhqbmtndVhuT1R1MV9pWDZESUJnVGtmRGVVXzY3YWZMSUgxbGY0YjBNMEhEVlRDQkJrOEh1WURqbkU0a3VscXF0YTJ6bjVyTVR5eHl1ckZERjIzaWxwU01VY0lsQk5oUXJNM1p6dWpvWklFalZwTGFNdjFIVG9fTWZYU2FYQ2E2T0p5ZW83M3lTeldmQmd0SFhmdU5UejVZMlBTNy1iY2FHM01uSG9Hdkk?oc=5",
+      "resumo": "Atribuição do abono de família pré-natal passa a poder ser feita de forma automática ECO",
+      "categoria": "apoios",
+      "cluster_id": "familia"
     },
     {
       "data_iso": "2026-08-08",
