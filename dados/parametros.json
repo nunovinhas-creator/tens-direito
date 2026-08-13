@@ -638,75 +638,135 @@
       }
     },
     "psu": {
-      "limite_patrimonio_multiplicador_ias": {
-        "descricao": "PSU — limite de património (bens móveis e bens móveis sujeitos a registo), em múltiplos do IAS",
+      "valor_referencia_multiplicador_ias": {
+        "descricao": "PSU — Valor de Referência (VRP), em múltiplos do IAS; base da fórmula PSUbase = VRP × AE",
+        "unidade": "× IAS",
+        "valor": 0.5,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 7.º — \"O valor de referência da PSU corresponde a 50 % do valor do indexante dos apoios sociais (IAS)\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "ponderacao_titular": {
+        "descricao": "PSU — ponderação do requerente ou titular, no cálculo de adultos equivalentes (AE)",
+        "unidade": "ratio",
+        "valor": 1,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 24.º/2, alínea a) — \"1 pelo requerente ou titular\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "ponderacao_maior": {
+        "descricao": "PSU — ponderação de cada indivíduo maior do agregado (18+), além do requerente/titular, no cálculo de adultos equivalentes (AE). Renomeado nesta sessão de 'ponderacao_outro_adulto' — nome inalterado quanto ao conceito, só clarificado.",
+        "unidade": "ratio",
+        "valor": 0.7,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 24.º/2, alínea b) — \"0,7 por cada indivíduo maior\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "ponderacao_menor": {
+        "descricao": "PSU — ponderação de cada indivíduo menor do agregado (<18), no cálculo de adultos equivalentes (AE). Renomeado nesta sessão de 'ponderacao_menor_ate_25' — o nome antigo pressupunha um corte aos 25 anos que NUNCA existiu no texto legal (ver comentário no topo do ficheiro); 'menor' aqui é a maioridade civil (18 anos), igual à distinção do artigo 5.º sobre o agregado familiar.",
+        "unidade": "ratio",
+        "valor": 0.5,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 24.º/2, alínea c) — \"0,5 por cada indivíduo menor\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "teto_maximo_multiplicador_ias": {
+        "descricao": "PSU — teto máximo do montante mensal global (PSUglobal, já com majorações), em múltiplos do IAS. Renomeado nesta sessão de 'valor_maximo_mensal' (EUR/mês, null) — o decreto-lei fixa-o como multiplicador do IAS, nunca um euro fixo.",
+        "unidade": "× IAS",
+        "valor": 6,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 25.º/3 — \"não pode ser superior ao teto máximo dos apoios de base não contributiva atribuídos ao agregado familiar, excluindo as prestações por encargos no domínio da deficiência e da dependência do subsistema de proteção familiar, o qual corresponde a seis vezes o valor do IAS\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "valor_minimo_euros": {
+        "descricao": "PSU — valor mensal global mínimo abaixo do qual não há lugar à atribuição da prestação. ÚNICO parâmetro deste ficheiro fixado em euro fixo, NÃO indexado ao IAS nem a qualquer outro índice — o próprio artigo não o liga ao IAS.",
+        "unidade": "EUR",
+        "valor": 10.0,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 25.º/5 — \"Caso o valor mensal global da PSU seja inferior a 10 € não há lugar à atribuição da prestação\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "limite_patrimonio_mobiliario_multiplicador_ias": {
+        "descricao": "PSU — limite de património MOBILIÁRIO do requerente e agregado, em múltiplos do IAS. Renomeado nesta sessão de 'limite_patrimonio_multiplicador_ias' — o decreto-lei separa este limite do de bens móveis sujeitos a registo (ver limite_bens_moveis_registo_multiplicador_ias), dois tectos distintos que a Lei n.º 36/2026 (só a autorização) tinha fundido num só parâmetro.",
         "unidade": "× IAS",
         "valor": 60,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea d), subalínea v)",
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 8.º/1, alínea c) — \"O valor do património mobiliário do requerente e do seu agregado familiar não ser superior a 60 vezes o valor do IAS\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
+        "verificado_em": "2026-08-13"
       },
-      "valor_referencia_mensal": {
-        "descricao": "PSU — Valor de Referência (montante base da fórmula)",
-        "unidade": "EUR/mês",
-        "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea d), subalínea iv) — fixado por referência ao IAS, sem multiplicador definido; valor exacto reservado ao decreto-lei do Governo, ainda não publicado (prazo PRR: 31 ago 2026)",
+      "limite_bens_moveis_registo_multiplicador_ias": {
+        "descricao": "PSU — limite de bens móveis SUJEITOS A REGISTO (ex.: veículos) do requerente e agregado, em múltiplos do IAS. Parâmetro NOVO nesta sessão — limite SEPARADO do património mobiliário (limite_patrimonio_mobiliario_multiplicador_ias), nunca somado a ele: são dois tectos de 60× IAS cada, não um só de 120× IAS.",
+        "unidade": "× IAS",
+        "valor": 60,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 8.º/1, alínea d) — \"O valor dos bens móveis sujeitos a registo do requerente e do seu agregado familiar não ser superior a 60 vezes o valor do IAS\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
+        "verificado_em": "2026-08-13"
       },
-      "valor_maximo_mensal": {
-        "descricao": "PSU — valor máximo da prestação, em acumulação com rendimentos/outras prestações",
-        "unidade": "EUR/mês",
-        "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea n) — valor a definir por decreto-lei do Governo, ainda não publicado (prazo PRR: 31 ago 2026)",
+      "cit_limiar_multiplicador_ias": {
+        "descricao": "PSU — Componente de Incentivo ao Trabalho (CIT), parcela 1: limiar até ao qual a totalidade dos rendimentos de trabalho conta na íntegra (sem redução), em múltiplos do IAS. Substitui, nesta sessão, o antigo 'coeficiente_cit' (ratio único, null) — a CIT nunca foi um coeficiente único, é uma estrutura de duas parcelas (ver também cit_taxa_acima_limiar).",
+        "unidade": "× IAS",
+        "valor": 0.2,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 28.º/2, alínea a) — \"Da totalidade desses rendimentos, até ao limite de 20 % do valor do IAS\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
+        "verificado_em": "2026-08-13"
+      },
+      "cit_taxa_acima_limiar": {
+        "descricao": "PSU — Componente de Incentivo ao Trabalho (CIT), parcela 2: taxa aplicada à parte dos rendimentos de trabalho que excede cit_limiar_multiplicador_ias. CIT = min(R, cit_limiar×IAS) + cit_taxa_acima_limiar × max(0, R − cit_limiar×IAS), onde R são os rendimentos de trabalho do titular e do agregado, já deduzidos das contribuições obrigatórias para a segurança social (artigo 28.º/3).",
+        "unidade": "fracção (0-1)",
+        "valor": 0.5,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 28.º/2, alínea b) — \"50 % da parte desses rendimentos que exceda o limite previsto na alínea anterior\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
+      },
+      "data_producao_efeitos": {
+        "descricao": "PSU — data a partir da qual o decreto-lei produz efeitos (i.e., a partir da qual a PSU substitui de facto as 13 prestações extintas, artigo 57.º). NÃO é um parâmetro de cálculo — é metadata do próprio diploma, guardada aqui para nunca mais ninguém repetir a estimativa pré-decreto de \"1 de janeiro de 2027\" numa página nova. Distinta da entrada em vigor do diploma em si (1.º dia útil seguinte à publicação, 14 de agosto de 2026) — o decreto-lei já é lei desde 14/08/2026, mas só produz efeitos práticos para os beneficiários a partir de 31/12/2026.",
+        "unidade": "data",
+        "valor": "2026-12-31",
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 63.º — \"O presente decreto-lei entra em vigor no primeiro dia útil seguinte ao da sua publicação e produz efeitos a 31 de dezembro de 2026\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-13"
       },
       "majoracao_parentalidade_mensal": {
-        "descricao": "PSU — majoração por parentalidade, componente do montante global",
-        "unidade": "EUR/mês",
+        "descricao": "PSU — majoração por parentalidade, componente do montante global. NUNCA um valor único: fórmula = (0,80 × IAS) − (ponderação do beneficiário da majoração × valor_referencia_multiplicador_ias × IAS), onde a ponderação é ponderacao_titular/maior/menor consoante QUEM no agregado é o beneficiário. Aplicável pelos períodos do Código do Trabalho a quem, sendo beneficiário do regime geral, não tem direito a subsídio parental inicial/exclusivo do pai/risco clínico na gravidez/risco específico/interrupção da gravidez/adoção por não ter cumprido o prazo de garantia. Não acumulável com outras majorações deste decreto-lei nem com subsídios de idêntica natureza de outro regime de inscrição obrigatória. `valor` fica `null` deliberadamente — não por falta de informação legal (a fórmula está 100% definida), mas porque um número fixo aqui seria sempre incompleto sem saber o beneficiário; o cálculo fica para a FASE 2 (lógica no simulador), nunca hardcoded como euro único.",
+        "unidade": "EUR/mês (fórmula, não valor fixo — ver descrição)",
         "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea o) — valor a definir por decreto-lei do Governo, ainda não publicado",
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 26.º — n.º 2: \"A majoração referida no número anterior corresponde à diferença entre 80 % do IAS e o valor resultante da aplicação da ponderação prevista no n.º 2 do artigo 24.º, relativa ao beneficiário da majoração, ao valor de referência da PSU\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
+        "verificado_em": "2026-08-13"
       },
-      "coeficiente_cit": {
-        "descricao": "PSU — coeficiente da Componente de Incentivo ao Trabalho (CIT)",
-        "unidade": "ratio",
+      "majoracao_desemprego_mensal": {
+        "descricao": "PSU — majoração por desemprego, componente do montante global. Parâmetro NOVO nesta sessão (não existia no YAML anterior). NUNCA um valor único: fórmula = (0,80 × IAS) − PSUglobal, onde PSUglobal é o montante mensal global já calculado nos termos do artigo 25.º/1 (sem esta majoração). Aplicável por agregado familiar a quem, sendo beneficiário do regime geral, está em desemprego involuntário sem direito a subsídio de desemprego (por não ter cumprido o prazo de garantia, ou por o ter esgotado); sem atribuição prévia de subsídio de desemprego, exige ainda 120 dias de trabalho por conta de outrem com registo de remunerações, nos 12 meses imediatamente anteriores ao desemprego. Sem lugar à majoração se PSUglobal já for ≥ 80 % do IAS. Concedida só durante os primeiros 6 meses de atribuição da PSU — cessada a majoração, a PSU normal mantém-se pelo período do artigo 30.º (12 meses, renovável), desde que se mantenham as condições. Não acumulável com outras majorações deste decreto-lei nem com subsídios de idêntica natureza de outro regime de inscrição obrigatória. `valor` fica `null` pelo mesmo motivo de majoracao_parentalidade_mensal — depende do PSUglobal de cada agregado, nunca reduzível a um euro fixo; cálculo para a FASE 2.",
+        "unidade": "EUR/mês (fórmula, não valor fixo — ver descrição)",
         "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alíneas o) e p) — confirma a existência e o mecanismo da CIT, mas não fixa nenhum valor numérico nem intervalo; valor exacto reservado ao decreto-lei do Governo, ainda não publicado",
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 27.º — n.º 1 (fórmula e condições), n.º 2 (corte se PSUglobal ≥ 80% IAS), n.º 3 (120 dias/12 meses sem subsídio prévio), n.º 4 (\"concedida exclusivamente durante os primeiros seis meses de atribuição da PSU\")",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
-      },
-      "ponderacao_outro_adulto": {
-        "descricao": "PSU — peso de cada adulto do agregado (18+) além do requerente, no cálculo de adultos equivalentes",
-        "unidade": "ratio",
-        "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea m) — exige ponderações diferenciadas entre adultos 18+ e crianças/jovens, em regime não globalmente mais desfavorável do que o actual, sem fixar valores; a definir por decreto-lei",
-        "fonte_url": "https://dre.pt",
-        "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
-      },
-      "ponderacao_menor_ate_25": {
-        "descricao": "PSU — peso de cada criança/jovem do agregado, no cálculo de adultos equivalentes",
-        "unidade": "ratio",
-        "valor": null,
-        "vigencia_inicio": "2026-06-25",
-        "referencia_legal": "Lei n.º 36/2026, de 27 de julho, artigo 2.º, alínea m) — exige ponderações diferenciadas entre adultos 18+ e crianças/jovens, em regime não globalmente mais desfavorável do que o actual, sem fixar valores; a definir por decreto-lei",
-        "fonte_url": "https://dre.pt",
-        "fonte_url_complementar": null,
-        "verificado_em": "2026-07-28"
+        "verificado_em": "2026-08-13"
       }
     },
     "subsidio-doenca": {

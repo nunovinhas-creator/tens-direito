@@ -734,15 +734,21 @@ def test_deducao_rendas_nunca_afirma_900_como_ja_utilizavel_na_declaracao_2026()
     assert "2027" in html, "ano da declaração em que os 900€ passam a aplicar-se ausente"
 
 
-# ── PSU — Lei n.º 36/2026 (autorização legislativa), dados/parametros/psu.yaml
-# (sessão de 2026-07-28, migração para o padrão OpenFisca). Ao contrário das
-# outras prestações já migradas, a PSU tem só 1 parâmetro confirmado
-# (limite de património, 60×IAS) — os restantes 6 ficam `valor: null` até
-# ao decreto-lei do Governo (prazo PRR: 31 ago 2026). Os dois testes abaixo
-# cobrem as duas metades desse estado: o valor confirmado é validado pela
-# fórmula real (recalculada, nunca hardcoded), e os pendentes são
-# trancados como pendentes — "null" aqui não é ausência de teste, é a
-# afirmação activa de "ainda não sabemos, e é assim mesmo que deve estar".
+# ── PSU — Decreto-Lei n.º 166/2026, de 13 de agosto, dados/parametros/psu.yaml
+# (FASE 1 de 2 do plano de activação, sessão de 2026-08-13 — só parâmetros
+# + testes-âncora; nenhuma página HTML nem o simulador foram tocados nesta
+# fase, ver Fase 2). O decreto-lei fixa directamente 10 parâmetros
+# numéricos (Valor de Referência, as 3 ponderações de adultos
+# equivalentes, o teto máximo global, o mínimo em euro, os DOIS limites
+# de património SEPARADOS — mobiliário e bens móveis sujeitos a registo,
+# nunca somados — e as 2 parcelas da CIT, que nunca foi um único
+# "coeficiente") + 1 data de produção de efeitos — todos recalculados a
+# partir da fórmula/multiplicador real, nunca hardcoded como cópia solta.
+# As 2 majorações (parentalidade/desemprego) continuam `null` por
+# desenho — não são um "valor a definir mais tarde", são estruturalmente
+# não-redutíveis a um único euro (dependem de qual beneficiário do
+# agregado, ou do PSUglobal já calculado) — ver dados/parametros/psu.yaml
+# para a fórmula completa de cada uma.
 
 _PSU = None
 
@@ -755,17 +761,52 @@ def _param_psu(nome: str):
     return _PSU[nome]["valor"]
 
 
+def test_psu_valor_referencia_0_5x_ias():
+    """Art. 7.º do Decreto-Lei n.º 166/2026 — \"O valor de referência da
+    PSU corresponde a 50 % do valor do indexante dos apoios sociais
+    (IAS)\". Base da fórmula PSUbase = VRP × AE."""
+    assert _param_psu("valor_referencia_multiplicador_ias") == 0.5
+
+
+def test_psu_ponderacoes_adultos_equivalentes_1_0_7_0_5():
+    """Art. 24.º/2 do Decreto-Lei n.º 166/2026 — titular=1, maior=0,7,
+    menor=0,5. NUNCA "menor até 25 anos": o texto legal usa só a
+    maioridade civil (18 anos), sem qualquer corte etário adicional —
+    ver o comentário de renomeação em dados/parametros/psu.yaml, que
+    documenta o nome antigo errado ('ponderacao_menor_ate_25') que este
+    parâmetro substituiu."""
+    assert _param_psu("ponderacao_titular") == 1
+    assert _param_psu("ponderacao_maior") == 0.7
+    assert _param_psu("ponderacao_menor") == 0.5
+
+
+def test_psu_teto_maximo_6x_ias():
+    """Art. 25.º/3 do Decreto-Lei n.º 166/2026 — o teto máximo do montante
+    mensal global (já com majorações) corresponde a seis vezes o IAS."""
+    assert _param_psu("teto_maximo_multiplicador_ias") == 6
+
+
+def test_psu_valor_minimo_10_euros_nao_indexado():
+    """Art. 25.º/5 do Decreto-Lei n.º 166/2026 — abaixo de 10 € não há
+    lugar à atribuição da PSU. Único parâmetro deste ficheiro em euro
+    fixo, nunca indexado ao IAS nem a qualquer outro índice — o próprio
+    artigo não o liga ao IAS, ao contrário de todos os outros limiares
+    da PSU."""
+    assert _param_psu("valor_minimo_euros") == 10.00
+
+
 def test_psu_limite_patrimonio_60x_ias():
-    """O único parâmetro da PSU já confirmado por lei (Lei n.º 36/2026,
-    artigo 2.º/d/v) é o multiplicador do limite de património — nunca o
-    valor em euros em si, que depende do IAS de cada ano. Recalcula
+    """O limite de património MOBILIÁRIO — art. 8.º/1/c do Decreto-Lei
+    n.º 166/2026 (antes só confirmado pela Lei n.º 36/2026, artigo
+    2.º/d/v, como um limite único e combinado — agora separado do de
+    bens móveis sujeitos a registo, ver o teste seguinte). Recalcula
     multiplicador × IAS_2026 (nunca hardcoda "32.227,80") e confirma que
     bate com o que já está publicado em psu-quem-tem-direito.html e
     prestacao-social-unica.html. Se o IAS mudar (Portaria de janeiro) sem
     ninguém rever estas páginas, este teste fica vermelho sozinho — mesmo
     princípio dos outros canários IAS-derivados deste ficheiro."""
-    multiplicador = _param_psu("limite_patrimonio_multiplicador_ias")
-    assert multiplicador == 60, "o multiplicador confirmado pela Lei n.º 36/2026 é 60× IAS — mudou sem rever a fonte legal?"
+    multiplicador = _param_psu("limite_patrimonio_mobiliario_multiplicador_ias")
+    assert multiplicador == 60, "o multiplicador confirmado pelo Decreto-Lei n.º 166/2026 é 60× IAS — mudou sem rever a fonte legal?"
     limite = round(multiplicador * IAS_2026, 2)
     limite_fmt = f"{limite:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     assert limite_fmt == "32.227,80", f"60 × IAS_2026 deveria dar 32.227,80 €, deu {limite_fmt} €"
@@ -775,34 +816,60 @@ def test_psu_limite_patrimonio_60x_ias():
         assert limite_fmt in html, f"{pagina}: limite de património {limite_fmt} € (60 × IAS) ausente do corpo"
 
 
-def test_psu_parametros_ainda_pendentes():
-    """A PSU tem 6 parâmetros deliberadamente `null` em
-    dados/parametros/psu.yaml — a Lei n.º 36/2026 (autorização
-    legislativa) confirma que existem (Valor de Referência, valor
-    máximo, majoração de parentalidade, coeficiente CIT, ponderação de
-    outro adulto, ponderação de menor) mas não fixa nenhum valor
-    numérico; isso fica para o decreto-lei do Governo (ainda não
-    publicado, prazo PRR: 31 ago 2026).
+def test_psu_limite_bens_moveis_registo_60x_ias_separado_do_patrimonio():
+    """Art. 8.º/1/d do Decreto-Lei n.º 166/2026 — limite de bens móveis
+    SUJEITOS A REGISTO (ex.: veículos), também 60× IAS, mas SEPARADO do
+    limite de património mobiliário (art. 8.º/1/c) — dois tectos de 60×
+    IAS cada, nunca somados nem confundidos com um único tecto de 120×
+    IAS. A Lei n.º 36/2026 (só a autorização legislativa, sem o texto
+    operacional) tinha fundido os dois num único parâmetro; o
+    decreto-lei corrige isso."""
+    patrimonio = _param_psu("limite_patrimonio_mobiliario_multiplicador_ias")
+    registo = _param_psu("limite_bens_moveis_registo_multiplicador_ias")
+    assert patrimonio == 60
+    assert registo == 60
+    assert patrimonio == registo, "os dois tectos são independentes (art. 8.º/1/c e /1/d) mas ambos 60× IAS — nunca somar para um único 120× IAS"
 
-    Este teste afirma esse estado pendente como CORRECTO, não como uma
-    lacuna — falhar aqui (ficar vermelho) é o sinal de que alguém
-    preencheu um valor sem passar pela sessão de confirmação exigida.
-    Nunca "corrigir" este teste sem antes confirmar a fonte primária
-    (o decreto-lei publicado) e sem seguir o Passo 4 de
-    .claude/commands/atualizar-cluster-psu.md (confirmação obrigatória
-    antes de tocar em ficheiros)."""
-    pendentes = [
-        "valor_referencia_mensal",
-        "valor_maximo_mensal",
-        "majoracao_parentalidade_mensal",
-        "coeficiente_cit",
-        "ponderacao_outro_adulto",
-        "ponderacao_menor_ate_25",
-    ]
-    for chave in pendentes:
-        assert _param_psu(chave) is None, (
-            f"dados/parametros/psu.yaml: '{chave}' deixou de ser null. Se o decreto-lei da PSU já "
-            "foi publicado com este valor, confirma a fonte primária e segue o Passo 4 de "
-            ".claude/commands/atualizar-cluster-psu.md antes de actualizar este teste — nunca "
-            "silenciar esta asserção sem essa confirmação."
-        )
+
+def test_psu_cit_estrutura_de_duas_parcelas_0_20_e_0_50():
+    """Art. 28.º/2 do Decreto-Lei n.º 166/2026 — a CIT NUNCA foi um único
+    coeficiente (o antigo 'coeficiente_cit', ratio único, foi removido —
+    ver dados/parametros/psu.yaml): é uma estrutura de duas parcelas —
+    a totalidade dos rendimentos de trabalho até 20% do IAS conta na
+    íntegra, e 50% da parte que excede esse limiar. CIT = min(R, 0,20×IAS)
+    + 0,50 × max(0, R − 0,20×IAS)."""
+    assert _param_psu("cit_limiar_multiplicador_ias") == 0.20
+    assert _param_psu("cit_taxa_acima_limiar") == 0.50
+
+
+def test_psu_producao_de_efeitos_31_dezembro_2026_nunca_1_janeiro_2027():
+    """Art. 63.º do Decreto-Lei n.º 166/2026 — \"entra em vigor no
+    primeiro dia útil seguinte ao da sua publicação e produz efeitos a
+    31 de dezembro de 2026\". A data usada em todas as sessões
+    anteriores ao decreto-lei ("1 de janeiro de 2027") era só uma
+    estimativa nunca confirmada por texto legal — este teste tranca a
+    data real, para nenhuma página escrita na FASE 2 repetir a
+    estimativa antiga."""
+    assert _param_psu("data_producao_efeitos") == "2026-12-31"
+
+
+def test_psu_majoracoes_continuam_null_por_desenho_nunca_um_euro_unico():
+    """As duas majorações (parentalidade — art. 26.º; desemprego — art.
+    27.º) ficam `null` DELIBERADAMENTE, mesmo depois do decreto-lei — não
+    por falta de informação legal (ambas as fórmulas estão 100%
+    definidas, ver dados/parametros/psu.yaml), mas porque nenhuma das
+    duas é redutível a um único valor em euros: a de parentalidade
+    depende de QUAL elemento do agregado é o beneficiário (ponderação
+    titular/maior/menor); a de desemprego depende do PSUglobal já
+    calculado desse agregado específico. Este teste falha se alguém
+    tentar "resolver" isto com um número fixo em vez de implementar a
+    fórmula na FASE 2 (lógica do simulador) — nunca silenciar esta
+    asserção sem reler o comentário completo em dados/parametros/psu.yaml."""
+    assert _param_psu("majoracao_parentalidade_mensal") is None, (
+        "majoracao_parentalidade_mensal deixou de ser null — depende do beneficiário, nunca deveria "
+        "ser um único euro fixo neste YAML; a fórmula fica para a lógica do simulador (FASE 2)"
+    )
+    assert _param_psu("majoracao_desemprego_mensal") is None, (
+        "majoracao_desemprego_mensal deixou de ser null — depende do PSUglobal já calculado, nunca "
+        "deveria ser um único euro fixo neste YAML; a fórmula fica para a lógica do simulador (FASE 2)"
+    )
