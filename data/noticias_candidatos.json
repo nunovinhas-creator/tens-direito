@@ -1,163 +1,5 @@
 [
   {
-    "data": "2026-07-29",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 13,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 12,
-      "habitacao_arrendamento": 14,
-      "salario_minimo": 12,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em agosto - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-27",
-        "score": 5,
-        "decisao": "vencedor",
-        "motivo": "score=5, categoria=apoios"
-      },
-      {
-        "titulo": "Recebe apoios da Segurança Social? Veja o calendário de pagamentos do mês de agosto - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-27",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Majoração do subsídio de desemprego: Segurança Social passa a avisar automaticamente - Ekonomista",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-28",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Como funciona a atribuição automática do abono de família pré-natal? - Doutor Finanças",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-07-23",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Despedidos por justa causa mantêm acesso à futura Prestação Social Única - Jornal SOL",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-27",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-22",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Material escolar: os apoios que existem para além dos manuais (e como pedir) - Leak.pt",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-07-25",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-25"
-      },
-      {
-        "titulo": "Pagamentos da Segurança Social agendados para agosto - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-23",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Apoio extraordinário à renda: quem tem direito e como pedir? - DECO Proteste",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-07-24",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-07-24"
-      },
-      {
-        "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-28",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo - Expresso",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-24",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Patrões descartam salário mínimo acima de 970 euros em 2027 - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-24",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em agosto - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 5
-      },
-      {
-        "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão - ECO",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-07-30",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2829,6 +2671,188 @@
       {
         "titulo": "O desemprego aumentou em quase 58,000 pessoas em setembro. - portugalresident.com",
         "feed_nome": "subsidio_desemprego",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-08-13",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 12,
+      "subsidio_desemprego": 11,
+      "rsi": 15,
+      "psu_pensoes": 11,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 14,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 12,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-07",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-07"
+      },
+      {
+        "titulo": "Prestação social única: o que vai mudar nos apoios sociais? - Deco Proteste",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-11",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-06-25"
+      },
+      {
+        "titulo": "Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300 - eco.sapo.pt",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-11",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-11"
+      },
+      {
+        "titulo": "Subsídio de desemprego cortado a mais de seis mil pessoas em 2024 - Rádio Comercial",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-10",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-10"
+      },
+      {
+        "titulo": "Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%) - Human Resources Portugal",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-10",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-10"
+      },
+      {
+        "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única - RTP",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-08",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-08"
+      },
+      {
+        "titulo": "Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma - eco.sapo.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-07",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-07"
+      },
+      {
+        "titulo": "Atribuição do abono de família pré-natal passa a poder ser feita de forma automática - eco.sapo.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-10",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-10"
+      },
+      {
+        "titulo": "Há novidades no Abono de Família Pré-Natal: saiba o que muda - Executive Digest",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-12",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Reforma do abono de família. Se voltasse atrás, Corinne Cahen faria tudo outra vez - contacto.lu",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "O desemprego aumentou em quase 58,000 pessoas em setembro. - Portugal Resident",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-10",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-10"
+      },
+      {
+        "titulo": "Salário mínimo em Portugal aumentou menos que na maioria da UE - Idealista",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-11",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Presidente da República promulga decreto que regula Estatuto do Cuidador Informal - ODigital.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-08-12",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Salários mínimos para a época 2026/27 - Sindicato dos Jogadores",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-07",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Há novidades no Abono de Família Pré-Natal: saiba o que muda - Executive Digest",
+        "feed_nome": "abono_familia",
+        "score": 1
+      },
+      {
+        "titulo": "Salário mínimo em Portugal aumentou menos que na maioria da UE - Idealista",
+        "feed_nome": "salario_minimo",
         "score": 1
       }
     ]

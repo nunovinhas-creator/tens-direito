@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-12",
+      "titulo": "Há novidades no Abono de Família Pré-Natal: saiba o que muda",
+      "fonte_nome": "Executive Digest",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNV0FfdUdQNFgtLWhoQkJWMThxSV9pbEtHS01sNnVnYkNHZTljLXdqeWY4SG9SN2luazNVMWVDdk1pdDN4c3c1d0JpNF9FRzZwTnBQR0VYTFNYUXhtLUpoSk50cllBNTRjeUJnOEF3bExLeF9ybXhEb3QwTkRmUVdJSEtMZVg0a05rUm5wRW5XRjRwcDJEc0pBMXphbGcyc2FQZ2FpbUNvNFdYejVwSVhF?oc=5",
+      "resumo": "Há novidades no Abono de Família Pré-Natal: saiba o que muda Executive Digest",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
+      "data_iso": "2026-08-11",
+      "titulo": "Salário mínimo em Portugal aumentou menos que na maioria da UE",
+      "fonte_nome": "Idealista",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxObm5uaTEwd3JKVG9JUTBaZ2gycV9UZWtzWWxSaHRXdW1adlhncEdOTHEyZmpwS0YtQV9lZWRyZC1OM1p3U01tLVVQVE92ZTNUN1p5bFB3YVBzZFloZDJWWXhqU05KY2dnVDY3YUVwLWZHNlNUSW5KZ3BMUWd1aG4zVFpUZ2xxZFpmRXJKLWF6Q1FFYTdLTEJBMlRPb0RDanRmbmJHc3VLbkMyLVNqSU9xLW5aYUV3eENEWXp1S2tPSEFjSDk5Q1VadnpfMGdaOEnSAc8BQVVfeXFMTm5ubmkxMHdySlRvSVEwWmdoMnFfVGVrc1lsUmh0V3VtWnZYZ3BHTkxxMmZqcEtGLUFfZWVkcmQtTjNad1NNbS1VUFRPdmUzVDdaeWxQd2FQc2RZaGQyVll4alNOSmNnZ1Q2N2FFcC1mRzZTVEluSmdwTFFndWhuM1RaVGdscWRaZkVySi1hekNRRWE3S0xCQTJUT29EQ2p0Zm5iR3N1S25DMi1TaklPcS1uWmFFd3hDRFl6dUtrT0hBY0g5OUNVWnZ6XzBnWjhJ?oc=5",
+      "resumo": "Salário mínimo em Portugal aumentou menos que na maioria da UE Idealista",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-11",
       "titulo": "Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300",
       "fonte_nome": "eco.sapo.pt",
