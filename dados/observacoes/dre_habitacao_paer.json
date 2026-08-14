@@ -1,8 +1,8 @@
 {
   "fonte": "dre_habitacao_paer",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-07-20T18:22:24.984106+00:00",
-  "sha256_conteudo": "a5fb8628a3f4049865330d325c57c2439103c908af9c8bfb2c863c8ea2b41c9e",
+  "data_extracao": "2026-08-14T07:51:20.020575+00:00",
+  "sha256_conteudo": "26b98764994e7ffc0f8a5799279f65ec65a21d58d81464cb2e578389f6a4c910",
   "estado": "OK",
   "valores_extraidos": {
     "titulo": "Resultados de Pesquisa: \"apoio extraordinário à renda\"",
@@ -26,7 +26,6 @@
     "itens_lista": [
       "Decreto-Lei n.º 130/2023 - Diário da República n.º 248/2023, Série I de 2023-12-27",
       "Decreto-Lei n.º 103-B/2023 - Diário da República n.º 217/2023, 1º Suplemento, Série I de 2023-11-09",
-      "Decreto Legislativo Regional n.º 27/2025/A - Diário da República n.º 250/2025, Série I de 2025-12-30",
       "Decreto-Lei n.º 13-A/2025 - Diário da República n.º 48/2025, Suplemento, Série I de 2025-03-10",
       "Decreto-Lei n.º 105/2026 - Diário da República n.º 101/2026, Série I de 2026-05-26",
       "Lei n.º 73-A/2025 - Diário da República n.º 250/2025, Suplemento, Série I de 2025-12-30",
