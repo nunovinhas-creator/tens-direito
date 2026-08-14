@@ -1,0 +1,23 @@
+{
+  "url": "https://www.igefe.mec.pt/Page/Index/199",
+  "url_original": "https://www.igefe.mec.pt/Page/Index/199",
+  "data_acesso": "2026-08-14T07:50:16.994824+00:00",
+  "status": "ok",
+  "conteudo_extraido": {
+    "titulo": "MEGA – Manuais Escolares Gratuitos",
+    "paragrafos": [
+      "LIVRARIAS - MEGA Encontra-se a decorrer o processo de registo de livrarias no âmbito do Programa MEGA – Manuais Escolares Gratuitos , para o ano letivo 2025/2026. Para que possam ser consideradas livrarias associadas ao programa MEGA , as entidades interessadas devem efetuar o respetivo registo com a maior brevidade possível, através das seguintes plataformas: Portal: www.manuaisescolares.pt Aplicação móvel: Edu Rede Escolar (disponível para Android e iOS) Edu Rede Escolar – Apps no Google Play Durante o processo de registo, é obrigatória a apresentação dos documentos de habilitação indicados na plataforma, nomeadamente os que comprovam o exercício legal da a sua atividade. Emissão de Vouchers A emissão dos vouchers para manuais escolares gratuitos terá início a partir do dia 28 de julho de 2025, sendo essencial que as livrarias interessadas concluam o seu registo antes dessa data, de forma a garantir a sua inclusão na rede de distribuição autorizada. Perguntas Frequentes FAQs"
+    ],
+    "itens_lista": [
+      "O IGeFE O IGeFE Conselho Diretivo Estrutura Orgânica Instrumentos de Gestão Instrumentos Legais Recursos Humanos Organograma Legislação Qualidade Projetos Financiados RGPD Consultas Públicas",
+      "PRR PRR Documentção PRR Investimento C06 Investimento C19 Investimento C20",
+      "Login GesEdu (Estab. de Ensino) Docentes Municípios",
+      "Página Inicial",
+      "MEGA – Manuais Escolares Gratuitos",
+      "Portal: www.manuaisescolares.pt",
+      "Aplicação móvel: Edu Rede Escolar (disponível para Android e iOS) Edu Rede Escolar – Apps no Google Play"
+    ]
+  },
+  "nota": "IGeFE, I.P. — entidade que emite os vouchers MEGA aos encarregados de educação; complementa mega_datas/dge_manuais, que só vigiam dge.mec.pt (ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')",
+  "hash_conteudo": "5592a88df6bae0770172565d834d6384569bea49e27db4679b20c39e12112c0d"
+}
