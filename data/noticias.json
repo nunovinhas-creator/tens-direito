@@ -2,10 +2,28 @@
   "itens": [
     {
       "data_iso": "2026-08-13",
+      "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPbk11OGdCOGV2NndQd2tWZFp1aC1Qd1JuQW0xWlJfZW1UM1FwdUlHRjk3cERXUTdHZkJKcWZ3WHlULU9waWhkOXVXZFRtaG5GUFJ6RGQyaFU3ZTBRSUN1d01xRkNkMVd2dDlOUTJyTDUtSUxmNnVRM3I3dGpzVGVLa1E5dVExd2tPVDZnQklFcFRfUUlPMVFYUk45MTNtX19XaFVtX044eXJmUmd2X09wc3QxVVlPVy00N2NSZDBBdmpwRnlXUzlzWVpxcHAxa2VKeDFKb05TQjJXQQ?oc=5",
+      "resumo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única Público",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-13",
       "titulo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada",
       "fonte_nome": "SÁBADO",
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNS0d2R3Q1ZUJXZHN0MnRZTGh2bWwwM1BoZVlnczdVeFlGVE9UZzZwWW5CXzNHZ3hSZVdDSWVTQUhPY0pJS2ZJemdxRDJQYXljdmNUTXoyeVo4RnI2ZkpnS0EzcnRwQU9NS0VXQjZGNTdEMlZ0dzMzQjR5enV5eTBadUQ2b2czUXl6S3ZSYWV4U2tvOF82TEcxY1R4Vy02X3Uwb3hOdU5BVHYxSjNIWWFlTWl2X1BZV29rbjczQtIBtwFBVV95cUxOajRhZGRMNGFmUXFOVHphN2h4cEU5UGpZdVJoblpNeDNqalZBU25SanB3UkFNRHdNdWQ5VDZobkkyQ3hSdHozb0Y4R1N5dXFPcjF5ejRkcVBuSk1CMGpwcC1ULWIweF9SbDFVSXpjQlh4N0JzaG5QZFhoT2NXcWRTTGhSVDdhaDh6R1N5a2JhM0dqeDB6M3Jub2FNcXFhN2h4akt4ZWdmLWdBcjRrT3g4dHd3eThRTzg?oc=5",
       "resumo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada SÁBADO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-13",
+      "titulo": "Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor é extremamente maior",
+      "fonte_nome": "Diário do Comércio",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOSHVfZDllQkpXa3BaREpzMm9waDZOMHJJMExYQXJ6UE0tTzNrNmRNMHFwRzVlUkp4ZERlRXpPdHJ2Y2pRQkZLbVdYRlUwdnpYckhXdlFFWmV0aGtzU1QwaFFranU3VkdvdHFvb0wwbGxDMHZvYjBralRjaG9LZ3V6VjViVWlzNEY1dmJTVUg5QzZYZ3ZlVXRoUERkRTU2UE5ZenVvTzRRdzFBSTlxM2hmN0RvTDE4bjA4NV83Ry1ZRHB5RzdX?oc=5",
+      "resumo": "Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor é extremamente maior Diário do Comércio",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
