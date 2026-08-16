@@ -59,6 +59,11 @@
     "pagina": "calendario-escolar-apoios.html",
     "titulo": "Calendário de Apoios Escolares 2026/2027: todos os prazos"
   },
+  "calendario-pagamentos-psu": {
+    "chip": null,
+    "pagina": "calendario-pagamentos-psu.html",
+    "titulo": "Duração e pagamento da PSU 2026: 12 meses renováveis"
+  },
   "calendario-pagamentos-seguranca-social": {
     "chip": null,
     "pagina": "calendario-pagamentos-seguranca-social.html",
@@ -83,6 +88,11 @@
     "chip": "Como Pedir",
     "pagina": "como-pedir-niss.html",
     "titulo": "Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão"
+  },
+  "como-pedir-psu": {
+    "chip": null,
+    "pagina": "como-pedir-psu.html",
+    "titulo": "Como pedir a PSU 2026: requerimento, prazos e documentos"
   },
   "complemento-solidario-idosos": {
     "chip": "Idosos, Incapacidade e Cuidadores",
