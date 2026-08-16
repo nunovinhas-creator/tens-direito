@@ -149,6 +149,30 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         min_chars_uteis=1500,
         ancora_conteudo=('"indexante dos apoios sociais"',),
     ),
+    # Sentinela irmão do dre_psu, criado a 2026-08-16 (Fase 2, Commit
+    # 5/5 — fecho do sentinela dre_psu original): vigia as Portarias de
+    # regulamentação do Decreto-Lei n.º 166/2026 (a PSU) que o próprio
+    # diploma deixa por publicar — confirmado directamente pelo Nuno na
+    # leitura do texto real (dre.pt continua bloqueado nesta sessão):
+    # artigo 17.º (fórmula de apoios à habitação com carácter de
+    # regularidade, dependente de uma estatística do INE actualizada por
+    # portaria — já documentado como "único ponto ainda sem valor
+    # concreto" em psu-quando-entra-em-vigor.html/simulador-psu.html) e
+    # artigos 32.º/59.º (procedimentos e meios de prova da candidatura).
+    # Mesmo mecanismo de pesquisa de frase exacta do dre_psu/dre_ias, mas
+    # pesquisando pelo NÚMERO do decreto-lei (mesmo padrão robusto de
+    # dre_habitacao_garantia — qualquer Portaria que o regulamente tem de
+    # o citar na ementa) em vez de uma frase descritiva, e filtrando só
+    # resultados do tipo Portaria (nunca Decreto-Lei — esse já existe).
+    # min_chars_uteis 1500 é o ponto de partida honesto (nunca calibrado
+    # contra um runner real nesta sessão — WebFetch/curl bloqueados),
+    # mesmo padrão já usado para dre_habitacao_paer/dre_habitacao_garantia/
+    # dre_ias.
+    "dre_psu_regulamentacao": FonteConfig(
+        nome="DRE — Pesquisa Portaria(s) de regulamentação da PSU",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"Decreto-Lei n.º 166/2026"',),
+    ),
 }
 
 # Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
@@ -206,6 +230,10 @@ _PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
     # real no backend da Segurança Social noutro domínio; nunca
     # acrescentar esse componente a uma fonte nova sem prova própria).
     "dre_ias": PerfilBrowser(stealth=False, headers_custom=False),
+    # dre_psu_regulamentacao: mesmo site, mesma precaução — sem prova
+    # própria de que extra_http_headers/stealth funcionam contra este
+    # backend, herda a calibração já provada para dre_psu/dre_ias.
+    "dre_psu_regulamentacao": PerfilBrowser(stealth=False, headers_custom=False),
 }
 
 
@@ -475,6 +503,40 @@ FONTES_PLAYWRIGHT = [
             # dias). Só conta como "nova" uma Portaria datada a partir da
             # activação desta watchlist.
             "desde": "2026-07-28",
+        },
+    },
+    {
+        "slug": "dre_psu_regulamentacao",
+        # Sentinela irmão do dre_psu (2026-08-16, Fase 2, Commit 5/5) —
+        # ver o comentário completo junto à entrada em _FONTE_CONFIGS.
+        # Vigia Portaria(s) que regulamentem o DL 166/2026 (art. 17.º
+        # renda de referência; arts. 32.º/59.º procedimentos e meios de
+        # prova). Pesquisa pelo número do decreto-lei (padrão robusto de
+        # dre_habitacao_garantia), filtrando só resultados do tipo
+        # Portaria.
+        "url": "https://diariodarepublica.pt/dr/home",
+        "nota": ("DRE — vigiar Portaria(s) de regulamentação da PSU "
+                 "(art. 17.º renda de referência; arts. 32.º/59.º "
+                 "procedimentos e meios de prova)"),
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"Decreto-Lei n.º 166/2026"',
+        },
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
+        },
+        "detectar_portaria": {
+            "chave_aviso": "dre_psu_regulamentacao_portaria_detectada",
+            "mensagem_log": "%s: Portaria de regulamentação da PSU detectada em "
+                             "DRE — confirmar se é o art. 17.º ou os arts. "
+                             "32.º/59.º!\n%s",
+            # Corte de recência: tecnicamente redundante (o DL 166/2026 é
+            # novo de 13/08/2026, não pode haver Portaria antiga a citá-lo)
+            # — mantido por hábito defensivo consistente com
+            # dre_habitacao_paer/dre_habitacao_garantia/dre_ias, custo zero.
+            "desde": "2026-08-16",
         },
     },
 ]
@@ -961,10 +1023,29 @@ def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
     """Detecta o decreto-lei da PSU — ver `_detectar_decreto_lei_generico`
     para o mecanismo completo. Mantido como função própria (em vez de só
     uma chamada inline) porque `tests/test_dre_psu_pesquisa.py` a importa
-    directamente por nome."""
+    directamente por nome; assinatura e fonte config (`_FONTE_CONFIGS`/
+    `FONTES_PLAYWRIGHT`) 100% inalteradas desde a Issue #54.
+
+    Corte de recência acrescentado a 2026-08-16 (Fase 2, Commit 5/5 —
+    fecho do sentinela): o Decreto-Lei n.º 166/2026, de 13 de agosto, foi
+    publicado — sem este corte, a pesquisa por '"prestação social única"'
+    encontraria sempre o próprio DL n.º 166/2026 nos resultados e
+    dispararia esta Issue todos os dias, para sempre (mesma classe de
+    falso positivo já visto no PAER, Issue #73, só que desta vez sobre o
+    seu próprio alvo já conhecido, não um alvo antigo). `data_minima`
+    hardcoded aqui (nunca no dict de `FONTES_PLAYWRIGHT`, que
+    `tests/test_dre_habitacao_watchlist.py::test_dre_psu_continua_a_usar_o_mecanismo_antigo_intocado`
+    tranca à forma exacta de antes — `"detectar_decreto_lei" not in
+    fonte`) — a fonte continua activa: um FUTURO Decreto-Lei que também
+    mencione "prestação social única" (ex.: uma alteração ao regime já
+    criado) ainda dispara; só o DL 166/2026 já conhecido deixa de
+    re-disparar todos os dias. Sentinela irmão para o que falta
+    regulamentar por Portaria (art. 17.º; arts. 32.º/59.º) —
+    `dre_psu_regulamentacao`, mais abaixo neste ficheiro."""
     return _detectar_decreto_lei_generico(
         slug, conteudo, "dre_psu_decreto_detectado",
         "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
+        data_minima="2026-08-16",
     )
 
 

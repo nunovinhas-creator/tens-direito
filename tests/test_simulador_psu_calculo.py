@@ -4,11 +4,10 @@ executados num browser real (Chromium headless via Playwright) — extrai
 o JS inline directamente do HTML real, nunca uma cópia à parte (mesma
 filosofia de test_pesquisa_hero.py/test_pesquisa_ranking.py).
 
-Todos os parâmetros usados aqui são FICTÍCIOS, criados só para validar
-a mecânica da fórmula (adultos equivalentes, redução gradual da CIT,
-limite de 50%, agregados de vários tamanhos) — nunca confundir com os
-valores de PARAMETROS_PSU do ficheiro real, que são todos `null` até
-ao decreto-lei (ver CLAUDE.md "IMPACTO DA PSU").
+Activado na Fase 2 (2026-08-13, Decreto-Lei n.º 166/2026): ao contrário
+da versão anterior deste ficheiro, os parâmetros usados aqui são os
+REAIS de produção (IAS 2026 = 537,13 €, valores fixados pelo decreto-lei),
+nunca fictícios — a fórmula já não está "à espera do decreto-lei".
 
 Se o Chromium do Playwright não estiver disponível no ambiente onde os
 testes correm, o módulo inteiro é ignorado (skip) em vez de falhar.
@@ -33,16 +32,31 @@ def _extrair_script_inline(marcador: str) -> str:
 
 CALCULO_JS = _extrair_script_inline("function calcularPSU")
 
-# Parâmetros fictícios de teste — nunca reais. Valores redondos e
-# artificiais escolhidos só para tornar as contas fáceis de verificar
-# à mão (RSI e IAS reais nunca são exactamente 200/100).
-PARAMS_FIXTURE_TESTE = {
-    "valorReferencia": {"valor": 200, "fonte": "fixture de teste", "verificado_em": None},
-    "valorMaximo": {"valor": 500, "fonte": "fixture de teste", "verificado_em": None},
-    "coeficienteCIT": {"valor": 1, "min": 0.5, "max": 1, "fonte": "fixture de teste", "verificado_em": None},
-    "majoracaoParentalidade": {"valor": 50, "fonte": "fixture de teste", "verificado_em": None},
-    "adultosEquivalentes": {"requerente": 1, "outroAdulto": 0.5, "menorAte25": 0.5, "fonte": "fixture de teste", "verificado_em": None},
-    "limitePatrimonio": {"multiplicadorIAS": 60, "fonte": "fixture de teste", "verificado_em": None},
+# ── Valores reais de produção (Decreto-Lei n.º 166/2026) ────────────────
+# Nunca hardcoded como cópia solta dos números finais — recalculados aqui
+# a partir do IAS e dos multiplicadores/ponderações do decreto-lei, exactamente
+# como o JS do simulador faz a partir de dados/parametros.json. Se o IAS
+# mudar (Portaria nova), estes testes continuam correctos sem qualquer edição.
+IAS_2026 = 537.13
+VRP = 0.5 * IAS_2026
+TETO = 6 * IAS_2026
+VALOR_MINIMO = 10.00
+PONDERACAO_TITULAR = 1
+PONDERACAO_MAIOR = 0.7
+PONDERACAO_MENOR = 0.5
+CIT_LIMIAR = 0.20 * IAS_2026
+CIT_TAXA_ACIMA_LIMIAR = 0.50
+
+PARAMETROS_PRODUCAO = {
+    "valorReferencia": VRP,
+    "teto": TETO,
+    "valorMinimo": VALOR_MINIMO,
+    "ponderacaoTitular": PONDERACAO_TITULAR,
+    "ponderacaoMaior": PONDERACAO_MAIOR,
+    "ponderacaoMenor": PONDERACAO_MENOR,
+    "citLimiar": CIT_LIMIAR,
+    "citTaxaAcimaLimiar": CIT_TAXA_ACIMA_LIMIAR,
+    "dataProducaoEfeitos": "2026-12-31",
 }
 
 
@@ -90,136 +104,204 @@ def pagina():
 
 
 def _calcular(pagina, params, entrada):
+    entrada_completa = {
+        "numAdultos": 1, "numMenores": 0,
+        "rendimentoTrabalho": 0, "outrosRendimentos": 0,
+        "majoracao": "nenhuma", "beneficiarioMajoracao": "titular",
+        **entrada,
+    }
     return pagina.evaluate(
         "([params, entrada]) => calcularPSU(params, entrada)",
-        [params, entrada],
+        [params, entrada_completa],
     )
 
 
-# ── Estado de produção: nunca calcula com os valores reais (todos null) ────
-def test_parametros_producao_ficam_sempre_em_aguarda_decreto(pagina):
-    parametros_producao = pagina.evaluate("PARAMETROS_PSU")
-    resultado = _calcular(pagina, parametros_producao, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "desempregado_apto", "temFilhos": False,
-    })
-    assert resultado["estado"] == "AGUARDA_DECRETO"
-    assert "valor" not in resultado
+def _aprox(a, b, tol=0.005):
+    return abs(a - b) < tol
 
 
-def test_fixture_com_valor_referencia_null_fica_em_aguarda_decreto(pagina):
-    params = dict(PARAMS_FIXTURE_TESTE)
-    params["valorReferencia"] = {"valor": None, "fonte": "x", "verificado_em": None}
-    resultado = _calcular(pagina, params, {"numAdultos": 1, "numMenoresAte25": 0})
-    assert resultado["estado"] == "AGUARDA_DECRETO"
-
-
-# ── Adultos equivalentes — agregados de vários tamanhos ─────────────────────
-def test_adultos_equivalentes_pessoa_sozinha(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": False,
-    })
+# ── Adultos equivalentes — agregados de vários tamanhos ─────────────────
+def test_titular_sozinho_zero_rendimentos_da_exactamente_o_vrp(pagina):
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {"numAdultos": 1, "numMenores": 0})
     assert resultado["adultosEquivalentes"] == 1
+    assert _aprox(resultado["psuBase"], VRP)
+    assert _aprox(resultado["valor"], VRP)
 
 
-def test_adultos_equivalentes_casal_sem_filhos(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 2, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": False,
+def test_titular_mais_um_maior_e_um_menor_multiplica_pelas_ponderacoes(pagina):
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {"numAdultos": 2, "numMenores": 1})
+    ae_esperado = PONDERACAO_TITULAR + PONDERACAO_MAIOR + PONDERACAO_MENOR  # 1 + 0.7 + 0.5 = 2.2
+    assert _aprox(resultado["adultosEquivalentes"], ae_esperado)
+    assert _aprox(resultado["psuBase"], VRP * ae_esperado)
+    assert _aprox(resultado["valor"], VRP * ae_esperado)
+
+
+def test_familia_grande_soma_todas_as_ponderacoes(pagina):
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {"numAdultos": 2, "numMenores": 3})
+    ae_esperado = PONDERACAO_TITULAR + PONDERACAO_MAIOR + 3 * PONDERACAO_MENOR  # 1 + 0.7 + 1.5 = 3.2
+    assert _aprox(resultado["adultosEquivalentes"], ae_esperado)
+
+
+# ── CIT — duas parcelas (artigo 28.º/2) ──────────────────────────────────
+def test_cit_dentro_do_limiar_conta_na_integra(pagina):
+    # Rendimento de trabalho abaixo do limiar (107,43 €) — CIT = rendimento na íntegra.
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "rendimentoTrabalho": 50,
     })
-    # 1 (requerente) + 0.5 (outro adulto) = 1.5
-    assert resultado["adultosEquivalentes"] == 1.5
+    assert _aprox(resultado["cit"], 50)
+    # Efeito líquido: rendimento de trabalho dentro do limiar não reduz o valor.
+    assert _aprox(resultado["valor"], VRP)
 
 
-def test_adultos_equivalentes_familia_grande(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 2, "numMenoresAte25": 3, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": False,
+def test_cit_acima_do_limiar_ativa_as_duas_parcelas(pagina):
+    # Rendimento de trabalho de 300€ excede o limiar de 107,43€ — a CIT
+    # cobre o limiar na íntegra + 50% do excedente (artigo 28.º/2, a) e b)).
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "rendimentoTrabalho": 300,
     })
-    # 1 + 0.5 (outro adulto) + 3 * 0.5 (menores) = 3.0
-    assert resultado["adultosEquivalentes"] == 3.0
+    cit_esperada = CIT_LIMIAR + CIT_TAXA_ACIMA_LIMIAR * (300 - CIT_LIMIAR)
+    assert _aprox(resultado["cit"], cit_esperada)
+    valor_esperado = max(0, VRP + cit_esperada - 300)
+    assert _aprox(resultado["valor"], valor_esperado)
+    # Confirma que o rendimento de trabalho nunca é "tudo ou nada": o
+    # simulador dá sempre mais valor do que se a CIT não existisse.
+    assert resultado["valor"] > max(0, VRP - 300)
 
 
-# ── CIT — redução gradual, nunca abaixo de 50% do valor base ────────────────
-def test_cit_sem_rendimento_proprio_e_o_valor_base_completo(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "desempregado_apto", "temFilhos": False,
-        "rendimentoProprioMensal": 0, "limiarReducaoCIT": 400,
-    })
-    # citBase = 200 * 1 = 200
-    assert resultado["cit"] == 200
-
-
-def test_cit_reduz_gradualmente_com_rendimento_proprio(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "desempregado_apto", "temFilhos": False,
-        "rendimentoProprioMensal": 200, "limiarReducaoCIT": 400,
-    })
-    # fracaoRestante = max(0.5, 1 - 200/400) = max(0.5, 0.5) = 0.5 -> cit = 100
-    assert resultado["cit"] == 100
-
-
-def test_cit_nunca_desce_abaixo_de_50_por_cento_do_base(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "desempregado_apto", "temFilhos": False,
-        # rendimento próprio muito acima do limiar — a fracaoRestante ficaria
-        # negativa sem o piso de 0.5
-        "rendimentoProprioMensal": 4000, "limiarReducaoCIT": 400,
-    })
-    assert resultado["cit"] == 100  # 50% de 200, nunca menos
-
-
-def test_cit_e_zero_para_quem_ja_trabalha(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": False,
-        "rendimentoProprioMensal": 0, "limiarReducaoCIT": 400,
+def test_outros_rendimentos_reduzem_o_valor_sem_beneficiar_da_cit(pagina):
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": 100,
     })
     assert resultado["cit"] == 0
+    assert _aprox(resultado["valor"], VRP - 100)
 
 
-# ── Majoração parentalidade ──────────────────────────────────────────────────
-def test_majoracao_parentalidade_aplicada_so_com_filhos(pagina):
-    com_filhos = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": True,
+# ── Teto máximo (6×IAS) ──────────────────────────────────────────────────
+def test_agregado_muito_grande_e_cortado_no_teto(pagina):
+    # AE = 1 + 19×0,7 (19 outros maiores) + 5×0,5 (5 menores) = 16,8 ->
+    # psuBase bem acima do teto de 6×IAS — o resultado final nunca pode
+    # exceder o teto, por maior que seja o agregado.
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {"numAdultos": 20, "numMenores": 5})
+    ae = PONDERACAO_TITULAR + 19 * PONDERACAO_MAIOR + 5 * PONDERACAO_MENOR
+    assert VRP * ae > TETO, "pré-condição do teste: o psuBase tem de exceder o teto"
+    assert _aprox(resultado["valor"], TETO)
+
+
+# ── Mínimo de 10 € (artigo 25.º/5) ────────────────────────────────────────
+def test_valor_abaixo_do_minimo_fica_sem_prestacao(pagina):
+    # Titular sozinho, psuBase = VRP (268,565€); outros rendimentos deixam
+    # o resultado positivo mas abaixo dos 10€ — não há lugar à prestação.
+    outros_rendimentos = VRP - 6.565  # deixa ~6,57€, abaixo do mínimo
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": outros_rendimentos,
     })
-    sem_filhos = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "outra", "temFilhos": False,
-    })
-    assert com_filhos["majoracao"] == 50
-    assert sem_filhos["majoracao"] == 0
+    assert resultado["abaixoDoMinimo"] is True
+    assert resultado["valor"] == 0
 
 
-# ── Valor final — rendimentos do agregado e limite máximo ───────────────────
-def test_rendimentos_do_agregado_reduzem_o_valor_final(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 150,
-        "situacaoLaboral": "outra", "temFilhos": False,
+def test_valor_exactamente_no_minimo_ou_acima_mantem_se(pagina):
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": VRP - 50,
     })
-    # base = 200 * 1 = 200; sem CIT nem majoração; 200 - 150 = 50
-    assert resultado["valor"] == 50
+    assert resultado["abaixoDoMinimo"] is False
+    assert _aprox(resultado["valor"], 50)
 
 
 def test_valor_nunca_fica_negativo(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 1, "numMenoresAte25": 0, "rendimentoAgregadoMensal": 10000,
-        "situacaoLaboral": "outra", "temFilhos": False,
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": 100000,
     })
     assert resultado["valor"] == 0
 
 
-def test_valor_e_limitado_pelo_valor_maximo(pagina):
-    resultado = _calcular(pagina, PARAMS_FIXTURE_TESTE, {
-        "numAdultos": 2, "numMenoresAte25": 3, "rendimentoAgregadoMensal": 0,
-        "situacaoLaboral": "desempregado_apto", "temFilhos": True,
-        "rendimentoProprioMensal": 0, "limiarReducaoCIT": 400,
+# ── Majoração por parentalidade (artigo 26.º) ────────────────────────────
+def test_majoracao_parentalidade_titular_completa_ate_80_por_cento_do_ias(pagina):
+    # Titular sozinho, 0 rendimentos: psuBase = VRP = valor atribuído ao
+    # titular pela ponderação da fórmula base -> majoração = 80%IAS - VRP,
+    # e o resultado final sobe exactamente a 80% do IAS.
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "majoracao": "parentalidade", "beneficiarioMajoracao": "titular",
     })
-    # base = 200 * 3.0 = 600; cit = 200; majoracao = 50 -> bruto = 850,
-    # mas valorMaximo da fixture é 500
-    assert resultado["valor"] == 500
+    majoracao_esperada = 0.80 * IAS_2026 - PONDERACAO_TITULAR * VRP
+    assert _aprox(resultado["majoracao"], majoracao_esperada)
+    assert _aprox(resultado["valor"], 0.80 * IAS_2026)
+
+
+def test_majoracao_parentalidade_varia_com_o_beneficiario(pagina):
+    resultado_maior = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "majoracao": "parentalidade", "beneficiarioMajoracao": "maior",
+    })
+    resultado_menor = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "majoracao": "parentalidade", "beneficiarioMajoracao": "menor",
+    })
+    majoracao_maior_esperada = 0.80 * IAS_2026 - PONDERACAO_MAIOR * VRP
+    majoracao_menor_esperada = 0.80 * IAS_2026 - PONDERACAO_MENOR * VRP
+    assert _aprox(resultado_maior["majoracao"], majoracao_maior_esperada)
+    assert _aprox(resultado_menor["majoracao"], majoracao_menor_esperada)
+    # Ponderação menor (0,5) < ponderação maior (0,7) -> a diferença ao
+    # limiar de 80% do IAS é maior, logo a majoração é maior.
+    assert resultado_menor["majoracao"] > resultado_maior["majoracao"]
+
+
+# ── Majoração por desemprego (artigo 27.º) ────────────────────────────────
+def test_majoracao_desemprego_eleva_ate_80_por_cento_do_ias_quando_aplicavel(pagina):
+    # Titular sozinho com outros rendimentos que deixam o PSUglobal abaixo
+    # de 80% do IAS — a majoração de desemprego eleva exactamente até lá.
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": 50,
+        "majoracao": "desemprego",
+    })
+    assert resultado["majoracao"] > 0
+    assert _aprox(resultado["valor"], 0.80 * IAS_2026)
+
+
+def test_majoracao_desemprego_nao_se_aplica_se_psuglobal_ja_e_80_por_cento_do_ias(pagina):
+    # Titular + 1 maior, 0 rendimentos: psuBase já excede 80% do IAS —
+    # "sem lugar à majoração se PSUglobal já for ≥ 80% do IAS" (artigo 27.º/2).
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+        "numAdultos": 2, "numMenores": 0, "majoracao": "desemprego",
+    })
+    psu_global_sem_majoracao = VRP * (PONDERACAO_TITULAR + PONDERACAO_MAIOR)
+    assert psu_global_sem_majoracao >= 0.80 * IAS_2026, "pré-condição do teste"
+    assert resultado["majoracao"] == 0
+    assert _aprox(resultado["valor"], psu_global_sem_majoracao)
+
+
+def test_majoracoes_nunca_acumulaveis_simulador_so_aplica_uma(pagina):
+    # "nenhuma" é o valor por omissão do select — confirma que sem
+    # escolha explícita nenhuma majoração é aplicada.
+    resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {"numAdultos": 1, "numMenores": 0, "majoracao": "nenhuma"})
+    assert resultado["majoracao"] == 0
+
+
+def test_majoracao_valor_nao_reconhecido_aplica_zero_por_omissao(pagina):
+    # Fail-safe explícito: calcularPSU() só reconhece exactamente
+    # "parentalidade" ou "desemprego" — qualquer outro valor de
+    # input.majoracao (incluindo um que sugira "as duas", ou uma string
+    # vazia) tem de resultar em ZERO majoração, nunca num crash nem numa
+    # soma acidental das duas. O <select> HTML já impede este cenário na
+    # prática (só 3 opções possíveis), mas a função calcularPSU() em si
+    # nunca deve confiar só nisso — testa-se aqui directamente, com um
+    # valor a tentar deliberadamente pedir "as duas".
+    for valor_invalido in ("ambas", "parentalidade_e_desemprego", "xyz", ""):
+        resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+            "numAdultos": 1, "numMenores": 0, "majoracao": valor_invalido,
+        })
+        assert resultado["majoracao"] == 0, (
+            f"input.majoracao='{valor_invalido}' devia aplicar ZERO majoração, "
+            f"aplicou {resultado['majoracao']}"
+        )
+        assert _aprox(resultado["valor"], VRP), (
+            f"input.majoracao='{valor_invalido}' devia dar o mesmo resultado que 'nenhuma' "
+            f"(VRP={VRP}), deu {resultado['valor']}"
+        )
+
+
+# ── Coerência com o artigo do decreto-lei citado no próprio ficheiro ────
+def test_nenhum_valor_de_producao_fica_null(pagina):
+    parametros = pagina.evaluate("PARAMETROS_PSU")
+    assert parametros is None, (
+        "PARAMETROS_PSU só é preenchido depois do fetch de /dados/parametros.json "
+        "em runtime — numa página sem fetch (esta fixture de teste) tem de "
+        "continuar null; os testes acima passam os parâmetros directamente."
+    )

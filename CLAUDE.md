@@ -2205,15 +2205,31 @@ caráter de regularidade" entram nos rendimentos considerados; e a lei
 prevê revisão do CSI em 90 dias para não deixar ninguém excluído com a
 extinção da pensão social de velhice.
 
-Aguarda: decreto-lei com valores + publicação DR.
-Prazo PRR decreto-lei: 31 ago 2026 (dentro da janela de 120 dias da
-autorização legislativa).
-Entrada em vigor para beneficiários: 1 jan 2027 (texto inicial, não confirmado pelo decreto-lei).
+**FECHADO — decreto-lei publicado (2026-08-13).** O Decreto-Lei n.º
+166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I),
+foi publicado e está **em vigor desde 14 de agosto de 2026** — dentro do
+prazo PRR (31 ago 2026) e da janela de 120 dias da autorização
+legislativa (Lei n.º 36/2026). **Produção de efeitos para
+beneficiários: 31 de dezembro de 2026 (artigo 63.º)** — corrige o "1 de
+janeiro de 2027" que este ficheiro citava como "texto inicial, não
+confirmado" antes do decreto-lei sair; o valor real e definitivo é
+31/12/2026, nunca 1/1/2027. Todos os valores, ponderações e a fórmula de
+cálculo estão fixados directamente no diploma — ver
+`dados/parametros/psu.yaml` para os valores e a secção "Plano de acção"
+mais abaixo para o detalhe completo da activação (Fase 2, Commits 1-4,
+concluída a 2026-08-16).
+
 Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-social.html` a 3 jul 2026
 (5.ª página filha — ver "PÁGINAS PUBLICADAS"). As 6 páginas do cluster
 (pillar + 5 filhas) foram actualizadas a 18/07/2026 com a milestone da
-promulgação, e de novo a 28/07/2026 com a publicação da Lei n.º 36/2026 em
-DR — ver entradas de revisão no fim deste ficheiro.
+promulgação, a 28/07/2026 com a publicação da Lei n.º 36/2026 em DR, e a
+2026-08-13/16 com os valores reais do decreto-lei (Fase 2) — ver
+entradas de revisão no fim deste ficheiro. **Mais 3 páginas novas
+publicadas na Fase 2**: `como-pedir-psu.html` e
+`calendario-pagamentos-psu.html` (Commit 2/5), e `simulador-psu.html`
+activado — `index,follow`, fórmula real, banner de vigência ligado a
+`data_producao_efeitos` (Commit 3/5) — cluster com 8 páginas no total
+(pillar + 7 filhas, incluindo o simulador).
 
 **Sentinela automático (`dre_psu`) — CORRIGIDO DE VEZ a 2026-07-07
 (Issue #54), com o mecanismo confirmado num runner com browser
@@ -2255,6 +2271,69 @@ contra o backend real). Testes: `tests/test_dre_psu_pesquisa.py`
 (9 casos, fixtures do texto real do diagnóstico — índice inteiro nunca
 OK, eco sem aspas nunca OK, resultados actuais reais nunca disparam,
 decreto dispara, falso positivo antigo não dispara).
+
+**Sentinela FECHADO/RECONFIGURADO — 2026-08-16 (Fase 2, Commit 5/5)**: o
+sinal que `dre_psu` vigiava (publicação do decreto-lei) já cumpriu a
+função — o Decreto-Lei n.º 166/2026 está publicado. Decisão tomada:
+**nem desactivar por completo, nem deixar tal e qual** — as duas coisas
+seriam erradas por motivos diferentes.
+
+- **Porque não deixar tal e qual**: `_detectar_decreto_psu()` nunca teve
+  corte de recência (`data_minima`) — não fazia falta enquanto a PSU não
+  tinha decreto-lei nenhum. Agora que tem, a pesquisa por `'"prestação
+  social única"'` encontra sempre o próprio DL n.º 166/2026 nos
+  resultados — sem correcção, isto dispararia a Issue "decreto-lei PSU
+  detectado" **todos os dias, para sempre** (mesma classe de falso
+  positivo já visto no PAER, Issue #73, só que desta vez sobre o
+  próprio alvo já conhecido do sentinela, não um alvo antigo alheio).
+- **Porque não desactivar por completo**: `dre_psu` continua útil como
+  rede de segurança geral — um decreto-lei FUTURO que também mencione
+  "prestação social única" (ex.: uma alteração ao regime já criado)
+  ainda deve disparar. E há dois pontos reais e concretos que o
+  Decreto-Lei n.º 166/2026 deixa por regulamentar (confirmados
+  directamente pelo Nuno na leitura do texto real — dre.pt continua
+  bloqueado nesta sessão, mesma limitação de sempre): o **artigo 17.º**
+  (fórmula de apoios à habitação com carácter de regularidade,
+  dependente de uma estatística do INE actualizada por portaria — já
+  documentado como "único ponto ainda sem valor concreto" em
+  `psu-quando-entra-em-vigor.html`/`simulador-psu.html`) e os
+  **artigos 32.º/59.º** (procedimentos e meios de prova da candidatura).
+
+**Correcção aplicada**: `_detectar_decreto_psu()` ganhou
+`data_minima="2026-08-16"`, hardcoded dentro da função — **nunca** no
+dict de `FONTES_PLAYWRIGHT` (que `tests/test_dre_habitacao_watchlist.py::test_dre_psu_continua_a_usar_o_mecanismo_antigo_intocado`
+tranca à forma exacta de antes: `"detectar_decreto_lei" not in fonte`).
+O próprio DL n.º 166/2026 (datado 13/08/2026, antes do corte) deixa de
+disparar; um decreto-lei futuro datado depois do corte continua a
+disparar normalmente. `dre_psu` mantém-se em `SLUGS_MONITORIZADOS`,
+`FONTES_PLAYWRIGHT` e no bloco de Issue de `pipeline-diario.yml`, 100%
+inalterados na forma.
+
+**Sentinela irmão novo — `dre_psu_regulamentacao`**: mesmo mecanismo de
+pesquisa de frase exacta, mas a pesquisar pelo **número** do
+decreto-lei (`'"Decreto-Lei n.º 166/2026"'`, mesmo padrão robusto de
+`dre_habitacao_garantia` — qualquer Portaria que o regulamente tem de o
+citar na ementa) em vez de uma frase descritiva, e a filtrar só
+resultados do tipo **Portaria** (`detectar_portaria`, mesmo mecanismo do
+`dre_ias`) — nunca Decreto-Lei, que já não interessa a este sentinela
+(é trabalho do `dre_psu`). Corte de recência `"desde": "2026-08-16"`
+acrescentado por hábito defensivo consistente (tecnicamente redundante
+— o DL 166/2026 é demasiado novo para ter Portarias antigas a citá-lo).
+Cobre os dois pontos em aberto (art. 17.º; arts. 32.º/59.º) com um único
+sentinela — quando disparar, a Issue automática pede para confirmar qual
+dos dois é. Nunca calibrado contra um runner real nesta sessão
+(WebFetch/curl bloqueados) — a 1.ª corrida real do pipeline confirma
+`min_chars_uteis`, mesmo padrão honesto já usado para
+`dre_habitacao_paer`/`dre_habitacao_garantia`/`dre_ias`.
+
+Testes: `tests/test_dre_psu_regulamentacao.py` (15 casos) — confirma que
+`dre_psu` mantém config/perfil/forma 100% inalterados, que o próprio DL
+166/2026 já não dispara `dre_psu` (regressão do achado real desta
+sessão), que um decreto-lei futuro sobre a PSU ainda dispara `dre_psu`,
+e cobre `dre_psu_regulamentacao` (config, presença em
+`FONTES_PLAYWRIGHT`, corte de recência, detecção por item — Portaria
+dispara, Decreto-Lei nunca dispara este sentinela específico, conteúdo
+vazio nunca dispara).
 
 ### Páginas NÃO afectadas pela PSU
 
@@ -2318,61 +2397,74 @@ avançados para 18/07/2026 nas 3 páginas HTML tocadas.
 
 ### Páginas com aviso PSU activo
 
-Manter avisos de transição até DR publicado:
+Avisos de transição activos até **31 de dezembro de 2026** (produção de
+efeitos, artigo 63.º do DL 166/2026) — reescritos na Fase 2 (Commit 4/5,
+2026-08-16) com o facto real (conversão oficiosa, artigo 57.º), a
+substituir o texto pré-decreto ("aprovada... aguarda decreto-lei"):
 
 | Página | Absorção | Aviso |
 |---|---|---|
-| `rsi.html` | Absorvido integralmente | "RSI será absorvido pela PSU" |
-| `subsidio-desemprego.html` | Só subsídio SOCIAL absorvido | "Subsídio SOCIAL absorvido; CONTRIBUTIVO não afectado" |
-| `subsidio-parental.html` | Só apoios NÃO contributivos absorvidos | "Apoios não-contributivos absorvidos; contributivo mantém-se" |
+| `rsi.html` | Absorvido integralmente | DL 166/2026 em vigor, conversão oficiosa (art. 57.º) a partir de 31/12/2026 |
+| `subsidio-desemprego.html` | Só subsídio SOCIAL absorvido | Idem; CONTRIBUTIVO não afectado |
+| `subsidio-parental.html` | Só apoios NÃO contributivos absorvidos | Idem; contributivo mantém-se |
 
-### Cluster PSU — páginas em espera (NÃO criar ainda)
+### Cluster PSU — activado (Fase 2, 2026-08-16)
 
-| Página | Gatilho para escrever |
-|---|---|
-| `como-pedir-psu.html` | Decreto-lei da PSU publicado em dre.pt com procedimento definido |
-| `calendario-pagamentos-psu.html` | Decreto-lei da PSU publicado em dre.pt com valores e datas |
+**As duas páginas antes "em espera" já estão publicadas** (Commit 2/5):
+`como-pedir-psu.html` e `calendario-pagamentos-psu.html`.
 
-**`simulador-psu.html` já existe** (desde 3 jul 2026), pronto e testado
-(`tests/test_simulador_psu_calculo.py`), mas deliberadamente **não publicado**
-— fora de `sitemap.xml`, `scripts/pesquisa.js` e `data/clusters.json`, com
-`<meta name="robots" content="noindex, nofollow">` e `ESTADO_SIMULADOR =
-'AGUARDA_DECRETO'`. Publicar (não criar) é o gatilho: decreto-lei da PSU
-publicado em dre.pt com Valor de Referência, valor máximo e coeficiente CIT
-confirmados — ver o Passo 5a de `.claude/commands/atualizar-cluster-psu.md`.
+**`simulador-psu.html` activado** (Commit 3/5, 2026-08-16): `robots`
+passou de `noindex,nofollow` para `index,follow`, `ESTADO_SIMULADOR`
+passou de `'AGUARDA_DECRETO'` para dinâmico (fetch de
+`dados/parametros.json` em runtime, mesmo padrão dos outros
+simuladores), fórmula real implementada e testada
+(`tests/test_simulador_psu_calculo.py`, 18 golden tests), banner de
+vigência ligado a `data_producao_efeitos` do YAML (nunca uma string
+solta) — mostra "simulação informativa, pagamento só a partir de
+31/12/2026" enquanto essa data não chegar. Artigo 17.º (apoios à
+habitação com carácter de regularidade) explicitamente **não
+implementado** — campo marcado "não considerado nesta versão", nunca
+inventado um valor sem a Portaria de regulamentação (ver sentinela
+`dre_psu_regulamentacao` acima).
 
-### Plano de acção (quando DR for publicado)
+### Plano de acção — CONCLUÍDO (Fase 2, Commits 1-4, 2026-08-16)
 
-1. Actualizar `prestacao-social-unica.html` com valores reais do decreto-lei
-2. Actualizar `psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html` e
-   `psu-trabalho-social.html` (secção "Por definir" — obrigatoriedade do
-   trabalho social) com valores/factos confirmados
-3. Criar `como-pedir-psu.html` e `calendario-pagamentos-psu.html`; publicar
-   `simulador-psu.html` (Passo 5a do comando `atualizar-cluster-psu`)
-4. Transformar `rsi.html` em página de transição RSI→PSU com redirecionamento interno
-5. Actualizar avisos em `subsidio-desemprego.html` e `subsidio-parental.html`
-6. **NUNCA apagar páginas antigas** — redirecionar para PSU via links internos para evitar 404s
-7. Quando o tema arrefecer (algumas semanas depois do decreto-lei):
-   reduzir a densidade da PSU na homepage — hoje aparece 6×
-   (banner `DESTAQUE:INICIO/FIM`, cartão "Comece por aqui", cartão de
-   cluster, cartão de destaque, cartão de prazos, notícia do dia).
-   Candidatos a remover primeiro: o banner do topo e o cartão de
-   prazos — os outros 4 continuam a fazer sentido como navegação
-   permanente do cluster.
-8. Actualizar `descricao_curta` do cluster `prestacao-social-unica` em `data/clusters.json`
-   (deixa de dizer "ainda não em vigor — aguarda decreto-lei") e correr
-   `python scripts/sincronizar_clusters.py` para propagar a mudança ao cartão da
-   homepage e a qualquer bloco "pertence ao guia" já injectado nos artigos do cluster
-9. ~~Revalidar a secção "PSI e a Prestação Social Única"~~ — **fechado a
-   2026-07-18, antes do decreto-lei** (ver "PENDÊNCIA PSI vs PSU —
-   FECHADA" acima): confirmado que a PSI não consta da lista dos 13
-   apoios porque o perímetro foi fixado pela autorização legislativa, não
-   pelo decreto-lei — este último não o pode alargar. Não é preciso
-   esperar pela publicação para esta conclusão específica. Continua
-   prudente, quando o decreto-lei sair, uma leitura rápida do texto
-   publicado só para confirmar que a lista dos 13 apoios em
-   `psu-lista-13-apoios.html` bate certo ao pormenor (nomes exactos,
-   ordem), mas já não é preciso revalidar SE a PSI entra ou não.
+Registo histórico do plano original, com o estado real de cada item:
+
+1. ✅ **Feito (Commit 1/5)** — `prestacao-social-unica.html` actualizada
+   com valores reais do decreto-lei.
+2. ✅ **Feito (Commit 1/5)** — `psu-quando-entra-em-vigor.html`,
+   `psu-quem-tem-direito.html` e `psu-trabalho-social.html` actualizadas
+   com valores/factos confirmados (trabalho social: "obrigatório, com
+   excepções").
+3. ✅ **Feito (Commits 2/5 + 3/5)** — `como-pedir-psu.html` e
+   `calendario-pagamentos-psu.html` criadas; `simulador-psu.html`
+   publicado.
+4. ❌ **Nunca feito, e correctamente assim** — "transformar `rsi.html`
+   em página de transição RSI→PSU com redirecionamento interno" era uma
+   suposição do plano original, escrita antes de se conhecer o texto
+   real do decreto-lei. O regime transitório real (artigo 57.º) mantém o
+   RSI a funcionar exactamente como hoje até 31/12/2026, com conversão
+   oficiosa só depois — não há nada para redireccionar antes disso, e
+   mesmo depois o conteúdo de `rsi.html` continua útil para quem procura
+   entender o que aconteceu. `rsi.html` manteve-se como guia normal do
+   RSI, só com o aviso de transição actualizado (item 5).
+5. ✅ **Feito (Commit 4/5)** — avisos em `subsidio-desemprego.html` e
+   `subsidio-parental.html` actualizados com o facto real (mesmo commit
+   que actualizou `rsi.html`).
+6. ✅ **Confirmado, continua a valer** — nenhuma página antiga foi
+   apagada.
+7. **Ainda pendente, sem prazo** — reduzir a densidade da PSU na
+   homepage "quando o tema arrefecer" — julgamento do Nuno, registado em
+   `ROADMAP.md` → "À espera de um sinal" → "Manuais".
+8. ✅ **Feito (Commit 4/5)** — `descricao_curta` do cluster
+   `prestacao-social-unica` actualizada em `data/clusters.json`
+   ("Decreto-Lei n.º 166/2026 em vigor — pagamento a partir de
+   31/12/2026"), `scripts/sincronizar_clusters.py` corrido.
+9. ✅ **Já estava fechado antes do decreto-lei** (2026-07-18, ver
+   "PENDÊNCIA PSI vs PSU — FECHADA" acima) — confirmado, sem alteração
+   necessária: a PSI continua fora da lista dos 13 apoios, o decreto-lei
+   nunca poderia ter alargado esse perímetro.
 
 ---
 

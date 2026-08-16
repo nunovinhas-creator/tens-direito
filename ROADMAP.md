@@ -108,7 +108,7 @@ fact-check feito ainda):
 
 | Item | Gatilho exacto | Onde verifico | Acção quando disparar |
 |---|---|---|---|
-| **Decreto-lei da PSU publicado — ALTA PRIORIDADE, gatilho aproximando-se** | Publicação em dre.pt do decreto-lei da PSU (prazo PRR: 31 ago 2026). **Milestone intermédia já cumprida a 2026-07-17**: o PR promulgou a autorização legislativa que permite ao Governo aprovar o decreto-lei — válida só 120 dias (janela ~ago-nov 2026) — e o diploma final terá de fixar valores e condições directamente (já não por portaria), ficando sujeito a nova promulgação do PR e possível apreciação parlamentar. Isto reduz a margem de tempo real até ao gatilho seguinte | `dre_psu` — **corrigido a 2026-07-07** (Issue #54): pesquisa interactiva de frase exacta no diariodarepublica.pt, com âncora que prova filtragem real; Issue automática ao detectar um Decreto-Lei nos resultados (ver CLAUDE.md "IMPACTO DA PSU" → nota do sentinela). Confirmado `OK` e monitorizado diariamente (`data/estado_fontes.json`, `ultima_ok: 2026-07-18`) — cron diário sem data-limite, cobre a janela ago-nov sozinho. **Infra de activação já preparada (PR #78/#80, 28/07/2026)**: as 6 páginas do cluster já reflectem a Lei n.º 36/2026 (autorização legislativa); `dados/parametros/psu.yaml` já segue o padrão OpenFisca (7 parâmetros — só `limite_patrimonio_multiplicador_ias` confirmado, os outros 6 `null` pendentes) e `tests/test_valores_ancora.py` já tranca esse estado com 2 testes-âncora (`test_psu_limite_patrimonio_60x_ias`, `test_psu_parametros_ainda_pendentes`) — ver CLAUDE.md, entrada retroactiva "Última revisão: 2026-07-28 (PR #80)" | Correr `/atualizar-cluster-psu` — sessão imediata de valores + activação do simulador PSU assim que a Issue disparar (9 passos: actualizar as 5 páginas do cluster, criar `como-pedir-psu.html` + `calendario-pagamentos-psu.html`, publicar `simulador-psu.html`, transformar `rsi.html`, actualizar avisos em subsídio desemprego/parental, nunca apagar páginas antigas, reduzir densidade da PSU depois, actualizar `data/clusters.json`, revalidar a lista dos 13 apoios em `prestacao-social-para-a-inclusao.html`) — ver CLAUDE.md **"IMPACTO DA PSU"** → "Plano de acção" |
+| **Portaria(s) de regulamentação da PSU — art. 17.º (renda de referência) e arts. 32.º/59.º (procedimentos e meios de prova)** | Publicação em dre.pt de uma Portaria que regulamenta o Decreto-Lei n.º 166/2026 (já publicado e em vigor — o gatilho anterior "decreto-lei da PSU publicado" fechou a 2026-08-13, ver "CONCLUÍDO RECENTEMENTE"). Dois pontos concretos deixados por regulamentar pelo próprio diploma (confirmados directamente pelo Nuno na leitura do texto real) | `dre_psu_regulamentacao` — novo sentinela (2026-08-16, Fase 2 Commit 5/5): pesquisa de frase exacta pelo número do decreto-lei (`"Decreto-Lei n.º 166/2026"`), filtrando só resultados do tipo Portaria (`detectar_portaria`, mesmo mecanismo do `dre_ias`); corte de recência `"desde": "2026-08-16"`. Nunca calibrado contra um runner real nesta sessão — a 1.ª corrida real do pipeline confirma `min_chars_uteis`. `dre_psu` (o sentinela original do decreto-lei) mantém-se activo em paralelo, com um corte de recência novo (`data_minima="2026-08-16"` dentro de `_detectar_decreto_psu()`) para nunca voltar a disparar sobre o próprio DL 166/2026 já conhecido — só um decreto-lei FUTURO sobre a PSU continua a disparar essa Issue | Confirmar em dre.pt qual dos 2 pontos a Portaria regulamenta; se for o art. 17.º, actualizar `psu-quando-entra-em-vigor.html`/`simulador-psu.html` com o valor real (considerar acrescentar a `dados/parametros/psu.yaml`); se for os arts. 32.º/59.º, actualizar `como-pedir-psu.html` — ver CLAUDE.md **"IMPACTO DA PSU"** → nota do sentinela |
 | **Data/valor expirado numa página** | `verificar_datas.py` (Shadow Mode + pipeline) detecta um padrão não suprimido | Issues `data-expirada` (fecho automático se corrigido) | Rever a página assinalada — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** |
 | **Fonte do scraper bloqueada 3 dias seguidos** | `data/estado_fontes.json` regista o 3.º dia consecutivo `BLOQUEADO` (inclui `dre_psu` desde 2026-07-05, agora que "conteúdo suspeito" conta como bloqueio) | Issues `fonte-bloqueada` (fecho automático ao recuperar) | Investigar/corrigir o scraper para essa fonte — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** e **"AUDITORIA DE INFRAESTRUTURA"** achado 1 |
 | **Revogação do PAER / reforma "produto único" do arrendamento — watchlist calibrada contra um runner real (2026-07-20)** | `dre_habitacao_paer` — pesquisa de frase exacta `"apoio extraordinário à renda"` no diariodarepublica.pt, mesmo mecanismo do `dre_psu`; dispara quando um Decreto-Lei **datado a partir de 2026-07-20** aparecer nos resultados. **1.ª corrida real (workflow_dispatch) confirmou um falso positivo genuíno**: a pesquisa devolveu correctamente o DL n.º 20-B/2023 (diploma fundador do PAER) e as suas alterações já conhecidas — sem corte de recência, dispararia esta Issue todos os dias. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`); Issue #73 fechada com explicação; 6 testes de regressão novos (incl. fixture real desta corrida) em `tests/test_dre_habitacao_watchlist.py`; `dre_psu` confirmado 100% inalterado. **2.ª corrida real (após a correcção) confirmou a correcção Python a funcionar** (`achou=False`, nenhuma linha nova em `avisos.log`) — mas recriou a Issue (#74) na mesma, por um bug **diferente e separado**: o passo JS "Abrir Issues" filtra `avisos.log` por dia calendário (`l.startsWith(hoje)`), não por corrida — como as 2 corridas de teste aconteceram no mesmo dia UTC, a linha antiga da 1.ª corrida (anterior à correcção) foi "reencontrada". **Nunca acontece no cron diário normal** (uma corrida/dia) — só se manifesta com múltiplos `workflow_dispatch` manuais no mesmo dia, exactamente esta calibração. Issue #74 fechada com a mesma explicação. Gap registado, não corrigido (baixa prioridade, mesma categoria do gap MUDOU do MEGA) — corrigir exigiria filtrar por timestamp de início da corrida em vez de por dia, na lógica de Issues partilhada por várias watchlists (MEGA, PSU, Garantia Pública) | Issue `🏠 Decreto-lei sobre o PAER detectado em DRE` (label `verificar`, dedup automático) | Confirmar se revoga/substitui o PAER isoladamente ou é a fusão "produto único" (Porta 65/Porta 65+/PAER/Arrendar para Subarrendar); actualizar `apoio-extraordinario-renda.html` sempre, `porta-65.html`/`primeiro-direito.html`/`p/habitacao.html` se for a fusão — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
@@ -200,10 +200,10 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 | **Junho/Julho 2027** | Revisão anual do calendário e dos 2 despachos de prazo que mudam de ano para ano (vales MEGA, bolsa de estudo do ensino superior) | `calendario-escolar-apoios.html`, `manuais-escolares-mega.html`, `bolsa-de-estudo-ensino-superior.html` — `verificar_datas.py` confirmado a disparar sozinho em 2027 (padrão `data_mes_ano`/`ano_letivo`) |
 | **Junho 2027** | Próxima revisão sazonal do MEGA (datas de emissão 2026/2027 já publicadas e confirmadas a 13/07/2026: 3/10/13 ago) | `manuais-escolares-mega.html` — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
 | **Mensal (automático)** | Calendário de pagamentos — `calendario-mensal.yml` **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e publica o mês seguinte sozinho (dia 25/28) + vira a página no dia 1; agosto 2026 já foi obtido e publicado automaticamente (12/07). Só precisa de sessão manual se o scraper falhar (Issue `calendario-manual` com o erro) — ex.: prestação nova fora da allow-list `NOME_PARA_SLUG` | `calendario-pagamentos-seguranca-social.html` + `data/calendario_pagamentos.json` — ver CLAUDE.md **"CALENDÁRIO DE PAGAMENTOS"** e `docs/FONTE-CALENDARIO.md` |
-| **Agosto 2026** | Prazo PRR do decreto-lei da PSU (autorização legislativa promulgada a 17/07/2026, válida 120 dias) | `prestacao-social-unica.html`, `psu-quando-entra-em-vigor.html`, `psu-quem-tem-direito.html`, `psu-lista-13-apoios.html`, `psu-trabalho-social.html`, `psu-vs-abono-familia.html` — verificação manual/news dre.pt + sentinela `dre_psu` |
+| **13 de agosto de 2026** (cumprido) | Publicação do Decreto-Lei n.º 166/2026 (dentro do prazo PRR de 31 ago 2026) — gatilho fechado, ver "CONCLUÍDO RECENTEMENTE" | Cluster PSU inteiro (8 páginas) — activado na Fase 2 |
 | **3 de agosto de 2031** (nota de verificação, sem gatilho de acção) | Prazo-limite real remanescente para os Cartões de Cidadão com MRZ mas sem chip de contacto (emitidos até 10/06/2024). O prazo de 2026 **não** se aplica ao CC normal — corrigido a 2026-07-18 após esclarecimento oficial do IRN (30/12/2025); só afecta o CC do Tratado de Porto Seguro e o BI vitalício | `renovar-cartao-cidadao.html` — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
 | **Setembro** | Prazos ASE / Bolsa de Mérito | `acao-social-escolar.html`, `bolsa-de-merito.html` — calendário anual |
-| **Janeiro 2027** | Entrada em vigor da PSU para beneficiários (texto inicial, ainda não confirmado pelo decreto-lei) | Todo o cluster PSU |
+| **31 de dezembro de 2026** | Produção de efeitos da PSU para beneficiários (artigo 63.º, DL 166/2026 — confirmado, corrige o "1 de janeiro de 2027" citado antes do decreto-lei sair). Conversão oficiosa dos beneficiários actuais das 13 prestações extintas; 1.º mês em que a PSU é paga de facto. Verificar nessa altura que o banner de vigência do simulador (`aplicarBannerVigencia()`, já ligado a `data_producao_efeitos`) muda automaticamente de estado, sem intervenção manual | Todo o cluster PSU, `simulador-psu.html` |
 
 Detalhe completo: CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** e **"IMPACTO DA
 PSU"**.
@@ -211,6 +211,56 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Cluster PSU — activação completa (Fase 2, Commits 1-5)** — 2026-08-16.
+  Decreto-Lei n.º 166/2026, de 13 de agosto, publicado (Diário da
+  República n.º 156/2026, Série I), em vigor desde 14/08/2026, produção
+  de efeitos a **31/12/2026** (artigo 63.º — corrige o "1 de janeiro de
+  2027" citado antes do decreto-lei sair, ver CLAUDE.md "IMPACTO DA PSU").
+  5 commits, cada um revisto e verificado a passar a suite completa antes
+  do seguinte:
+  - **Commit 1** — as 6 páginas existentes do cluster actualizadas com
+    valores reais do decreto-lei.
+  - **Commit 2** — 2 páginas novas: `como-pedir-psu.html`,
+    `calendario-pagamentos-psu.html`.
+  - **Commit 3** — `simulador-psu.html` activado: `robots` de
+    `noindex,nofollow` para `index,follow`, fórmula real implementada e
+    testada (18 golden tests), banner de vigência ligado a
+    `data_producao_efeitos` do YAML, artigo 17.º (habitação) marcado
+    explicitamente "não considerado" — nunca inventado.
+  - **Commit 4** — cross-links das 13 prestações extintas nas 3 páginas
+    com página própria (`rsi.html`, `subsidio-desemprego.html`,
+    `subsidio-parental.html` — 7 das 13 sem página própria, sem cross-link
+    por desenho); teste fail-safe da majoração (valor não reconhecido →
+    zero, nunca as duas em simultâneo); `sincronizar_nav.py` confirmado
+    sem duplicados; banner sazonal da homepage actualizado; 2 entradas
+    obsoletas em `data/clusters.json` corrigidas e propagadas a 12
+    páginas via `sincronizar_clusters.py`.
+  - **Commit 5** — esta entrada + fecho/reconfiguração do sentinela
+    `dre_psu` (ver abaixo) + correcção do "1 jan 2027" em `CLAUDE.md`.
+
+  **Sentinela `dre_psu`**: achado real nesta sessão — sem corte de
+  recência, `_detectar_decreto_psu()` re-dispararia todos os dias sobre o
+  próprio DL 166/2026 já conhecido (mesma classe de falso positivo do
+  PAER, Issue #73). Corrigido com `data_minima="2026-08-16"` hardcoded
+  dentro da função (nunca no dict de `FONTES_PLAYWRIGHT`, que
+  `tests/test_dre_habitacao_watchlist.py::test_dre_psu_continua_a_usar_o_mecanismo_antigo_intocado`
+  tranca à forma exacta de antes) — a fonte mantém-se activa como rede de
+  segurança para um decreto-lei futuro sobre a PSU. Novo sentinela irmão,
+  `dre_psu_regulamentacao`: pesquisa pelo número do decreto-lei
+  (`"Decreto-Lei n.º 166/2026"`), filtrando só Portarias
+  (`detectar_portaria`, mesmo mecanismo do `dre_ias`) — cobre os 2 pontos
+  que o próprio diploma deixa por regulamentar (art. 17.º renda de
+  referência; arts. 32.º/59.º procedimentos e meios de prova),
+  confirmados directamente pelo Nuno. Nunca calibrado contra um runner
+  real nesta sessão. 15 testes novos em
+  `tests/test_dre_psu_regulamentacao.py`.
+
+  Suite completa + coerência do cluster (breadcrumb/nav/datas/anos) +
+  guardrail de skips + `ruff` + `verificar_datas.py` (0 alertas), todos
+  verdes antes de cada commit. Sem merge — PR aberto contra `main`
+  aguarda revisão final do Nuno, commit-a-commit. Ver CLAUDE.md
+  "IMPACTO DA PSU" para o detalhe completo de cada commit.
 
 - **Cluster Habitação — Sessão 3 (fecho: dedução de rendas, 1.º Direito,
   auditoria Porta 65, watchlist DRE)** — 2026-07-20. Fecha o "Backlog

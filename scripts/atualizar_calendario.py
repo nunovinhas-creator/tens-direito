@@ -184,24 +184,31 @@ VISTA_PRESTACOES = [
 #   ganhar entrada neste dicionário.
 PSU_NOTAS = {
     "rsi": (
-        'Vai ser <a href="/prestacao-social-unica.html">integrado na '
-        "PSU</a> — o pagamento continua normal até ao decreto-lei."
+        'O Decreto-Lei n.º 166/2026 confirma que vai ser <a href="/'
+        'prestacao-social-unica.html">integrado na PSU</a> por conversão '
+        "oficiosa (artigo 57.º), a partir de 31 de dezembro de 2026 — o "
+        "pagamento continua normal até lá."
     ),
     "pensoes": (
         "Se é pensão social de velhice ou invalidez (não a pensão "
-        'contributiva), vai ser <a href="/prestacao-social-unica.html">'
-        "integrada na PSU</a> — o pagamento continua normal até ao "
-        "decreto-lei."
+        "contributiva), o Decreto-Lei n.º 166/2026 confirma que vai ser "
+        '<a href="/prestacao-social-unica.html">integrada na PSU</a> por '
+        "conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de "
+        "2026 — o pagamento continua normal até lá."
     ),
     "subsidio-desemprego": (
-        "Se é o subsídio social de desemprego (não o contributivo), vai "
-        'ser <a href="/prestacao-social-unica.html">integrado na PSU</a> '
-        "— o pagamento continua normal até ao decreto-lei."
+        "Se é o subsídio social de desemprego (não o contributivo), o "
+        "Decreto-Lei n.º 166/2026 confirma que vai ser "
+        '<a href="/prestacao-social-unica.html">integrado na PSU</a> por '
+        "conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de "
+        "2026 — o pagamento continua normal até lá."
     ),
     "parentalidade-social": (
         "Os subsídios sociais de parentalidade (não os contributivos) "
         'vão ser <a href="/prestacao-social-unica.html">integrados na '
-        "PSU</a> — o pagamento continua normal até ao decreto-lei."
+        "PSU</a> por conversão oficiosa (artigo 57.º) do Decreto-Lei "
+        "n.º 166/2026, a partir de 31 de dezembro de 2026 — o pagamento "
+        "continua normal até lá."
     ),
 }
 

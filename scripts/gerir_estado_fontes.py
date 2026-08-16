@@ -50,6 +50,11 @@ SLUGS_MONITORIZADOS = (
     "dre_habitacao_garantia",
     # Sentinela do IAS (2026-07-28) — mesma máquina de estados.
     "dre_ias",
+    # Sentinela irmão do dre_psu (2026-08-16, Fase 2, Commit 5/5) — vigia
+    # as Portarias de regulamentação do DL 166/2026 (art. 17.º; arts.
+    # 32.º/59.º) que o próprio dre_psu já não cobre. Mesma máquina de
+    # estados.
+    "dre_psu_regulamentacao",
 )
 
 

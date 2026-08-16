@@ -11,14 +11,16 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Página ainda não publicada — fora do sitemap/pesquisa.js/clusters.json
-       até ao decreto-lei da PSU. noindex deliberado, não é um esquecimento. -->
-  <meta name="robots" content="noindex, nofollow">
+  <!-- Activado na Fase 2 (2026-08-13) — Decreto-Lei n.º 166/2026 publicado,
+       valores reais em vigor desde 14/08/2026. Ver aviso de vigência no
+       corpo: o resultado é sempre uma simulação informativa, porque o
+       decreto-lei só produz efeitos (paga de facto) a 31/12/2026. -->
+  <meta name="robots" content="index, follow">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-  <title>Simulador da Prestação Social Única (PSU) — em preparação</title>
-  <meta name="description" content="Simulador da PSU 2026: aguarda a publicação do decreto-lei com os valores oficiais. A estrutura da fórmula já está pronta.">
-  <meta property="og:title" content="Simulador da Prestação Social Única (PSU) — em preparação">
-  <meta property="og:description" content="Aguarda a publicação do decreto-lei com os valores oficiais da PSU. A estrutura da fórmula já está pronta.">
+  <title>Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026)</title>
+  <meta name="description" content="Simulador da Prestação Social Única com os valores reais do Decreto-Lei n.º 166/2026: Valor de Referência, adultos equivalentes, Componente de Incentivo ao Trabalho, teto e mínimo. Pagamento efectivo a partir de 31/12/2026.">
+  <meta property="og:title" content="Simulador da PSU 2026: calcula o teu valor">
+  <meta property="og:description" content="Calcula o valor estimado da tua PSU com a fórmula real do Decreto-Lei n.º 166/2026 — Valor de Referência, adultos equivalentes, CIT, teto e mínimo.">
   <meta property="og:url" content="https://tensdireito.com/simulador-psu.html">
   <link rel="canonical" href="https://tensdireito.com/simulador-psu.html">
   <meta property="og:type" content="article">
@@ -27,8 +29,98 @@
   <meta property="og:image" content="https://tensdireito.com/assets/img/og/simulador-psu.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Simulador da Prestação Social Única (PSU) — em preparação">
+  <meta property="og:image:alt" content="Simulador da PSU 2026: calcula o teu valor">
   <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador da PSU 2026",
+    "url": "https://tensdireito.com/simulador-psu.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "O valor que o simulador mostra já é pago?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. O resultado é uma simulação informativa do que terás direito a receber a partir de 31 de dezembro de 2026, data em que o Decreto-Lei n.º 166/2026 produz efeitos (artigo 63.º). Antes dessa data, o valor mostrado não confere direito a receber já."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como se calcula o valor da PSU?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PSUglobal = (PSUbase + CIT) − rendimentos do agregado, com um teto de 6× o IAS (3.222,78 € em 2026) e um mínimo de 10 €. PSUbase = Valor de Referência (50% do IAS = 268,57 €) × adultos equivalentes (1 pelo titular, 0,7 por cada maior, 0,5 por cada menor). A Componente de Incentivo ao Trabalho (CIT) faz com que os primeiros 20% do IAS de rendimentos de trabalho contem na íntegra a favor do beneficiário, e que só 50% da parte que excede esse limiar conte contra a prestação."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O simulador considera apoios à habitação como rendimento?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não, nesta versão. O artigo 17.º do decreto-lei conta apoios à habitação com caráter de regularidade como rendimento, mas o cálculo depende de uma estatística do INE actualizada periodicamente por portaria — um valor que este site nunca inventa. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso acumular a majoração de parentalidade com a de desemprego?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. O decreto-lei prevê que nenhuma das duas majorações é acumulável com a outra, nem com subsídios de idêntica natureza de outro regime de inscrição obrigatória (artigos 26.º e 27.º). O simulador só permite escolher uma de cada vez."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é uma estimativa oficial?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. É uma ferramenta educativa e independente, que aplica a fórmula pública do Decreto-Lei n.º 166/2026 aos dados que introduzires. O valor final é sempre determinado pela Segurança Social, com base no teu processo concreto."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Tens Direito", "item": "https://tensdireito.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Simulador da PSU 2026", "item": "https://tensdireito.com/simulador-psu.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador da PSU 2026: calcula o teu valor",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-psu.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-07-03",
+    "dateModified": "2026-08-13"
+  }
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,30 +143,40 @@
     .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.5rem; color: var(--ink); }
     .hero-sub { font-size: 1rem; color: var(--muted); max-width: 540px; margin: 0 auto 1.5rem; }
     main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-    .aguarda-box { background: var(--amber-bg); border-left: 4px solid #F59E0B; border-radius: 0 var(--radius) var(--radius) 0; padding: 1.5rem; margin-bottom: 2rem; color: var(--amber); }
-    .aguarda-box strong { display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
-    .aguarda-box p { margin-bottom: 0.5rem; }
-    .aguarda-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+    .aviso-vigencia { background: #DBEAFE; border-left: 4px solid #1E40AF; border-radius: 0 var(--radius) var(--radius) 0; padding: 1.5rem; margin-bottom: 2rem; color: #1E3A5F; }
+    .aviso-vigencia strong { display: block; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .aviso-vigencia p { margin-bottom: 0.5rem; }
+    .aviso-vigencia a { color: #1E40AF; text-decoration: underline; font-weight: 600; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #3B82F6; border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.25rem; margin-bottom: 1.5rem; color: #1E40AF; font-size: 0.9rem; }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
     .erro-parametros { background: #FEE2E2; border-left: 4px solid #DC2626; border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; color: #7F1D1D; display: none; }
     .erro-parametros strong { display: block; margin-bottom: 0.35rem; }
-    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; opacity: 0.6; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
     .calc-card fieldset { border: none; }
     .form-group { margin-bottom: 1.5rem; }
     .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
     .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; background: #F9FAFB; }
     .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: not-allowed; border: 2px solid transparent; white-space: nowrap; }
-    .btn-primary { background: #9CA3AF; color: var(--white); }
-    .resultado { display: none; }
+    .form-group.condicional { display: none; }
+    .form-group.condicional.show { display: block; }
+    .erro-campo { color: #DC2626; font-size: 0.85rem; margin-top: 0.3rem; display: none; }
+    .erro-campo.show { display: block; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:disabled { background: #9CA3AF; cursor: not-allowed; }
+    .resultado { display: none; background: #f1faf9; border: 1px solid var(--teal); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
     .resultado.show { display: block; }
+    .resultado-valor { font-size: 2rem; font-weight: 800; color: var(--teal-dark); margin-bottom: 0.5rem; }
+    .resultado-linha { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .resultado-linha:last-child { border-bottom: none; }
+    .resultado-aviso { font-size: 0.85rem; color: var(--amber); margin-top: 0.75rem; }
     .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
     .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
     .formula-box code { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.9rem; margin-bottom: 1rem; overflow-x: auto; }
     .formula-box table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
     .formula-box th, .formula-box td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
     .formula-box th { color: var(--teal); font-weight: 700; }
-    .formula-box .pendente { color: #B45309; font-weight: 600; }
-    .formula-box .confirmado { color: #15803d; font-weight: 600; }
     .faq-section { margin-top: 3rem; }
     .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
     details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
@@ -179,51 +281,68 @@
 </div>
 <!-- partilhar:fim -->
 
-    <p class="hero-sub">A estrutura de cálculo já está pronta — falta o decreto-lei do Governo com os valores oficiais para a activar.</p>
+    <p class="hero-sub">Calcula uma estimativa do valor da PSU com a fórmula real do Decreto-Lei n.º 166/2026 — em vigor desde 14/08/2026.</p>
   </header>
 
   <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Valores 2026</strong> — Valor de Referência 268,57€ (0,5×IAS), teto 3.222,78€ (6×IAS), mínimo 10€, IAS 537,13€ · <strong>Verificado a 13/08/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/prestacao-social-unica.html">ver guia completo da PSU</a>
+    </div>
+
     <div id="avisoParametrosErroPSU" class="erro-parametros" role="alert">
       <strong>⚠️ Não foi possível carregar os parâmetros oficiais</strong>
       <p>Tenta recarregar a página. Se o problema persistir, os dados podem estar temporariamente indisponíveis.</p>
     </div>
 
-    <div class="aguarda-box">
-      <strong>⏳ Simulação ainda indisponível</strong>
-      <p>Esta calculadora só pode dar um valor real depois de o Governo publicar o decreto-lei da PSU com o Valor de Referência, o valor máximo, o coeficiente da Componente de Incentivo ao Trabalho (CIT) e as ponderações do agregado. Prazo PRR: 31 de agosto de 2026.</p>
-      <p>Até lá, este simulador mostra a estrutura da fórmula aprovada — sem nenhum número inventado. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a> para o calendário completo.</p>
+    <div id="bannerVigencia" class="aviso-vigencia" role="note">
+      <strong>⚠️ Simulação informativa — a PSU ainda não é paga</strong>
+      <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados — mas só produz efeitos (paga de facto) a <strong>31 de dezembro de 2026</strong> (artigo 63.º). O resultado abaixo é uma simulação do que terás direito a receber a partir dessa data, não confere direito a receber já. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>
     </div>
 
-    <div class="calc-card" aria-disabled="true">
-      <fieldset disabled>
+    <div class="calc-card">
+      <fieldset id="fieldsetPSU" disabled>
         <form id="formPSU" onsubmit="return false;">
           <div class="form-group">
-            <label for="numAdultos">Número de adultos no agregado</label>
+            <label for="numAdultos">Adultos no agregado (18+), incluindo-te a ti</label>
             <input type="number" id="numAdultos" min="1" step="1" value="1">
+            <small>O titular conta sempre 1; cada adulto além desse conta 0,7.</small>
           </div>
           <div class="form-group">
-            <label for="numMenores">Menores de 25 anos no agregado</label>
+            <label for="numMenores">Menores no agregado (menos de 18 anos)</label>
             <input type="number" id="numMenores" min="0" step="1" value="0">
+            <small>Cada menor conta 0,5 para os adultos equivalentes.</small>
           </div>
           <div class="form-group">
-            <label for="rendimento">Rendimento mensal do agregado (€)</label>
-            <input type="number" id="rendimento" min="0" step="10">
+            <label for="rendimentoTrabalho">Rendimentos de trabalho mensais do agregado (€)</label>
+            <input type="number" id="rendimentoTrabalho" min="0" step="10" value="0">
+            <small>Já deduzidas as contribuições obrigatórias para a Segurança Social (artigo 28.º/3). Beneficia da Componente de Incentivo ao Trabalho (CIT).</small>
           </div>
           <div class="form-group">
-            <label for="situacaoLaboral">Situação laboral</label>
-            <select id="situacaoLaboral">
-              <option value="desempregado_apto">Desempregado, apto para trabalhar</option>
-              <option value="outra">Outra situação</option>
+            <label for="outrosRendimentos">Outros rendimentos mensais do agregado (€)</label>
+            <input type="number" id="outrosRendimentos" min="0" step="10" value="0">
+            <small>Pensões, rendas, outras prestações sociais, etc. — contam sempre na íntegra, sem a CIT.</small>
+          </div>
+          <div class="form-group">
+            <label for="majoracao">Tens direito a alguma majoração?</label>
+            <select id="majoracao">
+              <option value="nenhuma">Nenhuma</option>
+              <option value="parentalidade">Majoração por parentalidade (art. 26.º)</option>
+              <option value="desemprego">Majoração por desemprego (art. 27.º)</option>
+            </select>
+            <small>As duas majorações nunca são acumuláveis entre si.</small>
+          </div>
+          <div class="form-group condicional" id="grupoBeneficiarioMajoracao">
+            <label for="beneficiarioMajoracao">Quem é o beneficiário da majoração de parentalidade?</label>
+            <select id="beneficiarioMajoracao">
+              <option value="titular">Titular do requerimento</option>
+              <option value="maior">Outro adulto do agregado (18+)</option>
+              <option value="menor">Um menor do agregado (&lt;18)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="temFilhos">Tem filhos a cargo?</label>
-            <select id="temFilhos">
-              <option value="nao">Não</option>
-              <option value="sim">Sim</option>
-            </select>
+          <div class="aviso-info">
+            <strong>ℹ️ Não incluído nesta versão:</strong> apoios à habitação com caráter de regularidade (artigo 17.º) — o cálculo depende de uma estatística do INE actualizada por portaria, um valor que este site nunca inventa. Se recebes algum apoio deste tipo, o teu valor real pode ser diferente do simulado.
           </div>
-          <button type="submit" class="btn btn-primary" disabled>🧮 Simulação indisponível</button>
+          <button type="submit" id="botaoCalcularPSU" class="btn btn-primary" disabled>⏳ A carregar valores oficiais…</button>
         </form>
       </fieldset>
     </div>
@@ -231,10 +350,10 @@
     <div id="resultado" class="resultado"></div>
 
     <div class="formula-box">
-      <h2>Estrutura da fórmula aprovada</h2>
-      <code>PSU = Valor de Referência × Adultos Equivalentes + CIT + Majoração Parentalidade − Rendimentos do Agregado</code>
+      <h2>Fórmula usada (Decreto-Lei n.º 166/2026)</h2>
+      <code>PSUglobal = (PSUbase + CIT) − rendimentos do agregado, com teto de 6×IAS e mínimo de 10 €<br>PSUbase = Valor de Referência (0,5×IAS) × adultos equivalentes (1 / 0,7 / 0,5)</code>
       <table>
-        <thead><tr><th>Parâmetro</th><th>Estado</th><th>Fonte</th></tr></thead>
+        <thead><tr><th>Parâmetro</th><th>Valor</th><th>Fonte</th></tr></thead>
         <tbody id="tabelaParametros"></tbody>
       </table>
     </div>
@@ -243,29 +362,43 @@
       <h2>Perguntas frequentes</h2>
 
       <details>
-        <summary>Porque é que não me dá um valor?</summary>
+        <summary>O valor que o simulador mostra já é pago?</summary>
         <div class="faq-resposta">
-          Porque o decreto-lei do Governo, que define o Valor de Referência da PSU, o valor máximo e o coeficiente da Componente de Incentivo ao Trabalho, ainda não foi publicado. Sem estes números, qualquer valor mostrado seria inventado — e isso vai contra o princípio deste site.
+          Não. O resultado é uma simulação informativa do que terás direito a receber a partir de 31 de dezembro de 2026, data em que o Decreto-Lei n.º 166/2026 produz efeitos (artigo 63.º). Antes dessa data, o valor mostrado não confere direito a receber já.
         </div>
       </details>
 
       <details>
-        <summary>Quando é que esta calculadora vai funcionar?</summary>
+        <summary>Como se calcula o valor da PSU?</summary>
         <div class="faq-resposta">
-          Assim que o decreto-lei for publicado em Diário da República (prazo PRR: 31 de agosto de 2026) e os valores forem confirmados manualmente. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a> para acompanhar.
+          PSUglobal = (PSUbase + CIT) − rendimentos do agregado, com um teto de 6× o IAS (3.222,78 € em 2026) e um mínimo de 10 €. PSUbase = Valor de Referência (50% do IAS = 268,57 €) × adultos equivalentes (1 pelo titular, 0,7 por cada maior, 0,5 por cada menor). A CIT faz com que os primeiros 20% do IAS de rendimentos de trabalho contem na íntegra a favor do beneficiário, e que só 50% da parte que excede esse limiar conte contra a prestação.
         </div>
       </details>
 
       <details>
-        <summary>Os "Adultos Equivalentes" e o limite de patrimônio já estão confirmados?</summary>
+        <summary>O simulador considera apoios à habitação como rendimento?</summary>
         <div class="faq-resposta">
-          Só em parte. O requerente conta sempre como 1 adulto equivalente, e o limite de património (60 × IAS) já consta da Lei n.º 36/2026 — esses dois já estão confirmados. Os pesos dos restantes adultos e das crianças/jovens do agregado ainda não: a lei exige que sejam diferenciados entre si, mas não fixa nenhum valor. Isso, o Valor de Referência, o valor máximo e o coeficiente exacto da CIT ficam todos para o decreto-lei.
+          Não, nesta versão. O artigo 17.º do decreto-lei conta apoios à habitação com caráter de regularidade como rendimento, mas o cálculo depende de uma estatística do INE actualizada periodicamente por portaria — um valor que este site nunca inventa. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado.
+        </div>
+      </details>
+
+      <details>
+        <summary>Posso acumular a majoração de parentalidade com a de desemprego?</summary>
+        <div class="faq-resposta">
+          Não. Nenhuma das duas majorações é acumulável com a outra, nem com subsídios de idêntica natureza de outro regime de inscrição obrigatória (artigos 26.º e 27.º). O simulador só permite escolher uma de cada vez.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é uma estimativa oficial?</summary>
+        <div class="faq-resposta">
+          Não. É uma ferramenta educativa e independente, que aplica a fórmula pública do Decreto-Lei n.º 166/2026 aos dados que introduzires. O valor final é sempre determinado pela Segurança Social, com base no teu processo concreto.
         </div>
       </details>
     </section>
 
     <div class="disclaimer">
-      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa em preparação, desenvolvida de forma independente. Não está publicado nem indexado — só é acessível por URL directo. Nenhum valor é mostrado antes da confirmação oficial dos parâmetros pelo decreto-lei do Governo.
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa e independente, sem ligação ao Estado ou à Segurança Social. Aplica a fórmula pública do Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I). O resultado é sempre uma simulação — o decreto-lei só produz efeitos a 31 de dezembro de 2026 (artigo 63.º), e o valor final é sempre determinado pela Segurança Social.
     </div>
   </main>
 
@@ -286,23 +419,26 @@
   </footer>
 
   <script>
+    // ── IAS 2026 — constante partilhada, mesmo padrão de simulador-rsi.html/
+    // simulador-subsidio-desemprego.html: não vive em dados/parametros.json
+    // como prestação própria, por isso cada simulador que precisa dele para
+    // converter multiplicadores × IAS guarda a sua própria cópia citada.
+    const IAS_2026 = { valor: 537.13, fonte: 'Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026', verificado_em: '2026-07-13' };
+
     // ── PARAMETROS_PSU — carregado em runtime de /dados/parametros.json,
     // consolidado por scripts/gerar_parametros_json.py a partir de
     // dados/parametros/psu.yaml (padrão OpenFisca, mesmo dos outros
-    // simuladores já migrados — csi/subsidio-doenca/abono). Nunca calcula
-    // com valores em falta: 3 estados possíveis —
+    // simuladores já migrados — csi/subsidio-doenca/abono). psu.yaml
+    // guarda os valores como MULTIPLICADORES do IAS (nunca euros fixos,
+    // excepto valor_minimo_euros) — este simulador é que os converte para
+    // euros com o IAS_2026 acima. Nunca calcula com valores em falta:
     //   1) fetch falhado → aviso de erro visível, formulário desactivado;
-    //   2) fetch OK mas valor_referencia_mensal ainda null → estado normal
-    //      actual, "aguarda decreto-lei" visível, formulário desactivado;
-    //   3) fetch OK e valor_referencia_mensal preenchido → formulário
-    //      activa.
-    // ESTADO_SIMULADOR reflecte SEMPRE o que veio do JSON — nunca um
-    // `const` fixo a decorar manualmente numa sessão futura (ver
-    // .claude/commands/atualizar-cluster-psu.md, Passo 5a: preencher o
-    // YAML numa sessão de confirmação continua a ser manual; o que deixa
-    // de ser manual é sincronizar esta página com esse preenchimento).
+    //   2) fetch OK → formulário activa (todos os parâmetros de cálculo
+    //      da fórmula base estão preenchidos desde a Fase 2 — só as
+    //      majorações continuam null no YAML por desenho, calculadas
+    //      aqui a partir da fórmula legal completa, nunca hardcoded).
     let PARAMETROS_PSU = null;
-    let ESTADO_SIMULADOR = 'AGUARDA_DECRETO';
+    let ESTADO_SIMULADOR = 'A_CARREGAR';
 
     async function carregarParametrosPSU() {
       try {
@@ -312,25 +448,25 @@
         const psu = todos.prestacoes && todos.prestacoes.psu;
         if (!psu) throw new Error('prestações.psu em falta em dados/parametros.json');
 
+        const ias = IAS_2026.valor;
         PARAMETROS_PSU = {
-          valorReferencia: psu.valor_referencia_mensal,
-          valorMaximo: psu.valor_maximo_mensal,
-          coeficienteCIT: psu.coeficiente_cit,
-          majoracaoParentalidade: psu.majoracao_parentalidade_mensal,
-          adultosEquivalentes: {
-            requerente: 1,
-            outroAdulto: psu.ponderacao_outro_adulto.valor,
-            menorAte25: psu.ponderacao_menor_ate_25.valor,
-          },
-          limitePatrimonio: {
-            multiplicadorIAS: psu.limite_patrimonio_multiplicador_ias.valor,
-          },
+          valorReferencia: psu.valor_referencia_multiplicador_ias.valor * ias,
+          teto: psu.teto_maximo_multiplicador_ias.valor * ias,
+          valorMinimo: psu.valor_minimo_euros.valor,
+          ponderacaoTitular: psu.ponderacao_titular.valor,
+          ponderacaoMaior: psu.ponderacao_maior.valor,
+          ponderacaoMenor: psu.ponderacao_menor.valor,
+          citLimiar: psu.cit_limiar_multiplicador_ias.valor * ias,
+          citTaxaAcimaLimiar: psu.cit_taxa_acima_limiar.valor,
+          dataProducaoEfeitos: psu.data_producao_efeitos.valor,
         };
-        ESTADO_SIMULADOR = PARAMETROS_PSU.valorReferencia.valor !== null ? 'ATIVO' : 'AGUARDA_DECRETO';
-        renderTabelaParametros(psu);
+        ESTADO_SIMULADOR = 'ATIVO';
+        renderTabelaParametros(psu, ias);
         aplicarEstadoFormulario();
+        aplicarBannerVigencia();
         return true;
       } catch (erro) {
+        ESTADO_SIMULADOR = 'ERRO';
         mostrarErroParametrosPSU();
         console.error('Simulador PSU: falha a carregar parâmetros oficiais —', erro);
         return false;
@@ -345,81 +481,171 @@
     }
 
     function aplicarEstadoFormulario() {
-      const fieldset = document.querySelector('.calc-card fieldset');
-      const botao = document.querySelector('#formPSU button[type="submit"]');
-      const aguardaBox = document.querySelector('.aguarda-box');
+      const fieldset = document.getElementById('fieldsetPSU');
+      const botao = document.getElementById('botaoCalcularPSU');
       const activo = ESTADO_SIMULADOR === 'ATIVO';
       if (fieldset) fieldset.disabled = !activo;
       if (botao) {
         botao.disabled = !activo;
-        botao.textContent = activo ? '🧮 Calcular PSU' : '🧮 Simulação indisponível';
+        botao.textContent = activo ? '🧮 Calcular PSU' : '⏳ A carregar valores oficiais…';
       }
-      if (aguardaBox) aguardaBox.style.display = activo ? 'none' : 'block';
     }
 
-    // ── Mecânica de cálculo ──────────────────────────────────────────────────
-    // Testada com parâmetros FICTÍCIOS em tests/test_simulador_psu_calculo.py
-    // — nunca com os valores de produção acima (todos null por desenho).
+    // ── Banner de vigência — ligado a data_producao_efeitos do YAML, nunca
+    // a uma string solta (fecha a lacuna assinalada na Fase 1: antes só
+    // vigencia_inicio existia, sem nenhum campo a marcar quando o cálculo
+    // passa a corresponder a um pagamento real). ─────────────────────────
+    function aplicarBannerVigencia() {
+      const banner = document.getElementById('bannerVigencia');
+      if (!banner || !PARAMETROS_PSU || !PARAMETROS_PSU.dataProducaoEfeitos) return;
+      const hoje = new Date();
+      const dataEfeitos = new Date(PARAMETROS_PSU.dataProducaoEfeitos + 'T00:00:00');
+      const dataFormatada = dataEfeitos.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
+      if (hoje < dataEfeitos) {
+        banner.innerHTML = `<strong>⚠️ Simulação informativa — a PSU ainda não é paga</strong>
+          <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados — mas só produz efeitos (paga de facto) a <strong>${dataFormatada}</strong> (artigo 63.º). O resultado abaixo é uma simulação do que terás direito a receber a partir dessa data, não confere direito a receber já. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>`;
+      } else {
+        banner.innerHTML = `<strong>✅ A PSU já está a ser paga</strong>
+          <p>Desde ${dataFormatada}, a PSU é paga de facto aos beneficiários. O resultado abaixo é uma estimativa do valor a que tens direito — o valor final é sempre determinado pela Segurança Social.</p>`;
+      }
+    }
 
-    function calcularAdultosEquivalentes(parametros, numAdultos, numMenoresAte25) {
+    // ── Mostrar/esconder o beneficiário da majoração de parentalidade ────
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectMajoracao = document.getElementById('majoracao');
+      const grupoBeneficiario = document.getElementById('grupoBeneficiarioMajoracao');
+      if (selectMajoracao && grupoBeneficiario) {
+        selectMajoracao.addEventListener('change', () => {
+          grupoBeneficiario.classList.toggle('show', selectMajoracao.value === 'parentalidade');
+        });
+      }
+    });
+
+    // ── Mecânica de cálculo — fórmula real do Decreto-Lei n.º 166/2026 ────
+    // Testada em tests/test_simulador_psu_calculo.py com os valores reais
+    // de produção (nunca fictícios, desde a activação na Fase 2).
+
+    function calcularAdultosEquivalentes(parametros, numAdultos, numMenores) {
       const outrosAdultos = Math.max(0, (numAdultos || 1) - 1);
-      return parametros.adultosEquivalentes.requerente
-        + outrosAdultos * parametros.adultosEquivalentes.outroAdulto
-        + (numMenoresAte25 || 0) * parametros.adultosEquivalentes.menorAte25;
+      return parametros.ponderacaoTitular
+        + outrosAdultos * parametros.ponderacaoMaior
+        + (numMenores || 0) * parametros.ponderacaoMenor;
     }
 
-    // Redução gradual da CIT com o rendimento próprio, nunca abaixo de 50%
-    // do valor base — mecânica provisória enquanto o decreto-lei não define
-    // a fórmula exacta de redução do incentivo ao trabalho.
-    function calcularCIT(parametros, rendimentoProprioMensal, limiarReducaoTotal) {
-      if (parametros.coeficienteCIT.valor === null || parametros.valorReferencia.valor === null) return 0;
-      const citBase = parametros.valorReferencia.valor * parametros.coeficienteCIT.valor;
-      if (!rendimentoProprioMensal || rendimentoProprioMensal <= 0) return citBase;
-      const fracaoRestante = Math.max(0.5, 1 - (rendimentoProprioMensal / limiarReducaoTotal));
-      return citBase * fracaoRestante;
+    // CIT = min(R, limiar) + taxa × max(0, R − limiar) — artigo 28.º/2.
+    function calcularCIT(parametros, rendimentoTrabalho) {
+      const r = rendimentoTrabalho || 0;
+      const parteDentroLimiar = Math.min(r, parametros.citLimiar);
+      const parteExcedente = Math.max(0, r - parametros.citLimiar);
+      return parteDentroLimiar + parametros.citTaxaAcimaLimiar * parteExcedente;
+    }
+
+    // Majoração por parentalidade (artigo 26.º/2): 80% do IAS menos o
+    // valor atribuído ao beneficiário pela ponderação da fórmula base.
+    function calcularMajoracaoParentalidade(parametros, beneficiario) {
+      const ponderacao = beneficiario === 'maior' ? parametros.ponderacaoMaior
+        : beneficiario === 'menor' ? parametros.ponderacaoMenor
+        : parametros.ponderacaoTitular;
+      const valorAtribuido = ponderacao * parametros.valorReferencia;
+      return Math.max(0, 0.80 * IAS_2026.valor - valorAtribuido);
+    }
+
+    // Majoração por desemprego (artigo 27.º): 80% do IAS menos o PSUglobal
+    // já calculado sem esta majoração; sem lugar se PSUglobal ≥ 80% do IAS.
+    function calcularMajoracaoDesemprego(psuGlobalSemMajoracao) {
+      const limiar = 0.80 * IAS_2026.valor;
+      if (psuGlobalSemMajoracao >= limiar) return 0;
+      return Math.max(0, limiar - psuGlobalSemMajoracao);
     }
 
     function calcularPSU(parametros, input) {
-      if (!parametros || parametros.valorReferencia.valor === null) {
-        return { estado: 'AGUARDA_DECRETO' };
+      const adultosEquivalentes = calcularAdultosEquivalentes(parametros, input.numAdultos, input.numMenores);
+      const psuBase = parametros.valorReferencia * adultosEquivalentes;
+      const cit = calcularCIT(parametros, input.rendimentoTrabalho);
+      const rendimentosTotais = (input.rendimentoTrabalho || 0) + (input.outrosRendimentos || 0);
+      const psuGlobalSemMajoracao = Math.max(0, psuBase + cit - rendimentosTotais);
+
+      let majoracao = 0;
+      if (input.majoracao === 'parentalidade') {
+        majoracao = calcularMajoracaoParentalidade(parametros, input.beneficiarioMajoracao);
+      } else if (input.majoracao === 'desemprego') {
+        majoracao = calcularMajoracaoDesemprego(psuGlobalSemMajoracao);
       }
-      const adultosEquivalentes = calcularAdultosEquivalentes(parametros, input.numAdultos, input.numMenoresAte25);
-      const base = parametros.valorReferencia.valor * adultosEquivalentes;
-      const cit = input.situacaoLaboral === 'desempregado_apto'
-        ? calcularCIT(parametros, input.rendimentoProprioMensal || 0, input.limiarReducaoCIT || 1)
-        : 0;
-      const majoracao = input.temFilhos ? (parametros.majoracaoParentalidade.valor || 0) : 0;
-      let valor = base + cit + majoracao - (input.rendimentoAgregadoMensal || 0);
-      valor = Math.max(0, valor);
-      if (parametros.valorMaximo.valor !== null) {
-        valor = Math.min(valor, parametros.valorMaximo.valor);
-      }
-      return { estado: 'ATIVO', valor, adultosEquivalentes, cit, majoracao };
+
+      let valor = Math.min(psuGlobalSemMajoracao + majoracao, parametros.teto);
+      const abaixoDoMinimo = valor > 0 && valor < parametros.valorMinimo;
+      if (abaixoDoMinimo) valor = 0;
+
+      return { adultosEquivalentes, psuBase, cit, majoracao, valor, abaixoDoMinimo };
     }
 
-    // ── Renderização da tabela de parâmetros — corre depois do fetch, com os
-    // 7 parâmetros reais de dados/parametros.json (um por chave do YAML,
-    // 1:1, nunca um agrupamento inventado) mais a constante estrutural
-    // "requerente" ──────────────────────────────────────────────────────
-    function renderTabelaParametros(psu) {
+    function formatarEuro(valor) {
+      return valor.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    }
+
+    document.getElementById('formPSU') && document.getElementById('formPSU').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (ESTADO_SIMULADOR !== 'ATIVO' || !PARAMETROS_PSU) return;
+      const input = {
+        numAdultos: parseInt(document.getElementById('numAdultos').value, 10) || 1,
+        numMenores: parseInt(document.getElementById('numMenores').value, 10) || 0,
+        rendimentoTrabalho: parseFloat(document.getElementById('rendimentoTrabalho').value) || 0,
+        outrosRendimentos: parseFloat(document.getElementById('outrosRendimentos').value) || 0,
+        majoracao: document.getElementById('majoracao').value,
+        beneficiarioMajoracao: document.getElementById('beneficiarioMajoracao').value,
+      };
+      const resultado = calcularPSU(PARAMETROS_PSU, input);
+      renderResultado(resultado);
+      if (typeof gtag === 'function') {
+        gtag('event', 'simulacao_concluida', { simulador: 'psu' });
+      }
+    });
+
+    function renderResultado(r) {
+      const div = document.getElementById('resultado');
+      if (!div) return;
+      div.classList.add('show');
+      const avisoMinimo = r.abaixoDoMinimo
+        ? '<p class="resultado-aviso">⚠️ O valor calculado é inferior a 10 € — não há lugar à prestação (artigo 25.º/5).</p>'
+        : '';
+      div.innerHTML = `
+        <div class="resultado-valor">${formatarEuro(r.valor)}<span style="font-size:1rem;font-weight:400;color:var(--muted)">/mês (estimativa)</span></div>
+        <div class="resultado-linha"><span>Adultos equivalentes</span><span>${r.adultosEquivalentes.toFixed(2)}</span></div>
+        <div class="resultado-linha"><span>PSUbase (Valor de Referência × adultos equivalentes)</span><span>${formatarEuro(r.psuBase)}</span></div>
+        <div class="resultado-linha"><span>Componente de Incentivo ao Trabalho (CIT)</span><span>${formatarEuro(r.cit)}</span></div>
+        <div class="resultado-linha"><span>Majoração aplicada</span><span>${formatarEuro(r.majoracao)}</span></div>
+        ${avisoMinimo}`;
+      div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ── Renderização da tabela de parâmetros — 11 parâmetros reais de
+    // dados/parametros.json (1:1 com o YAML, nunca um agrupamento
+    // inventado), convertidos para euro quando aplicável ─────────────────
+    function formatarValorTabela(valor, unidade) {
+      if (unidade === 'eur') return formatarEuro(valor);
+      if (unidade === 'ratio') return valor.toLocaleString('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+      return String(valor);
+    }
+
+    function renderTabelaParametros(psu, ias) {
       const linhas = [
-        ['Requerente (adulto equivalente)', { valor: 1, referencia_legal: 'estrutural — definição da fórmula, nunca muda' }],
-        ['Valor de Referência', psu.valor_referencia_mensal],
-        ['Valor máximo', psu.valor_maximo_mensal],
-        ['Coeficiente CIT', psu.coeficiente_cit],
-        ['Majoração parentalidade', psu.majoracao_parentalidade_mensal],
-        ['Ponderação — outro adulto (18+)', psu.ponderacao_outro_adulto],
-        ['Ponderação — criança/jovem', psu.ponderacao_menor_ate_25],
-        ['Limite de património (× IAS)', psu.limite_patrimonio_multiplicador_ias],
+        ['IAS 2026', ias, 'eur', IAS_2026.fonte],
+        ['Valor de Referência (0,5×IAS)', psu.valor_referencia_multiplicador_ias.valor * ias, 'eur', psu.valor_referencia_multiplicador_ias.referencia_legal],
+        ['Teto máximo (6×IAS)', psu.teto_maximo_multiplicador_ias.valor * ias, 'eur', psu.teto_maximo_multiplicador_ias.referencia_legal],
+        ['Valor mínimo', psu.valor_minimo_euros.valor, 'eur', psu.valor_minimo_euros.referencia_legal],
+        ['Ponderação — titular', psu.ponderacao_titular.valor, 'ratio', psu.ponderacao_titular.referencia_legal],
+        ['Ponderação — maior (18+)', psu.ponderacao_maior.valor, 'ratio', psu.ponderacao_maior.referencia_legal],
+        ['Ponderação — menor (&lt;18)', psu.ponderacao_menor.valor, 'ratio', psu.ponderacao_menor.referencia_legal],
+        ['CIT — limiar (0,20×IAS)', psu.cit_limiar_multiplicador_ias.valor * ias, 'eur', psu.cit_limiar_multiplicador_ias.referencia_legal],
+        ['CIT — taxa acima do limiar', psu.cit_taxa_acima_limiar.valor * 100 + '%', 'texto', psu.cit_taxa_acima_limiar.referencia_legal],
+        ['Limite património mobiliário (60×IAS)', psu.limite_patrimonio_mobiliario_multiplicador_ias.valor * ias, 'eur', psu.limite_patrimonio_mobiliario_multiplicador_ias.referencia_legal],
+        ['Limite bens móveis registados (60×IAS)', psu.limite_bens_moveis_registo_multiplicador_ias.valor * ias, 'eur', psu.limite_bens_moveis_registo_multiplicador_ias.referencia_legal],
       ];
       const corpo = document.getElementById('tabelaParametros');
       if (!corpo) return;
-      corpo.innerHTML = linhas.map(([nome, p]) => {
-        const confirmado = p.valor !== null;
-        const estadoHtml = confirmado
-          ? '<span class="confirmado">✓ confirmado</span>'
-          : '<span class="pendente">⏳ pendente</span>';
-        return `<tr><td>${nome}</td><td>${estadoHtml}</td><td>${p.referencia_legal}</td></tr>`;
+      corpo.innerHTML = linhas.map(([nome, valor, unidade, fonte]) => {
+        const valorHtml = unidade === 'texto' ? valor : formatarValorTabela(valor, unidade);
+        return `<tr><td>${nome}</td><td>${valorHtml}</td><td>${fonte}</td></tr>`;
       }).join('');
     }
 

@@ -39,7 +39,6 @@ DOMINIO = "https://tensdireito.com"
 # sitemap — justificação por página, nunca "esquecimento":
 EXCLUSOES_SITEMAP = {
     "404.html": "página de erro, robots noindex, sem conteúdo editorial (ver CLAUDE.md 'PÁGINAS INSTITUCIONAIS')",
-    "simulador-psu.html": "ferramenta pronta mas deliberadamente não publicada — aguarda decreto-lei da PSU, robots noindex,nofollow (ver CLAUDE.md 'IMPACTO DA PSU')",
 }
 
 PAGINAS = encontrar_paginas()
