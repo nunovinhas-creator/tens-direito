@@ -173,6 +173,7 @@ jobs:
               'dre_habitacao_paer': 'https://diariodarepublica.pt/dr/home',
               'dre_habitacao_garantia': 'https://diariodarepublica.pt/dr/home',
               'dre_ias': 'https://diariodarepublica.pt/dr/home',
+              'dre_psu_regulamentacao': 'https://diariodarepublica.pt/dr/home',
             };
 
             const mudancas = [];
@@ -1315,6 +1316,59 @@ jobs:
                     labels: ['verificar', 'fonte-alterada'],
                   });
                   console.log('Issue Portaria do IAS criada.');
+                }
+              }
+
+              // Issue específica: Portaria de regulamentação da PSU
+              // detectada em DRE (sentinela irmão do dre_psu, 2026-08-16,
+              // Fase 2 Commit 5/5 — o decreto-lei da PSU já saiu; falta
+              // regulamentar o art. 17.º e os arts. 32.º/59.º por
+              // Portaria — mesmo cuidado dos blocos acima, só linhas de
+              // hoje).
+              const linha_psu_reg = avisos_hoje.find(l => l.includes('dre_psu_regulamentacao_portaria_detectada'));
+              if (linha_psu_reg) {
+                const existing_psu_reg = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'verificar',
+                });
+                const duplicate_psu_reg = existing_psu_reg.data.find(i => i.title.includes('Portaria de regulamentação da PSU'));
+                if (!duplicate_psu_reg) {
+                  const match_psu_reg = linha_psu_reg.match(/dre_psu_regulamentacao_portaria_detectada:(.*)$/);
+                  const excertos_psu_reg = match_psu_reg ? match_psu_reg[1].trim() : '(ver data/scraped/dre_psu_regulamentacao_latest.json)';
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `📋 Portaria de regulamentação da PSU detectada em DRE`,
+                    body: [
+                      `## 📋 Portaria que regulamenta o Decreto-Lei n.º 166/2026 (PSU) detectada automaticamente em dre.pt`,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte monitorizada:** https://diariodarepublica.pt (pesquisa de frase exacta: \"Decreto-Lei n.º 166/2026\", só resultados do tipo Portaria)`,
+                      ``,
+                      `### Excertos detectados`,
+                      `\`\`\``,
+                      excertos_psu_reg,
+                      `\`\`\``,
+                      ``,
+                      `### Dois pontos ainda por regulamentar — confirmar qual é este`,
+                      `1. **Artigo 17.º** — fórmula que conta apoios à habitação com carácter de regularidade como rendimento, dependente de uma estatística do INE (renda de referência por m²) actualizada por Portaria`,
+                      `2. **Artigos 32.º/59.º** — procedimentos e meios de prova da candidatura`,
+                      ``,
+                      `### Acções necessárias (por ordem)`,
+                      `1. Confirmar em https://dre.pt qual dos 2 pontos esta Portaria regulamenta (ou se é outra coisa — a pesquisa por número do decreto-lei pode devolver Portarias sem relação directa com estes 2 pontos)`,
+                      `2. Se for o artigo 17.º: actualizar \`psu-quando-entra-em-vigor.html\`/\`simulador-psu.html\` — substituir "único ponto ainda sem valor concreto" pelo valor real; considerar acrescentar o parâmetro a \`dados/parametros/psu.yaml\``,
+                      `3. Se for os artigos 32.º/59.º: actualizar \`como-pedir-psu.html\` com os meios de prova/procedimentos confirmados`,
+                      `4. Actualizar a data de verificação nas páginas tocadas`,
+                      `5. Fechar esta issue após actualização`,
+                      ``,
+                      `### Contexto`,
+                      `- Ver CLAUDE.md secção "IMPACTO DA PSU" → nota do sentinela`,
+                    ].join('\n'),
+                    labels: ['verificar', 'fonte-alterada'],
+                  });
+                  console.log('Issue Portaria de regulamentação da PSU criada.');
                 }
               }
             } catch(_) {}
