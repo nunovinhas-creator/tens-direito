@@ -57,11 +57,6 @@ EXCLUIDAS = {
     # diferentes (familia, apoios-escolares, idosos-incapacidade-cuidadores),
     # não pertence a nenhum cluster único. Mesma categoria de comecar-aqui.html.
     "simuladores.html",
-    # Ferramenta pronta mas deliberadamente não publicada — aguarda o
-    # decreto-lei da PSU (ver PARAMETROS_PSU no próprio ficheiro e
-    # CLAUDE.md "IMPACTO DA PSU"). Fica fora de clusters.json até ao dia
-    # do decreto (ver .claude/commands/atualizar-cluster-psu.md).
-    "simulador-psu.html",
     # Hub cross-cluster do Gerador de Documentos — mesma categoria de
     # simuladores.html (agrega minutas de vários temas, não pertence a
     # um único cluster).

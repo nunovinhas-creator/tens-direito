@@ -60,7 +60,7 @@
     "titulo": "Calendário de Apoios Escolares 2026/2027: todos os prazos"
   },
   "calendario-pagamentos-psu": {
-    "chip": null,
+    "chip": "Prestação Social Única",
     "pagina": "calendario-pagamentos-psu.html",
     "titulo": "Duração e pagamento da PSU 2026: 12 meses renováveis"
   },
@@ -90,7 +90,7 @@
     "titulo": "Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão"
   },
   "como-pedir-psu": {
-    "chip": null,
+    "chip": "Prestação Social Única",
     "pagina": "como-pedir-psu.html",
     "titulo": "Como pedir a PSU 2026: requerimento, prazos e documentos"
   },
@@ -365,9 +365,9 @@
     "titulo": "Simulador de IMT Jovem 2026 — quanto poupas na primeira casa"
   },
   "simulador-psu": {
-    "chip": null,
+    "chip": "Prestação Social Única",
     "pagina": "simulador-psu.html",
-    "titulo": "Simulador da Prestação Social Única (PSU) — em preparação"
+    "titulo": "Simulador da PSU 2026: calcula o teu valor"
   },
   "simulador-rsi": {
     "chip": "Trabalho e Rendimento",
