@@ -25,11 +25,11 @@
       "icone": "🔄",
       "pillar": "/prestacao-social-unica.html",
       "paginas": [
-        {"slug": "psu-quando-entra-em-vigor.html", "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir", "tipo": "artigo", "destaque": true, "emoji": "🔄", "desc": "Timeline da PSU: lei aprovada, decreto-lei pendente, entrada em vigor prevista."},
+        {"slug": "psu-quando-entra-em-vigor.html", "titulo": "PSU 2026: decreto-lei publicado — timeline completa", "tipo": "artigo", "destaque": true, "emoji": "🔄", "desc": "Timeline da PSU: Decreto-Lei n.º 166/2026 publicado e em vigor — pagamento a partir de 31/12/2026."},
         {"slug": "psu-quem-tem-direito.html", "titulo": "Quem tem direito à PSU", "tipo": "artigo", "destaque": false},
         {"slug": "psu-vs-abono-familia.html", "titulo": "PSU e Abono de Família: são apoios diferentes", "tipo": "artigo", "destaque": false},
         {"slug": "psu-lista-13-apoios.html", "titulo": "As 13 prestações que a PSU vai substituir", "tipo": "artigo", "destaque": false},
-        {"slug": "psu-trabalho-social.html", "titulo": "Trabalho social na PSU: aprovado vs. por definir", "tipo": "artigo", "destaque": false},
+        {"slug": "psu-trabalho-social.html", "titulo": "Trabalho social na PSU: obrigatório, com excepções", "tipo": "artigo", "destaque": false},
         {"slug": "como-pedir-psu.html", "titulo": "Como pedir a PSU 2026", "tipo": "artigo", "destaque": false},
         {"slug": "calendario-pagamentos-psu.html", "titulo": "Duração e pagamento da PSU 2026", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-psu.html", "titulo": "Simulador da PSU", "tipo": "ferramenta", "destaque": false}

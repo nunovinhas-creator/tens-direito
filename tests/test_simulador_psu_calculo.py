@@ -274,6 +274,29 @@ def test_majoracoes_nunca_acumulaveis_simulador_so_aplica_uma(pagina):
     assert resultado["majoracao"] == 0
 
 
+def test_majoracao_valor_nao_reconhecido_aplica_zero_por_omissao(pagina):
+    # Fail-safe explícito: calcularPSU() só reconhece exactamente
+    # "parentalidade" ou "desemprego" — qualquer outro valor de
+    # input.majoracao (incluindo um que sugira "as duas", ou uma string
+    # vazia) tem de resultar em ZERO majoração, nunca num crash nem numa
+    # soma acidental das duas. O <select> HTML já impede este cenário na
+    # prática (só 3 opções possíveis), mas a função calcularPSU() em si
+    # nunca deve confiar só nisso — testa-se aqui directamente, com um
+    # valor a tentar deliberadamente pedir "as duas".
+    for valor_invalido in ("ambas", "parentalidade_e_desemprego", "xyz", ""):
+        resultado = _calcular(pagina, PARAMETROS_PRODUCAO, {
+            "numAdultos": 1, "numMenores": 0, "majoracao": valor_invalido,
+        })
+        assert resultado["majoracao"] == 0, (
+            f"input.majoracao='{valor_invalido}' devia aplicar ZERO majoração, "
+            f"aplicou {resultado['majoracao']}"
+        )
+        assert _aprox(resultado["valor"], VRP), (
+            f"input.majoracao='{valor_invalido}' devia dar o mesmo resultado que 'nenhuma' "
+            f"(VRP={VRP}), deu {resultado['valor']}"
+        )
+
+
 # ── Coerência com o artigo do decreto-lei citado no próprio ficheiro ────
 def test_nenhum_valor_de_producao_fica_null(pagina):
     parametros = pagina.evaluate("PARAMETROS_PSU")
