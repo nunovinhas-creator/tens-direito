@@ -272,7 +272,7 @@
   "prestacao-social-unica": {
     "chip": "Prestação Social Única",
     "pagina": "prestacao-social-unica.html",
-    "titulo": "Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor"
+    "titulo": "Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona"
   },
   "primeiro-direito": {
     "chip": "Habitação",
@@ -292,22 +292,22 @@
   "psu-lista-13-apoios": {
     "chip": "Prestação Social Única",
     "pagina": "psu-lista-13-apoios.html",
-    "titulo": "As 13 prestações que a PSU vai substituir (lista completa)"
+    "titulo": "As 13 prestações que a PSU substitui (lista completa, DL 166/2026)"
   },
   "psu-quando-entra-em-vigor": {
     "chip": "Prestação Social Única",
     "pagina": "psu-quando-entra-em-vigor.html",
-    "titulo": "PSU 2026: o que já foi aprovado e o que ainda falta decidir"
+    "titulo": "PSU 2026: decreto-lei publicado — timeline completa até 31/12/2026"
   },
   "psu-quem-tem-direito": {
     "chip": "Prestação Social Única",
     "pagina": "psu-quem-tem-direito.html",
-    "titulo": "Quem tem direito à PSU (o que a lei já define)"
+    "titulo": "Quem tem direito à PSU — condições de acesso do decreto-lei"
   },
   "psu-trabalho-social": {
     "chip": "Prestação Social Única",
     "pagina": "psu-trabalho-social.html",
-    "titulo": "Trabalho social na PSU 2026: aprovado vs. por definir"
+    "titulo": "Trabalho social na PSU 2026: obrigatório, com excepções"
   },
   "psu-vs-abono-familia": {
     "chip": "Prestação Social Única",
