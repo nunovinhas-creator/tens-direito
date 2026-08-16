@@ -873,3 +873,50 @@ def test_psu_majoracoes_continuam_null_por_desenho_nunca_um_euro_unico():
         "majoracao_desemprego_mensal deixou de ser null — depende do PSUglobal já calculado, nunca "
         "deveria ser um único euro fixo neste YAML; a fórmula fica para a lógica do simulador (FASE 2)"
     )
+
+
+# ── Artigo 17.º — apoios à habitação como rendimento (2026-08-16) ────────
+# Estrutura de parâmetros criada nesta sessão, SEM valor de mediana do INE
+# e SEM activar o cálculo no simulador — ver o comentário completo em
+# dados/parametros/psu.yaml. Este teste é o análogo do canário dos `null`
+# já usado para as majorações acima, mas com um propósito diferente: aqui
+# trancar o estado "NÃO PRONTO" contra activação prematura, não a
+# impossibilidade estrutural de reduzir a um único valor. Falha (vermelho)
+# se alguém preencher UM dos 3 parâmetros pendentes sem os outros dois — o
+# gate de segurança (calcularHabitacao() em simulador-psu.html) exige os
+# 3 preenchidos em conjunto (mediana + trimestre de referência + portaria
+# que os fixa), nunca um valor "meio-confirmado".
+def test_art17_habitacao_pendente_ate_portaria():
+    """Os 3 insumos que dependem de fonte externa (INE) e confirmação
+    legal (portaria do artigo 17.º/5) continuam null — nenhum valor
+    estimado ou "provisório" pode ser publicado aqui sem essa dupla
+    confirmação. Se um dia só um dos três for preenchido (ex.: alguém
+    encontra a mediana do INE mas a portaria ainda não saiu), este teste
+    tem de continuar vermelho — os 3 só avançam para um valor real em
+    conjunto, nunca isoladamente."""
+    pendentes = (
+        "art17_mediana_renda_m2_ine",
+        "art17_mediana_renda_m2_referencia",
+        "art17_portaria_habitacao",
+    )
+    valores = {nome: _param_psu(nome) for nome in pendentes}
+    todos_none = all(v is None for v in valores.values())
+    assert todos_none, (
+        f"artigo 17.º/habitação: nem todos os parâmetros pendentes continuam null — {valores}. "
+        "Os 3 (mediana INE + trimestre de referência + portaria) só devem avançar para um valor "
+        "real EM CONJUNTO, com a portaria do artigo 17.º/5 confirmada — nunca um preenchido "
+        "isoladamente. Se a portaria já saiu e os 3 foram preenchidos correctamente, este teste "
+        "tem de ser reescrito para validar o valor real (nunca apenas apagado)."
+    )
+
+
+def test_art17_habitacao_constantes_fixas_na_lei():
+    """Os 3 parâmetros que o próprio Decreto-Lei n.º 166/2026 já fixa
+    directamente (nunca dependeram do INE nem de portaria) — artigo
+    17.º/2 (coeficiente de imputação) e artigo 17.º/3 (área de
+    referência e divisor da renda de referência, "um terço"). Confirmados
+    contra o texto legal extraído de dados/fontes/Decreto-Lei n.PDF
+    (artigo 17.º) nesta sessão."""
+    assert _param_psu("art17_area_referencia_m2") == 112.50
+    assert _param_psu("art17_coeficiente_imputacao") == 0.5
+    assert _param_psu("art17_divisor_renda_referencia") == 3
