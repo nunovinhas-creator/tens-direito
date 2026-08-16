@@ -638,6 +638,66 @@
       }
     },
     "psu": {
+      "art17_mediana_renda_m2_ine": {
+        "descricao": "PSU — art. 17.º/3: mediana das rendas por m² de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao 3.º trimestre do ano anterior, publicada pelo INE. PENDENTE — o INE não tem, à data desta sessão, nenhuma publicação com este recorte exacto confirmada como a fonte oficial para este cálculo; nunca inventar um número. `null` até confirmação directa contra o INE.",
+        "unidade": "EUR/m²",
+        "valor": null,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"A renda de referência corresponde a um terço do valor mediano das rendas por metro quadrado de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao terceiro trimestre do ano anterior, publicado pelo Instituto Nacional de Estatística, I. P.\" — valor ainda por confirmar contra a publicação real do INE.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
+      "art17_mediana_renda_m2_referencia": {
+        "descricao": "PSU — art. 17.º/3: período civil a que se reporta a mediana acima (ex.: \"3.º trimestre de 2025\") — nunca o mesmo ano da vigência do parâmetro (a lei exige sempre o 3.º trimestre do ano ANTERIOR ao da aplicação). PENDENTE, junto com art17_mediana_renda_m2_ine — os dois só ficam preenchidos em conjunto, nunca um sem o outro.",
+        "unidade": "texto (trimestre/ano)",
+        "valor": null,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"com referência ao terceiro trimestre do ano anterior\"; artigo 17.º/4 — \"Não estando disponível o valor mediano referido no número anterior, é considerado... o valor mediano mais recente publicado pelo Instituto Nacional de Estatística, I. P.\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
+      "art17_portaria_habitacao": {
+        "descricao": "PSU — art. 17.º/5: número e data da portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social que fixa/actualiza anualmente o valor dos apoios à habitação determinado pelos números anteriores do artigo. PENDENTE — sentinela `dre_psu_regulamentacao` (scripts/scraper_playwright.py) vigia a publicação; `null` até essa portaria ser confirmada.",
+        "unidade": "texto (n.º/data do diploma)",
+        "valor": null,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/5 — \"O valor dos apoios à habitação determinado nos números anteriores é atualizado anualmente por portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social.\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
+      "art17_area_referencia_m2": {
+        "descricao": "PSU — art. 17.º/3: área de referência aplicada ao valor mediano das rendas por m², definida de acordo com os censos mais recentes como área útil média da residência habitual em Portugal. FIXO na lei — não depende do INE nem de portaria, ao contrário dos 3 parâmetros anteriores.",
+        "unidade": "m²",
+        "valor": 112.5,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"...e aplicado à área de referência de 112,50 m2, definida de acordo com os censos mais recentes, como área útil média da residência habitual em Portugal\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
+      "art17_coeficiente_imputacao": {
+        "descricao": "PSU — art. 17.º/2: coeficiente aplicado à diferença entre a renda de referência e a renda paga pelo beneficiário, para determinar o valor do apoio imputado à habitação social (incluindo programas de arrendamento subsidiado). FIXO na lei. Ver nota sobre o âmbito exacto do n.º 2 no comentário do bloco acima — não resolvido nesta sessão.",
+        "unidade": "ratio",
+        "valor": 0.5,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/2 — \"...o valor dos apoios imputados à habitação social, incluindo os que decorrem de programas de arrendamento subsidiado corresponde a 50 % da diferença entre a renda de referência e a renda paga pelo beneficiário\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
+      "art17_divisor_renda_referencia": {
+        "descricao": "PSU — art. 17.º/3: divisor aplicado ao valor mediano das rendas por m² para obter a renda de referência (\"um terço do valor mediano\"). FIXO na lei.",
+        "unidade": "ratio (divisor)",
+        "valor": 3,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"A renda de referência corresponde a um terço do valor mediano das rendas por metro quadrado...\"",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-16"
+      },
       "valor_referencia_multiplicador_ias": {
         "descricao": "PSU — Valor de Referência (VRP), em múltiplos do IAS; base da fórmula PSUbase = VRP × AE",
         "unidade": "× IAS",

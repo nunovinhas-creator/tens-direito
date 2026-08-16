@@ -73,7 +73,7 @@
         "name": "O simulador considera apoios à habitação como rendimento?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Não, nesta versão. O artigo 17.º do decreto-lei conta apoios à habitação com caráter de regularidade como rendimento, mas o cálculo depende de uma estatística do INE actualizada periodicamente por portaria — um valor que este site nunca inventa. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado."
+          "text": "Ainda não. O formulário já tem o campo (\"Recebo apoio à habitação social ou arrendamento subsidiado\"), mas fica desactivado — o artigo 17.º do decreto-lei conta esses apoios como rendimento do agregado, mas o cálculo depende de uma estatística do INE (mediana das rendas por m²) fixada por portaria (artigo 17.º/5), que ainda não foi publicada. Este site nunca inventa esse valor. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado até essa portaria sair e o campo activar."
         }
       },
       {
@@ -339,8 +339,20 @@
               <option value="menor">Um menor do agregado (&lt;18)</option>
             </select>
           </div>
-          <div class="aviso-info">
-            <strong>ℹ️ Não incluído nesta versão:</strong> apoios à habitação com caráter de regularidade (artigo 17.º) — o cálculo depende de uma estatística do INE actualizada por portaria, um valor que este site nunca inventa. Se recebes algum apoio deste tipo, o teu valor real pode ser diferente do simulado.
+          <div class="form-group" id="grupoHabitacao">
+            <label for="recebeApoioHabitacao">
+              <input type="checkbox" id="recebeApoioHabitacao" disabled style="width:auto;margin-right:0.5rem;vertical-align:middle;">
+              Recebo apoio à habitação social ou arrendamento subsidiado (artigo 17.º)
+            </label>
+            <div class="form-group condicional" id="grupoRendaPagaHabitacao">
+              <label for="rendaPagaHabitacao">Renda que pagas mensalmente (€)</label>
+              <input type="number" id="rendaPagaHabitacao" min="0" step="10" value="0" disabled>
+            </div>
+            <div class="aviso-info" id="avisoHabitacaoIndisponivel">
+              <strong>ℹ️ Ainda não disponível — aguarda portaria de regulamentação.</strong>
+              O artigo 17.º do decreto-lei conta apoios à habitação com caráter de regularidade (habitação social, arrendamento subsidiado) como rendimento do agregado — mas o valor depende de uma estatística do INE (mediana das rendas por m²) fixada por portaria (artigo 17.º/5), que ainda não foi publicada. Este site nunca inventa esse valor: enquanto a portaria não sair, este campo fica desactivado e o simulador nunca soma habitação ao cálculo. Assim que a portaria for publicada, o campo activa-se automaticamente.
+              <strong>Nota importante:</strong> quando este campo se activar, marcar que recebes este apoio vai <strong>aumentar</strong> o rendimento considerado e por isso <strong>reduzir</strong> o valor da PSU — não é um erro do simulador, é a fórmula legal (artigo 17.º/2): o apoio à habitação conta como rendimento do agregado, tal como uma pensão ou outra prestação social.
+            </div>
           </div>
           <button type="submit" id="botaoCalcularPSU" class="btn btn-primary" disabled>⏳ A carregar valores oficiais…</button>
         </form>
@@ -378,7 +390,7 @@
       <details>
         <summary>O simulador considera apoios à habitação como rendimento?</summary>
         <div class="faq-resposta">
-          Não, nesta versão. O artigo 17.º do decreto-lei conta apoios à habitação com caráter de regularidade como rendimento, mas o cálculo depende de uma estatística do INE actualizada periodicamente por portaria — um valor que este site nunca inventa. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado.
+          Ainda não. O formulário já tem o campo ("Recebo apoio à habitação social ou arrendamento subsidiado"), mas fica desactivado — o artigo 17.º do decreto-lei conta esses apoios como rendimento do agregado, mas o cálculo depende de uma estatística do INE (mediana das rendas por m²) fixada por portaria (artigo 17.º/5), que ainda não foi publicada. Este site nunca inventa esse valor. Se recebes um apoio deste tipo, o teu valor real pode ser diferente do simulado até essa portaria sair e o campo activar.
         </div>
       </details>
 
@@ -459,10 +471,27 @@
           citLimiar: psu.cit_limiar_multiplicador_ias.valor * ias,
           citTaxaAcimaLimiar: psu.cit_taxa_acima_limiar.valor,
           dataProducaoEfeitos: psu.data_producao_efeitos.valor,
+          // ── Artigo 17.º (apoios à habitação) — GATE DE SEGURANÇA ──────
+          // `pronto` só é true quando os DOIS insumos externos (mediana
+          // do INE + portaria que os fixa, artigo 17.º/5) estiverem
+          // ambos preenchidos em dados/parametros/psu.yaml — nunca
+          // decidido pelo formulário/UI. Enquanto `pronto` for false,
+          // calcularHabitacao() devolve sempre 0, independentemente do
+          // input (ver comentário junto à função, mais abaixo).
+          art17Habitacao: {
+            pronto: psu.art17_mediana_renda_m2_ine.valor !== null && psu.art17_portaria_habitacao.valor !== null,
+            medianaRendaM2: psu.art17_mediana_renda_m2_ine.valor,
+            medianaReferencia: psu.art17_mediana_renda_m2_referencia.valor,
+            portaria: psu.art17_portaria_habitacao.valor,
+            areaReferencia: psu.art17_area_referencia_m2.valor,
+            coeficienteImputacao: psu.art17_coeficiente_imputacao.valor,
+            divisorRendaReferencia: psu.art17_divisor_renda_referencia.valor,
+          },
         };
         ESTADO_SIMULADOR = 'ATIVO';
         renderTabelaParametros(psu, ias);
         aplicarEstadoFormulario();
+        aplicarEstadoHabitacao();
         aplicarBannerVigencia();
         return true;
       } catch (erro) {
@@ -488,6 +517,33 @@
       if (botao) {
         botao.disabled = !activo;
         botao.textContent = activo ? '🧮 Calcular PSU' : '⏳ A carregar valores oficiais…';
+      }
+    }
+
+    // ── Artigo 17.º — campo de habitação, desactivado por construção ──────
+    // Independente do estado geral do formulário (fieldsetPSU): mesmo depois
+    // de o fieldset ficar activo, o checkbox/input de habitação mantêm o seu
+    // PRÓPRIO atributo `disabled` (HTML), só removido aqui, e só quando
+    // `art17Habitacao.pronto` for true — nunca herdado automaticamente de
+    // `aplicarEstadoFormulario()`. Isto é a camada de UX do mesmo gate que
+    // `calcularHabitacao()` aplica na função pura — dupla garantia: mesmo
+    // que alguém force o atributo `disabled` a sair via DevTools, a função
+    // de cálculo nunca soma habitação sem `pronto === true`.
+    function aplicarEstadoHabitacao() {
+      const pronto = !!(PARAMETROS_PSU && PARAMETROS_PSU.art17Habitacao && PARAMETROS_PSU.art17Habitacao.pronto);
+      const checkbox = document.getElementById('recebeApoioHabitacao');
+      const aviso = document.getElementById('avisoHabitacaoIndisponivel');
+      if (checkbox) checkbox.disabled = !pronto;
+      if (aviso) aviso.style.display = pronto ? 'none' : 'block';
+      if (!pronto) {
+        // Nunca deixar um estado a meio: se por algum motivo o campo
+        // estava marcado (não devia ser possível com o checkbox
+        // desactivado, mas é uma segunda linha de defesa), repõe-se.
+        if (checkbox) checkbox.checked = false;
+        const grupoRenda = document.getElementById('grupoRendaPagaHabitacao');
+        if (grupoRenda) grupoRenda.classList.remove('show');
+        const rendaInput = document.getElementById('rendaPagaHabitacao');
+        if (rendaInput) rendaInput.disabled = true;
       }
     }
 
@@ -517,6 +573,22 @@
       if (selectMajoracao && grupoBeneficiario) {
         selectMajoracao.addEventListener('change', () => {
           grupoBeneficiario.classList.toggle('show', selectMajoracao.value === 'parentalidade');
+        });
+      }
+    });
+
+    // ── Mostrar/esconder a renda paga (art. 17.º) ao marcar o checkbox ────
+    // Só pode disparar quando o checkbox estiver activo (pronto === true,
+    // ver aplicarEstadoHabitacao) — enquanto pendente, o checkbox nunca sai
+    // do estado disabled, por isso este listener nunca é accionado na prática.
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkboxHabitacao = document.getElementById('recebeApoioHabitacao');
+      const grupoRenda = document.getElementById('grupoRendaPagaHabitacao');
+      const rendaInput = document.getElementById('rendaPagaHabitacao');
+      if (checkboxHabitacao && grupoRenda) {
+        checkboxHabitacao.addEventListener('change', () => {
+          grupoRenda.classList.toggle('show', checkboxHabitacao.checked);
+          if (rendaInput) rendaInput.disabled = !checkboxHabitacao.checked;
         });
       }
     });
@@ -558,11 +630,35 @@
       return Math.max(0, limiar - psuGlobalSemMajoracao);
     }
 
+    // Artigo 17.º — apoios à habitação como rendimento. GATE DE SEGURANÇA:
+    // só calcula um valor diferente de 0 quando `parametros.art17Habitacao`
+    // existir E `.pronto === true` (i.e., quando dados/parametros/psu.yaml
+    // tiver mediana do INE E portaria de regulamentação preenchidos — ver
+    // psu.yaml e tests/test_valores_ancora.py::
+    // test_art17_habitacao_pendente_ate_portaria). Enquanto pendente,
+    // devolve SEMPRE 0, independentemente de `recebeApoio`/`rendaPaga` —
+    // esta função é a última linha de defesa, mesmo que o formulário
+    // alguma vez fosse contornado (ex. via DevTools).
+    //
+    // Fórmula (artigo 17.º/2-3, texto real): renda de referência = (mediana
+    // do INE ÷ 3) × área de referência (112,50 m²); imputado = coeficiente
+    // (0,5) × max(0, renda de referência − renda paga). Nunca passa pela
+    // CIT (artigo 28.º) — a CIT é exclusiva de rendimentos de TRABALHO,
+    // nunca de apoios à habitação; soma-se directamente ao rendimento
+    // considerado, tal como outrosRendimentos.
+    function calcularHabitacao(parametros, recebeApoio, rendaPaga) {
+      const art17 = parametros.art17Habitacao;
+      if (!art17 || !art17.pronto || !recebeApoio) return 0;
+      const rendaReferencia = (art17.medianaRendaM2 / art17.divisorRendaReferencia) * art17.areaReferencia;
+      return art17.coeficienteImputacao * Math.max(0, rendaReferencia - (rendaPaga || 0));
+    }
+
     function calcularPSU(parametros, input) {
       const adultosEquivalentes = calcularAdultosEquivalentes(parametros, input.numAdultos, input.numMenores);
       const psuBase = parametros.valorReferencia * adultosEquivalentes;
       const cit = calcularCIT(parametros, input.rendimentoTrabalho);
-      const rendimentosTotais = (input.rendimentoTrabalho || 0) + (input.outrosRendimentos || 0);
+      const habitacao = calcularHabitacao(parametros, input.recebeApoioHabitacao, input.rendaPagaHabitacao);
+      const rendimentosTotais = (input.rendimentoTrabalho || 0) + (input.outrosRendimentos || 0) + habitacao;
       const psuGlobalSemMajoracao = Math.max(0, psuBase + cit - rendimentosTotais);
 
       let majoracao = 0;
@@ -576,7 +672,7 @@
       const abaixoDoMinimo = valor > 0 && valor < parametros.valorMinimo;
       if (abaixoDoMinimo) valor = 0;
 
-      return { adultosEquivalentes, psuBase, cit, majoracao, valor, abaixoDoMinimo };
+      return { adultosEquivalentes, psuBase, cit, habitacao, majoracao, valor, abaixoDoMinimo };
     }
 
     function formatarEuro(valor) {
@@ -586,6 +682,7 @@
     document.getElementById('formPSU') && document.getElementById('formPSU').addEventListener('submit', (e) => {
       e.preventDefault();
       if (ESTADO_SIMULADOR !== 'ATIVO' || !PARAMETROS_PSU) return;
+      const checkboxHabitacao = document.getElementById('recebeApoioHabitacao');
       const input = {
         numAdultos: parseInt(document.getElementById('numAdultos').value, 10) || 1,
         numMenores: parseInt(document.getElementById('numMenores').value, 10) || 0,
@@ -593,6 +690,11 @@
         outrosRendimentos: parseFloat(document.getElementById('outrosRendimentos').value) || 0,
         majoracao: document.getElementById('majoracao').value,
         beneficiarioMajoracao: document.getElementById('beneficiarioMajoracao').value,
+        // Artigo 17.º — só tem efeito real quando PARAMETROS_PSU.art17Habitacao.pronto
+        // for true (ver calcularHabitacao); enquanto pendente, o checkbox nunca sai
+        // do estado disabled/desmarcado, mas lê-se sempre o valor real do DOM.
+        recebeApoioHabitacao: !!(checkboxHabitacao && checkboxHabitacao.checked),
+        rendaPagaHabitacao: parseFloat(document.getElementById('rendaPagaHabitacao').value) || 0,
       };
       const resultado = calcularPSU(PARAMETROS_PSU, input);
       renderResultado(resultado);
@@ -613,6 +715,7 @@
         <div class="resultado-linha"><span>Adultos equivalentes</span><span>${r.adultosEquivalentes.toFixed(2)}</span></div>
         <div class="resultado-linha"><span>PSUbase (Valor de Referência × adultos equivalentes)</span><span>${formatarEuro(r.psuBase)}</span></div>
         <div class="resultado-linha"><span>Componente de Incentivo ao Trabalho (CIT)</span><span>${formatarEuro(r.cit)}</span></div>
+        <div class="resultado-linha"><span>Apoios à habitação considerados (art. 17.º)</span><span>${formatarEuro(r.habitacao)}</span></div>
         <div class="resultado-linha"><span>Majoração aplicada</span><span>${formatarEuro(r.majoracao)}</span></div>
         ${avisoMinimo}`;
       div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

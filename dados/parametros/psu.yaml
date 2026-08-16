@@ -95,22 +95,113 @@
 # estas majorações fica para a FASE 2 (lógica no simulador), nunca um
 # número fixo neste YAML.
 #
-# ARTIGO 17.º (apoios à habitação como rendimento) — DELIBERADAMENTE NÃO
-# PARAMETRIZADO NESTA SESSÃO, sem entrada própria neste ficheiro. A fórmula
-# ("50% da diferença entre a renda de referência e a renda paga"; "renda de
-# referência = 1/3 da mediana das rendas por m² de novos contratos nos
-# últimos 12 meses, referência ao 3.º trimestre do ano anterior, publicada
-# pelo INE, × 112,50 m²") depende de uma estatística do INE actualizada
-# periodicamente — não é um multiplicador do IAS nem um euro fixo por
-# Portaria, ao contrário de todos os outros parâmetros deste ficheiro.
-# O próprio artigo 17.º/5 prevê uma actualização ANUAL por portaria, o que
-# sugere que, eventualmente, um valor final concreto passará a ser
-# publicável aqui — mas até essa portaria sair, qualquer valor guardado
-# seria uma estimativa nossa sobre dados do INE, não um facto legal
-# directamente citável. Registado como pendência para uma sessão dedicada
-# (fonte: INE, mediana das rendas por m² — nunca inventar um número).
+# ARTIGO 17.º (apoios à habitação como rendimento) — ESTRUTURA parametrizada
+# nesta sessão (2026-08-16, auditoria + implementação da estrutura), SEM
+# valor de mediana do INE e SEM activar o cálculo no simulador. Distinção
+# central: a FÓRMULA é 100% conhecida (texto legal, artigo 17.º/2 e /3) —
+# só o VALOR de um dos seus insumos (a mediana das rendas por m² do INE) e a
+# confirmação de que esse valor já está legalmente fixado (a portaria do
+# artigo 17.º/5) é que faltam. Por isso, ao contrário da decisão da sessão
+# anterior ("sem entrada própria"), os 3 parâmetros FIXOS na lei entram já
+# com valor; os 3 que dependem do INE/portaria entram como `null`,
+# EXPLICITAMENTE pendentes — mesmo padrão dos `null` de
+# majoracao_parentalidade_mensal/majoracao_desemprego_mensal acima, mas por
+# um motivo diferente: aquelas dependem do beneficiário/agregado (nunca
+# redutíveis a um valor único, mesmo com toda a informação legal disponível);
+# estas dependem de uma fonte externa (INE) ainda não publicada/fixada por
+# portaria — o dia em que essa portaria sair, deixam de ser `null`.
+#
+# NOME DO BLOCO — prefixo `art17_`, nunca um objecto YAML aninhado: o
+# consolidador (`scripts/gerar_parametros_json.py`) exige um esquema plano
+# (cada chave de topo → `{descricao, unidade, valores: [...]}`), sem suporte
+# nativo a agrupamento — mesma limitação já documentada para
+# `dados/parametros/abono.yaml` (sufixo de cenário) e para o próprio grupo
+# `cit_*` deste ficheiro (2 parâmetros, mesmo prefixo). `art17_` agrupa os 6
+# parâmetros abaixo pelo nome, sem exigir mudança ao consolidador.
+#
+# ÂMBITO DO N.º 2 — DELIBERADAMENTE NÃO RESOLVIDO NESTA SESSÃO: o texto do
+# artigo 17.º/1 define "apoios à habitação" de forma ampla ("habitação
+# social e todos os apoios à habitação, com caráter de regularidade...
+# independentemente da natureza jurídica da entidade que os atribui"), mas
+# a fórmula dos 50% do n.º 2 refere-se literalmente só a "apoios imputados à
+# habitação social, incluindo os que decorrem de programas de arrendamento
+# subsidiado" — nunca fica claro se essa fórmula se generaliza a qualquer
+# apoio do n.º 1 (ex.: uma transferência municipal em dinheiro) ou é
+# específica de habitação social/arrendamento subsidiado. Registado aqui
+# para a portaria do n.º 5 (ou uma leitura jurídica mais aprofundada)
+# resolver — o simulador, quando activado, tem de reflectir a resposta a
+# esta pergunta, nunca assumir a leitura mais ampla por comodidade.
+#
+# GATE DE SEGURANÇA (o mais importante) — o campo de habitação no simulador
+# só pode ficar funcional quando `art17_mediana_renda_m2_ine` E
+# `art17_portaria_habitacao` tiverem AMBOS um valor não-null neste ficheiro.
+# Enquanto qualquer um faltar, o campo do formulário fica desactivado com
+# explicação, e `calcularPSU()` nunca soma habitação ao rendimento
+# considerado — trancado por `tests/test_valores_ancora.py::
+# test_art17_habitacao_pendente_ate_portaria` e pela própria função JS
+# `calcularHabitacao()` (dupla garantia: teste-âncora + gate na função pura).
 #
 # Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+art17_mediana_renda_m2_ine:
+  descricao: "PSU — art. 17.º/3: mediana das rendas por m² de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao 3.º trimestre do ano anterior, publicada pelo INE. PENDENTE — o INE não tem, à data desta sessão, nenhuma publicação com este recorte exacto confirmada como a fonte oficial para este cálculo; nunca inventar um número. `null` até confirmação directa contra o INE."
+  unidade: "EUR/m²"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: null
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"A renda de referência corresponde a um terço do valor mediano das rendas por metro quadrado de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao terceiro trimestre do ano anterior, publicado pelo Instituto Nacional de Estatística, I. P.\" — valor ainda por confirmar contra a publicação real do INE."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
+
+art17_mediana_renda_m2_referencia:
+  descricao: "PSU — art. 17.º/3: período civil a que se reporta a mediana acima (ex.: \"3.º trimestre de 2025\") — nunca o mesmo ano da vigência do parâmetro (a lei exige sempre o 3.º trimestre do ano ANTERIOR ao da aplicação). PENDENTE, junto com art17_mediana_renda_m2_ine — os dois só ficam preenchidos em conjunto, nunca um sem o outro."
+  unidade: "texto (trimestre/ano)"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: null
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"com referência ao terceiro trimestre do ano anterior\"; artigo 17.º/4 — \"Não estando disponível o valor mediano referido no número anterior, é considerado... o valor mediano mais recente publicado pelo Instituto Nacional de Estatística, I. P.\""
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
+
+art17_portaria_habitacao:
+  descricao: "PSU — art. 17.º/5: número e data da portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social que fixa/actualiza anualmente o valor dos apoios à habitação determinado pelos números anteriores do artigo. PENDENTE — sentinela `dre_psu_regulamentacao` (scripts/scraper_playwright.py) vigia a publicação; `null` até essa portaria ser confirmada."
+  unidade: "texto (n.º/data do diploma)"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: null
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/5 — \"O valor dos apoios à habitação determinado nos números anteriores é atualizado anualmente por portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social.\""
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
+
+art17_area_referencia_m2:
+  descricao: "PSU — art. 17.º/3: área de referência aplicada ao valor mediano das rendas por m², definida de acordo com os censos mais recentes como área útil média da residência habitual em Portugal. FIXO na lei — não depende do INE nem de portaria, ao contrário dos 3 parâmetros anteriores."
+  unidade: "m²"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: 112.50
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"...e aplicado à área de referência de 112,50 m2, definida de acordo com os censos mais recentes, como área útil média da residência habitual em Portugal\""
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
+
+art17_coeficiente_imputacao:
+  descricao: "PSU — art. 17.º/2: coeficiente aplicado à diferença entre a renda de referência e a renda paga pelo beneficiário, para determinar o valor do apoio imputado à habitação social (incluindo programas de arrendamento subsidiado). FIXO na lei. Ver nota sobre o âmbito exacto do n.º 2 no comentário do bloco acima — não resolvido nesta sessão."
+  unidade: "ratio"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: 0.5
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/2 — \"...o valor dos apoios imputados à habitação social, incluindo os que decorrem de programas de arrendamento subsidiado corresponde a 50 % da diferença entre a renda de referência e a renda paga pelo beneficiário\""
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
+
+art17_divisor_renda_referencia:
+  descricao: "PSU — art. 17.º/3: divisor aplicado ao valor mediano das rendas por m² para obter a renda de referência (\"um terço do valor mediano\"). FIXO na lei."
+  unidade: "ratio (divisor)"
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: 3
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"A renda de referência corresponde a um terço do valor mediano das rendas por metro quadrado...\""
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-16"
 
 valor_referencia_multiplicador_ias:
   descricao: "PSU — Valor de Referência (VRP), em múltiplos do IAS; base da fórmula PSUbase = VRP × AE"

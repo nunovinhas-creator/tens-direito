@@ -2423,9 +2423,107 @@ vigência ligado a `data_producao_efeitos` do YAML (nunca uma string
 solta) — mostra "simulação informativa, pagamento só a partir de
 31/12/2026" enquanto essa data não chegar. Artigo 17.º (apoios à
 habitação com carácter de regularidade) explicitamente **não
-implementado** — campo marcado "não considerado nesta versão", nunca
-inventado um valor sem a Portaria de regulamentação (ver sentinela
-`dre_psu_regulamentacao` acima).
+implementado** neste Commit 3/5 — campo marcado "não considerado nesta
+versão", nunca inventado um valor sem a Portaria de regulamentação (ver
+sentinela `dre_psu_regulamentacao` acima). **Estrutura (gated)
+implementada numa sessão de auditoria seguinte, ainda no mesmo dia
+(2026-08-16) — ver subsecção "Artigo 17.º — estrutura pronta, cálculo
+desactivado" logo abaixo.**
+
+### Artigo 17.º — estrutura pronta, cálculo desactivado (2026-08-16)
+
+Sessão de auditoria seguida de implementação, no mesmo dia da activação
+do cluster PSU (Fase 2, acima) — objectivo: preparar a ESTRUTURA do
+artigo 17.º (apoios à habitação como rendimento) no simulador, **sem**
+o valor da mediana do INE e **sem** activar o cálculo. Princípio de
+segurança (o mesmo padrão já usado para os `null` das majorações da
+Fase 1/2): o campo de habitação só pode ficar funcional quando existir
+em `dados/parametros/psu.yaml` um valor de mediana €/m² **E** uma
+referência à portaria que o legitima. Enquanto qualquer um faltar, o
+campo mostra-se **desactivado** com explicação, e `calcularPSU()`
+**nunca** soma habitação — trancado em duas camadas independentes:
+um teste-âncora (`tests/test_valores_ancora.py::
+test_art17_habitacao_pendente_ate_portaria`) e um gate na própria
+função pura do JS (`calcularHabitacao()`), nunca confiado só ao
+atributo `disabled` do HTML.
+
+**Fórmula confirmada contra o texto real do artigo 17.º** (extraído de
+`dados/fontes/Decreto-Lei n.PDF`, n.º 2-3): renda de referência = ⅓ ×
+mediana €/m² de novos contratos (últimos 12 meses, ref. 3.º trimestre
+do ano anterior, INE) × 112,50 m²; imputado = 0,5 × max(0, renda de
+referência − renda paga). O teto de 450×IAS do artigo 14.º/3
+**não** se aplica aqui — é específico dos rendimentos prediais (valor
+patrimonial do imóvel de habitação própria e permanente), uma categoria
+de rendimento inteiramente distinta.
+
+**Âmbito do n.º 2 — deliberadamente por esclarecer**: o n.º 1 define
+"apoios à habitação" de forma ampla ("habitação social e todos os
+apoios à habitação, com caráter de regularidade... independentemente
+da natureza jurídica da entidade que os atribui"), mas a fórmula dos
+50% do n.º 2 refere-se literalmente só a "apoios imputados à habitação
+social, incluindo os que decorrem de programas de arrendamento
+subsidiado" — não fica claro se se generaliza a qualquer apoio do n.º 1
+ou é específica desse subconjunto. Registado em comentário no próprio
+`dados/parametros/psu.yaml`, para a portaria (ou uma leitura jurídica
+mais aprofundada) resolver antes de qualquer activação.
+
+**`dados/parametros/psu.yaml`** ganhou o bloco `art17_*` (prefixo — o
+consolidador não suporta agrupamento nativo, mesmo padrão já usado para
+`abono.yaml`/`cit_*`): `art17_area_referencia_m2` (112,50), `art17_
+coeficiente_imputacao` (0,5) e `art17_divisor_renda_referencia` (3) —
+todos fixos na lei, com valor desde já; `art17_mediana_renda_m2_ine`,
+`art17_mediana_renda_m2_referencia` e `art17_portaria_habitacao` —
+todos `null`, deliberadamente pendentes.
+
+**`simulador-psu.html`**: `carregarParametrosPSU()` constrói
+`PARAMETROS_PSU.art17Habitacao = { pronto, medianaRendaM2,
+medianaReferencia, portaria, areaReferencia, coeficienteImputacao,
+divisorRendaReferencia }` — `pronto` só é `true` quando
+`art17_mediana_renda_m2_ine` **e** `art17_portaria_habitacao` tiverem
+ambos valor não-null. `calcularHabitacao(parametros, recebeApoio,
+rendaPaga)` devolve sempre 0 enquanto `!pronto`, independentemente do
+input — soma directamente ao rendimento considerado em `calcularPSU()`,
+**nunca** passa pela CIT (exclusiva de rendimentos de trabalho, artigo
+28.º). Novo campo no formulário — checkbox "Recebo apoio à habitação
+social ou arrendamento subsidiado (artigo 17.º)" + campo condicional de
+renda paga — nasce sempre com o atributo `disabled` próprio (não herdado
+do `fieldsetPSU` geral: `aplicarEstadoHabitacao()` gere-o à parte, dupla
+garantia com o gate da função pura), com um `aviso-info` persistente
+("Ainda não disponível — aguarda portaria de regulamentação"),
+explicando também que, quando activo, marcar o apoio **aumenta** o
+rendimento considerado e por isso **reduz** o valor da PSU — para não
+parecer um bug quando a portaria sair.
+
+**Testes**: `tests/test_valores_ancora.py` ganhou 2 testes (o canário
+que tranca os 3 `null` em conjunto — confirmado a falhar de propósito
+com um valor injectado isoladamente — e a confirmação dos 3 valores
+fixos). `tests/test_simulador_psu_calculo.py` ganhou 6 golden tests
+(gate fechado nunca soma habitação mesmo com input explícito; fail-safe
+sem a chave `art17Habitacao` no objecto; fórmula correcta com uma
+mediana **fictícia** — só no ficheiro de teste, nunca em produção;
+gate aberto mas checkbox desmarcado não soma; renda paga acima da
+referência nunca fica negativa) mais 2 testes de runtime real
+(`http.server`, página completa, fetch real de `/dados/parametros.json`):
+o checkbox nasce `disabled` e o aviso fica visível; um bypass
+deliberado do `disabled` via DevTools simulado nunca produz um valor de
+habitação > 0 no resultado renderizado — confirma, contra a página real,
+que produção continua sem mostrar nenhum valor de habitação.
+
+**Passos para activar, quando `dre_psu_regulamentacao` disparar para o
+artigo 17.º** (ver sentinela na secção acima): 1) confirmar em dre.pt
+qual dos dois pontos a portaria regulamenta (art. 17.º ou arts.
+32.º/59.º); 2) se for o art. 17.º, esclarecer primeiro o âmbito do n.º 2
+(ver acima); 3) preencher os 3 `null` em `dados/parametros/psu.yaml`
+(mediana + trimestre de referência + portaria, os 3 em conjunto, nunca
+isoladamente) com `referencia_legal`/`fonte_url`/`verificado_em` reais;
+4) regenerar `dados/parametros.json`
+(`python scripts/gerar_parametros_json.py`); 5) `test_art17_habitacao_
+pendente_ate_portaria` passa a ficar vermelho sozinho — reescrever para
+validar o valor real (nunca apenas apagar); 6) confirmar que o
+formulário activa o checkbox e o campo de renda paga em produção. Nunca
+tocar nas páginas de conteúdo do cluster (`psu-quando-entra-em-vigor.html`
+já explica a fórmula sem número) até este ponto — ficam como estão até
+à portaria.
 
 ### Plano de acção — CONCLUÍDO (Fase 2, Commits 1-4, 2026-08-16)
 
@@ -8628,3 +8726,53 @@ sem passar pelo Passo 4 de `.claude/commands/atualizar-cluster-psu.md`).
 
 Sem alteração a nenhum valor publicado nas páginas HTML além da remoção
 do intervalo do CIT já descrita. PR: #80 (merged).*
+
+---
+
+*Última revisão: 2026-08-16 (sessão seguinte, mesmo dia da activação do
+cluster PSU) — implementada a ESTRUTURA do artigo 17.º da PSU (apoios à
+habitação como rendimento) no simulador, sem o valor da mediana do INE e
+sem activar o cálculo — ver nova secção "Artigo 17.º — estrutura pronta,
+cálculo desactivado (2026-08-16)" dentro de "IMPACTO DA PSU" para o
+detalhe completo. Precedida de uma auditoria read-only (mesma sessão,
+sem commits) que confirmou, contra o texto real do artigo 17.º extraído
+de `dados/fontes/Decreto-Lei n.PDF`: a fórmula (renda de referência = ⅓
+× mediana €/m² do INE × 112,50 m²; imputado = 50% × max(0, renda de
+referência − renda paga)); que o teto de 450×IAS do artigo 14.º/3 não se
+aplica aqui (é específico de rendimentos prediais); e uma ambiguidade
+real no âmbito do n.º 2 (a fórmula dos 50% fala literalmente só de
+"habitação social... e arrendamento subsidiado", não necessariamente de
+qualquer apoio do n.º 1) — registada, não resolvida.
+
+4 commits: 1) `dados/parametros/psu.yaml` ganha o bloco `art17_*` — 3
+parâmetros fixos na lei (área 112,50 m², coeficiente 0,5, divisor 3) e 3
+pendentes, deliberadamente `null` (mediana do INE, trimestre de
+referência, portaria do artigo 17.º/5); `dados/parametros.json`
+regenerado. 2) Teste-âncora `test_art17_habitacao_pendente_ate_portaria`
+(mesmo princípio dos `null` das majorações da Fase 1/2, mas para trancar
+"não pronto" em vez de "nunca redutível a um valor único") — confirmado
+a falhar de propósito com um valor injectado isoladamente, revertido; +
+`test_art17_habitacao_constantes_fixas_na_lei`. 3)
+`calcularHabitacao(parametros, recebeApoio, rendaPaga)` — gate de
+segurança na própria função pura (nunca confia só no HTML): devolve
+sempre 0 enquanto `parametros.art17Habitacao.pronto` for `false`; soma
+directamente ao rendimento considerado, nunca passa pela CIT. Campo novo
+no formulário (checkbox + renda paga condicional) nasce `disabled` por
+construção própria, com aviso persistente e nota de UX ("aumenta o
+rendimento, reduz a PSU — não é um bug"). 6 golden tests novos + 2 testes
+de runtime real (`http.server`, fetch real de `/dados/parametros.json`)
+que confirmam, contra a página real, que um bypass deliberado do
+`disabled` nunca produz um valor de habitação > 0 no resultado
+renderizado — produção continua, hoje, sem mostrar nenhum valor de
+habitação. 4) Esta entrada + a secção nova de CLAUDE.md, com os passos
+exactos para activar quando `dre_psu_regulamentacao` disparar. Nenhuma
+página de conteúdo do cluster tocada (por instrução explícita — ficam
+como estão até à portaria).
+
+Suite completa + testes novos + ruff verdes (ver mensagem final da
+sessão para os números exactos). `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sem relação com scraper/Shadow Mode). Trabalho feito na branch
+`claude/audit-art17-housing-psu-cx9ce7` (designada pelo ambiente remoto
+desta sessão), 4 commits assinados, sem merge — PR aberto no fecho da
+sessão, ver mensagem final para o número exacto.

@@ -13,8 +13,11 @@ Se o Chromium do Playwright não estiver disponível no ambiente onde os
 testes correm, o módulo inteiro é ignorado (skip) em vez de falhar.
 """
 import glob
+import http.server
 import os
 import re
+import socket
+import threading
 from pathlib import Path
 
 import pytest
@@ -47,6 +50,15 @@ PONDERACAO_MENOR = 0.5
 CIT_LIMIAR = 0.20 * IAS_2026
 CIT_TAXA_ACIMA_LIMIAR = 0.50
 
+# Artigo 17.º (habitação) — os 3 valores FIXOS na lei (nunca dependem do
+# INE nem de portaria, ao contrário dos 3 pendentes); "pronto: False"
+# reflecte o estado REAL de produção enquanto dados/parametros/psu.yaml
+# tiver art17_mediana_renda_m2_ine/art17_portaria_habitacao a null (ver
+# tests/test_valores_ancora.py::test_art17_habitacao_pendente_ate_portaria).
+ART17_AREA_REFERENCIA = 112.50
+ART17_COEFICIENTE_IMPUTACAO = 0.5
+ART17_DIVISOR_RENDA_REFERENCIA = 3
+
 PARAMETROS_PRODUCAO = {
     "valorReferencia": VRP,
     "teto": TETO,
@@ -57,6 +69,15 @@ PARAMETROS_PRODUCAO = {
     "citLimiar": CIT_LIMIAR,
     "citTaxaAcimaLimiar": CIT_TAXA_ACIMA_LIMIAR,
     "dataProducaoEfeitos": "2026-12-31",
+    "art17Habitacao": {
+        "pronto": False,
+        "medianaRendaM2": None,
+        "medianaReferencia": None,
+        "portaria": None,
+        "areaReferencia": ART17_AREA_REFERENCIA,
+        "coeficienteImputacao": ART17_COEFICIENTE_IMPUTACAO,
+        "divisorRendaReferencia": ART17_DIVISOR_RENDA_REFERENCIA,
+    },
 }
 
 
@@ -108,6 +129,7 @@ def _calcular(pagina, params, entrada):
         "numAdultos": 1, "numMenores": 0,
         "rendimentoTrabalho": 0, "outrosRendimentos": 0,
         "majoracao": "nenhuma", "beneficiarioMajoracao": "titular",
+        "recebeApoioHabitacao": False, "rendaPagaHabitacao": 0,
         **entrada,
     }
     return pagina.evaluate(
@@ -297,6 +319,131 @@ def test_majoracao_valor_nao_reconhecido_aplica_zero_por_omissao(pagina):
         )
 
 
+# ── Artigo 17.º — apoios à habitação, GATE DE SEGURANÇA (2026-08-16) ────
+# Estrutura implementada, nunca activada nesta sessão. Dois golden tests
+# obrigatórios: (a) com o estado REAL de produção (mediana null, "pronto"
+# false) — habitação nunca entra no cálculo, seja qual for o input; (b)
+# com um valor de mediana FICTÍCIO, construído só dentro deste ficheiro de
+# teste (nunca em dados/parametros/psu.yaml nem em produção) — confirma
+# que a fórmula em si está correcta, para o dia em que a portaria sair.
+
+def test_gate_fechado_habitacao_nunca_entra_no_calculo_mesmo_com_input(pagina):
+    """Estado real de produção (PARAMETROS_PRODUCAO.art17Habitacao.pronto
+    é False, porque dados/parametros/psu.yaml tem os 3 pendentes a null).
+    Mesmo pedindo explicitamente para contar o apoio à habitação (checkbox
+    marcado + renda paga preenchida), o resultado tem de ser EXACTAMENTE
+    igual a não pedir nada — a função calcularHabitacao() nunca soma
+    quando o gate está fechado, independentemente do input."""
+    entrada_sem_habitacao = {"numAdultos": 1, "numMenores": 0, "outrosRendimentos": 100}
+    entrada_com_habitacao = {
+        "numAdultos": 1, "numMenores": 0, "outrosRendimentos": 100,
+        "recebeApoioHabitacao": True, "rendaPagaHabitacao": 50,
+    }
+    resultado_sem = _calcular(pagina, PARAMETROS_PRODUCAO, entrada_sem_habitacao)
+    resultado_com = _calcular(pagina, PARAMETROS_PRODUCAO, entrada_com_habitacao)
+
+    assert resultado_sem["habitacao"] == 0
+    assert resultado_com["habitacao"] == 0, (
+        "gate fechado (art17Habitacao.pronto=False) mas calcularHabitacao() devolveu "
+        f"{resultado_com['habitacao']} — nunca pode somar habitação sem a portaria confirmada"
+    )
+    assert _aprox(resultado_sem["valor"], resultado_com["valor"]), (
+        "com o gate fechado, marcar 'recebo apoio à habitação' não pode alterar o "
+        "resultado final de forma nenhuma"
+    )
+
+
+def test_gate_fechado_mesmo_sem_a_chave_art17habitacao_no_objecto_parametros(pagina):
+    """Fail-safe adicional: se por algum motivo `parametros.art17Habitacao`
+    nem sequer existir no objecto (ex.: um objecto de parâmetros mais
+    antigo, ou um erro de construção), calcularHabitacao() tem de devolver
+    0 sempre, nunca rebentar nem assumir 'pronto' por omissão."""
+    parametros_sem_art17 = {k: v for k, v in PARAMETROS_PRODUCAO.items() if k != "art17Habitacao"}
+    resultado = _calcular(pagina, parametros_sem_art17, {
+        "numAdultos": 1, "numMenores": 0,
+        "recebeApoioHabitacao": True, "rendaPagaHabitacao": 0,
+    })
+    assert resultado["habitacao"] == 0
+    assert _aprox(resultado["valor"], VRP)
+
+
+def test_formula_do_artigo_17_com_mediana_ficticia_valor_so_neste_teste(pagina):
+    """Valor de mediana FICTÍCIO (1000 €/m², claramente irreal — nunca um
+    número que possa ser confundido com um valor real do INE), construído
+    só aqui, para provar que a fórmula legal (renda de referência =
+    mediana÷3 × 112,50 m²; imputado = 0,5 × max(0, renda_ref − renda_paga))
+    está correcta e pronta a usar no dia em que a portaria sair. Este
+    valor NUNCA deve aparecer em dados/parametros/psu.yaml nem em
+    simulador-psu.html — só neste ficheiro de teste."""
+    mediana_ficticia = 1000.0
+    renda_referencia_esperada = (mediana_ficticia / ART17_DIVISOR_RENDA_REFERENCIA) * ART17_AREA_REFERENCIA
+    assert _aprox(renda_referencia_esperada, 37500.0), "pré-condição do teste: renda de referência esperada"
+
+    parametros_ficticios = {
+        **PARAMETROS_PRODUCAO,
+        "art17Habitacao": {
+            **PARAMETROS_PRODUCAO["art17Habitacao"],
+            "pronto": True,
+            "medianaRendaM2": mediana_ficticia,
+        },
+    }
+    renda_paga = 300.0
+    imputado_esperado = ART17_COEFICIENTE_IMPUTACAO * max(0, renda_referencia_esperada - renda_paga)
+
+    resultado = _calcular(pagina, parametros_ficticios, {
+        "numAdultos": 1, "numMenores": 0,
+        "recebeApoioHabitacao": True, "rendaPagaHabitacao": renda_paga,
+    })
+    assert _aprox(resultado["habitacao"], imputado_esperado)
+    # Soma directamente a R, nunca passa pela CIT — mesmo tratamento de outrosRendimentos.
+    assert _aprox(resultado["valor"], max(0, min(VRP - imputado_esperado, TETO)))
+
+
+def test_formula_do_artigo_17_gate_aberto_mas_checkbox_desmarcado_nao_soma(pagina):
+    """Mesmo com o gate aberto (pronto=True, mediana fictícia preenchida),
+    se o utilizador não marcar o checkbox (recebeApoioHabitacao=False),
+    a habitação continua a não entrar no cálculo — o gate autoriza o
+    cálculo, nunca o força."""
+    parametros_ficticios = {
+        **PARAMETROS_PRODUCAO,
+        "art17Habitacao": {
+            **PARAMETROS_PRODUCAO["art17Habitacao"],
+            "pronto": True,
+            "medianaRendaM2": 1000.0,
+        },
+    }
+    resultado = _calcular(pagina, parametros_ficticios, {
+        "numAdultos": 1, "numMenores": 0,
+        "recebeApoioHabitacao": False, "rendaPagaHabitacao": 300,
+    })
+    assert resultado["habitacao"] == 0
+    assert _aprox(resultado["valor"], VRP)
+
+
+def test_formula_do_artigo_17_renda_paga_acima_da_referencia_nunca_fica_negativa(pagina):
+    """Se a renda paga pelo beneficiário for maior do que a renda de
+    referência, o imputado tem de ficar em 0 (max(0, ...)) — nunca um
+    valor negativo a "aumentar" artificialmente a PSU."""
+    mediana_ficticia = 5.0  # deliberadamente baixa, para a renda de referência ficar pequena
+    renda_referencia = (mediana_ficticia / ART17_DIVISOR_RENDA_REFERENCIA) * ART17_AREA_REFERENCIA
+    assert renda_referencia < 500, "pré-condição do teste: renda de referência tem de ser baixa"
+
+    parametros_ficticios = {
+        **PARAMETROS_PRODUCAO,
+        "art17Habitacao": {
+            **PARAMETROS_PRODUCAO["art17Habitacao"],
+            "pronto": True,
+            "medianaRendaM2": mediana_ficticia,
+        },
+    }
+    resultado = _calcular(pagina, parametros_ficticios, {
+        "numAdultos": 1, "numMenores": 0,
+        "recebeApoioHabitacao": True, "rendaPagaHabitacao": 5000,  # muito acima da renda de referência
+    })
+    assert resultado["habitacao"] == 0
+    assert _aprox(resultado["valor"], VRP)
+
+
 # ── Coerência com o artigo do decreto-lei citado no próprio ficheiro ────
 def test_nenhum_valor_de_producao_fica_null(pagina):
     parametros = pagina.evaluate("PARAMETROS_PSU")
@@ -304,4 +451,76 @@ def test_nenhum_valor_de_producao_fica_null(pagina):
         "PARAMETROS_PSU só é preenchido depois do fetch de /dados/parametros.json "
         "em runtime — numa página sem fetch (esta fixture de teste) tem de "
         "continuar null; os testes acima passam os parâmetros directamente."
+    )
+
+
+# ── Runtime real: página servida por http.server, fetch real de
+# /dados/parametros.json — mesma filosofia de test_simulador_csi_calculo.py.
+# Confirma, contra a página REAL (não a fixture com JS extraído), que o
+# estado de produção de hoje nunca mostra nenhum valor de habitação: o
+# checkbox nasce disabled, o aviso "aguarda portaria" fica visível, e
+# mesmo uma tentativa deliberada de bypass (remover o disabled via JS)
+# nunca produz um resultado com habitação > 0 — a última linha de defesa
+# é sempre calcularHabitacao(), nunca o atributo disabled do HTML.
+def _porta_livre() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+@pytest.fixture(scope="module")
+def servidor():
+    porta = _porta_livre()
+    handler = lambda *a, **kw: http.server.SimpleHTTPRequestHandler(*a, directory=str(RAIZ), **kw)  # noqa: E731
+    httpd = http.server.ThreadingHTTPServer(("127.0.0.1", porta), handler)
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{porta}"
+    httpd.shutdown()
+    thread.join(timeout=5)
+
+
+@pytest.fixture()
+def pagina_real(servidor):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=_CHROMIUM_PATH)
+        page = browser.new_page()
+        yield page, servidor
+        browser.close()
+
+
+def test_producao_real_checkbox_habitacao_nasce_desactivado_e_aviso_visivel(pagina_real):
+    page, servidor = pagina_real
+    page.goto(f"{servidor}/simulador-psu.html")
+    page.wait_for_function("document.getElementById('botaoCalcularPSU').disabled === false", timeout=5000)
+
+    assert page.evaluate("document.getElementById('recebeApoioHabitacao').disabled") is True, (
+        "o checkbox de habitação nunca pode nascer activo enquanto a mediana do INE "
+        "e a portaria continuarem null em dados/parametros/psu.yaml"
+    )
+    assert page.evaluate("document.getElementById('avisoHabitacaoIndisponivel').style.display") == "block"
+    assert page.evaluate("PARAMETROS_PSU.art17Habitacao.pronto") is False
+
+
+def test_producao_real_bypass_do_disabled_nunca_produz_habitacao_no_resultado(pagina_real):
+    page, servidor = pagina_real
+    page.goto(f"{servidor}/simulador-psu.html")
+    page.wait_for_function("document.getElementById('botaoCalcularPSU').disabled === false", timeout=5000)
+
+    # Bypass deliberado do disabled do browser (DevTools simulado) — a
+    # garantia real tem de vir de calcularHabitacao(), nunca do atributo.
+    page.evaluate("document.getElementById('recebeApoioHabitacao').removeAttribute('disabled')")
+    page.check("#recebeApoioHabitacao")
+    page.evaluate("document.getElementById('rendaPagaHabitacao').removeAttribute('disabled')")
+    page.fill("#rendaPagaHabitacao", "0")
+
+    page.click("#botaoCalcularPSU")
+    page.wait_for_selector("#resultado.show", timeout=5000)
+    texto = page.inner_text("#resultado")
+    linhas = texto.split("\n")
+    idx = next(i for i, linha in enumerate(linhas) if "Apoios à habitação considerados" in linha)
+    valor_linha = linhas[idx + 1]
+    assert "0,00 €" in valor_linha, (
+        f"mesmo com bypass do disabled, o valor de habitação no resultado tem de continuar "
+        f"0,00 € (gate fechado em PARAMETROS_PSU.art17Habitacao.pronto) — resultado real: {texto}"
     )
