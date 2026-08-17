@@ -25,6 +25,7 @@ from gerar_noticias import (
     detect_category,
     detectar_cluster,
     encontrar_duplicado,
+    _e_noticia_de_pais_estrangeiro,
     guardar_itens,
     label_mes,
     normalizar_titulo,
@@ -170,6 +171,39 @@ def test_score_entry_reconhece_retribuicao_minima_com_titulo_real_do_diagnostico
 def test_score_entry_reconhece_complemento_solidario_com_titulo_real_do_diagnostico():
     e = _entry("Complemento Solidário para Idosos sobe em janeiro: confira os valores")
     assert score_entry(e) > 0
+
+
+# Achado real em produção (Nuno, screenshot de 2026-08-17): 2 dos 84 itens
+# já publicados eram sobre outro país — EUA/Brasil —, com score > 0 só
+# pela keyword "desemprego"/"salário mínimo", sem qualquer verificação de
+# país. Títulos exactos capturados na screenshot, nunca reconstruídos de
+# memória — ver comentário junto a _REGEX_PAIS_ESTRANGEIRO em
+# gerar_noticias.py para o raciocínio completo.
+
+def test_score_entry_rejeita_noticia_real_sobre_desemprego_nos_eua():
+    e = _entry("Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada")
+    assert score_entry(e) == -1
+
+
+def test_score_entry_rejeita_noticia_real_sobre_salario_minimo_do_brasil():
+    e = _entry("Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor é extremamente maior")
+    assert score_entry(e) == -1
+
+
+def test_e_noticia_de_pais_estrangeiro_marcadores_isolados():
+    assert _e_noticia_de_pais_estrangeiro("desemprego sobe nos eua este mês")
+    assert _e_noticia_de_pais_estrangeiro("crise nos estados unidos afeta mercado")
+    assert _e_noticia_de_pais_estrangeiro("aumento do salário mínimo no brasil")
+    assert _e_noticia_de_pais_estrangeiro("valor de r$ 1.621 por mês")
+
+
+def test_e_noticia_de_pais_estrangeiro_falso_nunca_dispara_em_noticia_portuguesa():
+    """Guarda anti-sobre-supressão — mesma disciplina de
+    test_verificar_datas.py: um filtro novo nunca pode apanhar conteúdo
+    legítimo sobre Portugal só por semelhança superficial."""
+    assert not _e_noticia_de_pais_estrangeiro("abono de família sobe em portugal no próximo ano")
+    assert not _e_noticia_de_pais_estrangeiro("subsídio de desemprego: quem tem direito em 2026")
+    assert not _e_noticia_de_pais_estrangeiro("segurança social paga pensões e prestações em agosto")
 
 
 def test_detect_category_educacao():
