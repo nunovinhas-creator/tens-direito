@@ -203,6 +203,39 @@ KEYWORDS = [
 
 STOPWORDS = ["publicidade", "patrocinado", "sponsored", "advertisement"]
 
+# Notícias sobre OUTROS PAÍSES — achado real (Nuno, screenshot de produção,
+# 2026-08-17): 2 dos 84 itens já publicados em data/noticias.json eram sobre
+# o desemprego/salário mínimo dos EUA e do Brasil, não de Portugal —
+# "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil..." (SÁBADO)
+# e "Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor
+# é extremamente maior" (Diário do Comércio, publicação brasileira). Os dois
+# pontuavam > 0 pela keyword "desemprego"/"salário mínimo" sem qualquer
+# verificação de que o artigo é sobre Portugal — `gl=PT`/`hl=pt-PT` no URL
+# do feed só define a edição geográfica da pesquisa do Google News, nunca
+# filtra o país do conteúdo devolvido; um artigo em português sobre outro
+# país, publicado por um órgão de comunicação que o Google associa a
+# Portugal (ou que só cita "Portugal" numa comparação, como o do Brasil),
+# continua a bater com a query. Regra 1 de "REGRAS DE CONTEÚDO" do
+# CLAUDE.md ("nunca PT-BR") e a própria razão de ser do site — notícias
+# sobre APOIOS SOCIAIS PORTUGUESES — tornam isto sempre uma rejeição, nunca
+# só uma penalização: mesmo tratamento de STOPWORDS (score = -1, hard
+# reject, nunca chega ao corte de qualidade > 0). Regex, não substring
+# simples, porque "eua" sozinho é curto de mais (mesmo risco já documentado
+# para "ias") — sem risco conhecido para "brasil"/"r$" (nenhuma palavra
+# portuguesa corrente contém "brasil" como substring não relacionada, e "R$"
+# nunca aparece em texto PT-PT, que usa sempre "€"), mas mantidos na mesma
+# regex por consistência. Lista deliberadamente pequena e sourced só dos 2
+# casos reais encontrados — nunca especulativa (ex.: Espanha/Angola/
+# Moçambique ficam de fora até haver um falso positivo real que os
+# justifique, mesma disciplina de "nunca resolver por suspeita" já seguida
+# no resto deste ficheiro).
+_REGEX_PAIS_ESTRANGEIRO = re.compile(r"\beua\b|estados unidos|brasil|r\$")
+
+
+def _e_noticia_de_pais_estrangeiro(texto: str) -> bool:
+    return bool(_REGEX_PAIS_ESTRANGEIRO.search(texto))
+
+
 # "ias" (IAS, o Indexante dos Apoios Sociais) é curta de mais para
 # `kw in texto` simples — é substring de palavras portuguesas correntes
 # sem relação nenhuma com o tema (a mais comum: "dias"; também
@@ -426,6 +459,8 @@ def encontrar_duplicado(
 def score_entry(entry) -> int:
     text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
     if any(s in text for s in STOPWORDS):
+        return -1
+    if _e_noticia_de_pais_estrangeiro(text):
         return -1
     return sum(1 for kw in KEYWORDS if _contem_keyword(kw, text))
 

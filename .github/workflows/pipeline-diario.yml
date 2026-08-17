@@ -270,8 +270,16 @@ jobs:
           conteudo = conteudo.replace('&#160;', ' ')
           conteudo = conteudo.replace('\xa0', ' ')
 
-          # Limpar espaços múltiplos
-          conteudo = re.sub(r'  +', ' ', conteudo)
+          # Limpar espaços múltiplos DENTRO de texto (nunca a indentação HTML no
+          # início de linha) — achado real, 2026-08-17: `r'  +'` sem lookbehind
+          # colapsava também a indentação de render_destaque()/render_arquivo_card()
+          # (scripts/gerar_noticias.py), deixando noticias.html sempre "achatado"
+          # a cada corrida do pipeline, mesmo sem nenhum &nbsp; por limpar.
+          # `(?<=\S)` exige um carácter não-espaço imediatamente antes do troço —
+          # nunca verdade logo a seguir a uma quebra de linha, por isso a
+          # indentação sobrevive; espaços a mais dentro de texto continuam a
+          # colapsar como sempre.
+          conteudo = re.sub(r'(?<=\S)[ \t]{2,}', ' ', conteudo)
 
           with open('noticias.html', 'w', encoding='utf-8') as f:
               f.write(conteudo)
