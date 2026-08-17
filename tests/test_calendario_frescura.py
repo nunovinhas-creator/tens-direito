@@ -136,6 +136,30 @@ def test_meta_degradada_nunca_tem_mes_velho():
     assert "2026" in meta  # degrada para o ano, nunca para um mês velho
 
 
+@pytest.mark.parametrize("mes", range(1, 13))
+def test_meta_title_e_description_cabem_no_limite_em_todos_os_meses(mes):
+    """2026-08-17: o <title> literal do padrão pedido ("Calendário de
+    Pagamentos da Segurança Social: {mês} de {ano}") excedia 60 chars em
+    7 dos 12 meses (pior caso: fevereiro, 63 chars) — só corrido mês a
+    mês é que o problema aparece, nunca só com o mês corrente do dia em
+    que o teste corre. Este teste cobre os 12, não só agosto."""
+    dados = {
+        "fonte_url": "https://www.seg-social.pt",
+        "meses": [{
+            "ano": 2026, "mes": mes,
+            "pagamentos": [{"dia": 1, "prestacoes": ["pensoes"],
+                            "metodo": ["transferencia_bancaria"]}],
+        }],
+    }
+    meta = render_meta(dados, dt.date(2026, mes, 15))
+    titulo = re.search(r"<title>(.*?)</title>", meta).group(1)
+    descricao = re.search(r'content="([^"]*)"', meta).group(1)
+    assert len(titulo) < 60, f"mês {mes}: título com {len(titulo)} chars — {titulo!r}"
+    assert len(descricao) < 155, (
+        f"mês {mes}: description com {len(descricao)} chars — {descricao!r}"
+    )
+
+
 def test_mes_seguinte_e_renderizado_quando_disponivel():
     mes_corrente = {
         "ano": 2026, "mes": 7,

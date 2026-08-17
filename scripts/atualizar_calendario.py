@@ -547,17 +547,25 @@ def render_home(dados: dict, hoje: dt.date) -> str:
 def render_meta(dados: dict, hoje: dt.date) -> str:
     """Zona CAL:META — <title> + meta description com o mês corrente.
 
+    Título/description desenhados para caber sempre < 60 / < 155 chars,
+    confirmado contra os 12 meses do ano (não só o mês corrente do dia em
+    que o gerador corre) — "fevereiro"/"setembro"/"novembro"/"dezembro"
+    são os piores casos de comprimento. O <title> literal "Calendário de
+    Pagamentos da Segurança Social: {mês} de {ano}" excedia 60 chars em 7
+    dos 12 meses; a versão sem "da"/sem "de" antes do ano cabe sempre
+    (57 chars no pior caso, fevereiro). Ver tests/test_calendario_frescura.py.
+
     Sem mês corrente no JSON, degrada para o ano (nunca um mês velho).
     O og:title fica FORA desta zona, estável — ver docs/FONTE-CALENDARIO.md.
     """
     atual = _encontrar_mes(dados, hoje.year, hoje.month)
     if atual:
+        mes_ano_curto = f"{MESES_PT[hoje.month]} {hoje.year}"
+        titulo = f"Calendário de Pagamentos Segurança Social: {mes_ano_curto}"
         mes_txt = nome_mes(hoje.year, hoje.month)
-        titulo = f"Calendário de Pagamentos da Segurança Social — {mes_txt}"
         descricao = (
-            f"Datas de pagamento em {mes_txt}: pensões, abono de família, "
-            "subsídio de desemprego e doença, RSI, CSI e PSI — por transferência "
-            "bancária e vale de correio, segundo o calendário oficial."
+            f"Datas de pagamento em {mes_txt}: pensões, abono, subsídios, "
+            "RSI, CSI e PSI — calendário oficial da Segurança Social."
         )
     else:
         titulo = f"Calendário de Pagamentos da Segurança Social {hoje.year}"
