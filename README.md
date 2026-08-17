@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **16 de agosto de 2026**.
+Actualizado automaticamente a partir do repositório em **17 de agosto de 2026**.
 
 ### Páginas publicadas
 
@@ -31,11 +31,13 @@ Actualizado automaticamente a partir do repositório em **16 de agosto de 2026**
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
+| [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — agosto de 2026 |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
+| [`como-pedir-psu.html`](como-pedir-psu.html) | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
 | [`dados.html`](dados.html) | Dados Abertos — Tens Direito |
@@ -55,14 +57,14 @@ Actualizado automaticamente a partir do repositório em **16 de agosto de 2026**
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: Candidaturas, Quem Tem Direito e Como Concorrer — Tens Direito |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | PSI 2026: valor 333,64€, quem tem direito e como pedir |
-| [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: o que é, quais os 13 apoios e quando entra em vigor |
+| [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona |
 | [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
 | [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — como fazer online |
-| [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU vai substituir (lista completa 2026) |
-| [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: o que já foi aprovado e o que ainda falta decidir |
-| [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso aprovadas pela Assembleia da República |
-| [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: aprovado vs. por definir |
+| [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU substitui (lista completa 2026, DL 166/2026) |
+| [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: decreto-lei publicado — timeline completa até 31/12/2026 |
+| [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso do Decreto-Lei n.º 166/2026 |
+| [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: obrigatório, com excepções (DL 166/2026) |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
 | [`registo-criminal-online.html`](registo-criminal-online.html) | Certificado do Registo Criminal Online 2026: preço, prazo e como pedir |
 | [`renovar-cartao-cidadao.html`](renovar-cartao-cidadao.html) | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos |
@@ -72,7 +74,7 @@ Actualizado automaticamente a partir do repositório em **16 de agosto de 2026**
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
 | [`simulador-imt-jovem.html`](simulador-imt-jovem.html) | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa |
-| [`simulador-psu.html`](simulador-psu.html) | Simulador da Prestação Social Única (PSU) — em preparação |
+| [`simulador-psu.html`](simulador-psu.html) | Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026) |
 | [`simulador-rsi.html`](simulador-rsi.html) | Simulador do RSI 2026 |
 | [`simulador-subsidio-desemprego.html`](simulador-subsidio-desemprego.html) | Simulador do Subsídio de Desemprego 2026 |
 | [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
@@ -399,6 +401,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 16 de agosto de 2026 às 07:56 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 17 de agosto de 2026 às 08:22 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

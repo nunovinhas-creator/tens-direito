@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-14",
+      "titulo": "Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNZ0NhREllOXhhcGVGTU1QejJPZkFod01kX292OXR5Z3NFbm5PTlZvVzFvQ0RaTHVrYlJLMllhd2lFdHBVOFpnR09aZ1B5UWdKMGVQSl8zR3YyNlRtWnAxSk1jOWY0eFJOeU52Y1AtaS1BZm05SWV5emF1T0VmWEtzNEwwZXQyQXh2NWk1OWJETm1jdktyUl8tMU9JaTFEZFZXWnZBeGFWeWN0VU9MLUlBcDAzcU9aQQ?oc=5",
+      "resumo": "Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro ECO",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-08-13",
       "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única",
       "fonte_nome": "Público",
