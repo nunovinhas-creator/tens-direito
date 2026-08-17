@@ -188,14 +188,21 @@ def test_piso_300_325_nunca_reaparece_sem_confirmacao():
 # validade". Scan a todo o repositório (grep a <title>/<meta
 # name="description"> por padrões de €/%) — resultado no fim do ficheiro.
 
-def test_subsidio_desemprego_title_teto_2_5x_ias():
+def test_subsidio_desemprego_title_sem_valor_ancora():
+    # 2026-08-17 (revisão de CTR): o <title> deixou de citar o teto de
+    # 2,5x IAS ("valor até 1.342,83€" → "valor, duração e como pedir") —
+    # este teste substitui test_subsidio_desemprego_title_teto_2_5x_ias
+    # (removido) e tranca a ausência, não uma fórmula: qualquer valor
+    # legal em € que volte a aparecer no <title> tem de ganhar cobertura
+    # própria neste ficheiro, nunca ficar solto. O piso (100% IAS)
+    # continua ancorado na meta description pelo teste seguinte.
     titulo = _title("subsidio-desemprego.html")
-    assert _valores_eur(titulo) == [round(IAS_2026 * 2.5, 2)], titulo
+    assert _valores_eur(titulo) == [], titulo
 
 
 def test_subsidio_desemprego_meta_description_piso_ias():
-    # A description passou a citar só o piso (2026-07-06, revisão de CTR) —
-    # o teto de 2,5x IAS continua ancorado no <title> pelo teste acima.
+    # A description cita o piso (2026-07-06, revisão de CTR); o teto de
+    # 2,5x IAS já não é citado em title nem description (2026-08-17).
     desc = _meta_description("subsidio-desemprego.html")
     assert _valores_eur(desc) == [IAS_2026], desc
 

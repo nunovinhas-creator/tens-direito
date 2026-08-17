@@ -42,7 +42,7 @@
   "baixa-medica-subsidio-doenca": {
     "chip": "Trabalho e Rendimento",
     "pagina": "baixa-medica-subsidio-doenca.html",
-    "titulo": "Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração"
+    "titulo": "Baixa médica 2026: percentagens, prazos e autodeclaração"
   },
   "bolsa-de-estudo-ensino-superior": {
     "chip": "Apoios Escolares",
@@ -212,7 +212,7 @@
   "manuais-escolares-mega": {
     "chip": "Apoios Escolares",
     "pagina": "manuais-escolares-mega.html",
-    "titulo": "Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales"
+    "titulo": "Manuais escolares MEGA 2026/2027: como levantar os vales"
   },
   "marcar-atendimento-seguranca-social": {
     "chip": "Como Pedir",
@@ -397,7 +397,7 @@
   "subsidio-desemprego": {
     "chip": "Trabalho e Rendimento",
     "pagina": "subsidio-desemprego.html",
-    "titulo": "Subsídio de desemprego 2026: valor até 1.342,83€ e como pedir"
+    "titulo": "Subsídio de desemprego 2026: valor, duração e como pedir"
   },
   "subsidio-parental": {
     "chip": "Família e Crianças",
