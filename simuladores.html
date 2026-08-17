@@ -189,6 +189,8 @@
     .sim-card p { color: #495057; font-size: 0.92rem; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
     .sim-card a.btn-sim { display: inline-block; background: #0F766E; color: #fff; font-weight: 700; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.9rem; text-align: center; }
     .sim-card a.btn-sim:hover { background: #115E59; }
+    .sim-card.sim-destaque { position: relative; background: #e6f4f1; border-top-width: 6px; }
+    .sim-badge-novo { position: absolute; top: -10px; right: 1rem; background: #DC2626; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.6rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
     @media (max-width: 700px) { .sim-grid { grid-template-columns: 1fr; } }
     .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin-bottom: 1.5rem; }
     .fonte-bloco a { color: #0F766E; font-weight: 600; }
@@ -299,6 +301,13 @@
 
   <h2>Escolhe o teu simulador</h2>
   <div class="sim-grid">
+    <div class="sim-card sim-destaque">
+      <span class="sim-badge-novo">Novo</span>
+      <div class="sim-icon">🔄</div>
+      <h3>Simulador da PSU</h3>
+      <p>Estima o valor mensal da Prestação Social Única com base no agregado, rendimentos e majorações — resultado a partir de 31/12/2026.</p>
+      <a href="/simulador-psu.html" class="btn-sim">🧮 Simular PSU →</a>
+    </div>
     <div class="sim-card">
       <div class="sim-icon">👶</div>
       <h3>Simulador de Abono de Família</h3>
@@ -340,12 +349,6 @@
       <h3>Simulador de IMT Jovem</h3>
       <p>Compara o IMT e o Imposto do Selo da primeira casa com e sem a isenção jovem, e vê quanto poupas na escritura.</p>
       <a href="/simulador-imt-jovem.html" class="btn-sim">🧮 Simular IMT Jovem →</a>
-    </div>
-    <div class="sim-card">
-      <div class="sim-icon">🔄</div>
-      <h3>Simulador da PSU</h3>
-      <p>Estima o valor mensal da Prestação Social Única com base no agregado, rendimentos e majorações — resultado a partir de 31/12/2026.</p>
-      <a href="/simulador-psu.html" class="btn-sim">🧮 Simular PSU →</a>
     </div>
     <div class="sim-card">
       <div class="sim-icon">🔎</div>
