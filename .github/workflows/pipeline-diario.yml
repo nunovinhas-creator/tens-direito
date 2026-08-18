@@ -178,45 +178,64 @@ jobs:
 
             const mudancas = [];
 
+            const hashOf = (d) => {
+              const c = {...d};
+              ['data_acesso','data_scrape','timestamp','data_run'].forEach(k => delete c[k]);
+              return crypto.createHash('sha256').update(JSON.stringify(c, Object.keys(c).sort())).digest('hex');
+            };
+
             for (const [slug, url] of Object.entries(fontes)) {
-              const latest_path = path.join(scraped_dir, `${slug}_latest.json`);
+              // Ficheiro de hoje por nome EXACTO, nunca por prefixo —
+              // slug + '_' + hoje batia por engano com qualquer outro
+              // slug que comece pelo mesmo prefixo (ex.: 'dre_psu' ~
+              // 'dre_psu_regulamentacao'), fazendo este step escolher o
+              // ficheiro errado como "resultado de hoje" (Issue #99).
+              const ficheiro_hoje = `${slug}_${hoje}.json`;
+              const new_path = path.join(scraped_dir, ficheiro_hoje);
 
-              const files = fs.readdirSync(scraped_dir)
-                .filter(f => f.startsWith(slug + '_') && f.includes(hoje) && !f.endsWith('_latest.json'))
-                .sort().reverse();
-
-              if (files.length === 0) {
+              if (!fs.existsSync(new_path)) {
                 console.log(`${slug}: sem scrape de hoje`);
                 continue;
               }
 
-              const new_path = path.join(scraped_dir, files[0]);
               const new_content = fs.readFileSync(new_path, 'utf8');
               let new_data;
               try { new_data = JSON.parse(new_content); } catch(e) { continue; }
 
-              if (!fs.existsSync(latest_path)) {
-                fs.writeFileSync(latest_path, new_content);
-                console.log(`${slug}: primeiro scrape guardado como latest`);
-                continue;
-              }
-
-              const old_content = fs.readFileSync(latest_path, 'utf8');
-              let old_data;
-              try { old_data = JSON.parse(old_content); } catch(e) {
-                fs.writeFileSync(latest_path, new_content);
-                continue;
-              }
-
-              const hashOf = (d) => {
-                const c = {...d};
-                ['data_acesso','data_scrape','timestamp','data_run'].forEach(k => delete c[k]);
-                return crypto.createHash('sha256').update(JSON.stringify(c, Object.keys(c).sort())).digest('hex');
-              };
-
               // CAMADA 1: ignorar respostas classificadas como bloqueio pelo scraper
               if (new_data.status === 'bloqueado') {
                 console.log(`${slug}: BLOQUEADO (Camada 1) — a ignorar comparação de hash`);
+                continue;
+              }
+
+              // Baseline: o ficheiro diário anterior mais recente, por
+              // nome exacto e com dados válidos (status ok/ok_via_arquivo,
+              // sem `aviso`) — nunca `_latest.json`. Esse ficheiro já foi
+              // reescrito pelo Step 1 (scraper_playwright._guardar_resultado)
+              // com o resultado de HOJE antes deste step correr, por isso
+              // comparar contra ele dava sempre "sem alterações" (a
+              // comparação ficava vazia — o mesmo conteúdo contra si
+              // próprio). Este step deixa de escrever em `_latest.json`
+              // em qualquer ramo — o único escritor do latest é o scraper.
+              const regex_diario = new RegExp(`^${slug}_\\d{4}-\\d{2}-\\d{2}\\.json$`);
+              const candidatos = fs.readdirSync(scraped_dir)
+                .filter(f => regex_diario.test(f) && f !== ficheiro_hoje)
+                .sort().reverse();
+
+              let old_data = null;
+              for (const candidato of candidatos) {
+                let d;
+                try {
+                  d = JSON.parse(fs.readFileSync(path.join(scraped_dir, candidato), 'utf8'));
+                } catch (e) { continue; }
+                if ((d.status === 'ok' || d.status === 'ok_via_arquivo') && !d.aviso) {
+                  old_data = d;
+                  break;
+                }
+              }
+
+              if (!old_data) {
+                console.log(`${slug}: sem histórico comparável`);
                 continue;
               }
 
@@ -228,7 +247,6 @@ jobs:
               } else {
                 console.log(`${slug}: MUDANÇA DETECTADA`);
                 mudancas.push({ slug, url, hoje, hora, new_data, old_data });
-                fs.writeFileSync(latest_path, new_content);
               }
             }
 
