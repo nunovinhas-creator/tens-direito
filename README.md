@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **17 de agosto de 2026**.
+Actualizado automaticamente a partir do repositório em **18 de agosto de 2026**.
 
 ### Páginas publicadas
 
@@ -27,12 +27,12 @@ Actualizado automaticamente a partir do repositório em **17 de agosto de 2026**
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
 | [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
-| [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica e subsídio de doença 2026: percentagens, prazos e autodeclaração |
+| [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
-| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos da Segurança Social — agosto de 2026 |
+| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: agosto 2026 |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
@@ -49,13 +49,13 @@ Actualizado automaticamente a partir do repositório em **17 de agosto de 2026**
 | [`iban-seguranca-social.html`](iban-seguranca-social.html) | Como alterar o IBAN na Segurança Social |
 | [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
-| [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares gratuitos 2026/2027: como funciona o MEGA e como levantar os vales |
+| [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares MEGA 2026/2027: como levantar os vales |
 | [`marcar-atendimento-seguranca-social.html`](marcar-atendimento-seguranca-social.html) | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
-| [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: Candidaturas, Quem Tem Direito e Como Concorrer — Tens Direito |
+| [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: quem tem direito e como concorrer |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | PSI 2026: valor 333,64€, quem tem direito e como pedir |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona |
 | [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
@@ -80,7 +80,7 @@ Actualizado automaticamente a partir do repositório em **17 de agosto de 2026**
 | [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
-| [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor até 1.342,83€ e como pedir |
+| [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor, duração e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
 | [`verificador-apoios.html`](verificador-apoios.html) | Vê a que apoios podes ser elegível — abono, ASE e bolsas |
 
@@ -401,6 +401,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 17 de agosto de 2026 às 08:22 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 18 de agosto de 2026 às 07:57 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

@@ -1,7 +1,7 @@
 {
   "url": "https://diariodarepublica.pt/dr/pesquisa",
   "url_original": "https://diariodarepublica.pt/dr/home",
-  "data_acesso": "2026-08-18T06:57:23.592441+00:00",
+  "data_acesso": "2026-08-18T06:57:04.272558+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "",
@@ -10,6 +10,6 @@
     ],
     "itens_lista": []
   },
-  "nota": "DRE — vigiar Portaria(s) de regulamentação da PSU (art. 17.º renda de referência; arts. 32.º/59.º procedimentos e meios de prova)",
+  "nota": "DRE — vigiar alteração/prorrogação da Garantia Pública (DL 44/2024, prazo actual: 31 dez 2026)",
   "hash_conteudo": "4c2a385012799c6d133591bdeb87e1206d149f1d8a58f830be8269ba303f2ca7"
 }
