@@ -61,7 +61,9 @@
         {"slug": "cuidador-informal.html", "titulo": "Cuidador Informal", "tipo": "artigo", "destaque": false},
         {"slug": "amim.html", "titulo": "AMIM — Atestado Médico de Incapacidade Multiuso", "tipo": "artigo", "destaque": false},
         {"slug": "prestacao-social-para-a-inclusao.html", "titulo": "Prestação Social para a Inclusão (PSI)", "tipo": "artigo", "destaque": false},
-        {"slug": "simulador-csi.html", "titulo": "Simulador do CSI", "tipo": "ferramenta", "destaque": false}
+        {"slug": "simulador-csi.html", "titulo": "Simulador do CSI", "tipo": "ferramenta", "destaque": false},
+        {"slug": "amim-beneficios-fiscais.html", "titulo": "Benefícios Fiscais do AMIM", "tipo": "artigo", "destaque": false},
+        {"slug": "cartao-europeu-estacionamento.html", "titulo": "Cartão Europeu de Estacionamento", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": []
     },
