@@ -116,6 +116,9 @@
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
     .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+    .resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .resposta-rapida-texto { margin: 0; }
+    .resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
     .hero .valor-destaque { display: inline-block; background: #0F766E; border-radius: 6px; padding: 0.35rem 0.8rem; font-weight: 700; font-size: 1.15rem; margin-top: 0.5rem; }
     main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
     h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
@@ -176,6 +179,8 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -267,9 +272,11 @@
 </div>
 <!-- partilhar:fim -->
 
-    <div class="resposta-direta">
-      <p>Tudo o que precisas de saber sobre o AMIM — como pedir, como funciona a junta médica, o que significa cada percentagem, o limiar crítico dos <strong>60%</strong> e os benefícios a que podes ter direito.</p>
+    <div class="resposta-direta resposta-rapida">
+      <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+      <p class="resposta-rapida-texto">Pedes o AMIM no centro de saúde da tua área — a avaliação é feita por junta médica segundo a Tabela Nacional de Incapacidades e resulta numa percentagem de incapacidade permanente, que serve ao mesmo tempo para impostos, apoios sociais, emprego e mobilidade. A partir de 60%, acedes à generalidade desses benefícios.</p>
       <span class="valor-destaque">Limiar crítico: 60% de incapacidade permanente</span>
+      <span class="resposta-rapida-tempo">📖 Leitura completa: 21 min</span>
     </div>
   </div>
 </header>
@@ -585,6 +592,20 @@
       </table>
     </div>
   </div>
+
+  <!-- CHECKLIST FINAL -->
+  <section class="checklist-final" aria-label="Checklist final">
+    <h2>Checklist: pedir o AMIM</h2>
+    <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+    <ul class="checklist-lista">
+      <li><label><input type="checkbox"><span>Reuniste relatórios médicos e exames recentes que documentem o impacto funcional da doença ou deficiência?</span></label></li>
+      <li><label><input type="checkbox"><span>Apresentaste o requerimento de avaliação de incapacidade no centro de saúde da tua área?</span></label></li>
+      <li><label><input type="checkbox"><span>Guardaste o comprovativo de entrega do requerimento?</span></label></li>
+      <li><label><input type="checkbox"><span>Aguardaste a convocatória para a junta médica (ou confirmaste se tens dispensa)?</span></label></li>
+      <li><label><input type="checkbox"><span>Compareceste à avaliação (ou beneficiaste da dispensa)?</span></label></li>
+      <li><label><input type="checkbox"><span>Recebeste o atestado e comunicaste-o às entidades certas (Finanças, Segurança Social)?</span></label></li>
+    </ul>
+  </section>
 
   <!-- 14. FAQ -->
   <div class="zona-cinzenta" id="faq">
