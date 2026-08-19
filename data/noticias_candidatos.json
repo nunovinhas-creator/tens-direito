@@ -1,251 +1,5 @@
 [
   {
-    "data": "2026-08-04",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 12,
-      "subsidio_desemprego": 12,
-      "rsi": 13,
-      "psu_pensoes": 11,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 11,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 13,
-      "csi_idosos": 10
-    },
-    "candidatos": [
-      {
-        "titulo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros - Doutor Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-03",
-        "score": 5,
-        "decisao": "vencedor",
-        "motivo": "score=5, categoria=apoios"
-      },
-      {
-        "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-04",
-        "score": 3,
-        "decisao": "vencedor",
-        "motivo": "score=3, categoria=emprego"
-      },
-      {
-        "titulo": "Majoração do subsídio de desemprego: Segurança Social passa a avisar automaticamente - e-konomista.pt",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-28",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros - CNN Portugal",
-        "feed_nome": "rsi",
-        "data_iso": "2026-07-30",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-03",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Prestação Social Única vai ter valor de referência de 268 euros - Diário de Notícias",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-30",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "GOVERNO CRIA PRESTAÇÃO SOCIAL ÚNICA COM VALOR DE 268,6 EUROS - jornalonline.pt",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-30",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de Familia - CNN Portugal",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-02",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Segurança Social divulga calendário de pagamentos de agosto: vê todas as datas - 4gnews",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-07-31",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de Família - CNN Portugal",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-01",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Segurança Social divulga calendário de pagamentos de agosto: vê todas as datas - 4gnews",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-07-31",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Porto, Lisboa e Setúbal concentram maior número de beneficiários do RSI - Diário do Distrito",
-        "feed_nome": "rsi",
-        "data_iso": "2026-07-30",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Agosto de 2026 - economiafinancas.com",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-07-30",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Segurança Social divulga calendário de pagamentos de agosto: vê todas as datas - 4gnews",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-31",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Segurança Social: pagamentos no mês de agosto de 2026 - Pplware",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-31",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Agosto de 2026 - economiafinancas.com",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-07-30",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-28",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-07-31",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos passa a abranger mais 105 mil pessoas em pouco mais de dois anos - XXV Governo Constitucional",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-03",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Mais de 5 mil idosos com complemento solidário - dnoticias.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-04",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Jornal de Negócios",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-01",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-01"
-      },
-      {
-        "titulo": "O Complemento Solidário para Idosos (CSI) chega agora a mais pessoas. Graças às … - SAPO",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-03",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Notícias de Coimbra",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-01",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Prestação Social Única junta 13 apoios e terá referência de 268,6 euros - Doutor Finanças",
-        "feed_nome": "psu_pensoes",
-        "score": 5
-      },
-      {
-        "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto",
-        "feed_nome": "subsidio_desemprego",
-        "score": 3
-      }
-    ]
-  },
-  {
     "data": "2026-08-05",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2948,6 +2702,252 @@
         "titulo": "Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal. - Portugal Resident",
         "feed_nome": "subsidio_desemprego",
         "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-08-19",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 13,
+      "subsidio_desemprego": 11,
+      "rsi": 13,
+      "psu_pensoes": 8,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 14,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 13,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público",
+        "feed_nome": "rsi",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-13"
+      },
+      {
+        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - Campeão das Províncias",
+        "feed_nome": "rsi",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-13"
+      },
+      {
+        "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-13"
+      },
+      {
+        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - Campeão das Províncias",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-13"
+      },
+      {
+        "titulo": "Prestação social única: o que muda nos apoios sociais? - DECO PROteste",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-06-25"
+      },
+      {
+        "titulo": "Prestação Social Única junta RSI e várias pensões a partir do final do ano - O Vilaverdense",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-13",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-13"
+      },
+      {
+        "titulo": "Prestação Social Única terá referência de 268,6 euros - Doutor Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-13",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-03"
+      },
+      {
+        "titulo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-18",
+        "score": 3,
+        "decisao": "vencedor",
+        "motivo": "score=3, categoria=apoios"
+      },
+      {
+        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-18",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego - RTP",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-15",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro - eco.sapo.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-14",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de família: quem tem direito, como pedir e quanto recebe em 2026? - DECO PROteste",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-14",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Há novidades no Abono de Família Pré-Natal: saiba o que muda - Executive Digest",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-08-12",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-19",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal. - Portugal Resident",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-17",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - regiao-sul.pt",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-18",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo em Portugal: governo propõe € 665 - Portugal Resident",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-17",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Medicamentos gratuitos para idosos com complemento solidário limitados a genéricos ou preço de referência - SIC Notícias",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-18",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento solidário para idosos aumenta em janeiro de 2025 - Rádio Voz da Planície",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-16",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Ação Social Escolar exige registo na internet para assegurar refeições em Penafiel - paivense.pt",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-08-17",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Presidente da República promulga decreto que regula Estatuto do Cuidador Informal - ODigital.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-08-12",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada - sabado.pt",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-13",
+        "score": -1,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor é extremamente maior - Diário do Comércio",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-08-13",
+        "score": -1,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "score": 3
+      },
+      {
+        "titulo": "Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego - RTP",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
       }
     ]
   }

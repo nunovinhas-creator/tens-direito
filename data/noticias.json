@@ -1,11 +1,29 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-18",
+      "titulo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOMzlRSXNFRmhFWUdxMzJNRDFaaUxxdVI0X2U4WVZzSGlVaE9vTGFEVW9Va1IwdUE4bkQwcWtfUk9NMHV2NVM3NFBwYVZNczVjWUNVTkh3UHJ1blFRbTM5WVBJU2RSc2Zsd0VlVGZtSTRSM1ppU1pXdU9BQXoyT1g0UnA2YW5jY2VyM1pIUzJmcGE3SjhoWEVzN0FlcWVXTTBjWUFGUWhlV2g4MnZRQk9ieTR3?oc=5",
+      "resumo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 Economia e Finanças",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-08-17",
       "titulo": "Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal.",
       "fonte_nome": "Portugal Resident",
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNeW9WNDhESUhYbFJWRW15Q1EyeWJ6SmxzRTNTdS1McllEejFnOTA4RXJIM09CU1M1V1RzaW1oRThzSWNaRUZoOXJuVlNkdHlUNkZUM2xTM3JLLVJPcGx1RkFROHU3d09MM0pla0R1cGRGU2pNcS1OYzdKUDNUckJEMjRNek1hbjc5QkhPUlU3UThtZ1A2ZEZCQURDVXhsN2ZIN2ZPOFJTSTZkd1laS3pnVzc1cTR3MUJ4bTN3Z1lQWUU?oc=5",
       "resumo": "Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal. Portugal Resident",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-15",
+      "titulo": "Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego",
+      "fonte_nome": "RTP",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQUHpCQUUtd0c1TUc0MkRhSHJzLW9MQkFSNnluTTg0MWRXUFBRT3pLQXRxUUFONHVwTzU2b0Vtc2ZmaThBN0xIbjlrYkRQTlFXYnFxeXdYblFsTzc0SjY4Z1MyclVZbXNJOXpSdVpsOGZvVHIxdTM3cFhGcXh2bVQ3MF9VZ2pqNHNyVWZZTTdhejQ1T2ljREZUVEJETExnSUJ4N3dHU0tvUjgxRHd0QS11Q1FpVXJBMDF1LVd2VWRR?oc=5",
+      "resumo": "Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego RTP",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
