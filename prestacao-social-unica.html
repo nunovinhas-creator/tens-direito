@@ -137,6 +137,9 @@
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
     .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+    .resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .resposta-rapida-texto { margin: 0; }
+    .resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
     main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
     h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
     .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
@@ -211,6 +214,8 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
   <!-- PILLAR-JSONLD:INICIO -->
   <script type="application/ld+json">
   {
@@ -366,8 +371,10 @@
 </div>
 <!-- partilhar:fim -->
 
-    <div class="resposta-direta">
-      <p>O <strong>Decreto-Lei n.º 166/2026, de 13 de agosto</strong>, criou a PSU e está <strong>em vigor desde 14 de agosto de 2026</strong>. Unifica 13 apoios sociais num único regime, com Valor de Referência de <strong>268,57 €</strong> (50% do IAS) por adulto equivalente, teto de <strong>3.222,78 €</strong> (6× IAS) e mínimo de <strong>10 €</strong>. <strong>Já podes pedir</strong> — mas o decreto-lei só <strong>produz efeitos a 31 de dezembro de 2026</strong> (artigo 63.º): é só a partir dessa data que a PSU passa a ser paga de facto, substituindo as 13 prestações extintas.</p>
+    <div class="resposta-direta resposta-rapida">
+      <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+      <p class="resposta-rapida-texto">Já podes pedir a PSU na Segurança Social Direta, mas só é paga a partir de 31 de dezembro de 2026 (artigo 63.º) — até lá, quem já recebe um dos 13 apoios que ela substitui mantém a prestação actual sem alteração. O valor calcula-se por 268,57 € por adulto equivalente, com teto de 3.222,78 €.</p>
+      <span class="resposta-rapida-tempo">📖 Leitura completa: 12 min</span>
     </div>
   </div>
 </header>
@@ -599,6 +606,20 @@
       </div>
     </div>
   </div>
+
+  <!-- CHECKLIST FINAL -->
+  <section class="checklist-final" aria-label="Checklist final">
+    <h2>Checklist: pedir a PSU</h2>
+    <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+    <ul class="checklist-lista">
+      <li><label><input type="checkbox"><span>Confirmaste que tens 18 anos ou mais e resides em Portugal?</span></label></li>
+      <li><label><input type="checkbox"><span>Calculaste os adultos equivalentes do teu agregado (1 pelo titular + 0,7 por adulto + 0,5 por menor)?</span></label></li>
+      <li><label><input type="checkbox"><span>Verificaste se o rendimento do teu agregado fica abaixo do limite (268,57 € por adulto equivalente, teto 3.222,78 €)?</span></label></li>
+      <li><label><input type="checkbox"><span>Confirmaste que o património mobiliário e os bens móveis registados do agregado ficam, cada um, abaixo de 32.227,80 €?</span></label></li>
+      <li><label><input type="checkbox"><span>Se és estrangeiro, confirmaste que tens pelo menos 1 ano de residência legal?</span></label></li>
+      <li><label><input type="checkbox"><span>Submeteste o pedido na Segurança Social Direta ou noutro serviço da instituição gestora?</span></label></li>
+    </ul>
+  </section>
 
   <!-- FAQ LONG-TAIL -->
   <div class="zona-cinzenta">

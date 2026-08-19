@@ -150,6 +150,9 @@
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
     .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+    .resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .resposta-rapida-texto { margin: 0; }
+    .resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
     main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
     h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
     .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
@@ -193,6 +196,8 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -284,8 +289,10 @@
 </div>
 <!-- partilhar:fim -->
 
-    <div class="resposta-direta">
-      <p>Apoio mensal ao arrendamento gerido pelo IHRU. O <strong>Porta 65 Jovem</strong> é para quem tem entre 18 e 35 anos; o <strong>Porta 65+</strong> não tem limite de idade e destina-se a quem sofreu uma quebra de rendimentos superior a 20% ou é família monoparental. As candidaturas estão sempre abertas, sem prazo, desde 2023.</p>
+    <div class="resposta-direta resposta-rapida">
+      <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+      <p class="resposta-rapida-texto">As candidaturas ao Porta 65 estão sempre abertas, sem prazo, desde 2023. O <strong>Porta 65 Jovem</strong> é para quem tem entre 18 e 35 anos. O <strong>Porta 65+</strong> não tem limite de idade e destina-se a quem teve uma quebra de rendimentos superior a 20% ou é família monoparental.</p>
+      <span class="resposta-rapida-tempo">📖 Leitura completa: 6 min</span>
     </div>
   </div>
 </header>
@@ -362,6 +369,19 @@
     <strong>👀 Uma possível reforma a acompanhar</strong>
     O Governo manifestou intenção de fundir vários apoios ao arrendamento — Porta 65, Porta 65+, Apoio Extraordinário à Renda e o programa Arrendar para Subarrendar — num único produto, mais simples de perceber. Até à data de verificação desta página, não existe nenhum projecto de lei nem consulta pública publicados sobre esta fusão — é só uma intenção anunciada. Estamos a acompanhar; nada muda hoje na forma de te candidatares ao Porta 65.
   </div>
+
+  <!-- CHECKLIST FINAL -->
+  <section class="checklist-final" aria-label="Checklist final">
+    <h2>Checklist: candidatar-me ao Porta 65</h2>
+    <p class="checklist-progresso" aria-live="polite">0 de 5 concluídos</p>
+    <ul class="checklist-lista">
+      <li><label><input type="checkbox"><span>Escolheste a modalidade certa (Jovem ou +)?</span></label></li>
+      <li><label><input type="checkbox"><span>Confirmaste que cumpres os critérios de idade, rendimentos e habitação?</span></label></li>
+      <li><label><input type="checkbox"><span>Reuniste os documentos de rendimento do agregado?</span></label></li>
+      <li><label><input type="checkbox"><span>Tens a senha de acesso ao Portal das Finanças activa?</span></label></li>
+      <li><label><input type="checkbox"><span>Preencheste a candidatura no Portal da Habitação, em "Apresentar Candidatura"?</span></label></li>
+    </ul>
+  </section>
 
   <div class="zona-cinzenta">
     <h2>Dúvidas frequentes</h2>

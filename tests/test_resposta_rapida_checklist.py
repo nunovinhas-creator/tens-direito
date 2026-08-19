@@ -41,6 +41,14 @@ PAGINAS_ALVO = [
     "manuais-escolares-mega.html",
     "acao-social-escolar.html",
     "subsidio-desemprego.html",
+    "porta-65.html",
+    "abono-de-familia.html",
+    "complemento-solidario-idosos.html",
+    "rsi.html",
+    "cuidador-informal.html",
+    "prestacao-social-unica.html",
+    "prestacao-social-para-a-inclusao.html",
+    "amim.html",
 ]
 
 # Só as páginas com secção "Dúvidas frequentes" dedicada é que permitem
@@ -53,6 +61,14 @@ MARCADOR_FAQ_POR_PAGINA = {
     "acao-social-escolar.html": "Dúvidas frequentes",
     "subsidio-desemprego.html": "Dúvidas frequentes",
     "manuais-escolares-mega.html": None,
+    "porta-65.html": "Dúvidas frequentes",
+    "abono-de-familia.html": "Dúvidas frequentes",
+    "complemento-solidario-idosos.html": "Dúvidas frequentes sobre o CSI",
+    "rsi.html": "Dúvidas frequentes",
+    "cuidador-informal.html": "Dúvidas frequentes",
+    "prestacao-social-unica.html": "Dúvidas frequentes sobre a PSU",
+    "prestacao-social-para-a-inclusao.html": "10. Perguntas frequentes",
+    "amim.html": "14. Perguntas frequentes",
 }
 
 MAX_PALAVRAS_RESPOSTA_RAPIDA = 60

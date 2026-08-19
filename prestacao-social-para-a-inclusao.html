@@ -123,6 +123,9 @@
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
     .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+    .resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .resposta-rapida-texto { margin: 0; }
+    .resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
     .hero .valor-destaque { display: inline-block; background: #0F766E; border-radius: 6px; padding: 0.35rem 0.8rem; font-weight: 700; font-size: 1.15rem; margin-top: 0.5rem; }
     main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
     h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
@@ -183,6 +186,8 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -274,9 +279,11 @@
 </div>
 <!-- partilhar:fim -->
 
-    <div class="resposta-direta">
-      <p>A Prestação Social para a Inclusão (PSI) é um apoio mensal da Segurança Social para pessoas com incapacidade igual ou superior a 60%. Em 2026, a componente base é de 333,64 €/mês, com um complemento que pode chegar aos 670 €/mês, e os valores têm retroativos a janeiro. Acumula com trabalho e com pensão de invalidez, dentro de limites.</p>
+    <div class="resposta-direta resposta-rapida">
+      <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+      <p class="resposta-rapida-texto">Se tens incapacidade igual ou superior a 60% (certificada pelo AMIM), podes receber 333,64 €/mês de componente base, mais um complemento até 670 €/mês consoante os teus rendimentos — com retroativos a janeiro de 2026. Acumula com trabalho e, em certas condições, com pensão de invalidez.</p>
       <span class="valor-destaque">333,64 €/mês (componente base) · até 670 €/mês (complemento)</span>
+      <span class="resposta-rapida-tempo">📖 Leitura completa: 12 min</span>
     </div>
   </div>
 </header>
@@ -309,7 +316,7 @@
       <li><a href="#zonas" style="color:#0F766E;">Zonas cinzentas</a></li>
       <li><a href="#erros" style="color:#0F766E;">Erros comuns e mitos</a></li>
       <li><a href="#faq" style="color:#0F766E;">Perguntas frequentes</a></li>
-      <li><a href="#checklist" style="color:#0F766E;">Checklist final</a></li>
+      <li><a href="#checklist" style="color:#0F766E;">Depois de aprovado: o que manter em dia</a></li>
     </ol>
   </div>
 
@@ -459,6 +466,19 @@
     </div>
   </div>
 
+  <!-- CHECKLIST FINAL -->
+  <section class="checklist-final" aria-label="Checklist final">
+    <h2>Checklist: pedir a PSI</h2>
+    <p class="checklist-progresso" aria-live="polite">0 de 5 concluídos</p>
+    <ul class="checklist-lista">
+      <li><label><input type="checkbox"><span>Garantiste que tens o AMIM com grau de incapacidade ≥ 60% (ou comprovativo de teres requerido a avaliação)?</span></label></li>
+      <li><label><input type="checkbox"><span>Se tens 55 anos ou mais, tens prova de que a certificação foi requerida antes dessa idade?</span></label></li>
+      <li><label><input type="checkbox"><span>Preencheste o formulário Mod. PSI 1-DGSS (componente base e complemento)?</span></label></li>
+      <li><label><input type="checkbox"><span>Tens o documento de identificação para anexar ao pedido?</span></label></li>
+      <li><label><input type="checkbox"><span>Submeteste o pedido na Segurança Social Direta ou por carta ao Centro Distrital?</span></label></li>
+    </ul>
+  </section>
+
   <!-- 10. FAQ -->
   <div class="zona-cinzenta" id="faq">
     <h2>10. Perguntas frequentes</h2>
@@ -516,14 +536,7 @@
   <!-- 11. CHECKLIST -->
   <div class="card" id="checklist">
     <span class="badge">Checklist</span>
-    <h2>11. Checklist final</h2>
-
-    <h3>Antes do pedido</h3>
-    <ul class="checklist-psi">
-      <li>AMIM com grau ≥ 60% (ou comprovativo de teres requerido a avaliação).</li>
-      <li>Se tens 55+ anos: prova de que a certificação foi requerida antes dessa idade.</li>
-      <li>Formulário Mod. PSI 1-DGSS preenchido.</li>
-    </ul>
+    <h2>11. Depois de aprovado: o que manter em dia</h2>
 
     <h3>Depois de submeter</h3>
     <ul class="checklist-psi">
