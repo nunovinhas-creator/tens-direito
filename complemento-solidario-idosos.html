@@ -177,6 +177,9 @@
     .hero-inner { max-width: 900px; margin: 0 auto; }
     .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
     .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+    .resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .resposta-rapida-texto { margin: 0; }
+    .resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
     .hero .valor-destaque { display: inline-block; background: #0F766E; border-radius: 6px; padding: 0.35rem 0.8rem; font-weight: 700; font-size: 1.15rem; margin-top: 0.5rem; }
     main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
     h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
@@ -260,6 +263,8 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -351,9 +356,11 @@
 </div>
 <!-- partilhar:fim -->
 
-    <div class="resposta-direta">
-      <p>O CSI garante que nenhum idoso fique abaixo do limiar de pobreza. Paga a diferença entre os teus rendimentos e o valor de referência anual:</p>
+    <div class="resposta-direta resposta-rapida">
+      <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+      <p class="resposta-rapida-texto">O CSI paga a diferença entre os teus rendimentos e o valor de referência — 8.040 €/ano se vives sozinho, 14.070 €/ano se és casal. Tens direito a partir dos 66 anos e 9 meses, se residires em Portugal há pelo menos 6 anos.</p>
       <span class="valor-destaque">8.040 €/ano (individual) · 14.070 €/ano (casal)</span>
+      <span class="resposta-rapida-tempo">📖 Leitura completa: 9 min</span>
     </div>
   </div>
 </header>
@@ -530,6 +537,20 @@
     </ul>
     <p style="margin-top:0.75rem;font-size:0.9rem;color:#5C6770;">O incumprimento pode levar à suspensão ou cessação do CSI e à obrigação de devolver valores indevidamente recebidos.</p>
   </div>
+
+  <!-- CHECKLIST FINAL -->
+  <section class="checklist-final" aria-label="Checklist final">
+    <h2>Checklist: pedir o CSI</h2>
+    <p class="checklist-progresso" aria-live="polite">0 de 6 concluídos</p>
+    <ul class="checklist-lista">
+      <li><label><input type="checkbox"><span>Confirmaste que tens 66 anos e 9 meses ou mais e resides em Portugal há pelo menos 6 anos?</span></label></li>
+      <li><label><input type="checkbox"><span>Reuniste os Modelos CSI 1, CSI 1/1 e CSI 1/2?</span></label></li>
+      <li><label><input type="checkbox"><span>Tens a declaração de IRS pronta, se tiveres obrigação de a entregar?</span></label></li>
+      <li><label><input type="checkbox"><span>Tens os extractos de pensões estrangeiras, se aplicável?</span></label></li>
+      <li><label><input type="checkbox"><span>Acedeste à Segurança Social Direta com o NIF e senha (ou Chave Móvel Digital)?</span></label></li>
+      <li><label><input type="checkbox"><span>Preencheste e submeteste o Modelo CSI 1-DGSS com a autorização de consulta bancária e fiscal?</span></label></li>
+    </ul>
+  </section>
 
   <!-- FAQ LONG-TAIL -->
   <div class="zona-cinzenta">
