@@ -40,6 +40,9 @@ nav { display: flex; align-items: center; gap: 1.5rem; max-width: 900px; margin:
 .hero-inner { max-width: 900px; margin: 0 auto; }
 .hero h1 { font-size: 1.75rem; margin-bottom: 0.75rem; line-height: 1.3; }
 .hero .resposta-direta { background: #0F766E; border-left: 4px solid #fff; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; font-size: 1.05rem; }
+.resposta-rapida-label { display: block; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.resposta-rapida-texto { margin: 0; }
+.resposta-rapida-tempo { display: block; font-size: 0.85rem; font-weight: 400; margin-top: 0.65rem; }
 main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
 h2 { color: #0F766E; font-size: 1.2rem; margin-bottom: 0.75rem; margin-top: 0.25rem; }
 .card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
@@ -252,6 +255,8 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/checklist.css">
+  <script src="/assets/js/checklist.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -341,8 +346,10 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
 </div>
 <!-- partilhar:fim -->
 
-      <div class="resposta-direta">
-        O abono de família é uma prestação mensal paga pela Segurança Social a famílias com crianças e jovens até aos 24 anos. O valor depende do escalão de rendimento do agregado familiar — até 190,98 €/mês para bebés até 3 anos no 1.º escalão (Portaria n.º 60/2026/1).
+      <div class="resposta-direta resposta-rapida">
+        <span class="resposta-rapida-label">⚡ Resposta rápida</span>
+        <p class="resposta-rapida-texto">Se tens filhos até aos 16 anos (24 se estudarem), podes receber entre 44,77 € e 190,98 € por mês, consoante a idade da criança e o escalão de rendimento do teu agregado — o valor mais alto (190,98 €) aplica-se a bebés até 3 anos no 1.º escalão.</p>
+        <span class="resposta-rapida-tempo">📖 Leitura completa: 10 min</span>
       </div>
     </div>
   </header>
@@ -521,6 +528,21 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
       </ul>
     </div>
 
+
+    <!-- CHECKLIST FINAL -->
+    <section class="checklist-final" aria-label="Checklist final">
+      <h2>Checklist: pedir o abono de família</h2>
+      <p class="checklist-progresso" aria-live="polite">0 de 7 concluídos</p>
+      <ul class="checklist-lista">
+        <li><label><input type="checkbox"><span>Confirmaste que cumpres os critérios de elegibilidade (idade da criança, rendimento do agregado)?</span></label></li>
+        <li><label><input type="checkbox"><span>Tens a certidão de nascimento da criança?</span></label></li>
+        <li><label><input type="checkbox"><span>Tens a última declaração de IRS (ou declaração de rendimentos)?</span></label></li>
+        <li><label><input type="checkbox"><span>Tens o IBAN para receber o pagamento?</span></label></li>
+        <li><label><input type="checkbox"><span>Acedeste à Segurança Social Direta com o NIF e a palavra-passe (ou Chave Móvel Digital)?</span></label></li>
+        <li><label><input type="checkbox"><span>Preencheste o requerimento em Crianças e Jovens → Abono de Família → Nova Prestação?</span></label></li>
+        <li><label><input type="checkbox"><span>Submeteste o pedido e guardaste o número de processo?</span></label></li>
+      </ul>
+    </section>
 
     <!-- DÚVIDAS FREQUENTES -->
     <section class="zona-cinzenta" aria-label="Dúvidas frequentes">
