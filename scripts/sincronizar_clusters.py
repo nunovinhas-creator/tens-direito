@@ -100,12 +100,12 @@ EXCLUIDAS = {
     # observações), não pertence a nenhum cluster único, mesma categoria
     # de acessibilidade.html/sobre.html.
     "dados.html",
-    # Verificador de Apoios (2026-07-27) — ferramenta cross-cluster que
-    # aponta para apoios de vários clusters diferentes (abono/família,
-    # apoios-escolares), mesma categoria de simuladores.html/
-    # comecar-aqui.html. Só calcula o abono (via assets/js/calc-apoios.js,
-    # partilhado com simulador-abono.html); os restantes apoios são
-    # ponteiros condicionais, sem cluster único a atribuir.
+    # Verificador de Apoios — removido a 2026-08-19 (zero impressões em 3
+    # meses no Search Console). O ficheiro verificador-apoios.html
+    # continua a existir, mas só como página-fantasma de redirecionamento
+    # (meta refresh + canonical) para /simuladores.html — nunca voltou a
+    # pertencer a um cluster, por isso mantém-se em EXCLUIDAS. Ver o
+    # commit de remoção para o detalhe completo.
     "verificador-apoios.html",
 }
 

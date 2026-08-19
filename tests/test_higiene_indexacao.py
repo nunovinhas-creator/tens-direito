@@ -39,6 +39,12 @@ DOMINIO = "https://tensdireito.com"
 # sitemap — justificação por página, nunca "esquecimento":
 EXCLUSOES_SITEMAP = {
     "404.html": "página de erro, robots noindex, sem conteúdo editorial (ver CLAUDE.md 'PÁGINAS INSTITUCIONAIS')",
+    "verificador-apoios.html": (
+        "removida a 2026-08-19 (zero impressões em 3 meses no Search Console) — o ficheiro "
+        "continua a existir só como página-fantasma de redirecionamento (meta refresh + "
+        "canonical externo para /simuladores.html, ver EXCLUSOES_CANONICAL_EXTERNO), "
+        "deliberadamente fora do sitemap e sem nenhum link de entrada"
+    ),
 }
 
 PAGINAS = encontrar_paginas()
@@ -96,6 +102,16 @@ def test_pagina_publica_esta_no_sitemap_ou_tem_exclusao_justificada(caminho):
 
 _RE_CANONICAL = re.compile(r'<link rel="canonical" href="([^"]+)">')
 
+# Excepção única e deliberada: página-fantasma de redirecionamento — o
+# GitHub Pages não faz 301 do lado do servidor, por isso a canónica aponta
+# para o destino real (/simuladores.html), nunca para si própria. Nunca
+# adicionar aqui por conveniência — só para uma página comprovadamente
+# retirada de circulação, com meta refresh a acompanhar (ver
+# verificador-apoios.html e o commit que a criou).
+EXCLUSOES_CANONICAL_EXTERNO = {
+    "verificador-apoios.html": f"{DOMINIO}/simuladores.html",
+}
+
 
 @pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
 def test_pagina_tem_canonica_auto_referente(caminho):
@@ -109,8 +125,8 @@ def test_pagina_tem_canonica_auto_referente(caminho):
     assert not href.endswith("/index.html"), f"{caminho.name}: canónica aponta a index.html explícito"
 
     rel = str(caminho.relative_to(RAIZ))
-    esperado = _ficheiro_para_url(rel)
-    assert href == esperado, f"{caminho.name}: canónica {href} != auto-referente esperado {esperado}"
+    esperado = EXCLUSOES_CANONICAL_EXTERNO.get(rel, _ficheiro_para_url(rel))
+    assert href == esperado, f"{caminho.name}: canónica {href} != esperado {esperado}"
 
     # nunca duplicada
     assert len(_RE_CANONICAL.findall(html)) == 1, f"{caminho.name}: mais de uma tag canonical"

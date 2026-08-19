@@ -24,7 +24,10 @@ PESQUISA_JS = (RAIZ / "scripts" / "pesquisa.js").read_text(encoding="utf-8")
 # do hero, 404.html não faz sentido como resultado de pesquisa).
 # simulador-psu.html foi activado na Fase 2 (Decreto-Lei n.º 166/2026) e
 # tem entrada normal em scripts/pesquisa.js — já não consta desta lista.
-NAO_INDEXADAS = {"index.html", "404.html"}
+# verificador-apoios.html removida a 2026-08-19 — o ficheiro que resta é
+# só uma página-fantasma de redirecionamento para /simuladores.html,
+# nunca deve aparecer como resultado de pesquisa.
+NAO_INDEXADAS = {"index.html", "404.html", "verificador-apoios.html"}
 
 
 def carregar_indice_pesquisa():

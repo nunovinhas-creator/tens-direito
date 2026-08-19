@@ -7,6 +7,10 @@
     "motivo": "index.html deliberadamente fora do índice de pesquisa — a homepage não se pesquisa a si própria",
     "tipo": "estrutural"
   },
+  "tests/test_pesquisa_indice.py::test_todas_as_paginas_elegiveis_estao_no_indice[verificador-apoios.html]": {
+    "motivo": "verificador-apoios.html removida a 2026-08-19 — o ficheiro que resta é só uma página-fantasma de redirecionamento para /simuladores.html, nunca deve aparecer como resultado de pesquisa",
+    "tipo": "estrutural"
+  },
   "tests/test_resposta_rapida_checklist.py::test_checklist_final_vem_antes_do_faq[manuais-escolares-mega.html]": {
     "motivo": "manuais-escolares-mega.html não tem secção de FAQ visível dedicada nesta página (só JSON-LD) — o checklist foi colocado antes de RELACIONADOS em vez de inventar uma secção que a página não tem",
     "tipo": "estrutural"
