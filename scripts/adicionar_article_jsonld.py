@@ -69,6 +69,8 @@ DATAS_PUBLICACAO = {
     "complemento-solidario-idosos.html": "2026-06-28",
     "prestacao-social-unica.html": "2026-06-28",
     "amim.html": "2026-07-01",
+    "amim-beneficios-fiscais.html": "2026-08-19",
+    "cartao-europeu-estacionamento.html": "2026-08-19",
     "psu-quando-entra-em-vigor.html": "2026-07-01",
     "psu-quem-tem-direito.html": "2026-07-01",
     "psu-vs-abono-familia.html": "2026-07-01",

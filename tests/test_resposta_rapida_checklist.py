@@ -49,6 +49,8 @@ PAGINAS_ALVO = [
     "prestacao-social-unica.html",
     "prestacao-social-para-a-inclusao.html",
     "amim.html",
+    "amim-beneficios-fiscais.html",
+    "cartao-europeu-estacionamento.html",
 ]
 
 # Só as páginas com secção "Dúvidas frequentes" dedicada é que permitem
@@ -69,6 +71,8 @@ MARCADOR_FAQ_POR_PAGINA = {
     "prestacao-social-unica.html": "Dúvidas frequentes sobre a PSU",
     "prestacao-social-para-a-inclusao.html": "10. Perguntas frequentes",
     "amim.html": "14. Perguntas frequentes",
+    "amim-beneficios-fiscais.html": "Perguntas frequentes",
+    "cartao-europeu-estacionamento.html": "Perguntas frequentes",
 }
 
 MAX_PALAVRAS_RESPOSTA_RAPIDA = 60

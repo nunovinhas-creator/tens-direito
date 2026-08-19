@@ -279,6 +279,41 @@ def test_limiar_60_por_cento_nunca_diverge_entre_amim_e_psi():
     assert limiar_psi == limiar_amim == [60.0]
 
 
+def test_limiar_60_por_cento_tambem_no_guia_de_beneficios_fiscais_do_amim():
+    # amim-beneficios-fiscais.html (2026-08-19, split de amim.html) repete
+    # o mesmo limiar de 60% na meta description — nunca pode divergir dos
+    # dois já trancados acima.
+    limiar_amim = _percentagens(_meta_description("amim.html"))
+    limiar_fiscal = _percentagens(_meta_description("amim-beneficios-fiscais.html"))
+    assert limiar_amim == limiar_fiscal == [60.0]
+
+
+def test_cartao_estacionamento_meta_description_limiares_batem_com_o_corpo():
+    # cartao-europeu-estacionamento.html (2026-08-19, split de amim.html)
+    # cita os dois limiares do cartão (60%/95%) na meta description —
+    # têm de bater com os valores já trancados no corpo por
+    # test_cartao_estacionamento_limiares_e_validade_consistentes.
+    percentagens = _percentagens(_meta_description("cartao-europeu-estacionamento.html"))
+    assert 60.0 in percentagens, percentagens
+    assert 95.0 in percentagens, percentagens
+
+
+# ── PSI: 333,64€/670€ citados também em amim.html (resumo da secção 7.2,
+# 2026-08-19) — canário de consistência entre as duas páginas, pedido
+# explicitamente antes do split para nunca ficarem a divergir em silêncio.
+# 670€ não tem 2 casas decimais no texto ("670 €/mês"), por isso fica fora
+# de _valores_eur() (documentado ali como não capturado) — comparado por
+# substring literal nas duas páginas, mesmo formato em ambas.
+
+def test_valores_psi_batem_entre_amim_e_prestacao_social_para_a_inclusao():
+    html_amim = _ler("amim.html")
+    html_psi = _ler("prestacao-social-para-a-inclusao.html")
+    assert "333,64 €/mês" in html_amim, "componente base da PSI em falta no resumo de amim.html"
+    assert "333,64 €/mês" in html_psi, "componente base da PSI em falta no corpo de prestacao-social-para-a-inclusao.html"
+    assert "670 €/mês" in html_amim, "complemento da PSI em falta no resumo de amim.html"
+    assert "670 €/mês" in html_psi, "complemento da PSI em falta no corpo de prestacao-social-para-a-inclusao.html"
+
+
 def test_subsidio_desemprego_meta_description_percentagem_bate_com_o_corpo():
     # 65% é a taxa fixa do DL n.º 220/2006 (RR × 65%) — sem relação com o
     # IAS, canário de consistência com o corpo do artigo (já fact-checked).
@@ -299,14 +334,19 @@ def test_dias_de_espera_por_vinculo():
     assert _param_subsidio_doenca("dias_espera_seguro_social_voluntario") == 30
 
 
-# ── Cartão Europeu de Estacionamento (secção "Bónus", 2026-07-11) ────────────
+# ── Cartão Europeu de Estacionamento (secção "Bónus", 2026-07-11; página
+# própria desde 2026-08-19 — ver "amim-html-split-three-pages") ──────────────
 # Valores do DL n.º 307/2003, na redação do DL n.º 128/2017 (fontes:
 # imt-ip.pt e gov.pt, verificados a 2026-07-11). Sem relação com o IAS —
 # canário de consistência: a mesma secção vive em 3 páginas e os limiares
 # (≥60%, ≥95%) e a validade (10 anos) nunca podem divergir entre elas.
+# `amim.html` saiu desta lista a 2026-08-19: o conteúdo completo do cartão
+# mudou-se para `cartao-europeu-estacionamento.html` (página própria,
+# cluster idosos-incapacidade-cuidadores); amim.html passou a ter só um
+# resumo de 2-3 linhas + link, fora do âmbito deste canário de duplicação.
 
 PAGINAS_CARTAO_ESTACIONAMENTO = (
-    "amim.html",
+    "cartao-europeu-estacionamento.html",
     "prestacao-social-para-a-inclusao.html",
     "cuidador-informal.html",
 )
@@ -314,8 +354,12 @@ PAGINAS_CARTAO_ESTACIONAMENTO = (
 
 def _seccao_cartao(pagina: str) -> str:
     html = _ler(pagina)
+    # Limite pelo próprio fecho do <div> (sem <div> aninhado dentro do
+    # cartão) — não pela adjacência a <!-- RELACIONADOS:INICIO -->, que
+    # deixou de valer em cartao-europeu-estacionamento.html (tem
+    # .checklist-final e FAQ entre o cartão e RELACIONADOS).
     m = re.search(
-        r'<div class="card" id="cartao-estacionamento">(.*?)</div>\s*\n\s*(?:<!-- RELACIONADOS:INICIO -->)',
+        r'<div class="card" id="cartao-estacionamento">(.*?)\n\s*</div>',
         html,
         re.S,
     )
@@ -336,13 +380,13 @@ def test_cartao_estacionamento_limiares_e_validade_consistentes():
         assert "pessoal e intransmissível" in seccao, f"{pagina}: regra de uso em falta"
 
 
-def test_cartao_estacionamento_liga_ao_guia_amim_excepto_no_proprio():
+def test_cartao_estacionamento_liga_ao_guia_amim():
+    # As 3 páginas com o cartão completo citam sempre o AMIM como o
+    # documento essencial — nunca amim.html em si (que já não tem esta
+    # secção desde 2026-08-19, só um resumo com link para cá).
     for pagina in PAGINAS_CARTAO_ESTACIONAMENTO:
         seccao = _seccao_cartao(pagina)
-        if pagina == "amim.html":
-            assert '"/amim.html"' not in seccao, "amim.html não deve linkar para si próprio"
-        else:
-            assert 'href="/amim.html"' in seccao, f"{pagina}: sem link para o guia do AMIM"
+        assert 'href="/amim.html"' in seccao, f"{pagina}: sem link para o guia do AMIM"
 
 
 # ── Assistência a filhos e família (2026-07-11) ──────────────────────────────

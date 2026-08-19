@@ -29,6 +29,11 @@
     "pagina": "amim.html",
     "titulo": "AMIM 2026: Guia Completo do Atestado Médico de Incapacidade Multiuso"
   },
+  "amim-beneficios-fiscais": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "amim-beneficios-fiscais.html",
+    "titulo": "Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC"
+  },
   "apoio-extraordinario-renda": {
     "chip": "Habitação",
     "pagina": "apoio-extraordinario-renda.html",
@@ -68,6 +73,11 @@
     "chip": null,
     "pagina": "calendario-pagamentos-seguranca-social.html",
     "titulo": "Calendário de Pagamentos da Segurança Social"
+  },
+  "cartao-europeu-estacionamento": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "cartao-europeu-estacionamento.html",
+    "titulo": "Cartão Europeu de Estacionamento 2026: Quem Tem Direito e Como Pedir"
   },
   "certidao-situacao-tributaria": {
     "chip": "Como Pedir",
