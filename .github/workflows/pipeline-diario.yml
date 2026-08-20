@@ -246,14 +246,37 @@ jobs:
                 console.log(`${slug}: sem alterações`);
               } else {
                 console.log(`${slug}: MUDANÇA DETECTADA`);
-                mudancas.push({ slug, url, hoje, hora, new_data, old_data });
+
+                // URL real do scrape (campo `url` do próprio ficheiro), nunca
+                // o URL genérico do mapa `fontes` acima — achado real da
+                // Issue #114: para as fontes DRE de pesquisa interactiva o
+                // mapa aponta sempre para a página de entrada (/dr/home),
+                // nunca para a página de resultados (/dr/pesquisa) que foi
+                // de facto vigiada e onde a mudança aconteceu.
+                const url_real = new_data.url || url;
+
+                // Diff de conteudo_extraido.itens_lista — o que apareceu/
+                // desapareceu de facto entre a baseline e hoje, capado a 10
+                // de cada lado (a issue nunca deve crescer sem controlo).
+                // Sem isto a issue só dizia "mudou algo", nunca O QUÊ,
+                // obrigando sempre a abrir a fonte manualmente para ver a
+                // diferença (Issue #114, dre_habitacao_paer).
+                const itens_novos = (new_data.conteudo_extraido && new_data.conteudo_extraido.itens_lista) || [];
+                const itens_antigos = (old_data.conteudo_extraido && old_data.conteudo_extraido.itens_lista) || [];
+                const set_antigos = new Set(itens_antigos);
+                const set_novos = new Set(itens_novos);
+                const itens_adicionados = itens_novos.filter(i => !set_antigos.has(i)).slice(0, 10);
+                const itens_removidos = itens_antigos.filter(i => !set_novos.has(i)).slice(0, 10);
+
+                mudancas.push({ slug, url: url_real, hoje, hora, itens_adicionados, itens_removidos });
               }
             }
 
             // Guardar lista de mudanças para step de Issues (mais tarde)
             fs.mkdirSync('data', { recursive: true });
             fs.writeFileSync('data/mudancas.json', JSON.stringify(mudancas.map(m => ({
-              slug: m.slug, url: m.url, data: m.hoje, hora: m.hora
+              slug: m.slug, url: m.url, data: m.hoje, hora: m.hora,
+              itens_adicionados: m.itens_adicionados, itens_removidos: m.itens_removidos,
             })), null, 2));
             console.log(`${mudancas.length} mudança(s) registada(s) em data/mudancas.json`);
 
@@ -841,6 +864,25 @@ jobs:
                 // que a mudança persiste.
                 const duplicate = existing_mud.data.find(i => i.title.includes(`Mudança detectada: ${m.slug}`));
                 if (!duplicate) {
+                  // Secção do diff — só aparece quando o Step 2 encontrou
+                  // itens novos e/ou removidos em conteudo_extraido.itens_lista
+                  // (ver `data/mudancas.json`); fontes cujo hash mudou por
+                  // outro motivo (titulo/paragrafos) ou sem itens_lista
+                  // nenhuns ficam sem esta secção — nunca um "O que mudou"
+                  // vazio a fingir informação que não existe.
+                  const itens_adicionados = m.itens_adicionados || [];
+                  const itens_removidos = m.itens_removidos || [];
+                  const linhas_diff = [];
+                  if (itens_adicionados.length > 0 || itens_removidos.length > 0) {
+                    linhas_diff.push(``, `### O que mudou`);
+                    if (itens_adicionados.length > 0) {
+                      linhas_diff.push(``, `**Itens novos:**`, ...itens_adicionados.map(i => `- ${i}`));
+                    }
+                    if (itens_removidos.length > 0) {
+                      linhas_diff.push(``, `**Itens removidos:**`, ...itens_removidos.map(i => `- ${i}`));
+                    }
+                  }
+
                   await github.rest.issues.create({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -850,6 +892,7 @@ jobs:
                       ``,
                       `**Data/hora:** ${hoje} ${hora} UTC`,
                       `**Fonte:** ${m.url}`,
+                      ...linhas_diff,
                       ``,
                       `### Acção necessária`,
                       `1. Verificar a fonte manualmente: ${m.url}`,
