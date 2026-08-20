@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **19 de agosto de 2026**.
+Actualizado automaticamente a partir do repositório em **20 de agosto de 2026**.
 
 ### Páginas publicadas
 
@@ -24,6 +24,7 @@ Actualizado automaticamente a partir do repositório em **19 de agosto de 2026**
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
+| [`amim-beneficios-fiscais.html`](amim-beneficios-fiscais.html) | Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC | Tens Direito |
 | [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
 | [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
@@ -33,6 +34,7 @@ Actualizado automaticamente a partir do repositório em **19 de agosto de 2026**
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: agosto 2026 |
+| [`cartao-europeu-estacionamento.html`](cartao-europeu-estacionamento.html) | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | Tens Direito |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
@@ -54,13 +56,13 @@ Actualizado automaticamente a partir do repositório em **19 de agosto de 2026**
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
-| [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos |
-| [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: quem tem direito e como concorrer |
+| [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: dos 4 aos 23 (ou 25) anos |
+| [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: sem prazo, candidaturas todo o ano |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | PSI 2026: valor 333,64€, quem tem direito e como pedir |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona |
 | [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
-| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — como fazer online |
+| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — dá para regularizar |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU substitui (lista completa 2026, DL 166/2026) |
 | [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: decreto-lei publicado — timeline completa até 31/12/2026 |
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso do Decreto-Lei n.º 166/2026 |
@@ -82,7 +84,7 @@ Actualizado automaticamente a partir do repositório em **19 de agosto de 2026**
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor, duração e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
-| [`verificador-apoios.html`](verificador-apoios.html) | Vê a que apoios podes ser elegível — abono, ASE e bolsas |
+| [`verificador-apoios.html`](verificador-apoios.html) | Esta ferramenta mudou-se — Tens Direito |
 
 <!-- END:ESTADO -->
 
@@ -401,6 +403,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 19 de agosto de 2026 às 07:46 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 20 de agosto de 2026 às 08:12 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-19",
+      "titulo": "Nova lei para auxílio-desemprego",
+      "fonte_nome": "Portugal Resident",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBMVXd3UTdrM0ZiTklKdFgyNEhKbFV6VWNjX2Mta2hLUzNlRG5XYVNsYnpIbEJlT0dYUmlKTUVZSVB6Yl9jZFhRbW15alVDLVpkRmV4VWdNRW9mMU5YSThqaXEwZEZZZTQtX3g3Y3dsNUZpRldjcGNtVUxjWkk0V2s?oc=5",
+      "resumo": "Nova lei para auxílio-desemprego Portugal Resident",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-18",
+      "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro",
+      "fonte_nome": "Executive Digest",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPTWgwN1NfbUFuT2lIUHc4NXJVbW9YWXBkVmNnWTBZNlNHVDJJZUVlTHBWMmRLbDFILVF0QWxGeGZvcWc1UlhCWFRVU21uM2VaSEc3d1lfYmFoVkxRVWFZaDI0TjBMUmZEeTFsejJ0TjdOcDFSZHhlbmRIYWRhWFBybElTZDM4X25YWDhpbEZBbGdiRE5lQ2huTi00a3k0ckI3X2dpYVRjb3dyRnlEaTNWbF90a0NTNUdQcHl0Smg1VnQ4eDhfanhjSlg1VQ?oc=5",
+      "resumo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro Executive Digest",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-08-18",
       "titulo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026",
       "fonte_nome": "Economia e Finanças",
@@ -8,6 +26,15 @@
       "resumo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 Economia e Finanças",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-18",
+      "titulo": "Os desempregados ainda podem solicitar auxílio-renda.",
+      "fonte_nome": "Portugal Resident",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPS3NHOVVhZ2p4cUNIMkgxRDB6MFRWZkt4OHFhc25GX1hCeEhpXzNMS3V2LUhScDE5M0Ftd0NuQklrTFh1VDh4VHNvRGR2WXFHZDNoRGNjdWV6dzAzODRzLXNRQ2ZYQ0Z2Y29EZ2FJRUEzMEtxNEVLOVM2NUs1dDJsNlMyZWtHYnVkc1Q5ckdTeUxzalI2VnZLTkJ0RQ?oc=5",
+      "resumo": "Os desempregados ainda podem solicitar auxílio-renda. Portugal Resident",
+      "categoria": "habitacao",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-08-17",
