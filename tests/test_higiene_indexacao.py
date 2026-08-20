@@ -11,7 +11,17 @@ segurança permanente. Falha se:
      JSON-LD válido (author/publisher/datePublished/dateModified);
   5. uma página pública for órfã — inalcançável a partir de
      `index.html` navegando só por `href`s internos das próprias
-     páginas (a mesma nav/HTML estático que o Google rastreia).
+     páginas (a mesma nav/HTML estático que o Google rastreia);
+  6. qualquer bloco `<script type="application/ld+json">` de qualquer
+     página não for JSON válido (`json.loads()` falha) — lacuna real
+     encontrada a 2026-08-20 (Search Console reportou "','ou'}' em
+     falta" em amim-beneficios-fiscais.html): os testes existentes que
+     tocam em JSON-LD ou filtram por `@type` antes de fazer parse (só
+     valida o bloco Article, nunca os outros) ou engolem
+     `json.JSONDecodeError` em silêncio à procura de um tipo
+     específico (BreadcrumbList) — nenhum garantia que TODOS os blocos
+     de TODAS as páginas são JSON parseável. Este teste fecha essa
+     lacuna, sem filtrar por tipo.
 
 Corre no job "testes-python" do CI (`integridade.yml`), a cada push a
 `main` — mesmo padrão de `test_nav_coerencia.py`/`test_breadcrumb_coerencia.py`.
@@ -210,3 +220,28 @@ def test_pagina_publica_nao_e_orfa(caminho):
         f"{rel} é uma página pública mas não é alcançável a partir de index.html "
         "seguindo apenas hrefs internos — página órfã, sem sinal de rastreio para o Google"
     )
+
+
+# ── Passo 6: TODOS os blocos ld+json são JSON válido ────────────────────────
+#
+# Diferente de test_pagina_de_conteudo_tem_article_jsonld_valido (só
+# valida o bloco Article) e de _extrair_breadcrumb_jsonld em
+# test_breadcrumb_coerencia.py (engole JSONDecodeError à procura de
+# BreadcrumbList) — este teste faz json.loads() em CADA bloco, sem
+# filtrar por @type, para que um FAQPage/HowTo/BreadcrumbList/Article
+# com sintaxe partida nunca passe despercebido de novo.
+
+_RE_LDJSON = re.compile(r'<script type="application/ld\+json">([\s\S]*?)</script>')
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_todos_os_blocos_ldjson_sao_json_valido(caminho):
+    html = caminho.read_text(encoding="utf-8")
+    blocos = _RE_LDJSON.findall(html)
+    for i, bloco in enumerate(blocos):
+        try:
+            json.loads(bloco)
+        except json.JSONDecodeError as e:
+            pytest.fail(
+                f"{caminho.name}: bloco ld+json #{i} não é JSON válido — {e}"
+            )
