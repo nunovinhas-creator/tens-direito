@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-08-19",
+      "titulo": "Prestação social única junta 13 apoios e substitui o RSI no fim de 2026",
+      "fonte_nome": "SAPO",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQYThpS3AzSEhLX1BhRk85elByNVhEYUdlU0ZBcUFJY2JwMG04RF9yMjJRNzNLeGhOQ0d4UGowWlBBZEQ0ZG9kMkJ1cVFpMEdjMG9NMTluOW0wck45Z2Fkd1J3WTk1a29jQ3FHcWxDZTlsLWRGX1B0V01hSElnRjlZT3RJR1MwdTZXT0ZES3ZUWDd1eXJGOVRPdUhHSjc3QXowbjQ4?oc=5",
+      "resumo": "Prestação social única junta 13 apoios e substitui o RSI no fim de 2026 SAPO",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-19",
       "titulo": "Nova lei para auxílio-desemprego",
       "fonte_nome": "Portugal Resident",
       "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBMVXd3UTdrM0ZiTklKdFgyNEhKbFV6VWNjX2Mta2hLUzNlRG5XYVNsYnpIbEJlT0dYUmlKTUVZSVB6Yl9jZFhRbW15alVDLVpkRmV4VWdNRW9mMU5YSThqaXEwZEZZZTQtX3g3Y3dsNUZpRldjcGNtVUxjWkk0V2s?oc=5",
@@ -35,6 +44,15 @@
       "resumo": "Os desempregados ainda podem solicitar auxílio-renda. Portugal Resident",
       "categoria": "habitacao",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-17",
+      "titulo": "Salário mínimo em Portugal: governo propõe € 665",
+      "fonte_nome": "Portugal Resident",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOUnRxYXowZE1jX2NUYzA4eUdqQV9PdWxZMXdkZXBSMUF0Yk1qaEhtaGRHVjdVdm9Ba2hkNWpmbVAwZ1N0WVREamM0OFY0TENudUNFQVVfd3B0VGVGb2M3eWdnTXRyMHNEdVBQcmpLMnNUUnhtQ1N4UVRick9vX3MzYnVjOHpkRERkeDZDSmNGZ0RKOWs5ZE1wcTAzdmdVQlZkQkxySUNOd0tLX25lM0E?oc=5",
+      "resumo": "Salário mínimo em Portugal: governo propõe € 665 Portugal Resident",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
     },
     {
       "data_iso": "2026-08-17",
