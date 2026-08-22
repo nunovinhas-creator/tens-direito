@@ -2,61 +2,61 @@
   "dge_ase": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dge_manuais": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dre_habitacao_garantia": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dre_habitacao_paer": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dre_ias": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dre_psu": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "dre_psu_regulamentacao": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "iefp_desemprego": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "igefe_mega": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "mega_datas": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "seg_social_abono": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   },
   "seg_social_rsi": {
     "dias_consecutivos_bloqueado": 0,
     "estado": "OK",
-    "ultima_ok": "2026-08-21"
+    "ultima_ok": "2026-08-22"
   }
 }
