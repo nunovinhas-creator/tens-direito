@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-22",
+      "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOOXR4ZEFNRENydnp4bktabE55R2NZajdJTzQwdUZMNUt0NzRwSkZBcHRnWVZhTEtWT1J2MVFOUUpra1NMd3dGaE85SmhvUjRnUzBvRF91ekRHNVRmNWtIZXBRb3V0aS1yNThGRlZMdWE0dldablBSNWJ0UjlRdExha3E4TXAyckhNM2I5dFVWa1ZnY3VadVhUcHp0ODdYSnV2S1lFSXlaeEtmdDFVc2JncFJmOXhDUzhOb0Y0cEFxOFQzcXpXbl9KbHprRm1COTA?oc=5",
+      "resumo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude CNN Portugal",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-22",
+      "titulo": "Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência",
+      "fonte_nome": "recordeuropa.com",
+      "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxQR0daZXYzTlZxR2NSWGd5MFdzTnZkaGRsQ2xacnZoMlpsU1pwaTR0YnhVU2F3ZXdwQ19EQXFidHBFN0F4Y3A1Qk9XTk16QUR5cnJTalFVNEw5UlVtRnEzb3JySHRtbm54aktJMnBLVERNSjBWZm9iSnR0ZmlPbWRkWnhlemxVVG1GSlZUeTdHbVdTMzZoTzhOZDJHYjZvUnlKNC1YbHh6ZlBfRTYtaURoUEJUalRJdFlLVGlwVGZhc0oxanFBZU43alU5RUhqTUJpTDFkcENvaWl1VHN2N3Z5clJJRjVzOWpUR1RaNENHTWI3SDVJM19IMmVZVkIyOXJja2hvMm13?oc=5",
+      "resumo": "Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência recordeuropa.com",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
       "data_iso": "2026-08-19",
       "titulo": "Prestação social única junta 13 apoios e substitui o RSI no fim de 2026",
       "fonte_nome": "SAPO",
