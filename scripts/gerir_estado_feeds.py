@@ -98,7 +98,11 @@ def carregar_estado(caminho: Path) -> Dict[str, dict]:
     try:
         conteudo = json.loads(caminho.read_text(encoding="utf-8"))
         return conteudo if isinstance(conteudo, dict) else {}
-    except Exception:
+    except json.JSONDecodeError as exc:
+        # Nunca em silêncio: cair para {} aqui reinicia a contagem de dias
+        # consecutivos morto de TODOS os feeds -- se acontecer sem aviso
+        # nenhum, um feed já a meio da contagem para Issue nunca a atinge.
+        print(f"⚠ {caminho.name} malformado ({exc}) — estado dos feeds reiniciado a partir de zero.")
         return {}
 
 
@@ -131,7 +135,8 @@ def main(*, raiz: Optional[Path] = None, hoje: Optional[str] = None) -> Dict[str
     if caminho_saude_hoje.exists():
         try:
             saude_hoje = json.loads(caminho_saude_hoje.read_text(encoding="utf-8"))
-        except Exception:
+        except json.JSONDecodeError as exc:
+            print(f"⚠ {caminho_saude_hoje.name} malformado ({exc}) — tratado como sem dados de saúde hoje.")
             saude_hoje = []
 
     todos_os_feeds = _todos_os_feeds(saude_hoje)

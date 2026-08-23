@@ -1129,8 +1129,11 @@ def _registar_bloqueio(slug: str, url: str, classif) -> None:
     if BLOQUEIOS_PATH.exists():
         try:
             bloqueios = json.loads(BLOQUEIOS_PATH.read_text(encoding="utf-8"))
-        except Exception:
-            pass
+        except json.JSONDecodeError as exc:
+            # Nunca perder entradas de outras fontes/dias em silêncio: ficar
+            # com bloqueios=[] e escrever a seguir apagaria o ficheiro
+            # inteiro sem ninguém saber porquê.
+            _registar_aviso(slug, f"bloqueios_json_malformado_ao_registar:{exc}")
     # Substituir entrada anterior do mesmo slug para o mesmo dia
     hoje = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     bloqueios = [b for b in bloqueios if not (b["slug"] == slug and b["data"][:10] == hoje)]
@@ -1154,7 +1157,11 @@ def _limpar_bloqueio_hoje(slug: str) -> None:
         return
     try:
         bloqueios = json.loads(BLOQUEIOS_PATH.read_text(encoding="utf-8"))
-    except Exception:
+    except json.JSONDecodeError as exc:
+        # A recuperação falha em silêncio sem isto -- nunca deixar uma fonte
+        # presa em BLOQUEADO sem ninguém saber que foi por causa de um
+        # bloqueios.json ilegível, não por continuar de facto bloqueada.
+        _registar_aviso(slug, f"bloqueios_json_malformado_ao_limpar:{exc}")
         return
     hoje = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     novo = [b for b in bloqueios if not (b.get("slug") == slug and b.get("data", "")[:10] == hoje)]
@@ -1287,8 +1294,12 @@ def _guardar_resultado(slug: str, resultado: dict) -> None:
             if old.get("hash_conteudo") == resultado["hash_conteudo"]:
                 log.info("%s: conteúdo idêntico ao latest — sem atualização", slug)
                 return
-        except Exception:
-            pass
+        except json.JSONDecodeError as exc:
+            # Benigno por desenho: o write a seguir substitui sempre o
+            # ficheiro por dados frescos e válidos -- nunca fica um estado
+            # corrompido no disco. Mas continua a ser um sinal de que algo
+            # escreveu lixo em latest_path, por isso fica registado.
+            log.warning("%s: %s ilegível (%s) — a sobrescrever com dados novos.", slug, latest_path.name, exc)
 
     with open(latest_path, "w", encoding="utf-8") as f:
         json.dump(resultado, f, ensure_ascii=False, indent=2)

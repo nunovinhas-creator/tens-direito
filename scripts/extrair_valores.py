@@ -58,7 +58,11 @@ def _extrair_de_json(slug: str, campo: str, regex: str) -> str | None:
         return None
     try:
         data = json.loads(latest.read_text(encoding="utf-8"))
-    except Exception:
+    except json.JSONDecodeError as exc:
+        # Nunca deixar isto indistinguível de "campo ausente" no relatório —
+        # um _latest.json corrompido é sempre um defeito a corrigir, não um
+        # "não encontrado" normal.
+        print(f"⚠ {latest.name} malformado ({exc}) — a saltar {slug}/{campo}, nunca tratado como 'não encontrado'.")
         return None
 
     # Procurar o padrão em todos os valores de texto do JSON

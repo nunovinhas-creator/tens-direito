@@ -108,7 +108,8 @@ def registar(slug: str) -> str:
     if caminho.exists():
         try:
             anterior = json.loads(caminho.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as exc:
+            print(f"{slug}: {caminho.name} malformado ({exc}) — a tratar como sem observação anterior e a sobrescrever.")
             anterior = {}
         if (
             anterior.get("sha256_conteudo") == nova_obs["sha256_conteudo"]
