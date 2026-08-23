@@ -127,7 +127,12 @@ def carregar_estado(caminho: Path) -> Dict[str, dict]:
     try:
         conteudo = json.loads(caminho.read_text(encoding="utf-8"))
         return conteudo if isinstance(conteudo, dict) else {}
-    except Exception:
+    except json.JSONDecodeError as exc:
+        # Nunca em silêncio: cair para {} aqui reinicia a contagem de dias
+        # consecutivos bloqueado de TODAS as fontes -- se acontecer sem
+        # aviso nenhum, uma fonte já a meio da contagem para Issue nunca
+        # a atinge.
+        print(f"⚠ {caminho.name} malformado ({exc}) — estado das fontes reiniciado a partir de zero.")
         return {}
 
 
@@ -156,7 +161,12 @@ def main(*, raiz: Optional[Path] = None, hoje: Optional[str] = None) -> Dict[str
     if caminho_bloqueios.exists():
         try:
             bloqueios = json.loads(caminho_bloqueios.read_text(encoding="utf-8"))
-        except Exception:
+        except json.JSONDecodeError as exc:
+            # Sem isto, um bloqueios.json corrompido faz TODAS as fontes
+            # parecerem "não bloqueadas hoje" -- uma fonte genuinamente
+            # bloqueada há dias podia ter o contador reiniciado sem
+            # nenhum sinal.
+            print(f"⚠ {caminho_bloqueios.name} malformado ({exc}) — tratado como sem bloqueios hoje.")
             bloqueios = []
 
     estado_anterior = carregar_estado(caminho_estado)

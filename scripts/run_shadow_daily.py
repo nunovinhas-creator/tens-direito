@@ -119,7 +119,11 @@ def _carregar_json(caminho: Path) -> dict:
     try:
         conteudo = json.loads(caminho.read_text(encoding="utf-8"))
         return conteudo if isinstance(conteudo, dict) else {}
-    except Exception:
+    except json.JSONDecodeError as exc:
+        # Puramente observacional (Shadow Mode nunca aplica nada), por isso
+        # falhar para {} é seguro -- mas nunca em silêncio: fica sempre um
+        # sinal de que este ficheiro está ilegível.
+        print(f"⚠ {caminho.name} malformado ({exc}) — tratado como vazio nesta simulação.", file=sys.stderr)
         return {}
 
 

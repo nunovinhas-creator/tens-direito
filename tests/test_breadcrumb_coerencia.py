@@ -41,11 +41,18 @@ def _extrair_links_badge(html: str):
 
 
 def _extrair_breadcrumb_jsonld(html: str):
+    # Nunca engolir JSONDecodeError aqui: um bloco ld+json malformado tem de
+    # rebentar o teste, nunca ficar tratado como "sem BreadcrumbList" — foi
+    # exactamente esse silêncio que deixou passar o FAQPage partido de
+    # amim-beneficios-fiscais.html (PR #115), só apanhado dias depois pelo
+    # Search Console. `test_todos_os_blocos_ldjson_sao_json_valido`
+    # (tests/test_higiene_indexacao.py) já valida TODOS os blocos ld+json de
+    # TODAS as páginas reais, incluindo as 43 usadas aqui — cobertura
+    # confirmada independente da ordem de recolha do pytest, por isso esta
+    # função pode confiar em JSON sempre válido e deixar json.loads() falhar
+    # a sério se algum dia não for.
     for m in re.finditer(r'<script type="application/ld\+json">([\s\S]*?)</script>', html):
-        try:
-            data = json.loads(m.group(1))
-        except json.JSONDecodeError:
-            continue
+        data = json.loads(m.group(1))
         candidatos = data if isinstance(data, list) else [data]
         for item in candidatos:
             if isinstance(item, dict) and item.get("@type") == "BreadcrumbList":

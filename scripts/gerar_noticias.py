@@ -994,7 +994,8 @@ def registar_candidatos_log(
     if caminho.exists():
         try:
             historico = json.loads(caminho.read_text(encoding="utf-8"))
-        except Exception:
+        except json.JSONDecodeError as exc:
+            print(f"⚠ {caminho.name} malformado ({exc}) — histórico de candidatos truncado, a recomeçar do zero.")
             historico = []
 
     registo = {
