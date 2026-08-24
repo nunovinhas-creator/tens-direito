@@ -1,0 +1,155 @@
+# Migração RSI para o padrão OpenFisca (2026-08-24) — RSI era um dos 3
+# simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md, Fase 0, e
+# ROADMAP.md → "Migração do ASE"; RSI/subsídio de desemprego nem sequer
+# estavam registados como pendência até este levantamento).
+#
+# PASSO 0: os 10 valores de PARAMETROS_RSI (era um objecto JS inline em
+# simulador-rsi.html) foram verificados um a um contra fonte primária via
+# WebSearch — `WebFetch`/`curl` a diariodarepublica.pt, pgdlisboa.pt e
+# e-konomista.pt devolveram `EGRESS_BLOCKED` nesta sessão (mesma
+# limitação de rede documentada em dezenas de sessões anteriores deste
+# repositório — ver CLAUDE.md). Nenhum valor divergiu do que já estava
+# publicado em rsi.html/simulador-rsi.html (confirmado antes desta
+# migração, com 5 canários novos em tests/test_valores_ancora.py, PR #120)
+# — esta migração é só de formato, não de conteúdo.
+#
+# Diplomas confirmados por triangulação (≥2 pesquisas independentes cada,
+# nunca uma só fonte):
+# - Valor base (247,56€/mês, titular): Portaria n.º 71/2026/1, de 13 de
+#   fevereiro (DR n.º 31/2026, Série I) — fixa o valor de referência anual
+#   do RSI, 46,09% do IAS 2026.
+# - Percentagens por adulto adicional (70%) e por menor (50%): Lei n.º
+#   13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na
+#   redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — este DL subiu as
+#   percentagens de 50%→70% (adulto) e 30%→50% (menor) face ao regime
+#   anterior a 2016; confirmado por 2 pesquisas independentes.
+# - Limite de património (60×IAS, mobiliário e bens móveis sujeitos a
+#   registo): Decreto-Lei n.º 70/2010, de 16 de junho, artigo 9.º —
+#   confirmado por 3 pesquisas independentes, sempre com o mesmo texto
+#   quase-verbatim ("não superiores, cada um, a 60 vezes o valor do
+#   IAS"); nunca confirmado por leitura directa do artigo (dre.pt
+#   bloqueado) — nível de confiança "diploma + artigo triangulados",
+#   não "texto primário lido". Distinto do limite de 240×IAS do mesmo
+#   diploma, que se aplica ao subsistema de protecção familiar (abono),
+#   não ao RSI — não confundir os dois limites deste mesmo DL.
+# - Percentagens de rendimentos considerados (80% trabalho dependente,
+#   100% independente/subsídio de desemprego/outros): mesmo Decreto-Lei
+#   n.º 70/2010 (regras de determinação dos rendimentos na condição de
+#   recursos) — diploma confirmado, mas SEM número de artigo específico
+#   confirmado com confiança (as pesquisas não isolaram um artigo único
+#   para esta regra); nunca inventado um número — citado só o diploma,
+#   corroborado pelo Guia Prático 8001 do ISS, I.P.
+# - Idade mínima (18 anos): Lei n.º 13/2003, de 21 de maio — condições
+#   gerais de atribuição (há excepções legais para menores, não
+#   modeladas pelo simulador, já documentadas em rsi.html).
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+valor_titular_mensal:
+  descricao: "Valor de referência do RSI — adulto titular (100% da escala de equivalência)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 247.56
+      referencia_legal: "Portaria n.º 71/2026/1, de 13 de fevereiro — valor de referência do RSI para 2026 (46,09% do IAS)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/71-2026-1049254415"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+valor_adulto_adicional_mensal:
+  descricao: "Valor de referência do RSI — cada adulto adicional do agregado (70% da escala de equivalência)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 173.29
+      referencia_legal: "Lei n.º 13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — 70% do valor de referência do agregado, por cada adulto adicional; valor em euros aplicado sobre a Portaria n.º 71/2026/1"
+      fonte_url: "https://files.diariodarepublica.pt/1s/2016/01/00300/0001600016.pdf"
+      fonte_url_complementar: "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856"
+      verificado_em: "2026-08-24"
+
+valor_menor_mensal:
+  descricao: "Valor de referência do RSI — cada menor de 18 anos do agregado (50% da escala de equivalência)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 123.78
+      referencia_legal: "Lei n.º 13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — 50% do valor de referência do agregado, por cada menor de 18 anos; valor em euros aplicado sobre a Portaria n.º 71/2026/1"
+      fonte_url: "https://files.diariodarepublica.pt/1s/2016/01/00300/0001600016.pdf"
+      fonte_url_complementar: "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856"
+      verificado_em: "2026-08-24"
+
+limite_patrimonio_multiplicador_ias:
+  descricao: "Limite de património mobiliário e de bens móveis sujeitos a registo, cada um, em múltiplo do IAS — nunca escrito à mão em euros, sempre derivado do IAS em runtime"
+  unidade: "múltiplo do IAS"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, artigo 9.º, na redação atual — património mobiliário e bens móveis sujeitos a registo, cada um, não superiores a 60 × IAS"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+percentagem_rendimento_trabalho_dependente:
+  descricao: "Percentagem do rendimento de trabalho dependente considerada na condição de recursos"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.80
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos (trabalho dependente, já deduzidas as contribuições para a Segurança Social); sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+percentagem_rendimento_trabalho_independente:
+  descricao: "Percentagem do rendimento de trabalho independente considerada na condição de recursos"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1.00
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+percentagem_subsidio_desemprego:
+  descricao: "Percentagem do subsídio de desemprego considerada na condição de recursos"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1.00
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+percentagem_outros_rendimentos:
+  descricao: "Percentagem de outros rendimentos regulares do agregado (pensões, apoios, etc.) considerada na condição de recursos"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1.00
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+idade_minima_anos:
+  descricao: "Idade mínima geral de acesso ao RSI (há excepções legais para menores, não modeladas por este simulador)"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 18
+      referencia_legal: "Lei n.º 13/2003, de 21 de maio — condições gerais de atribuição"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856"
+      fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
+      verificado_em: "2026-08-24"
+
+ias_2026:
+  descricao: "Indexante dos Apoios Sociais (IAS) 2026 — usado para derivar o limite de património (60 × IAS)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 537.13
+      referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-24"

@@ -124,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-13",
-    "dateModified": "2026-08-16"
+    "dateModified": "2026-08-24"
   }
   </script>
 
@@ -313,7 +313,11 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Valores 2026</strong> — 247,56€ (titular) + 173,29€ (adulto adicional) + 123,78€ (menor), IAS 537,13€ · <strong>Verificado a 16/08/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/rsi.html">ver guia completo do RSI</a>
+      💡 <strong>Valores 2026</strong> — 247,56€ (titular) + 173,29€ (adulto adicional) + 123,78€ (menor), IAS 537,13€ · <strong>Verificado a 24/08/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/rsi.html">ver guia completo do RSI</a>
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os parâmetros oficiais do RSI agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
     </div>
 
     <div class="calc-card">
@@ -385,7 +389,7 @@
         </div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular RSI</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularRSI" disabled>🧮 Calcular RSI</button>
           <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
         </div>
       </form>
@@ -489,32 +493,76 @@
     // ══════════════════════════════════════════════════════════════════════
     // SIMULADOR DO RSI — 1. CONSTANTES
     // ══════════════════════════════════════════════════════════════════════
-    // PARAMETROS_RSI — fonte única de verdade da fórmula. Cada valor tem
-    // "fonte" e "verificado_em" próprios (mesmo padrão de PARAMETROS_CSI em
-    // simulador-csi.html e PARAMETROS_SUBSIDIO_DOENCA em
-    // simulador-subsidio-doenca.html). Nenhum valor legal aparece solto no
-    // meio da lógica de cálculo — toda a função calcularRSI() lê
-    // exclusivamente deste objecto (Fase 3/Fase 4 do desenho aprovado).
+    // PARAMETROS_RSI — fonte única de verdade da fórmula. Nenhum valor
+    // legal aparece solto no meio da lógica de cálculo — toda a função
+    // calcularRSI() lê exclusivamente deste objecto (Fase 3/Fase 4 do
+    // desenho aprovado em 2026-07-13).
     //
-    // Valores fact-checked em rsi.html (verificado 24/06/2026) e
-    // reconfirmados por pesquisa externa nesta sessão (13/07/2026): DRE
-    // (Portaria n.º 71/2026/1), Jornal de Negócios, e-konomista, Doutor
-    // Finanças — sem divergências. Confirmado também, por 3 fontes
-    // independentes, que a escala de equivalência não tem tecto de número
-    // de elementos do agregado (ver CLAUDE.md, auditoria da Fase 1).
-    const PARAMETROS_RSI = {
-      anoReferencia: { valor: 2026, fonte: 'Ano de vigência dos valores desta simulação', verificado_em: '2026-07-13' },
-      valorTitular: { valor: 247.56, fonte: 'Portaria n.º 71/2026/1, de 13 de fevereiro — RSI base 2026 (46,09% do IAS)', verificado_em: '2026-07-13' },
-      valorAdultoAdicional: { valor: 173.29, fonte: 'Portaria n.º 71/2026/1 — 70% do RSI base, por cada adulto adicional', verificado_em: '2026-07-13' },
-      valorMenor: { valor: 123.78, fonte: 'Portaria n.º 71/2026/1 — 50% do RSI base, por cada menor de 18 anos', verificado_em: '2026-07-13' },
-      ias: { valor: 537.13, fonte: 'Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026', verificado_em: '2026-07-13' },
-      limitePatrimonio: { valor: 32227.80, fonte: '60 × IAS 2026 — limite de ativos financeiros; habitação própria permanente excluída', verificado_em: '2026-07-13' },
-      percentagemDependente: { valor: 0.80, fonte: 'Guia Prático RSI, seg-social.pt — trabalho dependente conta 80%, já deduzidas as contribuições', verificado_em: '2026-07-13' },
-      percentagemIndependente: { valor: 1.00, fonte: 'Guia Prático RSI, seg-social.pt — trabalho independente conta 100%', verificado_em: '2026-07-13' },
-      percentagemSubsidioDesemprego: { valor: 1.00, fonte: 'seg-social.pt — subsídio de desemprego soma-se a 100% aos rendimentos do agregado', verificado_em: '2026-07-13' },
-      percentagemOutros: { valor: 1.00, fonte: 'Outros rendimentos regulares (pensões, apoios, etc.) contam a 100%', verificado_em: '2026-07-13' },
-      idadeMinima: { valor: 18, fonte: 'Lei n.º 13/2003, de 21 de maio — idade mínima geral (excepções legais não modeladas)', verificado_em: '2026-07-13' },
-    };
+    // Valores fact-checked em rsi.html (verificado 24/06/2026), depois
+    // reconfirmados por pesquisa externa (13/07/2026): DRE (Portaria
+    // n.º 71/2026/1), Jornal de Negócios, e-konomista, Doutor Finanças —
+    // sem divergências. Confirmado também, por 3 fontes independentes,
+    // que a escala de equivalência não tem tecto de número de elementos
+    // do agregado (ver CLAUDE.md, auditoria da Fase 1).
+    //
+    // Migração para o padrão OpenFisca (2026-08-24, ver
+    // dados/parametros/rsi.yaml): PARAMETROS_RSI deixou de ser um
+    // objecto JS inline — passa a ser carregado em runtime de
+    // /dados/parametros.json (gerado por scripts/gerar_parametros_json.py),
+    // mesmo padrão de PARAMETROS_CSI em simulador-csi.html e
+    // PARAMETROS_SUBSIDIO_DOENCA em simulador-subsidio-doenca.html.
+    // PASSO 0 desta migração reconfirmou os 10 valores contra fonte
+    // primária (WebSearch — WebFetch a diariodarepublica.pt/pgdlisboa.pt
+    // continua bloqueado nesta sessão, mesma limitação de sempre): zero
+    // divergências face aos valores já publicados — migração só de
+    // formato, nunca de conteúdo. Nunca calcula com valores em falta: se
+    // o fetch falhar, mostra um erro visível (#avisoParametrosErro) e
+    // mantém o botão de calcular desactivado — um estado de erro nunca
+    // pode parecer sucesso.
+    let PARAMETROS_RSI = null;
+
+    async function carregarParametrosRSI() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const rsi = todos.prestacoes && todos.prestacoes.rsi;
+        if (!rsi) throw new Error("prestações.rsi em falta em dados/parametros.json");
+        const limitePatrimonioValor = rsi.limite_patrimonio_multiplicador_ias.valor * rsi.ias_2026.valor;
+        PARAMETROS_RSI = {
+          anoReferencia: { valor: new Date(rsi.valor_titular_mensal.vigencia_inicio).getFullYear() },
+          valorTitular: rsi.valor_titular_mensal,
+          valorAdultoAdicional: rsi.valor_adulto_adicional_mensal,
+          valorMenor: rsi.valor_menor_mensal,
+          ias: rsi.ias_2026,
+          // Derivado do IAS em runtime (multiplicador × IAS), nunca um
+          // valor em euros escrito à mão — mesmo padrão de
+          // simulador-psu.html/simulador-imt-jovem.html.
+          limitePatrimonio: { valor: limitePatrimonioValor, referencia_legal: rsi.limite_patrimonio_multiplicador_ias.referencia_legal },
+          percentagemDependente: rsi.percentagem_rendimento_trabalho_dependente,
+          percentagemIndependente: rsi.percentagem_rendimento_trabalho_independente,
+          percentagemSubsidioDesemprego: rsi.percentagem_subsidio_desemprego,
+          percentagemOutros: rsi.percentagem_outros_rendimentos,
+          idadeMinima: rsi.idade_minima_anos,
+        };
+        const botao = document.getElementById('btnCalcularRSI');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosRSI(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosRSI(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularRSI');
+      if (botao) botao.disabled = true;
+      console.error('Simulador RSI: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosRSI);
 
     // ══════════════════════════════════════════════════════════════════════
     // 2. MENSAGENS — centralizadas, nunca repetidas noutras funções
@@ -898,6 +946,12 @@
 
     function calcularRSIFormulario(evento) {
       evento.preventDefault();
+
+      if (!PARAMETROS_RSI) {
+        mostrarErroParametrosRSI(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
       limparErrosFormulario();
 
       var bruto = {
