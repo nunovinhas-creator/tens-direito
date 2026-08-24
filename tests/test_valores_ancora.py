@@ -1049,3 +1049,152 @@ def test_rsi_idade_minima_bate_com_o_artigo():
     assert _param_rsi("idade_minima_anos") == 18
     html = _ler("rsi.html")
     assert "18 anos ou mais" in html, "idade mínima geral (18 anos) em falta no artigo"
+
+
+# ── Subsídio de Desemprego — migrado para dados/parametros/desemprego.yaml ──
+# (2026-08-24). Último simulador por migrar sem bloqueio externo (o ASE fica
+# à espera do despacho da DGEstE). PASSO 0 apresentado e aprovado antes da
+# migração: 16 valores escalares (a Fase 0 tinha contado "17" por engano,
+# corrigido em LEVANTAMENTO-DADOS-ABERTOS.md) + 12 células da tabela de
+# duração — toda a verificação por triangulação WebSearch (WebFetch a
+# diariodarepublica.pt/pgdlisboa.pt/app.parlamento.pt continua bloqueado
+# nesta sessão), nenhuma por leitura directa do diploma. Diploma-base:
+# Decreto-Lei n.º 220/2006, de 3 de novembro. Ver dados/parametros/
+# desemprego.yaml para o detalhe completo de cada citação, incluindo o único
+# valor sem diploma atribuído (garantia_dias_ti_cessacao).
+
+_DESEMPREGO = None
+
+
+def _param_desemprego(nome: str):
+    global _DESEMPREGO
+    if _DESEMPREGO is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _DESEMPREGO = todos["prestacoes"]["desemprego"]
+    return _DESEMPREGO[nome]["valor"]
+
+
+def test_desemprego_ias_2026_no_yaml():
+    assert _param_desemprego("ias") == IAS_2026
+
+
+def test_desemprego_valores_base_batem_com_o_artigo():
+    """Art. 28.º do DL 220/2006 — 65% RR, RR = R/360, base de 30 dias
+    por mês, mínimo 1×IAS, máximo 2,5×IAS — todos confirmados pela
+    mesma citação (quase-verbatim de fonte secundária de conteúdo
+    legal, triangulada 2×)."""
+    assert _param_desemprego("percentagem_rr") == 0.65
+    assert _param_desemprego("divisor_rr") == 360
+    assert _param_desemprego("dias_por_mes") == 30
+    assert _param_desemprego("minimo") == 537.13 == IAS_2026
+    assert _param_desemprego("maximo") == round(2.5 * IAS_2026, 2) == 1342.83
+
+    html = _ler("subsidio-desemprego.html")
+    for valor in ("65%", "537,13", "1.342,83"):
+        assert valor in html, f"{valor} em falta no artigo subsidio-desemprego.html"
+
+
+def test_desemprego_salario_minimo_dl_139_2025():
+    """Decreto-Lei n.º 139/2025, de 29 de dezembro — RMMG 2026, mesmo
+    diploma já usado em dados/parametros/subsidio-doenca.yaml."""
+    assert _param_desemprego("salario_minimo") == 920.00
+    assert "920" in _ler("subsidio-desemprego.html")
+
+
+def test_desemprego_majoracoes_minimo_maximo_batem_com_o_artigo():
+    """DL 220/2006, na redação do DL n.º 64/2012 — mecanismo/percentagem
+    confirmados, sem número de artigo confirmado com confiança nesta
+    sessão (ver comentário no YAML — nunca inventado)."""
+    assert _param_desemprego("minimo_majorado") == round(1.15 * IAS_2026, 2) == 617.70
+    assert _param_desemprego("maximo_majorado") == round(_param_desemprego("maximo") * 1.10, 2) == 1477.11
+
+    html = _ler("subsidio-desemprego.html")
+    for valor in ("617,70", "1.477,11"):
+        assert valor in html, f"{valor} em falta no artigo subsidio-desemprego.html"
+
+
+def test_desemprego_prazos_de_garantia_e_requerimento_batem_com_o_artigo():
+    """Prazo de garantia regime geral (art. 22.º, 360 dias) e prazo de
+    requerimento (90 dias, diploma confirmado via gov.pt, sem artigo
+    pinado). garantia_dias_ti_cessacao (720 dias) fica deliberadamente
+    SEM diploma atribuído — o valor está triangulado, o diploma não."""
+    assert _param_desemprego("garantia_dias_geral") == 360
+    assert _param_desemprego("garantia_dias_ti_cessacao") == 720
+    assert _param_desemprego("prazo_requerimento_dias") == 90
+
+    html = _ler("subsidio-desemprego.html")
+    for valor in ("360 dias", "720 dias", "90 dias"):
+        assert valor in html, f"'{valor}' em falta no artigo subsidio-desemprego.html"
+
+
+def test_desemprego_garantia_dias_ti_cessacao_nunca_com_diploma_inventado():
+    """Tranca a decisão desta sessão: a citação anterior (DL 220/2006)
+    revelou-se contradita pela pesquisa; o diploma correcto (candidato:
+    DL n.º 65/2012) não foi confirmado com confiança suficiente — nunca
+    escrever aqui um diploma como se estivesse confirmado."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    ref = todos["prestacoes"]["desemprego"]["garantia_dias_ti_cessacao"]["referencia_legal"]
+    assert "Decreto-Lei n.º 220/2006" not in ref
+    assert "Decreto-Lei n.º 65/2012" not in ref
+    assert "por confirmar" in ref.lower()
+
+
+def test_desemprego_acrescimos_por_carreira_longa_batem_com_o_artigo():
+    """Art. 37.º do DL 220/2006 — 30/45/60 dias por grupo de 5 anos de
+    carreira longa nos últimos 20 anos, conforme a idade."""
+    assert _param_desemprego("acrescimo_ate_40") == 30
+    assert _param_desemprego("acrescimo_40_a_49") == 45
+    assert _param_desemprego("acrescimo_50_mais") == 60
+    assert _param_desemprego("anos_por_grupo_acrescimo") == 5
+
+    html = _ler("subsidio-desemprego.html")
+    for valor in ("30 dias", "45 dias", "60 dias", "cada 5 anos"):
+        assert valor in html, f"'{valor}' em falta no artigo subsidio-desemprego.html"
+
+
+# Tabela de duração (12 células) — nome do parâmetro YAML → célula esperada
+# em subsidio-desemprego.html (texto "<N> dias", conforme publicado na
+# tabela "Quanto tempo dura"). Garantia: consistência interna (célula a
+# célula, zero divergências, confirmado nesta sessão), não leitura directa
+# do artigo completo — ver dados/parametros/desemprego.yaml.
+_CELULAS_DURACAO = {
+    "duracao_ate29anos_ate15meses_dias": 150,
+    "duracao_ate29anos_15a24meses_dias": 210,
+    "duracao_ate29anos_mais24meses_dias": 330,
+    "duracao_30a39anos_ate15meses_dias": 180,
+    "duracao_30a39anos_15a24meses_dias": 330,
+    "duracao_30a39anos_mais24meses_dias": 420,
+    "duracao_40a49anos_ate15meses_dias": 210,
+    "duracao_40a49anos_15a24meses_dias": 360,
+    "duracao_40a49anos_mais24meses_dias": 540,
+    "duracao_50maisanos_ate15meses_dias": 270,
+    "duracao_50maisanos_15a24meses_dias": 480,
+    "duracao_50maisanos_mais24meses_dias": 540,
+}
+
+
+def test_desemprego_tabela_duracao_12_celulas_batem_com_o_yaml():
+    for nome, esperado in _CELULAS_DURACAO.items():
+        assert _param_desemprego(nome) == esperado, f"{nome}: esperado {esperado}, YAML tem {_param_desemprego(nome)}"
+
+
+def test_desemprego_tabela_duracao_bate_celula_a_celula_com_o_artigo():
+    """Comparação célula a célula com a tabela publicada em
+    subsidio-desemprego.html ("Quanto tempo dura o subsídio de
+    desemprego") — confirmado nesta sessão sem nenhuma divergência.
+    Cada dia-valor da tabela tem de aparecer no corpo do artigo."""
+    html = _ler("subsidio-desemprego.html")
+    for dias in sorted(set(_CELULAS_DURACAO.values())):
+        assert f"{dias} dias" in html, f"'{dias} dias' (tabela de duração) em falta no artigo"
+
+
+def test_desemprego_exemplo_regressao_52_anos_780_dias():
+    """52 anos, >24 meses, 20 anos de registo → 540 + 4×60 = 780 dias —
+    exemplo já publicado no artigo, mesmo caso de regressão do golden
+    test do simulador."""
+    base = _param_desemprego("duracao_50maisanos_mais24meses_dias")
+    acrescimo = 4 * _param_desemprego("acrescimo_50_mais")
+    assert base == 540
+    assert acrescimo == 240
+    assert base + acrescimo == 780
+    assert "780 dias" in _ler("subsidio-desemprego.html")

@@ -1,0 +1,346 @@
+# Migração do simulador de subsídio de desemprego para o padrão
+# OpenFisca (2026-08-24) — último simulador por migrar sem bloqueio
+# externo (o ASE fica à espera do despacho da DGEstE, ver ROADMAP.md).
+#
+# PASSO 0 apresentado e aprovado antes desta migração: 16 valores
+# escalares (a Fase 0 tinha contado "17" por engano — corrigido em
+# LEVANTAMENTO-DADOS-ABERTOS.md) + 12 células da tabela de duração.
+# `WebFetch`/`curl` a diariodarepublica.pt/pgdlisboa.pt/app.parlamento.pt
+# continuam bloqueados nesta sessão (mesma limitação de sempre) — TODA
+# a verificação foi feita por triangulação `WebSearch`, nunca por
+# leitura directa do diploma. Nenhum valor caiu fora do formato já
+# publicado — migração só de formato, nunca de conteúdo (confirmado
+# célula a célula contra subsidio-desemprego.html, ver os comentários
+# da tabela de duração mais abaixo).
+#
+# Diploma-base: Decreto-Lei n.º 220/2006, de 3 de novembro (regime
+# jurídico de protecção social no desemprego), na redação actual.
+#
+# Confiança por grupo:
+# - art. 28.º (percentagemRR/divisorRR/diasPorMes/minimo/maximo):
+#   citação quase-verbatim de fonte secundária de conteúdo legal,
+#   triangulada 2×.
+# - art. 22.º (garantiaDiasGeral): citação quase-verbatim, triangulada.
+# - art. 37.º (acréscimos + tabela de duração): conceito e mecanismo
+#   confirmados por várias fontes independentes; a tabela completa não
+#   foi lida de um único texto primário — a garantia adicional é a
+#   consistência célula-a-célula com subsidio-desemprego.html
+#   (confirmada nesta sessão, zero divergências) e a triangulação já
+#   feita numa sessão anterior (13/07/2026).
+# - minimoMajorado/maximoMajorado/prazoRequerimentoDias: diploma
+#   confirmado (DL 220/2006, os dois primeiros na redação do DL n.º
+#   64/2012, de 15 de março), mecanismo/percentagem/prazo confirmados,
+#   mas SEM número de artigo específico fixado com confiança nesta
+#   sessão — nunca inventado.
+# - garantiaDiasTiCessacao: ver o comentário dedicado junto ao próprio
+#   parâmetro — é o único valor sem diploma atribuído.
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+ias:
+  descricao: "Indexante dos Apoios Sociais (IAS) 2026"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 537.13
+      referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-24"
+
+salario_minimo:
+  descricao: "Retribuição Mínima Mensal Garantida (RMMG/salário mínimo) 2026 — limiar para a majoração do mínimo/máximo"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 920.00
+      referencia_legal: "Decreto-Lei n.º 139/2025, de 29 de dezembro — fixa em 920€ a RMMG, com efeitos a 1 de janeiro de 2026"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/139-2025-992879809"
+      fonte_url_complementar: "https://www.dgert.gov.pt/retribuicao-minima-mensal-garantida-para-2026"
+      verificado_em: "2026-08-24"
+
+percentagem_rr:
+  descricao: "Percentagem da Remuneração de Referência (RR) que fixa o valor diário do subsídio"
+  unidade: "fracção (0-1)"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 0.65
+      referencia_legal: "Decreto-Lei n.º 220/2006, de 3 de novembro, artigo 28.º — \"o montante diário do subsídio de desemprego é igual a 65% da remuneração de referência\""
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+divisor_rr:
+  descricao: "Divisor da Remuneração de Referência (RR = R / divisor) — distinto do prazo de garantia de 360 dias (artigo 22.º), mesmo número, artigo diferente"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 360
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 28.º — \"a remuneração diária é igual a R/360\""
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+dias_por_mes:
+  descricao: "Base de conversão diário↔mensal do subsídio"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 30
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 28.º — \"calculado na base de 30 dias por mês\""
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+minimo:
+  descricao: "Valor mensal mínimo do subsídio (1× IAS)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 537.13
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 28.º — \"não pode ser... inferior ao valor desse indexante\" (1× IAS)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+maximo:
+  descricao: "Valor mensal máximo do subsídio (2,5× IAS)"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1342.83
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 28.º — \"não pode ser superior a duas vezes e meia o valor do IAS\""
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+minimo_majorado:
+  descricao: "Valor mensal mínimo majorado (1,15× IAS) quando a remuneração-base era ≥ salário mínimo nacional"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 617.70
+      referencia_legal: "Decreto-Lei n.º 220/2006, na redação do Decreto-Lei n.º 64/2012, de 15 de março — majoração a 1,15× IAS quando a remuneração-base ≥ RMMG; mecanismo e percentagem confirmados por 2 pesquisas independentes, sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-24"
+
+maximo_majorado:
+  descricao: "Valor mensal máximo majorado (máximo + 10%) quando ambos os cônjuges/unidos de facto estão desempregados com filhos a cargo"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1477.11
+      referencia_legal: "Decreto-Lei n.º 220/2006, na redação do Decreto-Lei n.º 64/2012, de 15 de março — majoração de 10% quando ambos os cônjuges/unidos de facto no mesmo agregado têm direito ao subsídio e têm filhos a cargo (depende de pedido e prova, não modelado pelo simulador); mecanismo confirmado, sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-24"
+
+garantia_dias_geral:
+  descricao: "Prazo de garantia (dias de registo de remunerações) — regime geral e trabalhador independente economicamente dependente"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 360
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 22.º — \"360 dias de trabalho por conta de outrem... num período de 24 meses imediatamente anterior à data do desemprego\""
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+garantia_dias_ti_cessacao:
+  descricao: "Prazo de garantia (dias) — trabalhador independente, modalidade de cessação de actividade (\"actividade empresarial encerrada\")"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 720
+      # DIPLOMA POR CONFIRMAR — nunca escrever aqui um diploma como se
+      # estivesse confirmado. A citação anterior no código
+      # (Decreto-Lei n.º 220/2006) é contradita pela pesquisa desta
+      # sessão: o regime de trabalhadores independentes com cessação
+      # de actividade parece reger-se por um diploma diferente
+      # (candidato: Decreto-Lei n.º 65/2012, de 15 de março), mas as
+      # fontes secundárias usam terminologia inconsistente ("Subsídio
+      # Parcial" vs. "Subsídio Integral" vs. modalidade "cessação de
+      # actividade") — não permitiu fixar isto com confiança
+      # suficiente para citar como referência autoritativa. O valor em
+      # si (720 dias / 48 meses) bate com o texto já publicado em
+      # subsidio-desemprego.html ("Actividade empresarial encerrada:
+      # prazo de garantia de 720 dias nos 48 meses anteriores, com
+      # contribuições à taxa de 25,2%"), distinto do prazo de 360 dias
+      # do trabalhador independente "economicamente dependente" (esse
+      # sim confirmado, ver garantia_dias_geral). Revisitar numa sessão
+      # dedicada, idealmente com acesso directo ao texto legal (dre.pt
+      # bloqueado nesta sessão).
+      referencia_legal: "Diploma exacto por confirmar — ver nota completa no comentário deste parâmetro em dados/parametros/desemprego.yaml. Valor (720 dias/48 meses) confirmado contra o texto já publicado em subsidio-desemprego.html, nunca contra leitura directa do diploma"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-24"
+
+prazo_requerimento_dias:
+  descricao: "Prazo (dias seguidos) para apresentar o requerimento a contar da data do desemprego — atrasos reduzem o período de concessão, nunca eliminam o direito"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 90
+      referencia_legal: "Decreto-Lei n.º 220/2006 (confirmado via gov.pt, serviço oficial de requerimento) — sem número de artigo confirmado com confiança nesta sessão"
+      fonte_url: "https://www.gov.pt/servicos/requerer-o-subsidio-de-desemprego"
+      verificado_em: "2026-08-24"
+
+acrescimo_ate_40:
+  descricao: "Acréscimo de dias (por cada grupo de anos de carreira longa) — beneficiário com menos de 40 anos"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 30
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — acréscimo por carreira contributiva longa, <40 anos"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+acrescimo_40_a_49:
+  descricao: "Acréscimo de dias (por cada grupo de anos de carreira longa) — beneficiário dos 40 aos 49 anos"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 45
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — acréscimo por carreira contributiva longa, 40–49 anos"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+acrescimo_50_mais:
+  descricao: "Acréscimo de dias (por cada grupo de anos de carreira longa) — beneficiário com 50 ou mais anos"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — acréscimo por carreira contributiva longa, ≥50 anos"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+anos_por_grupo_acrescimo:
+  descricao: "Cada quantos anos de carreira contributiva longa (últimos 20 anos) se conta um grupo de acréscimo"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 5
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — grupos de 5 anos com registo de remunerações nos últimos 20 anos"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+# ── Tabela de duração-base (12 células) — artigo 37.º ───────────────────────
+# Nomenclatura: duracao_<faixa etária>_<faixa de meses com registo>_dias.
+# Faixas de idade/meses (idadeMin/idadeMax/escalao) são estrutura, não
+# valor legal — ficam como constantes no próprio simulador; só os "dias"
+# de cada célula vêm daqui. GARANTIA: confirmado nesta sessão que as 12
+# células batem exactamente, sem nenhuma divergência, com a tabela já
+# publicada em subsidio-desemprego.html — essa é a garantia principal
+# (consistência interna), não uma nova leitura do artigo completo.
+
+duracao_ate29anos_ate15meses_dias:
+  descricao: "Duração-base (dias) — até 29 anos, até 15 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 150
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_ate29anos_15a24meses_dias:
+  descricao: "Duração-base (dias) — até 29 anos, mais de 15 até 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 210
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_ate29anos_mais24meses_dias:
+  descricao: "Duração-base (dias) — até 29 anos, mais de 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 330
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_30a39anos_ate15meses_dias:
+  descricao: "Duração-base (dias) — 30 a 39 anos, até 15 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 180
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_30a39anos_15a24meses_dias:
+  descricao: "Duração-base (dias) — 30 a 39 anos, mais de 15 até 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 330
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_30a39anos_mais24meses_dias:
+  descricao: "Duração-base (dias) — 30 a 39 anos, mais de 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 420
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_40a49anos_ate15meses_dias:
+  descricao: "Duração-base (dias) — 40 a 49 anos, até 15 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 210
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_40a49anos_15a24meses_dias:
+  descricao: "Duração-base (dias) — 40 a 49 anos, mais de 15 até 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 360
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_40a49anos_mais24meses_dias:
+  descricao: "Duração-base (dias) — 40 a 49 anos, mais de 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 540
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_50maisanos_ate15meses_dias:
+  descricao: "Duração-base (dias) — 50 ou mais anos, até 15 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 270
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_50maisanos_15a24meses_dias:
+  descricao: "Duração-base (dias) — 50 ou mais anos, mais de 15 até 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 480
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
+
+duracao_50maisanos_mais24meses_dias:
+  descricao: "Duração-base (dias) — 50 ou mais anos, mais de 24 meses com registo de remunerações"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 540
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 37.º — garantia de consistência interna com subsidio-desemprego.html, não leitura directa do artigo completo"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/220-2006-546202"
+      verificado_em: "2026-08-24"
