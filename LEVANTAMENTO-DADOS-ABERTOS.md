@@ -68,7 +68,7 @@ inline (`PARAMETROS_*`/`CONFIG`), cada valor já citando `fonte`/
 | Simulador | Parâmetros escalares no objecto JS | Extra | Estado |
 |---|---|---|---|
 | `simulador-rsi.html` | 12 (`PARAMETROS_RSI`) | — | Nenhum registo em `ROADMAP.md` a apontar para esta migração — nem sequer está na fila |
-| `simulador-subsidio-desemprego.html` | 17 (`PARAMETROS_SUBSIDIO_DESEMPREGO`) | + tabela `TABELA_DURACAO_BASE` (12 linhas × dias) | Idem — sem registo em `ROADMAP.md` |
+| `simulador-subsidio-desemprego.html` | 16 (`PARAMETROS_SUBSIDIO_DESEMPREGO` — contado mal como "17" na 1.ª versão deste levantamento, corrigido a 2026-08-24 no PASSO 0 da migração) | + tabela `TABELA_DURACAO_BASE` (12 linhas × dias) | Idem — sem registo em `ROADMAP.md` |
 | `simulador-ase.html` | 2 (`limiteEscalaoA`/`limiteEscalaoB`) + 4 valores monetários em `cobertura` (texto, sem `fonte`/`verificado_em` por campo) | — | **Bloqueado por desenho** — `ROADMAP.md` já regista a razão (despacho anual da DGEstE 2026/2027 ainda não fornecido) e a dependência desejada (`ase.yaml` deve referenciar os escalões do abono, nunca duplicar) |
 
 Ou seja: RSI e Subsídio de Desemprego não têm sequer o estatuto de "bloqueado,

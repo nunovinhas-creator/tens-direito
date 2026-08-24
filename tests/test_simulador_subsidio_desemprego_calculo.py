@@ -18,10 +18,21 @@ Os dois casos de regressão obrigatórios (Fase 3, aprovados): "1.200€/mês
 → 780€/mês" e "52 anos, >24 meses, 20 anos de registo → 780 dias" são
 os exemplos já publicados em subsidio-desemprego.html.
 
+Migração para o padrão OpenFisca (2026-08-24, ver
+dados/parametros/desemprego.yaml): PARAMETROS_SUBSIDIO_DESEMPREGO e
+TABELA_DURACAO_BASE deixaram de ser objectos JS inline — passam a ser
+carregados em runtime de /dados/parametros.json. Os golden tests da
+mecânica pura (`calcularSubsidioDesemprego`/`calcularDuracao`) constroem
+`params`/a tabela directamente a partir de dados/parametros.json (nunca
+de globais da página, que ficam vazios/null na página em branco usada
+pela fixture `pagina`) — mesmo padrão já aplicado a
+test_simulador_rsi_calculo.py/test_simulador_csi_calculo.py.
+
 Se o Chromium do Playwright não estiver disponível no ambiente onde os
 testes correm, o módulo inteiro é ignorado (skip) em vez de falhar.
 """
 import glob
+import json
 import os
 import re
 import socket
@@ -34,6 +45,7 @@ import pytest
 RAIZ = Path(__file__).parent.parent
 SIMULADOR_HTML = (RAIZ / "simulador-subsidio-desemprego.html").read_text(encoding="utf-8")
 ARTIGO_HTML = (RAIZ / "subsidio-desemprego.html").read_text(encoding="utf-8")
+PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
 
 
 def _extrair_script_inline(texto: str, marcador: str, nome_ficheiro: str) -> str:
@@ -121,6 +133,13 @@ def pagina_real(servidor):
         page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
         page.route("https://fonts.googleapis.com/**", lambda route: route.abort())
         page.goto(f"{servidor}/simulador-subsidio-desemprego.html", wait_until="domcontentloaded")
+        # Os parâmetros carregam de forma assíncrona (fetch de
+        # /dados/parametros.json) — esperar que o botão fique activo
+        # antes de qualquer interacção (mesmo padrão de
+        # test_simulador_rsi_calculo.py/test_simulador_csi_calculo.py).
+        page.wait_for_function(
+            "document.getElementById('btnCalcularDesemprego').disabled === false", timeout=5000
+        )
         yield page
         browser.close()
 
@@ -131,21 +150,82 @@ PARAMS_DEFAULT = {
 }
 
 
+def _parametros_desemprego_de_producao() -> dict:
+    """Lê dados/parametros.json (a "nova fonte") e monta o mesmo formato
+    que PARAMETROS_SUBSIDIO_DESEMPREGO tem em runtime (ver
+    carregarParametrosSubsidioDesemprego() em
+    simulador-subsidio-desemprego.html) — nunca valores hardcoded aqui."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    d = todos["prestacoes"]["desemprego"]
+    return {
+        "ias": d["ias"],
+        "salarioMinimo": d["salario_minimo"],
+        "percentagemRR": d["percentagem_rr"],
+        "divisorRR": d["divisor_rr"],
+        "diasPorMes": d["dias_por_mes"],
+        "minimo": d["minimo"],
+        "minimoMajorado": d["minimo_majorado"],
+        "maximo": d["maximo"],
+        "maximoMajorado": d["maximo_majorado"],
+        "garantiaDiasGeral": d["garantia_dias_geral"],
+        "garantiaDiasTiCessacao": d["garantia_dias_ti_cessacao"],
+        "prazoRequerimentoDias": d["prazo_requerimento_dias"],
+        "acrescimoAte40": d["acrescimo_ate_40"],
+        "acrescimo40a49": d["acrescimo_40_a_49"],
+        "acrescimo50Mais": d["acrescimo_50_mais"],
+        "anosPorGrupoAcrescimo": d["anos_por_grupo_acrescimo"],
+    }
+
+
+def _tabela_duracao_de_producao() -> list:
+    """Mesma reconstrução da tabela (idadeMin/idadeMax/escalao são
+    estrutura, não valor legal — só "dias" vem do JSON) feita por
+    carregarParametrosSubsidioDesemprego() em
+    simulador-subsidio-desemprego.html. Playwright serializa
+    float('inf') correctamente como Infinity em JS (confirmado nesta
+    sessão)."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    d = todos["prestacoes"]["desemprego"]
+    return [
+        {"idadeMin": 0, "idadeMax": 29, "escalao": "ate15", "dias": d["duracao_ate29anos_ate15meses_dias"]["valor"]},
+        {"idadeMin": 0, "idadeMax": 29, "escalao": "15a24", "dias": d["duracao_ate29anos_15a24meses_dias"]["valor"]},
+        {"idadeMin": 0, "idadeMax": 29, "escalao": "mais24", "dias": d["duracao_ate29anos_mais24meses_dias"]["valor"]},
+        {"idadeMin": 30, "idadeMax": 39, "escalao": "ate15", "dias": d["duracao_30a39anos_ate15meses_dias"]["valor"]},
+        {"idadeMin": 30, "idadeMax": 39, "escalao": "15a24", "dias": d["duracao_30a39anos_15a24meses_dias"]["valor"]},
+        {"idadeMin": 30, "idadeMax": 39, "escalao": "mais24", "dias": d["duracao_30a39anos_mais24meses_dias"]["valor"]},
+        {"idadeMin": 40, "idadeMax": 49, "escalao": "ate15", "dias": d["duracao_40a49anos_ate15meses_dias"]["valor"]},
+        {"idadeMin": 40, "idadeMax": 49, "escalao": "15a24", "dias": d["duracao_40a49anos_15a24meses_dias"]["valor"]},
+        {"idadeMin": 40, "idadeMax": 49, "escalao": "mais24", "dias": d["duracao_40a49anos_mais24meses_dias"]["valor"]},
+        {"idadeMin": 50, "idadeMax": float("inf"), "escalao": "ate15", "dias": d["duracao_50maisanos_ate15meses_dias"]["valor"]},
+        {"idadeMin": 50, "idadeMax": float("inf"), "escalao": "15a24", "dias": d["duracao_50maisanos_15a24meses_dias"]["valor"]},
+        {"idadeMin": 50, "idadeMax": float("inf"), "escalao": "mais24", "dias": d["duracao_50maisanos_mais24meses_dias"]["valor"]},
+    ]
+
+
+def _injectar_tabela_duracao(pagina):
+    """A fixture `pagina` (página em branco) nunca faz fetch, por isso
+    TABELA_DURACAO_BASE fica `[]` — injectar a versão de produção antes
+    de qualquer chamada a calcularDuracao()/calcularSubsidioDesemprego()."""
+    pagina.evaluate("(tabela) => { TABELA_DURACAO_BASE = tabela; }", _tabela_duracao_de_producao())
+
+
 def _calcular(pagina, entrada):
     entrada_completa = dict(PARAMS_DEFAULT)
     entrada_completa.update(entrada)
+    _injectar_tabela_duracao(pagina)
     return pagina.evaluate(
         "([params, entrada]) => calcularSubsidioDesemprego(params, entrada)",
-        [pagina.evaluate("PARAMETROS_SUBSIDIO_DESEMPREGO"), entrada_completa],
+        [_parametros_desemprego_de_producao(), entrada_completa],
     )
 
 
 def _duracao(pagina, entrada):
     entrada_completa = dict(PARAMS_DEFAULT)
     entrada_completa.update(entrada)
+    _injectar_tabela_duracao(pagina)
     return pagina.evaluate(
         "([params, entrada]) => calcularDuracao(params, entrada)",
-        [pagina.evaluate("PARAMETROS_SUBSIDIO_DESEMPREGO"), entrada_completa],
+        [_parametros_desemprego_de_producao(), entrada_completa],
     )
 
 
@@ -525,13 +605,58 @@ def test_ui_limpar_remove_resultado_e_erros(pagina_real):
     assert not pagina_real.is_visible("#erroMeses")
 
 
+# ── Runtime real: fetch de /dados/parametros.json (sucesso e falha) ────────
+# Migração 2026-08-24 — mesmo padrão de test_simulador_rsi_calculo.py.
+# `pagina_real` já espera o botão activar (ver a fixture acima).
+
+def test_runtime_fetch_com_sucesso_activa_o_botao_e_calcula(pagina_real):
+    assert pagina_real.evaluate("document.getElementById('avisoParametrosErro').style.display") != "block"
+    pagina_real.fill("#remuneracao", "1200")
+    pagina_real.fill("#dataNascimento", "1990-01-01")
+    pagina_real.fill("#meses", "30")
+    pagina_real.click("button[type=submit]")
+    pagina_real.wait_for_selector("#resultado.show", timeout=5000)
+    texto = pagina_real.inner_text("#resultado")
+    assert "780.00" in texto or "780,00" in texto  # mesmo exemplo do golden test
+
+
+def test_runtime_fetch_com_falha_bloqueia_o_botao_e_nunca_calcula(servidor):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=_CHROMIUM_PATH)
+        page = browser.new_page()
+        page.route("**/dados/parametros.json", lambda route: route.abort())
+        page.goto(f"{servidor}/simulador-subsidio-desemprego.html", wait_until="domcontentloaded")
+        page.wait_for_function(
+            "document.getElementById('avisoParametrosErro').style.display === 'block'", timeout=5000
+        )
+        assert page.evaluate("document.getElementById('btnCalcularDesemprego').disabled") is True
+        assert page.evaluate(
+            "window.PARAMETROS_SUBSIDIO_DESEMPREGO === null || typeof window.PARAMETROS_SUBSIDIO_DESEMPREGO === 'undefined'"
+        ) or page.evaluate("PARAMETROS_SUBSIDIO_DESEMPREGO") is None
+
+        # Mesmo contornando o `disabled` via JS, a guarda em
+        # calcularSubsidioDesempregoFormulario() nunca deixa o resultado
+        # aparecer sem parâmetros carregados.
+        page.evaluate("document.getElementById('btnCalcularDesemprego').removeAttribute('disabled')")
+        page.fill("#remuneracao", "1200")
+        page.fill("#dataNascimento", "1990-01-01")
+        page.fill("#meses", "30")
+        page.click("#btnCalcularDesemprego")
+        page.wait_for_timeout(300)
+        assert "show" not in (page.get_attribute("#resultado", "class") or "")
+        browser.close()
+
+
 # ── Coerência artigo ↔ simulador ─────────────────────────────────────────────
 
 def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     """Rede de segurança: se subsidio-desemprego.html for actualizado sem
-    o simulador (ou vice-versa), este teste falha antes de qualquer
-    divergência passar despercebida."""
-    params = pagina.evaluate("PARAMETROS_SUBSIDIO_DESEMPREGO")
+    dados/parametros/desemprego.yaml (ou vice-versa), este teste falha
+    antes de qualquer divergência passar despercebida. Lê a mesma fonte
+    que simulador-subsidio-desemprego.html consome em runtime
+    (dados/parametros.json), nunca um PARAMETROS_SUBSIDIO_DESEMPREGO
+    global — a página em branco da fixture `pagina` nunca faz fetch."""
+    params = _parametros_desemprego_de_producao()
 
     assert params["ias"]["valor"] == 537.13
     assert params["salarioMinimo"]["valor"] == 920.00
@@ -552,8 +677,9 @@ def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
         assert valor_esperado in ARTIGO_HTML, f"'{valor_esperado}' não encontrado em subsidio-desemprego.html"
 
     for chave in params:
-        assert params[chave]["verificado_em"] is not None, f"{chave} sem verificado_em"
-        assert params[chave]["fonte"], f"{chave} sem fonte"
+        assert params[chave]["verificado_em"], f"{chave} sem verificado_em"
+        assert params[chave]["referencia_legal"], f"{chave} sem referencia_legal"
+        assert params[chave]["fonte_url"], f"{chave} sem fonte_url"
 
 
 def test_nenhum_valor_legal_escrito_diretamente_na_logica_de_calculo():

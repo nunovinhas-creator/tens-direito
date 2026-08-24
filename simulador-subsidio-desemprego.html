@@ -124,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-13",
-    "dateModified": "2026-07-13"
+    "dateModified": "2026-08-24"
   }
   </script>
 
@@ -318,7 +318,11 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Valores 2026</strong> — 65% da Remuneração de Referência, entre 537,13€/617,70€ e 1.342,83€/1.477,11€, IAS 537,13€ · <strong>Verificado a 13/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/subsidio-desemprego.html">ver guia completo do subsídio de desemprego</a>
+      💡 <strong>Valores 2026</strong> — 65% da Remuneração de Referência, entre 537,13€/617,70€ e 1.342,83€/1.477,11€, IAS 537,13€ · <strong>Verificado a 24/08/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/subsidio-desemprego.html">ver guia completo do subsídio de desemprego</a>
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os parâmetros oficiais do subsídio de desemprego agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
     </div>
 
     <div class="calc-card">
@@ -375,7 +379,7 @@
         </div>
 
         <div class="btn-grupo">
-          <button type="submit" class="btn btn-primary">🧮 Calcular subsídio</button>
+          <button type="submit" class="btn btn-primary" id="btnCalcularDesemprego" disabled>🧮 Calcular subsídio</button>
           <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
         </div>
       </form>
@@ -479,17 +483,33 @@
     // SIMULADOR DO SUBSÍDIO DE DESEMPREGO — 1. CONSTANTES
     // ══════════════════════════════════════════════════════════════════════
     // PARAMETROS_SUBSIDIO_DESEMPREGO — fonte única de verdade da fórmula.
-    // Cada valor tem "fonte" e "verificado_em" próprios (mesmo padrão de
-    // PARAMETROS_RSI em simulador-rsi.html). Nenhum valor legal aparece
-    // solto no meio da lógica — toda a função calcularSubsidioDesemprego()
-    // e calcularDuracao() lêem exclusivamente deste objecto.
+    // Nenhum valor legal aparece solto no meio da lógica — toda a função
+    // calcularSubsidioDesemprego() e calcularDuracao() lêem exclusivamente
+    // deste objecto (e de TABELA_DURACAO_BASE, ver abaixo).
     //
-    // Valores confirmados por triangulação externa nesta sessão
-    // (13/07/2026): DECO PROteste, ABANCA, CGD, Montepio, Doutor Finanças,
-    // Fed Finance — sem divergências. Confirmado também que a redução de
-    // 10% aos 180 dias (medida histórica de 2012) foi REVOGADA em janeiro
-    // de 2018 — não é modelada, nem deve voltar a sê-lo sem um facto novo
-    // e confirmado (ver CLAUDE.md, auditoria da Fase 1 desta sessão).
+    // Valores confirmados por triangulação externa (13/07/2026): DECO
+    // PROteste, ABANCA, CGD, Montepio, Doutor Finanças, Fed Finance —
+    // sem divergências. Confirmado também que a redução de 10% aos 180
+    // dias (medida histórica de 2012) foi REVOGADA em janeiro de 2018 —
+    // não é modelada, nem deve voltar a sê-lo sem um facto novo e
+    // confirmado (ver CLAUDE.md, auditoria da Fase 1 dessa sessão).
+    //
+    // Migração para o padrão OpenFisca (2026-08-24, ver
+    // dados/parametros/desemprego.yaml): PARAMETROS_SUBSIDIO_DESEMPREGO e
+    // TABELA_DURACAO_BASE deixam de ser objectos JS inline — passam a
+    // carregar em runtime de /dados/parametros.json, mesmo padrão de
+    // PARAMETROS_RSI em simulador-rsi.html. PASSO 0 desta migração
+    // (WebSearch — WebFetch a diariodarepublica.pt/pgdlisboa.pt/
+    // app.parlamento.pt continua bloqueado nesta sessão) reconfirmou os
+    // 16 valores + as 12 células da tabela de duração sem nenhuma
+    // divergência face ao já publicado — migração só de formato, nunca
+    // de conteúdo. Um valor (garantiaDiasTiCessacao) fica deliberadamente
+    // SEM diploma atribuído — a citação anterior (DL 220/2006) revelou-se
+    // provavelmente errada e o diploma correcto não foi confirmado com
+    // confiança suficiente; ver a nota completa em
+    // dados/parametros/desemprego.yaml. Nunca calcula com valores em
+    // falta: se o fetch falhar, mostra um erro visível
+    // (#avisoParametrosErro) e mantém o botão de calcular desactivado.
     //
     // Decisões aprovadas (Fase 1/3) que limitam deliberadamente o âmbito:
     // NÃO modela o tecto de 75% da RR líquida nem a excepção do mínimo
@@ -498,44 +518,69 @@
     // calcula o valor do Subsídio Social de Desemprego, só sinaliza
     // elegibilidade. NÃO inclui o Subsídio de Desemprego Parcial (fora
     // de âmbito desta versão).
-    const PARAMETROS_SUBSIDIO_DESEMPREGO = {
-      ias: { valor: 537.13, fonte: 'Portaria n.º 480-A/2025/1, de 30 de dezembro — IAS 2026', verificado_em: '2026-07-13' },
-      salarioMinimo: { valor: 920.00, fonte: 'Salário mínimo nacional 2026', verificado_em: '2026-07-13' },
-      percentagemRR: { valor: 0.65, fonte: 'Decreto-Lei n.º 220/2006, de 3 de novembro — valor diário do subsídio', verificado_em: '2026-07-13' },
-      divisorRR: { valor: 360, fonte: 'DL 220/2006 — divisor da Remuneração de Referência', verificado_em: '2026-07-13' },
-      diasPorMes: { valor: 30, fonte: 'Conversão mensal↔diária usada em todo o regime (ex.: subsídio diário × 30 = valor mensal)', verificado_em: '2026-07-13' },
-      minimo: { valor: 537.13, fonte: 'DL 220/2006 — 100% do IAS 2026', verificado_em: '2026-07-13' },
-      minimoMajorado: { valor: 617.70, fonte: 'DL 220/2006 — 115% do IAS 2026, quando a remuneração-base era ≥ salário mínimo', verificado_em: '2026-07-13' },
-      maximo: { valor: 1342.83, fonte: 'DL 220/2006 — 2,5 × IAS 2026', verificado_em: '2026-07-13' },
-      maximoMajorado: { valor: 1477.11, fonte: 'DL 220/2006 — máximo + 10%, ambos os cônjuges desempregados com filhos a cargo', verificado_em: '2026-07-13' },
-      garantiaDiasGeral: { valor: 360, fonte: 'DL 220/2006 — prazo de garantia, regime geral e TI economicamente dependente', verificado_em: '2026-07-13' },
-      garantiaDiasTiCessacao: { valor: 720, fonte: 'DL 220/2006 — prazo de garantia, Subsídio por Cessação de Actividade', verificado_em: '2026-07-13' },
-      prazoRequerimentoDias: { valor: 90, fonte: 'DL 220/2006 — prazo para apresentar o requerimento', verificado_em: '2026-07-13' },
-      acrescimoAte40: { valor: 30, fonte: 'DL 220/2006, art.º 37.º — acréscimo por 5 anos de carreira longa, <40 anos', verificado_em: '2026-07-13' },
-      acrescimo40a49: { valor: 45, fonte: 'DL 220/2006, art.º 37.º — idem, 40–49 anos', verificado_em: '2026-07-13' },
-      acrescimo50Mais: { valor: 60, fonte: 'DL 220/2006, art.º 37.º — idem, ≥50 anos', verificado_em: '2026-07-13' },
-      anosPorGrupoAcrescimo: { valor: 5, fonte: 'DL 220/2006, art.º 37.º — cada grupo de anos de carreira longa que conta para o acréscimo', verificado_em: '2026-07-13' },
-    };
+    let PARAMETROS_SUBSIDIO_DESEMPREGO = null;
+    let TABELA_DURACAO_BASE = [];
 
-    // Tabela de duração-base (dias), por escalão etário × escalão de meses
-    // com registo de remunerações desde o último desemprego. Fonte: DL
-    // 220/2006, art.º 37.º — confirmada por triangulação externa
-    // (13/07/2026) e coerente com o exemplo já publicado no artigo
-    // (52 anos, >24 meses, 20 anos de registo → 540 + 240 = 780 dias).
-    const TABELA_DURACAO_BASE = [
-      { idadeMin: 0, idadeMax: 29, escalao: 'ate15', dias: 150 },
-      { idadeMin: 0, idadeMax: 29, escalao: '15a24', dias: 210 },
-      { idadeMin: 0, idadeMax: 29, escalao: 'mais24', dias: 330 },
-      { idadeMin: 30, idadeMax: 39, escalao: 'ate15', dias: 180 },
-      { idadeMin: 30, idadeMax: 39, escalao: '15a24', dias: 330 },
-      { idadeMin: 30, idadeMax: 39, escalao: 'mais24', dias: 420 },
-      { idadeMin: 40, idadeMax: 49, escalao: 'ate15', dias: 210 },
-      { idadeMin: 40, idadeMax: 49, escalao: '15a24', dias: 360 },
-      { idadeMin: 40, idadeMax: 49, escalao: 'mais24', dias: 540 },
-      { idadeMin: 50, idadeMax: Infinity, escalao: 'ate15', dias: 270 },
-      { idadeMin: 50, idadeMax: Infinity, escalao: '15a24', dias: 480 },
-      { idadeMin: 50, idadeMax: Infinity, escalao: 'mais24', dias: 540 },
-    ];
+    async function carregarParametrosSubsidioDesemprego() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const d = todos.prestacoes && todos.prestacoes.desemprego;
+        if (!d) throw new Error("prestações.desemprego em falta em dados/parametros.json");
+        PARAMETROS_SUBSIDIO_DESEMPREGO = {
+          ias: d.ias,
+          salarioMinimo: d.salario_minimo,
+          percentagemRR: d.percentagem_rr,
+          divisorRR: d.divisor_rr,
+          diasPorMes: d.dias_por_mes,
+          minimo: d.minimo,
+          minimoMajorado: d.minimo_majorado,
+          maximo: d.maximo,
+          maximoMajorado: d.maximo_majorado,
+          garantiaDiasGeral: d.garantia_dias_geral,
+          garantiaDiasTiCessacao: d.garantia_dias_ti_cessacao,
+          prazoRequerimentoDias: d.prazo_requerimento_dias,
+          acrescimoAte40: d.acrescimo_ate_40,
+          acrescimo40a49: d.acrescimo_40_a_49,
+          acrescimo50Mais: d.acrescimo_50_mais,
+          anosPorGrupoAcrescimo: d.anos_por_grupo_acrescimo,
+        };
+        // idadeMin/idadeMax/escalao são estrutura (faixas), não valor
+        // legal — só "dias" vem de dados/parametros.json. Ver o
+        // comentário dedicado em dados/parametros/desemprego.yaml.
+        TABELA_DURACAO_BASE = [
+          { idadeMin: 0, idadeMax: 29, escalao: 'ate15', dias: d.duracao_ate29anos_ate15meses_dias.valor },
+          { idadeMin: 0, idadeMax: 29, escalao: '15a24', dias: d.duracao_ate29anos_15a24meses_dias.valor },
+          { idadeMin: 0, idadeMax: 29, escalao: 'mais24', dias: d.duracao_ate29anos_mais24meses_dias.valor },
+          { idadeMin: 30, idadeMax: 39, escalao: 'ate15', dias: d.duracao_30a39anos_ate15meses_dias.valor },
+          { idadeMin: 30, idadeMax: 39, escalao: '15a24', dias: d.duracao_30a39anos_15a24meses_dias.valor },
+          { idadeMin: 30, idadeMax: 39, escalao: 'mais24', dias: d.duracao_30a39anos_mais24meses_dias.valor },
+          { idadeMin: 40, idadeMax: 49, escalao: 'ate15', dias: d.duracao_40a49anos_ate15meses_dias.valor },
+          { idadeMin: 40, idadeMax: 49, escalao: '15a24', dias: d.duracao_40a49anos_15a24meses_dias.valor },
+          { idadeMin: 40, idadeMax: 49, escalao: 'mais24', dias: d.duracao_40a49anos_mais24meses_dias.valor },
+          { idadeMin: 50, idadeMax: Infinity, escalao: 'ate15', dias: d.duracao_50maisanos_ate15meses_dias.valor },
+          { idadeMin: 50, idadeMax: Infinity, escalao: '15a24', dias: d.duracao_50maisanos_15a24meses_dias.valor },
+          { idadeMin: 50, idadeMax: Infinity, escalao: 'mais24', dias: d.duracao_50maisanos_mais24meses_dias.valor },
+        ];
+        const botao = document.getElementById('btnCalcularDesemprego');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosSubsidioDesemprego(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosSubsidioDesemprego(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularDesemprego');
+      if (botao) botao.disabled = true;
+      console.error('Simulador Subsídio de Desemprego: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosSubsidioDesemprego);
 
     // ══════════════════════════════════════════════════════════════════════
     // 2. MENSAGENS — centralizadas, nunca repetidas noutras funções
@@ -910,6 +955,12 @@
 
     function calcularSubsidioDesempregoFormulario(evento) {
       evento.preventDefault();
+
+      if (!PARAMETROS_SUBSIDIO_DESEMPREGO) {
+        mostrarErroParametrosSubsidioDesemprego(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
       limparErrosFormulario();
 
       var bruto = {
