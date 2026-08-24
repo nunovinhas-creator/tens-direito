@@ -1,179 +1,5 @@
 [
   {
-    "data": "2026-08-09",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 12,
-      "subsidio_desemprego": 13,
-      "rsi": 15,
-      "psu_pensoes": 11,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 14,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 13,
-      "csi_idosos": 13
-    },
-    "candidatos": [
-      {
-        "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-07",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-07"
-      },
-      {
-        "titulo": "Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-04",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-04"
-      },
-      {
-        "titulo": "Prestação Social Única terá referência de 268,6 euros - Doutor Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-03",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-03"
-      },
-      {
-        "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - Jornal Económico",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-04",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-04"
-      },
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de agosto - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-03",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-03"
-      },
-      {
-        "titulo": "Governo reconhece erro nos guias sobre subsídio de desemprego - SIC Notícias",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-04",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-04"
-      },
-      {
-        "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única - RTP",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-08",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "abono de família - CNN Portugal",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-06",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Reforma do abono de família. Se voltasse atrás, Corinne Cahen faria tudo outra vez - contacto.lu",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-06",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de Familia - CNN Portugal",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-02",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-07",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos passa a abranger mais 105 mil pessoas em pouco mais de dois anos - XXV Governo Constitucional",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-03",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Mais de 5 mil idosos com complemento solidário - dnoticias.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-04",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Salários mínimos para a época 2026/27 - Sindicato dos Jogadores",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-07",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única - RTP",
-        "feed_nome": "psu_pensoes",
-        "score": 2
-      },
-      {
-        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-08-10",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2816,6 +2642,111 @@
       {
         "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude - CNN Portugal",
         "feed_nome": "irs_fiscalidade",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-08-24",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 14,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-18",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-18"
+      },
+      {
+        "titulo": "Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência - recordeuropa.com",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-22",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-22"
+      },
+      {
+        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-19",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-19"
+      },
+      {
+        "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude - CNN Portugal",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-08-21",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-22"
+      },
+      {
+        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - diariOnline Região Sul",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-18",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Medicamentos gratuitos para idosos com complemento solidário limitados a genéricos ou preço de referência - SIC Notícias",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-18",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - diariOnline Região Sul",
+        "feed_nome": "calendario_pagamentos_seg_social",
         "score": 1
       }
     ]
