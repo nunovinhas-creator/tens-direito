@@ -829,6 +829,108 @@
         "verificado_em": "2026-08-13"
       }
     },
+    "rsi": {
+      "valor_titular_mensal": {
+        "descricao": "Valor de referência do RSI — adulto titular (100% da escala de equivalência)",
+        "unidade": "EUR/mês",
+        "valor": 247.56,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 71/2026/1, de 13 de fevereiro — valor de referência do RSI para 2026 (46,09% do IAS)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/71-2026-1049254415",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "valor_adulto_adicional_mensal": {
+        "descricao": "Valor de referência do RSI — cada adulto adicional do agregado (70% da escala de equivalência)",
+        "unidade": "EUR/mês",
+        "valor": 173.29,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — 70% do valor de referência do agregado, por cada adulto adicional; valor em euros aplicado sobre a Portaria n.º 71/2026/1",
+        "fonte_url": "https://files.diariodarepublica.pt/1s/2016/01/00300/0001600016.pdf",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856",
+        "verificado_em": "2026-08-24"
+      },
+      "valor_menor_mensal": {
+        "descricao": "Valor de referência do RSI — cada menor de 18 anos do agregado (50% da escala de equivalência)",
+        "unidade": "EUR/mês",
+        "valor": 123.78,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — 50% do valor de referência do agregado, por cada menor de 18 anos; valor em euros aplicado sobre a Portaria n.º 71/2026/1",
+        "fonte_url": "https://files.diariodarepublica.pt/1s/2016/01/00300/0001600016.pdf",
+        "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856",
+        "verificado_em": "2026-08-24"
+      },
+      "limite_patrimonio_multiplicador_ias": {
+        "descricao": "Limite de património mobiliário e de bens móveis sujeitos a registo, cada um, em múltiplo do IAS — nunca escrito à mão em euros, sempre derivado do IAS em runtime",
+        "unidade": "múltiplo do IAS",
+        "valor": 60,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, artigo 9.º, na redação atual — património mobiliário e bens móveis sujeitos a registo, cada um, não superiores a 60 × IAS",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "percentagem_rendimento_trabalho_dependente": {
+        "descricao": "Percentagem do rendimento de trabalho dependente considerada na condição de recursos",
+        "unidade": "fracção (0-1)",
+        "valor": 0.8,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos (trabalho dependente, já deduzidas as contribuições para a Segurança Social); sem número de artigo confirmado com confiança nesta sessão",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "percentagem_rendimento_trabalho_independente": {
+        "descricao": "Percentagem do rendimento de trabalho independente considerada na condição de recursos",
+        "unidade": "fracção (0-1)",
+        "valor": 1.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "percentagem_subsidio_desemprego": {
+        "descricao": "Percentagem do subsídio de desemprego considerada na condição de recursos",
+        "unidade": "fracção (0-1)",
+        "valor": 1.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "percentagem_outros_rendimentos": {
+        "descricao": "Percentagem de outros rendimentos regulares do agregado (pensões, apoios, etc.) considerada na condição de recursos",
+        "unidade": "fracção (0-1)",
+        "valor": 1.0,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, na redação atual — regras de determinação dos rendimentos considerados na condição de recursos; sem número de artigo confirmado com confiança nesta sessão",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "idade_minima_anos": {
+        "descricao": "Idade mínima geral de acesso ao RSI (há excepções legais para menores, não modeladas por este simulador)",
+        "unidade": "anos",
+        "valor": 18,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 13/2003, de 21 de maio — condições gerais de atribuição",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856",
+        "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
+        "verificado_em": "2026-08-24"
+      },
+      "ias_2026": {
+        "descricao": "Indexante dos Apoios Sociais (IAS) 2026 — usado para derivar o limite de património (60 × IAS)",
+        "unidade": "EUR/mês",
+        "valor": 537.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 480-A/2025/1, de 30 de dezembro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-24"
+      }
+    },
     "subsidio-doenca": {
       "taxa_escalao_ate_30_dias": {
         "descricao": "Percentagem da RR diária paga — baixa até 30 dias",
