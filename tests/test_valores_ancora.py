@@ -435,6 +435,64 @@ def test_assistencia_familia_percentagens_pos_loe2026():
     assert "30 dias" in desc and "2026" in desc and "subsídio" in desc
 
 
+# ── RSI — rsi.html + simulador-rsi.html (2026-08-24) ─────────────────────────
+# RSI ainda não tem dados/parametros/rsi.yaml (ver LEVANTAMENTO-DADOS-ABERTOS.md
+# — pendência registada, não um esquecimento silencioso). `simulador-rsi.html`
+# guarda os valores num objecto JS inline (`PARAMETROS_RSI`, com `fonte`/
+# `verificado_em` por campo) — este canário lê essa fonte com `_valor_js` e
+# confirma consistência com o artigo `rsi.html`, mesmo padrão de
+# `test_renovar_cc_*`/`test_assistencia_familia_*` acima para prestações sem
+# YAML próprio. Fonte: Portaria n.º 71/2026/1, de 13 de fevereiro (RSI base
+# 2026), confirmada em ambas as páginas a 2026-07-13.
+
+def test_rsi_ias_2026_no_simulador():
+    assert _valor_js(_ler("simulador-rsi.html"), "ias") == IAS_2026
+
+
+def test_rsi_valores_base_batem_entre_simulador_e_artigo():
+    js = _ler("simulador-rsi.html")
+    html = _ler("rsi.html")
+    titular = _valor_js(js, "valorTitular")
+    adulto = _valor_js(js, "valorAdultoAdicional")
+    menor = _valor_js(js, "valorMenor")
+    assert (titular, adulto, menor) == (247.56, 173.29, 123.78)
+    for valor in ("247,56 €", "173,29 €", "123,78 €"):
+        assert valor in html, f"{valor} (PARAMETROS_RSI) em falta no artigo rsi.html"
+    # Exemplo publicado no artigo (casal + 2 filhos): soma dos 4 componentes.
+    soma = round(titular + adulto + 2 * menor, 2)
+    assert soma == 668.41
+    assert "668,41 €" in html, "exemplo do casal com 2 filhos (668,41 €) em falta"
+
+
+def test_rsi_limite_patrimonio_60x_ias_bate_entre_simulador_e_artigo():
+    # Sem YAML próprio de RSI — recalculado aqui (60 × IAS) para falhar
+    # sozinho quando o IAS mudar, mesmo padrão de test_primeiro_direito_*
+    # e dos canários do cluster PSU/Habitação.
+    js = _ler("simulador-rsi.html")
+    html = _ler("rsi.html")
+    limite = _valor_js(js, "limitePatrimonio")
+    assert limite == round(60 * IAS_2026, 2) == 32227.80
+    assert "32.227,80 €" in html, "limite de património (60 × IAS) em falta no artigo"
+
+
+def test_rsi_percentagens_rendimentos_batem_entre_simulador_e_artigo():
+    js = _ler("simulador-rsi.html")
+    html = _ler("rsi.html")
+    assert _valor_js(js, "percentagemDependente") == 0.80
+    assert _valor_js(js, "percentagemIndependente") == 1.00
+    assert _valor_js(js, "percentagemSubsidioDesemprego") == 1.00
+    assert _valor_js(js, "percentagemOutros") == 1.00
+    assert "conta só 80%" in html or "conta 80%" in html, "80% do trabalho dependente em falta"
+    assert "contam 100%" in html, "100% dos restantes rendimentos em falta"
+
+
+def test_rsi_idade_minima_bate_entre_simulador_e_artigo():
+    js = _ler("simulador-rsi.html")
+    html = _ler("rsi.html")
+    assert _valor_js(js, "idadeMinima") == 18
+    assert "18 anos ou mais" in html, "idade mínima geral (18 anos) em falta no artigo"
+
+
 # ── Renovação do Cartão de Cidadão — preços administrativos (justica.gov.pt) ─
 # Valores fixos por Portaria/tabela de emolumentos do IRN, sem relação com
 # o IAS — canário de consistência entre title/meta description e o corpo
