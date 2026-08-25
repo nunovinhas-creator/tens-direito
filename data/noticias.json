@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-24",
+      "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto",
+      "fonte_nome": "O Mirante",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNNjQxUmROSVBqV3Z0SVcxa1dIaTZoWTdCRWFoZEhHY1NLdFhWQWp6bFMxS2VMbDFwRUNqdVNfelBzUFVSVVBaeWFvVnRsaHFVNDBLZTZDazk5Mm5XSzhXclJOeGU5SE9sVHg4WVZzM3VZRmVPS3NMNnZPdGxpNTdRV3JrUnhIZkFPdGpoMmdTMHlUNnp6YnJwNG90b2tjZDB1VnZNT3FzYkhGQktEQnlKeXZpVTFVaFNUWnY4Mk9vMk82eXphbko5ZHc4Wkg?oc=5",
+      "resumo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto O Mirante",
+      "categoria": "educacao",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-24",
+      "titulo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos",
+      "fonte_nome": "Barlavento",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE4zeERhSkVaWnZYZkxuLW83cElPaS1pZ0JFcnNCeWNEZTNneG8zZk9DanJIRElPV21GRVFXQVl0UWQtdktuaTRIeGpiWFBoVkVncUNkeFZ5SWdPODM5b3pwaVJsZVdKT0FpYlVWcW1uaTdnMHJqZ0NF?oc=5",
+      "resumo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos Barlavento",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
       "data_iso": "2026-08-22",
       "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude",
       "fonte_nome": "CNN Portugal",
