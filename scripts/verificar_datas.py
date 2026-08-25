@@ -105,6 +105,19 @@ MARCADORES_HISTORICOS = [
     # doutrina fiscal, nunca junto a um prazo corrente; confirmado por grep
     # sem colisão com nenhum outro match de data no site antes de aplicar.
     r"informa[çc][ãa]o\s+vinculativa",
+    # Regra antiga revogada numa data concreta - facto histórico permanente,
+    # mesma família de "exist(e|ia|iam) antes de" acima, formulação inversa
+    # (issue #126, simulador-subsidio-desemprego.html, 2026-08-25: "a redução
+    # de 10% aos 180 dias ... foi REVOGADA em janeiro de 2018"). O match nunca
+    # tinha disparado antes: o texto estava desde a criação da página, mas
+    # partido por uma quebra de linha de comentário JS ("janeiro\n    // de
+    # 2018") - o prefixo "// " da linha de continuação quebrava o \s+ da
+    # regex; a migração para YAML (2026-08-24) fez reflow do comentário para
+    # uma única linha e expôs o match, já sem marcador de supressão. Nunca
+    # apanha uma pergunta hipotética sobre revogação futura (ex.: "...quando
+    # for revogado?", sem "foi"); confirmado por grep sem colisão com nenhum
+    # outro match de data no site antes de aplicar.
+    r"\bfoi\s+revogad[ao]\s+em\b",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

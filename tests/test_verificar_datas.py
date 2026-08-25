@@ -220,6 +220,32 @@ def test_regra_revogada_existia_antes_de_nao_gera_alerta():
     assert detectar_alertas(html, "baixa-medica-subsidio-doenca.html", ANO, MES) is None
 
 
+def test_regra_revogada_foi_revogada_em_nao_gera_alerta():
+    # Regra antiga revogada numa data concreta, formulação inversa de
+    # "existia antes de" — mesma família, "foi REVOGADA em <data>" (issue
+    # #126, simulador-subsidio-desemprego.html): descreve permanentemente
+    # um estado passado, nunca "expira".
+    html = _html(
+        "A redução de 10% aos 180 dias foi revogada em janeiro de 2018 "
+        "e não é modelada."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "simulador-subsidio-desemprego.html", ANO, MES) is None
+
+
+def test_marcador_foi_revogada_em_nao_sobre_suprime():
+    # Guarda anti-sobre-supressão: uma data antiga genuína, sem "foi
+    # revogad[ao] em" por perto, continua a disparar normalmente — inclui
+    # o caso de uma pergunta hipotética sobre revogação futura ("quando
+    # for revogado?"), que nunca deve ser confundida com "foi revogado".
+    html = _html(
+        "O que acontece a quem já recebe o apoio quando for revogado? "
+        "O prazo de candidatura terminou em março de 2023."
+    )
+    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
+    assert detectar_alertas(html, "sintetica.html", ANO, MES) is not None
+
+
 def test_antes_de_generico_sem_exist_nao_e_mascarado_por_engano():
     # "antes de <data antiga>" sozinho, sem "existia/existe/existiam", não é
     # uma regra revogada — não pode ser mascarado por sobreposição de
@@ -483,6 +509,22 @@ def test_marcador_informacao_vinculativa_nao_suprime_data_sem_relacao():
     # de doutrina fiscal por perto continua a disparar normalmente.
     conteudo = "<p>O prazo de candidatura terminou em outubro de 2025.</p>"
     assert detectar_alertas(conteudo, "sintetica.html", 2026, 7) is not None
+
+
+# ── Marcador "foi revogad[ao] em" (issue #126, 2026-08-25) ──
+# simulador-subsidio-desemprego.html tem, desde a criação (13/07/2026), um
+# comentário JS a explicar que a redução de 10% aos 180 dias foi revogada em
+# janeiro de 2018. O texto nunca disparou porque estava partido por uma
+# quebra de linha de comentário ("janeiro\n    // de 2018" — o prefixo "// "
+# da continuação quebrava o \s+ da regex); a migração para YAML (2026-08-24)
+# fez reflow do comentário para uma única linha e expôs o match, sem
+# marcador de supressão.
+
+
+def test_simulador_subsidio_desemprego_real_nao_gera_alerta_foi_revogada_em():
+    html = _ler_pagina_real("simulador-subsidio-desemprego.html")
+    for mes in (1, 7, 8, 9):
+        assert detectar_alertas(html, "simulador-subsidio-desemprego.html", 2026, mes) is None
 
 
 def test_todas_as_paginas_de_p_e_documentos_reais_sem_alerta():
