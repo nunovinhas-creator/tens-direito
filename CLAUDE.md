@@ -2097,8 +2097,8 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | Página | Data a rever | Trigger |
 |---|---|---|
 | `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
-| `acao-social-escolar.html` | Setembro (prazo ASE) | Calendário anual |
-| `bolsa-de-merito.html` | Setembro (prazo bolsa) | Calendário anual |
+| `acao-social-escolar.html` | Setembro — prazo de candidatura ("até 30 de setembro"), **nunca** escalões (ver nota abaixo) | Redundante com `calendario-escolar-apoios.html`, mantida por cautela |
+| `bolsa-de-merito.html` | Setembro — valor do ano lectivo (2,5×IAS em vigor), **nunca** um despacho próprio (ver nota abaixo) | Calendário anual — texto da própria página desactualizado, ver nota |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
 | `complemento-solidario-idosos.html` | Janeiro (novo valor CSI) | Issue automática do scraper |
@@ -2159,6 +2159,54 @@ braille/digital, Despacho n.º 3026/2024) é o processo de **adopção de
 manuais pelas escolas**, distinto do processo de **emissão de vouchers
 aos encarregados de educação** que esta página documenta; scraper essa
 fonte não ajudaria a detectar o sinal que importa aqui.
+
+**`acao-social-escolar.html`/`bolsa-de-merito.html` — nota de manutenção
+sazonal, correcção de premissa (2026-08-25)**: sessão "Sentinela para o
+despacho da ASE" investigou onde é publicado o "despacho anual da
+DGEstE com os escalões ASE" que a migração do ASE para YAML dava como
+bloqueio (ver `ROADMAP.md` → "TRABALHO FUTURO REGISTADO") — **não
+existe nenhum acto desse tipo**. `WebFetch` continua bloqueado nesta
+sessão para qualquer domínio `.gov.pt`/`.mec.pt`/`diariodarepublica.pt`
+(confirmado de novo: `EGRESS_BLOCKED` mesmo para domínios fora do
+Estado, ex. `google.com` — mesma limitação documentada em várias
+sessões anteriores), por isso a investigação foi feita inteiramente por
+triangulação `WebSearch` (várias pesquisas independentes, nunca uma
+fonte só), sem acesso directo ao texto de nenhum diploma.
+
+O regime substantivo da ASE — escalões A/B como % do IAS, tectos de
+material escolar (16€/8€) e visitas de estudo (20€/10€) em euros,
+desconto nas refeições (gratuita no A, 50% no B) — está fixado desde
+2015 pelos Despachos n.º 8452-A/2015, 5296/2017 e 7255/2018, **sem
+nenhuma república anual**: os valores de 2025/2026 encontrados via
+`WebSearch` (16€/8€ material, 20€/10€ visitas) são idênticos aos já
+citados no site desde a publicação original — nenhuma fonte encontrada
+menciona um despacho novo a alterá-los. A única variável real é o
+IAS, publicado por Portaria própria (tipicamente dezembro/janeiro) —
+**já vigiado pelo sentinela `dre_ias`** (Issue automática de janeiro,
+ver "PÁGINAS COM DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de
+Mérito: o valor é sempre 2,5×IAS, calculado a partir do mesmo Despacho
+n.º 8452-A/2015 — **nunca** um despacho anual próprio. O texto de
+`bolsa-de-merito.html` ("o valor de 2026/2027 aguarda publicação do
+despacho anual") herda a mesma premissa errada — o valor 2026/2027
+(1.342,83 € = 2,5 × IAS 2026, já confirmado desde janeiro) é calculável
+hoje, sem esperar por nada; **página não corrigida nesta sessão**
+(fora do âmbito — só documentação), registado para uma sessão dedicada.
+
+O prazo de "30 de setembro" em `acao-social-escolar.html` é uma regra
+fixa do regime-base (não republicada ano a ano); a única coisa que o
+podia genuinamente deslocar é um despacho de calendário escolar/
+matrículas novo — já agregado por `calendario-escolar-apoios.html`
+(ver a entrada dessa página nesta tabela). A revisão de setembro deste
+artigo fica por isso redundante com essa página, mantida por cautela.
+
+Único acto do Ministério da Educação com cadência quase-anual
+encontrado nesta investigação e relacionado com a ASE — mas **não
+adoptado como sentinela**: o preço-tecto da refeição escolar (indexado
+ao IPC desde o ano lectivo 2024/2025, 1,46 € desde então, sem alteração
+confirmada para 2026/2027). Decisão consciente de não vigiar: o site
+expressa sempre o custo da refeição como desconto percentual (gratuita/
+50%), nunca o valor em euros, por isso este acto nunca afecta um valor
+publicado — ver `ROADMAP.md` → "À ESPERA DE UM SINAL" → "Manuais".
 
 **`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
 ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb
@@ -8776,3 +8824,61 @@ sem relação com scraper/Shadow Mode). Trabalho feito na branch
 `claude/audit-art17-housing-psu-cx9ce7` (designada pelo ambiente remoto
 desta sessão), 4 commits assinados, sem merge — PR aberto no fecho da
 sessão, ver mensagem final para o número exacto.
+
+---
+
+*Última revisão: 2026-08-25 — "Sentinela para o despacho da ASE": sessão
+de investigação e correcção de documentação, **nenhum sentinela novo
+construído, nenhum HTML tocado**. PASSO 0 investigou onde é publicado o
+"despacho anual da DGEstE com os escalões ASE" que bloqueava a migração
+do ASE para YAML (`ROADMAP.md` → "TRABALHO FUTURO REGISTADO") — via
+`WebSearch` só (`WebFetch` confirmado bloqueado nesta sessão para
+qualquer domínio `.gov.pt`/`.mec.pt`/`diariodarepublica.pt`, e até para
+domínios fora do Estado como `google.com` — `EGRESS_BLOCKED` no proxy de
+rede desta sessão, mesma limitação documentada em dezenas de sessões
+anteriores). Achado: **não existe** esse acto. O regime substantivo da
+ASE — escalões A/B como %IAS, tectos de material (16€/8€) e visitas
+(20€/10€) em euros, desconto de refeições (gratuita/50%) — está fixado
+desde 2015 pelos Despachos n.º 8452-A/2015, 5296/2017 e 7255/2018, sem
+nenhuma república anual (os valores de 2025/2026 encontrados via
+`WebSearch` são idênticos aos de 2015); a única variável real é o IAS,
+publicado por Portaria própria e já vigiado pelo sentinela `dre_ias`. O
+mesmo vale para a Bolsa de Mérito (valor = 2,5×IAS, mesmo Despacho
+n.º 8452-A/2015, nunca um despacho anual próprio) — achado lateral: o
+texto de `bolsa-de-merito.html` ("o valor de 2026/2027 aguarda
+publicação do despacho anual") herda a mesma premissa errada; o valor
+2026/2027 (1.342,83 €) já é calculável hoje com o IAS 2026 confirmado —
+**página não corrigida nesta sessão** (fora do âmbito, decisão
+explícita do Nuno de só tocar em documentação), registada para uma
+sessão dedicada.
+
+Único acto do Ministério da Educação com cadência quase-anual
+encontrado, ligado à ASE mas nunca citado no site (o custo da refeição
+é sempre expresso como desconto %, nunca em euros): o preço-tecto da
+refeição escolar (1,46 €, indexado ao IPC desde 2024/2025). Registado em
+`ROADMAP.md` → "À ESPERA DE UM SINAL" → "Manuais" como **decisão
+consciente de não vigiar**, com a razão — não como lacuna.
+
+Correcções aplicadas: `ROADMAP.md` → "TRABALHO FUTURO REGISTADO" (a
+entrada da migração do ASE passa de "⛔ bloqueado" a "✅ já não
+bloqueado", com a razão real e a mesma acção de sempre — migrar como
+qualquer outra prestação desta série, sem prazo, não feita nesta
+sessão); nova linha em "À ESPERA DE UM SINAL" → "Manuais" para o preço
+da refeição. `CLAUDE.md` → "PÁGINAS COM DATAS SAZONAIS": as duas linhas
+de `acao-social-escolar.html`/`bolsa-de-merito.html` corrigidas (deixam
+de dizer "Calendário anual" sem mais contexto, passam a apontar para a
+razão real — prazo de candidatura redundante com
+`calendario-escolar-apoios.html` num caso, texto desactualizado da
+própria página no outro) + nova nota de manutenção sazonal com o
+raciocínio completo desta investigação.
+
+`data/estado_fontes.json` confirmado nesta sessão antes de qualquer
+edição: `dge_ase` em `OK`, 0 dias consecutivos bloqueado — a única fonte
+que já toca em ASE é genérica (hash da homepage `dge.mec.pt`, nunca
+reconhecimento de acto), sem qualquer relação com este achado.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper novo). Suite completa
+(`pytest tests/ -q`) corrida sem alterações a nenhum `.py`/`.html` —
+confirma zero regressões de uma sessão puramente documental. Trabalho
+feito na branch `claude/sentinela-despacho-ase` (criada nesta sessão,
+`main` limpa antes de arrancar) — commit local, sem push.*
