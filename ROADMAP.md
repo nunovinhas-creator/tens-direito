@@ -103,6 +103,7 @@ fact-check feito ainda):
 | **Densidade da PSU na homepage** | "Quando o tema arrefecer" (sem data fixada) — julgamento do Nuno | Olhar à homepage / tráfego | Remover banner do topo + cartão de prazos (dos 6 pontos actuais que a PSU ocupa) — ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 1 |
 | **Nova tabela de rendas máximas de referência do Porta 65** | Publicação anual, tipicamente no fim do ano, de um novo PDF `RendasMaximas_AAAA.pdf` no Portal da Habitação — não é um decreto-lei, por isso fora do alcance da watchlist DRE (`dre_habitacao_paer`/`dre_habitacao_garantia`) | portaldahabitacao.pt (verificação manual — sem scraper dedicado) | Confirmar a tabela do ano novo e actualizar `porta-65.html` se algum valor citado no corpo mudar — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
 | **Novo sistema de ação social no ensino superior — publicação em DR ainda por confirmar** (`bolsa-de-estudo-ensino-superior.html`) | **Estado a 2026-07-14** (não fechado): o diploma foi promulgado pelo PR a 7/07/2026 (confirmado por 6+ fontes jornalísticas independentes) — mas esta sessão **não confirmou** a publicação em Diário da República nem a citação exacta (número/data) do decreto-lei; acesso directo a dre.pt bloqueado em 2 sessões seguidas. A página já reflecte os valores comunicados pelo Governo/DGES-IES (mínima ≈872€, média ≈2.660€, apoio residência 160€/mês, Bolsa de Incentivo 1.045€) com nota explícita dessa lacuna — **nunca afirmar que "já é lei" sem essa confirmação** | dre.pt (Code não tem scraper dedicado; tentar `WebSearch` por "Decreto-Lei n.º" + "ação social" + "ensino superior" + o ano, ou pedir ao Nuno para confirmar directamente) | 1) Confirmar a citação exacta do decreto-lei publicado; 2) verificar os valores já publicados na página contra o texto real do diploma (não assumir que o comunicado do Governo bate certo com o texto final); 3) citar o número do decreto-lei na página (`fonte-bloco` + JSON-LD se aplicável); 4) só depois disso — nunca antes — cobrir os valores (872€/2.660€/160€/1.045€) em `tests/test_valores_ancora.py`, como canário de consistência (não há fórmula IAS-derivada, mesma categoria do abono/PSI) |
+| **Preço-tecto da refeição escolar** — decisão consciente de **não vigiar**, não uma lacuna (investigação de 2026-08-25, "Sentinela para o despacho da ASE") | Único acto do Ministério da Educação com cadência quase-anual encontrado na investigação do despacho da ASE (indexado ao IPC desde o ano lectivo 2024/2025, 1,46€ desde então, sem alteração confirmada para 2026/2027) — mas o site nunca cita este valor: `acao-social-escolar.html`/`simulador-ase.html` expressam o custo da refeição só como desconto percentual (gratuita no A, 50% no B, fixo desde o Despacho n.º 8452-A/2015), nunca o preço em euros. Por isso este acto nunca afecta um valor publicado no site | dge.mec.pt/refeitorios-escolares (sem scraper dedicado; `WebFetch` bloqueado nesta sessão para qualquer domínio `.gov.pt`/`.mec.pt`/`diariodarepublica.pt`, confirmado de novo — mesma limitação de sempre) | Nada a fazer, salvo decisão editorial futura de passar a citar o preço da refeição em euros — nesse caso, construir um sentinela dedicado (pesquisa de frase exacta, mesmo padrão de `dre_ias`) antes de publicar o valor — ver CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** |
 
 ### Automáticos (o sistema já avisa via Issue)
 
@@ -139,19 +140,31 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   breadcrumb/relacionados também aos simuladores, sem forçar hero escuro —
   ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 2.
 - **Migração do ASE para parâmetros YAML (Commit 3 da sessão "Parâmetros
-  YAML + auditoria factual", 2026-07-19)** — ⛔ **bloqueado**: exige o
-  despacho anual da DGEstE (Ministério da Educação) com os escalões ASE
-  do ano lectivo 2026/2027, ainda não fornecido/verificado pelo Nuno.
-  Quando disponível: `dados/parametros/ase.yaml` deve **referenciar os
-  escalões do abono** (A↔1.º, B↔2.º) em vez de duplicar limiares —
-  dependência explícita para que uma actualização do abono nunca deixe o
-  ASE inconsistente — mais auditoria de `simulador-ase.html` e
-  `acao-social-escolar.html` contra o despacho. Commits 1 (subsídio de
-  doença) e 2 (abono de família) desta sessão concluídos — ver CLAUDE.md
-  **"DADOS ABERTOS"** e a entrada de revisão "Última revisão: 2026-07-19"
-  (sessão "Parâmetros YAML + auditoria factual") para o detalhe completo,
-  incluindo as 2 correcções factuais reais encontradas (piso do subsídio
-  de doença RMMG-não-IAS; limite da Garantia para a Infância IAS-2024).
+  YAML + auditoria factual", 2026-07-19)** — ✅ **já não bloqueado**.
+  Investigação de 2026-08-25 ("Sentinela para o despacho da ASE", ver
+  CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** → nota
+  `acao-social-escolar.html`/`bolsa-de-merito.html`) confirmou que a
+  razão do bloqueio anterior — "exige o despacho anual da DGEstE com os
+  escalões ASE do ano lectivo 2026/2027" — não corresponde a nenhum acto
+  real: o regime está fixado desde 2015 pelos Despachos n.º 8452-A/2015,
+  5296/2017 e 7255/2018 (escalões em %IAS, tectos de material/visitas em
+  euros, desconto de refeições), sem nenhuma república anual; a única
+  variável é o IAS, já publicado por Portaria própria e já vigiado pelo
+  `dre_ias`. Pronto para migrar como qualquer outra prestação:
+  `dados/parametros/ase.yaml` deve **referenciar os escalões do abono**
+  (A↔1.º, B↔2.º) em vez de duplicar limiares — dependência explícita
+  para que uma actualização do abono nunca deixe o ASE inconsistente —
+  mais auditoria de `simulador-ase.html` e `acao-social-escolar.html`
+  contra os 3 despachos-base (nunca assumir que os valores hoje no site
+  já batem certo, mesma disciplina dos outros commits desta série).
+  Commits 1 (subsídio de doença) e 2 (abono de família) desta sessão
+  concluídos — ver CLAUDE.md **"DADOS ABERTOS"** e a entrada de revisão
+  "Última revisão: 2026-07-19" (sessão "Parâmetros YAML + auditoria
+  factual") para o detalhe completo, incluindo as 2 correcções factuais
+  reais encontradas (piso do subsídio de doença RMMG-não-IAS; limite da
+  Garantia para a Infância IAS-2024). Sem prazo, não feito ainda —
+  fica como candidato ao próximo commit desta série, não como sessão de
+  documentação.
 - **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
   para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
   com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca
