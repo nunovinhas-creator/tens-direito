@@ -225,6 +225,49 @@ def test_acao_social_escolar_meta_description_ias_literal():
     assert _valores_eur(desc) == [IAS_2026], desc
 
 
+def test_bolsa_merito_meta_description_valor_2_5x_ias():
+    # bolsa-de-merito.html corrigida em 2026-08-25 (sessão "Sentinela
+    # para o despacho da ASE" tinha sinalizado esta página como
+    # pendente): dizia "o valor de 2026/2027 aguarda publicação do
+    # despacho anual" — não existe despacho próprio, o multiplicador
+    # 2,5×IAS é fixo desde o Despacho n.º 8452-A/2015 (2015), mesmo
+    # diploma-base da ASE. O valor sobe sozinho com a Portaria anual do
+    # IAS — se este teste falhar em janeiro, é a Portaria nova a forçar
+    # a revisão consciente da página, exactamente como desenhado.
+    desc = _meta_description("bolsa-de-merito.html")
+    assert _valores_eur(desc) == [round(2.5 * IAS_2026, 2)], desc
+
+
+def test_bolsa_merito_og_tags_espelham_title_e_description():
+    assert _meta_og("bolsa-de-merito.html", "og:title") == _title("bolsa-de-merito.html")
+    assert _meta_og("bolsa-de-merito.html", "og:description") == _meta_description("bolsa-de-merito.html")
+
+
+def test_bolsa_merito_valor_e_prestacoes_2026_2027_batem_com_o_corpo():
+    html = _ler("bolsa-de-merito.html")
+    valor = round(2.5 * IAS_2026, 2)
+    p1 = round(valor * 0.40, 2)
+    p2 = round(valor * 0.30, 2)
+    assert abs(p1 + 2 * p2 - valor) < 1e-9
+
+    def _fmt(v: float) -> str:
+        return f"{v:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
+
+    assert f'<div class="valor-num">{_fmt(valor)}</div>' in html
+    assert f"<strong>{_fmt(p1)}</strong>" in html
+    assert f"<strong>{_fmt(p2)}</strong>" in html
+
+
+def test_bolsa_merito_nunca_afirma_despacho_proprio_pendente():
+    # Tranca a correcção de 2026-08-25 — nunca deve reaparecer a
+    # premissa de que o valor "aguarda" um despacho anual próprio da
+    # bolsa (não existe; ver CLAUDE.md secção "PÁGINAS COM DATAS
+    # SAZONAIS", nota de 2026-08-25).
+    html = _ler("bolsa-de-merito.html")
+    for trecho in ("aguarda publicação do despacho", "será atualizado após publicação do despacho"):
+        assert trecho not in html, f"bolsa-de-merito.html: {trecho!r} reapareceu — questão fechada em 2026-08-25"
+
+
 def test_baixa_medica_meta_description_percentagens_batem_com_simulador():
     # As percentagens da description não estão ligadas ao IAS, mas às
     # mesmas taxaEscalao1/taxaEscalao4 já ancoradas acima — sem este
