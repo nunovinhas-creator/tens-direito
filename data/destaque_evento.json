@@ -1,11 +1,11 @@
 {
-  "_nota": "Para activar/desactivar um evento: mudar 'ativo' para true/false. data_inicio e data_fim são OPCIONAIS — só usar quando o fim é realmente conhecido (ex. prazo fixo a 30/09). Quando a PSU sair em DR: actualizar 'titulo' e 'texto' para reflectir 'em vigor'. Quando deixar de ser novidade: pôr ativo:false.",
+  "_nota": "Para activar/desactivar um evento: mudar 'ativo' para true/false. data_inicio e data_fim são OPCIONAIS — só usar quando o fim é realmente conhecido (ex. prazo fixo a 30/09). Actualizado a 2026-08-26: DL n.º 166/2026 já publicado (13/08/2026) e em vigor (desde 14/08/2026) — 'titulo'/'texto' já reflectem isso. Quando deixar de ser novidade: pôr ativo:false (ver CLAUDE.md → 'IMPACTO DA PSU', plano de acção, ponto 7 — decisão do Nuno, sem prazo).",
   "evento": {
     "id": "psu-2026",
     "ativo": true,
     "data_inicio": "2026-06-25",
-    "titulo": "Nova Prestação Social Única aprovada",
-    "texto": "13 apoios num só. Aprovada no Parlamento a 25/06/2026. Aguarda decreto-lei com valores.",
+    "titulo": "Nova Prestação Social Única em vigor",
+    "texto": "13 apoios num só. Decreto-Lei n.º 166/2026 em vigor desde 14/08/2026 — pagamento a partir de 31/12/2026.",
     "cta_texto": "Ver o que muda →",
     "cta_url": "/prestacao-social-unica.html",
     "icone": "🔔"
