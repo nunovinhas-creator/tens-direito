@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-25",
+      "titulo": "Prestação Social Única (PSU) deixa desempregados mais desprotegidos",
+      "fonte_nome": "recordeuropa.com",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOVEFHUFZZWGJUaWNPVUtRcjR2c1N2SzMwM0wwUkVJUWtZNDFlWXUybHk3TGpMOVlKM012UkhQRFllSU92TlRyZDNUV1IwZ0lDV3hqWWJNdGtEU0t2VVNrVDF1OVhWZ1AzY0tIRnZ0RzBHaHRoZzI3dFd2YWxjR2p5V2cxV3hQbzZvZ1pUZEROX1pWUGZnMmJiZHY0NDMtZ01VdlRNeDZXeEF2eENnSmpraklRSlk3Y01ZSS1TNHhCbUEwNUZl?oc=5",
+      "resumo": "Prestação Social Única (PSU) deixa desempregados mais desprotegidos recordeuropa.com",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-08-25",
+      "titulo": "Datas de Pagamento das Prestações Social de Setembro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPTm1XV0dUVWx3cVZoaGZyZkJvNlBuNnAzSFVTSWQxS3ZtNElKMm1IQWZKS0dBa1hEbXp4NlJSYjR4eWlDVTN6Y3dZYlIzZXRhZ1VJVzU1TnYyNXd4TDNSLVVNRWdtQXkydHVlRjctZ0tNWWlxZ3JfemJyMG9fMVNPekpQZUNLTXlHVmNjemp2MV90dGVoLVpGVEhjRQ?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Social de Setembro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-08-24",
       "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto",
       "fonte_nome": "O Mirante",
