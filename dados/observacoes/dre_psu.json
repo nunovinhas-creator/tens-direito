@@ -1,13 +1,15 @@
 {
   "fonte": "dre_psu",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-08-14T07:51:09.072049+00:00",
-  "sha256_conteudo": "9df03d96b5830eaafafcb0a85fa80b6335adadf6fd7615722f8f02879d2cbdd0",
+  "data_extracao": "2026-08-27T17:36:49.013460+00:00",
+  "sha256_conteudo": "678a9afc75de5b98f0cc80d26f8551f074f8bcdb09e038a8d97a3ea68eea5b42",
   "estado": "OK",
   "valores_extraidos": {
     "titulo": "Resultados de Pesquisa: \"prestação social única\"",
     "paragrafos": [
       "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Trabalho, Solidariedade e Segurança Social",
       "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
       "Trabalho, Solidariedade e Segurança Social",
       "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
@@ -20,6 +22,8 @@
     ],
     "itens_lista": [
       "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Decreto-Lei n.º 166/2026",
       "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
       "Lei n.º 36/2026",
       "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
