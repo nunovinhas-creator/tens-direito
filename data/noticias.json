@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-27",
+      "titulo": "Subsídio de desemprego: esta novidade pode dar-te mais 10% extra",
+      "fonte_nome": "4gnews",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNQjFpcEhwbG9wOXhJc2N2WGViRW55SFlBZnFqcEpzdjZPVHZySkR4SnprTGRlM1J0a1J5dnJHOGxJcFloaEg4My1raS1RSnFFeU82ejVDRXNkRUs1aG83T3g0NWJmSmlKS3d3YkQ0MnFzWWlQUzl5RTNfZUoySExTZlNIdVh3a3lP?oc=5",
+      "resumo": "Subsídio de desemprego: esta novidade pode dar-te mais 10% extra 4gnews",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-25",
       "titulo": "Prestação Social Única (PSU) deixa desempregados mais desprotegidos",
       "fonte_nome": "recordeuropa.com",
@@ -16,6 +25,15 @@
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPTm1XV0dUVWx3cVZoaGZyZkJvNlBuNnAzSFVTSWQxS3ZtNElKMm1IQWZKS0dBa1hEbXp4NlJSYjR4eWlDVTN6Y3dZYlIzZXRhZ1VJVzU1TnYyNXd4TDNSLVVNRWdtQXkydHVlRjctZ0tNWWlxZ3JfemJyMG9fMVNPekpQZUNLTXlHVmNjemp2MV90dGVoLVpGVEhjRQ?oc=5",
       "resumo": "Datas de Pagamento das Prestações Social de Setembro de 2026 Economia e Finanças",
       "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-24",
+      "titulo": "Recebe apoios da Segurança Social? Já são conhecidas as datas de pagamento de Setembro",
+      "fonte_nome": "Human Resources Portugal",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOeDd1My1CV1UzUmltX0oyWjFfcmxzckhHMXpjOUd3eWw5djV2Yk5BcUtvRG4zSkx0U2RhMU9mNHdvMG9lY2tlN1NFTzRLS1hVTXhiamNKOEhvUG5NeVUwT1B5YTlxMml0T3RFS21EdHczR0dyNU9tWFY0QjhhTzBiTmJMT3dKbWFQNHhkQ1MxMmI4TVB5QjE1LWxQZUVhWFcwZHR5OFhzYkpmX25qcGN6SkY4MA?oc=5",
+      "resumo": "Recebe apoios da Segurança Social? Já são conhecidas as datas de pagamento de Setembro Human Resources Portugal",
+      "categoria": "apoios",
       "cluster_id": null
     },
     {

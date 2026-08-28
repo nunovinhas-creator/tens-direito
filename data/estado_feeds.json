@@ -1,67 +1,67 @@
 {
   "abono_familia": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "acao_social_escolar": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "calendario_pagamentos_seg_social": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "csi_idosos": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "cuidador_informal": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "habitacao_arrendamento": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "ias_valor_referencia": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "irs_fiscalidade": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "porta65_arrendamento": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "psu_pensoes": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "rsi": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "salario_minimo": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   },
   "subsidio_desemprego": {
-    "dias_consecutivos_morto": 1,
-    "estado": "MORTO",
-    "ultima_ok": "2026-08-26"
+    "dias_consecutivos_morto": 0,
+    "estado": "OK",
+    "ultima_ok": "2026-08-28"
   }
 }
