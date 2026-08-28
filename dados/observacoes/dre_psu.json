@@ -1,11 +1,11 @@
 {
   "fonte": "dre_psu",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-08-27T17:36:49.013460+00:00",
-  "sha256_conteudo": "678a9afc75de5b98f0cc80d26f8551f074f8bcdb09e038a8d97a3ea68eea5b42",
+  "data_extracao": "2026-08-28T18:21:21.402833+00:00",
+  "sha256_conteudo": "1504e005fa173c41438709e9a76d64468464ae137952665f5244c76f0ae13cd1",
   "estado": "OK",
   "valores_extraidos": {
-    "titulo": "Resultados de Pesquisa: \"prestação social única\"",
+    "titulo": "Resultados de pesquisa: \"prestação social única\"",
     "paragrafos": [
       "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
       "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
