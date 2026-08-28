@@ -1,11 +1,11 @@
 {
   "fonte": "dre_ias",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-07-28T08:53:43.950254+00:00",
-  "sha256_conteudo": "a6fa817546ee558016e0ffb741016a96cd75f6fc1334d3ebf803b0d9b059cf47",
+  "data_extracao": "2026-08-28T18:21:46.646737+00:00",
+  "sha256_conteudo": "6166ea9ed95672ee6f8f3c0ee3b3557ce25e0de0beebdc53ed035b740e8303e9",
   "estado": "OK",
   "valores_extraidos": {
-    "titulo": "Resultados de Pesquisa: \"indexante dos apoios sociais\"",
+    "titulo": "Resultados de pesquisa: \"indexante dos apoios sociais\"",
     "paragrafos": [
       "Portaria n.º 27/2020 - Diário da República n.º 22/2020, Série I de 2020-01-31",
       "Finanças e Trabalho, Solidariedade e Segurança Social",
