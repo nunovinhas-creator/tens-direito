@@ -1,211 +1,5 @@
 [
   {
-    "data": "2026-08-14",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 11,
-      "rsi": 14,
-      "psu_pensoes": 8,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 14,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 11,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - campeaoprovincias.pt",
-        "feed_nome": "rsi",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "vencedor",
-        "motivo": "score=4, categoria=apoios"
-      },
-      {
-        "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - campeaoprovincias.pt",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Prestação Social Única junta RSI e várias pensões a partir do final do ano - O Vilaverdense",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-07",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada - SÁBADO",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-13",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=emprego"
-      },
-      {
-        "titulo": "Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300 - ECO",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-11",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Subsídio de desemprego cortado a mais de seis mil pessoas em 2024 - Rádio Comercial",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-10",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Presidente da República promulga decreto-lei que cria a Prestação Social Única - RTP",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-11",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma - ECO",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-07",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Atribuição do abono de família pré-natal passa a poder ser feita de forma automática - ECO",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-10",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "O desemprego aumentou em quase 58,000 pessoas em setembro. - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-10",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-10"
-      },
-      {
-        "titulo": "Salário mínimo em Portugal aumentou menos que na maioria da UE - Idealista",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-11",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Enquanto o salário mínimo no Brasil é de R$ 1.621, em Portugal o valor é extremamente maior - diariodocomercio.com.br",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-13",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-07",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Operações de entidades públicas com financiamento do PRR cessado integradas no Portugal 2030 - Correio da Manhã",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Presidente da República promulga decreto que regula Estatuto do Cuidador Informal - ODigital.pt",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-08-12",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Salários mínimos para a época 2026/27 - Sindicato dos Jogadores",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-07",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - campeaoprovincias.pt",
-        "feed_nome": "rsi",
-        "score": 4
-      },
-      {
-        "titulo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada - SÁBADO",
-        "feed_nome": "subsidio_desemprego",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-08-15",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2495,6 +2289,159 @@
         "titulo": "Subsídio de desemprego: esta novidade pode dar-te mais 10% extra - 4gnews",
         "feed_nome": "subsidio_desemprego",
         "score": 2
+      }
+    ]
+  },
+  {
+    "data": "2026-08-29",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 12,
+      "rsi": 15,
+      "psu_pensoes": 12,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 14,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 12,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026 - SAPO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-28",
+        "score": 4,
+        "decisao": "vencedor",
+        "motivo": "score=4, categoria=apoios"
+      },
+      {
+        "titulo": "Majoração de 10% no subsídio de desemprego: Segurança Social passa a avisar automaticamente - Ekonomista",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-25",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Prestação Social Única (PSU) deixa desempregados mais desprotegidos - recordeuropa.com",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-25",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Recebe apoios da Segurança Social? Já são conhecidas as datas de pagamento de Setembro - Human Resources Portugal",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-24",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego: esta novidade pode dar-te mais 10% extra - 4gnews",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-27",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-27"
+      },
+      {
+        "titulo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos - Barlavento",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-24",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Prestação Social Única: estas são as novas regras para beneficiários e famílias - CNN Portugal",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-27",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Social de Setembro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-08-25",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-25"
+      },
+      {
+        "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto - O Mirante",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-08-24",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-24"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Social de Setembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-25",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-25"
+      },
+      {
+        "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude - CNN Portugal",
+        "feed_nome": "irs_fiscalidade",
+        "data_iso": "2026-08-22",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-22"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos: quem tem direito em 2026 - SAPO",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-08-24",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026 - SAPO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 4
       }
     ]
   }
