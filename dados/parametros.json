@@ -1109,6 +1109,126 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-08-13"
+      },
+      "senha_participacao_multiplicador_ias": {
+        "descricao": "PSU — senha de participação nas atividades de solidariedade social do artigo 21.º/1/c do decreto-lei (ver psu-trabalho-social.html): valor de CADA senha, por cada 20 horas semanais de participação efectivamente realizadas — nunca um valor mensal fixo (a portaria não esclarece o que acontece a quem participa menos de 20h numa semana). NUNCA conta como rendimento — nem para a condição de recursos (artigo 8.º do decreto-lei) nem para o montante global da própria PSU (artigo 25.º) — distinção deliberada face à CIT (cit_limiar_multiplicador_ias/cit_taxa_acima_limiar acima), que sim desconta rendimentos de trabalho normal. Pagamento mensal, com base no que a entidade promotora comunica sobre as horas realizadas — corrigido nesta sessão: a afirmação anterior de que o pagamento seria feito pela instituição gestora, nunca pela Segurança Social directamente, não estava confirmada pelo articulado e foi removida.",
+        "unidade": "× IAS por 20h semanais efectivamente realizadas",
+        "valor": 0.025,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto (Diário da República n.º 166/2026, Série I) — normas de execução do Decreto-Lei n.º 166/2026, ao abrigo do artigo 59.º —, artigo 22.º: senha de participação de 2,5% do IAS por cada 20 horas semanais de atividades de solidariedade social efectivamente realizadas; não conta como rendimento para a condição de recursos nem para o cálculo da PSU; pagamento mensal, com base no que a entidade promotora comunica sobre as horas realizadas.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano0": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 0 anos (ano de aquisição), usado na fórmula valor de mercado = valor de aquisição − (valor de aquisição × coeficiente). Ver o comentário acima para o âmbito completo (só PSU, artigo 4.º/7 — nunca assumido para RSI/CSI).",
+        "unidade": "ratio (0-1)",
+        "valor": 0,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo no ano zero: 0.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano1": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 1 ano, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.2,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 1 ano: 0,20.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano2": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 2 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.35,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 2 anos: 0,35.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano3": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 3 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.45,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 3 anos: 0,45.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano4": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 4 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.55,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 4 anos: 0,55.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano5": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 5 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.65,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 5 anos: 0,65.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano6": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 6 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.7,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 6 anos: 0,70.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano7": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 7 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.75,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 7 anos: 0,75.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano8": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 8 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.8,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 8 anos: 0,80.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano9": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 9 anos, mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.85,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 9 anos: 0,85.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
+      },
+      "veiculo_coeficiente_ano10mais": {
+        "descricao": "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 10 ou mais anos (tecto máximo do coeficiente), mesma fórmula de veiculo_coeficiente_ano0.",
+        "unidade": "ratio (0-1)",
+        "valor": 0.9,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 10 anos ou mais: 0,90 (valor máximo do coeficiente).",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
       }
     },
     "rsi": {

@@ -1016,6 +1016,250 @@ def test_art17_habitacao_constantes_fixas_na_lei():
     assert _param_psu("art17_divisor_renda_referencia") == 3
 
 
+# ── Portaria n.º 394/2026/1, de 27 de agosto — normas de execução da PSU
+# (artigo 59.º do Decreto-Lei n.º 166/2026), sessão de 2026-08-30. Primeira
+# fonte deste ficheiro que não é o próprio decreto-lei. Trabalho de
+# conteúdo por ordem, um artigo da portaria de cada vez — só o artigo 22.º
+# (senha de participação) foi implementado nesta sessão; os restantes
+# (meios de prova, renovação oficiosa, Anexo I) ficam para os passos
+# seguintes do mesmo plano de trabalho.
+
+def test_psu_senha_participacao_2_5_por_cento_ias():
+    """Art. 22.º da Portaria n.º 394/2026/1 — senha de participação de 2,5%
+    do IAS por cada 20 horas semanais de trabalho social (art. 21.º/1/c do
+    decreto-lei) efectivamente realizadas. Recalcula multiplicador ×
+    IAS_2026 (nunca hardcoda "13,43") e confirma que o valor está publicado
+    tanto no corpo como na FAQ de psu-trabalho-social.html."""
+    multiplicador = _param_psu("senha_participacao_multiplicador_ias")
+    assert multiplicador == 0.025, "o valor confirmado pela Portaria n.º 394/2026/1 é 2,5% do IAS — mudou sem rever a fonte legal?"
+    valor = round(multiplicador * IAS_2026, 2)
+    assert valor == 13.43, f"2,5% × IAS_2026 deveria dar 13,43 €, deu {valor} €"
+
+    html = _ler("psu-trabalho-social.html")
+    valor_fmt = f"{valor:.2f}".replace(".", ",")
+    assert html.count(valor_fmt) >= 2, (
+        f"{valor_fmt} € tem de aparecer no corpo E na FAQ de psu-trabalho-social.html — só apareceu "
+        f"{html.count(valor_fmt)}×"
+    )
+
+
+def test_psu_senha_participacao_nunca_conta_como_rendimento():
+    """Distinção central do art. 22.º: a senha de participação nunca entra
+    na condição de recursos nem no cálculo da PSU — ao contrário da CIT,
+    que desconta parte dos rendimentos de trabalho normal. A página tem de
+    afirmar isto explicitamente, nunca deixar ambíguo se conta ou não."""
+    html = _ler("psu-trabalho-social.html").lower()
+    assert "conta como rendimento" in html, (
+        "psu-trabalho-social.html tem de afirmar explicitamente que a senha de participação "
+        "não conta como rendimento (art. 22.º da Portaria n.º 394/2026/1)"
+    )
+
+
+def test_psu_senha_participacao_so_aplicavel_a_partir_de_31_dezembro_2026():
+    """A Portaria n.º 394/2026/1 está em vigor desde 28/08/2026, mas só
+    produz efeitos a 31/12/2026 — mesma data do artigo 63.º do
+    decreto-lei. A página nunca pode ler-se como se a senha de
+    participação já fosse paga hoje, só porque a portaria já está em
+    vigor."""
+    html = _ler("psu-trabalho-social.html")
+    assert "31 de dezembro de 2026" in html, (
+        "psu-trabalho-social.html tem de deixar claro que a senha de participação só se aplica "
+        "a partir de 31/12/2026 (mesmo dia da PSU) — nunca como já aplicável"
+    )
+
+
+def test_psu_disponibilidade_adicional_18_25_anos_e_3a_renovacao():
+    """Art. 14.º da Portaria n.º 394/2026/1 — duas situações em que a
+    disponibilidade sobe de 15h para 20h/semana: idade entre 18 e 25 anos
+    (titular ou membro do agregado), ou 3.ª renovação da prestação
+    (titular em idade activa — o mesmo tecto já previsto em termos gerais
+    pelo artigo 33.º/5 do decreto-lei). Confirma que ambas estão
+    documentadas em psu-trabalho-social.html, com o artigo certo citado."""
+    html = _ler("psu-trabalho-social.html")
+    assert "18 e 25 anos" in html, "critério de idade (18-25 anos) do artigo 14.º ausente de psu-trabalho-social.html"
+    assert "3.ª renovação" in html, "critério da 3.ª renovação ausente de psu-trabalho-social.html"
+    assert "artigo 14.º" in html, "citação ao artigo 14.º da Portaria n.º 394/2026/1 ausente de psu-trabalho-social.html"
+
+
+def test_psu_disponibilidade_adicional_nunca_afirma_soma_alem_de_20h():
+    """A portaria não esclarece se as duas situações do artigo 14.º se
+    somam entre si — a página nunca pode afirmar um tecto acima de 20h
+    (ex.: "25 horas") sem essa confirmação legal. Mesmo princípio dos
+    outros canários deste ficheiro que trancam uma NÃO-afirmação (ver
+    test_deducao_rendas_nunca_afirma_900_como_ja_utilizavel_na_declaracao_2026)."""
+    html = _ler("psu-trabalho-social.html")
+    assert "25 horas" not in html, (
+        "psu-trabalho-social.html não pode afirmar um tecto de 25 horas semanais — a portaria "
+        "não confirma que as duas situações do artigo 14.º se somam entre si"
+    )
+
+
+# ── Portaria n.º 394/2026/1 — meios de prova e prazos (arts. 4.º a 6.º),
+# item 3 do plano de trabalho, sessão de 2026-08-30. como-pedir-psu.html.
+
+def test_psu_meios_de_prova_regra_e_interoperabilidade():
+    """Arts. 4.º a 6.º da Portaria n.º 394/2026/1 — a prova faz-se, sempre
+    que possível, com base na informação já detida pela instituição
+    gestora ou obtida por interoperabilidade entre serviços; os
+    documentos só são pedidos quando essa informação não está
+    disponível. A página tem de dizer isto primeiro — a lista de
+    documentos é a excepção, nunca o procedimento normal."""
+    html = _ler("como-pedir-psu.html")
+    assert "interoperabilidade" in html.lower(), "regra da interoperabilidade ausente de como-pedir-psu.html"
+
+
+def test_psu_prazo_documentos_10_dias_uteis_20_regioes_autonomas():
+    """Prazo para entrega de documentos: 10 dias úteis a contar da
+    notificação, 20 nas Regiões Autónomas — diferente do prazo de
+    decisão (30/20 dias, artigo 31.º/1), que a página não pode confundir
+    com este."""
+    html = _ler("como-pedir-psu.html")
+    assert "10 dias úteis" in html, "prazo de 10 dias úteis para entrega de documentos ausente de como-pedir-psu.html"
+    assert "Regiões Autónomas" in html, "excepção das Regiões Autónomas (20 dias úteis) ausente de como-pedir-psu.html"
+
+
+def test_psu_falta_de_documentos_e_suspensao_nunca_indeferimento():
+    """Art. 6.º — a falta de documentos no prazo determina SUSPENSÃO do
+    procedimento, nunca indeferimento. A página nunca pode usar
+    "indeferido"/"indeferimento" sem uma negação explícita logo antes —
+    esta distinção é o ponto central do artigo, não um detalhe."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "suspenso" in html, "consequência de suspensão (não indeferimento) ausente de como-pedir-psu.html"
+    for m in re.finditer(r"indeferid", html):
+        contexto = html[max(0, m.start() - 20):m.start()]
+        assert "nunca" in contexto or "não " in contexto, (
+            f"'indeferido' aparece sem negação explícita perto de: "
+            f"...{html[max(0, m.start() - 60):m.start() + 30]}..."
+        )
+
+
+def test_psu_morada_para_comunicacoes_sem_morada_fixa():
+    """Quem não tem morada fixa pode indicar uma morada para
+    comunicações, incluindo a de uma pessoa colectiva — facto que ajuda
+    quem mais precisa e que a página tem de publicar, não só mencionar
+    a lista de documentos e seguir em frente."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "morada para comunicações" in html, (
+        "nota sobre morada para comunicações (sem morada fixa) ausente de como-pedir-psu.html"
+    )
+    assert "pessoa colectiva" in html, (
+        "a possibilidade de indicar a morada de uma pessoa colectiva ausente de como-pedir-psu.html"
+    )
+
+
+# ── Portaria n.º 394/2026/1 — renovação oficiosa (artigo 11.º), item 4 do
+# plano de trabalho, sessão de 2026-08-30. Vive em psu-quem-tem-direito.html
+# — nunca como-pedir-psu.html, que é só sobre o pedido inicial. Risco
+# central: nunca confundir esta renovação periódica com a conversão
+# oficiosa do artigo 57.º do decreto-lei (RSI/outros apoios → PSU, evento
+# único a 31/12/2026), já documentada em várias páginas do cluster.
+
+def test_psu_renovacao_oficiosa_artigo_11():
+    """Art. 11.º da Portaria n.º 394/2026/1 — renovação oficiosa pela
+    instituição gestora, verificação no mês imediatamente anterior ao
+    termo do período de atribuição, notificação da decisão em 10 dias
+    úteis. Documentado em psu-quem-tem-direito.html."""
+    html = _ler("psu-quem-tem-direito.html")
+    assert "renovação" in html.lower(), "renovação oficiosa (artigo 11.º) ausente de psu-quem-tem-direito.html"
+    assert "mês imediatamente anterior" in html, (
+        "momento da verificação (mês anterior ao termo do período de atribuição) ausente de "
+        "psu-quem-tem-direito.html"
+    )
+    assert "10 dias úteis" in html, "prazo de notificação (10 dias úteis) ausente de psu-quem-tem-direito.html"
+
+
+def test_psu_renovacao_nunca_confundida_com_conversao_artigo_57():
+    """A renovação periódica (artigo 11.º da portaria) e a conversão
+    oficiosa do RSI/outros apoios para PSU (artigo 57.º do decreto-lei)
+    são eventos diferentes — a página tem de distinguir os dois
+    explicitamente, nunca deixar a leitura ambígua para quem vem do RSI."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "não é a conversão" in html, (
+        "psu-quem-tem-direito.html tem de distinguir explicitamente a renovação periódica "
+        "(artigo 11.º) da conversão oficiosa do artigo 57.º"
+    )
+
+
+def test_psu_como_pedir_nunca_confunde_pedido_inicial_com_renovacao():
+    """como-pedir-psu.html é só sobre o pedido inicial — qualquer menção à
+    renovação periódica tem de deixar claro que não faz parte deste passo
+    a passo, apontando para onde o detalhe vive (psu-quem-tem-direito.html)."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "não inclui a renovação" in html, (
+        "como-pedir-psu.html tem de deixar explícito que o passo a passo do pedido inicial "
+        "não inclui a renovação periódica da PSU"
+    )
+
+
+# ── Anexo I da Portaria n.º 394/2026/1 — coeficientes de desvalorização de
+# veículos (artigo 4.º/7), item 5 do plano de trabalho, sessão de
+# 2026-08-30. psu-quem-tem-direito.html — dentro do card "Património", que
+# já tratava dos bens móveis sujeitos a registo.
+
+def test_psu_veiculo_coeficientes_batem_com_o_yaml():
+    """Os 11 coeficientes acumulados (ano zero a dez+ anos) — parâmetros
+    ESCALARES `veiculo_coeficiente_anoN`, nunca uma lista (uma lista
+    partiria a coluna REAL de dados/tensdireito.db, ver o comentário em
+    dados/parametros/psu.yaml) — recalculados a partir de
+    dados/parametros.json (nunca hardcoded aqui) têm de bater com os
+    publicados na tabela de psu-quem-tem-direito.html, formatados com
+    vírgula decimal como o resto do site."""
+    nomes = [f"veiculo_coeficiente_ano{i}" for i in range(10)] + ["veiculo_coeficiente_ano10mais"]
+    coeficientes = [_param_psu(nome) for nome in nomes]
+    esperados = [0, 0.20, 0.35, 0.45, 0.55, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90]
+    assert coeficientes == esperados, (
+        f"coeficientes de desvalorização de veículos mudaram no YAML sem rever a fonte legal — "
+        f"esperado {esperados}, encontrado {coeficientes}"
+    )
+    html = _ler("psu-quem-tem-direito.html")
+    for c in coeficientes:
+        if c == 0:
+            continue  # "0" sozinho não é uma string útil para procurar (colide com outros números)
+        formatado = f"{c:.2f}".rstrip("0").replace(".", ",")
+        assert formatado in html, (
+            f"coeficiente {formatado} (Anexo I) ausente da tabela de psu-quem-tem-direito.html"
+        )
+
+
+def test_psu_veiculo_formula_valor_mercado_presente():
+    """A fórmula do Anexo I (valor de mercado = valor de aquisição − valor
+    de aquisição × coeficiente) tem de estar publicada, nunca só a tabela
+    de coeficientes sem o mecanismo que os usa."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "valor de mercado" in html and "valor de aquisição" in html and "coeficiente de desvalorização" in html, (
+        "fórmula de valorização de veículos (Anexo I) ausente ou incompleta em psu-quem-tem-direito.html"
+    )
+
+
+def test_psu_veiculo_fallback_sem_valor_aquisicao_comprovado():
+    """Quando não for possível comprovar o valor de aquisição, usa-se o
+    valor de mercado directamente — regra de recurso que a página tem de
+    publicar, nunca deixar como se a fórmula fosse sempre aplicável."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "não for possível comprovar o valor de aquisição" in html, (
+        "regra de recurso (sem valor de aquisição comprovado, usa-se o valor de mercado) "
+        "ausente de psu-quem-tem-direito.html"
+    )
+
+
+def test_psu_veiculo_formula_nunca_assumida_para_rsi_ou_csi():
+    """A fórmula do Anexo I aplica-se à PSU por remissão do artigo 4.º/7
+    — nunca assumida para o RSI ou o CSI sem confirmação própria. A
+    página tem de o dizer explicitamente, e os YAML de RSI/CSI nunca
+    podem ganhar este parâmetro por engano/copy-paste."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "rsi" in html and "csi" in html, (
+        "psu-quem-tem-direito.html tem de mencionar explicitamente que a fórmula do Anexo I "
+        "não está confirmada para RSI/CSI"
+    )
+    for prestacao in ("rsi", "csi"):
+        conteudo_yaml = (PARAMETROS_DIR / f"{prestacao}.yaml").read_text(encoding="utf-8")
+        assert "veiculo_coeficiente_ano" not in conteudo_yaml, (
+            f"dados/parametros/{prestacao}.yaml ganhou o parâmetro de coeficientes de veículos da "
+            "PSU sem confirmação própria — a remissão do artigo 4.º/7 é só para a PSU"
+        )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em
