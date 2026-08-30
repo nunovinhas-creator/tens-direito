@@ -1016,6 +1016,58 @@ def test_art17_habitacao_constantes_fixas_na_lei():
     assert _param_psu("art17_divisor_renda_referencia") == 3
 
 
+# ── Portaria n.º 394/2026/1, de 27 de agosto — normas de execução da PSU
+# (artigo 59.º do Decreto-Lei n.º 166/2026), sessão de 2026-08-30. Primeira
+# fonte deste ficheiro que não é o próprio decreto-lei. Trabalho de
+# conteúdo por ordem, um artigo da portaria de cada vez — só o artigo 22.º
+# (senha de participação) foi implementado nesta sessão; os restantes
+# (meios de prova, renovação oficiosa, Anexo I) ficam para os passos
+# seguintes do mesmo plano de trabalho.
+
+def test_psu_senha_participacao_2_5_por_cento_ias():
+    """Art. 22.º da Portaria n.º 394/2026/1 — senha de participação de 2,5%
+    do IAS por cada 20 horas semanais de trabalho social (art. 21.º/1/c do
+    decreto-lei) efectivamente realizadas. Recalcula multiplicador ×
+    IAS_2026 (nunca hardcoda "13,43") e confirma que o valor está publicado
+    tanto no corpo como na FAQ de psu-trabalho-social.html."""
+    multiplicador = _param_psu("senha_participacao_multiplicador_ias")
+    assert multiplicador == 0.025, "o valor confirmado pela Portaria n.º 394/2026/1 é 2,5% do IAS — mudou sem rever a fonte legal?"
+    valor = round(multiplicador * IAS_2026, 2)
+    assert valor == 13.43, f"2,5% × IAS_2026 deveria dar 13,43 €, deu {valor} €"
+
+    html = _ler("psu-trabalho-social.html")
+    valor_fmt = f"{valor:.2f}".replace(".", ",")
+    assert html.count(valor_fmt) >= 2, (
+        f"{valor_fmt} € tem de aparecer no corpo E na FAQ de psu-trabalho-social.html — só apareceu "
+        f"{html.count(valor_fmt)}×"
+    )
+
+
+def test_psu_senha_participacao_nunca_conta_como_rendimento():
+    """Distinção central do art. 22.º: a senha de participação nunca entra
+    na condição de recursos nem no cálculo da PSU — ao contrário da CIT,
+    que desconta parte dos rendimentos de trabalho normal. A página tem de
+    afirmar isto explicitamente, nunca deixar ambíguo se conta ou não."""
+    html = _ler("psu-trabalho-social.html").lower()
+    assert "conta como rendimento" in html, (
+        "psu-trabalho-social.html tem de afirmar explicitamente que a senha de participação "
+        "não conta como rendimento (art. 22.º da Portaria n.º 394/2026/1)"
+    )
+
+
+def test_psu_senha_participacao_so_aplicavel_a_partir_de_31_dezembro_2026():
+    """A Portaria n.º 394/2026/1 está em vigor desde 28/08/2026, mas só
+    produz efeitos a 31/12/2026 — mesma data do artigo 63.º do
+    decreto-lei. A página nunca pode ler-se como se a senha de
+    participação já fosse paga hoje, só porque a portaria já está em
+    vigor."""
+    html = _ler("psu-trabalho-social.html")
+    assert "31 de dezembro de 2026" in html, (
+        "psu-trabalho-social.html tem de deixar claro que a senha de participação só se aplica "
+        "a partir de 31/12/2026 (mesmo dia da PSU) — nunca como já aplicável"
+    )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em

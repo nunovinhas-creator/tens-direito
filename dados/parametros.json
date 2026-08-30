@@ -1109,6 +1109,16 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-08-13"
+      },
+      "senha_participacao_multiplicador_ias": {
+        "descricao": "PSU — senha de participação nas atividades de solidariedade social do artigo 21.º/1/c do decreto-lei (ver psu-trabalho-social.html): valor pago por cada 20 horas semanais de participação efectivamente realizadas, em múltiplos do IAS. NUNCA conta como rendimento — nem para a condição de recursos (artigo 8.º do decreto-lei) nem para o montante global da própria PSU (artigo 25.º) — distinção deliberada face à CIT (cit_limiar_multiplicador_ias/cit_taxa_acima_limiar acima), que sim desconta rendimentos de trabalho normal. Pagamento mensal, a cargo da instituição gestora das atividades — nunca da Segurança Social directamente.",
+        "unidade": "× IAS por 20h semanais efectivamente realizadas",
+        "valor": 0.025,
+        "vigencia_inicio": "2026-08-27",
+        "referencia_legal": "Portaria n.º 394/2026/1, de 27 de agosto (Diário da República n.º 166/2026, Série I) — normas de execução do Decreto-Lei n.º 166/2026, ao abrigo do artigo 59.º —, artigo 22.º: senha de participação de 2,5% do IAS por cada 20 horas semanais de atividades de solidariedade social efectivamente realizadas; não conta como rendimento para a condição de recursos nem para o cálculo da PSU; pagamento mensal pela instituição gestora.",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-08-30"
       }
     },
     "rsi": {

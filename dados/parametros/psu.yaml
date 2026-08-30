@@ -332,3 +332,24 @@ majoracao_desemprego_mensal:
       referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 27.º — n.º 1 (fórmula e condições), n.º 2 (corte se PSUglobal ≥ 80% IAS), n.º 3 (120 dias/12 meses sem subsídio prévio), n.º 4 (\"concedida exclusivamente durante os primeiros seis meses de atribuição da PSU\")"
       fonte_url: "https://dre.pt"
       verificado_em: "2026-08-13"
+
+# PORTARIA N.º 394/2026/1 — primeiro parâmetro deste ficheiro cuja fonte NÃO
+# é o Decreto-Lei n.º 166/2026 em si, mas as suas normas de execução (artigo
+# 59.º do decreto-lei habilita o Governo a aprová-las por portaria).
+# Publicada a 27 de agosto de 2026 (Diário da República n.º 166/2026, Série
+# I), em vigor desde 28 de agosto — mas, tal como toda a PSU, só produz
+# efeitos a 31 de dezembro de 2026 (mesma data do artigo 63.º do
+# decreto-lei, ver data_producao_efeitos acima): a senha de participação só
+# chega a ser paga quando a PSU em si começar a ser paga, nunca antes.
+# `vigencia_inicio` usa a data de PUBLICAÇÃO da portaria (2026-08-27), pelo
+# mesmo motivo já documentado no topo deste ficheiro para o decreto-lei — é
+# a partir da publicação que o valor está legalmente fixado e citável.
+senha_participacao_multiplicador_ias:
+  descricao: "PSU — senha de participação nas atividades de solidariedade social do artigo 21.º/1/c do decreto-lei (ver psu-trabalho-social.html): valor pago por cada 20 horas semanais de participação efectivamente realizadas, em múltiplos do IAS. NUNCA conta como rendimento — nem para a condição de recursos (artigo 8.º do decreto-lei) nem para o montante global da própria PSU (artigo 25.º) — distinção deliberada face à CIT (cit_limiar_multiplicador_ias/cit_taxa_acima_limiar acima), que sim desconta rendimentos de trabalho normal. Pagamento mensal, a cargo da instituição gestora das atividades — nunca da Segurança Social directamente."
+  unidade: "× IAS por 20h semanais efectivamente realizadas"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.025
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto (Diário da República n.º 166/2026, Série I) — normas de execução do Decreto-Lei n.º 166/2026, ao abrigo do artigo 59.º —, artigo 22.º: senha de participação de 2,5% do IAS por cada 20 horas semanais de atividades de solidariedade social efectivamente realizadas; não conta como rendimento para a condição de recursos nem para o cálculo da PSU; pagamento mensal pela instituição gestora."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
