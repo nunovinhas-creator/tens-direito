@@ -879,13 +879,35 @@ def _ano_item(texto: str) -> str | None:
     return m.group(1) if m else None
 
 
+# Número completo do acto (ex.: "166/2026", "480-A/2025") — achado real de
+# 2026-08-30 (Issue #132): o nível 2 do corte de recência (`_ano_item`)
+# só compara pelo ANO, o que deixa passar qualquer acto do ano de corte em
+# diante — incluindo o próprio alvo já conhecido, quando aparece sem data
+# completa (caso real: "Decreto-Lei n.º 166/2026", uma linha-referência
+# sem sufixo "Série I de ..." que apareceu a 27/08/2026 ao lado de uma
+# Portaria nova que o cita). `_numero_item` existe só para
+# `numero_conhecido` em `_detectar_item_juridico_generico` poder excluir
+# esse acto específico mesmo sem data — nunca substitui `_ano_item`.
+_PADRAO_NUMERO_ATO = re.compile(r"n\.?[ºo]\s*([\w\-]*\/\d{4})", re.IGNORECASE)
+
+
+def _numero_item(texto: str) -> str | None:
+    """Extrai o número completo do próprio acto (ex.: "Decreto-Lei n.º
+    166/2026" → "166/2026"). `None` se o número não seguir o padrão
+    "n.º .../AAAA" — ver `numero_conhecido` em
+    `_detectar_item_juridico_generico`."""
+    m = _PADRAO_NUMERO_ATO.search(texto)
+    return m.group(1) if m else None
+
+
 _PADRAO_DECRETO_LEI = re.compile(r"\bdecreto[\s-]?lei\s+n", re.IGNORECASE)
 _PADRAO_PORTARIA = re.compile(r"\bportaria\s+n", re.IGNORECASE)
 
 
 def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str,
                                       mensagem_log: str, padrao: re.Pattern,
-                                      data_minima: str | None = None) -> bool:
+                                      data_minima: str | None = None,
+                                      numero_conhecido: str | None = None) -> bool:
     """Núcleo partilhado de detecção entre os resultados de uma pesquisa de
     frase exacta no DRE (mecanismo `pesquisa_interactiva`, ver
     `_obter_html_pesquisa`). `padrao` decide QUE tipo de acto conta como
@@ -942,6 +964,20 @@ def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str
        exclui (é antigo); `>= ano(data_minima)` mantém como sinal —
        nunca esconde um acto do próprio ano de activação ou posterior,
        mesmo sem a data exacta.
+
+       **Excepção ao nível 2, `numero_conhecido` (achado real de
+       2026-08-30, Issue #132)**: comparar só o ano deixa passar
+       QUALQUER acto do ano de corte em diante — incluindo o próprio
+       alvo já conhecido, quando o DRE o lista sem data (caso real: uma
+       linha "Decreto-Lei n.º 166/2026", sem sufixo "Série I de ...",
+       apareceu a par de uma Portaria nova que o cita; `"2026" >=
+       "2026"` deixou passar o mesmo decreto-lei que `data_minima` já
+       tinha excluído com a data completa). Quando `numero_conhecido`
+       está definido (`_numero_item` — "166/2026"), um item sem data cujo
+       número bate exactamente com ele é **sempre excluído** no nível 2,
+       mesmo que o ano por si só bastasse — nunca disfarça um acto
+       genuinamente novo (outro número), só o mesmo acto já registado a
+       reaparecer sem data.
     3. Salvaguarda final, só se NEM a data completa NEM o ano do número
        forem extraíveis (formato totalmente inesperado): mantém sempre
        como potencial sinal (mesmo invariante "nenhum estado de erro
@@ -965,6 +1001,10 @@ def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str
                 if data_t >= data_minima:
                     achados.append(t)
                 continue
+            if numero_conhecido and _numero_item(t) == numero_conhecido:
+                # Excepção ao nível 2 — o próprio alvo já conhecido,
+                # sem data completa desta vez: nunca dispara só pelo ano.
+                continue
             ano_t = _ano_item(t)
             if ano_t is not None:
                 # Nível 2 — ano do número do acto, só sem data completa.
@@ -986,7 +1026,8 @@ def _detectar_item_juridico_generico(slug: str, conteudo: dict, chave_aviso: str
 
 def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
                                     mensagem_log: str,
-                                    data_minima: str | None = None) -> bool:
+                                    data_minima: str | None = None,
+                                    numero_conhecido: str | None = None) -> bool:
     """Detecta um Decreto-Lei entre os resultados de uma pesquisa de frase
     exacta no DRE — thin wrapper de `_detectar_item_juridico_generico`
     com `padrao=_PADRAO_DECRETO_LEI`. Assinatura e comportamento 100%
@@ -994,10 +1035,12 @@ def _detectar_decreto_lei_generico(slug: str, conteudo: dict, chave_aviso: str,
     só do núcleo interno, para o sentinela do IAS poder reutilizá-lo com
     um padrão diferente — ver `_detectar_portaria_generico`) — mantida
     por compatibilidade com `tests/test_dre_habitacao_watchlist.py` e
-    `_detectar_decreto_psu`, que a chamam directamente por nome."""
+    `_detectar_decreto_psu`, que a chamam directamente por nome.
+    `numero_conhecido` acrescentado em 2026-08-30 (Issue #132), por
+    omissão `None` — só `_detectar_decreto_psu` o passa hoje."""
     return _detectar_item_juridico_generico(
         slug, conteudo, chave_aviso, mensagem_log, _PADRAO_DECRETO_LEI,
-        data_minima=data_minima,
+        data_minima=data_minima, numero_conhecido=numero_conhecido,
     )
 
 
@@ -1041,11 +1084,24 @@ def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
     criado) ainda dispara; só o DL 166/2026 já conhecido deixa de
     re-disparar todos os dias. Sentinela irmão para o que falta
     regulamentar por Portaria (art. 17.º; arts. 32.º/59.º) —
-    `dre_psu_regulamentacao`, mais abaixo neste ficheiro."""
+    `dre_psu_regulamentacao`, mais abaixo neste ficheiro.
+
+    `numero_conhecido="166/2026"` acrescentado a 2026-08-30 (Issue #132,
+    regressão real do corte de recência acima): a 27/08/2026 apareceu uma
+    Portaria nova (n.º 394/2026/1) que cita o DL 166/2026 — e o DRE listou
+    ao lado uma linha-referência SEM data completa, só "Decreto-Lei n.º
+    166/2026". Sem data, o corte cai no nível 2 de
+    `_detectar_item_juridico_generico` (compara só o ano — "2026" >=
+    "2026" da `data_minima` acima), que deixou passar o mesmo decreto-lei
+    que a data completa já tinha excluído — reabrindo exactamente a Issue
+    que este corte foi criado para fechar. `numero_conhecido` fecha essa
+    excepção: um item sem data cujo número é "166/2026" nunca dispara,
+    independentemente do ano."""
     return _detectar_decreto_lei_generico(
         slug, conteudo, "dre_psu_decreto_detectado",
         "%s: DECRETO-LEI PSU DETECTADO EM DRE — rever cluster e publicar valores!\n%s",
         data_minima="2026-08-16",
+        numero_conhecido="166/2026",
     )
 
 
@@ -1053,6 +1109,30 @@ def _detectar_decreto_psu(slug: str, conteudo: dict) -> bool:
 
 AVISOS_LOG = SCRAPED_DIR / "avisos.log"
 MIN_CHARS_CONTEUDO = 100
+
+# Achado de 2026-08-30 (triagem das Issues #131/#132/#133/#134): o
+# guardrail de "conteúdo suspeito" acima (MIN_CHARS_CONTEUDO, do achado
+# de 2026-07-05) não apanha um caso real — dre_psu_regulamentacao devolveu
+# a página de ZERO RESULTADOS do próprio DRE, todos os dias, desde
+# 2026-08-17 até hoje (12 dias), sempre classificada Estado.OK e sempre
+# "status": "ok" em disco, porque o texto de erro canónico do DRE
+# ("Certifique-se de que nenhuma palavra contém erros ortográficos...")
+# tem 141 caracteres — acima do limiar de 100, por isso nunca contava
+# como "suspeito". O mesmo hash idêntico já aparecia em
+# dre_habitacao_garantia desde 2026-07-20, documentado em CLAUDE.md como
+# "causa por investigar sem prioridade" — sem nenhum destes dois casos
+# jamais ter gerado sinal visível: um sentinela a devolver zero
+# indefinidamente ficava indistinguível de um sentinela saudável sem
+# novidades, contrariando o invariante "nenhum estado de erro pode
+# parecer sucesso" (ver CLAUDE.md).
+#
+# Corrigido reconhecendo directamente o texto canónico do DRE para
+# "pesquisa sem resultados" — mais preciso do que baixar o limiar de
+# caracteres (que só empurraria o mesmo problema para a próxima frase de
+# erro do DRE que calhe ser mais longa que o novo limiar). Nunca uma
+# substring solta tipo "erros" ou "ortográficos" (vocabulário comum
+# demais) — a frase inteira, específica ao DRE.
+_MARCADOR_DRE_SEM_RESULTADOS = "certifique-se de que nenhuma palavra contém erros ortográficos"
 
 
 def _conteudo_chars(conteudo: dict) -> int:
@@ -1065,6 +1145,17 @@ def _conteudo_chars(conteudo: dict) -> int:
     for r in conteudo.get("resultados", []):
         total += len(r.get("titulo", "")) + len(r.get("sumario", ""))
     return total
+
+
+def _e_pagina_sem_resultados_dre(conteudo: dict) -> bool:
+    """Detecta a página canónica de "zero resultados" do DRE — distinta de
+    "conteúdo suspeito" por caracteres (essa página tem texto suficiente
+    para passar MIN_CHARS_CONTEUDO), mas igualmente um sinal de que a
+    pesquisa de frase exacta não encontrou nada, nunca disfarçável de
+    sucesso silencioso. Verifica titulo + paragrafos (nunca itens_lista,
+    que está sempre vazia neste caso por definição)."""
+    texto = (conteudo.get("titulo", "") + " " + " ".join(conteudo.get("paragrafos", []))).lower()
+    return _MARCADOR_DRE_SEM_RESULTADOS in texto
 
 
 def _registar_aviso(slug: str, motivo: str) -> None:
@@ -1261,8 +1352,19 @@ def _guardar_resultado(slug: str, resultado: dict) -> None:
     # Validação mínima de conteúdo
     conteudo = resultado.get("conteudo_extraido", {})
     chars = _conteudo_chars(conteudo)
-    if chars < MIN_CHARS_CONTEUDO:
-        motivo = f"conteúdo suspeito: apenas {chars} caracteres (mínimo {MIN_CHARS_CONTEUDO})"
+    sem_resultados_dre = _e_pagina_sem_resultados_dre(conteudo)
+    if chars < MIN_CHARS_CONTEUDO or sem_resultados_dre:
+        if sem_resultados_dre:
+            # Achado de 2026-08-30: distinto do ramo de caracteres abaixo —
+            # esta página tem texto suficiente (141 chars, o próprio aviso
+            # de erro do DRE) para nunca cair no limiar MIN_CHARS_CONTEUDO,
+            # mas continua a ser zero conteúdo útil: a pesquisa de frase
+            # exacta não encontrou nenhum acto. Ver comentário junto a
+            # _MARCADOR_DRE_SEM_RESULTADOS.
+            motivo = (f"pesquisa DRE sem resultados — página canónica de "
+                      f"\"zero resultados\" do próprio DRE ({chars} caracteres)")
+        else:
+            motivo = f"conteúdo suspeito: apenas {chars} caracteres (mínimo {MIN_CHARS_CONTEUDO})"
         _registar_aviso(slug, motivo)
         # Achado de 2026-07-05: "conteúdo suspeito" (status "ok", sem sinal
         # de bloqueio, mas conteúdo extraído insuficiente — ex.: dre_psu,
