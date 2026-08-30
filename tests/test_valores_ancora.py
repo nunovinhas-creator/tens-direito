@@ -1068,6 +1068,32 @@ def test_psu_senha_participacao_so_aplicavel_a_partir_de_31_dezembro_2026():
     )
 
 
+def test_psu_disponibilidade_adicional_18_25_anos_e_3a_renovacao():
+    """Art. 14.º da Portaria n.º 394/2026/1 — duas situações em que a
+    disponibilidade sobe de 15h para 20h/semana: idade entre 18 e 25 anos
+    (titular ou membro do agregado), ou 3.ª renovação da prestação
+    (titular em idade activa — o mesmo tecto já previsto em termos gerais
+    pelo artigo 33.º/5 do decreto-lei). Confirma que ambas estão
+    documentadas em psu-trabalho-social.html, com o artigo certo citado."""
+    html = _ler("psu-trabalho-social.html")
+    assert "18 e 25 anos" in html, "critério de idade (18-25 anos) do artigo 14.º ausente de psu-trabalho-social.html"
+    assert "3.ª renovação" in html, "critério da 3.ª renovação ausente de psu-trabalho-social.html"
+    assert "artigo 14.º" in html, "citação ao artigo 14.º da Portaria n.º 394/2026/1 ausente de psu-trabalho-social.html"
+
+
+def test_psu_disponibilidade_adicional_nunca_afirma_soma_alem_de_20h():
+    """A portaria não esclarece se as duas situações do artigo 14.º se
+    somam entre si — a página nunca pode afirmar um tecto acima de 20h
+    (ex.: "25 horas") sem essa confirmação legal. Mesmo princípio dos
+    outros canários deste ficheiro que trancam uma NÃO-afirmação (ver
+    test_deducao_rendas_nunca_afirma_900_como_ja_utilizavel_na_declaracao_2026)."""
+    html = _ler("psu-trabalho-social.html")
+    assert "25 horas" not in html, (
+        "psu-trabalho-social.html não pode afirmar um tecto de 25 horas semanais — a portaria "
+        "não confirma que as duas situações do artigo 14.º se somam entre si"
+    )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em
