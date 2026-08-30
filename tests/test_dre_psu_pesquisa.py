@@ -199,3 +199,60 @@ def test_conteudo_vazio_nao_dispara(monkeypatch):
     capturados = _avisos_capturados(monkeypatch)
     assert sp._detectar_decreto_psu("dre_psu", {}) is False
     assert capturados == []
+
+
+def test_linha_referencia_sem_data_do_alvo_conhecido_nao_dispara(monkeypatch):
+    """Regressão da Issue #132 (2026-08-30): a 27/08/2026 apareceu uma
+    Portaria nova (n.º 394/2026/1) que cita o DL 166/2026, e o DRE listou
+    ao lado uma linha-referência SEM data completa — só "Decreto-Lei n.º
+    166/2026", sem sufixo "Série I de ...". Sem `numero_conhecido`, o
+    nível 2 do corte de recência comparava só o ano ("2026" >= "2026" de
+    `data_minima`) e deixava passar — reabrindo a Issue que o corte de
+    2026-08-16 (Fase 2, Commit 5/5) já tinha fechado para o mesmo acto.
+    Dados reais capturados no scrape de 2026-08-27 (dre_psu_2026-08-27.json),
+    nunca inventados."""
+    capturados = _avisos_capturados(monkeypatch)
+    conteudo = {
+        "titulo": "",
+        "itens_lista": [
+            "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+            "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+            "Decreto-Lei n.º 166/2026",
+            "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
+            "Lei n.º 36/2026",
+            "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+            "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+            "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+            "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07",
+        ],
+        "paragrafos": [],
+    }
+    assert sp._detectar_decreto_psu("dre_psu", conteudo) is False
+    assert capturados == []
+
+
+def test_linha_sem_data_com_numero_diferente_do_conhecido_continua_a_disparar(monkeypatch):
+    """`numero_conhecido` exclui só o acto já conhecido (166/2026) — um
+    Decreto-Lei GENUINAMENTE novo, listado sem data completa (o mesmo
+    formato do achado real acima, mas com outro número), continua a
+    disparar. Nunca uma supressão cega de "qualquer item sem data"."""
+    capturados = _avisos_capturados(monkeypatch)
+    conteudo = {
+        "titulo": "",
+        "itens_lista": [
+            "Decreto-Lei n.º 200/2026",
+        ],
+        "paragrafos": ["Altera o regime da prestação social única."],
+    }
+    assert sp._detectar_decreto_psu("dre_psu", conteudo) is True
+    assert len(capturados) == 1
+    assert "Decreto-Lei n.º 200/2026" in capturados[0][1]
+
+
+def test_numero_item_extrai_o_numero_completo_do_acto():
+    assert sp._numero_item("Decreto-Lei n.º 166/2026") == "166/2026"
+    assert sp._numero_item(
+        "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13"
+    ) == "166/2026"
+    assert sp._numero_item("Despacho n.º 7619/2025") == "7619/2025"
+    assert sp._numero_item("formato totalmente inesperado, sem número") is None
