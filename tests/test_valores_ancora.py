@@ -1191,6 +1191,75 @@ def test_psu_como_pedir_nunca_confunde_pedido_inicial_com_renovacao():
     )
 
 
+# ── Anexo I da Portaria n.º 394/2026/1 — coeficientes de desvalorização de
+# veículos (artigo 4.º/7), item 5 do plano de trabalho, sessão de
+# 2026-08-30. psu-quem-tem-direito.html — dentro do card "Património", que
+# já tratava dos bens móveis sujeitos a registo.
+
+def test_psu_veiculo_coeficientes_batem_com_o_yaml():
+    """Os 11 coeficientes acumulados (ano zero a dez+ anos) — parâmetros
+    ESCALARES `veiculo_coeficiente_anoN`, nunca uma lista (uma lista
+    partiria a coluna REAL de dados/tensdireito.db, ver o comentário em
+    dados/parametros/psu.yaml) — recalculados a partir de
+    dados/parametros.json (nunca hardcoded aqui) têm de bater com os
+    publicados na tabela de psu-quem-tem-direito.html, formatados com
+    vírgula decimal como o resto do site."""
+    nomes = [f"veiculo_coeficiente_ano{i}" for i in range(10)] + ["veiculo_coeficiente_ano10mais"]
+    coeficientes = [_param_psu(nome) for nome in nomes]
+    esperados = [0, 0.20, 0.35, 0.45, 0.55, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90]
+    assert coeficientes == esperados, (
+        f"coeficientes de desvalorização de veículos mudaram no YAML sem rever a fonte legal — "
+        f"esperado {esperados}, encontrado {coeficientes}"
+    )
+    html = _ler("psu-quem-tem-direito.html")
+    for c in coeficientes:
+        if c == 0:
+            continue  # "0" sozinho não é uma string útil para procurar (colide com outros números)
+        formatado = f"{c:.2f}".rstrip("0").replace(".", ",")
+        assert formatado in html, (
+            f"coeficiente {formatado} (Anexo I) ausente da tabela de psu-quem-tem-direito.html"
+        )
+
+
+def test_psu_veiculo_formula_valor_mercado_presente():
+    """A fórmula do Anexo I (valor de mercado = valor de aquisição − valor
+    de aquisição × coeficiente) tem de estar publicada, nunca só a tabela
+    de coeficientes sem o mecanismo que os usa."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "valor de mercado" in html and "valor de aquisição" in html and "coeficiente de desvalorização" in html, (
+        "fórmula de valorização de veículos (Anexo I) ausente ou incompleta em psu-quem-tem-direito.html"
+    )
+
+
+def test_psu_veiculo_fallback_sem_valor_aquisicao_comprovado():
+    """Quando não for possível comprovar o valor de aquisição, usa-se o
+    valor de mercado directamente — regra de recurso que a página tem de
+    publicar, nunca deixar como se a fórmula fosse sempre aplicável."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "não for possível comprovar o valor de aquisição" in html, (
+        "regra de recurso (sem valor de aquisição comprovado, usa-se o valor de mercado) "
+        "ausente de psu-quem-tem-direito.html"
+    )
+
+
+def test_psu_veiculo_formula_nunca_assumida_para_rsi_ou_csi():
+    """A fórmula do Anexo I aplica-se à PSU por remissão do artigo 4.º/7
+    — nunca assumida para o RSI ou o CSI sem confirmação própria. A
+    página tem de o dizer explicitamente, e os YAML de RSI/CSI nunca
+    podem ganhar este parâmetro por engano/copy-paste."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "rsi" in html and "csi" in html, (
+        "psu-quem-tem-direito.html tem de mencionar explicitamente que a fórmula do Anexo I "
+        "não está confirmada para RSI/CSI"
+    )
+    for prestacao in ("rsi", "csi"):
+        conteudo_yaml = (PARAMETROS_DIR / f"{prestacao}.yaml").read_text(encoding="utf-8")
+        assert "veiculo_coeficiente_ano" not in conteudo_yaml, (
+            f"dados/parametros/{prestacao}.yaml ganhou o parâmetro de coeficientes de veículos da "
+            "PSU sem confirmação própria — a remissão do artigo 4.º/7 é só para a PSU"
+        )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em

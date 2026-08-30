@@ -345,11 +345,142 @@ majoracao_desemprego_mensal:
 # mesmo motivo já documentado no topo deste ficheiro para o decreto-lei — é
 # a partir da publicação que o valor está legalmente fixado e citável.
 senha_participacao_multiplicador_ias:
-  descricao: "PSU — senha de participação nas atividades de solidariedade social do artigo 21.º/1/c do decreto-lei (ver psu-trabalho-social.html): valor pago por cada 20 horas semanais de participação efectivamente realizadas, em múltiplos do IAS. NUNCA conta como rendimento — nem para a condição de recursos (artigo 8.º do decreto-lei) nem para o montante global da própria PSU (artigo 25.º) — distinção deliberada face à CIT (cit_limiar_multiplicador_ias/cit_taxa_acima_limiar acima), que sim desconta rendimentos de trabalho normal. Pagamento mensal, a cargo da instituição gestora das atividades — nunca da Segurança Social directamente."
+  descricao: "PSU — senha de participação nas atividades de solidariedade social do artigo 21.º/1/c do decreto-lei (ver psu-trabalho-social.html): valor de CADA senha, por cada 20 horas semanais de participação efectivamente realizadas — nunca um valor mensal fixo (a portaria não esclarece o que acontece a quem participa menos de 20h numa semana). NUNCA conta como rendimento — nem para a condição de recursos (artigo 8.º do decreto-lei) nem para o montante global da própria PSU (artigo 25.º) — distinção deliberada face à CIT (cit_limiar_multiplicador_ias/cit_taxa_acima_limiar acima), que sim desconta rendimentos de trabalho normal. Pagamento mensal, com base no que a entidade promotora comunica sobre as horas realizadas — corrigido nesta sessão: a afirmação anterior de que o pagamento seria feito pela instituição gestora, nunca pela Segurança Social directamente, não estava confirmada pelo articulado e foi removida."
   unidade: "× IAS por 20h semanais efectivamente realizadas"
   valores:
     - vigencia_inicio: "2026-08-27"
       valor: 0.025
-      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto (Diário da República n.º 166/2026, Série I) — normas de execução do Decreto-Lei n.º 166/2026, ao abrigo do artigo 59.º —, artigo 22.º: senha de participação de 2,5% do IAS por cada 20 horas semanais de atividades de solidariedade social efectivamente realizadas; não conta como rendimento para a condição de recursos nem para o cálculo da PSU; pagamento mensal pela instituição gestora."
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto (Diário da República n.º 166/2026, Série I) — normas de execução do Decreto-Lei n.º 166/2026, ao abrigo do artigo 59.º —, artigo 22.º: senha de participação de 2,5% do IAS por cada 20 horas semanais de atividades de solidariedade social efectivamente realizadas; não conta como rendimento para a condição de recursos nem para o cálculo da PSU; pagamento mensal, com base no que a entidade promotora comunica sobre as horas realizadas."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+# ANEXO I — coeficientes de desvalorização acumulada de veículos, usados na
+# fórmula de valorização de bens móveis sujeitos a registo (artigo 8.º/1/d
+# do decreto-lei — ver limite_bens_moveis_registo_multiplicador_ias acima):
+# valor de mercado = valor de aquisição − (valor de aquisição × coeficiente).
+# Aplica-se à PSU por remissão do artigo 4.º/7 da Portaria n.º 394/2026/1 —
+# DELIBERADAMENTE não assumido para o RSI nem para o CSI (dados/parametros/
+# rsi.yaml e csi.yaml têm os seus próprios limites de património, sem
+# menção a esta fórmula nem a este Anexo; nenhuma remissão confirmada até
+# esta sessão). Quando não for possível comprovar o valor de aquisição,
+# usa-se directamente o valor de mercado (sem aplicar esta fórmula) — regra
+# procedimental, não um 12.º coeficiente.
+#
+# PREFIXO `veiculo_coeficiente_anoN`, 11 parâmetros escalares, nunca uma
+# lista — achado real desta sessão: `scripts/gerar_base_dados.py` tem a
+# coluna `valor` da tabela SQLite tipada `REAL` (um número por linha);
+# `sqlite3.executemany` rejeita uma lista Python com
+# `sqlite3.ProgrammingError` (apanhado por `tests/test_gerar_base_dados.py`,
+# que corre sobre TODAS as vigências do YAML, não só as consolidadas em
+# `dados/parametros.json`). Mesmo padrão já usado para `art17_*`/`cit_*`
+# neste ficheiro — o consolidador (e agora também o gerador da base SQLite)
+# nunca suportaram um valor composto, só escalares agrupados por prefixo.
+veiculo_coeficiente_ano0:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 0 anos (ano de aquisição), usado na fórmula valor de mercado = valor de aquisição − (valor de aquisição × coeficiente). Ver o comentário acima para o âmbito completo (só PSU, artigo 4.º/7 — nunca assumido para RSI/CSI)."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo no ano zero: 0."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano1:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 1 ano, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.20
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 1 ano: 0,20."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano2:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 2 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.35
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 2 anos: 0,35."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano3:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 3 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.45
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 3 anos: 0,45."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano4:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 4 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.55
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 4 anos: 0,55."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano5:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 5 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.65
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 5 anos: 0,65."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano6:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 6 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.70
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 6 anos: 0,70."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano7:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 7 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.75
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 7 anos: 0,75."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano8:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 8 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.80
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 8 anos: 0,80."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano9:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 9 anos, mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.85
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 9 anos: 0,85."
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-08-30"
+
+veiculo_coeficiente_ano10mais:
+  descricao: "PSU — Anexo I: coeficiente de desvalorização acumulada para veículo com 10 ou mais anos (tecto máximo do coeficiente), mesma fórmula de veiculo_coeficiente_ano0."
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2026-08-27"
+      valor: 0.90
+      referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 10 anos ou mais: 0,90 (valor máximo do coeficiente)."
       fonte_url: "https://dre.pt"
       verificado_em: "2026-08-30"
