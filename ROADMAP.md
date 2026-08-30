@@ -94,6 +94,20 @@ fact-check feito ainda):
 
 ## 🔔 À ESPERA DE UM SINAL
 
+### Canal de WhatsApp — critério editorial de publicação
+
+Ver CLAUDE.md → **"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO"**
+para o detalhe completo. Resumo: publica-se quando (1) um sentinela
+dirigido (`dre_psu`, `dre_psu_regulamentacao`, `dre_habitacao_paer`,
+`dre_habitacao_garantia`, `dre_ias`) dispara **e** a verificação manual
+confirma alteração real a um apoio, ou (2) uma página é corrigida por
+mudança de facto legal com avanço da data "Verificado a" — nunca por
+reorganização, trabalho interno ou calendário. Sem nada a publicar:
+silêncio, nunca um lembrete periódico. As 5 Issues automáticas destes
+sentinelas (`pipeline-diario.yml`, Step 8) já têm um passo extra na
+checklist a assinalar a candidatura — decisão e texto sempre do Nuno,
+publicação manual, sem gateway/API nova.
+
 ### Manuais (só o Nuno vê o sinal — o sistema não avisa)
 
 | Item | Gatilho exacto | Onde verifico | Acção quando disparar |
