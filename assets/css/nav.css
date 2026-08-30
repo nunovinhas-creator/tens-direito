@@ -101,7 +101,7 @@ main p a,
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-left: auto;
 }
 
@@ -173,7 +173,7 @@ main p a,
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   font-size: 0.9rem;
-  width: 190px;
+  width: 150px;
   font-family: inherit;
 }
 
@@ -235,6 +235,20 @@ main p a,
 .resultado-vazio { padding: 0.85rem 0.75rem; font-size: 0.85rem; color: #6c757d; }
 .resultado-vazio p { margin: 0 0 0.4rem; }
 .resultado-vazio a { font-weight: 700; color: #0F766E; }
+
+.nav-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  color: #075E54;
+}
+
+.nav-whatsapp:hover { background: #F0FDF9; }
+.nav-whatsapp svg { display: block; }
 
 .nav-toggle {
   display: none;
