@@ -1147,6 +1147,50 @@ def test_psu_morada_para_comunicacoes_sem_morada_fixa():
     )
 
 
+# ── Portaria n.º 394/2026/1 — renovação oficiosa (artigo 11.º), item 4 do
+# plano de trabalho, sessão de 2026-08-30. Vive em psu-quem-tem-direito.html
+# — nunca como-pedir-psu.html, que é só sobre o pedido inicial. Risco
+# central: nunca confundir esta renovação periódica com a conversão
+# oficiosa do artigo 57.º do decreto-lei (RSI/outros apoios → PSU, evento
+# único a 31/12/2026), já documentada em várias páginas do cluster.
+
+def test_psu_renovacao_oficiosa_artigo_11():
+    """Art. 11.º da Portaria n.º 394/2026/1 — renovação oficiosa pela
+    instituição gestora, verificação no mês imediatamente anterior ao
+    termo do período de atribuição, notificação da decisão em 10 dias
+    úteis. Documentado em psu-quem-tem-direito.html."""
+    html = _ler("psu-quem-tem-direito.html")
+    assert "renovação" in html.lower(), "renovação oficiosa (artigo 11.º) ausente de psu-quem-tem-direito.html"
+    assert "mês imediatamente anterior" in html, (
+        "momento da verificação (mês anterior ao termo do período de atribuição) ausente de "
+        "psu-quem-tem-direito.html"
+    )
+    assert "10 dias úteis" in html, "prazo de notificação (10 dias úteis) ausente de psu-quem-tem-direito.html"
+
+
+def test_psu_renovacao_nunca_confundida_com_conversao_artigo_57():
+    """A renovação periódica (artigo 11.º da portaria) e a conversão
+    oficiosa do RSI/outros apoios para PSU (artigo 57.º do decreto-lei)
+    são eventos diferentes — a página tem de distinguir os dois
+    explicitamente, nunca deixar a leitura ambígua para quem vem do RSI."""
+    html = _ler("psu-quem-tem-direito.html").lower()
+    assert "não é a conversão" in html, (
+        "psu-quem-tem-direito.html tem de distinguir explicitamente a renovação periódica "
+        "(artigo 11.º) da conversão oficiosa do artigo 57.º"
+    )
+
+
+def test_psu_como_pedir_nunca_confunde_pedido_inicial_com_renovacao():
+    """como-pedir-psu.html é só sobre o pedido inicial — qualquer menção à
+    renovação periódica tem de deixar claro que não faz parte deste passo
+    a passo, apontando para onde o detalhe vive (psu-quem-tem-direito.html)."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "não inclui a renovação" in html, (
+        "como-pedir-psu.html tem de deixar explícito que o passo a passo do pedido inicial "
+        "não inclui a renovação periódica da PSU"
+    )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em
