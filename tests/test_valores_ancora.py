@@ -1094,6 +1094,59 @@ def test_psu_disponibilidade_adicional_nunca_afirma_soma_alem_de_20h():
     )
 
 
+# ── Portaria n.º 394/2026/1 — meios de prova e prazos (arts. 4.º a 6.º),
+# item 3 do plano de trabalho, sessão de 2026-08-30. como-pedir-psu.html.
+
+def test_psu_meios_de_prova_regra_e_interoperabilidade():
+    """Arts. 4.º a 6.º da Portaria n.º 394/2026/1 — a prova faz-se, sempre
+    que possível, com base na informação já detida pela instituição
+    gestora ou obtida por interoperabilidade entre serviços; os
+    documentos só são pedidos quando essa informação não está
+    disponível. A página tem de dizer isto primeiro — a lista de
+    documentos é a excepção, nunca o procedimento normal."""
+    html = _ler("como-pedir-psu.html")
+    assert "interoperabilidade" in html.lower(), "regra da interoperabilidade ausente de como-pedir-psu.html"
+
+
+def test_psu_prazo_documentos_10_dias_uteis_20_regioes_autonomas():
+    """Prazo para entrega de documentos: 10 dias úteis a contar da
+    notificação, 20 nas Regiões Autónomas — diferente do prazo de
+    decisão (30/20 dias, artigo 31.º/1), que a página não pode confundir
+    com este."""
+    html = _ler("como-pedir-psu.html")
+    assert "10 dias úteis" in html, "prazo de 10 dias úteis para entrega de documentos ausente de como-pedir-psu.html"
+    assert "Regiões Autónomas" in html, "excepção das Regiões Autónomas (20 dias úteis) ausente de como-pedir-psu.html"
+
+
+def test_psu_falta_de_documentos_e_suspensao_nunca_indeferimento():
+    """Art. 6.º — a falta de documentos no prazo determina SUSPENSÃO do
+    procedimento, nunca indeferimento. A página nunca pode usar
+    "indeferido"/"indeferimento" sem uma negação explícita logo antes —
+    esta distinção é o ponto central do artigo, não um detalhe."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "suspenso" in html, "consequência de suspensão (não indeferimento) ausente de como-pedir-psu.html"
+    for m in re.finditer(r"indeferid", html):
+        contexto = html[max(0, m.start() - 20):m.start()]
+        assert "nunca" in contexto or "não " in contexto, (
+            f"'indeferido' aparece sem negação explícita perto de: "
+            f"...{html[max(0, m.start() - 60):m.start() + 30]}..."
+        )
+
+
+def test_psu_morada_para_comunicacoes_sem_morada_fixa():
+    """Quem não tem morada fixa pode indicar uma morada para
+    comunicações, incluindo a de uma pessoa colectiva — facto que ajuda
+    quem mais precisa e que a página tem de publicar, não só mencionar
+    a lista de documentos e seguir em frente."""
+    html = _ler("como-pedir-psu.html").lower()
+    assert "morada para comunicações" in html, (
+        "nota sobre morada para comunicações (sem morada fixa) ausente de como-pedir-psu.html"
+    )
+    assert "pessoa colectiva" in html, (
+        "a possibilidade de indicar a morada de uma pessoa colectiva ausente de como-pedir-psu.html"
+    )
+
+
 # ── RSI — migrado para dados/parametros/rsi.yaml (2026-08-24) ────────────────
 # RSI era um dos 3 simuladores por migrar (ver LEVANTAMENTO-DADOS-ABERTOS.md,
 # Fase 0) — `simulador-rsi.html` passa a ler /dados/parametros.json em
