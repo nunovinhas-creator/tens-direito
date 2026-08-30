@@ -4434,7 +4434,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-08-29*
+*Última revisão automática: 2026-08-30*
 
 ---
 

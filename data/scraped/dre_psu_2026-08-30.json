@@ -1,0 +1,36 @@
+{
+  "url": "https://diariodarepublica.pt/dr/pesquisa",
+  "url_original": "https://diariodarepublica.pt/dr/home",
+  "data_acesso": "2026-08-30T11:42:15.440248+00:00",
+  "status": "ok",
+  "conteudo_extraido": {
+    "titulo": "Resultados de pesquisa: \"prestação social única\"",
+    "paragrafos": [
+      "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Trabalho, Solidariedade e Segurança Social",
+      "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
+      "Trabalho, Solidariedade e Segurança Social",
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Trabalho, Solidariedade e Segurança Social - Direção-Geral da Solidariedade e Segurança Social",
+      "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Trabalho, Solidariedade e Segurança Social - Direção-Geral da Solidariedade e Segurança Social",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07",
+      "Trabalho, Solidariedade e Segurança Social - Gabinete da Ministra do Trabalho, Solidariedade e Segurança Social"
+    ],
+    "itens_lista": [
+      "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Decreto-Lei n.º 166/2026",
+      "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
+      "Lei n.º 36/2026",
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07"
+    ]
+  },
+  "nota": "DRE — vigiar publicação do decreto-lei da PSU (prazo PRR: 31 ago 2026)",
+  "hash_conteudo": "1504e005fa173c41438709e9a76d64468464ae137952665f5244c76f0ae13cd1"
+}
