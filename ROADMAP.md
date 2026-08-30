@@ -191,6 +191,29 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   clusters com 5+ páginas deixem de ter uma "cauda" invisível. Sem
   prazo — só afecta clusters grandes (`como-pedir`, `habitacao`,
   `apoios-escolares`, `trabalho-rendimento`), não o resto do site.
+- **43 diplomas citados em páginas mas ausentes de `fontes.html`**
+  (levantamento de 2026-08-30, sessão "FONTES.HTML — LACUNA DO CLUSTER
+  PSU") — a lista de trabalho é a própria `EXCECOES_DIPLOMAS_FONTES` em
+  `tests/test_fontes_coerencia.py` (nova rede de segurança criada nesta
+  sessão: falha se um diploma citado numa página não tiver cartão em
+  `fontes.html` nem constar dessa lista). Os 3 diplomas do cluster PSU
+  (Lei n.º 36/2026, Decreto-Lei n.º 166/2026, Portaria n.º 394/2026/1)
+  já foram acrescentados a `fontes.html` nesta mesma sessão — ficam de
+  fora da lista de trabalho. Resolver cada um dos 43 = confirmar o
+  permalink real do DRE (nunca inventar um subpath — usar a homepage
+  genérica `https://diariodarepublica.pt` quando não confirmável, mesma
+  regra de sempre) e acrescentar o cartão em `fontes.html`, seguindo o
+  padrão dos cartões de diploma já existentes (`.tag`="Legislação",
+  `<h2>`=citação completa, `<p>`=descrição de uma frase). **Principal
+  obstáculo**: confirmar os permalinks exige aceder a `dre.pt`, hoje
+  bloqueado no ambiente de desenvolvimento (mesma limitação documentada
+  em dezenas de sessões — `WebFetch`/`curl` devolvem 403 via proxy para
+  domínios externos); sem isso, cada entrada teria de usar a homepage
+  genérica, o que é válido mas perde a especificidade dos cartões mais
+  recentes do site. Sem prazo — nenhum destes 43 é urgente por si só,
+  mas o teste novo garante que a lista nunca mais cresce em silêncio: um
+  diploma citado numa página nova, sem cartão nem excepção registada,
+  faz o CI falhar.
 - **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
   `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
   2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no
