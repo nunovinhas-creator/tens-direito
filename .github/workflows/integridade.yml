@@ -81,6 +81,13 @@ jobs:
   testes-python:
     name: Suite de Testes (pytest)
     runs-on: ubuntu-latest
+    # Rede de segurança: sem isto, um hang no job usa o limite por omissão
+    # do GitHub Actions (6h). Já aconteceu — ver comentário no passo
+    # "Instalar dependências". 30 min dá ~2,7x de folga sobre o pior tempo
+    # total real medido nesta sessão (11m14s, suite com ~3600 testes) e
+    # espaço para o crescimento orgânico da suite, sem deixar um hang
+    # bloquear a fila de pushes a `main` (concurrency, acima) durante horas.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -99,7 +106,28 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-browsers-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+      - name: Configurar timeouts do apt (mitiga mirrors instáveis)
+        # playwright install --with-deps corre sempre apt-get update/install
+        # (dependências de sistema do Chromium — fontes, xfonts, etc.) mesmo
+        # com o binário em cache acima; a cache nunca passa por aqui. Sem
+        # timeout próprio, uma ligação a um mirror (ex.: azure.archive.
+        # ubuntu.com, o mirror regional por omissão nestes runners) pode
+        # ficar presa à espera de dados que nunca chegam — confirmado em
+        # produção: dois runs em 2026-08-19 ficaram assim pendurados 6h e
+        # 4h37m (o segundo só em fila, bloqueado pelo primeiro via
+        # concurrency), sem uma única linha de log entre a ligação e o
+        # cancelamento por timeout do GitHub. Isto força cada ligação a
+        # desistir ao fim de 15s e tentar de novo (até 3x, contra outro
+        # mirror se necessário) em vez de esperar indefinidamente.
+        run: |
+          echo 'Acquire::http::Timeout "15";' | sudo tee /etc/apt/apt.conf.d/99-timeout-ci > /dev/null
+          echo 'Acquire::https::Timeout "15";' | sudo tee -a /etc/apt/apt.conf.d/99-timeout-ci > /dev/null
+          echo 'Acquire::Retries "3";' | sudo tee -a /etc/apt/apt.conf.d/99-timeout-ci > /dev/null
       - name: Instalar dependências
+        # 5 min = ~8,5x o pior tempo real medido nesta sessão (35s, 4 runs
+        # saudáveis) — folga para os retries do apt acima a sério, mas nunca
+        # mais um hang de horas: falha aqui, nunca aos 6h do limite do job.
+        timeout-minutes: 5
         run: |
           pip install -r requirements.txt
           pip install pytest
