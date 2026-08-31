@@ -130,5 +130,23 @@
       "pesquisa DRE sem resultados — página canónica de \"zero resultados\" do próprio DRE (141 caracteres)"
     ],
     "chars_uteis": 141
+  },
+  {
+    "slug": "dre_habitacao_garantia",
+    "url": "https://diariodarepublica.pt/dr/pesquisa",
+    "data": "2026-08-31T13:07:05.370513+00:00",
+    "motivos": [
+      "pesquisa DRE sem resultados — página canónica de \"zero resultados\" do próprio DRE (141 caracteres)"
+    ],
+    "chars_uteis": 141
+  },
+  {
+    "slug": "dre_psu_regulamentacao",
+    "url": "https://diariodarepublica.pt/dr/pesquisa",
+    "data": "2026-08-31T13:07:20.702227+00:00",
+    "motivos": [
+      "pesquisa DRE sem resultados — página canónica de \"zero resultados\" do próprio DRE (141 caracteres)"
+    ],
+    "chars_uteis": 141
   }
 ]

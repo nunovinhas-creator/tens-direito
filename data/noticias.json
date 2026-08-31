@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-08-31",
+      "titulo": "IRS: Hoje é o último dia para contribuintes pagarem",
+      "fonte_nome": "recordeuropa.com",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPcmUtZmZYLVpfUWZpVC1zd1o4QUpvM3A3U3ZmSGN3aWhxTWZQUFgwd3BmYWd0XzdPT2NwLTIwcmtfS1RvTGhzdDJWTkVpaG1BdTFEMUdoVzBCRzV2ekRjcVJhTXh2aVY4SE1yWFMxOHRFT1Zzd3ZMWFBaN3FIYlBIVFJPdVV3NEdsdzFadnQwejN3UmVVNE82RGVSeUt1ZkJTUldKS0h1bDJMSVJkRy0xRA?oc=5",
+      "resumo": "IRS: Hoje é o último dia para contribuintes pagarem recordeuropa.com",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-08-28",
       "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026",
       "fonte_nome": "SAPO",
@@ -26,6 +35,15 @@
       "resumo": "Subsídio de desemprego: esta novidade pode dar-te mais 10% extra 4gnews",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-27",
+      "titulo": "Prestação Social Única: estas são as novas regras para beneficiários e famílias",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPQjFJOWd5TldWZmJnY1NVbG9sUDZNYmpGWXh5SzRuQjJNbDVYQldoU091U0pFckNnU0thMlYtWnZNWUx5S2VTcUhDaWhEb3ppMWk0a2ljSEktN2Y1di1OUW1Hei1uMWN1UEVrV2xkaGtWSjRjZUZJaXYtVGZ1dzJpM3VKZUFWWVhlckg5aTBVYXZEVi1QYXhZTHdsQWxrTWM4aU1QUnY5bnloa1JSN0hqd3RhVkRzdC1NTXNkLWRGN2ROZzJId3JCN3huLTQ1ZS0ycFZlTVRYSllqY040MFZ4MDV6cVNNX2ZRcm5jbTlyeTFENy1aZi11NnBn?oc=5",
+      "resumo": "Prestação Social Única: estas são as novas regras para beneficiários e famílias CNN Portugal",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
     },
     {
       "data_iso": "2026-08-25",
