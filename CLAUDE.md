@@ -27,6 +27,8 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
 - `dados/observacoes/<slug>.json` — historial auditável de observações do scraper, um ficheiro por fonte monitorizada, escrito por `scripts/registar_observacao.py` (Fase 1 de "DADOS ABERTOS", só quando `sha256_conteudo` mudar — ver essa secção)
 - `dados/parametros.json` — consolidado dos parâmetros legais (Fase 2 de "DADOS ABERTOS"), gerado por `scripts/gerar_parametros_json.py` a partir de `dados/parametros/*.yaml` (esses YAML continuam curados manualmente, nunca escritos pelo pipeline)
 - `dados/tensdireito.db` — base SQLite pública (Fase 3 de "DADOS ABERTOS"), gerada por `scripts/gerar_base_dados.py`
+- `data/canal_pendente.json` — fila de rascunhos por entregar ao canal de WhatsApp (gatilho de alteração legal); o pipeline só CONSOME (remove a entrada mais antiga entregue) — quem a preenche é sempre uma sessão editorial manual, nunca o pipeline (ver secção "CANAL DE WHATSAPP")
+- `data/canal_estado.json` — estado do mecanismo do canal (último rascunho entregue, último mês do calendário publicado), escrito por `scripts/preparar_canal.py` (ver secção "CANAL DE WHATSAPP")
 
 **TODOS os outros HTML são manuais e protegidos.**
 Esta regra aplica-se a páginas actuais E futuras.
@@ -2850,10 +2852,14 @@ secção define esse critério; o `ROADMAP.md` só aponta para aqui.
 **Nenhuma automação publica no canal.** Zero integração com a API do
 WhatsApp/Meta Business, zero gateway, zero token novo no repositório —
 decisão e texto são sempre do Nuno, publicados manualmente. O que existe
-é só o gatilho que diz **quando vale a pena olhar para o canal**, mais um
-apontador nas Issues automáticas já existentes (ver "Mecanismo" abaixo).
+é o gatilho que diz **quando vale a pena olhar para o canal**, mais
+(desde 2026-08-31, ver "Mecanismo" abaixo) um **rascunho pronto a
+copiar** — para o gatilho 1, o texto que um humano já escreveu no
+momento da correcção, só formatado e entregue; para o gatilho 3, um
+texto gerado de dados já verificados, sem julgamento novo nenhum. Nunca
+um texto inventado pela automação, nunca publicado sozinho.
 
-### Publica-se quando (qualquer um dos dois — nunca por omissão de nenhum)
+### Publica-se quando (qualquer um dos três — nunca por omissão de nenhum)
 
 1. **Um sentinela dirigido dispara E a verificação manual confirma
    alteração real** a um apoio coberto pelo site. "Dirigido" = reconhece
@@ -2888,6 +2894,18 @@ apontador nas Issues automáticas já existentes (ver "Mecanismo" abaixo).
    doença (RMMG, não IAS), ou os 13 apoios da PSU confirmados pela Lei
    n.º 36/2026 — todas já documentadas nas respectivas entradas de
    revisão deste ficheiro.
+3. **Calendário de pagamentos da Segurança Social, uma vez por mês** —
+   no primeiro dia útil do mês (simplificado a segunda-sexta, sem
+   calendário de feriados portugueses — limitação conhecida, ver
+   "Mecanismo"), com as datas confirmadas do **mês inteiro**, nunca um
+   aviso por cada dia de pagamento. Categoria diferente dos pontos 1-2:
+   não depende de um veredicto humano sobre "isto é uma alteração
+   real?" — é a mesma informação já verificada de
+   `calendario-pagamentos-seguranca-social.html`/
+   `data/calendario_pagamentos.json`, que o leitor precisa todos os
+   meses e não tem forma prática de saber sem visitar o site. Só
+   dispara quando o mês corrente já está confirmado nos dados (nunca
+   inventa um mês por publicar) e nunca duas vezes no mesmo mês.
 
 ### Não se publica
 
@@ -2899,13 +2917,19 @@ apontador nas Issues automáticas já existentes (ver "Mecanismo" abaixo).
   SEO técnico (canónicas, JSON-LD, sitemap) — mesmo numa sessão grande
   e com muitos commits, nada disto é "uma regra que mudou" para quem
   segue o canal.
-- Por **calendário** — nunca publicar só porque passou tempo desde a
-  última vez. O canal não promete cadência nenhuma; inventar uma
-  quebraria a promessa "avisamos só quando", não a cumpriria.
+- Por **cadência** — nunca publicar um lembrete só porque passou tempo
+  desde a última mensagem (ex.: um "ainda aqui!" mensal). O canal não
+  promete cadência nenhuma; inventar uma quebraria a promessa "avisamos
+  só quando", não a cumpriria. **Não confundir com o ponto 3 de "Publica-
+  se quando" (calendário de pagamentos)**: a distinção é sobre o
+  conteúdo, não sobre ter periodicidade — o calendário de pagamentos é
+  informação nova e verificada todos os meses (datas reais, nunca um
+  "continuamos aqui"), a única excepção deliberada a "sem cadência
+  prometida" nesta secção.
 
 ### Quando não há nada para publicar: nada
 
-Silêncio é o comportamento correcto sempre que nenhuma das duas condições
+Silêncio é o comportamento correcto sempre que nenhuma das condições
 acima se verificar — é exactamente o que o convite promete ao leitor.
 Nunca um lembrete periódico, nunca uma mensagem de "continuamos aqui" só
 para manter presença. O mesmo princípio de honestidade já aplicado ao
@@ -2913,22 +2937,87 @@ resto do site (ver "FRESCURA DA HOMEPAGE" → "Regra de honestidade": nenhum
 bloco mostra uma data inventada só para parecer actual) aplica-se ao
 canal.
 
-### Mecanismo — sinalização nas Issues existentes, sem automação nova
+### Mecanismo — `preparar_canal.py`, Issue `canal-rascunho` (2026-08-31)
 
-Os 5 blocos de Issue dos sentinelas dirigidos, em
-`.github/workflows/pipeline-diario.yml` (Step 8, "Abrir Issues se
-mudanças detectadas"), ganharam um passo adicional na checklist "Acções
-necessárias", sempre o penúltimo (antes de "Fechar esta issue"):
-**"Se confirmada uma alteração real a um apoio coberto pelo site:
-considerar publicação no canal de WhatsApp (...) — ver ROADMAP.md → 'À
-espera de um sinal' → 'Canal de WhatsApp'"**. Nada além de texto —
-não cria label novo, não abre issue própria, não chama nenhuma API do
-WhatsApp. É o mesmo humano que já teria de abrir a Issue para actualizar
-o site a decidir, no mesmo local onde já está a decidir o resto, sem
-adicionar nenhum passo de processo novo. Escolhido este caminho em vez de
-uma automação real precisamente porque o critério ("verificação manual
-confirma alteração real") já é, por desenho, um passo humano — uma
-automação que publicasse sozinha violaria a condição que a define.
+Substitui o mecanismo anterior (só texto na checklist das Issues dos
+sentinelas, nunca um rascunho de facto) por uma preparação real, mas
+sempre parada um passo antes de publicar. Só cobre os gatilhos 1
+(alteração legal) e 3 (calendário) da secção anterior — o gatilho de
+"notícia relevante" ficou deliberadamente por construir (ver
+`ROADMAP.md` → "À espera de um sinal" → "Canal de WhatsApp" para a
+medição real de agosto de 2026 e a razão).
+
+**Gatilho 1 — fila manual `data/canal_pendente.json`**
+(`{"_nota": "...", "entradas": [{titulo, resumo, paginas[]}]}`):
+preenchida à MÃO por uma sessão editorial, **no mesmo commit** em que
+corrige uma página por causa de uma alteração legal confirmada — nunca
+por nenhuma automação. O campo `_nota` explica o mecanismo directamente
+no ficheiro (mesmo padrão de `data/destaque_evento.json`, que já usa um
+`_nota` para o mesmo fim) — decisão deliberada depois de uma lição real
+noutro ficheiro deste repositório: instruções que só existiam numa
+sessão anterior, sem nota nenhuma no próprio JSON, passaram 12 dias sem
+ninguém as ler. `preparar_canal.py` preserva `_nota` em toda e qualquer
+escrita (só o campo `entradas` muda) — nunca reescreve o documento a
+partir do zero, o que a apagaria em silêncio; trancado por
+`test_nota_explicativa_sobrevive_ao_consumo_da_fila` e por
+`test_ficheiro_real_de_producao_tem_nota_explicativa` (este último corre
+sobre o ficheiro real, não uma cópia — falha se algum dia a nota for
+removida ou encolhida). `resumo` é o texto pronto a copiar (PT-PT
+simples, mesma régua de "LINGUAGEM PARA O UTILIZADOR"), escrito no
+momento de maior contexto (logo depois de confirmar o facto), não
+recriado a posteriori a partir de um diff. `scripts/preparar_canal.py`
+nunca decide se algo é "uma alteração real" — só consome a entrada mais
+antiga de `entradas` e formata. Isto substitui o antigo passo
+"considerar publicação" nas checklists dos 5 blocos de Issue dos
+sentinelas dirigidos (`pipeline-diario.yml`, Step 8) — cada um aponta
+agora para `data/canal_pendente.json` (**é aí que a decisão "confirmada
+uma alteração real" é tomada**, no mesmo passo da checklist) em vez de
+só "considerar".
+
+**Gatilho 3 — `data/calendario_pagamentos.json`**: sem fila manual,
+gerado directamente (já é fonte verificada). `calendario_devido()`
+só dispara quando (a) o mês corrente já está no JSON, (b) hoje é dia
+útil (seg-sex — sem calendário de feriados, limitação conhecida,
+nunca escondida) e (c) o mês ainda não foi entregue este mês
+(`data/canal_estado.json["ultimo_calendario_publicado"]`).
+
+**Prioridade e volume**: `scripts/preparar_canal.py::main()` tenta
+sempre o gatilho 1 primeiro; só se a fila estiver vazia tenta o
+gatilho 3. Nunca mais de 1 rascunho/dia. Numa colisão (alteração legal
+pendente no mesmo dia em que o calendário estaria devido), o calendário
+não é descartado — `calendario_devido()` continua a devolver o mês
+enquanto não for marcado como entregue, por isso a corrida seguinte sem
+alteração legal pendente entrega-o (só adiado, nunca perdido).
+
+**Passo novo em `pipeline-diario.yml`** (entre "Actualizar CLAUDE.md" e
+o guardrail de ficheiros protegidos, antes do push diário): corre
+`scripts/preparar_canal.py`, que escreve `/tmp/canal_rascunho_hoje.json`
+(efémero, fora do repositório, nunca commitado) quando há algo a
+publicar, e actualiza `data/canal_pendente.json`/`data/canal_estado.json`
+(commitados como qualquer outro ficheiro em `data/`). Um step novo mais
+abaixo ("Criar Issue do rascunho do canal") lê esse ficheiro e, se
+existir, cria uma Issue `📱 Canal — <título> (<data>)` com o texto num
+bloco de código pronto a copiar, label `canal-rascunho`, e a nota
+explícita "o texto final e a decisão de publicar são sempre tuas".
+**Sem nada a publicar, nenhuma Issue é criada** — silêncio é o
+comportamento correcto, mesma regra do resto desta secção. Fecho é
+sempre manual (o Nuno fecha depois de publicar ou de decidir não
+publicar).
+
+**Risco residual aceite, documentado no próprio script**: se a criação
+da Issue falhar por um motivo transitório depois de a fila já ter sido
+consumida/o mês marcado como entregue, essa mensagem específica fica
+sem retry automático (o estado já foi commitado). Considerado aceitável
+para uma ferramenta de sugestão, não um sistema crítico — nunca
+escondido.
+
+`scripts/preparar_canal.py` testado em `tests/test_preparar_canal.py`
+(19 casos: os dois gatilhos isoladamente, prioridade/colisão, limite de
+1/mês do calendário, entradas malformadas na fila nunca bloqueiam as
+seguintes, silêncio quando não há nada). Nenhuma chamada de rede — os
+testes correm inteiramente em `tmp_path`, `main()` aceita `raiz`/`hoje`/
+`saida` explícitos (mesmo padrão de `gerir_estado_fontes.main()`), sem
+monkeypatch de constantes de módulo.
 
 Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
 mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
@@ -8977,3 +9066,80 @@ reconhecimento de acto), sem qualquer relação com este achado.
 confirma zero regressões de uma sessão puramente documental. Trabalho
 feito na branch `claude/sentinela-despacho-ase` (criada nesta sessão,
 `main` limpa antes de arrancar) — commit local, sem push.*
+
+---
+
+*Última revisão: 2026-08-31 — preparação automática de rascunhos para o
+canal de WhatsApp. Passo 0 (obrigatório antes de construir): medidos os
+três gatilhos propostos contra dados reais de agosto de 2026 — o
+gatilho de "notícia relevante" (critério já usado por
+`gerar_noticias.py`) teria dado ~20 dias/31 com pelo menos uma
+vencedora, muito acima do limite de 10/mês; um filtro mais apertado
+(sinal legal directo no título) reduzia para 2 dias, mas ambos já
+coincidiam com o gatilho de alteração legal — decisão do Nuno de não
+construir este gatilho agora (ver ROADMAP.md → "À espera de um sinal"
+→ "Canal de WhatsApp" para os números completos e a razão).
+
+Construídos só os gatilhos 1 (alteração legal confirmada) e 3
+(calendário mensal de pagamentos) — nova secção "Mecanismo" dentro de
+"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO" com o detalhe
+completo. Novo `scripts/preparar_canal.py`: gatilho 1 lê e consome
+`data/canal_pendente.json` (fila preenchida à mão por sessões
+editoriais, nunca pela automação — o script só formata o texto que um
+humano já escreveu); gatilho 3 gera o rascunho automaticamente a partir
+de `data/calendario_pagamentos.json` (fonte já verificada, sem
+julgamento humano necessário), uma vez por mês, no primeiro dia útil
+(seg-sex, sem calendário de feriados — limitação conhecida,
+documentada). Prioridade 1 > 3 em caso de colisão no mesmo dia; o
+calendário nunca é perdido, só adiado para o próximo dia sem alteração
+legal pendente. Máximo 1 rascunho/dia.
+
+Novo passo em `pipeline-diario.yml` (antes do push diário) corre o
+script e escreve `/tmp/canal_rascunho_hoje.json` (efémero, nunca
+commitado); um step novo mais abaixo cria uma Issue `📱 Canal — <título>
+(<data>)` com o texto pronto a copiar num bloco de código, label
+`canal-rascunho` nova, e a nota explícita de que a decisão de publicar
+é sempre manual — sem nada a publicar, nenhuma Issue é criada. Os 5
+blocos de Issue dos sentinelas dirigidos (Step 8) tiveram o antigo
+passo "considerar publicação" substituído por uma instrução accionável:
+acrescentar uma entrada a `data/canal_pendente.json` no mesmo commit da
+correcção.
+
+21 testes novos em `tests/test_preparar_canal.py` (os dois gatilhos
+isolados, prioridade/colisão, limite de 1/mês, entradas malformadas na
+fila nunca bloqueiam as seguintes, silêncio quando não há nada, `_nota`
+explicativa sobrevive ao consumo da fila — testado também sobre o
+ficheiro real do repositório, não só sobre cópias em `tmp_path`) —
+`main()` aceita `raiz`/`hoje`/`saida` explícitos, mesmo padrão de
+`gerir_estado_fontes.main()`, sem monkeypatch de constantes de módulo.
+
+**`data/canal_pendente.json` ganhou `_nota` explicativa no próprio
+ficheiro** (revisão pedida pelo Nuno, antes do push): mesmo padrão já
+usado em `data/destaque_evento.json` — decisão tomada depois de uma
+lição real, documentada nesse ficheiro, de instruções que passaram 12
+dias sem ninguém as ler por não estarem visíveis no próprio JSON.
+Schema passou de array solto para `{"_nota": "...", "entradas": [...]}`;
+`preparar_canal.py` preserva `_nota` em toda e qualquer escrita (só
+`entradas` muda), nunca reescreve o documento a partir do zero. As 5
+checklists de Issue dos sentinelas dirigidos já apontavam para
+`data/canal_pendente.json` como o passo onde a decisão "confirmada uma
+alteração real" é tomada — confirmado, não precisou de correcção.
+
+Suite completa reconfirmada sem regressões: **3634 passed, 4 skipped**
+(mesma allow-list de sempre, confirmada elemento a elemento por
+`scripts/verificar_skips_permitidos.py`); `ruff check scripts/ tests/
+--select E,F,W --ignore E501 .` limpo; `data/canal_pendente.json`/
+`data/canal_estado.json` confirmados sem prompt injection
+(`scripts/verificar_injecao.py`); YAML do workflow validado. Dry-runs
+manuais contra dados reais (calendário de setembro de 2026, um caso de
+alteração legal fictício, e o schema real com `_nota`), sempre isolados
+em `tmp_path`/`/tmp` — nunca contra o checkout real, depois de uma 1.ª
+tentativa ter mutado por engano `data/canal_estado.json` local
+(revertido de imediato, sem consequência).
+
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/canal-rascunhos-automaticos-23gm2t` (designada pelo ambiente
+remoto desta sessão), 1 commit — **PR aberto contra `main`, NÃO
+integrado** (instrução explícita: sem merge; ver o PR para o número
+exacto).*

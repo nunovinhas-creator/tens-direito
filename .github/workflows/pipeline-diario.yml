@@ -720,6 +720,21 @@ jobs:
       - name: Actualizar CLAUDE.md
         run: python3 scripts/atualizar_claude_md.py
 
+      # ── Step 6b2: Preparar rascunho do canal de WhatsApp ─────────────────────
+      # Dois gatilhos apenas — alteração legal confirmada (fila manual
+      # data/canal_pendente.json, preenchida por sessões editoriais, nunca
+      # por esta automação) e calendário mensal de pagamentos (gerado de
+      # data/calendario_pagamentos.json, já verificado). O gatilho de
+      # "notícia relevante" ficou deliberadamente por construir — ver
+      # ROADMAP.md → "À espera de um sinal" → "Canal de WhatsApp" para a
+      # medição real de agosto de 2026 e a razão. Nunca publica sozinho —
+      # só prepara /tmp/canal_rascunho_hoje.json (efémero) para o step de
+      # Issues mais abaixo formatar como sugestão a rever manualmente.
+      - name: Preparar rascunho do canal de WhatsApp
+        run: python3 scripts/preparar_canal.py
+        env:
+          PYTHONUNBUFFERED: '1'
+
       # ── Step 6c: Guardrail — verificar ficheiros protegidos ─────────────────
       - name: Verificar ficheiros protegidos
         run: |
@@ -833,6 +848,103 @@ jobs:
               });
               console.log('Label feed-morto criada.');
             }
+
+      # ── Step 7g: Garantir label canal-rascunho ───────────────────────────────
+      - name: Criar label canal-rascunho se não existir
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'canal-rascunho',
+              });
+            } catch(_) {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'canal-rascunho',
+                color: '25D366',
+                description: 'Rascunho pronto a copiar para o canal de WhatsApp — sugestão, nunca publicado automaticamente',
+              });
+              console.log('Label canal-rascunho criada.');
+            }
+
+      # ── Step 7h: Criar Issue do rascunho do canal de WhatsApp ────────────────
+      # Consome /tmp/canal_rascunho_hoje.json (scripts/preparar_canal.py,
+      # Step 6b2 acima) — nunca commitado, só existe neste run. Sem nada a
+      # publicar hoje, o ficheiro não existe e este step não cria Issue
+      # nenhuma (silêncio é o comportamento correcto — ver
+      # ROADMAP.md/CLAUDE.md → "CANAL DE WHATSAPP"). Dedup por título com a
+      # data de hoje, mesmo padrão dos outros blocos de Issue deste
+      # workflow — protege contra uma corrida repetida no mesmo dia
+      # (workflow_dispatch manual) duplicar a Issue.
+      - name: Criar Issue do rascunho do canal (se houver algo a publicar)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const caminho = '/tmp/canal_rascunho_hoje.json';
+            if (!fs.existsSync(caminho)) {
+              console.log('Sem rascunho para o canal hoje — nada a fazer.');
+              return;
+            }
+
+            let rascunho;
+            try {
+              rascunho = JSON.parse(fs.readFileSync(caminho, 'utf8'));
+            } catch (e) {
+              console.log(`AVISO: /tmp/canal_rascunho_hoje.json malformado (${e}) — a ignorar.`);
+              return;
+            }
+            if (!rascunho || !rascunho.texto) {
+              console.log('Rascunho sem texto — nada a fazer.');
+              return;
+            }
+
+            const hoje = rascunho.data || new Date().toISOString().slice(0, 10);
+            const tituloIssue = `📱 Canal — ${rascunho.titulo} (${hoje})`;
+
+            const existentes = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              labels: 'canal-rascunho',
+              per_page: 30,
+            });
+            const duplicado = existentes.data.find(i => i.title === tituloIssue);
+            if (duplicado) {
+              console.log(`Issue de rascunho já existe para hoje: ${tituloIssue}`);
+              return;
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: tituloIssue,
+              body: [
+                `## 📱 Rascunho para o canal de WhatsApp`,
+                ``,
+                `**Gatilho:** ${rascunho.gatilho === 'calendario' ? 'calendário mensal de pagamentos' : 'alteração legal confirmada'}`,
+                `**Data:** ${hoje}`,
+                ``,
+                `### Texto pronto a copiar`,
+                ``,
+                '```',
+                rascunho.texto,
+                '```',
+                ``,
+                `### Isto é só uma sugestão`,
+                `O texto final e a decisão de publicar são sempre tuas — revê antes de colar no canal. Nunca é publicado automaticamente por nenhum sistema.`,
+                ``,
+                `### Depois de decidires`,
+                `- [ ] Publicado no canal (ajusta o texto à vontade antes de colar)`,
+                `- [ ] Decidido não publicar (explica porquê num comentário, se for útil para o futuro)`,
+                ``,
+                `Fecha esta issue depois de decidires.`,
+              ].join('\n'),
+              labels: ['canal-rascunho'],
+            });
+            console.log(`Issue de rascunho criada: ${tituloIssue}`);
 
       # ── Step 8: Abrir Issues se mudanças ou divergências ────────────────────
       - name: Abrir Issues se mudanças detectadas
@@ -1222,7 +1334,7 @@ jobs:
                       `6. Criar \`calendario-pagamentos-psu.html\` (gatilho: valores e datas confirmados)`,
                       `7. Actualizar avisos em \`rsi.html\`, \`subsidio-desemprego.html\`, \`subsidio-parental.html\``,
                       `8. Actualizar data de verificação em todas as páginas do cluster PSU`,
-                      `9. Se confirmada uma alteração real a um apoio coberto pelo site: considerar publicação no canal de WhatsApp (texto escrito à mão, publicação manual, nunca automática) — ver ROADMAP.md → \"À espera de um sinal\" → \"Canal de WhatsApp\"`,
+                      `9. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
                       `10. Fechar esta issue após actualização completa`,
                       ``,
                       `### Contexto`,
@@ -1274,7 +1386,7 @@ jobs:
                       `4. Se for a fusão "produto único": rever \`porta-65.html\` por inteiro (pode deixar de fazer sentido como está) e o aviso de watchlist nele`,
                       `5. Actualizar \`primeiro-direito.html\` e \`p/habitacao.html\` se o novo regime tocar em situações de carência habitacional`,
                       `6. Actualizar data de verificação em todas as páginas tocadas`,
-                      `7. Se confirmada uma alteração real a um apoio coberto pelo site: considerar publicação no canal de WhatsApp (texto escrito à mão, publicação manual, nunca automática) — ver ROADMAP.md → \"À espera de um sinal\" → \"Canal de WhatsApp\"`,
+                      `7. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
                       `8. Fechar esta issue após actualização completa`,
                       ``,
                       `### Contexto`,
@@ -1322,7 +1434,7 @@ jobs:
                       `3. Actualizar \`garantia-publica-credito-habitacao.html\` com o valor/prazo confirmado`,
                       `4. Actualizar \`simulador-imt-jovem.html\` se algum parâmetro partilhado for afectado`,
                       `5. Actualizar data de verificação em todas as páginas tocadas`,
-                      `6. Se confirmada uma alteração real a um apoio coberto pelo site: considerar publicação no canal de WhatsApp (texto escrito à mão, publicação manual, nunca automática) — ver ROADMAP.md → \"À espera de um sinal\" → \"Canal de WhatsApp\"`,
+                      `6. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
                       `7. Fechar esta issue após actualização completa`,
                       ``,
                       `### Contexto`,
@@ -1379,7 +1491,7 @@ jobs:
                       `6. \`simulador-ase.html\`/\`acao-social-escolar.html\` — escalões derivados do IAS (50%/100%), ainda não migrados para o padrão YAML (ver CLAUDE.md \"DADOS ABERTOS\", commit 3 bloqueado à espera do despacho anual da DGEstE)`,
                       `7. \`tests/test_valores_ancora.py\` — o novo valor do IAS tem de substituir a constante \`IAS_2026 = 537.13\` (e o nome da constante, se o ano mudar) — este canário cobre \"537,13€\" em vários \`<title>\`/meta description; falha sozinho enquanto não for actualizado`,
                       `8. Actualizar a data de verificação em todas as páginas tocadas`,
-                      `9. Se confirmada uma alteração real a um apoio coberto pelo site: considerar publicação no canal de WhatsApp (texto escrito à mão, publicação manual, nunca automática) — ver ROADMAP.md → \"À espera de um sinal\" → \"Canal de WhatsApp\"`,
+                      `9. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
                       `10. Fechar esta issue após actualização completa`,
                       ``,
                       `### Contexto`,
@@ -1434,7 +1546,7 @@ jobs:
                       `2. Se for o artigo 17.º: actualizar \`psu-quando-entra-em-vigor.html\`/\`simulador-psu.html\` — substituir "único ponto ainda sem valor concreto" pelo valor real; considerar acrescentar o parâmetro a \`dados/parametros/psu.yaml\``,
                       `3. Se for os artigos 32.º/59.º: actualizar \`como-pedir-psu.html\` com os meios de prova/procedimentos confirmados`,
                       `4. Actualizar a data de verificação nas páginas tocadas`,
-                      `5. Se confirmada uma alteração real a um apoio coberto pelo site: considerar publicação no canal de WhatsApp (texto escrito à mão, publicação manual, nunca automática) — ver ROADMAP.md → \"À espera de um sinal\" → \"Canal de WhatsApp\"`,
+                      `5. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
                       `6. Fechar esta issue após actualização`,
                       ``,
                       `### Contexto`,

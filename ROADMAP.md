@@ -100,13 +100,36 @@ Ver CLAUDE.md → **"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO"**
 para o detalhe completo. Resumo: publica-se quando (1) um sentinela
 dirigido (`dre_psu`, `dre_psu_regulamentacao`, `dre_habitacao_paer`,
 `dre_habitacao_garantia`, `dre_ias`) dispara **e** a verificação manual
-confirma alteração real a um apoio, ou (2) uma página é corrigida por
+confirma alteração real a um apoio, (2) uma página é corrigida por
 mudança de facto legal com avanço da data "Verificado a" — nunca por
-reorganização, trabalho interno ou calendário. Sem nada a publicar:
-silêncio, nunca um lembrete periódico. As 5 Issues automáticas destes
-sentinelas (`pipeline-diario.yml`, Step 8) já têm um passo extra na
-checklist a assinalar a candidatura — decisão e texto sempre do Nuno,
-publicação manual, sem gateway/API nova.
+reorganização/trabalho interno —, ou (3) uma vez por mês, no primeiro
+dia útil, o calendário de pagamentos do mês inteiro. Sem nada a
+publicar: silêncio, nunca um lembrete periódico.
+
+**Preparação automática do rascunho — implementada (2026-08-31)**:
+`scripts/preparar_canal.py` (corrido em `pipeline-diario.yml`) cobre os
+gatilhos 1 e 3 — gatilho 1 via fila manual `data/canal_pendente.json`
+(uma sessão editorial escreve o resumo no mesmo commit da correcção;
+o script só formata e entrega, nunca decide), gatilho 3 gerado
+automaticamente de `data/calendario_pagamentos.json`. Sem nada a
+publicar, nenhuma Issue `canal-rascunho` é criada. Decisão e publicação
+continuam sempre manuais — ver CLAUDE.md → "Mecanismo" para o detalhe.
+
+**Gatilho de "notícia relevante" — deliberadamente NÃO construído.**
+Passo 0 desta sessão mediu os três gatilhos propostos contra os dados
+reais de agosto de 2026 antes de escrever qualquer código: o critério
+de selecção já usado por `gerar_noticias.py` (um vencedor/dia, até 3
+categorias) teria dado **~20 dias em 31 com pelo menos uma notícia
+vencedora** — muito acima do limite de 10/mês combinado com os outros
+gatilhos. Um filtro mais apertado (só título com sinal legal directo —
+"decreto-lei"/"portaria"/"promulga"/"entra em vigor"/"Diário da
+República") reduzia para **2 dias**, mas ambos coincidiam com dias já
+cobertos pelo gatilho 1 (a publicação do DL 166/2026 da PSU) — ou seja,
+não acrescentava nenhuma mensagem que o gatilho legal não desse já,
+só código extra a manter. Decisão do Nuno: não construir este gatilho
+agora. Reabrir só com dados novos que mostrem o contrário (ex.: um
+filtro que capture notícias genuinamente novas sem sobrepor o gatilho
+1) — nunca por rotina.
 
 ### Manuais (só o Nuno vê o sinal — o sistema não avisa)
 

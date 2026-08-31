@@ -1,0 +1,4 @@
+{
+  "_nota": "Fila do canal de WhatsApp — PREENCHIDA À MÃO por uma sessão editorial, sempre no MESMO COMMIT em que corrige uma página por causa de uma alteração legal confirmada (nunca por refactor/reorganização/limpeza). NUNCA escrita pelo pipeline automático — scripts/preparar_canal.py só CONSOME, removendo a entrada mais antiga entregue e preservando esta nota. Cada entrada em 'entradas': {\"titulo\": string, \"resumo\": texto pronto a copiar para o WhatsApp em PT-PT simples, \"paginas\": [\"slug.html\", ...] tocadas pela correcção}. Ver CLAUDE.md → 'CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO' → 'Mecanismo' para o detalhe completo — e a checklist das Issues dos 5 sentinelas dirigidos em pipeline-diario.yml, que aponta para aqui.",
+  "entradas": []
+}
