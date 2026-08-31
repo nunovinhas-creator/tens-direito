@@ -2833,7 +2833,102 @@ Quando (e se) links de afiliados forem introduzidos:
 
 ---
 
-## E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL
+## CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO
+
+O convite ao canal (bloco `<!-- CANAL WHATSAPP -->` em `index.html` + 5
+artigos de maior tráfego — `prova-escolar.html`,
+`prestacao-social-para-a-inclusao.html`, `abono-de-familia.html`,
+`porta-65.html`, `subsidio-desemprego.html` —, PR #140, 2026-08-30)
+promete ao leitor: **"Avisamos só quando uma regra muda a sério — sem
+grupo, sem responderes a nada."** A partir do 1.º seguidor essa frase é
+uma obrigação editorial, não só copy — sem um critério explícito do que
+justifica um post, o canal morre por omissão, o mesmo padrão de páginas
+que ficaram indefinidamente "à espera de um despacho" sem ninguém a
+decidir quando agir (ver "🔔 À ESPERA DE UM SINAL" no `ROADMAP.md`). Esta
+secção define esse critério; o `ROADMAP.md` só aponta para aqui.
+
+**Nenhuma automação publica no canal.** Zero integração com a API do
+WhatsApp/Meta Business, zero gateway, zero token novo no repositório —
+decisão e texto são sempre do Nuno, publicados manualmente. O que existe
+é só o gatilho que diz **quando vale a pena olhar para o canal**, mais um
+apontador nas Issues automáticas já existentes (ver "Mecanismo" abaixo).
+
+### Publica-se quando (qualquer um dos dois — nunca por omissão de nenhum)
+
+1. **Um sentinela dirigido dispara E a verificação manual confirma
+   alteração real** a um apoio coberto pelo site. "Dirigido" = reconhece
+   um **acto legal concreto** (Decreto-Lei ou Portaria publicados em
+   dre.pt, por pesquisa de frase exacta) — nunca uma mudança de hash
+   genérica. Os 5 sentinelas dirigidos hoje activos:
+
+   | Sentinela | O que reconhece |
+   |---|---|
+   | `dre_psu` | Decreto-Lei sobre a PSU |
+   | `dre_psu_regulamentacao` | Portaria que regulamenta o DL n.º 166/2026 (PSU) |
+   | `dre_habitacao_paer` | Decreto-Lei sobre o Apoio Extraordinário à Renda |
+   | `dre_habitacao_garantia` | Decreto-Lei que cita o DL n.º 44/2024 (Garantia Pública) |
+   | `dre_ias` | Portaria do IAS |
+
+   O disparo do sentinela **nunca chega sozinho** — é só o início da
+   verificação humana já exigida pela Issue automática (ver "CLASSIFICADOR
+   — VERIFICAÇÃO POSITIVA" e "IMPACTO DA PSU"/"CLUSTER HABITAÇÃO" para o
+   detalhe de cada um). Vários destes sentinelas já produziram falsos
+   positivos confirmados e fechados sem qualquer alteração ao site (Issues
+   #55-#58 do MEGA, #73/#74 do PAER, #114 de `dre_habitacao_paer` — ver
+   "MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS" e "CLUSTER
+   HABITAÇÃO") — um disparo fechado como falso positivo nunca é publicável,
+   por definição não houve mudança nenhuma.
+2. **Uma página é corrigida por mudança de facto legal**, com avanço da
+   data "Verificado a"/`dateModified` — nunca por reorganização,
+   refactor, limpeza técnica ou melhoria de texto sem facto novo por
+   trás. Cobre tanto correcções vindas de um sentinela automático (ponto
+   1) como as encontradas manualmente numa sessão de fact-check
+   (`WebSearch`) sem qualquer sentinela a disparar — ex.: a correcção dos
+   limites de IMT Jovem nas Regiões Autónomas, o piso do subsídio de
+   doença (RMMG, não IAS), ou os 13 apoios da PSU confirmados pela Lei
+   n.º 36/2026 — todas já documentadas nas respectivas entradas de
+   revisão deste ficheiro.
+
+### Não se publica
+
+- Por **ruído já classificado como tal** — `MUDOU`/"conteúdo suspeito"
+  sem alteração real, ou qualquer Issue de sentinela dirigido fechada
+  como falso positivo (mesma lista do ponto 1 acima).
+- Por **trabalho interno** — testes, refactor, reestruturação de
+  conteúdo/navegação, infra-estrutura, acessibilidade, limpeza de CSS,
+  SEO técnico (canónicas, JSON-LD, sitemap) — mesmo numa sessão grande
+  e com muitos commits, nada disto é "uma regra que mudou" para quem
+  segue o canal.
+- Por **calendário** — nunca publicar só porque passou tempo desde a
+  última vez. O canal não promete cadência nenhuma; inventar uma
+  quebraria a promessa "avisamos só quando", não a cumpriria.
+
+### Quando não há nada para publicar: nada
+
+Silêncio é o comportamento correcto sempre que nenhuma das duas condições
+acima se verificar — é exactamente o que o convite promete ao leitor.
+Nunca um lembrete periódico, nunca uma mensagem de "continuamos aqui" só
+para manter presença. O mesmo princípio de honestidade já aplicado ao
+resto do site (ver "FRESCURA DA HOMEPAGE" → "Regra de honestidade": nenhum
+bloco mostra uma data inventada só para parecer actual) aplica-se ao
+canal.
+
+### Mecanismo — sinalização nas Issues existentes, sem automação nova
+
+Os 5 blocos de Issue dos sentinelas dirigidos, em
+`.github/workflows/pipeline-diario.yml` (Step 8, "Abrir Issues se
+mudanças detectadas"), ganharam um passo adicional na checklist "Acções
+necessárias", sempre o penúltimo (antes de "Fechar esta issue"):
+**"Se confirmada uma alteração real a um apoio coberto pelo site:
+considerar publicação no canal de WhatsApp (...) — ver ROADMAP.md → 'À
+espera de um sinal' → 'Canal de WhatsApp'"**. Nada além de texto —
+não cria label novo, não abre issue própria, não chama nenhuma API do
+WhatsApp. É o mesmo humano que já teria de abrir a Issue para actualizar
+o site a decidir, no mesmo local onde já está a decidir o resto, sem
+adicionar nenhum passo de processo novo. Escolhido este caminho em vez de
+uma automação real precisamente porque o critério ("verificação manual
+confirma alteração real") já é, por desenho, um passo humano — uma
+automação que publicasse sozinha violaria a condição que a define.
 
 Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
 mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
