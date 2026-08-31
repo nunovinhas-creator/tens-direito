@@ -2,9 +2,11 @@
 Testes para scripts/preparar_canal.py — rascunho diário do canal de
 WhatsApp (nunca publica, só prepara texto pronto a copiar).
 
-Cobre os dois gatilhos construídos (alteração legal confirmada,
-calendário mensal), a prioridade entre eles, o limite de 1
-rascunho/dia, e os caminhos de silêncio (nada a publicar). O gatilho de
+Cobre os gatilhos construídos — alteração legal confirmada (fila
+manual), alteração legal por confirmar (caminho automático via
+sentinela dirigido), calendário mensal — a prioridade entre eles, o
+limite de 1 rascunho/dia, a deduplicação por ocorrência do caminho
+automático, e os caminhos de silêncio (nada a publicar). O gatilho de
 "notícia relevante" foi deliberadamente NÃO construído — ver
 ROADMAP.md/CLAUDE.md — por isso não tem testes aqui.
 """
@@ -15,10 +17,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from preparar_canal import (  # noqa: E402
+    SENTINELAS_DIRIGIDOS,
+    avisos_de_hoje,
     calendario_devido,
     formatar_rascunho_calendario,
     formatar_rascunho_legal,
+    formatar_rascunho_sentinela,
     main,
+    obter_deteccao_sentinela,
     obter_pendente_legal,
 )
 
@@ -53,6 +59,22 @@ def _preparar_repo_falso(
     if calendario is not None:
         _escrever(dados_dir / "calendario_pagamentos.json", calendario)
     return tmp_path
+
+
+def _escrever_linha_avisos_log(tmp_path: Path, data_iso: str, chave_aviso: str, excerto: str) -> None:
+    """
+    Acrescenta uma linha a data/scraped/avisos.log no formato real
+    escrito por `scripts/scraper_playwright.py::_registar_aviso`
+    (timestamp ISO no início da linha + "AVISO slug=... motivo=chave:excerto").
+    Cumulativo por desenho (`mode="a"`) — mesmo comportamento do ficheiro
+    real, necessário para os testes de deduplicação por ocorrência (uma
+    linha por dia, mesmo excerto).
+    """
+    caminho = tmp_path / "data" / "scraped" / "avisos.log"
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    linha = f"{data_iso}T09:00:00.000000+00:00 AVISO slug=dre_x motivo={chave_aviso}:{excerto}\n"
+    with open(caminho, "a", encoding="utf-8") as f:
+        f.write(linha)
 
 
 _CALENDARIO_AGOSTO = {
@@ -106,6 +128,85 @@ def test_fila_so_com_entradas_malformadas_devolve_none():
     entrada, resto = obter_pendente_legal(fila)
     assert entrada is None
     assert resto == []
+
+
+# ── avisos_de_hoje / obter_deteccao_sentinela ───────────────────────────
+
+
+def test_avisos_de_hoje_filtra_pelo_prefixo_da_data(tmp_path):
+    caminho = tmp_path / "avisos.log"
+    caminho.write_text(
+        "2026-08-29T09:00:00+00:00 AVISO slug=x motivo=antigo:x\n"
+        "2026-08-31T09:00:00+00:00 AVISO slug=x motivo=hoje:y\n",
+        encoding="utf-8",
+    )
+    linhas = avisos_de_hoje(caminho, "2026-08-31")
+    assert len(linhas) == 1
+    assert "hoje:y" in linhas[0]
+
+
+def test_avisos_de_hoje_ficheiro_inexistente_devolve_lista_vazia(tmp_path):
+    assert avisos_de_hoje(tmp_path / "nao_existe.log", "2026-08-31") == []
+
+
+def test_obter_deteccao_sentinela_reconhece_as_5_chaves_dirigidas():
+    # As 5 chaves têm de bater exactamente com as que
+    # scripts/scraper_playwright.py escreve (_registar_aviso) — nunca um
+    # nome inventado que nunca dispararia na prática.
+    assert set(SENTINELAS_DIRIGIDOS) == {
+        "dre_psu_decreto_detectado",
+        "dre_psu_regulamentacao_portaria_detectada",
+        "dre_habitacao_paer_decreto_detectado",
+        "dre_habitacao_garantia_decreto_detectado",
+        "dre_ias_portaria_detectada",
+    }
+
+
+def test_obter_deteccao_sentinela_extrai_chave_e_excerto():
+    avisos_hoje = [
+        "2026-08-31T09:00:00+00:00 AVISO slug=dre_psu "
+        "motivo=dre_psu_decreto_detectado:- Decreto-Lei n.º 200/2026 - Série I de 2026-08-31"
+    ]
+    deteccao = obter_deteccao_sentinela(avisos_hoje, {})
+    assert deteccao is not None
+    chave_aviso, excerto = deteccao
+    assert chave_aviso == "dre_psu_decreto_detectado"
+    assert "Decreto-Lei n.º 200/2026" in excerto
+
+
+def test_obter_deteccao_sentinela_sem_sinal_hoje_devolve_none():
+    assert obter_deteccao_sentinela([], {}) is None
+    assert obter_deteccao_sentinela(["linha sem nenhuma chave dirigida"], {}) is None
+
+
+def test_obter_deteccao_sentinela_ocorrencia_ja_rascunhada_nunca_repete():
+    avisos_hoje = [
+        "2026-08-31T09:00:00+00:00 AVISO slug=dre_psu "
+        "motivo=dre_psu_decreto_detectado:- Decreto-Lei n.º 166/2026"
+    ]
+    ja_rascunhados = {"dre_psu_decreto_detectado": "- Decreto-Lei n.º 166/2026"}
+    assert obter_deteccao_sentinela(avisos_hoje, ja_rascunhados) is None
+
+
+def test_obter_deteccao_sentinela_excerto_diferente_conta_como_ocorrencia_nova():
+    avisos_hoje = [
+        "2026-09-01T09:00:00+00:00 AVISO slug=dre_psu "
+        "motivo=dre_psu_decreto_detectado:- Decreto-Lei n.º 999/2026 - Série I de 2026-09-01"
+    ]
+    ja_rascunhados = {"dre_psu_decreto_detectado": "- Decreto-Lei n.º 166/2026"}
+    deteccao = obter_deteccao_sentinela(avisos_hoje, ja_rascunhados)
+    assert deteccao is not None
+    assert "999/2026" in deteccao[1]
+
+
+def test_formatar_rascunho_sentinela_avisa_para_nao_publicar_sem_confirmar():
+    texto = formatar_rascunho_sentinela(
+        "dre_ias_portaria_detectada", "- Portaria n.º 1/2027 - Série I de 2027-01-05"
+    )
+    assert "POR CONFIRMAR" in texto
+    assert "Indexante dos Apoios Sociais" in texto
+    assert "Portaria n.º 1/2027" in texto
+    assert "Confirma o facto na fonte oficial" in texto
 
 
 # ── calendario_devido ────────────────────────────────────────────────────
@@ -303,6 +404,140 @@ def test_nota_explicativa_sobrevive_ao_consumo_da_fila(tmp_path):
     documento_persistido = json.loads((tmp_path / "data" / "canal_pendente.json").read_text())
     assert documento_persistido["_nota"] == "PREENCHIDA À MÃO — nunca apagar esta nota."
     assert documento_persistido["entradas"] == []
+
+
+# ── main() — caminho automático (sentinela, "por confirmar") ────────────
+
+
+def test_main_sentinela_prepara_rascunho_por_confirmar(tmp_path):
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario={"meses": []})
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-31", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 200/2026"
+    )
+    saida = tmp_path / "saida.json"
+    resultado = main(raiz=tmp_path, hoje="2026-08-31", saida=saida)
+
+    assert resultado is not None
+    assert resultado["confirmado"] is False
+    assert resultado["origem"] == "sentinela"
+    assert resultado["sentinela"] == "dre_psu_decreto_detectado"
+    assert "POR CONFIRMAR" in resultado["texto"]
+    assert saida.exists()
+
+    estado_persistido = json.loads((tmp_path / "data" / "canal_estado.json").read_text())
+    assert estado_persistido["sentinelas_rascunhadas"] == {
+        "dre_psu_decreto_detectado": "- Decreto-Lei n.º 200/2026"
+    }
+    assert estado_persistido["ultima_entrega_canal"] == "2026-08-31"
+
+
+def test_main_sem_sinal_de_sentinela_hoje_nunca_produz_rascunho_por_confirmar(tmp_path):
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario={"meses": []})
+    # sinal de ONTEM, nunca de hoje — avisos_de_hoje() tem de o excluir
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-30", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 200/2026"
+    )
+    resultado = main(raiz=tmp_path, hoje="2026-08-31", saida=tmp_path / "saida.json")
+    assert resultado is None
+
+
+def test_main_fila_manual_confirmada_ganha_sobre_sentinela_no_mesmo_dia(tmp_path):
+    _preparar_repo_falso(
+        tmp_path,
+        pendente=[{"titulo": "Facto legal", "resumo": "Resumo pronto."}],
+        estado={},
+        calendario={"meses": []},
+    )
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-31", "dre_ias_portaria_detectada", "- Portaria n.º 1/2027"
+    )
+    resultado = main(raiz=tmp_path, hoje="2026-08-31", saida=tmp_path / "saida.json")
+
+    assert resultado["confirmado"] is True
+    assert resultado["origem"] == "fila_manual"
+    # o sinal do sentinela nunca foi "gasto" — fica elegível para o dia
+    # seguinte, exactamente como o calendário fica em espera na colisão
+    # já testada acima
+    estado_persistido = json.loads((tmp_path / "data" / "canal_estado.json").read_text())
+    assert "sentinelas_rascunhadas" not in estado_persistido
+
+
+def test_main_sentinela_ganha_sobre_calendario_no_mesmo_dia(tmp_path):
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario=_CALENDARIO_AGOSTO)
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-03", "dre_habitacao_paer_decreto_detectado", "- Decreto-Lei n.º 5/2026"
+    )
+    # 2026-08-03 é o primeiro dia útil de agosto — o calendário estaria
+    # devido, mas a detecção do sentinela (alteração legal) tem prioridade
+    resultado = main(raiz=tmp_path, hoje="2026-08-03", saida=tmp_path / "saida.json")
+
+    assert resultado["confirmado"] is False
+    assert resultado["gatilho"] == "alteracao_legal"
+    estado_persistido = json.loads((tmp_path / "data" / "canal_estado.json").read_text())
+    assert "ultimo_calendario_publicado" not in estado_persistido
+
+
+def test_main_mesma_ocorrencia_de_sentinela_nunca_gera_dois_rascunhos(tmp_path):
+    # Cenário real (ver Issue #132 em CLAUDE.md): o mesmo sentinela
+    # continua a devolver o MESMO excerto em dias seguidos, sem que
+    # tenha havido nenhuma alteração legal nova.
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario={"meses": []})
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-27", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 166/2026"
+    )
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-28", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 166/2026"
+    )
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-29", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 166/2026"
+    )
+
+    r1 = main(raiz=tmp_path, hoje="2026-08-27", saida=tmp_path / "s1.json")
+    assert r1 is not None
+    assert r1["confirmado"] is False
+
+    r2 = main(raiz=tmp_path, hoje="2026-08-28", saida=tmp_path / "s2.json")
+    assert r2 is None
+
+    r3 = main(raiz=tmp_path, hoje="2026-08-29", saida=tmp_path / "s3.json")
+    assert r3 is None
+
+
+def test_main_sentinela_com_excerto_novo_volta_a_gerar_rascunho(tmp_path):
+    # A ocorrência muda de facto (um acto diferente) — nunca fica presa
+    # ao "já rascunhado" de uma ocorrência anterior.
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario={"meses": []})
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-08-27", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 166/2026"
+    )
+    _escrever_linha_avisos_log(
+        tmp_path, "2026-09-10", "dre_psu_decreto_detectado", "- Decreto-Lei n.º 999/2026"
+    )
+
+    r1 = main(raiz=tmp_path, hoje="2026-08-27", saida=tmp_path / "s1.json")
+    assert r1["confirmado"] is False
+
+    r2 = main(raiz=tmp_path, hoje="2026-09-10", saida=tmp_path / "s2.json")
+    assert r2 is not None
+    assert r2["confirmado"] is False
+    assert "999/2026" in r2["texto"]
+
+
+def test_main_calendario_e_fila_manual_continuam_confirmados(tmp_path):
+    # Reconfirma que só o caminho do sentinela nasce "por confirmar" —
+    # nenhuma regressão nos dois gatilhos já existentes.
+    _preparar_repo_falso(
+        tmp_path,
+        pendente=[{"titulo": "Facto legal", "resumo": "Resumo pronto."}],
+        estado={},
+        calendario={"meses": []},
+    )
+    r1 = main(raiz=tmp_path, hoje="2026-08-30", saida=tmp_path / "s1.json")
+    assert r1["confirmado"] is True
+
+    _preparar_repo_falso(tmp_path, pendente=[], estado={}, calendario=_CALENDARIO_AGOSTO)
+    r2 = main(raiz=tmp_path, hoje="2026-08-03", saida=tmp_path / "s2.json")
+    assert r2["confirmado"] is True
 
 
 def test_ficheiro_real_de_producao_tem_nota_explicativa():
