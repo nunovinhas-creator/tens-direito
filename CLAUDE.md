@@ -2941,13 +2941,14 @@ canal.
 
 Substitui o mecanismo anterior (só texto na checklist das Issues dos
 sentinelas, nunca um rascunho de facto) por uma preparação real, mas
-sempre parada um passo antes de publicar. Só cobre os gatilhos 1
-(alteração legal) e 3 (calendário) da secção anterior — o gatilho de
-"notícia relevante" ficou deliberadamente por construir (ver
-`ROADMAP.md` → "À espera de um sinal" → "Canal de WhatsApp" para a
-medição real de agosto de 2026 e a razão).
+sempre parada um passo antes de publicar. Cobre o gatilho 1 (alteração
+legal — em duas variantes, 1a/1b, ver abaixo) e o gatilho 3
+(calendário) da secção anterior — o gatilho de "notícia relevante"
+ficou deliberadamente por construir (ver `ROADMAP.md` → "À espera de um
+sinal" → "Canal de WhatsApp" para a medição real de agosto de 2026 e a
+razão).
 
-**Gatilho 1 — fila manual `data/canal_pendente.json`**
+**Gatilho 1a — fila manual `data/canal_pendente.json`, `confirmado: true`**
 (`{"_nota": "...", "entradas": [{titulo, resumo, paginas[]}]}`):
 preenchida à MÃO por uma sessão editorial, **no mesmo commit** em que
 corrige uma página por causa de uma alteração legal confirmada — nunca
@@ -2970,54 +2971,99 @@ nunca decide se algo é "uma alteração real" — só consome a entrada mais
 antiga de `entradas` e formata. Isto substitui o antigo passo
 "considerar publicação" nas checklists dos 5 blocos de Issue dos
 sentinelas dirigidos (`pipeline-diario.yml`, Step 8) — cada um aponta
-agora para `data/canal_pendente.json` (**é aí que a decisão "confirmada
-uma alteração real" é tomada**, no mesmo passo da checklist) em vez de
-só "considerar".
+para `data/canal_pendente.json` (**é aí que a decisão "confirmada uma
+alteração real" é tomada**, no mesmo passo da checklist) em vez de só
+"considerar".
 
-**Gatilho 3 — `data/calendario_pagamentos.json`**: sem fila manual,
-gerado directamente (já é fonte verificada). `calendario_devido()`
-só dispara quando (a) o mês corrente já está no JSON, (b) hoje é dia
-útil (seg-sex — sem calendário de feriados, limitação conhecida,
-nunca escondida) e (c) o mês ainda não foi entregue este mês
-(`data/canal_estado.json["ultimo_calendario_publicado"]`).
+**Gatilho 1b — caminho automático, sem fila manual, `confirmado: false`
+(2026-08-31)**: quando um dos 5 sentinelas dirigidos escreve a sua
+chave de aviso em `data/scraped/avisos.log` no dia de hoje (mesmas 5
+chaves que já geram Issue própria no Step 8 — `dre_psu_decreto_detectado`,
+`dre_psu_regulamentacao_portaria_detectada`,
+`dre_habitacao_paer_decreto_detectado`,
+`dre_habitacao_garantia_decreto_detectado`, `dre_ias_portaria_detectada`),
+`scripts/preparar_canal.py::obter_deteccao_sentinela()` prepara logo um
+rascunho — sem esperar que uma sessão editorial preencha 1a primeiro.
+Nunca confunde-se com 1a: nasce `confirmado: false`, com `sentinela`
+(a chave de aviso) e um texto que é só o excerto bruto detectado em
+dre.pt, nunca pronto a copiar. **O aviso "NÃO PUBLICAR AINDA" é
+obrigatório e vem sempre ANTES do texto** no corpo da Issue (Step 7h do
+workflow, ver abaixo) — motivado por os sentinelas já terem disparado
+por ruído confirmado depois de criada a Issue (Regulamento da Série II
+na Issue #114, o próprio DL 166/2026 já conhecido a reaparecer na Issue
+#132): um rascunho automático nunca pode ser tratado como pronto a
+publicar, mas também não faz sentido perder o sinal só porque ninguém
+preencheu 1a ainda.
+
+Deduplicado por **ocorrência**, não por dia: `data/canal_estado.json`
+guarda, em `sentinelas_rascunhadas` (`{chave_aviso: excerto}`), o
+último excerto para o qual este script já produziu um rascunho por
+sentinela — só volta a disparar quando o excerto detectado hoje for
+diferente do último rascunhado (um acto genuinamente novo, não o mesmo
+decreto-lei/portaria a persistir na pesquisa dia após dia, como
+aconteceu na prática antes do corte de recência da Issue #132 ser
+corrigido). A chave só é registada quando um rascunho é de facto
+produzido — se o sinal aparecer num dia em que 1a já ocupou o único
+slot diário, fica por rascunhar e continua elegível no dia seguinte
+(nunca perdido em silêncio).
+
+**Gatilho 3 — `data/calendario_pagamentos.json`, `confirmado: true`**:
+sem fila manual, gerado directamente (já é fonte verificada).
+`calendario_devido()` só dispara quando (a) o mês corrente já está no
+JSON, (b) hoje é dia útil (seg-sex — sem calendário de feriados,
+limitação conhecida, nunca escondida) e (c) o mês ainda não foi
+entregue este mês (`data/canal_estado.json["ultimo_calendario_publicado"]`).
 
 **Prioridade e volume**: `scripts/preparar_canal.py::main()` tenta
-sempre o gatilho 1 primeiro; só se a fila estiver vazia tenta o
-gatilho 3. Nunca mais de 1 rascunho/dia. Numa colisão (alteração legal
-pendente no mesmo dia em que o calendário estaria devido), o calendário
-não é descartado — `calendario_devido()` continua a devolver o mês
-enquanto não for marcado como entregue, por isso a corrida seguinte sem
-alteração legal pendente entrega-o (só adiado, nunca perdido).
+sempre 1a primeiro; só se a fila estiver vazia tenta 1b (sentinela);
+só se nenhum sentinela tiver sinal novo tenta 3 (calendário). Nunca
+mais de 1 rascunho/dia, qualquer que seja a origem. Numa colisão
+(mais do que uma origem pendente no mesmo dia), a(s) de prioridade mais
+baixa não são descartadas — `calendario_devido()` continua a devolver o
+mês enquanto não for marcado como entregue, e um sentinela por
+confirmar continua a re-detectar o mesmo excerto todos os dias até ser
+rascunhado — por isso a corrida seguinte sem nada de prioridade mais
+alta entrega-as (só adiadas, nunca perdidas).
 
-**Passo novo em `pipeline-diario.yml`** (entre "Actualizar CLAUDE.md" e
-o guardrail de ficheiros protegidos, antes do push diário): corre
-`scripts/preparar_canal.py`, que escreve `/tmp/canal_rascunho_hoje.json`
-(efémero, fora do repositório, nunca commitado) quando há algo a
-publicar, e actualiza `data/canal_pendente.json`/`data/canal_estado.json`
-(commitados como qualquer outro ficheiro em `data/`). Um step novo mais
-abaixo ("Criar Issue do rascunho do canal") lê esse ficheiro e, se
-existir, cria uma Issue `📱 Canal — <título> (<data>)` com o texto num
-bloco de código pronto a copiar, label `canal-rascunho`, e a nota
+**Passo em `pipeline-diario.yml`** (entre "Actualizar CLAUDE.md" e o
+guardrail de ficheiros protegidos, antes do push diário, portanto
+depois do scrape — `data/scraped/avisos.log` já tem os avisos de hoje
+quando este step corre): corre `scripts/preparar_canal.py`, que escreve
+`/tmp/canal_rascunho_hoje.json` (efémero, fora do repositório, nunca
+commitado) quando há algo a publicar, e actualiza
+`data/canal_pendente.json`/`data/canal_estado.json` (commitados como
+qualquer outro ficheiro em `data/`). Um step mais abaixo ("Criar Issue
+do rascunho do canal") lê esse ficheiro e, se existir, cria uma Issue
+com o texto num bloco de código, label `canal-rascunho`, e a nota
 explícita "o texto final e a decisão de publicar são sempre tuas".
-**Sem nada a publicar, nenhuma Issue é criada** — silêncio é o
-comportamento correcto, mesma regra do resto desta secção. Fecho é
-sempre manual (o Nuno fecha depois de publicar ou de decidir não
-publicar).
+Título e corpo variam com `rascunho.confirmado`: `true` → `📱 Canal —
+<título> (<data>)`, corpo directo ao texto; `false` → `⚠️ Canal (por
+confirmar) — <título> (<data>)`, label extra `verificar`, e o bloco de
+aviso "NÃO PUBLICAR AINDA" logo a seguir ao título da Issue, antes de
+qualquer outra coisa (nunca depois do texto nem só como nota de
+rodapé) — a checklist final também ganha um item extra ("Confirmado na
+fonte oficial") antes dos passos de publicação/decisão. **Sem nada a
+publicar, nenhuma Issue é criada** — silêncio é o comportamento
+correcto, mesma regra do resto desta secção. Fecho é sempre manual (o
+Nuno fecha depois de publicar, de decidir não publicar, ou de confirmar
+que um rascunho "por confirmar" não correspondia a nada real).
 
 **Risco residual aceite, documentado no próprio script**: se a criação
 da Issue falhar por um motivo transitório depois de a fila já ter sido
-consumida/o mês marcado como entregue, essa mensagem específica fica
-sem retry automático (o estado já foi commitado). Considerado aceitável
-para uma ferramenta de sugestão, não um sistema crítico — nunca
-escondido.
+consumida/o mês marcado como entregue/o excerto do sentinela já
+registado, essa mensagem específica fica sem retry automático (o estado
+já foi commitado). Considerado aceitável para uma ferramenta de
+sugestão, não um sistema crítico — nunca escondido.
 
 `scripts/preparar_canal.py` testado em `tests/test_preparar_canal.py`
-(19 casos: os dois gatilhos isoladamente, prioridade/colisão, limite de
-1/mês do calendário, entradas malformadas na fila nunca bloqueiam as
-seguintes, silêncio quando não há nada). Nenhuma chamada de rede — os
-testes correm inteiramente em `tmp_path`, `main()` aceita `raiz`/`hoje`/
-`saida` explícitos (mesmo padrão de `gerir_estado_fontes.main()`), sem
-monkeypatch de constantes de módulo.
+(os três gatilhos isoladamente, prioridade/colisão entre os três,
+limite de 1/mês do calendário, deduplicação por ocorrência do gatilho
+1b — mesmo excerto em dias seguidos nunca gera dois rascunhos, um
+excerto novo gera um rascunho novo —, entradas malformadas na fila
+nunca bloqueiam as seguintes, silêncio quando não há nada). Nenhuma
+chamada de rede — os testes correm inteiramente em `tmp_path`, `main()`
+aceita `raiz`/`hoje`/`saida` explícitos (mesmo padrão de
+`gerir_estado_fontes.main()`), sem monkeypatch de constantes de módulo.
 
 Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
 mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
@@ -9143,3 +9189,100 @@ tentativa ter mutado por engano `data/canal_estado.json` local
 remoto desta sessão), 1 commit — **PR aberto contra `main`, NÃO
 integrado** (instrução explícita: sem merge; ver o PR para o número
 exacto).*
+
+---
+
+*Última revisão: 2026-08-31 (sessão seguinte) — caminho automático para
+o gatilho 1 do canal de WhatsApp, sem passo manual. Até agora o gatilho
+1 (alteração legal) só produzia rascunho depois de uma sessão editorial
+preencher `data/canal_pendente.json` à mão — o disparo de um dos 5
+sentinelas dirigidos (`dre_psu`, `dre_psu_regulamentacao`,
+`dre_habitacao_paer`, `dre_habitacao_garantia`, `dre_ias`) ficava só
+registado na sua própria Issue `verificar`, sem nunca chegar ao canal
+enquanto ninguém confirmasse manualmente. Nova secção "Gatilho 1b" em
+"Mecanismo" (`CLAUDE.md`) com o detalhe completo — resumo: quando
+qualquer um dos 5 escreve a sua chave de aviso em
+`data/scraped/avisos.log` no dia de hoje,
+`scripts/preparar_canal.py::obter_deteccao_sentinela()` prepara logo um
+rascunho `confirmado: false`, sem esperar pela fila manual.
+
+**O aviso é obrigatório e vem sempre antes do texto** — exigência
+central desta sessão, motivada por os sentinelas já terem produzido
+ruído confirmado (Regulamento da Série II na Issue #114, o próprio
+DL 166/2026 já conhecido a reaparecer na Issue #132): um rascunho
+`confirmado: false` nunca pode parecer pronto a publicar. Implementado
+em dois sítios que têm de concordar — o texto do próprio rascunho
+(`formatar_rascunho_sentinela()`, sempre `[POR CONFIRMAR — ...]`) e,
+mais importante, o corpo da Issue criada pelo Step 7h de
+`pipeline-diario.yml`: o bloco `> ⚠️ NÃO PUBLICAR AINDA...` é inserido
+logo a seguir ao título `## Rascunho para o canal de WhatsApp`, antes
+de "Gatilho"/"Data" e muito antes do bloco de código com o texto —
+nunca como nota de rodapé. Título da Issue com prefixo distinto
+(`⚠️ Canal (por confirmar)` em vez de `📱 Canal`) e label extra
+`verificar`, para nunca se confundir na lista de Issues com um
+rascunho já confirmado.
+
+**Deduplicação por ocorrência, não por dia** — o requisito mais
+delicado desta sessão, porque já aconteceu na prática: antes do corte
+de recência da Issue #132 ser corrigido, `dre_psu` re-detectou o mesmo
+DL 166/2026 vários dias seguidos, escrevendo uma linha nova em
+`avisos.log` a cada corrida. Um mecanismo que disparasse "um rascunho
+por dia em que o sentinela dispara" teria criado uma Issue nova todos
+os dias para a mesma causa. Corrigido guardando, em
+`data/canal_estado.json["sentinelas_rascunhadas"]`
+(`{chave_aviso: excerto}`), o último excerto para o qual **já foi
+produzido** um rascunho por sentinela — só volta a disparar quando o
+excerto detectado hoje for genuinamente diferente do último rascunhado
+(nunca "já visto"; a chave só é gravada quando um rascunho é de facto
+entregue, para um sinal que perdeu o slot diário para a fila manual
+nunca ficar perdido, só adiado).
+
+Duas origens, dois estados, nunca misturados: `confirmado: true`
+(fila manual 1a, ou calendário 3 — já verificado, sem julgamento por
+fazer) vs. `confirmado: false` (sentinela 1b, sempre por confirmar).
+Prioridade fixa 1a > 1b > 3, no máximo 1 rascunho/dia como sempre — uma
+origem de prioridade mais baixa nunca é descartada por uma colisão, só
+adiada para a corrida seguinte.
+
+**O que não mudou, conforme pedido**: máximo continua 1 mensagem/dia; a
+publicação continua inteiramente manual (o rascunho automático é ainda
+mais explicitamente "não publiques isto" do que o confirmado); o
+gatilho de "notícia relevante" continua por construir. As checklists
+das Issues dos 5 sentinelas dirigidos (Step 8) não foram tocadas — 1a
+continua a ser o caminho preferido para um rascunho já confirmado e
+pronto a copiar; 1b é só a rede de segurança para quando ninguém a
+preencheu ainda.
+
+`tests/test_preparar_canal.py` ganhou 15 testes novos (36 no total):
+unitários para `avisos_de_hoje()`/`obter_deteccao_sentinela()`/
+`formatar_rascunho_sentinela()` (extracção do excerto, reconhecimento
+das 5 chaves exactas, ocorrência já rascunhada nunca repete, excerto
+diferente conta como ocorrência nova) e de integração via `main()`
+(rascunho por confirmar produzido e persistido correctamente; sem
+sinal de hoje nunca produz nada; fila manual ganha ao sentinela no
+mesmo dia sem gastar o sinal; sentinela ganha ao calendário no mesmo
+dia; a mesma ocorrência ao longo de 3 dias consecutivos — cenário real
+da Issue #132, reproduzido com fixtures — nunca gera mais do que 1
+rascunho; um excerto novo volta a gerar rascunho; os dois gatilhos
+pré-existentes continuam sempre `confirmado: true`). Sintaxe do
+JavaScript novo do Step 7h validada com `node --check` e exercitada com
+stubs da API do GitHub (`github.rest.issues.create`) nos dois caminhos
+(confirmado/por confirmar) antes do commit — confirmado que o aviso
+aparece mesmo antes do bloco de código e que o título/labels variam
+como esperado.
+
+Suite completa (`pytest tests/ -q`, ambiente local com
+`playwright`/`feedparser`/`beautifulsoup4`/`lxml`/`jsonschema`
+instalados manualmente — mesmo workaround do `sgmllib3k` já documentado
+em sessões anteriores para o `feedparser`, e o mesmo Chromium
+pré-instalado em `/opt/pw-browsers`): **3649 passed, 4 skipped, 1
+warning em 632s** — os 4 skips continuam exactamente os mesmos 4 da
+allow-list (`tests/skips_permitidos.json`), nenhum skip novo. `ruff
+check scripts/ tests/ --select E,F,W --ignore E501 .` limpo. YAML de
+`pipeline-diario.yml` validado com `yaml.safe_load`.
+`scripts/verificar_injecao.py` reconfirmado limpo (não tocado por esta
+sessão, corrido só como verificação). `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` — sessão sem
+scraper. Trabalho feito na branch `claude/automatic-legal-trigger-path-tqweh9`
+(designada pelo ambiente remoto desta sessão) — commit local, **sem
+push** (instrução explícita desta sessão).*

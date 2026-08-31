@@ -878,6 +878,15 @@ jobs:
       # data de hoje, mesmo padrão dos outros blocos de Issue deste
       # workflow — protege contra uma corrida repetida no mesmo dia
       # (workflow_dispatch manual) duplicar a Issue.
+      #
+      # `rascunho.confirmado` distingue as duas origens possíveis do
+      # gatilho 1 (ver scripts/preparar_canal.py → "1a"/"1b"): `true` vem
+      # da fila manual `data/canal_pendente.json` (já confirmado por uma
+      # sessão editorial) ou do calendário (já verificado, sem julgamento
+      # por fazer); `false` vem directamente de um dos 5 sentinelas
+      # dirigidos, SEM verificação humana nenhuma ainda — o aviso "NÃO
+      # PUBLICAR AINDA" abaixo é obrigatório e tem de aparecer ANTES do
+      # texto, nunca só como nota de rodapé.
       - name: Criar Issue do rascunho do canal (se houver algo a publicar)
         uses: actions/github-script@v7
         with:
@@ -901,8 +910,16 @@ jobs:
               return;
             }
 
+            // Só `false` explícito conta como "por confirmar" — qualquer
+            // forma inesperada (chave em falta, ficheiro de uma versão
+            // anterior deste script) é tratada como confirmado, nunca o
+            // inverso (nunca esconder um aviso que devia lá estar seria
+            // pior do que mostrar um aviso a mais).
+            const confirmado = rascunho.confirmado !== false;
+
             const hoje = rascunho.data || new Date().toISOString().slice(0, 10);
-            const tituloIssue = `📱 Canal — ${rascunho.titulo} (${hoje})`;
+            const prefixoTitulo = confirmado ? '📱 Canal' : '⚠️ Canal (por confirmar)';
+            const tituloIssue = `${prefixoTitulo} — ${rascunho.titulo} (${hoje})`;
 
             const existentes = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -917,17 +934,34 @@ jobs:
               return;
             }
 
+            let descricaoGatilho = 'alteração legal confirmada (fila manual)';
+            if (rascunho.gatilho === 'calendario') {
+              descricaoGatilho = 'calendário mensal de pagamentos';
+            } else if (!confirmado) {
+              descricaoGatilho = `alteração legal — POR CONFIRMAR (sentinela \`${rascunho.sentinela || 'desconhecido'}\`, automático)`;
+            }
+
+            // Aviso obrigatório, sempre a primeira coisa a seguir ao
+            // título — nunca depois do texto nem escondido no fim.
+            const avisoPorConfirmar = confirmado ? [] : [
+              `> ⚠️ **NÃO PUBLICAR AINDA — esta alteração ainda não foi verificada na fonte.**`,
+              `>`,
+              `> Este rascunho foi gerado automaticamente por um sentinela (\`${rascunho.sentinela || 'desconhecido'}\`) que detectou um sinal em dre.pt — o sentinela NUNCA confirma sozinho que se trata de uma alteração real (já produziu ruído no passado: Regulamento da Série II, DL já conhecido a reaparecer). Confirma primeiro o facto na fonte oficial (a Issue \`verificar\`/\`fonte-alterada\` deste sentinela tem os passos) antes de sequer pensar em copiar este texto para o canal.`,
+              ``,
+            ];
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: tituloIssue,
               body: [
-                `## 📱 Rascunho para o canal de WhatsApp`,
+                `## ${confirmado ? '📱' : '⚠️'} Rascunho para o canal de WhatsApp`,
                 ``,
-                `**Gatilho:** ${rascunho.gatilho === 'calendario' ? 'calendário mensal de pagamentos' : 'alteração legal confirmada'}`,
+                ...avisoPorConfirmar,
+                `**Gatilho:** ${descricaoGatilho}`,
                 `**Data:** ${hoje}`,
                 ``,
-                `### Texto pronto a copiar`,
+                `### Texto ${confirmado ? 'pronto a copiar' : '(rascunho bruto — nunca copiar sem confirmar primeiro)'}`,
                 ``,
                 '```',
                 rascunho.texto,
@@ -937,12 +971,13 @@ jobs:
                 `O texto final e a decisão de publicar são sempre tuas — revê antes de colar no canal. Nunca é publicado automaticamente por nenhum sistema.`,
                 ``,
                 `### Depois de decidires`,
+                ...(confirmado ? [] : [`- [ ] Confirmado na fonte oficial (só depois disto faz sentido pensar nos passos abaixo)`]),
                 `- [ ] Publicado no canal (ajusta o texto à vontade antes de colar)`,
                 `- [ ] Decidido não publicar (explica porquê num comentário, se for útil para o futuro)`,
                 ``,
                 `Fecha esta issue depois de decidires.`,
               ].join('\n'),
-              labels: ['canal-rascunho'],
+              labels: confirmado ? ['canal-rascunho'] : ['canal-rascunho', 'verificar'],
             });
             console.log(`Issue de rascunho criada: ${tituloIssue}`);
 

@@ -1,28 +1,51 @@
 """
 Prepara o rascunho diário do canal de WhatsApp — nunca publica.
 
-Dois gatilhos, por ordem de prioridade (ver CLAUDE.md → "CANAL DE
-WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO"). Deliberadamente só dois —
-o gatilho de "notícia relevante" ficou por construir (medição real de
-agosto de 2026 mostrou ~20 dias/mês com pelo menos uma vencedora do
+Gatilhos, por ordem de prioridade (ver CLAUDE.md → "CANAL DE WHATSAPP —
+GATILHO EDITORIAL DE PUBLICAÇÃO" → "Mecanismo"). O gatilho de "notícia
+relevante" ficou deliberadamente por construir — medição real de agosto
+de 2026 mostrou ~20 dias/mês com pelo menos uma vencedora do
 gerar_noticias.py, dos quais só 2 tinham sinal legal directo no título
-— e esses 2 já coincidiam com o gatilho 1). Ver ROADMAP.md → "À espera
+— e esses 2 já coincidiam com o gatilho 1. Ver ROADMAP.md → "À espera
 de um sinal" → "Canal de WhatsApp" para o raciocínio completo antes de
 o reabrir.
 
-1. ALTERAÇÃO LEGAL CONFIRMADA — data/canal_pendente.json
-   (`{"_nota": "...", "entradas": [{"titulo", "resumo", "paginas": [...]}]}`)
-   é uma fila preenchida à MÃO por uma sessão editorial, no mesmo commit
-   em que corrige uma página por causa de um facto legal confirmado
-   (nunca por refactor/limpeza/reorganização — mesma regra já
-   documentada em CLAUDE.md). O campo `_nota` explica o mecanismo
-   directamente no ficheiro (mesmo padrão de data/destaque_evento.json)
-   e é preservado em todas as escritas deste script — nunca apagado
-   numa reescrita automática. Este script NUNCA decide sozinho se algo
-   é "uma alteração real" — só formata e entrega o que um humano já
-   decidiu e escreveu. É deliberado que a fila não seja preenchida por
-   nenhuma automação: o critério ("verificação manual confirma
-   alteração real") é, por desenho, um passo humano.
+1a. ALTERAÇÃO LEGAL CONFIRMADA — data/canal_pendente.json
+    (`{"_nota": "...", "entradas": [{"titulo", "resumo", "paginas": [...]}]}`)
+    é uma fila preenchida à MÃO por uma sessão editorial, no mesmo
+    commit em que corrige uma página por causa de um facto legal
+    confirmado (nunca por refactor/limpeza/reorganização — mesma regra
+    já documentada em CLAUDE.md). O campo `_nota` explica o mecanismo
+    directamente no ficheiro (mesmo padrão de data/destaque_evento.json)
+    e é preservado em todas as escritas deste script — nunca apagado
+    numa reescrita automática. Este script NUNCA decide sozinho se algo
+    é "uma alteração real" — só formata e entrega o que um humano já
+    decidiu e escreveu. Produz um rascunho `confirmado: true`.
+
+1b. ALTERAÇÃO LEGAL POR CONFIRMAR — caminho automático, sem fila
+    manual: quando um dos 5 sentinelas dirigidos (`dre_psu`,
+    `dre_psu_regulamentacao`, `dre_habitacao_paer`,
+    `dre_habitacao_garantia`, `dre_ias` — ver `SENTINELAS_DIRIGIDOS`)
+    escreve a sua chave de aviso em `data/scraped/avisos.log` no dia de
+    hoje, este script prepara logo um rascunho — sem esperar que uma
+    sessão editorial confirme e preencha 1a primeiro. Nunca confunde-se
+    com 1a: o rascunho nasce `confirmado: false` e o texto nunca é
+    pronto a copiar — é só o excerto bruto detectado em dre.pt, a
+    aguardar verificação humana contra a fonte oficial antes de
+    qualquer publicação (o próprio step de Issues do workflow escreve o
+    aviso "NÃO PUBLICAR AINDA" no corpo, ver pipeline-diario.yml).
+    Motivo de existir a par de 1a: os sentinelas já dispararam por
+    ruído confirmado depois (Regulamento da Série II na Issue #114,
+    falso positivo do próprio DL 166/2026 na Issue #132) — um rascunho
+    "por confirmar" nunca deve ser tratado como pronto, mas também não
+    faz sentido perder o sinal só porque ninguém preencheu 1a ainda.
+    Deduplicado por OCORRÊNCIA, não por dia: se o mesmo sentinela
+    continuar a devolver o mesmo excerto em dias seguintes (já
+    aconteceu na prática, ver `SENTINELAS_DIRIGIDOS`/Issue #132), só o
+    1.º dia produz rascunho — `data/canal_estado.json` guarda o último
+    excerto já rascunhado por sentinela (`sentinelas_rascunhadas`) e só
+    volta a disparar quando o excerto for genuinamente diferente (um
+    acto novo, não o mesmo a persistir na pesquisa).
 
 2. CALENDÁRIO DE PAGAMENTOS — UMA mensagem por mês, a partir do
    primeiro dia útil, com as datas do mês inteiro, geradas de
@@ -31,13 +54,17 @@ o reabrir.
    Nunca um aviso por cada dia de pagamento. "Dia útil" é simplificado
    a segunda-sexta (sem calendário de feriados portugueses — o
    repositório não tem um noutro lado nenhum; documentado aqui como
-   limitação conhecida, nunca escondida).
+   limitação conhecida, nunca escondida). Produz sempre `confirmado: true`
+   — é informação já verificada, sem julgamento humano por fazer.
 
-Regra de volume: no máximo 1 rascunho/dia. Se os dois gatilhos tiverem
-algo pendente no mesmo dia, a alteração legal ganha — o calendário fica
-em espera (não é descartado: `calendario_devido()` continua a devolver
-o mês enquanto não for entregue, por isso a corrida seguinte sem
-alteração legal pendente entrega-o).
+Regra de volume: no máximo 1 rascunho/dia, qualquer que seja a origem.
+Prioridade fixa: 1a (fila manual, já confirmada) > 1b (sentinela, por
+confirmar) > 2 (calendário). Se mais do que um tiver algo pendente no
+mesmo dia, os de prioridade mais baixa ficam em espera — nunca são
+descartados (`calendario_devido()` continua a devolver o mês enquanto
+não for entregue; um sentinela por confirmar continua a re-detectar o
+mesmo excerto todos os dias até ser rascunhado), por isso a corrida
+seguinte sem nada de prioridade mais alta entrega-os.
 
 Saída: escreve /tmp/canal_rascunho_hoje.json (efémero, fora do
 repositório, nunca commitado) para o step de Issues do workflow
@@ -61,6 +88,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Optional
@@ -72,6 +100,30 @@ DOMINIO = "https://tensdireito.com"
 
 sys.path.insert(0, str(RAIZ_MODULO / "scripts"))
 from atualizar_calendario import MESES_PT, PRESTACOES  # noqa: E402
+
+# Os 5 sentinelas dirigidos que já geram Issue própria em
+# pipeline-diario.yml (labels "verificar"/"fonte-alterada") — mesma
+# chave de aviso escrita em data/scraped/avisos.log por
+# scripts/scraper_playwright.py (`_registar_aviso`, chamada com
+# `chave_aviso` a partir de `_detectar_decreto_psu`/
+# `_detectar_decreto_lei_generico`/`_detectar_portaria_generico`).
+# Ordem = a mesma dos blocos de Issue no workflow; só usada para
+# desempate determinístico se mais do que um disparar no mesmo dia
+# (nunca aleatório — nunca dois rascunhos no mesmo dia de qualquer
+# forma, ver regra de volume acima).
+SENTINELAS_DIRIGIDOS = {
+    "dre_psu_decreto_detectado": "Decreto-Lei sobre a Prestação Social Única (PSU)",
+    "dre_habitacao_paer_decreto_detectado": (
+        "Decreto-Lei sobre o Apoio Extraordinário à Renda (PAER)"
+    ),
+    "dre_habitacao_garantia_decreto_detectado": (
+        "Decreto-Lei que cita a Garantia Pública no crédito habitação"
+    ),
+    "dre_ias_portaria_detectada": "Portaria do Indexante dos Apoios Sociais (IAS)",
+    "dre_psu_regulamentacao_portaria_detectada": (
+        "Portaria que regulamenta o Decreto-Lei da PSU"
+    ),
+}
 
 
 def _carregar_json(caminho: Path, omissao):
@@ -127,6 +179,68 @@ def obter_pendente_legal(fila: list) -> tuple[dict | None, list]:
             continue
         return candidata, restante
     return None, restante
+
+
+def avisos_de_hoje(caminho_avisos_log: Path, hoje_iso: str) -> list[str]:
+    """
+    Linhas de data/scraped/avisos.log datadas de hoje — mesmo filtro do
+    step "Abrir Issues se mudanças detectadas" em pipeline-diario.yml
+    (`avisos_txt.split('\\n').filter(l => l.startsWith(hoje))`),
+    reproduzido aqui para nunca divergir. O ficheiro é cumulativo e
+    nunca rotacionado — sem este filtro, uma linha de dias/semanas
+    atrás reapareceria como "detectada hoje" para sempre (mesmo bug já
+    corrigido nas Issues #55-#58 do MEGA).
+    """
+    if not caminho_avisos_log.exists():
+        return []
+    texto = caminho_avisos_log.read_text(encoding="utf-8")
+    return [linha for linha in texto.split("\n") if linha.startswith(hoje_iso)]
+
+
+def obter_deteccao_sentinela(
+    avisos_hoje: list[str], ja_rascunhados: dict
+) -> tuple[str, str] | None:
+    """
+    Devolve (chave_aviso, excerto) do primeiro sentinela dirigido com um
+    sinal NOVO hoje entre os de `SENTINELAS_DIRIGIDOS` — "novo" quer
+    dizer: o excerto detectado hoje é diferente do último excerto para o
+    qual este script já preparou um rascunho para essa mesma chave
+    (`ja_rascunhados`, vindo de data/canal_estado.json). `None` se
+    nenhum sentinela tiver sinal novo hoje.
+
+    Nunca dispara duas vezes para a mesma ocorrência — o mesmo
+    decreto-lei/portaria a persistir nos resultados da pesquisa dia
+    após dia (já aconteceu na prática: Issue #132, dre_psu a re-detectar
+    o próprio DL 166/2026 vários dias seguidos antes de o corte de
+    recência ser corrigido). `ja_rascunhados` só regista uma chave
+    quando um rascunho foi de facto produzido para ela — se o sinal
+    apareceu num dia em que outra origem de maior prioridade ocupou o
+    único slot diário, fica por rascunhar e continua elegível no dia
+    seguinte (nunca perdido silenciosamente).
+    """
+    for chave_aviso in SENTINELAS_DIRIGIDOS:
+        linha = next((linha for linha in avisos_hoje if chave_aviso in linha), None)
+        if linha is None:
+            continue
+        match = re.search(re.escape(chave_aviso) + r":(.*)$", linha)
+        excerto = match.group(1).strip() if match else ""
+        if not excerto:
+            continue
+        if ja_rascunhados.get(chave_aviso) == excerto:
+            continue  # mesma ocorrência já rascunhada — nunca repetir
+        return chave_aviso, excerto
+    return None
+
+
+def formatar_rascunho_sentinela(chave_aviso: str, excerto: str) -> str:
+    nome = SENTINELAS_DIRIGIDOS.get(chave_aviso, chave_aviso)
+    linhas = [
+        f"[POR CONFIRMAR — {nome}]",
+        f"Sinal detectado automaticamente em dre.pt: {excerto}",
+        "Confirma o facto na fonte oficial e reescreve este texto em "
+        "PT-PT simples antes de sequer pensar em publicar.",
+    ]
+    return "\n\n".join(linhas)
 
 
 def calendario_devido(hoje: dt.date, estado: dict, dados_calendario: dict) -> dict | None:
@@ -196,6 +310,7 @@ def main(
     caminho_pendente = raiz / "data" / "canal_pendente.json"
     caminho_estado = raiz / "data" / "canal_estado.json"
     caminho_calendario = raiz / "data" / "calendario_pagamentos.json"
+    caminho_avisos_log = raiz / "data" / "scraped" / "avisos.log"
 
     estado = _carregar_json(caminho_estado, {})
     documento_pendente = _carregar_fila_pendente(caminho_pendente)
@@ -211,6 +326,8 @@ def main(
     if entrada is not None:
         rascunho = {
             "gatilho": "alteracao_legal",
+            "origem": "fila_manual",
+            "confirmado": True,
             "titulo": str(entrada.get("titulo") or "Alteração legal confirmada"),
             "texto": formatar_rascunho_legal(entrada),
             "data": hoje_data.isoformat(),
@@ -218,7 +335,33 @@ def main(
         estado["ultima_entrega_canal"] = hoje_data.isoformat()
         _guardar_json(caminho_estado, estado)
         _guardar_json(saida, rascunho)
-        print(f"Rascunho preparado (alteração legal): {rascunho['titulo']}")
+        print(f"Rascunho preparado (alteração legal, confirmada): {rascunho['titulo']}")
+        return rascunho
+
+    avisos_hoje = avisos_de_hoje(caminho_avisos_log, hoje_data.isoformat())
+    ja_rascunhados = estado.get("sentinelas_rascunhadas", {})
+    deteccao = obter_deteccao_sentinela(avisos_hoje, ja_rascunhados)
+    if deteccao is not None:
+        chave_aviso, excerto = deteccao
+        nome = SENTINELAS_DIRIGIDOS[chave_aviso]
+        rascunho = {
+            "gatilho": "alteracao_legal",
+            "origem": "sentinela",
+            "confirmado": False,
+            "sentinela": chave_aviso,
+            # Sem prefixo "Por confirmar —" aqui: o step de Issues do
+            # workflow já antepõe "⚠️ Canal (por confirmar)" ao título
+            # (rascunho.confirmado === false) — duplicar aqui deixaria o
+            # título da Issue com "por confirmar" repetido duas vezes.
+            "titulo": nome,
+            "texto": formatar_rascunho_sentinela(chave_aviso, excerto),
+            "data": hoje_data.isoformat(),
+        }
+        estado["sentinelas_rascunhadas"] = {**ja_rascunhados, chave_aviso: excerto}
+        estado["ultima_entrega_canal"] = hoje_data.isoformat()
+        _guardar_json(caminho_estado, estado)
+        _guardar_json(saida, rascunho)
+        print(f"Rascunho preparado (sentinela, por confirmar): {rascunho['titulo']}")
         return rascunho
 
     dados_calendario = _carregar_json(caminho_calendario, {})
@@ -226,6 +369,8 @@ def main(
     if mes_dados is not None:
         rascunho = {
             "gatilho": "calendario",
+            "origem": "calendario",
+            "confirmado": True,
             "titulo": f"Calendário de pagamentos — {MESES_PT[mes_dados['mes']]} de {mes_dados['ano']}",
             "texto": formatar_rascunho_calendario(mes_dados),
             "data": hoje_data.isoformat(),

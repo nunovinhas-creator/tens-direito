@@ -106,14 +106,22 @@ reorganização/trabalho interno —, ou (3) uma vez por mês, no primeiro
 dia útil, o calendário de pagamentos do mês inteiro. Sem nada a
 publicar: silêncio, nunca um lembrete periódico.
 
-**Preparação automática do rascunho — implementada (2026-08-31)**:
-`scripts/preparar_canal.py` (corrido em `pipeline-diario.yml`) cobre os
-gatilhos 1 e 3 — gatilho 1 via fila manual `data/canal_pendente.json`
-(uma sessão editorial escreve o resumo no mesmo commit da correcção;
-o script só formata e entrega, nunca decide), gatilho 3 gerado
-automaticamente de `data/calendario_pagamentos.json`. Sem nada a
-publicar, nenhuma Issue `canal-rascunho` é criada. Decisão e publicação
-continuam sempre manuais — ver CLAUDE.md → "Mecanismo" para o detalhe.
+**Preparação automática do rascunho — implementada (2026-08-31), com
+um caminho automático novo para o gatilho 1 (1b — sem esperar pela
+fila manual)**:
+`scripts/preparar_canal.py` (corrido em `pipeline-diario.yml`) cobre o
+gatilho 1 em duas variantes e o gatilho 3 — 1a via fila manual
+`data/canal_pendente.json` (uma sessão editorial escreve o resumo no
+mesmo commit da correcção, `confirmado: true`; o script só formata e
+entrega, nunca decide), 1b automático a partir de qualquer um dos 5
+sentinelas dirigidos escrevendo em `data/scraped/avisos.log`
+(`confirmado: false`, deduplicado por ocorrência — o mesmo excerto em
+dias seguidos nunca gera dois rascunhos), 3 gerado automaticamente de
+`data/calendario_pagamentos.json`. Um rascunho `confirmado: false`
+nasce sempre com o aviso "NÃO PUBLICAR AINDA" antes do texto na Issue —
+nunca é tratado como pronto a copiar. Sem nada a publicar, nenhuma
+Issue `canal-rascunho` é criada. Decisão e publicação continuam sempre
+manuais — ver CLAUDE.md → "Mecanismo" para o detalhe.
 
 **Gatilho de "notícia relevante" — deliberadamente NÃO construído.**
 Passo 0 desta sessão mediu os três gatilhos propostos contra os dados
