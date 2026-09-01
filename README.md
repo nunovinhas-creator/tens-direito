@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **31 de agosto de 2026**.
+Actualizado automaticamente a partir do repositório em **01 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -33,7 +33,7 @@ Actualizado automaticamente a partir do repositório em **31 de agosto de 2026**
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
-| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: agosto 2026 |
+| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: setembro 2026 |
 | [`cartao-europeu-estacionamento.html`](cartao-europeu-estacionamento.html) | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | Tens Direito |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
@@ -276,6 +276,7 @@ tens-direito/
 │   ├── migrar_consentimento.py
 │   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
+│   ├── preparar_canal.py
 │   ├── registar_observacao.py
 │   ├── run_shadow_daily.py
 │   ├── scraper_calendario.py
@@ -403,6 +404,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 31 de agosto de 2026 às 14:07 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 01 de setembro de 2026 às 12:36 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

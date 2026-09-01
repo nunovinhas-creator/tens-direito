@@ -4664,7 +4664,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-08-31*
+*Última revisão automática: 2026-09-01*
 
 ---
 
