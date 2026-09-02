@@ -260,6 +260,39 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   mas o teste novo garante que a lista nunca mais cresce em silêncio: um
   diploma citado numa página nova, sem cartão nem excepção registada,
   faz o CI falhar.
+- **Limiar de rendimento da Garantia para a Infância — provável
+  inconsistência de cenário, por confirmar em fonte primária** (achado em
+  2026-09-02, sessão "Garantia para a Infância" — ver CLAUDE.md, entrada
+  de revisão dessa data, para o detalhe completo): `dados/parametros/
+  abono.yaml` (`garantia_infancia_limite_rr_anual` = 2.495,37 €/ano) nunca
+  cita uma portaria concreta — só o Guia Prático 4001 do ISS, I.P.
+  (interpretativo, não diploma) e a homepage genérica `dre.pt`.
+  Triangulação nova (3 fontes financeiras independentes, aritmeticamente
+  consistentes com os IAS reais) sugere que este limiar segue a MESMA
+  estrutura de 3 cenários já parametrizada para os limites de escalão do
+  abono: (a) manutenção/rendimentos 2024, IAS 509,26 € → 2.495,37 €;
+  (b) pedidos novos/rendimentos 2025, IAS 522,50 € → 2.560,25 €;
+  (c) reavaliação/rendimentos 2026, IAS 537,13 € → 2.631,94 €.
+  `simulador-abono.html` declara em comentário (linha ~444) aplicar
+  sempre o cenário (b) para os escalões, mas usa o valor do cenário (a)
+  para a Garantia — inconsistência interna real, nunca corrigida: a
+  correcção de 19/07/2026 trocou o valor antigo (2.631,94 €, cenário c)
+  por 2.495,37 € (cenário a), nunca por 2.560,25 € (cenário b, o coerente
+  com o resto do simulador). **Não corrigido deliberadamente** — sem
+  fonte primária que confirme a estrutura de 3 cenários especificamente
+  para a Garantia, corrigir seria trocar uma suposição por outra (decisão
+  do Nuno). `abono-de-familia.html`, `simulador-abono.html` e
+  `abono.yaml` não foram tocados; `garantia-para-a-infancia.html` (nova
+  página) publica o valor actual com nota explícita de que não está
+  confirmado em fonte primária. **Sessão dedicada deve começar por**:
+  encontrar a portaria real que fixa este limiar (repetir o acesso a
+  `dre.pt`/`diariodarepublica.pt` num ambiente sem o bloqueio de rede
+  desta sessão, ou pedir confirmação directa ao Nuno, mesmo padrão já
+  usado para a Lei n.º 36/2026/DL n.º 166/2026). Só depois, se confirmada
+  a estrutura de 3 cenários, actualizar `abono.yaml` (3 parâmetros novos,
+  mesmo padrão dos limites de escalão), `simulador-abono.html` (usar o
+  valor do cenário correcto) e `abono-de-familia.html`/
+  `garantia-para-a-infancia.html` (texto).
 - **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
   `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
   2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no

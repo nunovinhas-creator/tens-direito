@@ -468,6 +468,7 @@ para esses três casos.
 | `simulador-imt-jovem.html` | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa | 20 jul. 2026 |
 | `deducao-rendas-irs.html` | Dedução de rendas no IRS 2026: até 900 € por ano | 20 jul. 2026 |
 | `primeiro-direito.html` | 1.º Direito 2026: apoio a quem vive em habitação indigna | 20 jul. 2026 |
+| `garantia-para-a-infancia.html` | Garantia para a Infância 2026: 127,33€/mês, sem pedido | 2 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -9539,3 +9540,141 @@ Issue #151 fecha-se sozinha ao recuperar (mesma máquina de estados de
 sempre). Trabalho feito na branch `claude/garantia-termo-e-triagem-150`
 (designada pelo ambiente remoto desta sessão) — commit local, **sem
 push** (instrução explícita desta sessão).*
+
+---
+
+*Última revisão: 2026-09-02 — nova página `garantia-para-a-infancia.html`,
+8.ª página do cluster `familia`. Sessão notável por ser um dos raros casos
+deste projecto com **leitura directa** de diplomas primários (Decreto
+Regulamentar n.º 3/2022, arts. 3.º/4.º/5.º/6.º/8.º/9.º/10.º; Portaria n.º
+60/2026/1, art. 5.º) em vez de triangulação — mas a página distingue
+explicitamente, no seu próprio bloco de fontes, o que veio dessa leitura
+directa do que veio de fontes secundárias, exactamente como pedido.
+
+**Verificação do limiar de rendimento (art. 4.º) — achado real, não
+corrigido**: o artigo 4.º remete o limite de Rendimento de Referência
+para portaria própria; essa portaria nunca foi identificada (`WebFetch`
+confirmado bloqueado nesta sessão para TODOS os domínios testados —
+`diariodarepublica.pt`, `files.dre.pt`, `homepagejuridica.pt`,
+`dre.tretas.org`, até `en.wikipedia.org` — não é bloqueio específico ao
+Estado). `dados/parametros/abono.yaml` confirma que o valor hoje
+publicado (2.495,37 €/ano) nunca esteve ligado a uma portaria concreta —
+`referencia_legal` cita só o Guia Prático 4001 do ISS, I.P. (documento
+interpretativo, não diploma) e `fonte_url` é a homepage genérica
+`dre.pt`. Triangulação nova por 3 fontes financeiras independentes,
+aritmeticamente consistentes com os IAS reais de cada ano, revelou uma
+estrutura não documentada até agora: o limiar da Garantia pode seguir os
+MESMOS 3 cenários já parametrizados para os limites de escalão do abono
+(`escalao1-4_limite_cenario_*`) — manutenção/rendimentos 2024 → 2.495,37 €
+(IAS 509,26 €); pedidos novos/rendimentos 2025 → 2.560,25 € (IAS 522,50 €);
+reavaliação/rendimentos 2026 → 2.631,94 € (IAS 537,13 €). Verificado no
+código: `simulador-abono.html` declara em comentário (linha ~444) aplicar
+sempre o cenário "pedidos novos" para os escalões, mas usa
+`garantia_infancia_limite_rr_anual` (o valor do cenário "manutenção") para
+a Garantia — uma inconsistência interna real. A correcção de 19/07/2026
+trocou o valor antigo (2.631,94 €, cenário de reavaliação) por 2.495,37 €
+(cenário de manutenção), nunca pelo valor coerente com o resto do
+simulador (2.560,25 €).
+
+**Decisão do Nuno, seguida à letra**: não corrigir — triangulação sem
+fonte primária "trocaria uma suposição por outra". `abono-de-familia.html`,
+`simulador-abono.html` e `dados/parametros/abono.yaml` **não foram
+tocados nesta sessão** (incluindo o efeito colateral mecânico de
+`scripts/sincronizar_clusters.py`, que reescreveria o `RELACIONADOS` de
+`abono-de-familia.html` ao adicionar a página nova ao cluster — corrido
+normalmente sobre o repositório inteiro e depois revertido `git checkout
+-- abono-de-familia.html` só nesse ficheiro, mantendo as restantes
+actualizações mecânicas de `index.html`/`p/familia.html`/
+`subsidio-parental.html`/`assistencia-familia-filhos.html`, nenhuma
+delas relacionada com a controvérsia). A página nova publica o valor
+2.495,37 € citando a mesma fonte (Guia Prático) mas com uma frase
+explícita — "não está confirmado numa fonte primária" — trancada por
+`tests/test_valores_ancora.py::test_garantia_infancia_limiar_nunca_afirmado_como_confirmado`.
+Investigação completa (a tabela dos 3 cenários, a inconsistência do
+simulador, os passos para a sessão dedicada) registada em `ROADMAP.md` →
+"TRABALHO FUTURO REGISTADO".
+
+**Verificação da relação com a PSU — resolvida com fonte primária, não
+inferência**: o repositório já tinha `dados/fontes/Decreto-Lei n.PDF`
+(o texto integral do DL n.º 166/2026, usado na sessão do art. 17.º de
+16/08/2026) — extraído com `pymupdf` (`pypdf` falhou por um conflito
+`cryptography`/`cffi` neste sandbox) e pesquisado directamente. Confirmado
+por leitura da "Norma revogatória" (art. 62.º, alíneas a) a p)) e da lista
+de diplomas alterados (art. 1.º, n.º 2, alíneas a) a k)): **nenhuma
+menciona o Decreto Regulamentar n.º 3/2022 nem a Garantia para a
+Infância** — confirmado também por `grep -i "infância"` ao texto inteiro
+(75.490 caracteres, zero ocorrências). A página afirma isto com
+certeza — nunca "segue a mesma lógica do abono", a inferência
+inicialmente proposta e explicitamente rejeitada pelo Nuno nesta sessão
+a favor da verificação real (trancado por
+`tests/test_garantia_infancia_psu_por_leitura_directa_nunca_por_inferencia`).
+
+**Conteúdo da página**: `.resposta-rapida` (56 palavras) abre pelo facto
+de ser automática (art. 10.º, reconhecimento oficioso); aviso dedicado
+sobre as majorações nunca contarem para o diferencial (art. 6.º, n.º 1 —
+"é aqui que mais se erra a fazer as contas à mão"); exemplo idêntico ao
+já publicado em `abono-de-familia.html` (criança de 8 anos, 1.º escalão,
+75,13 € + 52,20 € = 127,33 €), trancado por canário cruzado entre as duas
+páginas; FAQ de 8 perguntas com paridade 1:1 `<details>`↔JSON-LD;
+checklist final de 5 itens (adaptada à natureza automática da prestação —
+"confirmar", não "pedir"). `<title>`/meta description usam só valores
+directamente confirmados (127,33 €/mês, 52,20 €/mês) — o limiar por
+confirmar nunca entra em metadados, só no corpo, com a ressalva.
+
+**Integração**: `data/clusters.json` (8.ª página do cluster `familia`,
+inserida a seguir a `abono-de-familia.html`, edição cirúrgica de texto —
+nunca `json.dump()` do ficheiro inteiro, lição já registada numa sessão
+anterior sobre reformatação acidental). `scripts/sincronizar_clusters.py`
+corrido sobre o repositório inteiro — actualizou correctamente
+`index.html` (`ATUALIZACOES:HOME`), `p/familia.html` (`PILLAR-LISTA` +
+`PILLAR-JSONLD`, 4→5 itens), `subsidio-parental.html` e
+`assistencia-familia-filhos.html` (RELACIONADOS com a página nova,
+perdendo o cross-link para a PSU que já esgotava o máximo de 4 — mesmo
+efeito automático já documentado nesta secção para outras sessões);
+`abono-de-familia.html` foi revertido a seguir (`git checkout --`), por
+decisão do Nuno. A própria página nova já nasceu com `CLUSTER-BADGE`/
+`RELACIONADOS` correctos escritos à mão — confirmado por **zero
+alterações** a ela própria na corrida do script. `scripts/
+sincronizar_nav.py`, `adicionar_canonicas.py`, `adicionar_autoria_artigos.py`
+e `adicionar_article_jsonld.py` confirmados a **zero alterações** (nav,
+canónica, autoria e `Article` JSON-LD já correctos à partida — incluindo
+o cuidado já documentado de pôr `author`/`publisher` directamente no
+`FAQPage` à mão, porque o `@id` da NV Labs já presente no `Article` faz
+`adicionar_autoria_artigos.py` saltar essa inserção). `scripts/
+gerar_og_images.py --write` gerou só a imagem nova (1200×630, confirmado
+pelo cabeçalho JPEG real). `fontes.html` ganhou um cartão novo para o
+Decreto Regulamentar n.º 3/2022 (a citação nem sequer é apanhada pela
+regex de `tests/test_fontes_coerencia.py`, que só reconhece
+"Decreto-Lei"/"Portaria"/"Lei"/"Despacho" — acrescentado por convenção do
+site, não por exigência do teste). `sitemap.xml` e `scripts/pesquisa.js`
+actualizados manualmente.
+
+**Efeito lateral incidental, sem relação com esta sessão**: `scripts/
+inserir_botao_partilhar.py`, corrido sobre o repositório inteiro,
+encontrou e corrigiu uma lacuna pré-existente em `verificador-apoios.html`
+(nunca tinha o botão "Partilhar este artigo") — mantido, por ser
+exactamente o comportamento idempotente esperado do script, mesmo padrão
+de divulgação transparente já usado noutras sessões para efeitos
+colaterais deste tipo.
+
+**Ambiente de sandbox desta sessão**: `playwright`, `beautifulsoup4`,
+`lxml`, `jsonschema`, `pytest` e `pymupdf` não estavam instalados —
+instalados nesta sessão (`PyYAML`/`feedparser` excluídos do
+`requirements.txt` na instalação em lote por conflitos — `PyYAML` já
+estava presente via pacote do sistema; `feedparser` corrigido com o
+mesmo workaround já documentado em várias sessões anteriores para o bug
+`install_layout`/`setuptools` do `sgmllib3k`: baixado o tarball via `pip
+download --no-binary` e extraído `sgmllib.py` para `site-packages` à
+mão). Browsers Chromium reaproveitados de `/opt/pw-browsers` (revisão
+1194) via `PLAYWRIGHT_BROWSERS_PATH` e os `_localizar_chromium()`
+já existentes por ficheiro de teste.
+
+Suite completa (`pytest tests/ -q`): **3673 passed, 4 skipped** (13
+testes novos: 5 em `test_valores_ancora.py`; a allow-list de skips
+confirmada elemento a elemento, sem alteração); `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch
+`claude/garantia-para-a-infancia-d6gni5` (designada pelo ambiente remoto
+desta sessão) — commit local, **sem push** (instrução explícita desta
+sessão).*

@@ -299,6 +299,85 @@ def test_abono_meta_description_bate_com_tabela_do_artigo():
     assert "<td><strong>190,98 €</strong></td>" in html, "valor da tabela do 1.º escalão não encontrado no corpo"
 
 
+# ── Garantia para a Infância — canário entre garantia-para-a-infancia.html
+# e dados/parametros.json (sessão "Garantia para a Infância", 2026-09-02).
+# O valor mensal (127,33 €) e o diferencial (52,20 € = 127,33 € - 75,13 €)
+# vêm de dados/parametros.json (fonte única, migração de 2026-07-19 —
+# abono.yaml NÃO foi tocado nesta sessão, por decisão explícita: ver nota
+# abaixo). O limiar de elegibilidade (2.495,37 €/ano) NUNCA é ancorado
+# aqui — a própria página, e esta sessão, documentam que o valor não está
+# confirmado em fonte primária (o artigo 4.º do Decreto Regulamentar n.º
+# 3/2022 remete-o para uma portaria não identificada). Triangulação nova
+# desta sessão (3 fontes financeiras independentes) sugere que este
+# limiar pode seguir a MESMA estrutura de 3 cenários já parametrizada
+# para os limites de escalão do abono (escalao1-4_limite_cenario_*) — e
+# que `simulador-abono.html` pode já estar a usar o valor errado (do
+# cenário "manutenção" em vez do cenário "pedidos novos" que declara
+# aplicar). Não corrigido nesta sessão — ver ROADMAP.md → "TRABALHO
+# FUTURO REGISTADO" para a investigação completa antes de qualquer
+# correcção a `abono.yaml`/`simulador-abono.html`.
+
+_ABONO = None
+
+
+def _param_abono(nome: str):
+    global _ABONO
+    if _ABONO is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _ABONO = todos["prestacoes"]["abono"]
+    return _ABONO[nome]["valor"]
+
+
+def test_garantia_infancia_title_valor_mensal_bate_com_o_yaml():
+    title = _title("garantia-para-a-infancia.html")
+    assert _param_abono("garantia_infancia_valor_mensal") in _valores_eur(title), title
+
+
+def test_garantia_infancia_meta_description_diferencial_e_valor_mensal():
+    desc = _meta_description("garantia-para-a-infancia.html")
+    valores = _valores_eur(desc)
+    valor_mensal = _param_abono("garantia_infancia_valor_mensal")
+    diferencial = round(valor_mensal - _param_abono("escalao1_valor_37_a_72_meses"), 2)
+    assert valor_mensal in valores, desc
+    assert diferencial in valores, desc
+
+
+def test_garantia_infancia_exemplo_no_corpo_bate_com_abono_de_familia():
+    """O exemplo (criança de 8 anos, 1.º escalão) é o mesmo já publicado
+    em abono-de-familia.html — nunca recalculado à parte, só reafirmado.
+    abono-de-familia.html não foi tocado nesta sessão (decisão do Nuno);
+    este teste confirma que os dois textos, em ficheiros diferentes,
+    continuam a citar exactamente o mesmo valor mensal."""
+    html_novo = _ler("garantia-para-a-infancia.html")
+    html_abono = _ler("abono-de-familia.html")
+    valor_mensal = _param_abono("garantia_infancia_valor_mensal")
+    valor_mensal_fmt = f"{valor_mensal:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    assert f"{valor_mensal_fmt} €/mês" in html_novo, "valor mensal ausente do corpo da página nova"
+    assert f"{valor_mensal_fmt} €/mês" in html_abono, "valor mensal ausente do corpo de abono-de-familia.html"
+
+
+def test_garantia_infancia_limiar_nunca_afirmado_como_confirmado():
+    """Achado desta sessão, sinalizado mas não corrigido (ver ROADMAP.md):
+    o limiar de 2.495,37 € citado por triangulação pode corresponder só a
+    UM dos 3 cenários de rendimento do abono, não a um valor universal
+    "sempre IAS 2024". Este teste tranca só a HONESTIDADE do texto — a
+    página tem de dizer explicitamente que o valor não está confirmado
+    numa fonte primária, nunca apresentá-lo como facto assente. Falhar
+    aqui é o sinal de que alguém reescreveu esta secção sem essa cautela."""
+    html = _ler("garantia-para-a-infancia.html")
+    assert "não está confirmado numa fonte primária" in html
+
+
+def test_garantia_infancia_psu_por_leitura_directa_nunca_por_inferencia():
+    """A relação com a PSU vem de leitura directa do texto integral do
+    DL n.º 166/2026 (art. 62.º, norma revogatória) — nunca de "segue a
+    mesma lógica do abono", a inferência explicitamente rejeitada nesta
+    sessão a favor de uma verificação real contra a fonte primária."""
+    html = _ler("garantia-para-a-infancia.html")
+    assert "166/2026" in html
+    assert "segue a mesma lógica" not in html.lower()
+
+
 def test_psi_meta_description_bate_com_o_corpo_do_artigo():
     html = _ler("prestacao-social-para-a-inclusao.html")
     desc = _meta_description("prestacao-social-para-a-inclusao.html")
