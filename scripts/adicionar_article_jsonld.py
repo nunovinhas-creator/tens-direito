@@ -107,6 +107,7 @@ DATAS_PUBLICACAO = {
     "marcar-atendimento-seguranca-social.html": "2026-07-19",
     "imt-jovem.html": "2026-07-20",
     "garantia-publica-credito-habitacao.html": "2026-07-20",
+    "garantia-para-a-infancia.html": "2026-09-02",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')
