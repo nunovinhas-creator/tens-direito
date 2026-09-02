@@ -97,6 +97,11 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
     # eco, por isso nunca fica OK por engano. min_chars calibrado com
     # dados reais de um runner (2026-07-07): página filtrada (2 resultados)
     # ~2400 chars de texto útil; página de erro do DRE ~800.
+    #
+    # `dre_psu_regulamentacao` (mais abaixo) pesquisa desde 2026-09-01
+    # este MESMO termo, deliberadamente — ver o comentário completo
+    # junto a essa entrada para o motivo (Issue #148) e a garantia de
+    # que não é redundância: os dois filtram tipos de acto opostos.
     "dre_psu": FonteConfig(
         nome="DRE — Pesquisa PSU decreto-lei",
         min_chars_uteis=1500,
@@ -120,14 +125,36 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
     ),
     # Gatilho 3 da watchlist — prorrogação ou alteração da Garantia
     # Pública (DL 44/2024), crítico perto do prazo de 31/12/2026 já
-    # registado em dados/parametros/habitacao.yaml. Pesquisa pela citação
-    # do próprio diploma — qualquer decreto-lei que o altere ou prorrogue
-    # tem de o citar na ementa, mais robusto do que pesquisar pelo nome
-    # popular da medida (que pode variar).
+    # registado em dados/parametros/habitacao.yaml.
+    #
+    # CORRIGIDO 2026-09-01 (Issue #147): a pesquisa original — a citação
+    # exacta do diploma, `'"Decreto-Lei n.º 44/2024"'` — nunca devolveu
+    # UM ÚNICO resultado em 44 dias consecutivos (2026-07-20 a
+    # 2026-08-31, confirmado por `data/scraped/dre_habitacao_garantia_*.json`
+    # real — 44/44 dias com `itens_lista: []`), incluindo dias em que a
+    # fonte já era classificada `Estado.OK` (a âncora com aspas era
+    # ecoada — a pesquisa corria — só nunca encontrava nada). A hipótese
+    # original ("mais robusto do que o nome popular, porque qualquer
+    # diploma que o altere tem de o citar na ementa") estava errada: a
+    # pesquisa de frase exacta do DRE não parece corresponder a citações
+    # de outro diploma por número — só ao mesmo tipo de frase temática
+    # que já funciona nos outros 4 sentinelas (`dre_psu`,
+    # `dre_habitacao_paer`, `dre_ias`, e agora `dre_psu_regulamentacao`,
+    # ver esse comentário mais abaixo para a prova directa). Trocado
+    # para a designação que o próprio site usa para este apoio — "Garantia
+    # Pública" sozinho é demasiado genérico (termo comum a outras linhas
+    # de garantia do Estado, ex. crédito a empresas) — qualificado com
+    # "no crédito habitação" (já usado como rótulo humano desta mesma
+    # fonte em `scripts/preparar_canal.py`) para reduzir falsos positivos
+    # de tema, mesmo padrão dos outros sentinelas (frase específica, não
+    # citação). Nunca confirmado contra um scrape real com este termo
+    # nesta sessão (rede bloqueada para diariodarepublica.pt) — ver
+    # CLAUDE.md "IMPACTO DA PSU"/"CLUSTER HABITAÇÃO" para o estado real
+    # após a próxima corrida do pipeline.
     "dre_habitacao_garantia": FonteConfig(
         nome="DRE — Pesquisa alteração/prorrogação da Garantia Pública (DL 44/2024)",
         min_chars_uteis=1500,
-        ancora_conteudo=('"Decreto-Lei n.º 44/2024"',),
+        ancora_conteudo=('"Garantia Pública no crédito habitação"',),
     ),
     # Sentinela de SINAL para a Portaria anual que fixa o IAS (Indexante
     # dos Apoios Sociais) — 2026-07-28. Mesmo mecanismo de pesquisa de
@@ -159,19 +186,38 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
     # portaria — já documentado como "único ponto ainda sem valor
     # concreto" em psu-quando-entra-em-vigor.html/simulador-psu.html) e
     # artigos 32.º/59.º (procedimentos e meios de prova da candidatura).
-    # Mesmo mecanismo de pesquisa de frase exacta do dre_psu/dre_ias, mas
-    # pesquisando pelo NÚMERO do decreto-lei (mesmo padrão robusto de
-    # dre_habitacao_garantia — qualquer Portaria que o regulamente tem de
-    # o citar na ementa) em vez de uma frase descritiva, e filtrando só
-    # resultados do tipo Portaria (nunca Decreto-Lei — esse já existe).
-    # min_chars_uteis 1500 é o ponto de partida honesto (nunca calibrado
-    # contra um runner real nesta sessão — WebFetch/curl bloqueados),
-    # mesmo padrão já usado para dre_habitacao_paer/dre_habitacao_garantia/
-    # dre_ias.
+    # Mesmo mecanismo de pesquisa de frase exacta do dre_psu/dre_ias,
+    # filtrando só resultados do tipo Portaria (nunca Decreto-Lei — esse
+    # já existe, é trabalho do dre_psu).
+    #
+    # CORRIGIDO 2026-09-01 (Issue #148): o termo original — a citação
+    # exacta do diploma, `'"Decreto-Lei n.º 166/2026"'` — nunca devolveu
+    # UM ÚNICO resultado em 16 dias consecutivos (2026-08-16 a
+    # 2026-08-31, `itens_lista: []` em todos os `data/scraped/
+    # dre_psu_regulamentacao_*.json` reais), incluindo o próprio dia em
+    # que a Portaria n.º 394/2026/1 (que regulamenta exactamente este
+    # decreto-lei, publicada 27/08/2026 — ver CLAUDE.md "IMPACTO DA PSU")
+    # saiu e todos os dias seguintes. Prova directa de que a expressão,
+    # não a fonte, estava errada: `dre_psu` — que pesquisa
+    # `'"prestação social única"'`, mesmo dia, mesmo motor — TEM essa
+    # Portaria no seu `itens_lista` de 2026-09-01
+    # ("Portaria n.º 394/2026/1 - Diário da República n.º 166/2026,
+    # Série I de 2026-08-27"). Corrigido trocando o termo para o mesmo
+    # de `dre_psu` — a pesquisa de frase exacta do DRE parece corresponder
+    # por tema/classificação do acto, não por citação literal de outro
+    # diploma pelo número. **Isto faz este sentinela pesquisar
+    # literalmente o mesmo termo que `dre_psu` — deliberado, nunca
+    # redundante**: os FILTROS são opostos e mutuamente exclusivos
+    # (`detectar_decreto_lei_psu` só conta Decreto-Lei; `detectar_portaria`
+    # abaixo só conta Portaria) — cada sentinela vê os mesmos resultados
+    # brutos e reage só ao tipo de acto que lhe compete. Nunca apagar um
+    # dos dois por parecer duplicado — ver o mesmo aviso em
+    # `FONTES_PLAYWRIGHT` junto às duas entradas, e em CLAUDE.md
+    # "IMPACTO DA PSU".
     "dre_psu_regulamentacao": FonteConfig(
         nome="DRE — Pesquisa Portaria(s) de regulamentação da PSU",
         min_chars_uteis=1500,
-        ancora_conteudo=('"Decreto-Lei n.º 166/2026"',),
+        ancora_conteudo=('"prestação social única"',),
     ),
 }
 
@@ -441,16 +487,26 @@ FONTES_PLAYWRIGHT = [
         # Watchlist do cluster Habitação (Sessão 3, 2026-07-20) — vigiar
         # prorrogação ou alteração da Garantia Pública no crédito
         # habitação (DL 44/2024), crítico perto do prazo actual de
-        # 31/12/2026 (dados/parametros/habitacao.yaml). Pesquisa pela
-        # citação do próprio diploma — qualquer decreto-lei que o altere
-        # tem de o citar na ementa. Mesmo mecanismo do dre_psu, mesma
-        # ressalva de calibração (nunca testado contra um runner real
-        # nesta sessão).
+        # 31/12/2026 (dados/parametros/habitacao.yaml).
+        #
+        # CORRIGIDO 2026-09-01 (Issue #147, diagnóstico completo em
+        # _FONTE_CONFIGS["dre_habitacao_garantia"] acima): o termo
+        # original pesquisava a citação do diploma
+        # (`'"Decreto-Lei n.º 44/2024"'`) na suposição de que "qualquer
+        # decreto-lei que o altere tem de o citar na ementa" — nunca
+        # devolveu resultado nenhum em 44 dias seguidos, prova de que a
+        # pesquisa de frase exacta do DRE não corresponde a citações de
+        # outro diploma por número. Trocado para a designação temática do
+        # apoio ("Garantia Pública no crédito habitação" — a mesma que
+        # `scripts/preparar_canal.py` já usa como rótulo humano desta
+        # fonte), mesmo padrão comprovado de `dre_psu`/`dre_habitacao_paer`/
+        # `dre_ias`. Ainda por confirmar contra um scrape real (rede
+        # bloqueada nesta sessão) — a 1.ª corrida do pipeline confirma.
         "url": "https://diariodarepublica.pt/dr/home",
         "nota": "DRE — vigiar alteração/prorrogação da Garantia Pública (DL 44/2024, prazo actual: 31 dez 2026)",
         "pesquisa_interactiva": {
             "campo": "input[type='search']",
-            "termo": '"Decreto-Lei n.º 44/2024"',
+            "termo": '"Garantia Pública no crédito habitação"',
         },
         "seletores": {
             "titulo": "h1",
@@ -463,7 +519,19 @@ FONTES_PLAYWRIGHT = [
                              "DRE — confirmar se altera/prorroga o prazo!\n%s",
             # Mesmo corte de recência do dre_habitacao_paer — mesma
             # precaução, mesmo que a 1.ª corrida real (2026-07-20) tenha
-            # devolvido zero resultados para esta fonte.
+            # devolvido zero resultados para esta fonte (com o termo
+            # antigo, agora corrigido acima).
+            #
+            # PASSO PENDENTE para a 1.ª corrida real depois desta
+            # correcção (nunca confirmado nesta sessão — rede bloqueada):
+            # se a pesquisa temática nova devolver o próprio DL 44/2024
+            # (ou uma alteração já conhecida e tratada) com data completa
+            # posterior a 2026-07-20, este corte NÃO o exclui — mesmo
+            # padrão do achado feito para dre_psu_regulamentacao (ver
+            # esse comentário, "desde": "2026-08-28"). Confirmar nos
+            # resultados reais e, se necessário, subir este "desde" para
+            # o dia seguinte à data desse diploma já conhecido — nunca
+            # deixar um decreto-lei já tratado re-disparar todos os dias.
             "desde": "2026-07-20",
         },
     },
@@ -511,16 +579,29 @@ FONTES_PLAYWRIGHT = [
         # ver o comentário completo junto à entrada em _FONTE_CONFIGS.
         # Vigia Portaria(s) que regulamentem o DL 166/2026 (art. 17.º
         # renda de referência; arts. 32.º/59.º procedimentos e meios de
-        # prova). Pesquisa pelo número do decreto-lei (padrão robusto de
-        # dre_habitacao_garantia), filtrando só resultados do tipo
-        # Portaria.
+        # prova), filtrando só resultados do tipo Portaria.
+        #
+        # CORRIGIDO 2026-09-01 (Issue #148, diagnóstico completo em
+        # _FONTE_CONFIGS["dre_psu_regulamentacao"] acima): pesquisar a
+        # citação do decreto-lei por número (`'"Decreto-Lei n.º
+        # 166/2026"'`) nunca devolveu resultado nenhum em 16 dias
+        # seguidos — nem no próprio dia em que a Portaria n.º 394/2026/1
+        # (que o regulamenta) foi publicada. `dre_psu` prova, no mesmo
+        # dia e com o mesmo motor, que a pesquisa temática
+        # `'"prestação social única"'` já encontra essa Portaria — por
+        # isso o termo aqui passou a ser IDÊNTICO ao de `dre_psu`,
+        # deliberadamente (ver o cross-reference nesse comentário). Os
+        # dois sentinelas vêem os mesmos resultados brutos mas reagem a
+        # metades opostas: `dre_psu` (`detectar_decreto_lei_psu`) só
+        # dispara para Decreto-Lei; este (`detectar_portaria`) só para
+        # Portaria — nunca apagar um por parecer redundante com o outro.
         "url": "https://diariodarepublica.pt/dr/home",
         "nota": ("DRE — vigiar Portaria(s) de regulamentação da PSU "
                  "(art. 17.º renda de referência; arts. 32.º/59.º "
                  "procedimentos e meios de prova)"),
         "pesquisa_interactiva": {
             "campo": "input[type='search']",
-            "termo": '"Decreto-Lei n.º 166/2026"',
+            "termo": '"prestação social única"',
         },
         "seletores": {
             "titulo": "h1",
@@ -532,11 +613,35 @@ FONTES_PLAYWRIGHT = [
             "mensagem_log": "%s: Portaria de regulamentação da PSU detectada em "
                              "DRE — confirmar se é o art. 17.º ou os arts. "
                              "32.º/59.º!\n%s",
-            # Corte de recência: tecnicamente redundante (o DL 166/2026 é
-            # novo de 13/08/2026, não pode haver Portaria antiga a citá-lo)
-            # — mantido por hábito defensivo consistente com
-            # dre_habitacao_paer/dre_habitacao_garantia/dre_ias, custo zero.
-            "desde": "2026-08-16",
+            # Corte de recência subido de "2026-08-16" para "2026-08-28"
+            # na correcção do termo (2026-09-01, Issue #148) — achado
+            # real ao validar contra dados reais: a pesquisa temática
+            # `"prestação social única"` já devolve HOJE a própria
+            # Portaria n.º 394/2026/1 (data completa "Série I de
+            # 2026-08-27" no item) — a mesma que o commit #136 já
+            # confirmou e tratou (senha de participação, art. 22.º/59.º).
+            # Nível 1 do corte (data completa) decide sozinho por
+            # comparação de string — "2026-08-16" deixaria essa Portaria
+            # passar como "nova" TODOS OS DIAS, para sempre (mesmo
+            # pesadelo do PAER/Issue #73 e do dre_psu/Issue #132, agora
+            # por citação já resolvida em vez de decreto-lei já
+            # conhecido). "2026-08-28" (o dia seguinte à publicação)
+            # exclui-a por data, sem precisar de `numero_conhecido` — que
+            # `_detectar_portaria_generico` nem sequer aceita hoje (só
+            # `_detectar_decreto_lei_generico` tem esse parâmetro). Uma
+            # FUTURA Portaria de regulamentação (ex.: a que falta para o
+            # art. 17.º, mediana do INE) continua a disparar normalmente,
+            # por ter data posterior a este corte.
+            #
+            # Risco residual, aceite e registado (não fechado nesta
+            # sessão): se o DRE alguma vez listar a Portaria n.º
+            # 394/2026/1 sem a data completa (só "Portaria n.º
+            # 394/2026/1", como já aconteceu para o Decreto-Lei n.º
+            # 166/2026 na Issue #132), o nível 1 deixa de decidir e o
+            # nível 2 (ano do número, sem `numero_conhecido` aqui) deixá-
+            # la-ia passar de novo — ver CLAUDE.md "IMPACTO DA PSU" para
+            # o mesmo aviso.
+            "desde": "2026-08-28",
         },
     },
 ]

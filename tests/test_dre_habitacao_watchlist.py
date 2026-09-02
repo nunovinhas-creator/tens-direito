@@ -45,9 +45,17 @@ def test_dre_habitacao_paer_pesquisa_o_nome_oficial_do_paer():
     assert config.ancora_conteudo[0] == '"apoio extraordinário à renda"'
 
 
-def test_dre_habitacao_garantia_pesquisa_a_citacao_do_diploma():
+def test_dre_habitacao_garantia_pesquisa_a_frase_tematica_nao_a_citacao():
+    """Corrigido 2026-09-01 (Issue #147): a citação por número
+    ('"Decreto-Lei n.º 44/2024"') nunca devolveu um resultado em 44 dias
+    seguidos — trocada pela designação temática do apoio, mesmo padrão
+    comprovado de dre_psu/dre_habitacao_paer/dre_ias (ver
+    tests/test_dre_termos_pesquisa.py para o guardrail que impede a
+    regressão a um termo com forma de citação)."""
     config = sp._fonte_config("dre_habitacao_garantia")
-    assert config.ancora_conteudo[0] == '"Decreto-Lei n.º 44/2024"'
+    assert config.ancora_conteudo[0] == '"Garantia Pública no crédito habitação"'
+    fonte = next(f for f in sp.FONTES_PLAYWRIGHT if f["slug"] == "dre_habitacao_garantia")
+    assert fonte["pesquisa_interactiva"]["termo"] == '"Garantia Pública no crédito habitação"'
 
 
 def test_ambas_as_fontes_tem_perfil_sem_headers_custom():

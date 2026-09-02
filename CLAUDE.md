@@ -2360,30 +2360,73 @@ disparar normalmente. `dre_psu` mantém-se em `SLUGS_MONITORIZADOS`,
 inalterados na forma.
 
 **Sentinela irmão novo — `dre_psu_regulamentacao`**: mesmo mecanismo de
-pesquisa de frase exacta, mas a pesquisar pelo **número** do
-decreto-lei (`'"Decreto-Lei n.º 166/2026"'`, mesmo padrão robusto de
-`dre_habitacao_garantia` — qualquer Portaria que o regulamente tem de o
-citar na ementa) em vez de uma frase descritiva, e a filtrar só
-resultados do tipo **Portaria** (`detectar_portaria`, mesmo mecanismo do
-`dre_ias`) — nunca Decreto-Lei, que já não interessa a este sentinela
-(é trabalho do `dre_psu`). Corte de recência `"desde": "2026-08-16"`
-acrescentado por hábito defensivo consistente (tecnicamente redundante
-— o DL 166/2026 é demasiado novo para ter Portarias antigas a citá-lo).
-Cobre os dois pontos em aberto (art. 17.º; arts. 32.º/59.º) com um único
+pesquisa de frase exacta, a filtrar só resultados do tipo **Portaria**
+(`detectar_portaria`, mesmo mecanismo do `dre_ias`) — nunca Decreto-Lei,
+que já não interessa a este sentinela (é trabalho do `dre_psu`). Cobre
+os dois pontos em aberto (art. 17.º; arts. 32.º/59.º) com um único
 sentinela — quando disparar, a Issue automática pede para confirmar qual
-dos dois é. Nunca calibrado contra um runner real nesta sessão
-(WebFetch/curl bloqueados) — a 1.ª corrida real do pipeline confirma
-`min_chars_uteis`, mesmo padrão honesto já usado para
-`dre_habitacao_paer`/`dre_habitacao_garantia`/`dre_ias`.
+dos dois é.
 
-Testes: `tests/test_dre_psu_regulamentacao.py` (15 casos) — confirma que
+**Nasceu cego, corrigido a 2026-09-01 (Issues #147/#148)** — o termo
+original pesquisava a **citação** do decreto-lei por número
+(`'"Decreto-Lei n.º 166/2026"'`, mesmo padrão que `dre_habitacao_garantia`
+usava para o DL 44/2024, na suposição de que "qualquer Portaria que o
+regulamente tem de o citar na ementa"). Nunca devolveu um único
+resultado em 16 dias consecutivos (2026-08-16 a 2026-08-31, confirmado
+por `data/scraped/dre_psu_regulamentacao_*.json` reais) — nem no
+próprio dia em que a **Portaria n.º 394/2026/1** (27/08/2026, ver
+secção anterior) foi publicada, nem em nenhum dos dias seguintes. Prova
+directa de que a expressão estava errada, não a fonte: `dre_psu` —
+pesquisa temática `'"prestação social única"'`, mesmo motor, mesmo dia
+— **já tinha essa Portaria** no seu `itens_lista` de 2026-09-01. A
+pesquisa de frase exacta do DRE parece corresponder por tema/
+classificação do acto, nunca por citação literal de outro diploma pelo
+número — nenhum dos 4 sentinelas que sempre funcionaram
+(`dre_psu`/`dre_habitacao_paer`/`dre_ias`/agora este) usa uma citação;
+só os 2 que nasceram cegos usavam.
+
+**Corrigido trocando o termo para o MESMO de `dre_psu` — deliberado,
+nunca redundância**: os dois sentinelas passam a ver os mesmos
+resultados brutos do DRE, mas reagem a metades opostas —
+`detectar_decreto_lei_psu` (`dre_psu`) só conta Decreto-Lei;
+`detectar_portaria` (este sentinela) só conta Portaria. **Nunca apagar
+um dos dois por parecer duplicado** — `tests/test_dre_psu_regulamentacao.py::test_dre_psu_regulamentacao_termo_e_identico_ao_dre_psu_mas_filtros_opostos`
+tranca exactamente essa distinção. Corte de recência subido de
+`"2026-08-16"` para **`"2026-08-28"`**: com o termo novo, a pesquisa já
+devolve a própria Portaria n.º 394/2026/1 (data completa
+"Série I de 2026-08-27" no item) — sem o corte pós-27/08, ela seria
+sinalizada como "nova" todos os dias, para sempre (mesmo pesadelo do
+`numero_conhecido` do `dre_psu`, Issue #132, só que aqui resolvido só
+com a data, porque o item real já vinha com data completa —
+`_detectar_portaria_generico` nem sequer aceita `numero_conhecido`
+hoje). Uma Portaria genuinamente nova (ex.: a que falta para o art.
+17.º) continua a disparar normalmente. Ainda não confirmado contra um
+scrape real desta sessão pós-correcção — rede bloqueada para
+diariodarepublica.pt (mesma limitação de sempre); a validação disponível
+é a mais próxima possível sem inventar dados: o mesmo termo, o mesmo
+motor, o mesmo dia, já devolveu a Portaria via `dre_psu` — a 1.ª corrida
+real do pipeline com o termo novo confirma de vez.
+
+Novo guardrail permanente: `tests/test_dre_termos_pesquisa.py` — falha
+se qualquer fonte DRE (actual ou futura) com `pesquisa_interactiva`
+tiver um termo com forma de citação de diploma ("n.º" + barra + ano),
+o mesmo padrão que deixou `dre_habitacao_garantia` (44 dias) e este
+sentinela (16 dias) cegos sem nunca devolver um resultado.
+
+Testes: `tests/test_dre_psu_regulamentacao.py` (30+ casos) — confirma que
 `dre_psu` mantém config/perfil/forma 100% inalterados, que o próprio DL
 166/2026 já não dispara `dre_psu` (regressão do achado real desta
 sessão), que um decreto-lei futuro sobre a PSU ainda dispara `dre_psu`,
 e cobre `dre_psu_regulamentacao` (config, presença em
-`FONTES_PLAYWRIGHT`, corte de recência, detecção por item — Portaria
+`FONTES_PLAYWRIGHT`, corte de recência novo, detecção por item — Portaria
 dispara, Decreto-Lei nunca dispara este sentinela específico, conteúdo
-vazio nunca dispara).
+vazio nunca dispara) — mais uma secção nova de validação contra o
+`itens_lista` REAL de `data/scraped/dre_psu_2026-09-01.json` (nunca
+reescrito à mão): confirma que a Portaria n.º 394/2026/1 é encontrada e
+isolada correctamente do resto dos resultados reais (Lei, Decreto-Lei,
+Despachos), que o corte de recência novo a suprime (já tratada, commit
+`d0f082a`), e que uma Portaria futura hipotética, misturada com os
+mesmos dados reais, ainda dispara.
 
 ### Páginas NÃO afectadas pela PSU
 
@@ -2799,6 +2842,34 @@ O plano de 3 sessões está **concluído** — registo mantido para memória:
 | ~~Dedução de rendas em IRS~~ | **Concluído (Sessão 3)** — `deducao-rendas-irs.html` | Ver "Estado real verificado" acima |
 | ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
 | ~~Watchlist automática DRE~~ | **Concluído e calibrado contra um runner real (2026-07-20, sessão de integração)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. A 1.ª corrida real (`workflow_dispatch`) confirmou um falso positivo genuíno em `dre_habitacao_paer`: a pesquisa de frase exacta funcionou correctamente e devolveu o DL n.º 20-B/2023 (diploma fundador do PAER, confirmado por `WebSearch`) e as suas alterações já conhecidas (2023-2025) — sem corte de recência, isto criaria a mesma Issue todos os dias, porque a suposição original ("qualquer Decreto-Lei nos resultados é sinal de novidade", válida para o `dre_psu` porque a PSU ainda não tem diploma nenhum) não se aplica a uma lei já em vigor há anos. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só conta "novo" um item datado a partir da activação da watchlist; um item sem data reconhecível nunca é descartado em silêncio (mesmo invariante "nenhum estado de erro pode parecer sucesso"). `dre_psu` confirmado 100% inalterado (sem corte de recência, testado). Issue #73 fechada com a explicação. `dre_habitacao_garantia` devolveu zero resultados na 1.ª corrida (comportamento seguro, nunca disparou) — causa por investigar sem prioridade. 6 testes de regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no total), incluindo fixture com os dados reais desta corrida; ver ROADMAP.md → "Automáticos" | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
+
+**Correcção à linha "Watchlist automática DRE" da tabela acima
+(2026-09-01, Issues #147/#148)**: a "causa por investigar sem
+prioridade" do `dre_habitacao_garantia` estava investigada há muito —
+44 dias consecutivos, zero resultados, sempre, desde a criação. O
+termo pesquisava a **citação** do diploma por número
+(`'"Decreto-Lei n.º 44/2024"'`), nunca uma frase temática — mesmo
+padrão que também cegou `dre_psu_regulamentacao` (ver secção "IMPACTO
+DA PSU" para o diagnóstico completo, com prova directa via dado real:
+`dre_psu` encontrou, no mesmo dia e com o mesmo motor, um item que a
+citação-por-número equivalente nunca encontrou). Corrigido trocando o
+termo para a designação temática do apoio — `'"Garantia Pública no
+crédito habitação"'` (a mesma frase que `scripts/preparar_canal.py` já
+usa como rótulo humano desta fonte), mesmo padrão comprovado de
+`dre_psu`/`dre_habitacao_paer`/`dre_ias`. **Ainda não confirmado contra
+um scrape real** — rede bloqueada para diariodarepublica.pt nesta
+sessão também; ao contrário de `dre_psu_regulamentacao` (que herdou a
+prova indirecta de `dre_psu`, mesmo termo), não há dado real equivalente
+disponível para "Garantia Pública" — a 1.ª corrida real do pipeline
+depois desta correcção é que confirma. Se devolver o próprio DL 44/2024
+ou uma alteração já conhecida com data completa posterior a
+"2026-07-20" (o `desde` actual do `detectar_decreto_lei`), pode ser
+necessário subir esse corte, mesmo tratamento já dado a
+`dre_psu_regulamentacao` (comentário em `scripts/scraper_playwright.py`
+junto a essa entrada). Novo guardrail permanente,
+`tests/test_dre_termos_pesquisa.py`, impede qualquer sentinela DRE
+(actual ou futuro) de voltar a usar um termo com forma de citação de
+diploma.
 
 **Registado para o futuro, sem prazo, sem decisão tomada**: nova tabela
 de rendas máximas de referência do Porta 65 (publicação anual, fora do
@@ -9286,3 +9357,72 @@ sessão, corrido só como verificação). `AUTO_UPDATE_HABILITADO`/
 scraper. Trabalho feito na branch `claude/automatic-legal-trigger-path-tqweh9`
 (designada pelo ambiente remoto desta sessão) — commit local, **sem
 push** (instrução explícita desta sessão).*
+
+---
+
+*Última revisão: 2026-09-01 — corrigidos os termos de pesquisa de
+`dre_psu_regulamentacao` (Issue #148) e `dre_habitacao_garantia` (Issue
+#147), os dois sentinelas DRE que nunca devolveram um único resultado
+desde a criação (16 e 44 dias consecutivos, respectivamente —
+confirmado por `data/scraped/*_2026-*.json` reais, sessão de
+diagnóstico anterior no mesmo dia). Causa: ambos pesquisavam a
+**citação** de um diploma por número (`"Decreto-Lei n.º 166/2026"`/
+`"Decreto-Lei n.º 44/2024"`) — os 4 sentinelas DRE que sempre
+funcionaram (`dre_psu`, `dre_habitacao_paer`, `dre_ias`, e agora este)
+pesquisam sempre uma frase temática. Prova directa, não inferida:
+`dre_psu` (pesquisa `"prestação social única"`) já tinha, no
+`itens_lista` real de 2026-09-01, exactamente o caso de teste concreto
+pedido — "Portaria n.º 394/2026/1", que `dre_psu_regulamentacao` nunca
+encontrara em 16 dias com a citação por número.
+
+`dre_psu_regulamentacao` corrigido para o MESMO termo de `dre_psu`
+(`"prestação social única"`) — deliberado, nunca redundância: os
+filtros são opostos (`detectar_decreto_lei_psu` só conta Decreto-Lei;
+`detectar_portaria` só conta Portaria), documentado em comentário
+cruzado nos dois sítios em `scripts/scraper_playwright.py` e em
+CLAUDE.md "IMPACTO DA PSU". Corte de recência (`desde`) subido de
+"2026-08-16" para **"2026-08-28"** — achado ao validar contra o dado
+real: sem isto, a própria Portaria n.º 394/2026/1 (já tratada no commit
+`d0f082a`) seria sinalizada como "nova" todos os dias, para sempre
+(mesmo padrão do `numero_conhecido` do `dre_psu`, Issue #132, aqui
+resolvido só com a data porque `_detectar_portaria_generico` não aceita
+`numero_conhecido`). `dre_habitacao_garantia` corrigido para
+`"Garantia Pública no crédito habitação"` — a designação temática do
+apoio já usada como rótulo humano em `scripts/preparar_canal.py`;
+**ainda por confirmar contra um scrape real** (rede bloqueada para
+diariodarepublica.pt nesta sessão, mesma limitação de sempre — sem dado
+real equivalente ao de `dre_psu` disponível para este caso), com o
+mesmo aviso deixado em comentário para a 1.ª corrida real do pipeline
+confirmar (e, se necessário, subir o `desde` de `detectar_decreto_lei`
+da mesma forma).
+
+Novo guardrail permanente, `tests/test_dre_termos_pesquisa.py`: falha
+se qualquer fonte DRE (actual ou futura) com `pesquisa_interactiva`
+tiver um termo — ou uma `ancora_conteudo` — com forma de citação de
+diploma ("n.º" + barra + ano), confirmado a reconhecer os dois casos
+reais que falharam e a nunca disparar por engano com as 4 frases
+temáticas já comprovadas. `tests/test_dre_psu_regulamentacao.py`
+ganhou uma secção de validação contra o `itens_lista` REAL de
+`data/scraped/dre_psu_2026-09-01.json` (nunca reescrito à mão): confirma
+que a Portaria n.º 394/2026/1 é isolada correctamente dos outros 8 itens
+reais (Lei, Decreto-Lei, Despachos), que o corte de recência novo a
+suprime, e que uma Portaria futura hipotética, misturada com os mesmos
+dados reais, ainda dispara. Achado e corrigido antes do commit: uma 1.ª
+versão desse teste não isolava `_registar_aviso` via `monkeypatch` e
+escrevia mesmo em `data/scraped/avisos.log` real ao correr — revertido
+o ficheiro de dados e corrigido o teste antes de qualquer commit.
+
+Fechadas as Issues #147 e #148 com o diagnóstico: verdadeiro positivo
+quanto ao sintoma quotidiano (o scraper estava mesmo cego, todos os
+dias), mas a causa nunca foi um bloqueio do DRE — era a expressão de
+pesquisa, errada desde a criação de cada sentinela, nunca calibrada
+contra o motor real antes de hoje.
+
+Suite completa: **3660 passed, 4 skipped** (allow-list de skips
+confirmada elemento a elemento, sem alteração); `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper novo, só correcção de termos de pesquisa já
+existentes). Trabalho feito na branch `claude/corrigir-termos-sentinelas`
+(criada nesta sessão a partir de `main`) — commit local, **sem push**
+(instrução explícita desta sessão).*
