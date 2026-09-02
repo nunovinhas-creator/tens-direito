@@ -1,7 +1,7 @@
 {
   "url": "https://diariodarepublica.pt/dr/pesquisa",
   "url_original": "https://diariodarepublica.pt/dr/home",
-  "data_acesso": "2026-09-02T10:43:35.610055+00:00",
+  "data_acesso": "2026-09-02T10:42:55.314971+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "Resultados de pesquisa: \"prestação social única\"",
@@ -31,6 +31,6 @@
       "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07"
     ]
   },
-  "nota": "DRE — vigiar Portaria(s) de regulamentação da PSU (art. 17.º renda de referência; arts. 32.º/59.º procedimentos e meios de prova)",
+  "nota": "DRE — vigiar publicação do decreto-lei da PSU (prazo PRR: 31 ago 2026)",
   "hash_conteudo": "1504e005fa173c41438709e9a76d64468464ae137952665f5244c76f0ae13cd1"
 }

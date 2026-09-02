@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-01",
+      "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNdzQ1ZGs1bW9nZlN2ZzdYSU5kVjZNc09TRWxrYWpIVXBTS1F6MGgxeDVmRHplYjRueWVXaFBhazN3TXdRVzdRSEJid3lzY1NJZVkzMXFGc0ZydFBkalVabEFMeFJzMk1wdjZ2ZXJJcUdqT2U3T1o4U0h6aW1xSGZrLWVpcDRNNmdHLWJBYWVNalBKWko1Q0huVXB0WnJya19tRFNQQ0F4RnhLTVBDNnJPcw?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-08-31",
+      "titulo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários)",
+      "fonte_nome": "Human Resources Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQX3oyazBDWnFSVGpYMk5hZUI0NVF4LVp1ajlTWUJfeFFFRVBJRjZLNkd2eXdEQmIySHZiRTU3YVJ0MUg0OURvbHcyTnJZaWZ2N2hYdFI5LWJTSjVIbXU5d1l1U0pCaXpmNUJ4eXpfcV9OOHI1RUJuNmtHamRBaDlWNzh1RFByZV9aSjVWYnZGV0pUTjMtRFpKbG0tdjlqU1V6WjBCYmtEeHdXSzVYd2VhWGp3TjBrX0NPbXZwMTRoLWwtcnJ5V2k5V1VkTEstQllWUEgtSWZB?oc=5",
+      "resumo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) Human Resources Portugal",
+      "categoria": "apoios",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-08-31",
       "titulo": "Renda universitária: apoios que podes pedir em Portugal",
       "fonte_nome": "Idealista",
