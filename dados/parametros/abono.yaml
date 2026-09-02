@@ -282,6 +282,30 @@ escalao4_valor_mais_72_meses:
       verificado_em: "2026-07-19"
 
 # ── Garantia para a Infância ────────────────────────────────────────────────
+#
+# LIMIAR DE ELEGIBILIDADE (garantia_infancia_limite_rr_anual, abaixo) —
+# investigado de novo na sessão "Limiar da garantia — cenários" (2026-09-02,
+# seguimento à sessão "Garantia para a Infância" da mesma data — ver
+# ROADMAP.md → "TRABALHO FUTURO REGISTADO" para o achado original). Fonte
+# primária identificada: o art. 4.º c) do Decreto Regulamentar n.º 3/2022
+# remete este limiar para uma portaria própria dos membros do Governo das
+# finanças e da segurança social — confirmada como a Portaria n.º 223/2022,
+# de 6 de setembro (achado desta sessão, via listagem oficial em
+# sgeconomia.gov.pt). O art. 9.º do DL n.º 176/2003, para onde esse mesmo
+# artigo remete o CÁLCULO do Rendimento de Referência, usa a mesma lógica
+# de 3 cenários já parametrizada acima para os limites de escalão do abono
+# — o que sugere fortemente (mas não confirma) que o LIMIAR em si também
+# varia por cenário (manutenção/pedidos novos/reavaliação), não só o RR
+# que lhe é comparado. Sem conseguir ler o texto da Portaria n.º 223/2022
+# nem de uma eventual actualização anual (WebFetch bloqueado nesta sessão
+# para todos os domínios testados: dre.pt, files.dre.pt, dre.tretas.org,
+# pgdlisboa.pt, lexlink.eu, bancos), esta hipótese continua por confirmar
+# em fonte primária lida — por isso NENHUM parâmetro novo foi acrescentado
+# aqui e o valor de garantia_infancia_limite_rr_anual (2.495,37€, cenário
+# de manutenção) mantém-se inalterado. Ver o comentário equivalente em
+# simulador-abono.html (INCOERÊNCIA CONHECIDA, NÃO CORRIGIDA) — o
+# simulador declara aplicar sempre o cenário de pedidos novos para os
+# limites de escalão, mas usa este valor de manutenção para a Garantia.
 
 garantia_infancia_valor_mensal:
   descricao: "Valor mínimo mensal garantido por criança, no 1.º escalão, quando abaixo do limite de RR"

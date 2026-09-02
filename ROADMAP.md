@@ -260,39 +260,57 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   mas o teste novo garante que a lista nunca mais cresce em silêncio: um
   diploma citado numa página nova, sem cartão nem excepção registada,
   faz o CI falhar.
-- **Limiar de rendimento da Garantia para a Infância — provável
-  inconsistência de cenário, por confirmar em fonte primária** (achado em
-  2026-09-02, sessão "Garantia para a Infância" — ver CLAUDE.md, entrada
-  de revisão dessa data, para o detalhe completo): `dados/parametros/
-  abono.yaml` (`garantia_infancia_limite_rr_anual` = 2.495,37 €/ano) nunca
-  cita uma portaria concreta — só o Guia Prático 4001 do ISS, I.P.
-  (interpretativo, não diploma) e a homepage genérica `dre.pt`.
-  Triangulação nova (3 fontes financeiras independentes, aritmeticamente
-  consistentes com os IAS reais) sugere que este limiar segue a MESMA
-  estrutura de 3 cenários já parametrizada para os limites de escalão do
-  abono: (a) manutenção/rendimentos 2024, IAS 509,26 € → 2.495,37 €;
-  (b) pedidos novos/rendimentos 2025, IAS 522,50 € → 2.560,25 €;
-  (c) reavaliação/rendimentos 2026, IAS 537,13 € → 2.631,94 €.
-  `simulador-abono.html` declara em comentário (linha ~444) aplicar
-  sempre o cenário (b) para os escalões, mas usa o valor do cenário (a)
-  para a Garantia — inconsistência interna real, nunca corrigida: a
-  correcção de 19/07/2026 trocou o valor antigo (2.631,94 €, cenário c)
-  por 2.495,37 € (cenário a), nunca por 2.560,25 € (cenário b, o coerente
-  com o resto do simulador). **Não corrigido deliberadamente** — sem
-  fonte primária que confirme a estrutura de 3 cenários especificamente
-  para a Garantia, corrigir seria trocar uma suposição por outra (decisão
-  do Nuno). `abono-de-familia.html`, `simulador-abono.html` e
-  `abono.yaml` não foram tocados; `garantia-para-a-infancia.html` (nova
-  página) publica o valor actual com nota explícita de que não está
-  confirmado em fonte primária. **Sessão dedicada deve começar por**:
-  encontrar a portaria real que fixa este limiar (repetir o acesso a
-  `dre.pt`/`diariodarepublica.pt` num ambiente sem o bloqueio de rede
-  desta sessão, ou pedir confirmação directa ao Nuno, mesmo padrão já
-  usado para a Lei n.º 36/2026/DL n.º 166/2026). Só depois, se confirmada
-  a estrutura de 3 cenários, actualizar `abono.yaml` (3 parâmetros novos,
-  mesmo padrão dos limites de escalão), `simulador-abono.html` (usar o
-  valor do cenário correcto) e `abono-de-familia.html`/
-  `garantia-para-a-infancia.html` (texto).
+- **Limiar de rendimento da Garantia para a Infância — fonte
+  identificada, formula por cenário ainda por confirmar em fonte
+  primária lida** (achado em 2026-09-02, sessão "Garantia para a
+  Infância"; reinvestigado na sessão "Limiar da garantia — cenários",
+  mesma data — ver CLAUDE.md, entradas de revisão dessa data, para o
+  detalhe completo): `dados/parametros/abono.yaml`
+  (`garantia_infancia_limite_rr_anual` = 2.495,37 €/ano) continua sem
+  citar uma portaria concreta no campo `referencia_legal` — só o Guia
+  Prático 4001 do ISS, I.P. (interpretativo, não diploma). **Fonte
+  primária da OBRIGAÇÃO legal identificada nesta sessão**: o art. 4.º
+  c) do Decreto Regulamentar n.º 3/2022 remete este limiar para
+  portaria própria — confirmada como a **Portaria n.º 223/2022, de 6
+  de setembro** (via listagem oficial em sgeconomia.gov.pt); o art. 9.º
+  do DL n.º 176/2003, para onde esse artigo remete o CÁLCULO do
+  Rendimento de Referência, usa a mesma lógica de 3 cenários já
+  parametrizada para os limites de escalão do abono — reforça, mas não
+  confirma, que o limiar em si também varia por cenário. Triangulação
+  de fontes financeiras (Doutor Finanças/Montepio/Santander/
+  e-konomista/CGD), mais forte do que a da sessão de 2 de setembro
+  (desta vez com os 3 valores devolvidos em conjunto, de forma
+  internamente coerente, na mesma síntese): (a) manutenção/rendimentos
+  2024, IAS 509,26 € → 2.495,37 €; (b) pedidos novos/rendimentos 2025,
+  IAS 522,50 € → 2.560,25 €; (c) reavaliação/rendimentos 2026, IAS
+  537,13 € → 2.631,94 €. `simulador-abono.html` declara em comentário
+  aplicar sempre o cenário (b) para os escalões, mas usa o valor do
+  cenário (a) para a Garantia — inconsistência interna real,
+  **documentada mas ainda não corrigida**: a correcção de 19/07/2026
+  trocou o valor antigo (2.631,94 €, cenário c) por 2.495,37 € (cenário
+  a), nunca por 2.560,25 € (cenário b, o coerente com o resto do
+  simulador). **Continua sem correcção de valor, deliberadamente** —
+  nem a Portaria n.º 223/2022 nem uma eventual actualização anual para
+  2026 foram lidas (WebFetch confirmado bloqueado nesta 2.ª sessão para
+  todos os domínios testados: `dre.pt`/`files.dre.pt`/`dre.tretas.org`/
+  `pgdlisboa.pt`/`lexlink.eu`/bancos — não só os `.gov.pt` já
+  documentados noutras sessões); a triangulação de fontes financeiras
+  continua a não valer como fonte primária pelos padrões deste
+  repositório. `abono-de-familia.html`, `simulador-abono.html`
+  (parâmetros) e `abono.yaml` (valores) continuam intocados — só os
+  comentários de ambos os ficheiros foram actualizados com o achado da
+  Portaria n.º 223/2022, para a próxima sessão não repetir esta
+  investigação do zero. `garantia-para-a-infancia.html` continua a
+  publicar o valor actual com a nota de que não está confirmado em
+  fonte primária. **Sessão dedicada deve começar por**: ler o texto da
+  Portaria n.º 223/2022 e de uma eventual actualização anual (pedir
+  confirmação directa ao Nuno, ou repetir o acesso a `dre.pt` num
+  ambiente sem o bloqueio de rede destas duas sessões — mesmo padrão já
+  usado para a Lei n.º 36/2026/DL n.º 166/2026). Só depois, se
+  confirmada a estrutura de 3 cenários, actualizar `abono.yaml` (3
+  parâmetros novos, mesmo padrão dos limites de escalão),
+  `simulador-abono.html` (usar o valor do cenário correcto) e
+  `abono-de-familia.html`/`garantia-para-a-infancia.html` (texto).
 - **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
   `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
   2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no

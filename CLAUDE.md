@@ -9678,3 +9678,64 @@ sessão sem scraper). Trabalho feito na branch
 `claude/garantia-para-a-infancia-d6gni5` (designada pelo ambiente remoto
 desta sessão) — commit local, **sem push** (instrução explícita desta
 sessão).*
+
+---
+
+*Última revisão: 2026-09-02 (sessão "Limiar da garantia — cenários",
+seguimento directo à sessão anterior) — investigada a fonte do limiar de
+elegibilidade da Garantia para a Infância (`garantia_infancia_limite_rr_
+anual`), registada em `ROADMAP.md` como "por confirmar em fonte
+primária". **Encontrada a fonte primária da OBRIGAÇÃO legal, mas não o
+seu texto**: o art. 4.º c) do Decreto Regulamentar n.º 3/2022 remete este
+limiar para portaria própria dos membros do Governo das finanças e da
+segurança social — confirmada como a **Portaria n.º 223/2022, de 6 de
+setembro** (via listagem oficial em sgeconomia.gov.pt, achado novo desta
+sessão). Confirmado também que a Portaria n.º 60/2026/1 (já lida numa
+sessão anterior) não fixa este limiar — só o valor de referência mensal
+(art. 5.º/2 DR 3/2022, 1.528€/ano). E que o art. 9.º do DL n.º 176/2003,
+para onde o art. 4.º c) remete o CÁLCULO do Rendimento de Referência
+(não o limiar em si), usa a mesma lógica de 3 cenários já parametrizada
+para os limites de escalão do abono — reforça, sem confirmar, a hipótese
+de que o limiar também varia por cenário.
+
+**WebFetch confirmado 100% bloqueado nesta sessão** para todos os
+domínios testados — não só `.gov.pt`/`diariodarepublica.pt` (já
+documentado em dezenas de sessões anteriores), mas também
+`dre.tretas.org`, `pgdlisboa.pt`, `lexlink.eu` e até páginas de bancos
+(`santander.pt`, `cgd.pt`) — por isso nunca foi possível ler o texto da
+Portaria n.º 223/2022 nem de uma eventual actualização anual. Uma
+triangulação nova via `WebSearch` (Doutor Finanças/Montepio/Santander/
+e-konomista/CGD) devolveu, pela 1.ª vez numa única síntese coerente, os
+3 valores em simultâneo — manutenção 2.495,37€/pedidos novos
+2.560,25€/reavaliação 2.631,94€, com a mesma terminologia já usada no
+site — mas continua a ser triangulação de fontes secundárias, não uma
+fonte primária lida, pelos padrões deste repositório (`REGRA DE OURO`/
+"REGRAS DE CONTEÚDO": nunca publicar de triangulação quando a fonte
+primária existe mas não foi lida). **Nenhum valor foi alterado**:
+`dados/parametros/abono.yaml` ganhou só um comentário novo (Portaria n.º
+223/2022 + o cruzamento com o DL 176/2003, sem tocar em nenhum
+`valor:`), confirmado sincronizado com `dados/parametros.json`
+(`gerar_parametros_json.py --check`).
+
+**Incoerência interna corrigida** (independente da Parte 1, verificável
+só pelo código): `simulador-abono.html` declarava em comentário aplicar
+sempre o cenário (b) — pedidos novos — "a este simulador" em bloco,
+quando isso só é verdade para os limites de escalão
+(`escalao1-4_limite_cenario_pedidos_novos_2026`); a Garantia usa
+`garantia_infancia_limite_rr_anual`, um valor único sem variante por
+cenário, com origem documentada como cenário (a) manutenção. Corrigido o
+comentário (nunca o valor nem o comportamento) para escopar a afirmação
+"cenário (b)" aos limites de escalão e sinalizar explicitamente a
+incoerência, com o raciocínio completo e a fórmula candidata
+(2.560,25€ = 0,35 × IAS 2025 × 14) para quando a fonte primária existir.
+`ROADMAP.md` actualizado com o mesmo achado, substituindo a entrada da
+sessão anterior em vez de a duplicar.
+
+`pytest tests/ -q` reconfirmado sem regressões (nenhum valor tocado,
+`tests/test_valores_ancora.py::test_garantia_infancia_limiar_nunca_
+afirmado_como_confirmado` continua a passar sem alteração).
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/limiar-garantia-cenarios-2txc4c` (designada pelo ambiente remoto
+desta sessão) — commit local, **SEM PR — branch não integrada em
+`main`** (instrução explícita desta sessão: "Não fazer push").*
