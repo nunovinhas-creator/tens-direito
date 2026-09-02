@@ -302,20 +302,23 @@ def test_abono_meta_description_bate_com_tabela_do_artigo():
 # ── Garantia para a Infância — canário entre garantia-para-a-infancia.html
 # e dados/parametros.json (sessão "Garantia para a Infância", 2026-09-02).
 # O valor mensal (127,33 €) e o diferencial (52,20 € = 127,33 € - 75,13 €)
-# vêm de dados/parametros.json (fonte única, migração de 2026-07-19 —
-# abono.yaml NÃO foi tocado nesta sessão, por decisão explícita: ver nota
-# abaixo). O limiar de elegibilidade (2.495,37 €/ano) NUNCA é ancorado
-# aqui — a própria página, e esta sessão, documentam que o valor não está
-# confirmado em fonte primária (o artigo 4.º do Decreto Regulamentar n.º
-# 3/2022 remete-o para uma portaria não identificada). Triangulação nova
-# desta sessão (3 fontes financeiras independentes) sugere que este
-# limiar pode seguir a MESMA estrutura de 3 cenários já parametrizada
-# para os limites de escalão do abono (escalao1-4_limite_cenario_*) — e
-# que `simulador-abono.html` pode já estar a usar o valor errado (do
-# cenário "manutenção" em vez do cenário "pedidos novos" que declara
-# aplicar). Não corrigido nesta sessão — ver ROADMAP.md → "TRABALHO
-# FUTURO REGISTADO" para a investigação completa antes de qualquer
-# correcção a `abono.yaml`/`simulador-abono.html`.
+# vêm de dados/parametros.json (fonte única, migração de 2026-07-19).
+#
+# LIMIAR DE ELEGIBILIDADE — FECHADO (sessão "Limiar da garantia —
+# cenários", 2026-09-02, 2.ª ronda "CORRIGIR O QUE ESTÁ CONFIRMADO"): a
+# hipótese registada aqui na 1.ª ronda ("pode seguir a mesma estrutura de
+# 3 cenários", "não confirmado em fonte primária") foi confirmada — a
+# Portaria n.º 223/2022, de 6 de setembro, art. 2.º, foi lida directamente
+# pelo Nuno e fixa o limite em 0,35 do IAS "em vigor à data a que se
+# reportam os rendimentos apurados", mesma redacção do art. 14.º n.º 2 do
+# DL n.º 176/2003 (limites de escalão) — por isso o limiar segue mesmo os
+# 3 cenários: 2.495,37€ (manutenção), 2.560,25€ (pedidos novos, usado por
+# `simulador-abono.html`) e 2.631,94€ (reavaliação). Ver
+# dados/parametros/abono.yaml para os 3 parâmetros
+# (garantia_infancia_limite_rr_anual_cenario_*) e o comentário sobre o
+# multiplicador ×14 (analogia com o regime dos escalões, nunca norma
+# expressa encontrada — continua por confirmar, mas isso já não afecta se
+# o LIMIAR varia por cenário, só o valor exacto de cada cenário).
 
 _ABONO = None
 
@@ -356,16 +359,36 @@ def test_garantia_infancia_exemplo_no_corpo_bate_com_abono_de_familia():
     assert f"{valor_mensal_fmt} €/mês" in html_abono, "valor mensal ausente do corpo de abono-de-familia.html"
 
 
-def test_garantia_infancia_limiar_nunca_afirmado_como_confirmado():
-    """Achado desta sessão, sinalizado mas não corrigido (ver ROADMAP.md):
-    o limiar de 2.495,37 € citado por triangulação pode corresponder só a
-    UM dos 3 cenários de rendimento do abono, não a um valor universal
-    "sempre IAS 2024". Este teste tranca só a HONESTIDADE do texto — a
-    página tem de dizer explicitamente que o valor não está confirmado
-    numa fonte primária, nunca apresentá-lo como facto assente. Falhar
-    aqui é o sinal de que alguém reescreveu esta secção sem essa cautela."""
+def test_garantia_infancia_limiar_cita_a_portaria_e_os_3_cenarios():
+    """Fecha o achado da 1.ª ronda (2026-09-02): o limiar deixou de ser
+    "não confirmado" — a Portaria n.º 223/2022 foi lida directamente e
+    citada. Este teste tranca a citação e os 3 valores por cenário no
+    corpo da página — nunca um valor único apresentado sem a variação
+    (regressão para o estado anterior à confirmação)."""
     html = _ler("garantia-para-a-infancia.html")
-    assert "não está confirmado numa fonte primária" in html
+    assert "Portaria n.º 223/2022" in html
+    for valor in ("2.495,37", "2.560,25", "2.631,94"):
+        assert f"{valor} €/ano" in html, f"{valor} €/ano ausente do corpo — a variação por cenário desapareceu?"
+
+
+def test_garantia_infancia_multiplicador_14_continua_sinalizado_como_por_confirmar():
+    """O LIMIAR por cenário está confirmado (Portaria n.º 223/2022, art.
+    2.º), mas o multiplicador ×14 usado para o anualizar não tem norma
+    expressa encontrada — nem nesta sessão nem na anterior. Este teste
+    tranca que a página continua a avisar disso explicitamente, nunca
+    apresentando o ×14 como facto tão certo quanto o resto."""
+    html = _ler("garantia-para-a-infancia.html")
+    assert "×14" in html or "por confirmar" in html.lower()
+    assert "multiplicador" in html.lower()
+
+
+def test_garantia_infancia_yaml_tem_os_3_parametros_por_cenario():
+    """Os 3 valores por cenário vêm de dados/parametros.json (nunca
+    hardcoded na página nem nos testes) — mesmo padrão de
+    test_garantia_infancia_title_valor_mensal_bate_com_o_yaml acima."""
+    assert _param_abono("garantia_infancia_limite_rr_anual_cenario_manutencao_2025") == 2495.37
+    assert _param_abono("garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026") == 2560.25
+    assert _param_abono("garantia_infancia_limite_rr_anual_cenario_reavaliacao_2026") == 2631.94
 
 
 def test_garantia_infancia_psu_por_leitura_directa_nunca_por_inferencia():

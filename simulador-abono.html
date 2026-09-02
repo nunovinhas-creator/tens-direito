@@ -63,7 +63,7 @@
         "name": "O que é a Garantia para a Infância?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.495,37€ anuais (0,35 × IAS de 2024 × 14), o abono é garantido em pelo menos 127,33€/mês por criança, mesmo que o cálculo normal seja inferior."
+          "text": "Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.560,25€ anuais (0,35 × IAS de 2025 × 14, o cenário de pedidos novos que este simulador aplica), o abono é garantido em pelo menos 127,33€/mês por criança, mesmo que o cálculo normal seja inferior."
         }
       },
       {
@@ -124,7 +124,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-07-19"
+    "dateModified": "2026-09-02"
   }
   </script>
 
@@ -312,7 +312,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026, cenário de pedidos novos (rendimentos de 2025) · <strong>Verificado a 19/07/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a>.
+      💡 <strong>Portaria n.º 60/2026/1</strong> — Valores de referência 2026, cenário de pedidos novos (rendimentos de 2025) · <strong>Verificado a 02/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a>.
     </div>
 
     <div id="avisoCarregandoParametros" class="info-box" role="status">
@@ -374,7 +374,7 @@
       <details>
         <summary>O que é a Garantia para a Infância?</summary>
         <div class="faq-resposta">
-          Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.495,37€ anuais (0,35 × IAS de 2024 × 14), o abono é garantido em pelo menos <strong>127,33€/mês por criança</strong>, mesmo que o cálculo normal seja inferior. Isto assegura um piso mínimo.
+          Para famílias no 1.º escalão com Rendimento de Referência abaixo de 2.560,25€ anuais (0,35 × IAS de 2025 × 14, o cenário de pedidos novos que este simulador aplica), o abono é garantido em pelo menos <strong>127,33€/mês por criança</strong>, mesmo que o cálculo normal seja inferior. Isto assegura um piso mínimo.
         </div>
       </details>
 
@@ -443,44 +443,35 @@
     //
     // Este simulador aplica sempre o cenário (b) — pedidos NOVOS em 2026,
     // rendimentos de 2025 (IAS 2025 = 522,50€) — declarado explicitamente
-    // na UI, mas SÓ para os LIMITES DE ESCALÃO (escaloes[].limite, abaixo —
-    // ab.escalao1-4_limite_cenario_pedidos_novos_2026). Os cenários (a)
-    // manutenção/pedidos de 2025 (rendimentos de 2024) e (c) reavaliações
-    // em 2026 (rendimentos de 2026) têm limites de escalão diferentes,
-    // documentados em dados/parametros/abono.yaml e na tabela comparativa
-    // de abono-de-familia.html, mas não simulados aqui.
+    // na UI, para os LIMITES DE ESCALÃO (escaloes[].limite, abaixo —
+    // ab.escalao1-4_limite_cenario_pedidos_novos_2026) E para o LIMITE DE
+    // ELEGIBILIDADE DA GARANTIA PARA A INFÂNCIA (limiteGarantia, abaixo —
+    // ab.garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026).
+    // Os cenários (a) manutenção/pedidos de 2025 (rendimentos de 2024) e
+    // (c) reavaliações em 2026 (rendimentos de 2026) têm limites
+    // diferentes para ambos, documentados em dados/parametros/abono.yaml
+    // e na tabela comparativa de abono-de-familia.html, mas não simulados
+    // aqui — nunca misturar cenários dentro da mesma simulação.
     //
-    // CORRECÇÃO REAL DA AUDITORIA (2026-07-19): o limite de elegibilidade
-    // da Garantia para a Infância estava calculado com o IAS do ano
-    // corrente (0,35 × 537,13€ × 14 = 2.631,94€) — o Guia Prático 4001 do
-    // ISS, I.P., v4.80, de 30/06/2026, fixa este cálculo sempre com o IAS
-    // de 2024 (509,26€): 0,35 × 509,26€ × 14 = 2.495,37€. Corrigido aqui e
-    // em abono-de-familia.html.
-    //
-    // INCOERÊNCIA CONHECIDA, NÃO CORRIGIDA — `limiteGarantia` (abaixo) NÃO
-    // segue o cenário (b) declarado acima: `garantia_infancia_limite_rr_
-    // anual` é um valor ÚNICO em dados/parametros/abono.yaml (sem
-    // variantes por cenário, ao contrário dos limites de escalão), com
-    // origem documentada nesse ficheiro como cenário (a) manutenção
-    // (2.495,37€, a correcção da linha acima). Sinalizada na sessão
-    // "Garantia para a Infância" (2026-09-02, ver ROADMAP.md → "TRABALHO
-    // FUTURO REGISTADO") e reinvestigada na sessão "Limiar da garantia —
-    // cenários" (mesma data): confirmada a portaria que ORIGINALMENTE fixa
-    // este limiar (Portaria n.º 223/2022, de 6 de setembro, ao abrigo do
-    // art. 4.º c) do Decreto Regulamentar n.º 3/2022) e que o art. 9.º do
-    // DL n.º 176/2003 — para onde esse artigo remete o CÁLCULO do
-    // Rendimento de Referência — usa a mesma lógica de 3 cenários do
-    // abono; mas sem conseguir ler o texto de nenhuma portaria (WebFetch
-    // bloqueado nesta sessão para todos os domínios testados: dre.pt,
-    // files.dre.pt, dre.tretas.org, pgdlisboa.pt, lexlink.eu, bancos) para
-    // confirmar se o LIMIAR em si (não só o método de cálculo do RR) varia
-    // por cenário como os limites de escalão. Por isso `garantia_infancia_
-    // limite_rr_anual` NUNCA foi alterado nem parametrizado por cenário
-    // nesta sessão — REGRA explícita: sem fonte primária lida, o valor
-    // fica como está. Corrigir exigiria acrescentar
+    // INCOERÊNCIA RESOLVIDA (sessão "Limiar da garantia — cenários",
+    // 2026-09-02, 2.ª ronda "CORRIGIR O QUE ESTÁ CONFIRMADO") — até aqui,
+    // `limiteGarantia` usava um valor ÚNICO (garantia_infancia_limite_rr_
+    // anual, cenário de manutenção, 2.495,37€), divergindo do cenário (b)
+    // declarado acima para os limites de escalão. Fonte primária
+    // confirmada nesta sessão (lida pelo Nuno, WebFetch continua
+    // bloqueado neste sandbox): a Portaria n.º 223/2022, de 6 de setembro,
+    // art. 2.º, fixa o limite da Garantia em 0,35 do IAS "em vigor à data
+    // a que se reportam os rendimentos apurados" — redacção IDÊNTICA à do
+    // art. 14.º n.º 2 do DL n.º 176/2003 (mecânica dos limites de
+    // escalão). Sendo a mesma redacção legal, não há base para aplicar um
+    // cenário diferente ao limite da Garantia dentro da mesma simulação —
+    // por isso `limiteGarantia` passa a ler
     // `garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026`
-    // (candidato: 2.560,25€ = 0,35 × IAS 2025 × 14) só quando essa
-    // confirmação existir — nunca antes.
+    // (2.560,25€ = 0,35 × IAS 2025 × 14), o mesmo cenário (b) dos
+    // escalões. Os 3 valores por cenário continuam em
+    // dados/parametros/abono.yaml (nunca só este). O multiplicador ×14
+    // continua sem norma expressa encontrada (analogia com o regime dos
+    // escalões) — ver o comentário completo nesse YAML.
     let PARAMETROS_ABONO = null;
 
     async function carregarParametrosAbono() {
@@ -492,7 +483,7 @@
         if (!ab) throw new Error("prestações.abono em falta em dados/parametros.json");
         PARAMETROS_ABONO = {
           garantiaInfancia: ab.garantia_infancia_valor_mensal.valor,
-          limiteGarantia: ab.garantia_infancia_limite_rr_anual.valor,
+          limiteGarantia: ab.garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026.valor,
           majoracaoMonoparentalFracao: ab.majoracao_monoparental_fracao.valor,
           escaloes: [
             { id: 1, limite: ab.escalao1_limite_cenario_pedidos_novos_2026.valor,

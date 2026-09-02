@@ -260,57 +260,50 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   mas o teste novo garante que a lista nunca mais cresce em silêncio: um
   diploma citado numa página nova, sem cartão nem excepção registada,
   faz o CI falhar.
-- **Limiar de rendimento da Garantia para a Infância — fonte
-  identificada, formula por cenário ainda por confirmar em fonte
-  primária lida** (achado em 2026-09-02, sessão "Garantia para a
-  Infância"; reinvestigado na sessão "Limiar da garantia — cenários",
-  mesma data — ver CLAUDE.md, entradas de revisão dessa data, para o
-  detalhe completo): `dados/parametros/abono.yaml`
-  (`garantia_infancia_limite_rr_anual` = 2.495,37 €/ano) continua sem
-  citar uma portaria concreta no campo `referencia_legal` — só o Guia
-  Prático 4001 do ISS, I.P. (interpretativo, não diploma). **Fonte
-  primária da OBRIGAÇÃO legal identificada nesta sessão**: o art. 4.º
-  c) do Decreto Regulamentar n.º 3/2022 remete este limiar para
-  portaria própria — confirmada como a **Portaria n.º 223/2022, de 6
-  de setembro** (via listagem oficial em sgeconomia.gov.pt); o art. 9.º
-  do DL n.º 176/2003, para onde esse artigo remete o CÁLCULO do
-  Rendimento de Referência, usa a mesma lógica de 3 cenários já
-  parametrizada para os limites de escalão do abono — reforça, mas não
-  confirma, que o limiar em si também varia por cenário. Triangulação
-  de fontes financeiras (Doutor Finanças/Montepio/Santander/
-  e-konomista/CGD), mais forte do que a da sessão de 2 de setembro
-  (desta vez com os 3 valores devolvidos em conjunto, de forma
-  internamente coerente, na mesma síntese): (a) manutenção/rendimentos
-  2024, IAS 509,26 € → 2.495,37 €; (b) pedidos novos/rendimentos 2025,
-  IAS 522,50 € → 2.560,25 €; (c) reavaliação/rendimentos 2026, IAS
-  537,13 € → 2.631,94 €. `simulador-abono.html` declara em comentário
-  aplicar sempre o cenário (b) para os escalões, mas usa o valor do
-  cenário (a) para a Garantia — inconsistência interna real,
-  **documentada mas ainda não corrigida**: a correcção de 19/07/2026
-  trocou o valor antigo (2.631,94 €, cenário c) por 2.495,37 € (cenário
-  a), nunca por 2.560,25 € (cenário b, o coerente com o resto do
-  simulador). **Continua sem correcção de valor, deliberadamente** —
-  nem a Portaria n.º 223/2022 nem uma eventual actualização anual para
-  2026 foram lidas (WebFetch confirmado bloqueado nesta 2.ª sessão para
-  todos os domínios testados: `dre.pt`/`files.dre.pt`/`dre.tretas.org`/
-  `pgdlisboa.pt`/`lexlink.eu`/bancos — não só os `.gov.pt` já
-  documentados noutras sessões); a triangulação de fontes financeiras
-  continua a não valer como fonte primária pelos padrões deste
-  repositório. `abono-de-familia.html`, `simulador-abono.html`
-  (parâmetros) e `abono.yaml` (valores) continuam intocados — só os
-  comentários de ambos os ficheiros foram actualizados com o achado da
-  Portaria n.º 223/2022, para a próxima sessão não repetir esta
-  investigação do zero. `garantia-para-a-infancia.html` continua a
-  publicar o valor actual com a nota de que não está confirmado em
-  fonte primária. **Sessão dedicada deve começar por**: ler o texto da
-  Portaria n.º 223/2022 e de uma eventual actualização anual (pedir
-  confirmação directa ao Nuno, ou repetir o acesso a `dre.pt` num
-  ambiente sem o bloqueio de rede destas duas sessões — mesmo padrão já
-  usado para a Lei n.º 36/2026/DL n.º 166/2026). Só depois, se
-  confirmada a estrutura de 3 cenários, actualizar `abono.yaml` (3
-  parâmetros novos, mesmo padrão dos limites de escalão),
-  `simulador-abono.html` (usar o valor do cenário correcto) e
-  `abono-de-familia.html`/`garantia-para-a-infancia.html` (texto).
+- ~~Limiar de rendimento da Garantia para a Infância — fonte por
+  confirmar~~ **FECHADO (2026-09-02, sessão "Limiar da garantia —
+  cenários", 2.ª ronda "CORRIGIR O QUE ESTÁ CONFIRMADO")**: o Nuno leu
+  directamente o texto da **Portaria n.º 223/2022, de 6 de setembro,
+  art. 2.º** (WebFetch continua bloqueado nesta sessão) — fixa o limite
+  em 0,35 do IAS "em vigor à data a que se reportam os rendimentos
+  apurados", redacção IDÊNTICA à do art. 14.º n.º 2 do DL n.º 176/2003
+  (limites de escalão). Confirma a hipótese da 1.ª ronda: o limiar
+  segue a mesma mecânica de 3 cenários dos escalões. `dados/parametros/
+  abono.yaml` ganhou os 3 parâmetros por cenário
+  (`garantia_infancia_limite_rr_anual_cenario_manutencao_2025` =
+  2.495,37 €, `..._pedidos_novos_2026` = 2.560,25 €,
+  `..._reavaliacao_2026` = 2.631,94 €), todos com `referencia_legal` a
+  citar a Portaria n.º 223/2022; `simulador-abono.html` corrigido para
+  usar o cenário (b) pedidos novos (2.560,25 €) — o mesmo já usado para
+  os limites de escalão, resolvendo a incoerência interna sinalizada na
+  1.ª ronda (o simulador declarava cenário (b) mas usava o valor do
+  cenário (a)); `abono-de-familia.html` e `garantia-para-a-infancia.html`
+  actualizadas com a tabela dos 3 cenários e a citação da portaria;
+  `fontes.html` ganhou cartão próprio.
+
+  **Efeito prático da correcção**: uma banda de **64,88 €/ano de RR**
+  (2.495,37 € a 2.560,25 €) que antes ficava de fora da Garantia (por o
+  simulador usar o limiar mais baixo do cenário errado) passa a ter
+  direito — nunca o inverso, o novo limiar é sempre mais generoso.
+  Exemplo concreto trancado em teste: uma família de 1 criança com
+  rendimento anual de 5.060 € (RR = 2.530 €) passa de "sem direito" a
+  "com direito" à Garantia.
+
+  **O que fica por confirmar, registado em comentário no YAML e nesta
+  entrada**: o multiplicador ×14 usado para anualizar o IAS. Nem a
+  Portaria n.º 223/2022 nem o art. 9.º do DL n.º 176/2003 têm cláusula
+  expressa de anualização do IAS por 14 — o art. 14.º n.º 3 do DL
+  176/2003 anualiza incluindo férias/Natal, mas está expressamente
+  circunscrito à remuneração mínima (RMMG), nunca ao IAS. Pesquisa
+  dedicada nesta sessão (WebSearch, já que WebFetch continua bloqueado)
+  não encontrou nenhuma norma que estenda essa anualização ao IAS — as
+  sínteses obtidas eram inconsistentes entre si e nenhuma citava um
+  artigo concreto. Mantido o ×14 (dá 2.560,25 € no cenário b; com ×12
+  seria 2.138,89 €) por ser o valor que o Guia Prático 4001 do ISS, I.P.
+  publica e que a Segurança Social aplica na prática — mas por analogia
+  com o regime dos escalões, nunca por norma expressa confirmada. Se
+  uma sessão futura encontrar essa norma, fecha o caso por completo —
+  não é bloqueante para nada hoje, só uma nota de proveniência.
 - **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
   `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
   2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no

@@ -133,7 +133,7 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
         "name": "O que é a Garantia para a Infância?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Crianças do 1.º escalão com Rendimento de Referência abaixo de 0,35 × IAS de 2024 × 14 (= 2.495,37 €/ano) têm garantido um rendimento mínimo de 127,33 €/mês (1.528 €/ano). O Guia Prático da Segurança Social fixa este limite sempre com o IAS de 2024 (509,26 €), nunca actualizado para o IAS do ano corrente. A Segurança Social calcula e paga automaticamente o complemento necessário para atingir este valor — não é preciso pedir. Exemplo: criança de 8 anos no 1.º escalão recebe 75,13 €/mês de abono; a Garantia para a Infância paga automaticamente mais 52,20 €/mês."
+          "text": "Crianças do 1.º escalão com Rendimento de Referência abaixo do limite fixado pela Portaria n.º 223/2022 (0,35 × IAS) têm garantido um rendimento mínimo de 127,33 €/mês (1.528 €/ano). Tal como os escalões do abono, este limite depende do cenário de rendimentos: 2.495,37 €/ano para manutenção (IAS 2024), 2.560,25 €/ano para pedidos novos em 2026 (IAS 2025) ou 2.631,94 €/ano para reavaliações em 2026 (IAS 2026). A Segurança Social calcula e paga automaticamente o complemento necessário para atingir este valor — não é preciso pedir. Exemplo: criança de 8 anos no 1.º escalão recebe 75,13 €/mês de abono; a Garantia para a Infância paga automaticamente mais 52,20 €/mês."
         }
       },
       {
@@ -245,7 +245,7 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06-23",
-    "dateModified": "2026-07-19"
+    "dateModified": "2026-09-02"
   }
   </script>
   <link rel="stylesheet" href="/assets/css/share.css">
@@ -492,7 +492,18 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
     <div class="card">
       <span class="badge">Garantia para a Infância</span>
       <h2>Complemento automático para as famílias com menos rendimentos</h2>
-      <p>Crianças do <strong>1.º escalão</strong> com Rendimento de Referência abaixo de <strong>0,35 × IAS de 2024 × 14 = 2.495,37 €/ano</strong> têm garantido um rendimento mínimo de <strong>127,33 €/mês</strong> (1.528 €/ano). Este limite usa sempre o IAS de 2024 (509,26 €) — o Guia Prático da Segurança Social não o actualiza para o IAS do ano corrente.</p>
+      <p>Crianças do <strong>1.º escalão</strong> com Rendimento de Referência abaixo de um limite fixado pela <strong>Portaria n.º 223/2022, de 6 de setembro (art. 2.º)</strong> têm garantido um rendimento mínimo de <strong>127,33 €/mês</strong> (1.528 €/ano). A portaria fixa o limite em 0,35 do IAS "em vigor à data a que se reportam os rendimentos apurados" — redacção idêntica à dos limites de escalão acima, por isso este limite <strong>varia pelo mesmo cenário</strong>:</p>
+      <div class="tabela-wrap">
+        <table>
+          <thead>
+            <tr><th>(a) Manutenção/pedidos de 2025<br><small>rendimentos de 2024, IAS 509,26 €</small></th><th>(b) Pedidos novos em 2026<br><small>rendimentos de 2025, IAS 522,50 €</small></th><th>(c) Reavaliações em 2026<br><small>rendimentos de 2026, IAS 537,13 €</small></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Até <strong>2.495,37 €/ano</strong></td><td>Até <strong>2.560,25 €/ano</strong></td><td>Até <strong>2.631,94 €/ano</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-tabela">Cálculo: 0,35 × IAS do cenário × 14. O multiplicador ×14 não tem norma expressa encontrada — é a mesma anualização já aplicada aos limites de escalão, nunca confirmada como regra própria da Garantia. O <a href="/simulador-abono.html">nosso simulador</a> aplica sempre o cenário (b), pedidos novos em 2026 (2.560,25 €/ano).</p>
       <p>A Segurança Social calcula e paga automaticamente o complemento necessário para atingir este valor. <strong>Não é necessário fazer qualquer pedido.</strong></p>
       <p style="margin-top:0.5rem;background:#f1faf9;border-left:3px solid #0F766E;padding:0.75rem 1rem;border-radius:0 6px 6px 0;font-size:0.92rem;">
         <strong>Exemplo:</strong> criança de 8 anos no 1.º escalão recebe abono base de 75,13 €/mês. A Garantia para a Infância acrescenta automaticamente 52,20 €/mês, garantindo o total de 127,33 €/mês.
@@ -626,8 +637,8 @@ summary h3 { display: inline; font-size: 1rem; font-weight: 600; margin: 0; }
     <div class="fonte-bloco">
       <strong>Fontes e verificação:</strong><br>
       <a href="https://www.seg-social.pt/abono-de-familia-para-criancas-e-jovens" target="_blank" rel="noopener">seg-social.pt — Abono de Família para Crianças e Jovens</a><br>
-      Portaria n.º 60/2026/1, de 5 de fevereiro (valores 2026) · Instituto da Segurança Social · Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026<br>
-      Verificado a 19 de julho de 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · IAS 2026: 537,13 € · Os valores concretos devem ser confirmados no simulador oficial antes de qualquer decisão.
+      Portaria n.º 60/2026/1, de 5 de fevereiro (valores 2026) · Portaria n.º 223/2022, de 6 de setembro, art. 2.º (limite da Garantia para a Infância) · Instituto da Segurança Social · Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026<br>
+      Verificado a 2 de setembro de 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · IAS 2026: 537,13 € · Os valores concretos devem ser confirmados no simulador oficial antes de qualquer decisão.
     </div>
 
     <!-- DISCLAIMER -->
