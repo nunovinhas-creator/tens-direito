@@ -1,14 +1,35 @@
 {
   "fonte": "dre_psu_regulamentacao",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-08-17T07:22:21.676199+00:00",
-  "sha256_conteudo": "4c2a385012799c6d133591bdeb87e1206d149f1d8a58f830be8269ba303f2ca7",
+  "data_extracao": "2026-09-02T10:43:35.610055+00:00",
+  "sha256_conteudo": "1504e005fa173c41438709e9a76d64468464ae137952665f5244c76f0ae13cd1",
   "estado": "OK",
   "valores_extraidos": {
-    "titulo": "",
+    "titulo": "Resultados de pesquisa: \"prestação social única\"",
     "paragrafos": [
-      "- Certifique-se de que nenhuma palavra contém erros ortográficos. - Tente utilizar outras palavras-chave. - Tente palavras-chave mais gerais."
+      "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Trabalho, Solidariedade e Segurança Social",
+      "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
+      "Trabalho, Solidariedade e Segurança Social",
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Trabalho, Solidariedade e Segurança Social - Direção-Geral da Solidariedade e Segurança Social",
+      "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Trabalho, Solidariedade e Segurança Social - Direção-Geral da Solidariedade e Segurança Social",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07",
+      "Trabalho, Solidariedade e Segurança Social - Gabinete da Ministra do Trabalho, Solidariedade e Segurança Social"
     ],
-    "itens_lista": []
+    "itens_lista": [
+      "Lei n.º 36/2026 - Diário da República n.º 143/2026, Série I de 2026-07-27",
+      "Portaria n.º 394/2026/1 - Diário da República n.º 166/2026, Série I de 2026-08-27",
+      "Decreto-Lei n.º 166/2026",
+      "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
+      "Lei n.º 36/2026",
+      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
+      "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
+      "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07"
+    ]
   }
 }
