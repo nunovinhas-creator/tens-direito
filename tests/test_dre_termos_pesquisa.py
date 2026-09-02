@@ -68,7 +68,7 @@ def test_padrao_de_citacao_nunca_reconhece_as_frases_tematicas_reais():
         '"prestação social única"',
         '"apoio extraordinário à renda"',
         '"indexante dos apoios sociais"',
-        '"Garantia Pública no crédito habitação"',
+        '"garantia pessoal do Estado"',
     ):
         assert not _PADRAO_CITACAO_DIPLOMA.search(termo), (
             f"falso positivo do guardrail em {termo!r} — regex demasiado permissivo"

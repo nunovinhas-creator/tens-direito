@@ -9426,3 +9426,116 @@ sessão sem scraper novo, só correcção de termos de pesquisa já
 existentes). Trabalho feito na branch `claude/corrigir-termos-sentinelas`
 (criada nesta sessão a partir de `main`) — commit local, **sem push**
 (instrução explícita desta sessão).*
+
+---
+
+*Última revisão: 2026-09-02 — sessão de triagem de duas Issues (#150,
+#151) sobre os sentinelas DRE do cluster PSU/Habitação, com o termo de
+`dre_habitacao_garantia` finalmente calibrado contra o motor real.
+
+**Issue #150 (`dre_psu_regulamentacao`, 1.ª mudança detectada desde a
+correcção de termo da sessão anterior, commit `e3b67d7`)**: confirmado
+que é o mecanismo genérico de "mudança de conteúdo" (`data/mudancas.json`,
+0→9 itens face a 2026-09-01, que ainda devolvia a página canónica de
+"zero resultados") — nunca a Issue específica de "Portaria de
+regulamentação detectada" (`dre_psu_regulamentacao_portaria_detectada`).
+Confirmado ao correr `_detectar_portaria_generico()` directamente contra
+o `itens_lista` real de hoje (`data/scraped/dre_psu_regulamentacao_2026-09-02.json`):
+dos 9 itens, só um é Portaria (n.º 394/2026/1, já conhecida e tratada —
+data completa 2026-08-27, anterior ao corte de recência de
+"2026-08-28") — correctamente suprimida; nenhuma outra Portaria na
+lista. **Resposta directa à pergunta do Nuno: não há nenhuma Portaria
+nova a regulamentar a PSU além da 394/2026/1.** (Achado incidental
+corrigido no mesmo teste manual: uma chamada de verificação sem
+`data_minima` escreveu, sem querer, uma linha real em
+`data/scraped/avisos.log` — revertida com `git checkout` antes de
+continuar, nunca chegou a ficheiro nenhum commitado.)
+
+**Issue #151 (`dre_habitacao_garantia`, 4.º dia consecutivo cego, mesmo
+depois da correcção de termo da sessão anterior)**: calibrado contra o
+motor real pela primeira vez, via 4 corridas sucessivas de um workflow
+de diagnóstico temporário (`.github/workflows/diagnostico-garantia-
+termo-temp.yml` + `scripts/_diag_garantia_termo.py`, numa branch
+própria `claude/diag-garantia-termo-temp` — nunca em `main`, apagados
+os dois no fim, mesmo padrão já documentado nesta secção para
+diagnósticos anteriores).
+
+Achado metodológico incidental, mas real e relevante para qualquer
+diagnóstico DRE futuro: a 1.ª corrida (mesma `page`/`context`
+reutilizada entre termos, sem pausa) mostrou `"apoio extraordinário à
+renda"` — termo que já se sabe fiável, 19 itens/dia em produção — a
+devolver **0 itens**. Investigado antes de confiar no resultado:
+`dre_psu`, `dre_habitacao_paer`, `dre_habitacao_garantia`, `dre_ias` e
+`dre_psu_regulamentacao` partilham TODOS o mesmo `PerfilBrowser`
+(`stealth=False, headers_custom=False`) em `_PERFIL_POR_SLUG` — como
+`PerfilBrowser` é um `dataclass(frozen=True)`, instâncias com os mesmos
+valores são iguais e colidem na mesma chave de `grupos` em `main()`,
+logo as 5 fontes partilham o mesmo `context`/`page` em produção,
+processadas sequencialmente. Uma 2.ª pesquisa na mesma página, sem
+pausa, cai na página canónica de "zero resultados" do DRE mesmo com um
+termo correcto — mas a produção sobrevive a isto porque
+`scrape_playwright()` tenta até 3 vezes com 30-120s de espera entre
+tentativas quando a classificação falha (`TENTATIVAS_BLOQUEIO`), o que
+o diagnóstico inicial não replicava. Corrigido nas corridas seguintes
+abrindo um `context` novo (cookies limpos) por termo testado, com até 2
+tentativas e uma pausa curta — isolamento que devolveu resultados
+limpos e reprodutíveis.
+
+Com isolamento correcto: `"Garantia Pública no crédito habitação"`
+(termo actual) confirmado a devolver 0 resultados, 2 tentativas,
+contexto limpo — genuinamente morto, não um artefacto de sessão.
+`"garantia pública"` sozinho devolve 29 resultados, mas nenhum
+relacionado com o DL 44/2024 (são Resoluções da AR/CM sobre linhas de
+garantia pública completamente distintas — crédito a empresas, fundos
+europeus) — termo genérico demais, teria sido um novo falso-positivo à
+espera de acontecer. `"garantia do Estado"`, `"crédito à habitação de
+jovens"` e a citação do H1 da página de detalhe (`"Decreto-Lei n.º
+44/2024, de 10 de julho"`) devolvem todos 0.
+
+Em vez de continuar a adivinhar candidatos, extraído o texto completo
+da própria página de detalhe do DL 44/2024 em dre.pt (URL já conhecida
+de `dados/parametros/habitacao.yaml`) — a ementa e o corpo do diploma
+usam, repetidamente, a expressão legal exacta **"garantia pessoal do
+Estado"** (nunca "garantia pública"): *"Estabelece as condições em que
+o Estado pode prestar garantia pessoal a instituições de crédito..."*,
+*"A garantia pessoal do Estado, referida no artigo anterior, pode ser
+concedida..."*, *"A garantia pessoal do Estado não ultrapasse 15% do
+valor da transação..."*. Testado contra o motor real:
+`'"garantia pessoal do Estado"'` devolve **24 resultados à 1.ª
+tentativa**, incluindo a **Portaria n.º 236-A/2024/1** — a que
+regulamenta exactamente este DL 44/2024 (confirmada em
+`dados/parametros/habitacao.yaml`) — prova directa e não-inferida de
+que a frase está correcta. O próprio DL 44/2024 não aparece nos 24
+itens (é de 2024, tal como a Portaria 236-A/2024/1 seria também
+suprimida pelo corte de recência `desde: "2026-07-20"` já existente —
+o sentinela existe para apanhar uma ALTERAÇÃO futura, nunca para
+redescobrir o diploma já conhecido).
+
+Corrigido `dre_habitacao_garantia` em `scripts/scraper_playwright.py`
+(`_FONTE_CONFIGS` e `FONTES_PLAYWRIGHT`, `termo`/`ancora_conteudo` de
+`'"Garantia Pública no crédito habitação"'` para `'"garantia pessoal do
+Estado"'`, com o raciocínio completo em comentário) — `data_minima`
+("2026-07-20") mantida sem alteração, já cobre correctamente os itens
+históricos que este termo mais amplo devolve. `tests/test_dre_habitacao_
+watchlist.py::test_dre_habitacao_garantia_pesquisa_a_frase_tematica_
+nao_a_citacao` e `tests/test_dre_termos_pesquisa.py` (lista de frases
+temáticas comprovadas) actualizados para o termo novo. Não é o mesmo
+padrão do IAS/PSU/PAER (citação de diploma por número) — é o mesmo
+padrão já corrigido nas sessões anteriores (Issues #147/#148): um termo
+nunca confirmado contra o motor real antes de ser publicado. **Lição
+reforçada**: mesmo uma correcção que já não tem "forma de citação"
+(passa o guardrail `test_dre_termos_pesquisa.py`) ainda precisa de
+confirmação directa contra o motor real antes de ser dada como
+resolvida — o guardrail apanha a forma errada, nunca a semântica
+errada.
+
+Suite completa: **3660 passed, 4 skipped** (allow-list de skips
+confirmada elemento a elemento, sem alteração); `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper novo). A 1.ª corrida real do pipeline com o termo
+novo confirma se `dre_habitacao_garantia` sai do estado `BLOQUEADO`;
+Issue #151 fecha-se sozinha ao recuperar (mesma máquina de estados de
+sempre). Trabalho feito na branch `claude/garantia-termo-e-triagem-150`
+(designada pelo ambiente remoto desta sessão) — commit local, **sem
+push** (instrução explícita desta sessão).*

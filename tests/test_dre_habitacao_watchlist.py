@@ -46,16 +46,25 @@ def test_dre_habitacao_paer_pesquisa_o_nome_oficial_do_paer():
 
 
 def test_dre_habitacao_garantia_pesquisa_a_frase_tematica_nao_a_citacao():
-    """Corrigido 2026-09-01 (Issue #147): a citação por número
-    ('"Decreto-Lei n.º 44/2024"') nunca devolveu um resultado em 44 dias
-    seguidos — trocada pela designação temática do apoio, mesmo padrão
-    comprovado de dre_psu/dre_habitacao_paer/dre_ias (ver
-    tests/test_dre_termos_pesquisa.py para o guardrail que impede a
-    regressão a um termo com forma de citação)."""
+    """Corrigido de vez 2026-09-02 (Issue #151), calibrado contra o
+    motor real: a citação por número ('"Decreto-Lei n.º 44/2024"')
+    nunca devolveu um resultado em 44 dias seguidos; a 1.ª correcção
+    (2026-09-01, "Garantia Pública no crédito habitação") nunca chegou
+    a ser confirmada contra o motor real e continuou cega mais 4 dias
+    (Issue #151) — confirmado nesse dia a devolver 0 resultados, mesmo
+    com contexto/cookies limpos e retry. Trocada para "garantia pessoal
+    do Estado" — a expressão exacta usada, repetidamente, no texto do
+    próprio DL 44/2024 (lida directamente da página de detalhe em
+    dre.pt) — testada a devolver 24 resultados reais à 1.ª tentativa,
+    incluindo a Portaria n.º 236-A/2024/1 que regulamenta este mesmo
+    DL (ver o comentário completo em scripts/scraper_playwright.py,
+    junto a _FONTE_CONFIGS["dre_habitacao_garantia"], para a prova
+    completa; ver tests/test_dre_termos_pesquisa.py para o guardrail
+    que impede a regressão a um termo com forma de citação)."""
     config = sp._fonte_config("dre_habitacao_garantia")
-    assert config.ancora_conteudo[0] == '"Garantia Pública no crédito habitação"'
+    assert config.ancora_conteudo[0] == '"garantia pessoal do Estado"'
     fonte = next(f for f in sp.FONTES_PLAYWRIGHT if f["slug"] == "dre_habitacao_garantia")
-    assert fonte["pesquisa_interactiva"]["termo"] == '"Garantia Pública no crédito habitação"'
+    assert fonte["pesquisa_interactiva"]["termo"] == '"garantia pessoal do Estado"'
 
 
 def test_ambas_as_fontes_tem_perfil_sem_headers_custom():

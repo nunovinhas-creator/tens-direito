@@ -141,20 +141,44 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
     # que já funciona nos outros 4 sentinelas (`dre_psu`,
     # `dre_habitacao_paer`, `dre_ias`, e agora `dre_psu_regulamentacao`,
     # ver esse comentário mais abaixo para a prova directa). Trocado
-    # para a designação que o próprio site usa para este apoio — "Garantia
-    # Pública" sozinho é demasiado genérico (termo comum a outras linhas
-    # de garantia do Estado, ex. crédito a empresas) — qualificado com
-    # "no crédito habitação" (já usado como rótulo humano desta mesma
-    # fonte em `scripts/preparar_canal.py`) para reduzir falsos positivos
-    # de tema, mesmo padrão dos outros sentinelas (frase específica, não
-    # citação). Nunca confirmado contra um scrape real com este termo
-    # nesta sessão (rede bloqueada para diariodarepublica.pt) — ver
-    # CLAUDE.md "IMPACTO DA PSU"/"CLUSTER HABITAÇÃO" para o estado real
-    # após a próxima corrida do pipeline.
+    # (2026-09-01, ainda na Issue #147) para "Garantia Pública no
+    # crédito habitação" — mas essa correcção nunca foi confirmada
+    # contra o motor real (rede bloqueada nessa sessão) e continuou
+    # cega mais 4 dias seguidos (Issue #151, 2026-08-29 a 2026-09-01,
+    # também `itens_lista: []` sempre).
+    #
+    # CORRIGIDO DE VEZ 2026-09-02 (Issue #151), desta vez calibrado
+    # contra o motor real (4 corridas num runner via `workflow_dispatch`
+    # temporário, apagado no fim): "Garantia Pública no crédito
+    # habitação" confirmado a devolver 0 itens (2 tentativas, contexto/
+    # cookies limpos); "garantia pública" sozinho devolve 29 itens mas
+    # NENHUM relacionado com o DL 44/2024 (são Resoluções da AR/CM sobre
+    # garantias públicas de outros temas — termo genérico demais);
+    # "garantia do Estado", "crédito à habitação de jovens" e a citação
+    # do H1 ("Decreto-Lei n.º 44/2024, de 10 de julho") devolvem todos 0.
+    # Em vez de continuar a adivinhar, foi lido o texto completo da
+    # própria página de detalhe do DL 44/2024 em dre.pt (URL de
+    # `dados/parametros/habitacao.yaml`) — a ementa e o corpo do diploma
+    # usam sempre, repetidamente, a expressão exacta **"garantia pessoal
+    # do Estado"** (nunca "garantia pública"): "Estabelece as condições
+    # em que o Estado pode prestar garantia pessoal a instituições de
+    # crédito...", "A garantia pessoal do Estado, referida no artigo
+    # anterior, pode ser concedida...", "A garantia pessoal do Estado
+    # não ultrapasse 15% do valor da transação...". Testado contra o
+    # motor real: `'"garantia pessoal do Estado"'` devolve 24 itens à
+    # 1.ª tentativa, incluindo a **Portaria n.º 236-A/2024/1** — a que
+    # regulamenta exactamente este DL 44/2024 (confirmada em
+    # `dados/parametros/habitacao.yaml`) — prova directa de que a frase
+    # está correcta e apanha texto legal genuinamente relacionado com
+    # este regime, não só um genérico. O DL 44/2024 original não
+    # aparece nos 24 itens (é de 2024, mesma razão por que a Portaria
+    # 236-A/2024/1 será suprimida pelo corte de recência abaixo — ambos
+    # anteriores a "2026-07-20" — o sentinela existe para apanhar uma
+    # ALTERAÇÃO futura, não para redescobrir o diploma já conhecido).
     "dre_habitacao_garantia": FonteConfig(
         nome="DRE — Pesquisa alteração/prorrogação da Garantia Pública (DL 44/2024)",
         min_chars_uteis=1500,
-        ancora_conteudo=('"Garantia Pública no crédito habitação"',),
+        ancora_conteudo=('"garantia pessoal do Estado"',),
     ),
     # Sentinela de SINAL para a Portaria anual que fixa o IAS (Indexante
     # dos Apoios Sociais) — 2026-07-28. Mesmo mecanismo de pesquisa de
@@ -496,17 +520,26 @@ FONTES_PLAYWRIGHT = [
         # decreto-lei que o altere tem de o citar na ementa" — nunca
         # devolveu resultado nenhum em 44 dias seguidos, prova de que a
         # pesquisa de frase exacta do DRE não corresponde a citações de
-        # outro diploma por número. Trocado para a designação temática do
-        # apoio ("Garantia Pública no crédito habitação" — a mesma que
-        # `scripts/preparar_canal.py` já usa como rótulo humano desta
-        # fonte), mesmo padrão comprovado de `dre_psu`/`dre_habitacao_paer`/
-        # `dre_ias`. Ainda por confirmar contra um scrape real (rede
-        # bloqueada nesta sessão) — a 1.ª corrida do pipeline confirma.
+        # outro diploma por número. Trocado nesse dia para "Garantia
+        # Pública no crédito habitação" — mas sem confirmação real, e
+        # continuou cega mais 4 dias (Issue #151).
+        #
+        # CORRIGIDO DE VEZ 2026-09-02 (Issue #151, calibrado num runner
+        # real): "Garantia Pública no crédito habitação" confirmado a
+        # devolver 0 resultados; a designação genérica "garantia
+        # pública" devolve 29 resultados mas nenhum relacionado com este
+        # DL. Trocado para **"garantia pessoal do Estado"** — a
+        # expressão exacta que o próprio DL 44/2024 usa, repetidamente,
+        # no seu texto legal (lido directamente da página de detalhe em
+        # dre.pt, não inferido) — ver o comentário completo em
+        # `_FONTE_CONFIGS["dre_habitacao_garantia"]` para a prova (24
+        # resultados reais, incluindo a Portaria n.º 236-A/2024/1 que
+        # regulamenta este mesmo DL).
         "url": "https://diariodarepublica.pt/dr/home",
         "nota": "DRE — vigiar alteração/prorrogação da Garantia Pública (DL 44/2024, prazo actual: 31 dez 2026)",
         "pesquisa_interactiva": {
             "campo": "input[type='search']",
-            "termo": '"Garantia Pública no crédito habitação"',
+            "termo": '"garantia pessoal do Estado"',
         },
         "seletores": {
             "titulo": "h1",
