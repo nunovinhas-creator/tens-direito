@@ -1,14 +1,53 @@
 {
   "fonte": "dre_habitacao_garantia",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-07-20T18:22:31.771604+00:00",
-  "sha256_conteudo": "4c2a385012799c6d133591bdeb87e1206d149f1d8a58f830be8269ba303f2ca7",
+  "data_extracao": "2026-09-03T10:52:03.279355+00:00",
+  "sha256_conteudo": "77be1579dc5ec2f2e3ec13a1b52938709cce157c5ac351f965f25c946157b2e0",
   "estado": "OK",
   "valores_extraidos": {
-    "titulo": "",
+    "titulo": "Resultados de pesquisa: \"garantia pessoal do Estado\"",
     "paragrafos": [
-      "- Certifique-se de que nenhuma palavra contém erros ortográficos. - Tente utilizar outras palavras-chave. - Tente palavras-chave mais gerais."
+      "Portaria n.º 236-A/2024/1 - Diário da República n.º 188/2024, Suplemento, Série I de 2024-09-27",
+      "Finanças, Infraestruturas e Habitação e Juventude e Modernização",
+      "Decreto-Lei n.º 7/2002 - Diário da República n.º 7/2002, Série I-A de 2002-01-09",
+      "Resolução do Conselho de Ministros n.º 30/2021 - Diário da República n.º 57/2021, Série I de 2021-03-23",
+      "Resolução do Conselho de Ministros n.º 36/98 - Diário da República n.º 55/1998, Série I-B de 1998-03-06",
+      "Resolução do Conselho de Ministros n.º 66/98 - Diário da República n.º 128/1998, Série I-B de 1998-06-03",
+      "Resolução do Conselho de Ministros n.º 6/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 95/98 - Diário da República n.º 160/1998, Série I-B de 1998-07-14",
+      "Resolução do Conselho de Ministros n.º 43/98 - Diário da República n.º 74/1998, Série I-B de 1998-03-28",
+      "Resolução do Conselho de Ministros n.º 4/98 - Diário da República n.º 17/1998, Série I-B de 1998-01-21",
+      "Resolução do Conselho de Ministros n.º 8/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 7/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 44/98 - Diário da República n.º 74/1998, Série I-B de 1998-03-28",
+      "Resolução do Conselho de Ministros n.º 96/98 - Diário da República n.º 170/1998, Série I-B de 1998-07-25",
+      "Resolução do Conselho de Ministros n.º 204/97 - Diário da República n.º 279/1997, Série I-B de 1997-12-03"
     ],
-    "itens_lista": []
+    "itens_lista": [
+      "Resolução do Conselho de Ministros n.º 30/2021 - Diário da República n.º 57/2021, Série I de 2021-03-23",
+      "Resolução do Conselho de Ministros n.º 36/98 - Diário da República n.º 55/1998, Série I-B de 1998-03-06",
+      "Resolução do Conselho de Ministros n.º 66/98 - Diário da República n.º 128/1998, Série I-B de 1998-06-03",
+      "Resolução do Conselho de Ministros n.º 6/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 95/98 - Diário da República n.º 160/1998, Série I-B de 1998-07-14",
+      "Resolução do Conselho de Ministros n.º 43/98 - Diário da República n.º 74/1998, Série I-B de 1998-03-28",
+      "Resolução do Conselho de Ministros n.º 4/98 - Diário da República n.º 17/1998, Série I-B de 1998-01-21",
+      "Resolução do Conselho de Ministros n.º 8/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 7/98 - Diário da República n.º 18/1998, Série I-B de 1998-01-22",
+      "Resolução do Conselho de Ministros n.º 44/98 - Diário da República n.º 74/1998, Série I-B de 1998-03-28",
+      "Resolução do Conselho de Ministros n.º 96/98 - Diário da República n.º 170/1998, Série I-B de 1998-07-25",
+      "Resolução do Conselho de Ministros n.º 204/97 - Diário da República n.º 279/1997, Série I-B de 1997-12-03",
+      "Resolução do Conselho de Ministros n.º 12/98 - Diário da República n.º 21/1998, Série I-B de 1998-01-26",
+      "Resolução do Conselho de Ministros n.º 130/98 - Diário da República n.º 260/1998, Série I-B de 1998-11-10",
+      "Resolução do Conselho de Ministros n.º 139/98 - Diário da República n.º 280/1998, Série I-B de 1998-12-04",
+      "Resolução do Conselho de Ministros n.º 212/97 - Diário da República n.º 288/1997, Série I-B de 1997-12-15",
+      "Resolução do Conselho de Ministros n.º 3/98 - Diário da República n.º 17/1998, Série I-B de 1998-01-21",
+      "Portaria n.º 187/2025/1 - Diário da República n.º 74/2025, Série I de 2025-04-15",
+      "Portaria n.º 236-A/2024/1",
+      "Resolução do Conselho de Ministros n.º 214/97 - Diário da República n.º 294/1997, Série I-B de 1997-12-22",
+      "Resolução do Conselho de Ministros n.º 137/98 - Diário da República n.º 280/1998, Série I-B de 1998-12-04",
+      "Resolução do Conselho de Ministros n.º 105/98 - Diário da República n.º 187/1998, Série I-B de 1998-08-14",
+      "Resolução do Conselho de Ministros n.º 50/99 - Diário da República n.º 132/1999, Série I-B de 1999-06-08",
+      "Resolução do Conselho de Ministros n.º 107/98 - Diário da República n.º 192/1998, Série I-B de 1998-08-21"
+    ]
   }
 }
