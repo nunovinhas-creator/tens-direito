@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **02 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **03 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -47,6 +47,7 @@ Actualizado automaticamente a partir do repositório em **02 de setembro de 2026
 | [`deducao-rendas-irs.html`](deducao-rendas-irs.html) | Dedução de rendas no IRS 2026: até 900 € por ano |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
 | [`fontes.html`](fontes.html) | Fontes Oficiais — Tens Direito |
+| [`garantia-para-a-infancia.html`](garantia-para-a-infancia.html) | Garantia para a Infância 2026: 127,33€/mês, sem pedido |
 | [`garantia-publica-credito-habitacao.html`](garantia-publica-credito-habitacao.html) | Garantia Pública 2026: crédito habitação jovem até 100% |
 | [`iban-seguranca-social.html`](iban-seguranca-social.html) | Como alterar o IBAN na Segurança Social |
 | [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
@@ -404,6 +405,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 02 de setembro de 2026 às 11:43 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 03 de setembro de 2026 às 11:52 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
