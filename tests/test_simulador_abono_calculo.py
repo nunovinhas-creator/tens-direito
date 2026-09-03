@@ -22,6 +22,20 @@ o Guia Prático fixa este cálculo sempre com o IAS de 2024 (509,26€):
 os limites de RR do cenário (b) — pedidos novos em 2026 — mantêm-se
 inalterados (já batiam certo com o Guia Prático desde a publicação).
 
+INCOERÊNCIA RESOLVIDA (sessão "Limiar da garantia — cenários",
+2026-09-02): a correcção de 19/07 tinha deixado `limiteGarantia` preso
+ao cenário (a) manutenção (2.495,37€), enquanto o simulador declarava
+aplicar sempre o cenário (b) pedidos novos para os limites de escalão.
+Confirmado em fonte primária (Portaria n.º 223/2022, art. 2.º — mesma
+redacção do art. 14.º n.º 2 do DL n.º 176/2003) que o limite da Garantia
+segue a mesma mecânica de 3 cenários dos escalões — `limiteGarantia`
+passa a usar `garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026`
+(2.560,25€ = 0,35 × IAS 2025 × 14), o mesmo cenário (b). Os testes
+abaixo foram actualizados para esta mecânica; ver
+dados/parametros/abono.yaml para os 3 valores e o comentário sobre o
+multiplicador ×14 (analogia com o regime dos escalões, nunca norma
+expressa).
+
 Os valores usados aqui SÃO os valores de produção (Portaria n.º
 60/2026/1) — já fact-checked e publicados em abono-de-familia.html, por
 isso os casos de teste são calculados à mão a partir da mesma
@@ -66,7 +80,7 @@ def _parametros_abono_de_producao() -> dict:
     ab = todos["prestacoes"]["abono"]
     return {
         "garantiaInfancia": ab["garantia_infancia_valor_mensal"]["valor"],
-        "limiteGarantia": ab["garantia_infancia_limite_rr_anual"]["valor"],
+        "limiteGarantia": ab["garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026"]["valor"],
         "majoracaoMonoparentalFracao": ab["majoracao_monoparental_fracao"]["valor"],
         "escaloes": [
             {"id": 1, "limite": ab["escalao1_limite_cenario_pedidos_novos_2026"]["valor"],
@@ -156,10 +170,9 @@ def test_majoracao_monoparental_replica_exemplo_publicado(pagina):
 def test_garantia_infancia_aplicada_quando_valor_base_e_baixo(pagina):
     # 3 crianças com > 72 meses no 1.º escalão: valor base = 75,13 × 3 = 225,39;
     # mínimo da garantia = 127,33 × 3 = 381,99 > valor base -> garantia aplica-se.
-    # RR = 2000/(3+1) = 500€ — abaixo do limite corrigido (2.495,37€) e do
-    # limite antigo/errado (2.631,94€), por isso este caso não distingue as
-    # duas versões (ver test_limite_garantia_infancia_corrigido mais abaixo
-    # para um caso que só passa com o valor corrigido).
+    # RR = 2000/(3+1) = 500€ — abaixo dos 3 limites por cenário (2.495,37€ a
+    # 2.631,94€), por isso este caso não distingue entre eles (ver os testes
+    # de fronteira mais abaixo para casos que só passam com o cenário certo).
     r = _calcular(pagina, {
         "rendimentoAnual": 2000, "numCriancas": 3, "idadesMeses": [100, 100, 100], "monoparental": False,
     })
@@ -175,17 +188,38 @@ def test_garantia_infancia_nao_aplicada_quando_valor_base_ja_e_maior(pagina):
     assert r["garantiaAplicada"] is False
 
 
-# ── Correcção real da auditoria (2026-07-19): limite da Garantia ───────────
-def test_limite_garantia_infancia_corrigido_2495_37_nunca_2631_94(pagina):
-    # RR = 5000/(1+1) = 2.500€ — ACIMA do limite corrigido (2.495,37€),
-    # mas ABAIXO do limite antigo/errado (2.631,94€). Com o valor
-    # corrigido, a Garantia NÃO se aplica aqui — se este teste falhar
-    # com garantiaAplicada=True, o bug do IAS do ano corrente voltou.
+# ── Incoerência resolvida (sessão "Limiar da garantia — cenários",
+# 2026-09-02): o limite da Garantia passou do cenário (a) manutenção
+# (2.495,37€) para o cenário (b) pedidos novos (2.560,25€) — o mesmo
+# cenário já usado para os limites de escalão. Efeito prático: uma banda
+# de 64,88€/ano de RR (2.495,37€ a 2.560,25€) que antes ficava de fora
+# da Garantia passa a ter direito.
+def test_rr_na_banda_entre_cenario_a_e_b_passa_a_ter_garantia(pagina):
+    # RR = 5060/(1+1) = 2.530€ — ACIMA do limite do cenário (a) manutenção
+    # (2.495,37€), mas ABAIXO do limite do cenário (b) pedidos novos
+    # (2.560,25€), que o simulador usa desde esta correcção. Se este teste
+    # falhar com garantiaAplicada=False, a incoerência (simulador a aplicar
+    # o cenário (a) só para a Garantia) voltou.
     r = _calcular(pagina, {
-        "rendimentoAnual": 5000, "numCriancas": 1, "idadesMeses": [100], "monoparental": False,
+        "rendimentoAnual": 5060, "numCriancas": 1, "idadesMeses": [100], "monoparental": False,
     })
     assert r["escalao"] == 1
-    assert r["rr"] == 2500.0
+    assert r["rr"] == 2530.0
+    assert r["garantiaAplicada"] is True
+    assert round(r["valorTotal"], 2) == 127.33  # mínimo garantido, não o valor base (75,13€)
+
+
+def test_rr_acima_do_cenario_b_nunca_usa_o_limite_do_cenario_c(pagina):
+    # RR = 5200/(1+1) = 2.600€ — ACIMA do limite do cenário (b) pedidos
+    # novos (2.560,25€, o que o simulador usa), mas ABAIXO do limite do
+    # cenário (c) reavaliações (2.631,94€). Confirma que o simulador nunca
+    # mistura o cenário (c) — mais generoso — com o cenário (b) que declara
+    # aplicar; a Garantia NÃO se aplica aqui.
+    r = _calcular(pagina, {
+        "rendimentoAnual": 5200, "numCriancas": 1, "idadesMeses": [100], "monoparental": False,
+    })
+    assert r["escalao"] == 1
+    assert r["rr"] == 2600.0
     assert r["garantiaAplicada"] is False
     assert round(r["valorTotal"], 2) == 75.13  # valor base do 1.º escalão, >72 meses — sem garantia
 
@@ -241,7 +275,13 @@ def test_parametros_producao_sem_nenhum_campo_null(pagina):
 def test_parametros_producao_tem_todos_os_valores_confirmados():
     todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
     ab = todos["prestacoes"]["abono"]
-    assert ab["garantia_infancia_limite_rr_anual"]["valor"] == 2495.37
+    # O simulador usa sempre o cenário (b) pedidos novos — este é o valor
+    # que `limiteGarantia` (_parametros_abono_de_producao(), acima) lê.
+    assert ab["garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026"]["valor"] == 2560.25
+    # Os 3 valores por cenário continuam publicados (dados abertos), mesmo
+    # que o simulador só use um — nenhum deve desaparecer nem divergir.
+    assert ab["garantia_infancia_limite_rr_anual_cenario_manutencao_2025"]["valor"] == 2495.37
+    assert ab["garantia_infancia_limite_rr_anual_cenario_reavaliacao_2026"]["valor"] == 2631.94
     for chave, dados in ab.items():
         assert dados["verificado_em"], f"{chave} sem verificado_em"
         assert dados["referencia_legal"], f"{chave} sem referencia_legal"
@@ -251,14 +291,25 @@ def test_parametros_producao_tem_todos_os_valores_confirmados():
 # ── Coerência artigo ↔ simulador ─────────────────────────────────────────────
 
 def test_coerencia_artigo_simulador_garantia_infancia():
-    """O limite corrigido (2.495,37€) tem de aparecer no artigo
-    publicado, nunca só no simulador — e o valor antigo/errado
-    (2.631,94€) nunca deve reaparecer em nenhum dos dois."""
+    """Sessão "Limiar da garantia — cenários" (2026-09-02): os 3 valores
+    por cenário (2.495,37€ / 2.560,25€ / 2.631,94€) são agora todos
+    legítimos — cada um documentado como pertencente a um cenário
+    diferente, nunca um "valor antigo/errado". O que este teste tranca:
+    1) o valor que o simulador de facto usa (cenário b, 2.560,25€) tem de
+    aparecer tanto no artigo como no simulador — nunca só num dos dois;
+    2) fora de comentários <script>, o simulador nunca afirma um valor de
+    limite da Garantia diferente do que usa em runtime (2.495,37€/2.631,94€
+    só podem aparecer dentro de comentários, nunca em texto visível/JSON-LD)."""
     artigo = (RAIZ / "abono-de-familia.html").read_text(encoding="utf-8")
-    assert "2.495,37" in artigo
-    assert "2.495,37" in SIMULADOR_HTML
-    assert "2.631,94" not in artigo
-    assert "2.631,94" not in re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", SIMULADOR_HTML, flags=re.IGNORECASE)
+    simulador_sem_scripts = re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", SIMULADOR_HTML, flags=re.IGNORECASE)
+
+    assert "2.560,25" in artigo
+    assert "2.560,25" in simulador_sem_scripts
+    for valor_de_outro_cenario in ("2.495,37", "2.631,94"):
+        assert valor_de_outro_cenario not in simulador_sem_scripts, (
+            f"{valor_de_outro_cenario!r} apareceu fora de <script> no simulador — "
+            "só o valor do cenário (b), 2.560,25€, deve ser visível/JSON-LD"
+        )
 
 
 # ── Runtime real: fetch de /dados/parametros.json (sucesso e falha) ────────

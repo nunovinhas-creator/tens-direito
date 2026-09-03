@@ -9678,3 +9678,136 @@ sessão sem scraper). Trabalho feito na branch
 `claude/garantia-para-a-infancia-d6gni5` (designada pelo ambiente remoto
 desta sessão) — commit local, **sem push** (instrução explícita desta
 sessão).*
+
+---
+
+*Última revisão: 2026-09-02 (sessão "Limiar da garantia — cenários",
+seguimento directo à sessão anterior) — investigada a fonte do limiar de
+elegibilidade da Garantia para a Infância (`garantia_infancia_limite_rr_
+anual`), registada em `ROADMAP.md` como "por confirmar em fonte
+primária". **Encontrada a fonte primária da OBRIGAÇÃO legal, mas não o
+seu texto**: o art. 4.º c) do Decreto Regulamentar n.º 3/2022 remete este
+limiar para portaria própria dos membros do Governo das finanças e da
+segurança social — confirmada como a **Portaria n.º 223/2022, de 6 de
+setembro** (via listagem oficial em sgeconomia.gov.pt, achado novo desta
+sessão). Confirmado também que a Portaria n.º 60/2026/1 (já lida numa
+sessão anterior) não fixa este limiar — só o valor de referência mensal
+(art. 5.º/2 DR 3/2022, 1.528€/ano). E que o art. 9.º do DL n.º 176/2003,
+para onde o art. 4.º c) remete o CÁLCULO do Rendimento de Referência
+(não o limiar em si), usa a mesma lógica de 3 cenários já parametrizada
+para os limites de escalão do abono — reforça, sem confirmar, a hipótese
+de que o limiar também varia por cenário.
+
+**WebFetch confirmado 100% bloqueado nesta sessão** para todos os
+domínios testados — não só `.gov.pt`/`diariodarepublica.pt` (já
+documentado em dezenas de sessões anteriores), mas também
+`dre.tretas.org`, `pgdlisboa.pt`, `lexlink.eu` e até páginas de bancos
+(`santander.pt`, `cgd.pt`) — por isso nunca foi possível ler o texto da
+Portaria n.º 223/2022 nem de uma eventual actualização anual. Uma
+triangulação nova via `WebSearch` (Doutor Finanças/Montepio/Santander/
+e-konomista/CGD) devolveu, pela 1.ª vez numa única síntese coerente, os
+3 valores em simultâneo — manutenção 2.495,37€/pedidos novos
+2.560,25€/reavaliação 2.631,94€, com a mesma terminologia já usada no
+site — mas continua a ser triangulação de fontes secundárias, não uma
+fonte primária lida, pelos padrões deste repositório (`REGRA DE OURO`/
+"REGRAS DE CONTEÚDO": nunca publicar de triangulação quando a fonte
+primária existe mas não foi lida). **Nenhum valor foi alterado**:
+`dados/parametros/abono.yaml` ganhou só um comentário novo (Portaria n.º
+223/2022 + o cruzamento com o DL 176/2003, sem tocar em nenhum
+`valor:`), confirmado sincronizado com `dados/parametros.json`
+(`gerar_parametros_json.py --check`).
+
+**Incoerência interna corrigida** (independente da Parte 1, verificável
+só pelo código): `simulador-abono.html` declarava em comentário aplicar
+sempre o cenário (b) — pedidos novos — "a este simulador" em bloco,
+quando isso só é verdade para os limites de escalão
+(`escalao1-4_limite_cenario_pedidos_novos_2026`); a Garantia usa
+`garantia_infancia_limite_rr_anual`, um valor único sem variante por
+cenário, com origem documentada como cenário (a) manutenção. Corrigido o
+comentário (nunca o valor nem o comportamento) para escopar a afirmação
+"cenário (b)" aos limites de escalão e sinalizar explicitamente a
+incoerência, com o raciocínio completo e a fórmula candidata
+(2.560,25€ = 0,35 × IAS 2025 × 14) para quando a fonte primária existir.
+`ROADMAP.md` actualizado com o mesmo achado, substituindo a entrada da
+sessão anterior em vez de a duplicar.
+
+`pytest tests/ -q` reconfirmado sem regressões (nenhum valor tocado,
+`tests/test_valores_ancora.py::test_garantia_infancia_limiar_nunca_
+afirmado_como_confirmado` continua a passar sem alteração).
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/limiar-garantia-cenarios-2txc4c` (designada pelo ambiente remoto
+desta sessão) — commit local, **SEM PR — branch não integrada em
+`main`** (instrução explícita desta sessão: "Não fazer push").*
+
+---
+
+*Última revisão: 2026-09-02 (sessão "Limiar da garantia — cenários",
+2.ª ronda "CORRIGIR O QUE ESTÁ CONFIRMADO", seguimento directo à sessão
+anterior) — o Nuno leu directamente o texto da **Portaria n.º 223/2022,
+de 6 de setembro, art. 2.º** (WebFetch continua bloqueado nesta sessão
+para todos os domínios testados, incluindo um PDF fora de `.gov.pt`
+hospedado em `exercito.pt`) e confirmou o que a ronda anterior só tinha
+levantado por triangulação: o limite da Garantia para a Infância é
+fixado em 0,35 do IAS "em vigor à data a que se reportam os rendimentos
+apurados" — redacção IDÊNTICA à do art. 14.º n.º 2 do DL n.º 176/2003
+(mecânica dos limites de escalão do abono). Por isso o limiar segue a
+MESMA lógica de 3 cenários já parametrizada para os escalões.
+
+`dados/parametros/abono.yaml`: `garantia_infancia_limite_rr_anual`
+(valor único, cenário de manutenção) substituído por 3 parâmetros —
+`garantia_infancia_limite_rr_anual_cenario_manutencao_2025` (2.495,37 €),
+`..._pedidos_novos_2026` (2.560,25 €), `..._reavaliacao_2026`
+(2.631,94 €) — todos com `referencia_legal` a citar a Portaria n.º
+223/2022 em vez do Guia Prático 4001 (interpretativo). `simulador-
+abono.html`: `limiteGarantia` passa a ler o parâmetro do cenário (b)
+pedidos novos (2.560,25 €) — o mesmo cenário já usado para os limites
+de escalão, resolvendo a incoerência interna sinalizada na ronda
+anterior (o simulador declarava em comentário aplicar sempre o cenário
+(b), mas usava o valor do cenário (a) para a Garantia); comentário JS
+reescrito para reflectir a resolução. `abono-de-familia.html` e
+`garantia-para-a-infancia.html` ganharam a tabela dos 3 cenários (mesmo
+formato já usado para os escalões) e a citação da portaria, substituindo
+o texto "não está confirmado numa fonte primária". `fontes.html` ganhou
+cartão para a Portaria n.º 223/2022.
+
+**O que fica por confirmar, registado em comentário no YAML e em
+ROADMAP.md**: o multiplicador ×14 usado para anualizar o IAS. Pesquisa
+dedicada via `WebSearch` (WebFetch continua bloqueado) não encontrou
+nenhuma norma que anualize o IAS desta forma — nem a Portaria n.º
+223/2022 nem o art. 9.º do DL n.º 176/2003 têm essa cláusula expressa; o
+art. 14.º n.º 3 do DL 176/2003 anualiza incluindo férias/Natal mas está
+circunscrito à RMMG, nunca ao IAS. As sínteses do WebSearch eram
+inconsistentes entre si (uma chegou a devolver um valor "2.354,11 €" sem
+qualquer base) e nenhuma citou um artigo concreto. Mantido o ×14 — é o
+valor que o Guia Prático 4001 do ISS, I.P. publica e que a Segurança
+Social aplica na prática — mas por analogia com o regime dos escalões,
+nunca por norma expressa confirmada; o caso **não fecha por completo**
+nesta sessão.
+
+**Efeito prático da correcção**: uma banda de 64,88 €/ano de RR
+(2.495,37 € a 2.560,25 €) que antes ficava de fora da Garantia (por o
+simulador usar, por engano, o limiar mais baixo do cenário de
+manutenção) passa a ter direito — o novo limiar é sempre mais generoso,
+nunca o inverso. Trancado em 2 testes novos de fronteira: RR = 2.530 €
+(1 criança, rendimento anual 5.060 €) passa de `garantiaAplicada=False`
+para `garantiaAplicada=True`; RR = 2.600 € confirma que o simulador
+nunca usa por engano o limiar ainda mais generoso do cenário (c),
+2.631,94 €.
+
+Testes: `tests/test_valores_ancora.py` (3 testes novos — citação da
+portaria + os 3 valores no corpo, aviso do ×14 mantido, os 3 parâmetros
+YAML) substituem `test_garantia_infancia_limiar_nunca_afirmado_como_confirmado`;
+`tests/test_simulador_abono_calculo.py` (2 testes novos de fronteira
+substituem `test_limite_garantia_infancia_corrigido_2495_37_nunca_2631_94`,
+mais `test_parametros_producao_tem_todos_os_valores_confirmados` e
+`test_coerencia_artigo_simulador_garantia_infancia` reescritos para a
+mecânica de 3 cenários). `pytest tests/ -q` a passar sem regressões
+(ver resultado exacto no commit desta sessão). `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo (nenhum `.py` fora de
+`tests/` alterado). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_
+HABILITADA` reconfirmados `False` (inalterados — sessão sem scraper).
+Trabalho feito na branch `claude/limiar-garantia-cenarios-2txc4c`
+(designada pelo ambiente remoto desta sessão, continuação directa da
+ronda anterior) — commit local, **SEM PR — branch não integrada em
+`main`** (instrução explícita desta sessão: "Não fazer push").*

@@ -282,6 +282,37 @@ escalao4_valor_mais_72_meses:
       verificado_em: "2026-07-19"
 
 # ── Garantia para a Infância ────────────────────────────────────────────────
+#
+# LIMIAR DE ELEGIBILIDADE — FONTE CONFIRMADA (sessão "Limiar da garantia —
+# cenários", 2026-09-02, 2.ª ronda "CORRIGIR O QUE ESTÁ CONFIRMADO"): a
+# Portaria n.º 223/2022, de 6 de setembro, art. 2.º, fixa o limite em 0,35
+# do IAS "em vigor à data a que se reportam os rendimentos apurados" — lido
+# directamente pelo Nuno (WebFetch continua bloqueado nesta sessão para
+# todos os domínios testados: dre.pt, files.dre.pt, dre.tretas.org,
+# pgdlisboa.pt, lexlink.eu, exercito.pt, bancos). Esta redacção é IDÊNTICA
+# à do art. 14.º n.º 2 do DL n.º 176/2003 (mecânica dos limites de escalão,
+# acima) — por isso o limiar da Garantia segue a MESMA lógica de 3
+# cenários (manutenção/pedidos novos/reavaliação) já parametrizada para os
+# escalões, com o mesmo IAS por cenário. Confirma e fecha a hipótese que a
+# sessão anterior ("Garantia para a Infância", 2026-09-02) tinha
+# levantado por triangulação mas não conseguira verificar em fonte
+# primária lida — ver ROADMAP.md → "TRABALHO FUTURO REGISTADO".
+#
+# O QUE FICA POR CONFIRMAR — o multiplicador ×14: nem a Portaria n.º
+# 223/2022 nem o art. 9.º do DL n.º 176/2003 (cálculo do Rendimento de
+# Referência) têm cláusula explícita de anualização do IAS por 14. O art.
+# 14.º n.º 3 do DL 176/2003 anualiza incluindo subsídios de férias/Natal,
+# mas está expressamente circunscrito à remuneração mínima (RMMG) do
+# número anterior, nunca ao IAS. Pesquisa dedicada nesta sessão
+# (WebSearch, já que WebFetch continua bloqueado) não encontrou nenhuma
+# norma que estenda essa anualização ao IAS — as sínteses obtidas são
+# inconsistentes entre si e nenhuma cita um artigo concreto. Com ×12 o
+# limiar seria 2.138,89€ (cenário pedidos novos); com ×14 é 2.560,25€ — o
+# valor mantido aqui, por ser o que o Guia Prático 4001 do ISS, I.P.
+# publica e que a Segurança Social aplica na prática, mas **por analogia
+# com o regime dos escalões, nunca por norma expressa** — se uma sessão
+# futura encontrar essa norma, fecha o caso por completo e este aviso
+# deixa de ser necessário.
 
 garantia_infancia_valor_mensal:
   descricao: "Valor mínimo mensal garantido por criança, no 1.º escalão, quando abaixo do limite de RR"
@@ -293,15 +324,41 @@ garantia_infancia_valor_mensal:
       fonte_url: "https://dre.pt"
       verificado_em: "2026-07-19"
 
-garantia_infancia_limite_rr_anual:
-  descricao: "Limite de RR anual (1.º escalão) abaixo do qual se aplica a Garantia para a Infância — 0,35 × IAS 2024 × 14 (o Guia Prático fixa este cálculo sempre com o IAS de 2024, nunca actualizado para o ano corrente)"
+# Os três parâmetros seguintes substituem o antigo garantia_infancia_
+# limite_rr_anual (valor único, cenário de manutenção) — mesmo padrão dos
+# limites de escalão acima, um parâmetro por cenário. `simulador-abono.html`
+# usa sempre o cenário (b) — pedidos novos —, o mesmo já usado para os
+# limites de escalão, nunca um cenário diferente dentro da mesma simulação.
+
+garantia_infancia_limite_rr_anual_cenario_manutencao_2025:
+  descricao: "Limite de RR anual (1.º escalão) abaixo do qual se aplica a Garantia para a Infância — cenário (a) manutenção/pedidos de 2025, rendimentos de 2024 — 0,35 × IAS 2024 × 14"
   unidade: EUR/ano
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 2495.37
-      referencia_legal: "0,35 × IAS 2024 (509,26€) × 14 — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026 (CORRIGE um limite anterior calculado com o IAS 2026, 2.631,94€, que não corresponde ao Guia Prático)"
+      referencia_legal: "Portaria n.º 223/2022, de 6 de setembro, art. 2.º (0,35 × IAS em vigor à data dos rendimentos) — IAS 2024 (509,26€) × 14, confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026. O multiplicador ×14 é analogia com o regime dos escalões (art. 14.º n.º 2 do DL n.º 176/2003), nunca norma expressa — ver nota acima"
       fonte_url: "https://dre.pt"
-      verificado_em: "2026-07-19"
+      verificado_em: "2026-09-02"
+
+garantia_infancia_limite_rr_anual_cenario_pedidos_novos_2026:
+  descricao: "Limite de RR anual (1.º escalão) abaixo do qual se aplica a Garantia para a Infância — cenário (b) pedidos novos em 2026, rendimentos de 2025 — 0,35 × IAS 2025 × 14 — cenário usado por omissão em simulador-abono.html"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 2560.25
+      referencia_legal: "Portaria n.º 223/2022, de 6 de setembro, art. 2.º (0,35 × IAS em vigor à data dos rendimentos) — IAS 2025 (522,50€) × 14. O multiplicador ×14 é analogia com o regime dos escalões (art. 14.º n.º 2 do DL n.º 176/2003), nunca norma expressa — ver nota acima"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-02"
+
+garantia_infancia_limite_rr_anual_cenario_reavaliacao_2026:
+  descricao: "Limite de RR anual (1.º escalão) abaixo do qual se aplica a Garantia para a Infância — cenário (c) reavaliações em 2026, rendimentos de 2026 — 0,35 × IAS 2026 × 14"
+  unidade: EUR/ano
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 2631.94
+      referencia_legal: "Portaria n.º 223/2022, de 6 de setembro, art. 2.º (0,35 × IAS em vigor à data dos rendimentos) — IAS 2026 (537,13€) × 14. O multiplicador ×14 é analogia com o regime dos escalões (art. 14.º n.º 2 do DL n.º 176/2003), nunca norma expressa — ver nota acima"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-02"
 
 # ── Majoração monoparental ───────────────────────────────────────────────────
 
