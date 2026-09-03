@@ -184,6 +184,58 @@ jobs:
               return crypto.createHash('sha256').update(JSON.stringify(c, Object.keys(c).sort())).digest('hex');
             };
 
+            // CORRIGIDO 2026-09-03 (Issue #158, triagem confirmada contra os
+            // dados reais do dia): `dre_habitacao_garantia` pesquisa a frase
+            // legal ampla "garantia pessoal do Estado" (a expressão exacta
+            // usada pelo DL 44/2024, mas também por dezenas de diplomas
+            // não relacionados — o mecanismo de pesquisa em si está
+            // correcto, ver o comentário da fonte em
+            // scraper_playwright.py). A Issue #158 trouxe 24 itens no
+            // total, dos quais 22 eram "Resolução do Conselho de
+            // Ministros" de 1997-2021 sem relação nenhuma com crédito
+            // habitação jovem (uma delas, confirmada por pesquisa externa,
+            // autoriza uma garantia do Estado no âmbito de uma convenção
+            // Portugal-Angola) e só 2 eram Portarias genuinamente ligadas
+            // ao DL 44/2024 — uma delas (Portaria n.º 187/2025/1, a 1.ª
+            // alteração à Portaria n.º 236-A/2024/1) nem sequer estava
+            // ainda citada em dados/parametros/habitacao.yaml, achado real
+            // desta triagem. O detector dedicado
+            // (`detectar_decreto_lei`, chave `..._decreto_detectado`) já
+            // filtra correctamente por tipo (só Decreto-Lei) + data — o
+            // ruído da Issue #158 vinha do diff GENÉRICO desta secção, que
+            // nunca filtrava por tipo nenhum. Corrigido só para esta fonte
+            // (allow-list Decreto-Lei/Lei/Portaria/Despacho, os únicos
+            // tipos que os 5 detectores dedicados deste repositório alguma
+            // vez tratam como sinal) — **nunca generalizado às outras 4
+            // fontes DRE de pesquisa interactiva** nesta sessão:
+            // `dre_habitacao_paer` já tem um caso real e testado
+            // (`tests/test_diff_mudancas_issue.py`, Issue #114) em que o
+            // sinal relevante era um "Regulamento" da Série II — um tipo
+            // fora desta allow-list — por isso aplicar o mesmo filtro ali
+            // sem o confirmar primeiro contra o perfil de ruído real
+            // dessa fonte regrediria uma detecção já validada. `dre_psu`/
+            // `dre_psu_regulamentacao`/`dre_ias` nunca foram examinadas
+            // nesta sessão — generalizar por analogia é exactamente o
+            // erro que já custou duas rondas a este sentinela (Issues
+            // #147/#148/#151, ver CLAUDE.md → "IMPACTO DA PSU"). Registado
+            // em ROADMAP.md para uma sessão dedicada por fonte.
+            const DRE_SLUGS_PESQUISA = new Set(['dre_habitacao_garantia']);
+            // Só `itens_lista` (selector `a[href*='/dr/detalhe/']`, o
+            // resultado completo da pesquisa) — nunca `paragrafos`
+            // (`span[data-expression]`, um recorte truncado dos primeiros
+            // resultados renderizados, instável por desenho: um item pode
+            // entrar/sair desse recorte por reordenação da relevância do
+            // motor do DRE sem nenhuma mudança legal real por trás — achado
+            // real ao testar esta correcção contra os dados de hoje, onde
+            // "Decreto-Lei n.º 7/2002" (sem relação nenhuma com o DL
+            // 44/2024, 22 anos mais antigo) aparecia em `paragrafos` mas
+            // nunca em `itens_lista`).
+            const ACTO_LEGAL_REGEX = /^(Decreto-Lei|Lei|Portaria|Despacho)\s/i;
+            const extrairAtosLegais = (conteudo) => {
+              const itens = (conteudo && conteudo.itens_lista) || [];
+              return new Set(itens.filter(t => ACTO_LEGAL_REGEX.test(t)));
+            };
+
             for (const [slug, url] of Object.entries(fontes)) {
               // Ficheiro de hoje por nome EXACTO, nunca por prefixo —
               // slug + '_' + hoje batia por engano com qualquer outro
@@ -261,12 +313,40 @@ jobs:
                 // Sem isto a issue só dizia "mudou algo", nunca O QUÊ,
                 // obrigando sempre a abrir a fonte manualmente para ver a
                 // diferença (Issue #114, dre_habitacao_paer).
-                const itens_novos = (new_data.conteudo_extraido && new_data.conteudo_extraido.itens_lista) || [];
-                const itens_antigos = (old_data.conteudo_extraido && old_data.conteudo_extraido.itens_lista) || [];
-                const set_antigos = new Set(itens_antigos);
-                const set_novos = new Set(itens_novos);
-                const itens_adicionados = itens_novos.filter(i => !set_antigos.has(i)).slice(0, 10);
-                const itens_removidos = itens_antigos.filter(i => !set_novos.has(i)).slice(0, 10);
+                //
+                // Fontes DRE de pesquisa interactiva na allow-list (Issue
+                // #158, ver comentário junto a `DRE_SLUGS_PESQUISA` acima):
+                // o diff opera sobre `itens_lista` filtrada à allow-list de
+                // tipos de acto legal — nunca sobre a lista em bruto, que
+                // é dominada por Resoluções do Conselho de Ministros sem
+                // relação com o regime vigiado.
+                let itens_adicionados;
+                let itens_removidos;
+                if (DRE_SLUGS_PESQUISA.has(slug)) {
+                  const atos_novos = extrairAtosLegais(new_data.conteudo_extraido);
+                  const atos_antigos = extrairAtosLegais(old_data.conteudo_extraido);
+                  itens_adicionados = [...atos_novos].filter(i => !atos_antigos.has(i)).slice(0, 10);
+                  itens_removidos = [...atos_antigos].filter(i => !atos_novos.has(i)).slice(0, 10);
+                } else {
+                  const itens_novos = (new_data.conteudo_extraido && new_data.conteudo_extraido.itens_lista) || [];
+                  const itens_antigos = (old_data.conteudo_extraido && old_data.conteudo_extraido.itens_lista) || [];
+                  const set_antigos = new Set(itens_antigos);
+                  const set_novos = new Set(itens_novos);
+                  itens_adicionados = itens_novos.filter(i => !set_antigos.has(i)).slice(0, 10);
+                  itens_removidos = itens_antigos.filter(i => !set_novos.has(i)).slice(0, 10);
+                }
+
+                // Uma fonte DRE cujo hash mudou só por ruído fora da
+                // allow-list (reordenação/republicação de RCMs antigas,
+                // truncagem diferente dos primeiros resultados) nunca gera
+                // issue nenhuma — nada de accionável mudou de facto. Fontes
+                // não-DRE mantêm o comportamento anterior: uma issue sem
+                // itens no diff ainda é criada quando o hash muda por outro
+                // motivo (título/parágrafos), exactamente como já acontecia.
+                if (DRE_SLUGS_PESQUISA.has(slug) && itens_adicionados.length === 0 && itens_removidos.length === 0) {
+                  console.log(`${slug}: mudança só em itens fora da allow-list de actos legais (ruído histórico) — suprimida`);
+                  continue;
+                }
 
                 mudancas.push({ slug, url: url_real, hoje, hora, itens_adicionados, itens_removidos });
               }

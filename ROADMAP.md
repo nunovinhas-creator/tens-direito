@@ -160,7 +160,7 @@ filtro que capture notícias genuinamente novas sem sobrepor o gatilho
 | **Data/valor expirado numa página** | `verificar_datas.py` (Shadow Mode + pipeline) detecta um padrão não suprimido | Issues `data-expirada` (fecho automático se corrigido) | Rever a página assinalada — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** |
 | **Fonte do scraper bloqueada 3 dias seguidos** | `data/estado_fontes.json` regista o 3.º dia consecutivo `BLOQUEADO` (inclui `dre_psu` desde 2026-07-05, agora que "conteúdo suspeito" conta como bloqueio) | Issues `fonte-bloqueada` (fecho automático ao recuperar) | Investigar/corrigir o scraper para essa fonte — ver CLAUDE.md **"MÁQUINA DE ESTADOS DE FONTES BLOQUEADAS E ISSUES ÓRFÃS"** e **"AUDITORIA DE INFRAESTRUTURA"** achado 1 |
 | **Revogação do PAER / reforma "produto único" do arrendamento — watchlist calibrada contra um runner real (2026-07-20)** | `dre_habitacao_paer` — pesquisa de frase exacta `"apoio extraordinário à renda"` no diariodarepublica.pt, mesmo mecanismo do `dre_psu`; dispara quando um Decreto-Lei **datado a partir de 2026-07-20** aparecer nos resultados. **1.ª corrida real (workflow_dispatch) confirmou um falso positivo genuíno**: a pesquisa devolveu correctamente o DL n.º 20-B/2023 (diploma fundador do PAER) e as suas alterações já conhecidas — sem corte de recência, dispararia esta Issue todos os dias. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`); Issue #73 fechada com explicação; 6 testes de regressão novos (incl. fixture real desta corrida) em `tests/test_dre_habitacao_watchlist.py`; `dre_psu` confirmado 100% inalterado. **2.ª corrida real (após a correcção) confirmou a correcção Python a funcionar** (`achou=False`, nenhuma linha nova em `avisos.log`) — mas recriou a Issue (#74) na mesma, por um bug **diferente e separado**: o passo JS "Abrir Issues" filtra `avisos.log` por dia calendário (`l.startsWith(hoje)`), não por corrida — como as 2 corridas de teste aconteceram no mesmo dia UTC, a linha antiga da 1.ª corrida (anterior à correcção) foi "reencontrada". **Nunca acontece no cron diário normal** (uma corrida/dia) — só se manifesta com múltiplos `workflow_dispatch` manuais no mesmo dia, exactamente esta calibração. Issue #74 fechada com a mesma explicação. Gap registado, não corrigido (baixa prioridade, mesma categoria do gap MUDOU do MEGA) — corrigir exigiria filtrar por timestamp de início da corrida em vez de por dia, na lógica de Issues partilhada por várias watchlists (MEGA, PSU, Garantia Pública) | Issue `🏠 Decreto-lei sobre o PAER detectado em DRE` (label `verificar`, dedup automático) | Confirmar se revoga/substitui o PAER isoladamente ou é a fusão "produto único" (Porta 65/Porta 65+/PAER/Arrendar para Subarrendar); actualizar `apoio-extraordinario-renda.html` sempre, `porta-65.html`/`primeiro-direito.html`/`p/habitacao.html` se for a fusão — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
-| **Alteração/prorrogação da Garantia Pública (DL 44/2024) — watchlist calibrada contra um runner real (2026-07-20)** | `dre_habitacao_garantia` — pesquisa de frase exacta `"Decreto-Lei n.º 44/2024"`, mesmo mecanismo, mesmo corte de recência (`"desde": "2026-07-20"`); crítico perto do prazo actual, 31/12/2026. **1.ª corrida real devolveu zero resultados** (a pesquisa por esta frase com "n.º" não encontrou nenhum diploma — nem sequer o próprio DL 44/2024; comportamento seguro por desenho, mas a causa raiz — se é a pontuação "n.º"/período a quebrar a tokenização do Elasticsearch do DRE — fica por investigar, sem prioridade enquanto continuar a falhar em segurança, nunca em silêncio como sucesso) | Issue `🔑 Decreto-lei que cita o DL 44/2024 (Garantia Pública) detectado em DRE` (label `verificar`, dedup automático) | Confirmar o que muda (prazo, percentagem, valor do imóvel); se for o prazo, actualizar `garantia_prazo_contrato_limite` em `dados/parametros/habitacao.yaml` + `garantia-publica-credito-habitacao.html` — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
+| **Alteração/prorrogação da Garantia Pública (DL 44/2024) — termo corrigido e confirmado contra um scrape real (2026-09-02/03)** | `dre_habitacao_garantia` — pesquisa de frase exacta `"garantia pessoal do Estado"` (a expressão legal exacta do DL 44/2024; a citação por número nunca devolveu resultados — Issues #147/#151), corte de recência `"desde": "2026-07-20"` no `detectar_decreto_lei` dedicado (só Decreto-Lei conta). **Triagem da Issue #158 (2026-09-03)**: o detector dedicado nunca disparou por engano — confirmado correcto; o ruído era do diff GENÉRICO de `pipeline-diario.yml` (24 itens, 22 RCM sem relação nenhuma com o regime), corrigido com uma allow-list de tipos (Decreto-Lei/Lei/Portaria/Despacho, só `itens_lista`) scoped só a esta fonte — ver `tests/test_diff_mudancas_allow_list_dre.py`. Achado real: **Portaria n.º 187/2025/1** (1.ª alteração à Portaria n.º 236-A/2024/1) ainda não está citada em `dados/parametros/habitacao.yaml` — ver "TRABALHO FUTURO REGISTADO" | Issue `🔑 Decreto-lei que cita o DL 44/2024 (Garantia Pública) detectado em DRE` (label `verificar`, dedup automático) + Issue genérica `🔔 Mudança detectada: dre_habitacao_garantia` (agora só quando há um acto legal genuinamente novo) | Confirmar o que muda (prazo, percentagem, valor do imóvel); se for o prazo, actualizar `garantia_prazo_contrato_limite` em `dados/parametros/habitacao.yaml` + `garantia-publica-credito-habitacao.html` — ver CLAUDE.md **"CLUSTER HABITAÇÃO"** |
 | **Feed de notícias morto 3 dias seguidos** | `data/estado_feeds.json` regista o 3.º dia consecutivo `MORTO` | Issues `feed-morto` (fecho automático ao recuperar) | Substituir/reparar o feed — ver CLAUDE.md **"FRESCURA DA HOMEPAGE"** → "Fontes RSS" |
 | **Branch remota com commits únicos** | `limpar-branches.yml` (push a main, cron diário `0 5 * * *`, manual) encontra uma branch != `main` não totalmente integrada | Issue única `🌿 Branches órfãs por integrar` (fecho automático quando a lista fica vazia) | Trazer o trabalho para `main` (commit directo, nunca PR) ou apagar a branch manualmente — ver CLAUDE.md **"LIMPEZA AUTOMÁTICA DE BRANCHES"** |
 
@@ -304,6 +304,33 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   com o regime dos escalões, nunca por norma expressa confirmada. Se
   uma sessão futura encontrar essa norma, fecha o caso por completo —
   não é bloqueante para nada hoje, só uma nota de proveniência.
+- **Portaria n.º 187/2025/1, de 15 de abril — 1.ª alteração à Portaria
+  n.º 236-A/2024/1 (regulamentação da Garantia Pública, DL 44/2024)**,
+  encontrada pela triagem da Issue #158 (2026-09-03, ver
+  `tests/test_diff_mudancas_allow_list_dre.py`) mas nunca fact-checked —
+  confirmada só por `WebSearch` (síntese de fontes secundárias, nunca o
+  texto legal directo — `WebFetch` continua bloqueado para
+  `diariodarepublica.pt` e para qualquer subdomínio/mirror testado nesta
+  sessão: `files.diariodarepublica.pt`, `dre.tretas.org`, `bportugal.pt`,
+  `apcmc.pt`). Antes de acrescentar `fonte_url_complementar` a
+  `dados/parametros/habitacao.yaml` (mesmo padrão já usado no CSI):
+  confirmar em sessão dedicada, com acesso real ao texto da Portaria, se
+  altera algum dos 6 valores já publicados (idade 18-35, tecto 450.000€,
+  15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) — nunca assumir que
+  é só uma alteração de forma.
+- **Allow-list de tipos de acto legal no diff genérico "Detectar
+  mudanças"** (`pipeline-diario.yml`, Issue #158, 2026-09-03) — aplicada
+  só a `dre_habitacao_garantia` nesta sessão (a Resolução do Conselho de
+  Ministros é ruído confirmado para esta fonte: 22 dos 24 itens da
+  Issue #158). **Deliberadamente não generalizada** às outras 4 fontes
+  DRE de pesquisa interactiva: `dre_habitacao_paer` tem um caso real e
+  testado (Issue #114) em que o sinal é um "Regulamento" — fora desta
+  allow-list, aplicá-la ali sem confirmar regrediria uma detecção já
+  validada; `dre_psu`/`dre_psu_regulamentacao`/`dre_ias` nunca foram
+  examinadas. Candidato a sessão dedicada: para cada uma, inspeccionar
+  `data/scraped/<slug>_*.json` reais e só então decidir a allow-list
+  certa (nunca por analogia) — ver
+  `tests/test_diff_mudancas_allow_list_dre.py` para o padrão a seguir.
 - **Inbound dos hubs (`p/familia.html`, `p/trabalho-rendimento.html`,
   `p/idosos-incapacidade-cuidadores.html`) continua fraco** — a sessão de
   2026-07-28 corrigiu o que cada hub linka PARA FORA (filhos em falta no
@@ -338,6 +365,34 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Triagem da Issue #158 (`dre_habitacao_garantia`) — 2026-09-03.**
+  Confirmado com os dados reais do dia: dos 24 itens devolvidos pela
+  pesquisa "garantia pessoal do Estado", 22 eram Resoluções do Conselho
+  de Ministros de 1997-2021 sem relação nenhuma com o DL 44/2024 (uma
+  delas, confirmada por pesquisa externa, autoriza uma garantia do
+  Estado numa convenção Portugal-Angola) — o termo em si está correcto
+  e o detector dedicado (`detectar_decreto_lei`) nunca disparou por
+  engano, já filtra por tipo+data. O ruído vinha do diff GENÉRICO
+  "Detectar mudanças e registar" de `pipeline-diario.yml`, que compara
+  `itens_lista` em bruto sem filtro nenhum. Corrigido com uma allow-list
+  de tipos de acto legal (Decreto-Lei/Lei/Portaria/Despacho, só
+  `itens_lista` — nunca `paragrafos`, um recorte truncado e instável
+  onde um "Decreto-Lei n.º 7/2002" sem relação nenhuma também aparecia),
+  scoped só a esta fonte — nunca generalizada às outras 4 fontes DRE de
+  pesquisa interactiva sem confirmar cada uma contra dados reais (uma
+  delas, `dre_habitacao_paer`, já tem um caso testado — Issue #114 —
+  cujo sinal é um "Regulamento", fora desta allow-list; generalizar por
+  analogia teria regredido essa detecção). Achado lateral: a **Portaria
+  n.º 187/2025/1**, 1.ª alteração à Portaria n.º 236-A/2024/1
+  (regulamentação da Garantia Pública), nunca tinha sido citada em
+  `dados/parametros/habitacao.yaml` — fact-check ainda por fazer, ver
+  "TRABALHO FUTURO REGISTADO". 9 testes novos em
+  `tests/test_diff_mudancas_allow_list_dre.py` (allow-list scoped só a
+  esta fonte, extracção só de `itens_lista`, supressão quando o diff
+  filtrado fica vazio, regressão directa confirmando que
+  `dre_habitacao_paer` continua inalterada). Issue #158 fechada com o
+  desfecho.
 
 - **Cluster PSU — activação completa (Fase 2, Commits 1-5)** — 2026-08-16.
   Decreto-Lei n.º 166/2026, de 13 de agosto, publicado (Diário da
