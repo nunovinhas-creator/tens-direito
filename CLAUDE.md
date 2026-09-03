@@ -9811,3 +9811,104 @@ Trabalho feito na branch `claude/limiar-garantia-cenarios-2txc4c`
 (designada pelo ambiente remoto desta sessão, continuação directa da
 ronda anterior) — commit local, **SEM PR — branch não integrada em
 `main`** (instrução explícita desta sessão: "Não fazer push").*
+
+---
+
+*Última revisão: 2026-09-03 — triagem da Issue #158 (`dre_habitacao_garantia`),
+pedida com 3 opções à escolha ("filtro a jusante já isola o que interessa",
+"termo precisa de ser mais específico", "termo está certo, falta corte de
+recência"). PASSO 0 confirmou, contra os dados reais do dia
+(`data/scraped/dre_habitacao_garantia_2026-09-03.json`): dos 24 itens
+devolvidos pela pesquisa `"garantia pessoal do Estado"`, 22 eram
+"Resolução do Conselho de Ministros" de 1997-2021 sem relação nenhuma com
+o DL 44/2024 (confirmado por `WebSearch`: a RCM n.º 30/2021 autoriza uma
+garantia do Estado no âmbito de uma convenção Portugal-Angola) e só 2
+eram Portarias genuinamente ligadas ao regime — a já conhecida n.º
+236-A/2024/1, e a sua **1.ª alteração, a Portaria n.º 187/2025/1** (achado
+real, nunca antes citada em `dados/parametros/habitacao.yaml`, confirmada
+via `WebSearch` — WebFetch continua completamente bloqueado nesta sessão
+para todos os domínios testados, incluindo mirrors fora de `.gov.pt`:
+`files.diariodarepublica.pt`, `dre.tretas.org`, `bportugal.pt`,
+`apcmc.pt`).
+
+**Nenhuma das 3 opções propostas batia certo por inteiro** — a
+investigação revelou duas mecanismos distintos, não um só: (1) o detector
+DEDICADO (`detectar_decreto_lei`, chave `..._decreto_detectado`) já filtra
+correctamente por tipo (só Decreto-Lei) + corte de recência
+(`desde: "2026-07-20"`) — nenhum dos 24 itens é Decreto-Lei, por isso
+nunca disparou por engano; isto confirma a opção (a) para ESSE mecanismo,
+sem precisar de mudar o termo nem o corte. (2) A Issue #158 real veio de
+um mecanismo diferente e sem filtro nenhum: o diff GENÉRICO "Detectar
+mudanças e registar" de `pipeline-diario.yml` (o que escreve
+`data/mudancas.json` e cria Issues `fonte-alterada`), que compara
+`conteudo_extraido.itens_lista` em bruto para TODAS as fontes monitorizadas,
+sem nunca filtrar por tipo de acto legal — confirmado com
+`data/mudancas.json` real do dia: os 10 primeiros "itens novos" listados
+na Issue eram todos RCM. Este mecanismo nunca teve corte de recência nem
+filtro de tipo, ao contrário do que a opção (c) assumia ("falta corte de
+recência PARA ESTA FONTE" — na verdade falta para o mecanismo GENÉRICO,
+partilhado por todas as fontes DRE). A opção (b) foi descartada por
+impossibilidade prática: qualquer termo novo teria de ser confirmado
+contra o motor real do DRE antes de ser aceite (lição já custada em duas
+rondas — Issues #147/#148/#151) e esta sessão não tem acesso a browser
+interactivo real para o DRE (`WebFetch`/mirrors todos bloqueados);
+inventar um termo "mais específico" sem essa confirmação teria repetido
+o erro já documentado.
+
+**Correcção aplicada**: `.github/workflows/pipeline-diario.yml`, step
+"Detectar mudanças e registar" — nova allow-list `DRE_SLUGS_PESQUISA`
+(um `Set`, hoje só com `'dre_habitacao_garantia'`) + `ACTO_LEGAL_REGEX`
+(`/^(Decreto-Lei|Lei|Portaria|Despacho)\s/i`) + `extrairAtosLegais()`,
+que filtra `itens_lista` (nunca `paragrafos` — achado lateral: um
+"Decreto-Lei n.º 7/2002", sem relação nenhuma com o DL 44/2024, aparecia
+em `paragrafos` mas nunca em `itens_lista`; `paragrafos` é um recorte
+truncado dos primeiros resultados renderizados, `span[data-expression]`,
+instável por desenho, ao contrário de `itens_lista`, o resultado completo
+via `a[href*='/dr/detalhe/']`). Quando o diff filtrado fica vazio dos
+dois lados, nenhuma "mudança" é registada — nunca uma Issue "mudou algo"
+sem nada de accionável. Fontes fora da allow-list mantêm o comportamento
+anterior, sem qualquer alteração.
+
+**Deliberadamente NÃO generalizado às outras 4 fontes DRE de pesquisa
+interactiva** (`dre_psu`, `dre_psu_regulamentacao`, `dre_habitacao_paer`,
+`dre_ias`) — verificado antes de decidir, não por precaução vazia:
+`dre_habitacao_paer` tem um caso real e já testado
+(`tests/test_diff_mudancas_issue.py`, Issue #114) em que o sinal
+relevante era um "Regulamento" da Série II, um tipo FORA desta allow-list
+— aplicar o mesmo filtro ali sem confirmar primeiro o perfil de ruído
+real dessa fonte teria regredido silenciosamente uma detecção já
+validada (confirmado explicitamente: com o filtro aplicado ao par real
+`dre_habitacao_paer_2026-08-{19,20}.json`, o diff filtrado fica vazio,
+apagando o sinal). `dre_psu`/`dre_psu_regulamentacao` foram verificadas
+de passagem (o par real usado na Issue #150, `dre_psu_regulamentacao_
+2026-09-0{1,2}.json`, tem os 9 itens TODOS dentro da allow-list — o
+filtro aqui seria um no-op, mas nunca activado nesta sessão por
+disciplina de escopo) e `dre_ias` nunca foi examinada. Generalizar por
+analogia sem confirmar contra dados reais é exactamente o erro que já
+custou duas rondas a este sentinela — registado em `ROADMAP.md` →
+"TRABALHO FUTURO REGISTADO" para uma sessão dedicada, fonte a fonte.
+
+**Testes**: novo `tests/test_diff_mudancas_allow_list_dre.py` (9 testes)
+— estáticos sobre o script real do workflow (allow-list existe, scoped
+só a `dre_habitacao_garantia`, extracção só de `itens_lista`, supressão
+quando filtrado fica vazio) e comportamentais sobre dados REAIS desta
+sessão (`data/scraped/dre_habitacao_garantia_2026-09-0{2,3}.json`): o
+diff em bruto é dominado por RCM (10/10 dos itens capados são RCM), o
+diff filtrado isola só as 2 Portarias relevantes, a Portaria 187/2025/1
+ainda não está no YAML (canário para a sessão de fact-check futura), e
+uma regressão directa confirmando que `dre_habitacao_paer` continua com
+o comportamento antigo intacto. Sintaxe e lógica do JS novo validadas
+com `node --check` e execução real (`node`) contra os dados reais do
+dia — não só lidas, confirmadas a produzir exactamente o `data/mudancas.json`
+esperado (2 Portarias, zero RCM) antes do commit. `tests/test_diff_mudancas_issue.py`
+(13 testes pré-existentes) reconfirmado sem alterações.
+
+Issue #158 fechada com o desfecho completo (termo correcto, detector
+dedicado correcto, ruído era do diff genérico sem filtro — corrigido
+scoped a esta fonte, achado lateral da Portaria 187/2025/1 registado
+para fact-check). `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados — sessão sem scraper novo, só
+correcção ao diff genérico de mudanças). Trabalho feito na branch
+`claude/triagem-158-garantia-ty23uz` (designada pelo ambiente remoto
+desta sessão) — commit local, sem push (instrução explícita desta
+sessão).*
