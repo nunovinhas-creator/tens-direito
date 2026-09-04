@@ -623,6 +623,7 @@
           return '⚠️ Não cumpres o prazo de garantia do subsídio de desemprego ' + vinculoTexto + ' — precisas de ' + limiarDias + ' dias com registo de remunerações. Podes ter direito ao Subsídio Social de Desemprego (prazo reduzido, sujeito a condição de recursos) — consulta o guia completo do subsídio de desemprego. O cálculo abaixo é apenas uma referência de quanto receberias se cumprisses o prazo.';
         },
         tectoNaoModelado: 'Este simulador não calcula o limite legal de 75% da remuneração de referência líquida, nem a excepção do mínimo absoluto de 349,13€ — ambos dependem da tua retenção de IRS, que varia por caso. A Segurança Social pode ajustar o valor final com base nestes dois factores.',
+        tectoNaoModeladoComMajoracao: 'Este simulador não calcula o limite legal de 75% da remuneração de referência líquida, nem a excepção do mínimo absoluto de 349,13€ — ambos dependem da tua retenção de IRS, que varia por caso. A majoração de 10% que aplicaste sobe o valor bruto calculado, o que aumenta a probabilidade de o tecto de 75% ser a restrição activa — a Segurança Social pode pagar um valor final inferior ao que este simulador mostra.',
         atrasoAplicado: function (atraso) {
           return '⚠️ O requerimento foi apresentado ' + atraso + ' dia(s) além do prazo de 90 dias — a duração total foi reduzida por esse atraso.';
         },
@@ -898,7 +899,7 @@
       if (r.duracao.atraso > 0) {
         html += '<div class="aviso-teto">' + MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.atrasoAplicado(r.duracao.atraso) + '</div>';
       }
-      html += '<div class="aviso-info">' + MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.tectoNaoModelado + '</div>';
+      html += '<div class="aviso-info">' + (r.majoracaoAplicada ? MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.tectoNaoModeladoComMajoracao : MENSAGENS_SUBSIDIO_DESEMPREGO.avisos.tectoNaoModelado) + '</div>';
       html += '<div class="aviso-info">' + MENSAGENS_SUBSIDIO_DESEMPREGO.fiabilidade + '</div>';
       html += '</div>';
       return html;
