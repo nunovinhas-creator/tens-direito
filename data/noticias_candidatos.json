@@ -1,248 +1,5 @@
 [
   {
-    "data": "2026-08-20",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 11,
-      "rsi": 13,
-      "psu_pensoes": 6,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 13,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 14,
-      "csi_idosos": 13
-    },
-    "candidatos": [
-      {
-        "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público",
-        "feed_nome": "rsi",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-13"
-      },
-      {
-        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - Campeão das Províncias",
-        "feed_nome": "rsi",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-13"
-      },
-      {
-        "titulo": "RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-13"
-      },
-      {
-        "titulo": "Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - Campeão das Províncias",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-13"
-      },
-      {
-        "titulo": "Prestação social única: o que muda nos apoios sociais? - DECO PROteste",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-06-25"
-      },
-      {
-        "titulo": "Prestação Social Única junta RSI e várias pensões a partir do final do ano - O Vilaverdense",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-13"
-      },
-      {
-        "titulo": "Prestação Social Única terá referência de 268,6 euros - Doutor Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-13",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-03"
-      },
-      {
-        "titulo": "Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-18",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-18"
-      },
-      {
-        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 3,
-        "decisao": "vencedor",
-        "motivo": "score=3, categoria=apoios"
-      },
-      {
-        "titulo": "Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego - RTP",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-15",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-15"
-      },
-      {
-        "titulo": "Prestação Social Única chega no final de 2026: vê o que muda - Idealista",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-19",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro - ECO",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-14",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Afinal, quais são as condições para receber nova Prestação Social Única? - Notícias ao Minuto",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-14",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de família: quem tem direito, como pedir e quanto recebe em 2026? - DECO PROteste",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-08-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-19",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Os desempregados ainda podem solicitar auxílio-renda. - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=habitacao"
-      },
-      {
-        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Salário mínimo em Portugal: governo propõe € 665 - Portugal Resident",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-17",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Medicamentos gratuitos para idosos com complemento solidário limitados a genéricos ou preço de referência - sicnoticias.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Complemento solidário para idosos aumenta em janeiro de 2025 - Rádio Voz da Planície",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-16",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Ação Social Escolar exige registo na internet para assegurar refeições em Penafiel - paivense.pt",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-08-17",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Pedidos de subsídio de desemprego nos EUA sobem para 209 mil na semana passada - SÁBADO",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-13",
-        "score": -1,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 3
-      },
-      {
-        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "score": 1
-      },
-      {
-        "titulo": "Os desempregados ainda podem solicitar auxílio-renda. - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-08-21",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2033,5 +1790,139 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-09-04",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 14,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 10,
+      "habitacao_arrendamento": 13,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Renda universitária: apoios que podes pedir em Portugal - Idealista",
+        "feed_nome": "porta65_arrendamento",
+        "data_iso": "2026-08-31",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-31"
+      },
+      {
+        "titulo": "Pensões e apoios da Segurança Social: datas de pagamento em setembro de 2026 - 4gnews",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-28",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-28"
+      },
+      {
+        "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026 - SAPO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-28",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-28"
+      },
+      {
+        "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026 - ODigital.pt",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-28",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-28"
+      },
+      {
+        "titulo": "Renda universitária: apoios que podes pedir em Portugal - Idealista",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-08-31",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-31"
+      },
+      {
+        "titulo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) - Human Resources Portugal",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-31",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-31"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-01",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-01"
+      },
+      {
+        "titulo": "Novas regras para o mercado de arrendamento já em vigor - Idealista",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-09-01",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=habitacao"
+      },
+      {
+        "titulo": "Segurança Social: pagamentos no mês de setembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-31",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Novas regras para o mercado de arrendamento já em vigor - Idealista",
+        "feed_nome": "habitacao_arrendamento",
+        "score": 2
+      },
+      {
+        "titulo": "Segurança Social: pagamentos no mês de setembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 1
+      }
+    ]
   }
 ]

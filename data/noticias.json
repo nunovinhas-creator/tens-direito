@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-09-01",
+      "titulo": "Novas regras para o mercado de arrendamento já em vigor",
+      "fonte_nome": "Idealista",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQbXd4Q3hnZjhYR0Vua196T0xSaGdYNUp0NXZtTF8zMDFiMXBZTGZrS1I2WjcxQU1Qb21ydjd5Rm9XLXpfbmxFcTc4NDRnR0tjUmYyRk82WjRISzV3LWZ3RDFRMXhWcTVCVGo2SHNabDhTWjlhczZNWFh2N2FlQ0wxbU5wVG9ZazU3MTZqVjRQODgxV0gxWmxwOU1yOWJNNy1pSWNZWV94MEdTeXN4dktvbzU5N0JSRldhYk15Y3hNU1BESDRiU2ticE1nWE81d9IB0wFBVV95cUxPRHhEVWprRU5rcFdCN1o4TGVoMnR2TFcyWkZiOXdwS1dfUVBqQnRtaTdVelRQMnJIQ1h2SHNNdlEwb3l1cml2QXJqclI4MHdhdkliaV9MUFgycDBpY19RaXNNeUZjbnJhdFJiU1YwZ3FMV1pwTHRSaEdOd0YxaUpGYW5SM0lncm5PbUptbjQ1RVNKeVNUcVRJcEp4SjlPYmZRbUQ4ZE96alk1M1lJbXRiT0xNVWJUVHQySHc1Y0oxejVVejQ4TWVBMkN2aElFUUhYMkFR?oc=5",
+      "resumo": "Novas regras para o mercado de arrendamento já em vigor Idealista",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
+    },
+    {
+      "data_iso": "2026-09-01",
       "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026",
       "fonte_nome": "Economia e Finanças",
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNdzQ1ZGs1bW9nZlN2ZzdYSU5kVjZNc09TRWxrYWpIVXBTS1F6MGgxeDVmRHplYjRueWVXaFBhazN3TXdRVzdRSEJid3lzY1NJZVkzMXFGc0ZydFBkalVabEFMeFJzMk1wdjZ2ZXJJcUdqT2U3T1o4U0h6aW1xSGZrLWVpcDRNNmdHLWJBYWVNalBKWko1Q0huVXB0WnJya19tRFNQQ0F4RnhLTVBDNnJPcw?oc=5",
@@ -17,6 +26,15 @@
       "resumo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) Human Resources Portugal",
       "categoria": "apoios",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-08-31",
+      "titulo": "Segurança Social: pagamentos no mês de setembro de 2026",
+      "fonte_nome": "Pplware",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOZVdjczMzZVpsczJtN0hRdWF3Z1ZYWllGTndIZFhhYnNienFzVzd0QktPODhXSGtEd1FIdW41MjJnV2RfTmdlRWRKazJKelhvTlhJZEo5eFNvcVhFX2tyTmd0amdJeE5FOGp6dVkyN2dITTJtUldxVTZmRzBrLVZwcVJKaVRrZWNicEdFVkhWbGU5UdIBlwFBVV95cUxNQmFCaTk4SmpHSTVkRHg4cnJ3aF9VdnN2eWdCc3VmcEpsbU9ST0tIZmhfeWhvaEJ2TXlVWklRQ2JSdlgyUUVKSzdjZWtpTjV4SkJpcFBQYTUtbEZ0MEJ3c0NNVlRiUlBpV0hvczludDBMVm1HQUl0MklxSVhfNktjNW13d2JQbVRKWG9LbnMzazJoT1JfNFJJ?oc=5",
+      "resumo": "Segurança Social: pagamentos no mês de setembro de 2026 Pplware",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-08-31",
