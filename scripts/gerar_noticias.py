@@ -286,6 +286,7 @@ CLUSTER_KEYWORDS = {
     "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção", "salário mínimo"],
     "habitacao": ["porta 65", "apoio ao arrendamento", "apoio à renda", "arrendamento", "ihru"],
     "como-pedir": ["chave móvel digital", "cartão de cidadão", "niss", "segurança social direta", "iban"],
+    "reformas": ["reforma", "pensão de velhice", "idade da reforma", "idade normal de reforma", "factor de sustentabilidade"],
 }
 
 MESES_PT = [

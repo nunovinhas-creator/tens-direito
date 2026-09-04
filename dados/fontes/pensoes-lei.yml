@@ -1,0 +1,227 @@
+# pensoes-lei.yml
+# Parâmetros ESTRUTURAIS do regime de invalidez e velhice.
+# Só mudam quando a lei muda. NÃO colocar aqui valores anuais.
+#
+# Diploma-base: Decreto-Lei n.º 187/2007, de 10 de maio
+# Redação atual verificada em: republicação integral pelo DL 16-A/2021,
+#   DR 1.ª série n.º 39 (1.º Suplemento), 25-02-2021, págs. 11-(7) a 11-(37)
+#   https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf
+# Alterações posteriores à republicação: DL 18/2023 (art. 11.º) e
+#   DL 40/2025 (aditou art. 91.º-A). Nenhuma tocou nos anexos.
+
+meta:
+  diploma: "Decreto-Lei n.º 187/2007, de 10 de maio"
+  redacao_verificada_em: "2021-02-25"
+  fonte_republicacao: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+  fonte_consolidada: "Versão consolidada DRE à data de 2025-03-26"
+  fonte_consolidada_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+  # Verificado no DRE em 2026-09-04: a última alteração é o DL 40/2025,
+  # de 26 de março (12.ª alteração), que aditou o art. 91.º-A (prova de vida
+  # de residentes no estrangeiro), regulamentado pela Portaria 274/2025/1,
+  # de 31 de julho. Não tocou em cálculo, flexibilização, carreiras muito
+  # longas, idade pessoal nem penalizações.
+  ultima_alteracao: "Decreto-Lei n.º 40/2025, de 26 de março"
+  ultima_verificacao_dre: "2026-09-04"
+
+# ---------------------------------------------------------------------------
+# PRAZOS DE GARANTIA
+# ---------------------------------------------------------------------------
+prazos_garantia:
+  velhice:
+    anos_civis: 15
+    diploma: "DL 187/2007, art. 19.º"
+  invalidez_relativa:
+    anos_civis: 5
+    diploma: "DL 187/2007, art. 16.º n.º 1"
+  invalidez_absoluta:
+    anos_civis: 3
+    diploma: "DL 187/2007, art. 16.º n.º 2"
+  densidade_contributiva_dias: 120
+  diploma_densidade: "DL 187/2007, art. 12.º n.º 1"
+
+# ---------------------------------------------------------------------------
+# REMUNERAÇÃO DE REFERÊNCIA
+# ---------------------------------------------------------------------------
+remuneracao_referencia:
+  formula_geral: "TR / (n * 14)"
+  anos_maximos: 40
+  regra_acima_40: "somam-se as 40 remunerações anuais revalorizadas mais elevadas"
+  diploma: "DL 187/2007, art. 28.º n.os 1 e 2"
+  formula_p1: "R / 140"
+  p1_descricao: "10 anos civis com maiores remunerações, dentro dos últimos 15 da carreira"
+  diploma_p1: "DL 187/2007, art. 28.º n.º 3"
+
+# ---------------------------------------------------------------------------
+# TAXA DE FORMAÇÃO
+# ---------------------------------------------------------------------------
+taxa_formacao:
+  ate_20_anos:
+    taxa_anual_pct: 2.0
+    taxa_global_minima_pct: 30.0
+    diploma: "DL 187/2007, art. 30.º"
+
+  # ANEXO I (art. 31.º n.º 1) — taxa regressiva por parcela da RR, 21+ anos.
+  # Escalões idênticos aos do art. 32.º n.º 2.
+  anexo_i_escaloes:
+    - parcela: 1
+      limite_inferior_ias: 0
+      limite_superior_ias: 1.1
+      taxa_anual_pct: 2.30
+    - parcela: 2
+      limite_inferior_ias: 1.1
+      limite_superior_ias: 2.0
+      taxa_anual_pct: 2.25
+    - parcela: 3
+      limite_inferior_ias: 2.0
+      limite_superior_ias: 4.0
+      taxa_anual_pct: 2.20
+    - parcela: 4
+      limite_inferior_ias: 4.0
+      limite_superior_ias: 8.0
+      taxa_anual_pct: 2.10
+    - parcela: 5
+      limite_inferior_ias: 8.0
+      limite_superior_ias: null   # sem tecto
+      taxa_anual_pct: 2.00
+  anexo_i_diploma: "DL 187/2007, anexo I (art. 31.º n.º 1)"
+  anexo_i_anos_maximos: 40
+
+  # P1 — regra antiga (art. 34.º)
+  p1:
+    taxa_anual_pct: 2.0
+    taxa_global_minima_pct: 30.0
+    taxa_global_maxima_pct: 80.0
+    diploma: "DL 187/2007, art. 34.º"
+
+# ---------------------------------------------------------------------------
+# IDADE
+# ---------------------------------------------------------------------------
+idade:
+  idade_pessoal:
+    reducao_meses_por_ano_acima_de_40: 4
+    idade_minima_resultante: 60
+    diploma: "DL 187/2007, art. 20.º n.º 8"
+  flexibilizacao_antecipacao:
+    idade_minima: 60
+    anos_registo_minimos: 40
+    diploma: "DL 187/2007, art. 21.º n.º 2"
+  carreiras_muito_longas:
+    - via: "a"
+      idade_minima: 60
+      anos_civis_minimos: 48
+    - via: "b"
+      idade_minima: 60
+      anos_civis_minimos: 46
+      inicio_carreira_antes_dos: 17
+  carreiras_muito_longas_diploma: "DL 187/2007, art. 21.º-A n.º 1"
+  desemprego_longa_duracao_idade_limite: 57
+  razoes_conjunturais_idade_limite: 55
+
+# ---------------------------------------------------------------------------
+# PENSÃO ANTECIPADA (fator de redução)
+# ---------------------------------------------------------------------------
+pensao_antecipada:
+  taxa_mensal_reducao_pct: 0.5
+  formula_fator: "1 - (0.005 * meses_antecipacao)"
+  referencia_contagem: "idade pessoal, ou idade normal em vigor se não houver idade pessoal"
+  diploma: "DL 187/2007, art. 36.º n.os 2 a 4"
+  isento_de_reducao:
+    - "regime de carreiras contributivas muito longas (art. 36.º n.º 7)"
+
+# ---------------------------------------------------------------------------
+# PENSÃO BONIFICADA — ANEXO II
+# ---------------------------------------------------------------------------
+pensao_bonificada:
+  anos_registo_minimos: 15
+  idade_limite_contagem: 70
+  tecto_pct_melhor_rr: 92.0
+  formula_fator: "1 + (taxa_mensal * meses_a_bonificar)"
+  diploma: "DL 187/2007, art. 37.º"
+  # ANEXO II (art. 37.º n.º 4), redação do DL 79/2019, art. 5.º
+  anexo_ii_escaloes:
+    - carreira_min: 15
+      carreira_max: 24
+      taxa_mensal_pct: 0.33
+    - carreira_min: 25
+      carreira_max: 34
+      taxa_mensal_pct: 0.50
+    - carreira_min: 35
+      carreira_max: 39
+      taxa_mensal_pct: 0.65
+    - carreira_min: 40
+      carreira_max: null
+      taxa_mensal_pct: 1.00
+  anexo_ii_diploma: "DL 187/2007, anexo II (art. 37.º n.º 4), redação do DL 79/2019"
+
+# ---------------------------------------------------------------------------
+# FATOR DE SUSTENTABILIDADE
+# ---------------------------------------------------------------------------
+fator_sustentabilidade:
+  formula: "EMV(2000) / EMV(ano_inicio - 1)"
+  diploma: "DL 187/2007, art. 35.º n.os 3 e 4"
+  # Valor anual: ver pensoes-<ano>.yml
+  nao_se_aplica_a:
+    - "pensões de invalidez"
+    - "pensões de velhice por convolação de invalidez"
+    - "pensionistas na idade normal ou na idade pessoal, ou em idade superior"
+    - "regime de flexibilização da idade"
+    - "regime de antecipação por carreiras contributivas muito longas"
+  diploma_isencoes: "DL 187/2007, art. 35.º n.º 5"
+
+# ---------------------------------------------------------------------------
+# LIMITE SUPERIOR
+# ---------------------------------------------------------------------------
+limite_superior:
+  p1_maximo_em_ias: 12
+  excecoes:
+    - "P2 superior a P1: não há limite a P2 (art. 101.º n.º 2)"
+    - "P1 e P2 > 12 IAS e P1 > P2: calcula-se pelo art. 32.º (art. 101.º n.º 3)"
+  diploma: "DL 187/2007, art. 101.º"
+
+# ---------------------------------------------------------------------------
+# ACUMULAÇÃO — ANEXO III
+# ---------------------------------------------------------------------------
+acumulacao:
+  invalidez_relativa_mesma_profissao_limite: "1.00 * RR"
+  diploma_mesma_profissao: "DL 187/2007, art. 59.º n.º 1"
+  # ANEXO III (art. 59.º n.º 2) — profissão diferente da exercida à data da invalidez
+  anexo_iii_escaloes:
+    - ano: 1
+      limite_multiplo_rr: 2.00
+    - ano: 2
+      limite_multiplo_rr: 1.75
+    - ano: 3
+      limite_multiplo_rr: 1.50
+    - ano: 4          # 4.º e seguintes
+      limite_multiplo_rr: 1.33
+  anexo_iii_diploma: "DL 187/2007, anexo III (art. 59.º n.º 2)"
+  invalidez_absoluta_com_trabalho: false
+  diploma_invalidez_absoluta: "DL 187/2007, art. 61.º n.º 1"
+  velhice_com_trabalho: "livre, salvo art. 62.º n.os 2 e 3"
+  antecipada_mesma_empresa_anos_proibicao: 3
+  diploma_antecipada: "DL 187/2007, art. 62.º n.º 3"
+
+# ---------------------------------------------------------------------------
+# MONTANTES ADICIONAIS
+# ---------------------------------------------------------------------------
+montantes_adicionais:
+  meses: ["julho", "dezembro"]
+  valor: "igual à pensão mensal"
+  diploma: "DL 187/2007, art. 41.º"
+
+# ---------------------------------------------------------------------------
+# POR OBTER
+# ---------------------------------------------------------------------------
+pendentes:
+  - id: "formula_art_20_n3"
+    descricao: >
+      Fórmula de cálculo dos meses a acrescer à idade normal de 2014.
+      É imagem em todas as publicações do DR, incluindo a republicação de 2021.
+      NÃO BLOQUEANTE: a idade normal é publicitada por portaria (art. 20.º n.º 9)
+      e consta de pensoes-<ano>.yml.
+    onde_procurar: "PDF do DL 167-E/2013, leitura da imagem"
+  - id: "divergencia_art_26_n2"
+    descricao: >
+      A republicação de 2021 omite "e pelo fator de sustentabilidade, quando
+      aplicável" no art. 26.º n.º 2; a consolidação DRE de 2025-03-26 inclui-o
+      (alteração do DL 119/2018). Citar SEMPRE pela consolidação.

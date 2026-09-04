@@ -46,6 +46,19 @@ EXCECOES_ANOS_HISTORICOS = {
     ("complemento-solidario-idosos.html", 2024): "Regra de rendimentos dos filhos deixou de contar desde 2024 — facto histórico permanente",
     ("cuidador-informal.html", 2025): "Decreto-Lei n.º 138/2025 — número do diploma, não uma data de vigência",
     ("documentos/pedido-acesso-documentos-administrativos.html", 2016): "Lei n.º 26/2016 (LADA) — número do diploma, não uma data de vigência",
+    # Cluster reformas (2026-09-04) — DL 187/2007 é o diploma-base do regime
+    # geral de invalidez e velhice, citado no title/description das 7 páginas
+    # do cluster + pillar. "2007" é o número do diploma, não uma data de
+    # vigência — o diploma continua em vigor (versão consolidada) e é
+    # exactamente o tipo de facto estrutural que este cluster se propõe a
+    # nunca deixar caducar.
+    ("p/reformas.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("idade-normal.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("idade-pessoal.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("carreiras-muito-longas.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("como-e-calculada.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("que-anos-contam.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("mais-cedo-ou-mais-tarde.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
 }
 
 

@@ -108,6 +108,13 @@ DATAS_PUBLICACAO = {
     "imt-jovem.html": "2026-07-20",
     "garantia-publica-credito-habitacao.html": "2026-07-20",
     "garantia-para-a-infancia.html": "2026-09-02",
+    "idade-normal.html": "2026-09-04",
+    "idade-pessoal.html": "2026-09-04",
+    "carreiras-muito-longas.html": "2026-09-04",
+    "outras-antecipacoes.html": "2026-09-04",
+    "como-e-calculada.html": "2026-09-04",
+    "que-anos-contam.html": "2026-09-04",
+    "mais-cedo-ou-mais-tarde.html": "2026-09-04",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')
