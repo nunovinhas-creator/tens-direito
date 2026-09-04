@@ -122,6 +122,23 @@
         {"slug": "simulador-imt-jovem.html", "titulo": "Simulador de IMT Jovem", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]
+    },
+    {
+      "id": "reformas",
+      "nome": "Reformas e Pensões",
+      "descricao_curta": "Quando te podes reformar, como é calculada a pensão e o que muda se antecipares ou adiares — as regras estruturais do regime geral, sempre em vigor, nunca os valores que mudam todos os anos.",
+      "icone": "🧓",
+      "pillar": "/p/reformas.html",
+      "paginas": [
+        {"slug": "idade-normal.html", "titulo": "Idade normal de reforma", "tipo": "artigo", "destaque": true, "emoji": "🧓", "desc": "Porque sobe todos os anos, e onde vês a idade do teu ano."},
+        {"slug": "idade-pessoal.html", "titulo": "Idade pessoal de reforma", "tipo": "artigo", "destaque": false},
+        {"slug": "carreiras-muito-longas.html", "titulo": "Carreiras muito longas", "tipo": "artigo", "destaque": false},
+        {"slug": "outras-antecipacoes.html", "titulo": "Outras antecipações da reforma", "tipo": "artigo", "destaque": false},
+        {"slug": "como-e-calculada.html", "titulo": "Como é calculada a pensão", "tipo": "artigo", "destaque": false},
+        {"slug": "que-anos-contam.html", "titulo": "Que anos contam para a pensão", "tipo": "artigo", "destaque": false},
+        {"slug": "mais-cedo-ou-mais-tarde.html", "titulo": "Reformar mais cedo ou mais tarde", "tipo": "artigo", "destaque": false}
+      ],
+      "relacionados": ["idosos-incapacidade-cuidadores"]
     }
   ]
 }

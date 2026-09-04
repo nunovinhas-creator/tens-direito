@@ -74,6 +74,11 @@
     "pagina": "calendario-pagamentos-seguranca-social.html",
     "titulo": "Calendário de Pagamentos da Segurança Social"
   },
+  "carreiras-muito-longas": {
+    "chip": "Reformas e Pensões",
+    "pagina": "carreiras-muito-longas.html",
+    "titulo": "Carreiras Muito Longas: reforma aos 60 anos sem cortes"
+  },
   "cartao-europeu-estacionamento": {
     "chip": "Idosos, Incapacidade e Cuidadores",
     "pagina": "cartao-europeu-estacionamento.html",
@@ -93,6 +98,11 @@
     "chip": null,
     "pagina": "comecar-aqui.html",
     "titulo": "Começa aqui"
+  },
+  "como-e-calculada": {
+    "chip": "Reformas e Pensões",
+    "pagina": "como-e-calculada.html",
+    "titulo": "Como é Calculada a Pensão: as três peças da fórmula"
   },
   "como-pedir-niss": {
     "chip": "Como Pedir",
@@ -214,6 +224,16 @@
     "pagina": "iban-seguranca-social.html",
     "titulo": "Como alterar o IBAN na Segurança Social"
   },
+  "idade-normal": {
+    "chip": "Reformas e Pensões",
+    "pagina": "idade-normal.html",
+    "titulo": "Idade Normal de Reforma: porque sobe todos os anos"
+  },
+  "idade-pessoal": {
+    "chip": "Reformas e Pensões",
+    "pagina": "idade-pessoal.html",
+    "titulo": "Idade Pessoal de Reforma: carreira longa reduz a idade"
+  },
   "imt-jovem": {
     "chip": "Habitação",
     "pagina": "imt-jovem.html",
@@ -223,6 +243,11 @@
     "chip": null,
     "pagina": "index.html",
     "titulo": "Apoios Sociais e Direitos em Portugal"
+  },
+  "mais-cedo-ou-mais-tarde": {
+    "chip": "Reformas e Pensões",
+    "pagina": "mais-cedo-ou-mais-tarde.html",
+    "titulo": "Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação"
   },
   "manuais-escolares-mega": {
     "chip": "Apoios Escolares",
@@ -243,6 +268,11 @@
     "chip": "Como Pedir",
     "pagina": "numero-utente-sns.html",
     "titulo": "Número de utente do SNS: como pedir em 2026"
+  },
+  "outras-antecipacoes": {
+    "chip": "Reformas e Pensões",
+    "pagina": "outras-antecipacoes.html",
+    "titulo": "Outras Antecipações da Reforma: desemprego, deficiência e mais"
   },
   "p-apoios-escolares": {
     "chip": "Apoios Escolares",
@@ -268,6 +298,11 @@
     "chip": "Idosos, Incapacidade e Cuidadores",
     "pagina": "p/idosos-incapacidade-cuidadores.html",
     "titulo": "Apoios para Idosos, Incapacidade e Cuidadores em Portugal 2026 — Guia Completo"
+  },
+  "p-reformas": {
+    "chip": "Reformas e Pensões",
+    "pagina": "p/reformas.html",
+    "titulo": "Reformas e Pensões — Guia Completo das Regras"
   },
   "p-trabalho-rendimento": {
     "chip": "Trabalho e Rendimento",
@@ -338,6 +373,11 @@
     "chip": "Prestação Social Única",
     "pagina": "psu-vs-abono-familia.html",
     "titulo": "PSU 2026 e Abono de Família: são apoios diferentes — não se confundem"
+  },
+  "que-anos-contam": {
+    "chip": "Reformas e Pensões",
+    "pagina": "que-anos-contam.html",
+    "titulo": "Que Anos Contam para a Pensão: densidade e melhores 40 anos"
   },
   "registo-criminal-online": {
     "chip": "Como Pedir",

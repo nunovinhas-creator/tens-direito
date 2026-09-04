@@ -1,0 +1,351 @@
+# pensoes-2026.yml
+# Parâmetros ANUAIS. Substituído todos os anos.
+# Regra: nenhuma chave aqui pode ser inferida — cada valor tem portaria e URL.
+#
+# CONVENÇÃO DE ESTADO:
+#   estado: verificado   -> lido em PDF do DRE, pode ir para produção
+#   estado: por_verificar -> o build FALHA se qualquer chave estiver assim
+#
+# NUNCA USAR COMO FONTE DE CONTEÚDO EDITORIAL DO CLUSTER /p/reformas.html —
+# ver brief do cluster: as páginas do cluster citam sempre múltiplos de IAS
+# e regras estruturais (pensoes-lei.yml), nunca os euros deste ficheiro.
+# Mantido só como arquivo, reutilizável no dia em que houver um simulador
+# próprio de reformas.
+
+ano: 2026
+
+meta:
+  ultima_revisao_manual: "2026-09-03"
+  # Se hoje > vigencia_fim, o build falha (não cai para o ano anterior).
+  vigencia_inicio: "2026-01-01"
+  vigencia_fim: "2026-12-31"
+
+# ---------------------------------------------------------------------------
+# IAS
+# ---------------------------------------------------------------------------
+ias:
+  valor_eur: 537.13
+  estado: verificado
+  diploma: "Portaria n.º 480-A/2025/1, de 30 de dezembro, art. 2.º"
+  publicacao: "DR n.º 250/2025, Suplemento, Série I, de 2025-12-30"
+  dre_url: "POR_PREENCHER"
+  revoga: "Portaria n.º 6-B/2025/1, de 6 de janeiro"
+  produz_efeitos: "a partir de 2026-01-01"
+  taxa_atualizacao_ias_pct: 2.80
+  # Regra do IAS (Lei 53-B/2006, arts. 4.º e 5.º n.º 3):
+  #   IPC sem habitação + 20 % do crescimento real do PIB,
+  #   com mínimo de IPC + 0,5 p.p., arredondado à 1.ª decimal.
+  #   Em 2026: PIB 2,12 % / IPC 2,27 % -> 2,80 %.
+  # Coerência interna com a Portaria 480-B/2025/1:
+  #   1074,26 / 2 = 537,13 | 3222,78 / 6 = 537,13 | 6445,56 / 12 = 537,13
+
+# ---------------------------------------------------------------------------
+# IDADE NORMAL DE ACESSO
+# ---------------------------------------------------------------------------
+idade_normal:
+  "2026":
+    anos: 66
+    meses: 9
+    estado: verificado
+    diploma: "Portaria n.º 358/2024/1, de 30 de dezembro"
+    dre_url: "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090"
+  "2027":
+    anos: 66
+    meses: 11
+    estado: verificado
+    diploma: "Portaria n.º 476/2025/1"
+    dre_url: "POR_PREENCHER"
+
+# ---------------------------------------------------------------------------
+# FATOR DE SUSTENTABILIDADE
+# ---------------------------------------------------------------------------
+fator_sustentabilidade:
+  pensoes_iniciadas_em: 2026
+  valor: 0.8237
+  estado: verificado
+  diploma: "Portaria n.º 476/2025/1"
+  dre_url: "POR_PREENCHER"
+
+# ---------------------------------------------------------------------------
+# ATUALIZAÇÃO DAS PENSÕES EM 2026
+# ---------------------------------------------------------------------------
+atualizacao:
+  diploma: "Portaria n.º 480-B/2025/1, de 30 de dezembro"
+  publicacao: "DR n.º 250/2025, Suplemento, Série I, de 2025-12-30"
+  dre_url: "POR_PREENCHER"
+  estado: verificado
+  revoga: "Portaria n.º 372-B/2024/1, de 31 de dezembro"
+  produz_efeitos: "a partir de 2026-01-01"
+  aplica_se_a: "pensões atribuídas ANTERIORMENTE a 2026-01-01"
+  # Contexto do preâmbulo:
+  pib_medio_2_anos_ate_3t2025_pct: 2.12
+  ipc_sem_habitacao_dez_2025_pct: 2.27
+  # Art. 2.º n.º 1 — limiares em euros (equivalem a 2 e 6 vezes o IAS)
+  escaloes:
+    - ordem: 1
+      limite_inferior_eur: 0
+      limite_superior_eur: 1074.26
+      equivalencia_ias: "2 x IAS"
+      percentagem: 2.80
+      aumento_minimo_eur: 9.29
+      # Art. 3.º n.º 1: o mínimo de 9,29 € só se aplica a pensões
+      # com montante ENTRE 331,79 € e 1074,26 €.
+      aumento_minimo_so_acima_de_eur: 331.79
+      estado: verificado
+    - ordem: 2
+      limite_inferior_eur: 1074.26
+      limite_superior_eur: 3222.78
+      equivalencia_ias: "6 x IAS"
+      percentagem: 2.27
+      aumento_minimo_eur: 30.08
+      aumento_minimo_so_acima_de_eur: null
+      estado: verificado
+    - ordem: 3
+      limite_inferior_eur: 3222.78
+      limite_superior_eur: null
+      percentagem: 2.02
+      aumento_minimo_eur: 73.16
+      aumento_minimo_so_acima_de_eur: null
+      estado: verificado
+  sem_atualizacao_acima_de_eur: 6445.56
+  sem_atualizacao_equivalencia_ias: "12 x IAS"
+  sem_atualizacao_excecao: "art. 102.º do DL 187/2007 e art. 7.º n.º 2 da Lei 52/2007"
+  sem_atualizacao_estado: verificado
+  # Parcela das atualizações extraordinárias: 2,80 % (art. 2.º n.º 3)
+  parcela_extraordinaria_pct: 2.80
+
+# ---------------------------------------------------------------------------
+# PENSÕES MÍNIMAS (art. 44.º n.º 1 — "legislação própria")
+# ---------------------------------------------------------------------------
+pensoes_minimas:
+  diploma: "Portaria n.º 480-B/2025/1, art. 4.º"
+  dre_url: "POR_PREENCHER"
+  estado: verificado
+  escaloes:
+    - carreira_min: 0
+      carreira_max: 14
+      valor_eur: 341.08
+      fonte: "art. 4.º n.º 1"
+    - carreira_min: 15
+      carreira_max: 20
+      valor_eur: 357.80
+      fonte: "art. 4.º n.º 2"
+    - carreira_min: 21
+      carreira_max: 30
+      valor_eur: 394.82
+      fonte: "art. 4.º n.º 2"
+    - carreira_min: 31
+      carreira_max: null
+      valor_eur: 493.52
+      fonte: "art. 4.º n.º 2"
+  # Invalidez absoluta: mínimo = escalão de 40 anos (DL 187/2007, art. 45.º n.º 1)
+  invalidez_absoluta_usa_escalao: "31+"
+  # EXCLUSÃO CRÍTICA (art. 4.º n.º 3, alínea b):
+  # Os mínimos NÃO se aplicam às pensões antecipadas do regime de
+  # flexibilização (art. 20.º n.º 1 al. a) do DL 187/2007), nem às do
+  # regime do art. 22.º n.º 2 al. a) do DL 329/93.
+  nao_aplicavel_a:
+    - "pensões antecipadas do regime de flexibilização (DL 187/2007, art. 20.º n.º 1 a))"
+    - "pensões antecipadas do DL 329/93, art. 22.º n.º 2 a)"
+  nao_aplicavel_fonte: "Portaria 480-B/2025/1, art. 4.º n.º 3 b)"
+
+pensao_social:
+  # Regime não contributivo — art. 18.º n.º 1
+  valor_eur: 262.40
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 18.º n.º 1"
+  dre_url: "POR_PREENCHER"
+
+pensao_provisoria_invalidez:
+  valor_eur: 262.40
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 13.º"
+  nota: "corresponde ao valor da pensão social — DL 187/2007, art. 71.º n.º 1"
+
+regime_especial_agricolas:
+  pensao_invalidez_velhice_eur: 314.85
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 14.º n.º 1"
+
+# ---------------------------------------------------------------------------
+# COMPLEMENTOS
+# ---------------------------------------------------------------------------
+complemento_por_dependencia:
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 24.º"
+  regime_geral:
+    grau_1_eur: 131.20
+    grau_2_eur: 236.16
+  regime_especial_agricolas_e_nao_contributivo:
+    grau_1_eur: 118.08
+    grau_2_eur: 223.04
+
+complemento_conjuge_a_cargo:
+  valor_eur: 47.92
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 25.º"
+  nota: "prestação em extinção — DL 187/2007, art. 103.º; salvaguardam-se valores superiores em curso"
+
+complemento_extraordinario_solidariedade:
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 26.º (DL 208/2001)"
+  # O critério é a IDADE do titular, não o escalão de pensão.
+  menos_de_70_anos_eur: 22.83
+  com_70_ou_mais_anos_eur: 45.67
+
+# ---------------------------------------------------------------------------
+# ANEL 4 — regimes paralelos (CGA). Verificado, ainda não usado no Anel 2.
+# ---------------------------------------------------------------------------
+cga_minimos_aposentacao:
+  estado: verificado
+  diploma: "Portaria n.º 480-B/2025/1, art. 5.º"
+  escaloes:
+    - tempo_servico: "de 5 a 12 anos"
+      valor_eur: 318.76
+    - tempo_servico: "mais de 12 e até 18 anos"
+      valor_eur: 332.24
+    - tempo_servico: "mais de 18 e até 24 anos"
+      valor_eur: 355.16
+    - tempo_servico: "mais de 24 e até 30 anos"
+      valor_eur: 397.45
+    - tempo_servico: "mais de 30 anos"
+      valor_eur: 526.60
+
+# ---------------------------------------------------------------------------
+# COEFICIENTES DE REVALORIZAÇÃO
+# ---------------------------------------------------------------------------
+revalorizacao:
+  diploma: "Portaria n.º 88/2026/1, de 23 de fevereiro"
+  publicacao: "DR n.º 37/2026, Série I, de 2026-02-23"
+  dre_url: "POR_PREENCHER"
+  estado: verificado
+  revoga: "Portaria n.º 83/2025/1, de 5 de março"
+  produz_efeitos: "2026-01-01 a 2026-12-31"
+  # Contexto do preâmbulo (para a página de revalorização):
+  ipc_sem_habitacao_dez_2025_pct: 2.20
+  evolucao_ganhos_2025_pct: 6.10
+  atualizacao_serie_n1_pct: 2.20
+  atualizacao_serie_n2_pct: 2.70
+  #
+  # QUAL A SÉRIE A APLICAR (DL 187/2007, art. 27.º):
+  #   serie_n1 (anexo I da portaria)  -> art. 27.º n.º 1.
+  #       Usar em TODOS os anos no cálculo de P1 (art. 34.º / art. 28.º n.º 3)
+  #       e nos anos ANTERIORES a 2002 em qualquer cálculo.
+  #   serie_n2 (anexo II da portaria) -> art. 27.º n.os 2 e 3.
+  #       Usar nos anos DESDE 2002 quando o cálculo é com base em toda a
+  #       carreira contributiva (arts. 32.º e 33.º).
+  #   A distinção é pela REGRA DE CÁLCULO, não apenas pelo ano.
+  #
+  serie_n1_ano_minimo: 1951   # "Até 1951" usa o coeficiente de 1951
+  serie_n1:
+    1951: 130.3870
+    1952: 130.3870
+    1953: 129.2240
+    1954: 128.0711
+    1955: 123.8599
+    1956: 120.3693
+    1957: 118.4738
+    1958: 116.6077
+    1959: 115.2253
+    1960: 112.1960
+    1961: 110.1041
+    1962: 107.3137
+    1963: 105.4163
+    1964: 101.8516
+    1965: 98.5025
+    1966: 93.5447
+    1967: 88.8362
+    1968: 83.8077
+    1969: 76.8879
+    1970: 72.2630
+    1971: 64.5783
+    1972: 58.3889
+    1973: 51.6260
+    1974: 41.2677
+    1975: 35.8228
+    1976: 29.8524
+    1977: 23.4320
+    1978: 19.1907
+    1979: 15.4516
+    1980: 13.2519
+    1981: 11.0431
+    1982: 9.0221
+    1983: 7.1889
+    1984: 5.5598
+    1985: 4.6603
+    1986: 4.1723
+    1987: 3.8137
+    1988: 3.4796
+    1989: 3.0904
+    1990: 2.7252
+    1991: 2.4461
+    1992: 2.2463
+    1993: 2.1092
+    1994: 2.0050
+    1995: 1.9260
+    1996: 1.8680
+    1997: 1.8279
+    1998: 1.7798
+    1999: 1.7396
+    2000: 1.6923
+    2001: 1.6215
+    2002: 1.5664
+    2003: 1.5164
+    2004: 1.4821
+    2005: 1.4504
+    2006: 1.4066
+    2007: 1.3737
+    2008: 1.3387
+    2009: 1.3387
+    2010: 1.3203
+    2011: 1.2729
+    2012: 1.2385
+    2013: 1.2351
+    2014: 1.2351
+    2015: 1.2296
+    2016: 1.2226
+    2017: 1.2059
+    2018: 1.1946
+    2019: 1.1920
+    2020: 1.1920
+    2021: 1.1774
+    2022: 1.0898
+    2023: 1.0448
+    2024: 1.0220
+    2025: 1.0000
+    2026: 1.0000
+  serie_n2:
+    2002: 1.6690
+    2003: 1.6083
+    2004: 1.5670
+    2005: 1.5274
+    2006: 1.4795
+    2007: 1.4407
+    2008: 1.3984
+    2009: 1.3984
+    2010: 1.3735
+    2011: 1.3243
+    2012: 1.2881
+    2013: 1.2788
+    2014: 1.2788
+    2015: 1.2724
+    2016: 1.2627
+    2017: 1.2447
+    2018: 1.2288
+    2019: 1.2202
+    2020: 1.2156
+    2021: 1.1947
+    2022: 1.1057
+    2023: 1.0550
+    2024: 1.0270
+    2025: 1.0000
+    2026: 1.0000
+
+# ---------------------------------------------------------------------------
+# LIMITES DERIVADOS DO IAS (calculados, não escritos à mão)
+# ---------------------------------------------------------------------------
+derivados:
+  # O build calcula e expõe; existem aqui só para documentar a origem.
+  limite_p1: "12 * ias.valor_eur"
+  escaloes_rr: "anexo_i_escaloes de pensoes-lei.yml * ias.valor_eur"
+  pagamento_semestral_abaixo_de: "0.01 * ias.valor_eur"
