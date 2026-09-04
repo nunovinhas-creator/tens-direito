@@ -249,6 +249,11 @@
     "pagina": "mais-cedo-ou-mais-tarde.html",
     "titulo": "Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação"
   },
+  "majoracao-subsidio-desemprego": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "titulo": "Majoração de 10% do subsídio de desemprego 2026"
+  },
   "manuais-escolares-mega": {
     "chip": "Apoios Escolares",
     "pagina": "manuais-escolares-mega.html",

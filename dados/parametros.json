@@ -416,15 +416,15 @@
         "fonte_url_complementar": null,
         "verificado_em": "2026-08-24"
       },
-      "maximo_majorado": {
-        "descricao": "Valor mensal máximo majorado (máximo + 10%) quando ambos os cônjuges/unidos de facto estão desempregados com filhos a cargo",
-        "unidade": "EUR/mês",
-        "valor": 1477.11,
-        "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Decreto-Lei n.º 220/2006, na redação do Decreto-Lei n.º 64/2012, de 15 de março — majoração de 10% quando ambos os cônjuges/unidos de facto no mesmo agregado têm direito ao subsídio e têm filhos a cargo (depende de pedido e prova, não modelado pelo simulador); mecanismo confirmado, sem número de artigo confirmado com confiança nesta sessão",
-        "fonte_url": "https://dre.pt",
+      "majoracao_conjuges_percentagem": {
+        "descricao": "Majoração de 10% do montante DIÁRIO do subsídio de desemprego (art. 28.º), aplicada ANTES dos limites de mínimo/máximo do art. 29.º — nunca um tecto novo. Aplica-se quando, no mesmo agregado, ambos os cônjuges/unidos de facto (ou o parente único em agregado monoparental) têm filhos ou equiparados a cargo e são titulares de subsídio de desemprego/por cessação de actividade/por cessação de actividade profissional, ou o cônjuge está em desemprego não subsidiado (inscrito para procura de emprego); 10% para cada um se ambos forem titulares. Depende sempre de requerimento e prova (n.º 7) — nunca automática",
+        "unidade": "fracção (0-1)",
+        "valor": 0.1,
+        "vigencia_inicio": "2022-01-01",
+        "referencia_legal": "Decreto-Lei n.º 220/2006, artigo 28.º-A (aditado pelo artigo 3.º do Decreto-Lei n.º 119/2021, de 16 de dezembro), n.os 1 a 4 — lido directamente em PDF do DR nesta sessão (04/09/2026); produção de efeitos desde 1 de janeiro de 2022 (artigo 6.º do DL 119/2021)",
+        "fonte_url": "https://files.dre.pt/1s/2021/12/24200/0003100034.pdf",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-08-24"
+        "verificado_em": "2026-09-04"
       },
       "garantia_dias_geral": {
         "descricao": "Prazo de garantia (dias de registo de remunerações) — regime geral e trabalhador independente economicamente dependente",

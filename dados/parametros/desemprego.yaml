@@ -27,15 +27,42 @@
 #   consistência célula-a-célula com subsidio-desemprego.html
 #   (confirmada nesta sessão, zero divergências) e a triangulação já
 #   feita numa sessão anterior (13/07/2026).
-# - minimoMajorado/maximoMajorado/prazoRequerimentoDias: diploma
-#   confirmado (DL 220/2006, os dois primeiros na redação do DL n.º
-#   64/2012, de 15 de março), mecanismo/percentagem/prazo confirmados,
-#   mas SEM número de artigo específico fixado com confiança nesta
-#   sessão — nunca inventado.
+# - minimoMajorado/prazoRequerimentoDias: diploma confirmado (DL
+#   220/2006, o primeiro na redação do DL n.º 64/2012, de 15 de março),
+#   mecanismo/percentagem/prazo confirmados, mas SEM número de artigo
+#   específico fixado com confiança nesta sessão — nunca inventado.
 # - garantiaDiasTiCessacao: ver o comentário dedicado junto ao próprio
 #   parâmetro — é o único valor sem diploma atribuído.
 #
 # Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+#
+# CORRECÇÃO (2026-09-04, revista 2026-09-05) — "maximo_majorado"
+# (1.342,83 € + 10% = 1.477,11 €) REMOVIDO. Fonte primária lida em PDF
+# do Diário da República nesta sessão (WebFetch a diariodarepublica.pt/
+# files.dre.pt continua bloqueado nesta sessão — o Nuno leu e colou o
+# texto): Decreto-Lei n.º 119/2021, de 16 de dezembro
+# (https://files.dre.pt/1s/2021/12/24200/0003100034.pdf). O art. 2.º
+# altera SÓ o n.º 5 do art. 29.º do DL 220/2006 (o mínimo majorado,
+# 1,15× IAS — mantido como minimo_majorado abaixo). O art. 3.º adita o
+# art. 28.º-A ao DL 220/2006: majora em 10% "o montante diário do
+# subsídio de desemprego, calculado nos termos do artigo anterior"
+# (art. 28.º, ANTES dos limites de mínimo/máximo do art. 29.º) — nunca
+# altera o tecto de 2,5× IAS do art. 29.º. Formulação precisa (revista
+# 2026-09-05, nunca "nunca existiu": não foi verificado nesta sessão o
+# histórico completo de regimes transitórios/excepcionais do subsídio
+# de desemprego, ex. medidas COVID de 2020-2021, que podem ter tido
+# tectos próprios de vigência limitada e já caducada): não existe, na
+# redação ACTUAL do art. 28.º-A do DL 220/2006, aditado pelo DL n.º
+# 119/2021, nenhum "máximo majorado" — a majoração incide sobre o
+# montante diário do art. 28.º, não sobre os limites do art. 29.º, que
+# se aplicam sempre ao valor final, depois de qualquer majoração de
+# 10% já aplicada ao montante diário.
+# Ver majoracao_conjuges_percentagem abaixo para o parâmetro correcto
+# (o valor da majoração em si, 10%, não um tecto novo) e
+# majoracao-subsidio-desemprego.html para o guia completo do mecanismo
+# (condições do art. 28.º-A n.os 1-8, extensão a trabalhadores
+# independentes nos arts. 4.º/5.º deste diploma, produção de efeitos
+# desde 1 de janeiro de 2022 pelo art. 6.º).
 
 ias:
   descricao: "Indexante dos Apoios Sociais (IAS) 2026"
@@ -118,15 +145,15 @@ minimo_majorado:
       fonte_url: "https://dre.pt"
       verificado_em: "2026-08-24"
 
-maximo_majorado:
-  descricao: "Valor mensal máximo majorado (máximo + 10%) quando ambos os cônjuges/unidos de facto estão desempregados com filhos a cargo"
-  unidade: EUR/mês
+majoracao_conjuges_percentagem:
+  descricao: "Majoração de 10% do montante DIÁRIO do subsídio de desemprego (art. 28.º), aplicada ANTES dos limites de mínimo/máximo do art. 29.º — nunca um tecto novo. Aplica-se quando, no mesmo agregado, ambos os cônjuges/unidos de facto (ou o parente único em agregado monoparental) têm filhos ou equiparados a cargo e são titulares de subsídio de desemprego/por cessação de actividade/por cessação de actividade profissional, ou o cônjuge está em desemprego não subsidiado (inscrito para procura de emprego); 10% para cada um se ambos forem titulares. Depende sempre de requerimento e prova (n.º 7) — nunca automática"
+  unidade: "fracção (0-1)"
   valores:
-    - vigencia_inicio: "2026-01-01"
-      valor: 1477.11
-      referencia_legal: "Decreto-Lei n.º 220/2006, na redação do Decreto-Lei n.º 64/2012, de 15 de março — majoração de 10% quando ambos os cônjuges/unidos de facto no mesmo agregado têm direito ao subsídio e têm filhos a cargo (depende de pedido e prova, não modelado pelo simulador); mecanismo confirmado, sem número de artigo confirmado com confiança nesta sessão"
-      fonte_url: "https://dre.pt"
-      verificado_em: "2026-08-24"
+    - vigencia_inicio: "2022-01-01"
+      valor: 0.10
+      referencia_legal: "Decreto-Lei n.º 220/2006, artigo 28.º-A (aditado pelo artigo 3.º do Decreto-Lei n.º 119/2021, de 16 de dezembro), n.os 1 a 4 — lido directamente em PDF do DR nesta sessão (04/09/2026); produção de efeitos desde 1 de janeiro de 2022 (artigo 6.º do DL 119/2021)"
+      fonte_url: "https://files.dre.pt/1s/2021/12/24200/0003100034.pdf"
+      verificado_em: "2026-09-04"
 
 garantia_dias_geral:
   descricao: "Prazo de garantia (dias de registo de remunerações) — regime geral e trabalhador independente economicamente dependente"

@@ -140,16 +140,21 @@ def test_match_em_titulo_destaca_o_titulo(pagina):
 
 
 def test_match_fora_do_titulo_mostra_excerto_destacado(pagina):
-    # Páginas sem "sub" no título mas com o termo na descrição/keywords
-    # (ex.: "Estatuto do Cuidador Informal", via "subsídio" na descrição)
+    # Páginas sem o termo no título mas com o termo na descrição/keywords
     # têm de aparecer com <mark> no excerto. Não fixamos uma página
-    # concreta: a lista de páginas com "sub" no título cresce à medida
-    # que o site cresce (mais "subsídio X" no top 8 desloca exemplos
-    # antigos) — o teste verifica o mecanismo de camada 2/3, não a
-    # posição de ranking de uma página específica.
-    resultados = _pesquisar(pagina, "sub")
+    # concreta — o teste verifica o mecanismo de camada 2/3, não a
+    # posição de ranking de uma página específica. Termo escolhido
+    # deliberadamente ("segurança social") em vez do "sub" original
+    # (2026-09-04): "sub" cresceu para exactamente 8 títulos que contêm
+    # "sub" (subsídio/sub-23/substituir) — MAX_RESULTADOS=8 satura só
+    # com camada 1, sem sobrar nenhuma vaga para camada 2/3, tornando o
+    # teste falso-negativo por crescimento orgânico do site (mesmo risco
+    # já documentado no histórico deste teste). "segurança social" tem
+    # muito mais matches de camada 2/3 do que o cap de 8, por isso é
+    # robusto ao mesmo crescimento.
+    resultados = _pesquisar(pagina, "segurança social")
     fora_do_titulo = [r for r in resultados if r["camada"] in (2, 3)]
-    assert fora_do_titulo, "Pesquisa por 'sub' devia devolver pelo menos um resultado por descrição/keywords"
+    assert fora_do_titulo, "Pesquisa por 'segurança social' devia devolver pelo menos um resultado por descrição/keywords"
     assert all("<mark>" in r["excertoHtml"] for r in fora_do_titulo)
 
 

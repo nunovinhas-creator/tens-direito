@@ -115,6 +115,7 @@ DATAS_PUBLICACAO = {
     "como-e-calculada.html": "2026-09-04",
     "que-anos-contam.html": "2026-09-04",
     "mais-cedo-ou-mais-tarde.html": "2026-09-04",
+    "majoracao-subsidio-desemprego.html": "2026-09-04",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

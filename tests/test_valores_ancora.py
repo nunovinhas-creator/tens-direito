@@ -1490,16 +1490,62 @@ def test_desemprego_salario_minimo_dl_139_2025():
     assert "920" in _ler("subsidio-desemprego.html")
 
 
-def test_desemprego_majoracoes_minimo_maximo_batem_com_o_artigo():
+def test_desemprego_majoracao_minimo_batem_com_o_artigo():
     """DL 220/2006, na redação do DL n.º 64/2012 — mecanismo/percentagem
-    confirmados, sem número de artigo confirmado com confiança nesta
-    sessão (ver comentário no YAML — nunca inventado)."""
+    do mínimo majorado confirmados, sem número de artigo confirmado com
+    confiança nesta sessão (ver comentário no YAML — nunca inventado)."""
     assert _param_desemprego("minimo_majorado") == round(1.15 * IAS_2026, 2) == 617.70
-    assert _param_desemprego("maximo_majorado") == round(_param_desemprego("maximo") * 1.10, 2) == 1477.11
 
     html = _ler("subsidio-desemprego.html")
-    for valor in ("617,70", "1.477,11"):
-        assert valor in html, f"{valor} em falta no artigo subsidio-desemprego.html"
+    assert "617,70" in html, "617,70 em falta no artigo subsidio-desemprego.html"
+
+
+def test_desemprego_maximo_majorado_ausente_da_redacao_actual():
+    """Correcção 2026-09-04, formulação revista 2026-09-05 — fonte
+    primária lida em PDF do DR (Decreto-Lei n.º 119/2021, de 16 de
+    dezembro, https://files.dre.pt/1s/2021/12/24200/0003100034.pdf): o
+    art. 3.º adita o art. 28.º-A ao DL 220/2006, que majora em 10% o
+    montante DIÁRIO do subsídio (art. 28.º), ANTES dos limites de
+    mínimo/máximo do art. 29.º — nunca altera o tecto de 2,5× IAS.
+
+    Formulação deliberadamente escopada, nunca "nunca existiu": não foi
+    verificado nesta sessão o histórico completo de regimes transitórios
+    do subsídio de desemprego (ex. medidas excepcionais COVID de
+    2020-2021, já caducadas) — pode ter havido, nalgum ponto do passado,
+    um tecto próprio de vigência limitada. O que está confirmado por
+    leitura directa é mais restrito e suficiente: não existe, na
+    redação ACTUAL do artigo 28.º-A (aditado pelo DL 119/2021), nenhum
+    "máximo majorado" (1.477,11€) — a majoração incide sobre o montante
+    diário do artigo 28.º, não sobre os limites do artigo 29.º. O
+    parâmetro 'maximo_majorado' foi removido do YAML e nunca pode
+    reaparecer sem uma nova confirmação. Ver majoracao_conjuges_percentagem
+    (0,10) para o parâmetro correcto — a majoração em si, não um tecto
+    novo."""
+    todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+    assert "maximo_majorado" not in todos["prestacoes"]["desemprego"]
+    assert _param_desemprego("majoracao_conjuges_percentagem") == 0.10
+
+    for nome_html in ("subsidio-desemprego.html", "simulador-subsidio-desemprego.html", "majoracao-subsidio-desemprego.html"):
+        html = _ler(nome_html)
+        # Exclui blocos <script> — o comentário JS que documenta a remoção
+        # do "máximo majorado" cita "1.477,11€" como histórico legítimo de
+        # manutenção, nunca uma afirmação activa ao utilizador (mesmo
+        # padrão de test_percentagem_rendimento_trabalho_nunca_reaparece_sem_confirmacao
+        # para o CSI, acima).
+        sem_scripts = re.sub(r"<script\b[^>]*>[\s\S]*?</script>", "", html, flags=re.IGNORECASE)
+        assert "1.477,11" not in sem_scripts, f"'1.477,11' (máximo majorado inexistente) reapareceu fora de <script> em {nome_html}"
+        assert "1477.11" not in sem_scripts, f"'1477.11' (máximo majorado inexistente) reapareceu fora de <script> em {nome_html}"
+
+
+def test_desemprego_majoracao_conjuges_percentagem_bate_com_a_pagina_nova():
+    """Majoração de 10% (art. 28.º-A) — usada no <title>/meta description
+    de majoracao-subsidio-desemprego.html e no corpo do artigo."""
+    assert _param_desemprego("majoracao_conjuges_percentagem") == 0.10
+
+    html = _ler("majoracao-subsidio-desemprego.html")
+    assert "Majoração de 10%" in html, "'Majoração de 10%' em falta no <title> de majoracao-subsidio-desemprego.html"
+    assert "10%" in html
+    assert "1.342,83" in html, "máximo (1.342,83€) em falta — o tecto aplicável nunca muda com a majoração"
 
 
 def test_desemprego_prazos_de_garantia_e_requerimento_batem_com_o_artigo():

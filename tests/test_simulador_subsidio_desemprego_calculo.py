@@ -7,9 +7,12 @@ test_simulador_rsi_calculo.py/test_simulador_subsidio_doenca_calculo.py).
 
 Cobre a matriz de casos aprovada na Fase 3 do desenho deste simulador
 (ver CLAUDE.md/histórico de sessão): casos simples, mínimo/mínimo
-majorado, máximo/máximo majorado, prazo de garantia (regime geral e TI
-com cessação de actividade), duração (escalões etários × escalões de
-meses, majoração por carreira longa, redução por atraso na
+majorado, máximo (sempre 1.342,83€ — a redação actual do art. 28.º-A
+não prevê nenhum "máximo majorado", ver correcção 2026-09-04/2026-09-05),
+majoração de 10% do art. 28.º-A (aplicada ao montante diário, antes dos
+limites), prazo de garantia (regime geral e
+TI com cessação de actividade), duração (escalões etários × escalões
+de meses, majoração por carreira longa, redução por atraso na
 apresentação), validação de inputs inválidos (decimais, texto não-
 -numérico, campos obrigatórios vs. opcionais), datas de nascimento e
 precisão numérica (nunca -0,00€ nem resíduos de ponto flutuante).
@@ -166,7 +169,7 @@ def _parametros_desemprego_de_producao() -> dict:
         "minimo": d["minimo"],
         "minimoMajorado": d["minimo_majorado"],
         "maximo": d["maximo"],
-        "maximoMajorado": d["maximo_majorado"],
+        "majoracaoConjugesPercentagem": d["majoracao_conjuges_percentagem"],
         "garantiaDiasGeral": d["garantia_dias_geral"],
         "garantiaDiasTiCessacao": d["garantia_dias_ti_cessacao"],
         "prazoRequerimentoDias": d["prazo_requerimento_dias"],
@@ -296,7 +299,13 @@ def test_b3_remuneracao_um_centimo_abaixo_do_salario_minimo_nao_majora(pagina):
     assert r["minimoAplicavel"] == 537.13
 
 
-# ── C. Máximo e máximo majorado ──────────────────────────────────────────────
+# ── C. Máximo e majoração de 10% (art. 28.º-A) ───────────────────────────────
+# Corrigido 2026-09-04, formulação revista 2026-09-05: fonte primária
+# (DL n.º 119/2021, lida em PDF do DR) confirma que a majoração de 10%
+# incide sobre o montante DIÁRIO (art. 28.º), ANTES dos limites de
+# mínimo/máximo do art. 29.º — o máximo aplicável é SEMPRE 1.342,83€
+# (2,5× IAS), com ou sem majoração. A redação actual do art. 28.º-A
+# não prevê nenhum "máximo majorado" — ver dados/parametros/desemprego.yaml.
 
 def test_c1_remuneracao_alta_aplica_maximo(pagina):
     r = _calcular(pagina, {"remuneracao": 5000})
@@ -311,17 +320,128 @@ def test_c1_remuneracao_alta_aplica_maximo(pagina):
     assert r["maximoAplicado"] is True
 
 
-def test_c2_ambos_conjuges_aplica_maximo_majorado(pagina):
-    r = _calcular(pagina, {"remuneracao": 5000, "ambosConjuges": True})
-    assert r["maximoAplicavel"] == 1477.11
-    assert r["valorMensal"] == 1477.11
-    assert r["maximoAplicado"] is True
+def test_c2_ambos_conjuges_majora_10pc_o_diario_antes_dos_limites(pagina):
+    """1.200€/mês (o mesmo caso de regressão de A1, 780€/mês sem
+    majoração) com a majoração de 10%: 26,00€/dia × 1,10 = 28,60€/dia ×
+    30 = 858,00€/mês — dentro do máximo, por isso é o valor final. O
+    tecto aplicável continua 1.342,83€ — a redação actual da lei não
+    prevê nenhum "máximo majorado"."""
+    r = _calcular(pagina, {"remuneracao": 1200, "ambosConjuges": True})
+    assert r["majoracaoAplicada"] is True
+    assert r["subsidioDiarioBruto"] == 26.00
+    assert r["subsidioDiarioComMajoracao"] == 28.60
+    assert r["subsidioMensalBruto"] == 858.00
+    assert r["maximoAplicavel"] == 1342.83
+    assert r["valorMensal"] == 858.00
+    assert r["maximoAplicado"] is False
 
 
-def test_c3_ambos_conjuges_sem_ultrapassar_maximo_normal_nao_muda_valor(pagina):
-    r_normal = _calcular(pagina, {"remuneracao": 1200, "ambosConjuges": False})
-    r_conjuges = _calcular(pagina, {"remuneracao": 1200, "ambosConjuges": True})
-    assert r_normal["valorMensal"] == r_conjuges["valorMensal"] == 780.00
+def test_c3_majoracao_nunca_ultrapassa_o_maximo_normal(pagina):
+    """1.940€/mês: sem majoração dá 1.261,20€ (sem cap); com majoração
+    daria 1.387,20€ — mas o tecto aplicável continua 1.342,83€ (2,5×
+    IAS), nunca 'majorado' — prova directa de que não existe nenhum
+    máximo superior a este, mesmo com a majoração de 10% incluída."""
+    r_normal = _calcular(pagina, {"remuneracao": 1940, "ambosConjuges": False})
+    assert r_normal["subsidioMensalBruto"] == 1261.20
+    assert r_normal["valorMensal"] == 1261.20
+    assert r_normal["maximoAplicado"] is False
+
+    r_conjuges = _calcular(pagina, {"remuneracao": 1940, "ambosConjuges": True})
+    assert r_conjuges["subsidioDiarioComMajoracao"] == 46.24
+    assert r_conjuges["subsidioMensalBruto"] == 1387.20
+    assert r_conjuges["maximoAplicavel"] == 1342.83
+    assert r_conjuges["valorMensal"] == 1342.83
+    assert r_conjuges["maximoAplicado"] is True
+
+
+def test_c4_ambos_conjuges_ja_no_teto_nao_muda_valor(pagina):
+    """5.000€/mês já satura o máximo normal (3.250,20€ > 1.342,83€) —
+    com majoração continua exactamente no mesmo tecto, nunca acima."""
+    r_normal = _calcular(pagina, {"remuneracao": 5000, "ambosConjuges": False})
+    r_conjuges = _calcular(pagina, {"remuneracao": 5000, "ambosConjuges": True})
+    assert r_normal["valorMensal"] == r_conjuges["valorMensal"] == 1342.83
+
+
+def test_c5_ambos_conjuges_com_minimo_majorado_podem_acumular(pagina):
+    """Mínimo majorado (617,70€, remuneração ≥ salário mínimo) e a
+    majoração de 10% (art. 28.º-A) são regras diferentes que podem
+    coexistir na mesma simulação — remuneração de 920€ dá, sem
+    majoração, um bruto de 598,20€ (< 617,70€, mínimo majorado a
+    decidir o valor final); com majoração o bruto sobe para 657,90€,
+    acima do mínimo majorado, por isso deixa de ser o mínimo a decidir."""
+    r_sem = _calcular(pagina, {"remuneracao": 920, "ambosConjuges": False})
+    assert r_sem["minimoAplicavel"] == 617.70
+    assert r_sem["subsidioMensalBruto"] == 598.20
+    assert r_sem["valorMensal"] == 617.70
+    assert r_sem["minimoAplicado"] is True
+
+    r_com = _calcular(pagina, {"remuneracao": 920, "ambosConjuges": True})
+    assert r_com["minimoAplicavel"] == 617.70
+    assert r_com["subsidioMensalBruto"] == 657.90
+    assert r_com["valorMensal"] == 657.90
+    assert r_com["minimoAplicado"] is False
+
+
+# ── C6-C8. Verificação à mão, sessão de integração 2026-09-05 ───────────────
+# Três casos pedidos explicitamente antes do merge para main (PASSO 2):
+# base baixa, base média, e um caso em que o valor MAJORADO ultrapassa o
+# máximo de 1.342,83€ — confirmando que o tecto do art. 29.º se aplica
+# DEPOIS da majoração do art. 28.º-A, nunca antes. Valores confirmados
+# duas vezes: reimplementação Node isolada da fórmula (fora deste
+# ficheiro) e execução directa do JS real da página (aqui, mesmo
+# `calcularSubsidioDesemprego` de produção) — sem divergências.
+
+def test_c6_verificacao_a_mao_base_baixa_620(pagina):
+    """Remuneração 954€/mês → subsídio base (sem majoração) 620,10€/mês.
+    Com majoração: 20,67€/dia × 1,10 = 22,74€/dia × 30 = 682,20€/mês —
+    bem abaixo do máximo, nunca capado."""
+    r_sem = _calcular(pagina, {"remuneracao": 954, "ambosConjuges": False})
+    assert r_sem["subsidioMensalBruto"] == 620.10
+    assert r_sem["valorMensal"] == 620.10
+
+    r_com = _calcular(pagina, {"remuneracao": 954, "ambosConjuges": True})
+    assert r_com["subsidioDiarioBruto"] == 20.67
+    assert r_com["subsidioDiarioComMajoracao"] == 22.74
+    assert r_com["subsidioMensalBruto"] == 682.20
+    assert r_com["valorMensal"] == 682.20
+    assert r_com["maximoAplicado"] is False
+
+
+def test_c7_verificacao_a_mao_base_media_700(pagina):
+    """Remuneração 1.080€/mês → subsídio base (sem majoração) 702,00€/mês.
+    Com majoração: 23,40€/dia × 1,10 = 25,74€/dia × 30 = 772,20€/mês —
+    ainda bem abaixo do máximo, nunca capado."""
+    r_sem = _calcular(pagina, {"remuneracao": 1080, "ambosConjuges": False})
+    assert r_sem["subsidioMensalBruto"] == 702.00
+    assert r_sem["valorMensal"] == 702.00
+
+    r_com = _calcular(pagina, {"remuneracao": 1080, "ambosConjuges": True})
+    assert r_com["subsidioDiarioBruto"] == 23.40
+    assert r_com["subsidioDiarioComMajoracao"] == 25.74
+    assert r_com["subsidioMensalBruto"] == 772.20
+    assert r_com["valorMensal"] == 772.20
+    assert r_com["maximoAplicado"] is False
+
+
+def test_c8_verificacao_a_mao_majorado_ultrapassa_o_teto_fica_limitado(pagina):
+    """Remuneração 1.970€/mês → subsídio base (sem majoração) 1.280,70€/mês,
+    já abaixo do máximo por si só. Com majoração: 42,69€/dia × 1,10 =
+    46,96€/dia × 30 = 1.408,80€/mês — ULTRAPASSA 1.342,83€. O tecto do
+    art. 29.º aplica-se DEPOIS da majoração, nunca antes: o resultado
+    final fica limitado a exactamente 1.342,83€, nunca 1.408,80€ nem
+    qualquer "máximo majorado" superior a 1.342,83€."""
+    r_sem = _calcular(pagina, {"remuneracao": 1970, "ambosConjuges": False})
+    assert r_sem["subsidioMensalBruto"] == 1280.70
+    assert r_sem["valorMensal"] == 1280.70
+    assert r_sem["maximoAplicado"] is False
+
+    r_com = _calcular(pagina, {"remuneracao": 1970, "ambosConjuges": True})
+    assert r_com["subsidioDiarioBruto"] == 42.69
+    assert r_com["subsidioDiarioComMajoracao"] == 46.96
+    assert r_com["subsidioMensalBruto"] == 1408.80  # bruto, ANTES do tecto
+    assert r_com["maximoAplicavel"] == 1342.83
+    assert r_com["valorMensal"] == 1342.83  # tecto aplicado DEPOIS da majoração
+    assert r_com["maximoAplicado"] is True
 
 
 # ── D. Prazo de garantia — elegibilidade ─────────────────────────────────────
@@ -665,7 +785,7 @@ def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     assert params["minimo"]["valor"] == 537.13
     assert params["minimoMajorado"]["valor"] == 617.70
     assert params["maximo"]["valor"] == 1342.83
-    assert params["maximoMajorado"]["valor"] == 1477.11
+    assert params["majoracaoConjugesPercentagem"]["valor"] == 0.10
     assert params["garantiaDiasGeral"]["valor"] == 360
     assert params["garantiaDiasTiCessacao"]["valor"] == 720
     assert params["prazoRequerimentoDias"]["valor"] == 90
@@ -673,8 +793,14 @@ def test_coerencia_artigo_simulador_constantes_de_producao(pagina):
     assert params["acrescimo40a49"]["valor"] == 45
     assert params["acrescimo50Mais"]["valor"] == 60
 
-    for valor_esperado in ["537,13", "617,70", "349,13", "1.342,83", "1.477,11"]:
+    for valor_esperado in ["537,13", "617,70", "349,13", "1.342,83"]:
         assert valor_esperado in ARTIGO_HTML, f"'{valor_esperado}' não encontrado em subsidio-desemprego.html"
+
+    # "máximo majorado" (1.477,11€) ausente da redação actual do art.
+    # 28.º-A — corrigido 2026-09-04, formulação revista 2026-09-05
+    # (fonte primária lida em PDF do DR, ver dados/parametros/
+    # desemprego.yaml) — nunca pode reaparecer sem confirmação nova.
+    assert "1.477,11" not in ARTIGO_HTML, "'1.477,11' (máximo majorado inexistente) reapareceu em subsidio-desemprego.html"
 
     for chave in params:
         assert params[chave]["verificado_em"], f"{chave} sem verificado_em"

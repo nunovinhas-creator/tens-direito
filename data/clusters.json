@@ -76,6 +76,7 @@
       "pillar": "/p/trabalho-rendimento.html",
       "paginas": [
         {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true, "emoji": "📋", "desc": "Como pedir ao IEFP, processo passo a passo e situações especiais na UE."},
+        {"slug": "majoracao-subsidio-desemprego.html", "titulo": "Majoração de 10% do subsídio de desemprego", "tipo": "artigo", "destaque": false},
         {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false},
         {"slug": "baixa-medica-subsidio-doenca.html", "titulo": "Baixa médica e subsídio de doença", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-subsidio-doenca.html", "titulo": "Simulador de Subsídio de Doença", "tipo": "ferramenta", "destaque": false},

@@ -2109,6 +2109,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `psu-quando-entra-em-vigor.html` | Ago 2026 (decreto-lei) + Jan 2027 (entrada vigor) | Verificação manual/news dre.pt |
 | `psu-quem-tem-direito.html` | Ago 2026 (valores confirmados pelo decreto-lei) | Decreto-lei publicado |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
+| `majoracao-subsidio-desemprego.html` | **31 de dezembro de 2026** — o Decreto-Lei n.º 166/2026 (art. 49.º) altera a redação do n.º 5 do art. 28.º-A do DL 220/2006 nesta data (a majoração passa a manter-se quando o cônjuge transita para a PSU, em vez de "subsídio social de desemprego subsequente") — rever a secção "Se a situação mudar" e a FAQ correspondente, confirmando que o texto passa de "vai mudar a partir de" para o estado já em vigor | Sem sentinela automático dedicado — verificação manual, mesma data já vigiada pelo `pipeline-diario.yml` para o resto do cluster PSU |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
