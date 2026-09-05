@@ -9913,3 +9913,108 @@ correcção ao diff genérico de mudanças). Trabalho feito na branch
 `claude/triagem-158-garantia-ty23uz` (designada pelo ambiente remoto
 desta sessão) — commit local, sem push (instrução explícita desta
 sessão).*
+
+---
+
+*Última revisão: 2026-09-05 — cluster "Reformas e Pensões", Anel 3
+parte B (sobrevivência e subsídio por morte). Nota prévia: as duas
+sessões que criaram este cluster (pilar + Anéis 1/2, e a página da
+majoração de 10%, commits `c4c2536`/`056826b`/`b4c6df2`/`ea0a82c`, todas
+de 2026-09-04/05) nunca actualizaram este ficheiro nem `ROADMAP.md`,
+apesar dos triggers da secção "AUTO-ACTUALIZAÇÃO DESTE FICHEIRO" — esta
+entrada documenta só o trabalho desta sessão, sem reconstruir
+retroactivamente as anteriores.
+
+3 páginas novas publicadas: `pensao-de-sobrevivencia.html` (âncora do
+sub-anel — prazo de garantia de 36 meses, fórmula base + regra R/60
+para carreiras <60 meses, tabela de percentagens por grupo de
+titulares, repartição, acumulação, prestações adicionais, início e
+duração), `subsidio-por-morte.html` (prestação única, secção de
+desambiguação das 4 prestações que se pagam depois de uma morte) e
+`quem-tem-direito-por-parentesco.html` (descendentes e ascendentes).
+Diploma: Decreto-Lei n.º 322/90, de 18 de outubro — regime distinto do
+Decreto-Lei n.º 187/2007 (reforma/velhice) que o resto do cluster usa;
+citado sempre como "na redação em vigor", nunca "inalterado desde
+1990" (regra explícita do brief desta sessão).
+
+**Achado factual real, corrigido antes de publicar**: o brief desta
+sessão descrevia o subsídio por morte como "seis vezes a remuneração de
+referência" (art. 32.º) — a redacção ORIGINAL de 1990. Triangulação via
+`WebSearch` (`WebFetch` confirmado 100% bloqueado nesta sessão para
+todos os domínios testados — `diariodarepublica.pt`, mirrors como
+`dre.tretas.org`/`manuals.plus`/`servicosocial.pt`/`morte.pt`, e até
+domínios sem relação com o Estado, bancos incluídos — mesma limitação
+documentada em dezenas de sessões anteriores) revelou, com múltiplas
+fontes financeiras independentes datadas de 2026 e valores em euros
+consistentes com o IAS 2026 (1.611,39€ = 3×537,13€), que o
+**Decreto-Lei n.º 133/2012, de 27 de junho**, deu nova redacção ao art.
+32.º: o valor passou a ser **3 × IAS**, fixo, sem prazo de garantia. O
+mesmo diploma alterou também os arts. 29.º, 34.º, 36.º, 41.º, 48.º,
+50.º e 54.º do DL 322/90 — usado para citar correctamente as regras de
+acumulação (art. 29.º: cônjuge/ex-cônjuge/união de facto podem
+acumular com pensão própria; descendentes/ascendentes não podem) e de
+início/duração (art. 36.º: janela de 6 meses após a morte). Nunca
+publicado o valor antigo — trancado por
+`tests/test_valores_ancora.py::test_subsidio_por_morte_nunca_afirma_a_formula_original_de_1990_como_vigente`.
+
+Segundo achado, também corrigido antes de publicar: o art. 12.º (idade
+dos descendentes) foi alterado pelo Decreto-Lei n.º 53/2023, de 5 de
+julho — confirmado por 2 buscas independentes, com o detalhe completo
+dos 3 escalões (até 18 anos sem condição; 18-25 em ensino secundário/
+superior; 25-27 em pós-graduação/mestrado/doutoramento/estágio
+profissional obrigatório) — mais recente do que o limite de 25 anos
+que ainda circula em fontes secundárias desactualizadas.
+
+**Páginas 4 e 5 do sub-anel continuam bloqueadas, exactamente como o
+brief instruía**: `pensao-sobrevivencia-conjuge.html` (Decreto
+Regulamentar n.º 1/94) e `pensao-sobrevivencia-uniao-de-facto.html`
+(Lei n.º 7/2001) — ambos os diplomas só identificados/citados para
+desambiguação nas páginas publicadas (nunca desenvolvidos), com cartão
+próprio em `fontes.html`. A página 6 ("decidir depois") não foi criada.
+Detalhe completo do que falta em `ROADMAP.md` → "TRABALHO FUTURO
+REGISTADO".
+
+Integração completa: `data/clusters.json` (3 páginas novas no cluster
+`reformas`, `descricao_curta` actualizada), `p/reformas.html` (card
+"Anel 3" desbloqueado com os 3 guias novos + card "Invalidez e
+acumulação" ainda em preparação — `PILLAR-LISTA`/`PILLAR-JSONLD`
+actualizados por `scripts/sincronizar_clusters.py`, idempotência
+confirmada), `sitemap.xml`, `scripts/pesquisa.js`, `fontes.html` (6
+cartões novos: DL 322/90, DL 133/2012, DL 53/2023, DL 40/2025, DL
+104/2026, Lei n.º 7/2001 — `tests/test_fontes_coerencia.py` confirma
+zero diplomas citados sem cartão/excepção). `scripts/sincronizar_nav.py`,
+`adicionar_canonicas.py`, `adicionar_autoria_artigos.py` e
+`inserir_botao_partilhar.py` confirmados a **zero alterações** — as 3
+páginas já nasceram com nav/canónica/autoria/botão de partilha
+correctos. `scripts/adicionar_article_jsonld.py` ganhou as 3 entradas
+em `DATAS_PUBLICACAO` e confirmou o `Article` JSON-LD já escrito à mão
+como correcto. `scripts/gerar_og_images.py --write` gerou as 3 imagens
+próprias (1200×630, chip "Reformas e Pensões", confirmado pelo
+cabeçalho JPEG real).
+
+**Achado lateral, corrigido no mesmo commit**: `sincronizar_clusters.py`
+corrigiu de caminho o `RELACIONADOS` de `majoracao-subsidio-desemprego.html`
+(cluster `trabalho-rendimento`, sem relação com esta sessão) — estava
+dessincronizado de uma sessão anterior que não tinha corrido o script
+depois de publicar essa página.
+
+7 testes novos em `tests/test_valores_ancora.py` (tabela de
+percentagens travada aos 11 valores confirmados por triangulação,
+meta description consistente com a tabela — achado real: a 1.ª versão
+da meta description dizia "60% a 80%", corrigido para "20% a 80%"
+depois de o teste apanhar que o mínimo real da tabela é 20%, não 60% —,
+canário do valor 3×IAS do subsídio por morte, e o canário anti-regressão
+da fórmula de 1990). `verificar_datas.detectar_alertas()` confirmado
+sem falsos positivos nas 3 páginas + pilar, testado em 5 combinações
+ano/mês (2026-09 a 2027-09), apesar das muitas datas históricas citadas
+(1990, 2001, 2012, 2023, 2025, 2026). `tests/test_acessibilidade.py`
+confirma zero violações critical/serious nas 3 páginas + pilar.
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+
+Sibling branch conhecida nesta sessão, ainda não integrada em `main`:
+`claude/anel-3-invalidez-acumulacao-es1ruo` (Anel 3, parte A —
+invalidez/acumulação/complementos) — detalhe em `ROADMAP.md`.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/sobrevivencia-subsidio-morte-e4pvgz` (designada pelo ambiente
+remoto desta sessão).*

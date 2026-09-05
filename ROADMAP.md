@@ -342,6 +342,52 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   tráfego de cada cluster para o respectivo hub, com âncora descritiva
   (ex.: "guia completo de Família e Crianças"), não mais um card
   genérico.
+- **Cluster "Reformas e Pensões" — Anel 3, parte B publicada
+  (2026-09-05)**: `pensao-de-sobrevivencia.html`, `subsidio-por-morte.html`
+  e `quem-tem-direito-por-parentesco.html` publicadas, regidas pelo
+  Decreto-Lei n.º 322/90 — regime de protecção na eventualidade da morte,
+  diploma distinto do Decreto-Lei n.º 187/2007 (reforma/velhice) que o
+  resto do cluster usa. Achado real desta sessão: o subsídio por morte
+  **não** é "6× a remuneração de referência" (redacção original de 1990) —
+  o Decreto-Lei n.º 133/2012, de 27 de junho, deu nova redacção ao art.
+  32.º, fixando o valor em **3 × IAS**, sem prazo de garantia; o mesmo
+  diploma alterou também os arts. 29.º, 34.º, 36.º, 41.º, 48.º, 50.º e
+  54.º. Confirmado por triangulação `WebSearch` (`WebFetch` continua
+  bloqueado nesta sessão para todos os domínios testados, incluindo
+  `diariodarepublica.pt`, mirrors como `dre.tretas.org`, e até domínios
+  sem relação com o Estado como `en.wikipedia.org`/bancos — mesma
+  limitação documentada em dezenas de sessões anteriores).
+  **Páginas 4 e 5 do sub-anel continuam bloqueadas**, exactamente como o
+  brief desta sessão instruía — dependem de diplomas ainda por instruir
+  a fundo (só identificados/citados para desambiguação, nunca
+  desenvolvidos):
+  - `pensao-sobrevivencia-conjuge.html` — Decreto Regulamentar n.º 1/94,
+    de 18 de janeiro (condições de titularidade do ex-cônjuge).
+  - `pensao-sobrevivencia-uniao-de-facto.html` — Lei n.º 7/2001, de 11 de
+    maio (prova da união de facto, para onde o art. 8.º, n.º 2, do DL
+    322/90 remete) — já tem cartão em `fontes.html`, mas o regime
+    substantivo (quem prova o quê, prazos) não foi lido/verificado.
+  - **Lei n.º 23/2010** — uma das alterações conhecidas ao DL 322/90
+    (a par de DL 141/91, DL 265/99, DL 133/2012, DL 13/2013), alcance
+    exacto nunca confirmado nesta sessão — nenhuma página cita este
+    diploma por número, por isso não bloqueia nada hoje, mas fica por
+    verificar antes de qualquer página futura assumir "redação
+    inalterada" nos artigos que não tenham sido já confirmados como
+    amendados por outro diploma.
+  - `duracao-da-pensao-de-sobrevivencia.html` (página 6, "decidir
+    depois") — nunca criada; a duração vitalícia/temporária conforme
+    idade e duração do casamento continua por analisar.
+  - Verificação artigo-a-artigo dos arts. 24.º a 30.º contra o separador
+    "Modificações" do DRE (não pôde ser lido integralmente) continua
+    pendente de arquivo — não bloqueia o que já foi publicado, porque
+    nenhuma página afirma continuidade histórica, só "na redação em
+    vigor".
+  Sibling branch conhecida nesta sessão: `claude/anel-3-invalidez-
+  acumulacao-es1ruo` (Anel 3, parte A — invalidez/acumulação/
+  complementos) — ainda não integrada em `main` no momento desta sessão;
+  qualquer sessão futura que mexa em `p/reformas.html`/`data/clusters.json`
+  para essa parte deve confirmar primeiro se já foi integrada, para não
+  duplicar nem sobrepor o card "Anel 3" do pilar.
 ---
 
 ## 📅 DATAS FIXAS

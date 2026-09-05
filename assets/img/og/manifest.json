@@ -324,6 +324,11 @@
     "pagina": "passe-sub23.html",
     "titulo": "Passe sub-23 gratuito 2026: como pedir e o que muda quando completas 23 anos"
   },
+  "pensao-de-sobrevivencia": {
+    "chip": "Reformas e Pensões",
+    "pagina": "pensao-de-sobrevivencia.html",
+    "titulo": "Pensão de Sobrevivência: quem tem direito e como se calcula"
+  },
   "porta-65": {
     "chip": "Habitação",
     "pagina": "porta-65.html",
@@ -383,6 +388,11 @@
     "chip": "Reformas e Pensões",
     "pagina": "que-anos-contam.html",
     "titulo": "Que Anos Contam para a Pensão: densidade e melhores 40 anos"
+  },
+  "quem-tem-direito-por-parentesco": {
+    "chip": "Reformas e Pensões",
+    "pagina": "quem-tem-direito-por-parentesco.html",
+    "titulo": "Quem Tem Direito à Pensão de Sobrevivência: descendentes e ascendentes"
   },
   "registo-criminal-online": {
     "chip": "Como Pedir",
@@ -463,6 +473,11 @@
     "chip": "Família e Crianças",
     "pagina": "subsidio-parental.html",
     "titulo": "Licença parental 2026: dias, valores e como pedir o subsídio parental"
+  },
+  "subsidio-por-morte": {
+    "chip": "Reformas e Pensões",
+    "pagina": "subsidio-por-morte.html",
+    "titulo": "Subsídio por Morte: quem recebe, quanto e como pedir"
   },
   "verificador-apoios": {
     "chip": "Simuladores e calculadoras",

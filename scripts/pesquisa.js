@@ -458,6 +458,21 @@ var paginas = [
    titulo: 'Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação',
    descricao: 'Antecipar corta 0,5% da pensão por mês, para sempre. Adiar bonifica entre 0,33% e 1% por mês, conforme a carreira. As carreiras muito longas não têm corte nenhum.',
    keywords: 'reformar mais cedo mais tarde antecipar adiar corte bonificação flexibilização penalização reforma',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/pensao-de-sobrevivencia.html',
+   titulo: 'Pensão de Sobrevivência: quem tem direito e como se calcula',
+   descricao: 'A pensão de sobrevivência paga-se a quem dependia do falecido — cônjuge, descendentes ou ascendentes. Percentagens de 60% a 80%, prazo de garantia de 36 meses.',
+   keywords: 'pensão de sobrevivência viuvez cônjuge descendentes ascendentes percentagem prazo de garantia 36 meses',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/subsidio-por-morte.html',
+   titulo: 'Subsídio por Morte: quem recebe, quanto e como pedir',
+   descricao: 'Prestação única de 3 vezes o IAS, sem prazo de garantia, a pedir em 180 dias. Nunca confundir com a pensão de sobrevivência.',
+   keywords: 'subsídio por morte valor prazo 180 dias IAS reembolso despesas funeral subsídio de funeral',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/quem-tem-direito-por-parentesco.html',
+   titulo: 'Quem Tem Direito à Pensão de Sobrevivência: descendentes e ascendentes',
+   descricao: 'Descendentes têm direito até aos 18 anos, e depois se estudarem (até aos 25 ou 27). Ascendentes só quando não há cônjuge, ex-cônjuge nem descendentes com direito.',
+   keywords: 'pensão de sobrevivência descendentes ascendentes idade estudante deficiência a cargo',
    cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'}
 ];
 

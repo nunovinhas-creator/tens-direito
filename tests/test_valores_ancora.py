@@ -1632,4 +1632,73 @@ def test_desemprego_exemplo_regressao_52_anos_780_dias():
     assert base == 540
     assert acrescimo == 240
     assert base + acrescimo == 780
+
+
+# ── Pensão de sobrevivência e subsídio por morte (DL 322/90) — 2026-09-05 ────
+
+_PERCENTAGENS_PENSAO_SOBREVIVENCIA = [
+    60.0, 70.0,  # cônjuge/ex-cônjuge: 1 titular, 2+ titulares
+    20.0, 30.0, 40.0,  # descendentes, havendo cônjuge/ex-cônjuge: 1, 2, 3+
+    40.0, 60.0, 80.0,  # descendentes, sem cônjuge/ex-cônjuge: 1, 2, 3+ (dobro)
+    30.0, 50.0, 80.0,  # ascendentes: 1, 2, 3+
+]
+
+
+def test_pensao_sobrevivencia_tabela_percentagens_bate_com_o_esperado():
+    """Confirmado por triangulação independente via WebSearch (2026-09-05,
+    sessão de criação da página) — arts. 25.º a 27.º do DL 322/90, na
+    redação em vigor. Falhar aqui é o comportamento desejado se algum
+    dia uma edição alterar a tabela sem intenção."""
+    html = _ler("pensao-de-sobrevivencia.html")
+    m = re.search(r'<h2>Quanto recebe cada grupo de titulares</h2>.*?</table>', html, re.S)
+    assert m, "tabela de percentagens não encontrada"
+    assert _percentagens(m.group(0)) == _PERCENTAGENS_PENSAO_SOBREVIVENCIA
+
+
+def test_pensao_sobrevivencia_meta_description_percentagens_batem_com_a_tabela():
+    desc = _meta_description("pensao-de-sobrevivencia.html")
+    valores = _percentagens(desc)
+    assert valores == [20.0, 80.0], desc
+    assert min(valores) == min(_PERCENTAGENS_PENSAO_SOBREVIVENCIA)
+    assert max(valores) == max(_PERCENTAGENS_PENSAO_SOBREVIVENCIA)
+
+
+def test_pensao_sobrevivencia_descendentes_duplicam_sem_conjuge():
+    """A simetria destacada no corpo da página: a percentagem dos
+    descendentes duplica exactamente quando não há cônjuge/ex-cônjuge
+    com direito — 20→40, 30→60, 40→80."""
+    com_conjuge = [20.0, 30.0, 40.0]
+    sem_conjuge = [40.0, 60.0, 80.0]
+    assert [v * 2 for v in com_conjuge] == sem_conjuge
+
+
+def test_subsidio_por_morte_meta_description_valor_3x_ias():
+    desc = _meta_description("subsidio-por-morte.html")
+    assert "3 × IAS" in desc, desc
+
+
+def test_subsidio_por_morte_og_description_valor_3x_ias():
+    desc_og = _meta_og("subsidio-por-morte.html", "og:description")
+    assert "3 vezes o IAS" in desc_og, desc_og
+
+
+def test_subsidio_por_morte_formula_box_bate_com_a_meta_description():
+    """A fórmula visível no corpo (formula-box) tem de bater com o valor
+    afirmado na meta description — nunca dois números diferentes para o
+    mesmo facto legal."""
+    html = _ler("subsidio-por-morte.html")
+    assert '<div class="formula-box">Subsídio por morte = 3 × IAS</div>' in html
+
+
+def test_subsidio_por_morte_nunca_afirma_a_formula_original_de_1990_como_vigente():
+    """Correcção real desta sessão: várias fontes secundárias (e a
+    própria memória de um redator desatento) ainda descrevem o
+    subsídio por morte como "6 vezes a remuneração de referência" — a
+    redação original de 1990, substituída por 3×IAS pelo Decreto-Lei
+    n.º 133/2012, de 27 de junho (confirmado por múltiplas fontes
+    independentes datadas de 2026). Nunca voltar a publicar a fórmula
+    antiga como se fosse a vigente."""
+    html = _ler("subsidio-por-morte.html")
+    assert "seis vezes a remuneração de referência" not in html
+    assert "6 vezes a remuneração de referência" not in html
     assert "780 dias" in _ler("subsidio-desemprego.html")
