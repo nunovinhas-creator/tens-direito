@@ -469,6 +469,17 @@ para esses três casos.
 | `deducao-rendas-irs.html` | Dedução de rendas no IRS 2026: até 900 € por ano | 20 jul. 2026 |
 | `primeiro-direito.html` | 1.º Direito 2026: apoio a quem vive em habitação indigna | 20 jul. 2026 |
 | `garantia-para-a-infancia.html` | Garantia para a Infância 2026: 127,33€/mês, sem pedido | 2 set. 2026 |
+| `p/reformas.html` | Reformas e Pensões — Guia Completo das Regras 2026 | 4 set. 2026 |
+| `idade-normal.html` | Idade Normal de Reforma: porque sobe todos os anos | 4 set. 2026 |
+| `idade-pessoal.html` | Idade Pessoal de Reforma: carreira longa reduz a idade | 4 set. 2026 |
+| `carreiras-muito-longas.html` | Carreiras Muito Longas: reforma aos 60 anos sem cortes | 4 set. 2026 |
+| `outras-antecipacoes.html` | Outras Antecipações da Reforma: desemprego, deficiência e mais | 4 set. 2026 |
+| `como-e-calculada.html` | Como é Calculada a Pensão: as três peças da fórmula | 4 set. 2026 |
+| `que-anos-contam.html` | Que Anos Contam para a Pensão: densidade e melhores 40 anos | 4 set. 2026 |
+| `mais-cedo-ou-mais-tarde.html` | Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação | 4 set. 2026 |
+| `invalidez-relativa-ou-absoluta.html` | Invalidez Relativa ou Absoluta: a diferença e o que muda | 5 set. 2026 |
+| `pensao-e-trabalho.html` | Pensão e Trabalho: o que podes (e não podes) acumular | 5 set. 2026 |
+| `quando-a-invalidez-vira-velhice.html` | Quando a Invalidez Vira Velhice: a conversão automática | 5 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -9913,3 +9924,133 @@ correcção ao diff genérico de mudanças). Trabalho feito na branch
 `claude/triagem-158-garantia-ty23uz` (designada pelo ambiente remoto
 desta sessão) — commit local, sem push (instrução explícita desta
 sessão).*
+
+---
+
+*Última revisão: 2026-09-05 — Anel 3, parte A: invalidez e acumulação com
+trabalho, cluster `/p/reformas.html`. Três páginas novas —
+`invalidez-relativa-ou-absoluta.html`, `pensao-e-trabalho.html`,
+`quando-a-invalidez-vira-velhice.html` — todas dependentes exclusivamente
+do Decreto-Lei n.º 187/2007 (versão consolidada, DRE), já verificado por
+inteiro numa sessão anterior (Anel 1+2, 4 set. 2026) — nenhum fact-check
+novo necessário, o brief já trazia os artigos exactos citados. Mesma
+anatomia obrigatória dos Anéis 1/2: resposta-rápida (≤60 palavras,
+confirmado por contagem programática nas 3 — 48/43/45 palavras) → tabela/
+regra → exemplo → checklist, sempre em múltiplos do IAS/RR ou por remissão,
+nunca valores anuais em euros — única excepção deliberada: as coimas do
+art. 92.º (50 a 350 €), citadas com nota explícita de que são montantes
+fixados directamente pelo diploma, não por portaria anual, e nunca
+colocadas em `<title>`/meta description (por isso sem entrada nova em
+`tests/test_valores_ancora.py`).
+
+**Regra de contenção respeitada**: nenhuma das 3 páginas fala de pensão de
+sobrevivência, complementos autónomos ou regimes paralelos — o único
+`complemento social` citado é a exclusão de base de cálculo do art. 59.º,
+n.º 3, já mencionada explicitamente no próprio brief.
+
+**Decisão de datação**: o brief citava a fonte como "verificada em
+2026-09-04" (data da sessão anterior que fez o fact-check completo do
+DL 187/2007 para os Anéis 1/2) — inicialmente usada como "Verificado a"
+das 3 páginas novas, por analogia directa com essa frase. Corrigido antes
+do commit: **todo o histórico deste ficheiro usa sempre a data da própria
+sessão/commit para "Verificado a"/`datePublished`/`dateModified`, nunca a
+data de uma verificação anterior herdada** (confirmado por grep a
+`renovar-cartao-cidadao.html`/`garantia-para-a-infancia.html` antes de
+decidir) — as 3 páginas novas, `p/reformas.html` (só `dateModified`, pelo
+Anel 3 ter passado a ter conteúdo real) e a entrada nova da tabela
+"PÁGINAS PUBLICADAS" usam **5 set. 2026** (data real desta sessão), nunca
+4 set. `index.html` (`ATUALIZACOES:HOME`) resincronizado a seguir — as 3
+páginas novas + `majoracao-subsidio-desemprego.html` (também com
+"Verificado a 5 set. 2026", de fora do âmbito desta sessão) passam a
+ocupar as 4 posições, por serem hoje as mais recentemente verificadas do
+site inteiro.
+
+**`p/reformas.html`**: card "Anel 3" deixou de estar `Em preparação` — 3
+mini-cards para as páginas novas + `aviso-info` explícito de que a pensão
+de sobrevivência continua em levantamento (DL 187/2007 não a regula,
+nada publicado sem fonte primária). `PILLAR-LISTA`/`PILLAR-JSONLD`
+(`numberOfItems` 7→10) regenerados por `scripts/sincronizar_clusters.py`.
+
+**Achado lateral, corrigido no mesmo commit — drift pré-existente, sem
+relação com esta sessão**: `sincronizar_clusters.py --dry-run` já
+reportava, antes de qualquer alteração minha (confirmado por `git stash`),
+que `majoracao-subsidio-desemprego.html` (editado por outra sessão/
+pipeline, "Verificado a 5 set. 2026") tinha o bloco `RELACIONADOS`
+desactualizado (ainda apontava a `/simulador-subsidio-desemprego.html`,
+inexistente hoje) — corrigido como efeito mecânico e seguro do próprio
+script, mesmo padrão já documentado várias vezes neste ficheiro para
+"efeito lateral, sem relação com [o tema desta sessão]".
+
+**Achado de acessibilidade, corrigido antes do commit**: as duas tabelas
+comparativas (`invalidez-relativa-ou-absoluta.html`,
+`quando-a-invalidez-vira-velhice.html`) tinham `<th></th>` vazio na
+1.ª coluna — apanhado por `tests/test_acessibilidade.py`
+(`empty-table-header`, minor, acima do limiar de 0) — corrigido com texto
+descritivo ("Regra"/"Aspecto"), mesmo precedente de `porta-65.html`.
+
+**Redundância removida antes do commit**: a 1.ª versão de
+`pensao-e-trabalho.html` repetia a frase "os limites calculam-se sobre a
+pensão sem extras" duas vezes, byte a byte — uma vez como `aviso-info`
+isolado, outra como item 4 de "Quatro coisas que quase ninguém sabe" (o
+item pedido pelo brief). Removido o `aviso-info` duplicado, mantido só o
+item da lista.
+
+**Ligações internas obrigatórias** (exigidas explicitamente para
+`quando-a-invalidez-vira-velhice.html`) confirmadas presentes:
+`idade-normal.html` (3×), `pensao-e-trabalho.html` (2×),
+`invalidez-relativa-ou-absoluta.html` (1×). `pensao-e-trabalho.html`
+ganhou também um cross-link de corpo para `invalidez-relativa-ou-absoluta.html`
+(não exigido pelo brief, mas necessário — a página usa os termos "invalidez
+relativa/absoluta" sem os definir). O bloco `RELACIONADOS` automático das
+3 páginas novas mostra sempre os 4 primeiros irmãos do cluster (Anel 1) —
+comportamento mecânico já documentado noutras entradas deste ficheiro,
+nunca uma regressão desta sessão.
+
+Integração completa: `data/clusters.json` (edição cirúrgica de texto, não
+`json.dump()` do ficheiro inteiro — lição já registada numa sessão
+anterior sobre reformatação acidental), `sitemap.xml`,
+`scripts/pesquisa.js`, `scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO`). `scripts/sincronizar_nav.py`,
+`scripts/inserir_botao_partilhar.py`, `scripts/adicionar_canonicas.py`,
+`scripts/adicionar_autoria_artigos.py` e `scripts/adicionar_article_jsonld.py`
+confirmados todos a **zero alterações** às 3 páginas novas — nav, botão de
+partilha, canónica, autoria e `Article` JSON-LD já nasceram correctos.
+`scripts/gerar_og_images.py --write` gerou as 3 imagens (1200×630,
+confirmado pelo cabeçalho JPEG real, chip "Reformas e Pensões" herdado de
+`data/clusters.json`).
+
+**Ambiente de sandbox desta sessão**: `beautifulsoup4`/`lxml`/`playwright`/
+`playwright-stealth`/`jsonschema`/`requests`/`pytest` não estavam
+instalados — instalados nesta sessão; `feedparser` corrigido com o mesmo
+workaround já documentado em dezenas de sessões anteriores para o bug
+`install_layout`/`setuptools` do `sgmllib3k` (tarball extraído à mão para
+`site-packages`). Achado novo desta sessão: `pytest`/`ruff` no `PATH`
+resolviam para binários `uv tool` isolados (`/root/.local/share/uv/tools/`),
+com o seu próprio ambiente Python separado do `python3` do sistema onde os
+pacotes acima foram instalados — `python3 -m pytest tests/test_valores_ancora.py`
+falhava com `ModuleNotFoundError: No module named 'yaml'` mesmo com
+`python3 -c "import yaml"` a funcionar directamente, porque o `pytest` do
+PATH usava outro interpretador. Corrigido instalando `pytest` também no
+`python3` do sistema e usando sempre `python3 -m pytest` daí em diante —
+registado aqui para a próxima sessão neste sandbox não repetir o mesmo
+diagnóstico.
+
+Verificado nesta sessão: os 3 blocos JSON-LD de cada página válidos
+(`json.loads`), paridade 1:1 FAQ visível↔JSON-LD (7/7, 7/7, 5/5),
+`verificar_datas.detectar_alertas()` sem falsos positivos em nenhum mês
+de 2026/2027, zero overflow horizontal a 375px e zero erros de consola
+com Chromium real (só o aviso esperado de rede bloqueada do GA4/sandbox),
+checklist a actualizar o contador e a nunca persistir em `localStorage`
+entre reloads (confirmado com Chromium real, não só por ausência da
+string no código), `tests/test_acessibilidade.py` a 0 violações
+critical/serious/moderate/minor nas 5 páginas tocadas
+(`invalidez-relativa-ou-absoluta.html`, `pensao-e-trabalho.html`,
+`quando-a-invalidez-vira-velhice.html`, `p/reformas.html`, `index.html`).
+Suite completa (`pytest tests/ -q`) e `ruff check scripts/ tests/ --select
+E,F,W --ignore E501 .` corridos antes do commit — ver o resultado exacto
+no commit desta sessão. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch designada pelo ambiente
+remoto desta sessão, `claude/anel-3-invalidez-acumulacao-es1ruo` — ver o
+resumo final da sessão para o estado exacto de integração (PR aberto,
+merged, ou sem PR).*

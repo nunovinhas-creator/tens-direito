@@ -59,6 +59,11 @@ EXCECOES_ANOS_HISTORICOS = {
     ("como-e-calculada.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
     ("que-anos-contam.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
     ("mais-cedo-ou-mais-tarde.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    # Anel 3, parte A (2026-09-05) — mesmas 3 novas páginas do cluster,
+    # mesmo motivo das 7 anteriores.
+    ("invalidez-relativa-ou-absoluta.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("pensao-e-trabalho.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    ("quando-a-invalidez-vira-velhice.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
 }
 
 
