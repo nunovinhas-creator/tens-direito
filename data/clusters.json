@@ -137,7 +137,10 @@
         {"slug": "outras-antecipacoes.html", "titulo": "Outras antecipações da reforma", "tipo": "artigo", "destaque": false},
         {"slug": "como-e-calculada.html", "titulo": "Como é calculada a pensão", "tipo": "artigo", "destaque": false},
         {"slug": "que-anos-contam.html", "titulo": "Que anos contam para a pensão", "tipo": "artigo", "destaque": false},
-        {"slug": "mais-cedo-ou-mais-tarde.html", "titulo": "Reformar mais cedo ou mais tarde", "tipo": "artigo", "destaque": false}
+        {"slug": "mais-cedo-ou-mais-tarde.html", "titulo": "Reformar mais cedo ou mais tarde", "tipo": "artigo", "destaque": false},
+        {"slug": "invalidez-relativa-ou-absoluta.html", "titulo": "Invalidez relativa ou absoluta", "tipo": "artigo", "destaque": false},
+        {"slug": "pensao-e-trabalho.html", "titulo": "Pensão e trabalho", "tipo": "artigo", "destaque": false},
+        {"slug": "quando-a-invalidez-vira-velhice.html", "titulo": "Quando a invalidez vira velhice", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["idosos-incapacidade-cuidadores"]
     }

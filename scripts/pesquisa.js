@@ -458,6 +458,21 @@ var paginas = [
    titulo: 'Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação',
    descricao: 'Antecipar corta 0,5% da pensão por mês, para sempre. Adiar bonifica entre 0,33% e 1% por mês, conforme a carreira. As carreiras muito longas não têm corte nenhum.',
    keywords: 'reformar mais cedo mais tarde antecipar adiar corte bonificação flexibilização penalização reforma',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/invalidez-relativa-ou-absoluta.html',
+   titulo: 'Invalidez Relativa ou Absoluta: a diferença e o que muda',
+   descricao: 'A invalidez relativa permite continuar a trabalhar, com limites; a absoluta não permite. Prazo de garantia, o que conta como incapacidade permanente e como é avaliada.',
+   keywords: 'invalidez relativa absoluta diferença pensão incapacidade permanente prazo de garantia avaliação',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/pensao-e-trabalho.html',
+   titulo: 'Pensão e Trabalho: o que podes (e não podes) acumular',
+   descricao: 'Velhice normal é livre; a antecipada proíbe voltar à mesma empresa durante 3 anos; a invalidez relativa tem limites de rendimento; a absoluta não permite trabalhar.',
+   keywords: 'pensão trabalho acumular reforma antecipada invalidez relativa absoluta limites rendimento acumulação',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/quando-a-invalidez-vira-velhice.html',
+   titulo: 'Quando a Invalidez Vira Velhice: a conversão automática',
+   descricao: 'A pensão de invalidez transforma-se em pensão de velhice, sem pedido, no mês seguinte àquele em que atinges a idade normal de reforma. O que muda e o que se mantém.',
+   keywords: 'invalidez vira velhice conversão convolação automática pensão idade normal factor sustentabilidade',
    cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'}
 ];
 
