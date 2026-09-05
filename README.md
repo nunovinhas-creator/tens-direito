@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **04 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **05 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -34,10 +34,12 @@ Actualizado automaticamente a partir do repositório em **04 de setembro de 2026
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
 | [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: setembro 2026 |
+| [`carreiras-muito-longas.html`](carreiras-muito-longas.html) | Carreiras Muito Longas: reforma aos 60 anos sem cortes |
 | [`cartao-europeu-estacionamento.html`](cartao-europeu-estacionamento.html) | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | Tens Direito |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
 | [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
+| [`como-e-calculada.html`](como-e-calculada.html) | Como é Calculada a Pensão: as três peças da fórmula |
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
 | [`como-pedir-psu.html`](como-pedir-psu.html) | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
@@ -50,12 +52,17 @@ Actualizado automaticamente a partir do repositório em **04 de setembro de 2026
 | [`garantia-para-a-infancia.html`](garantia-para-a-infancia.html) | Garantia para a Infância 2026: 127,33€/mês, sem pedido |
 | [`garantia-publica-credito-habitacao.html`](garantia-publica-credito-habitacao.html) | Garantia Pública 2026: crédito habitação jovem até 100% |
 | [`iban-seguranca-social.html`](iban-seguranca-social.html) | Como alterar o IBAN na Segurança Social |
+| [`idade-normal.html`](idade-normal.html) | Idade Normal de Reforma: porque sobe todos os anos |
+| [`idade-pessoal.html`](idade-pessoal.html) | Idade Pessoal de Reforma: carreira longa reduz a idade |
 | [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
+| [`mais-cedo-ou-mais-tarde.html`](mais-cedo-ou-mais-tarde.html) | Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação |
+| [`majoracao-subsidio-desemprego.html`](majoracao-subsidio-desemprego.html) | Majoração de 10% do subsídio de desemprego 2026 |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares MEGA 2026/2027: como levantar os vales |
 | [`marcar-atendimento-seguranca-social.html`](marcar-atendimento-seguranca-social.html) | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
+| [`outras-antecipacoes.html`](outras-antecipacoes.html) | Outras Antecipações da Reforma: desemprego, deficiência e mais |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: dos 4 aos 23 (ou 25) anos |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: sem prazo, candidaturas todo o ano |
@@ -69,6 +76,7 @@ Actualizado automaticamente a partir do repositório em **04 de setembro de 2026
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso do Decreto-Lei n.º 166/2026 |
 | [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: obrigatório, com excepções (DL 166/2026) |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
+| [`que-anos-contam.html`](que-anos-contam.html) | Que Anos Contam para a Pensão: densidade e melhores 40 anos |
 | [`registo-criminal-online.html`](registo-criminal-online.html) | Certificado do Registo Criminal Online 2026: preço, prazo e como pedir |
 | [`renovar-cartao-cidadao.html`](renovar-cartao-cidadao.html) | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos |
 | [`rsi.html`](rsi.html) | RSI 2026: quem tem direito, valor e como pedir o Rendimento Social de Inserção |
@@ -405,6 +413,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 04 de setembro de 2026 às 12:08 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 05 de setembro de 2026 às 11:31 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
