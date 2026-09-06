@@ -1,134 +1,5 @@
 [
   {
-    "data": "2026-08-22",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 13,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 13,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 13,
-      "csi_idosos": 13
-    },
-    "candidatos": [
-      {
-        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-18"
-      },
-      {
-        "titulo": "Prestação Social Única chega no final de 2026: vê o que muda - Idealista",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-19",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-19",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-19"
-      },
-      {
-        "titulo": "Governo afasta reforma da Segurança Social e pede que não se assustem portugueses - recordeuropa.com",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-21",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Salário mínimo em Portugal: governo propõe € 665 - Portugal Resident",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-17",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-17"
-      },
-      {
-        "titulo": "Medicamentos gratuitos para idosos com complemento solidário limitados a genéricos ou preço de referência - SIC Notícias",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento solidário para idosos aumenta em janeiro de 2025 - Rádio Voz da Planície",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-16",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Justiça afasta regra do acordo Brasil-Portugal em aposentadoria - Previdenciarista",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-08-21",
-        "score": -1,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Prestação Social Única chega no final de 2026: vê o que muda - Idealista",
-        "feed_nome": "psu_pensoes",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-08-23",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1865,5 +1736,118 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-09-06",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 14,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 13,
+      "salario_minimo": 15,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Renda universitária: apoios que podes pedir em Portugal - Idealista",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-08-31",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-31"
+      },
+      {
+        "titulo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) - Human Resources Portugal",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-08-31",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-31"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-01",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-01"
+      },
+      {
+        "titulo": "Novas regras para o mercado de arrendamento já em vigor - Idealista",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-09-01",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-01"
+      },
+      {
+        "titulo": "Mais De 32 Mil Crianças E Jovens Abrangidos Pelo Abono De Família Nos Açores - Diário dos Açores",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-05",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Segurança Social: pagamentos no mês de setembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-08-31",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - Leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-05",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Mais De 32 Mil Crianças E Jovens Abrangidos Pelo Abono De Família Nos Açores - Diário dos Açores",
+        "feed_nome": "abono_familia",
+        "score": 1
+      }
+    ]
   }
 ]

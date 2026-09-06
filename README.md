@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **05 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **06 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -56,6 +56,7 @@ Actualizado automaticamente a partir do repositório em **05 de setembro de 2026
 | [`idade-pessoal.html`](idade-pessoal.html) | Idade Pessoal de Reforma: carreira longa reduz a idade |
 | [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
+| [`invalidez-relativa-ou-absoluta.html`](invalidez-relativa-ou-absoluta.html) | Invalidez Relativa ou Absoluta: a diferença e o que muda |
 | [`mais-cedo-ou-mais-tarde.html`](mais-cedo-ou-mais-tarde.html) | Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação |
 | [`majoracao-subsidio-desemprego.html`](majoracao-subsidio-desemprego.html) | Majoração de 10% do subsídio de desemprego 2026 |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares MEGA 2026/2027: como levantar os vales |
@@ -65,6 +66,7 @@ Actualizado automaticamente a partir do repositório em **05 de setembro de 2026
 | [`outras-antecipacoes.html`](outras-antecipacoes.html) | Outras Antecipações da Reforma: desemprego, deficiência e mais |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: dos 4 aos 23 (ou 25) anos |
+| [`pensao-e-trabalho.html`](pensao-e-trabalho.html) | Pensão e Trabalho: o que podes (e não podes) acumular |
 | [`porta-65.html`](porta-65.html) | Porta 65 Jovem 2026: sem prazo, candidaturas todo o ano |
 | [`prestacao-social-para-a-inclusao.html`](prestacao-social-para-a-inclusao.html) | PSI 2026: valor 333,64€, quem tem direito e como pedir |
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona |
@@ -76,6 +78,7 @@ Actualizado automaticamente a partir do repositório em **05 de setembro de 2026
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso do Decreto-Lei n.º 166/2026 |
 | [`psu-trabalho-social.html`](psu-trabalho-social.html) | Trabalho social na PSU 2026: obrigatório, com excepções (DL 166/2026) |
 | [`psu-vs-abono-familia.html`](psu-vs-abono-familia.html) | PSU 2026 e Abono de Família: são apoios diferentes — não se confundem |
+| [`quando-a-invalidez-vira-velhice.html`](quando-a-invalidez-vira-velhice.html) | Quando a Invalidez Vira Velhice: a conversão automática |
 | [`que-anos-contam.html`](que-anos-contam.html) | Que Anos Contam para a Pensão: densidade e melhores 40 anos |
 | [`registo-criminal-online.html`](registo-criminal-online.html) | Certificado do Registo Criminal Online 2026: preço, prazo e como pedir |
 | [`renovar-cartao-cidadao.html`](renovar-cartao-cidadao.html) | Renovar o Cartão de Cidadão 2026: desde 16,20 € e prazos |
@@ -413,6 +416,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 05 de setembro de 2026 às 11:31 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 06 de setembro de 2026 às 11:48 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
