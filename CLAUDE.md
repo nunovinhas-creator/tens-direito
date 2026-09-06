@@ -483,6 +483,10 @@ para esses três casos.
 | `pensao-de-sobrevivencia.html` | Pensão de Sobrevivência: quem tem direito e como se calcula | 6 set. 2026 |
 | `subsidio-por-morte.html` | Subsídio por Morte: quem recebe, quanto e como pedir | 6 set. 2026 |
 | `quem-tem-direito-por-parentesco.html` | Quem Tem Direito por Parentesco: descendentes e ascendentes | 6 set. 2026 |
+| `carreiras-contributivas-estrangeiro.html` | Carreira Contributiva no Estrangeiro: o que conta para a reforma | 6 set. 2026 |
+| `reforma-reino-unido-brexit.html` | Reforma e o Reino Unido: Acordo de Saída ou Brexit? | 6 set. 2026 |
+| `pensao-unificada.html` | Pensão Unificada: CGA e Segurança Social numa só pensão | 6 set. 2026 |
+| `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 6 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -10209,3 +10213,176 @@ commit desta correcção. `AUTO_UPDATE_HABILITADO`/
 sessão sem scraper). Trabalho feito na branch
 `claude/anel-3b-sobrevivencia-subsidio-uy2dbl` — sem PR, por instrução
 explícita.
+
+---
+
+*Última revisão: 2026-09-06 — Anel 4: regimes complementares, cluster
+`/p/reformas.html`. Três regimes juridicamente independentes do
+Decreto-Lei n.º 187/2007, cada um instruído pelo princípio transversal
+do brief — "âmbito antes da regra": nunca aplicar uma norma antes de
+confirmar quem ela abrange. `WebFetch` confirmado bloqueado nesta
+sessão para TODOS os domínios testados, sem excepção — não só
+`diariodarepublica.pt`/`.gov.pt` (limitação de sempre), mas também
+`eur-lex.europa.eu`, `europa.eu`, mirrors de terceiros
+(`dre.tretas.org`, `pgdlisboa.pt`, `files.dre.pt`) e até domínios sem
+relação nenhuma com o Estado (`en.wikipedia.org`) — a expectativa do
+brief de que "o EUR-Lex serve páginas legíveis, ao contrário do DRE"
+não se confirmou nesta sessão: o bloqueio é de rede (proxy), não do
+portal. Todo o conteúdo assenta em triangulação por `WebSearch` — várias
+pesquisas independentes por facto, nunca uma fonte só —, mesmo padrão já
+usado em dezenas de sessões anteriores perante o mesmo bloqueio.
+
+**Linha 1 — carreiras contributivas no estrangeiro** (prioridade 1, 2
+páginas). `carreiras-contributivas-estrangeiro.html` cobre só UE (27
+Estados-membros), EEE (Islândia, Liechtenstein, Noruega) e Suíça —
+mesma coordenação (Regulamento (CE) n.º 883/2004 + Regulamento (CE) n.º
+987/2009), três instrumentos jurídicos distintos por grupo (directo na
+UE; Acordo EEE; Acordo UE-Suíça de livre circulação). Exclusão
+deliberada e destacada (nunca só uma nota de rodapé) dos acordos
+bilaterais com países terceiros (Brasil, EUA, Canadá, Cabo Verde) —
+"ainda por documentar", nunca fingido como coberto. Totalização (art.
+11.º, DL 187/2007) distinguida explicitamente de cálculo proporcional
+(art. 39.º) — a distinção estruturante "aquisição do direito vs.
+cálculo do montante" exigida pelo brief, com exemplo numérico (12 anos
+PT / 18 estrangeiros / 30 totais → Portugal paga 12/30 do valor
+teórico). `reforma-reino-unido-brexit.html`, tratamento autónomo do
+Reino Unido conforme instruído: Acordo de Saída (situações
+transfronteiriças anteriores a 31/12/2020, fim do período de transição)
+vs. Protocolo de Coordenação da Segurança Social do Acordo de Comércio
+e Cooperação (situações desde 1/1/2021) — dois instrumentos, nunca
+tratados como equivalentes. Um ponto sinalizado com cautela reforçada,
+não apagado nem apresentado com falsa certeza: a regra de dispensa do
+cálculo proporcional do Protocolo TCA (21+ anos totais, ≤20 anos
+portugueses) tem origem numa síntese de terceiros sobre uma orientação
+técnica da DGSS, nunca confirmada por leitura directa do texto do
+Protocolo — marcada como tal na própria página (`aviso-atencao`) e no
+ROADMAP.md, para revisão quando houver acesso real ao texto.
+
+**Linha 2 — pensão unificada** (prioridade 2, 1 página). Achado
+central da sessão: o art. 63.º, n.º 2, do DL 187/2007 remete a
+atribuição da pensão unificada para "lei própria" sem a identificar —
+investigação confirmou que é o **Decreto-Lei n.º 361/98, de 18 de
+novembro** (regime da pensão unificada, anterior ao DL 187/2007 e já
+em vigor quando este saiu — por isso nunca precisou de ser citado),
+alterado pelo Decreto-Lei n.º 437/99 e pela Lei n.º 83-C/2013 (OE2014).
+A pista fraca do brief — Portaria n.º 642/83, citada no art. 28.º da
+Portaria 480-B/2025/1 — resolvida com a mesma triangulação: o DL 361/98
+revogou expressamente o DL 159/92 e a Portaria n.º 2/93, **nunca** a
+Portaria 642/83, que sobrevive só como categoria de indexação de
+pensões unificadas atribuídas ao abrigo do regime anterior a 1998 —
+nunca regula atribuições novas. Cronologia importante documentada como
+tal (antes/depois de 2014, Lei n.º 83-C/2013): a fórmula de cálculo
+passou de "pensão inteira pelas regras do último regime" para "cada
+parte pelas regras do seu regime, depois somadas" — nunca apresentada
+como se tivesse sido sempre assim.
+
+**Linha 3 — Caixa Geral de Aposentações** (prioridade 3, 1 página,
+`caixa-geral-aposentacoes.html`). Fronteira temporal confirmada com a
+norma exacta: **Lei n.º 60/2005, de 29 de dezembro, art. 2.º, n.º 1** —
+fecho a novas inscrições desde 1 de janeiro de 2006 (não "2006" por
+conhecimento geral, como o brief avisava para não assumir — a data e a
+norma foram confirmadas por triangulação antes de qualquer redacção).
+Estrutura obrigatória do brief seguida à letra, com 4 blocos separados
+na página: quem está abrangido (fronteira de 2006, primeiro que
+qualquer regra) → lei aplicável (Estatuto da Aposentação + Lei n.º
+60/2005 + Lei n.º 52/2007, por ordem cronológica) → regra de cálculo
+(divisão interna por datas — 1 de setembro de 1993 e 1 de janeiro de
+2006 decidem qual fórmula se aplica a cada parte da carreira, nunca uma
+fórmula única por pessoa; idade de acesso unificada com o regime geral
+desde 7 de março de 2014, Lei n.º 83-C/2013) → regras transitórias
+(regimes especiais com renúncia obrigatória; escalões de pensão mínima
+próprios da CGA, Portaria 480-B/2025/1 art. 5.º, sem valores em euros
+publicados, mesma regra do resto do cluster). Questão em aberto
+sinalizada, não escondida: a reinscrição na CGA de quem saiu da função
+pública depois de 2006 e regressou — a Lei n.º 45/2024 tentou
+restringi-la com efeitos retroactivos a 2006, e o Tribunal
+Constitucional já a declarou inconstitucional duas vezes (Acórdãos n.os
+689/2025 e 325/2026, princípio da protecção da confiança) — matéria
+ainda em evolução jurisprudencial, tratada como tal. Decisão sobre
+"anel autónomo" (pedida explicitamente pelo brief): CGA publicada como
+1 página dentro do Anel 4, proporcional ao universo decrescente de
+subscritores — registada em ROADMAP.md a condição para reabrir essa
+decisão (regimes especiais ou o litígio da reinscrição aprofundados
+numa sessão futura).
+
+**Achado lateral, corrigido antes do commit — dois falsos positivos
+reais do canário de datas expiradas** (`scripts/verificar_datas.py`):
+`reforma-reino-unido-brexit.html` ("31 de dezembro de 2020", fim do
+período de transição) e `caixa-geral-aposentacoes.html` ("1 de janeiro
+de 2006", fecho da CGA) disparariam `data_mes_ano` no pipeline real —
+confirmado directamente com `detectar_alertas()`, não assumido.
+Corrigido em duas frentes: reescritas as ocorrências que usavam "antes
+de"/"até"/"relativamente a" para usar "anterior a"/"posterior a"
+(marcadores já existentes e seguros), e acrescentados 4 marcadores
+novos a `MARCADORES_HISTORICOS` — `período de transição` (Brexit,
+evento histórico único, confirmado sem colisão site-wide excepto
+`psu-vs-abono-familia.html`, sem data próxima nessa página), `novas
+inscrições`/`se inscreveu`/`inscritos a partir de` (fecho da CGA, sem
+colisão fora das páginas deste tema), e `regulamento\s*\((?:ce|ue)\)\s*
+n\.?[ºo]` — citação de Regulamento europeu pelo formato oficial,
+categoria nunca antes citada neste site; confirmado que NÃO colide com
+a citação de `renovar-cartao-cidadao.html` ("Regulamento (UE)
+2025/1208", sem "n.º" — formato diferente, verificado por grep antes
+de aplicar). `detectar_alertas()` reconfirmado a devolver `None` nas 4
+páginas novas depois da correcção; `tests/test_verificar_datas.py` (46
+testes) sem regressões.
+
+**Achado lateral 2, também corrigido — canário de pesquisa interna**
+(2.ª ocorrência do mesmo padrão, já documentado 2× no histórico deste
+ficheiro): `tests/test_pesquisa_ranking.py::
+test_match_fora_do_titulo_mostra_excerto_destacado` usava "segurança
+social" como termo robusto (trocado de "sub" a 2026-09-04) — atingiu o
+próprio limite de 8 títulos com a publicação de `pensao-unificada.html`
+("Pensão Unificada: CGA e Segurança Social numa só pensão"), o 8.º
+título a conter o termo, saturando `MAX_RESULTADOS` só com camada 1.
+Trocado para "requerimento" (1 título hoje, 13 descrições/keywords —
+margem bem maior), com o histórico completo documentado no comentário
+do teste; mesma ressalva já registada nas trocas anteriores: um termo
+fixo continua vulnerável ao mesmo crescimento no futuro.
+
+Integração completa das 4 páginas: `data/clusters.json` (edição
+cirúrgica de texto, nunca `json.dump()` do ficheiro inteiro — lição já
+registada em sessões anteriores sobre reformatação acidental),
+`scripts/sincronizar_clusters.py` (regenerou `index.html`
+`ATUALIZACOES:HOME`, `p/reformas.html` `PILLAR-LISTA`/`PILLAR-JSONLD`
+13→17 itens, `CLUSTER-BADGE`/`RELACIONADOS` das 4 páginas novas — as
+já escritas à mão confirmadas idênticas ao que o script geraria antes
+da corrida real), `scripts/sincronizar_nav.py`/
+`scripts/inserir_botao_partilhar.py`/`scripts/adicionar_canonicas.py`/
+`scripts/adicionar_autoria_artigos.py`/`scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO` actualizado; zero alterações às 4 páginas — nav,
+canónica, autoria e `Article` JSON-LD já correctos à partida),
+`scripts/gerar_og_images.py --write` (4 imagens novas, 1200×630
+confirmado pelo cabeçalho JPEG real), `sitemap.xml`,
+`scripts/pesquisa.js`. `p/reformas.html`: card "Anel 4" deixou de estar
+`Em preparação`, FAQ (visível + JSON-LD) actualizada para deixar de
+apontar para "regras ainda por documentar". `fontes.html` ganhou 12
+cartões novos (2 Regulamentos europeus, Acordo de Saída, Protocolo TCA,
+DL 361/98, DL 437/99, Lei 83-C/2013, Estatuto da Aposentação, Lei
+60/2005, Lei 52/2007, DL 286/93, Lei 45/2024, Portaria 480-B/2025/1) —
+`tests/test_fontes_coerencia.py` (104 testes) confirmou e exigiu cada
+um dos que batem no formato de citação PT (Lei/Decreto-Lei/Portaria);
+os Regulamentos europeus e os Acordos internacionais ficam fora dessa
+regex por desenho (só reconhece diplomas portugueses), acrescentados
+por convenção editorial do site, não por exigência do teste.
+
+Nenhum valor em euros publicado em nenhuma das 4 páginas (regra do
+cluster, "nunca um valor que muda todos os anos") — os escalões de
+pensão mínima da CGA são descritos estruturalmente (5 escalões por
+tempo de serviço, Portaria 480-B/2025/1 art. 5.º), nunca com os
+montantes. `tests/test_valores_ancora.py` confirmado sem necessidade de
+nova entrada (nenhum €/% em `<title>`/meta description). 4 excepções
+novas registadas em `EXCECOES_ANOS_HISTORICOS`
+(`tests/test_anos_metadados.py`) para os anos de diplomas/datas
+históricas fixas citados em metadados (2004, 2005, 2006, 2020) —
+confirmadas a bater certo com o texto real das páginas.
+`tests/test_acessibilidade.py` — 0 violações críticas/sérias nas 5
+páginas tocadas (as 4 novas + `p/reformas.html`). Suite completa: 4275
+passed, 4 skipped antes da correcção dos dois achados laterais;
+reconfirmada sem regressões depois (`test_verificar_datas.py`: 46
+passed; `test_pesquisa_ranking.py`: 13 passed). `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+designada pelo ambiente remoto desta sessão,
+`claude/anel-4-regimes-complementares-5gssae`.

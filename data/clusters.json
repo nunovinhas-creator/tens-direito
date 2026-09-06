@@ -143,7 +143,11 @@
         {"slug": "quando-a-invalidez-vira-velhice.html", "titulo": "Quando a invalidez vira velhice", "tipo": "artigo", "destaque": false},
         {"slug": "pensao-de-sobrevivencia.html", "titulo": "Pensão de sobrevivência", "tipo": "artigo", "destaque": false},
         {"slug": "subsidio-por-morte.html", "titulo": "Subsídio por morte", "tipo": "artigo", "destaque": false},
-        {"slug": "quem-tem-direito-por-parentesco.html", "titulo": "Quem tem direito por parentesco", "tipo": "artigo", "destaque": false}
+        {"slug": "quem-tem-direito-por-parentesco.html", "titulo": "Quem tem direito por parentesco", "tipo": "artigo", "destaque": false},
+        {"slug": "carreiras-contributivas-estrangeiro.html", "titulo": "Carreira contributiva no estrangeiro", "tipo": "artigo", "destaque": false},
+        {"slug": "reforma-reino-unido-brexit.html", "titulo": "Reforma e o Reino Unido", "tipo": "artigo", "destaque": false},
+        {"slug": "pensao-unificada.html", "titulo": "Pensão unificada", "tipo": "artigo", "destaque": false},
+        {"slug": "caixa-geral-aposentacoes.html", "titulo": "Caixa Geral de Aposentações", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["idosos-incapacidade-cuidadores"]
     }

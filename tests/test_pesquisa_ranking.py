@@ -143,18 +143,20 @@ def test_match_fora_do_titulo_mostra_excerto_destacado(pagina):
     # Páginas sem o termo no título mas com o termo na descrição/keywords
     # têm de aparecer com <mark> no excerto. Não fixamos uma página
     # concreta — o teste verifica o mecanismo de camada 2/3, não a
-    # posição de ranking de uma página específica. Termo escolhido
-    # deliberadamente ("segurança social") em vez do "sub" original
-    # (2026-09-04): "sub" cresceu para exactamente 8 títulos que contêm
-    # "sub" (subsídio/sub-23/substituir) — MAX_RESULTADOS=8 satura só
-    # com camada 1, sem sobrar nenhuma vaga para camada 2/3, tornando o
-    # teste falso-negativo por crescimento orgânico do site (mesmo risco
-    # já documentado no histórico deste teste). "segurança social" tem
-    # muito mais matches de camada 2/3 do que o cap de 8, por isso é
-    # robusto ao mesmo crescimento.
-    resultados = _pesquisar(pagina, "segurança social")
+    # posição de ranking de uma página específica. 2.ª troca de termo
+    # (2026-09-06): "segurança social" (escolhido a 2026-09-04 para
+    # suceder ao "sub" original, que saturou a 8 títulos) atingiu, com a
+    # publicação de `pensao-unificada.html` ("Pensão Unificada: CGA e
+    # Segurança Social numa só pensão"), o seu próprio limite de 8
+    # títulos — o mesmo padrão de falso-negativo por crescimento
+    # orgânico já documentado duas vezes no histórico deste teste.
+    # "requerimento" tem hoje só 1 título com o termo (contra 13
+    # descrições/keywords) — termo processual específico, com margem
+    # bem maior antes de repetir o problema; ainda assim, um termo fixo
+    # continua vulnerável ao mesmo crescimento no futuro.
+    resultados = _pesquisar(pagina, "requerimento")
     fora_do_titulo = [r for r in resultados if r["camada"] in (2, 3)]
-    assert fora_do_titulo, "Pesquisa por 'segurança social' devia devolver pelo menos um resultado por descrição/keywords"
+    assert fora_do_titulo, "Pesquisa por 'requerimento' devia devolver pelo menos um resultado por descrição/keywords"
     assert all("<mark>" in r["excertoHtml"] for r in fora_do_titulo)
 
 

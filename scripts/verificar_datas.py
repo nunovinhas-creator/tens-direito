@@ -118,6 +118,32 @@ MARCADORES_HISTORICOS = [
     # for revogado?", sem "foi"); confirmado por grep sem colisão com nenhum
     # outro match de data no site antes de aplicar.
     r"\bfoi\s+revogad[ao]\s+em\b",
+    # Referência ao "período de transição" do Brexit (Acordo de Saída do
+    # Reino Unido) — expressão fixa e específica de um evento histórico
+    # único (terminou a 31/12/2020, nunca se repete), achado ao publicar
+    # reforma-reino-unido-brexit.html (2026-09-06). Âncora estreita —
+    # confirmado por grep que a única outra ocorrência no site
+    # (psu-vs-abono-familia.html) não tem nenhuma data de mês+ano nas
+    # proximidades, por isso não há risco de mascarar um prazo real.
+    r"per[íi]odo\s+de\s+transi[çc][ãa]o",
+    # Datas de fecho/inscrição da Caixa Geral de Aposentações — fronteiras
+    # históricas fixas (1993, 2005/2006), nunca "expiram" porque a CGA está
+    # fechada a novas inscrições desde 2006 (achado ao publicar
+    # caixa-geral-aposentacoes.html, 2026-09-06). Confirmado por grep sem
+    # colisão com nenhuma outra página do site (só fontes.html, mesmo tema).
+    r"novas\s+inscri[çc][õo]es", r"\bse\s+inscreveu\b",
+    r"\binscritos?\s+a\s+partir\s+de\b",
+    # Citação de um Regulamento europeu pelo formato oficial "Regulamento
+    # (CE/UE) n.º NNN/AAAA" — mesma família das citações de diploma
+    # português já cobertas acima (portaria/decreto-lei/lei/despacho),
+    # nunca coberta até agora porque o site nunca tinha citado um
+    # regulamento europeu antes de carreiras-contributivas-estrangeiro.html
+    # (2026-09-06). Note-se: "n\.?[ºo]" exige o "n.º"/"n.o" literal — o
+    # Regulamento (UE) 2025/1208 citado em renovar-cartao-cidadao.html
+    # nunca usa esse formato ("Regulamento (UE) 2025/1208", sem "n.º"),
+    # por isso esta âncora não colide com essa página (confirmado por
+    # grep antes de aplicar).
+    r"regulamento\s*\((?:ce|ue)\)\s*n\.?[ºo]",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

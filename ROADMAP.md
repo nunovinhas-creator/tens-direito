@@ -371,6 +371,32 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   texto consolidado do DRE, seguindo a mesma regra metodológica desta
   série ("a consolidação decide o que está em vigor hoje, nunca um
   diploma alterador isolado").
+- **Cluster Reformas e Pensões — Anel 4, regimes complementares, publicado
+  a 2026-09-06** (`carreiras-contributivas-estrangeiro.html`,
+  `reforma-reino-unido-brexit.html`, `pensao-unificada.html`,
+  `caixa-geral-aposentacoes.html` — ver CLAUDE.md, secção "Anel 4" no
+  pillar `p/reformas.html`, para o raciocínio completo). Dois pontos
+  registados, não fechados nesta sessão:
+  - **Regra de dispensa do cálculo proporcional do Protocolo TCA
+    Reino Unido (21 anos totais / ≤20 anos em Portugal)** — tem origem
+    numa síntese de terceiros sobre uma orientação técnica da DGSS
+    (`WebFetch`/`eur-lex.europa.eu`/`diariodarepublica.pt` bloqueados
+    nesta sessão), nunca confirmada por leitura directa do texto do
+    Protocolo. Sinalizada como tal na página
+    (`reforma-reino-unido-brexit.html`). Confirmar com acesso real ao
+    Protocolo antes de a tratar como definitiva.
+  - **CGA como anel autónomo** — o brief pedia para avaliar no final se
+    a Caixa Geral de Aposentações justifica um anel próprio, dada a
+    dimensão do Estatuto da Aposentação. Publicada nesta sessão como
+    1 página dentro do Anel 4 (`caixa-geral-aposentacoes.html`), com os
+    4 blocos exigidos (quem está abrangido / lei aplicável / regra de
+    cálculo / regras transitórias) — decisão desta sessão: proporcional
+    ao universo decrescente de subscritores, sem prazo para reavaliar.
+    Se uma sessão futura aprofundar regimes especiais (magistratura,
+    forças armadas, forças de segurança) ou o litígio da reinscrição
+    pós-2006 (Lei n.º 45/2024, Acórdãos TC n.os 689/2025 e 325/2026,
+    ainda em evolução), aí sim pode justificar-se desdobrar em mais do
+    que uma página.
 ---
 
 ## 📅 DATAS FIXAS
@@ -394,6 +420,21 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Cluster Reformas e Pensões — Anel 4, regimes complementares —
+  2026-09-06.** 4 páginas novas (`carreiras-contributivas-estrangeiro.html`,
+  `reforma-reino-unido-brexit.html`, `pensao-unificada.html`,
+  `caixa-geral-aposentacoes.html`), pillar 13→17 itens — ver CLAUDE.md,
+  secção "Anel 4" no pillar `p/reformas.html`, para o detalhe completo.
+  Achado central da Linha 2: o diploma que regula a atribuição da pensão
+  unificada (que o art. 63.º, n.º 2, do DL 187/2007 nunca identifica) é
+  o Decreto-Lei n.º 361/98 — a Portaria n.º 642/83 do brief era só uma
+  categoria de indexação legada, nunca a lei aplicável. Dois falsos
+  positivos reais do canário de datas expiradas corrigidos antes do
+  commit (datas históricas fixas — fim do período de transição do
+  Brexit, fecho da CGA em 2006 — nunca "expiram"); 4 marcadores novos em
+  `MARCADORES_HISTORICOS`, cada um confirmado sem colisão site-wide
+  antes de aplicar. Suite completa sem regressões, `ruff` limpo.
 
 - **Triagem da Issue #158 (`dre_habitacao_garantia`) — 2026-09-03.**
   Confirmado com os dados reais do dia: dos 24 itens devolvidos pela

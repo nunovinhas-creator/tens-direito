@@ -59,6 +59,11 @@
     "pagina": "bolsa-de-merito.html",
     "titulo": "Bolsa de mérito 2026/2027: quem tem direito e como candidatar"
   },
+  "caixa-geral-aposentacoes": {
+    "chip": "Reformas e Pensões",
+    "pagina": "caixa-geral-aposentacoes.html",
+    "titulo": "Caixa Geral de Aposentações: quem está abrangido e como funciona"
+  },
   "calendario-escolar-apoios": {
     "chip": "Apoios Escolares",
     "pagina": "calendario-escolar-apoios.html",
@@ -73,6 +78,11 @@
     "chip": null,
     "pagina": "calendario-pagamentos-seguranca-social.html",
     "titulo": "Calendário de Pagamentos da Segurança Social"
+  },
+  "carreiras-contributivas-estrangeiro": {
+    "chip": "Reformas e Pensões",
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "titulo": "Carreira Contributiva no Estrangeiro: o que conta para a reforma"
   },
   "carreiras-muito-longas": {
     "chip": "Reformas e Pensões",
@@ -339,6 +349,11 @@
     "pagina": "pensao-e-trabalho.html",
     "titulo": "Pensão e Trabalho: o que podes (e não podes) acumular"
   },
+  "pensao-unificada": {
+    "chip": "Reformas e Pensões",
+    "pagina": "pensao-unificada.html",
+    "titulo": "Pensão Unificada: CGA e Segurança Social numa só pensão"
+  },
   "porta-65": {
     "chip": "Habitação",
     "pagina": "porta-65.html",
@@ -408,6 +423,11 @@
     "chip": "Reformas e Pensões",
     "pagina": "quem-tem-direito-por-parentesco.html",
     "titulo": "Quem Tem Direito por Parentesco: descendentes e ascendentes"
+  },
+  "reforma-reino-unido-brexit": {
+    "chip": "Reformas e Pensões",
+    "pagina": "reforma-reino-unido-brexit.html",
+    "titulo": "Reforma e o Reino Unido: Acordo de Saída ou Brexit?"
   },
   "registo-criminal-online": {
     "chip": "Como Pedir",
