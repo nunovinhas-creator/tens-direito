@@ -10154,3 +10154,58 @@ lei, sem fórmula), por isso o canário é de consistência com a tabela do
 corpo — confirmado a falhar de propósito (valor adulterado para "99%")
 e revertido.
 
+
+---
+
+*Correcção (2026-09-06, mesmo dia) — três correcções a `subsidio-por-morte.html`,
+verificadas pelo Nuno na leitura integral da consolidação do DL 322/90
+no DRE (`WebFetch` continua bloqueado nesta sessão para
+`diariodarepublica.pt`, mesma limitação de sempre — a leitura foi feita
+pelo Nuno, não por esta sessão). Todas as três decorrem do
+**Decreto-Lei n.º 79/2019**, o alterador mais extenso do diploma depois
+do DL 133/2012, que a triangulação por `WebSearch` da sessão anterior
+nunca tinha detectado — confirma, mais uma vez, a regra metodológica do
+brief: um diploma alterador nunca é fonte de decisão sobre o texto
+vigente, só a consolidação.
+
+1. **Termo inicial dos prazos** (arts. 48.º, n.º 2, e 54.º, n.º 3): os
+   180 dias do subsídio por morte e os 90 dias do reembolso de despesas
+   de funeral contam-se da **data do registo do óbito**, não da data do
+   falecimento — datas que podem divergir por vários dias. Corrigido em
+   7 sítios (FAQ visível + JSON-LD, resumo rápido, resposta rápida,
+   checklist, dois parágrafos de corpo), com a atribuição da redacção
+   trocada de "Decreto-Lei n.º 133/2012" para "Decreto-Lei n.º 79/2019"
+   onde aplicável.
+2. **Art. 34.º está revogado** pelo DL 79/2019 — o piso de 1 × IAS na
+   remuneração de referência, usado como explicação do "porquê" da
+   fórmula transitória de 2012 colapsar sempre no mesmo valor, já não
+   existe. Parágrafo inteiro removido (não substituído — a explicação
+   aritmética deixou de ter base legal; a cronologia do art. 32.º em si
+   mantém-se válida e intocada).
+3. **Art. 54.º, n.º 4 mudou de sentido**: a redacção de 2012 mandava
+   *deduzir* ao subsídio por morte o valor limite do reembolso, na
+   falta de comprovativo das despesas de funeral. A redacção em vigor
+   (DL 79/2019) é diferimento, não dedução: sem esse comprovativo, o
+   subsídio só é pago depois de terminar o prazo de 90 dias do
+   reembolso, sem que este tenha sido requerido — nunca um valor
+   reduzido. Corrigido nos 3 sítios onde aparecia (FAQ visível +
+   JSON-LD, parágrafo de corpo).
+
+`fontes.html` — cartão do Decreto-Lei n.º 79/2019 expandido para
+reflectir também a sua relação com o DL 322/90 (antes só mencionava o
+Decreto-Lei n.º 187/2007). Nenhuma outra página do site continha estes
+três erros — confirmado por grep antes de fechar (só
+`subsidio-por-morte.html` cita os arts. 34.º/48.º/54.º/n.º 4 do
+DL 322/90).
+
+Verificado antes do commit: os 3 blocos JSON-LD continuam válidos,
+paridade 1:1 FAQ visível↔JSON-LD confirmada, `.resposta-rapida` com 55
+palavras (dentro do limite de 60), `verificar_datas.detectar_alertas()`
+sem alertas em nenhum mês de 2026, 0px de overflow a 375px, zero erros
+de consola (Chromium real). Suite completa + `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` — ver o resultado exacto no
+commit desta correcção. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch
+`claude/anel-3b-sobrevivencia-subsidio-uy2dbl` — sem PR, por instrução
+explícita.
