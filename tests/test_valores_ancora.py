@@ -1633,3 +1633,27 @@ def test_desemprego_exemplo_regressao_52_anos_780_dias():
     assert acrescimo == 240
     assert base + acrescimo == 780
     assert "780 dias" in _ler("subsidio-desemprego.html")
+
+
+# ── Pensão de sobrevivência (DL 322/90) — canário de consistência ───────────
+#
+# As percentagens de titulares (20% a 80%) não derivam do IAS — vêm
+# directamente dos arts. 25.º a 27.º do Decreto-Lei n.º 322/90 (sessão
+# "Anel 3B — sobrevivência e subsídio por morte", 2026-09-06). Canário
+# de CONSISTÊNCIA: os valores citados em title/meta description têm de
+# bater sempre com a tabela publicada no corpo da própria página.
+
+def test_pensao_sobrevivencia_meta_description_percentagens_batem_com_a_tabela():
+    html = _ler("pensao-de-sobrevivencia.html")
+    desc = _meta_description("pensao-de-sobrevivencia.html")
+    assert _percentagens(desc) == [20.0, 80.0], desc
+    assert "<td>1 descendente, havendo cônjuge/ex-cônjuge</td><td>20%</td>" in html
+    assert "<td>3 ou mais descendentes, sem cônjuge/ex-cônjuge</td><td>80%</td>" in html
+
+
+def test_pensao_sobrevivencia_og_description_percentagens_batem_com_a_tabela():
+    html = _ler("pensao-de-sobrevivencia.html")
+    og_desc = _meta_og("pensao-de-sobrevivencia.html", "og:description")
+    assert _percentagens(og_desc) == [20.0, 80.0], og_desc
+    assert "<td>1 descendente, havendo cônjuge/ex-cônjuge</td><td>20%</td>" in html
+    assert "<td>3 ou mais descendentes, sem cônjuge/ex-cônjuge</td><td>80%</td>" in html

@@ -480,6 +480,9 @@ para esses três casos.
 | `invalidez-relativa-ou-absoluta.html` | Invalidez Relativa ou Absoluta: a diferença e o que muda | 5 set. 2026 |
 | `pensao-e-trabalho.html` | Pensão e Trabalho: o que podes (e não podes) acumular | 5 set. 2026 |
 | `quando-a-invalidez-vira-velhice.html` | Quando a Invalidez Vira Velhice: a conversão automática | 5 set. 2026 |
+| `pensao-de-sobrevivencia.html` | Pensão de Sobrevivência: quem tem direito e como se calcula | 6 set. 2026 |
+| `subsidio-por-morte.html` | Subsídio por Morte: quem recebe, quanto e como pedir | 6 set. 2026 |
+| `quem-tem-direito-por-parentesco.html` | Quem Tem Direito por Parentesco: descendentes e ascendentes | 6 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -10054,3 +10057,155 @@ sessão sem scraper). Trabalho feito na branch designada pelo ambiente
 remoto desta sessão, `claude/anel-3-invalidez-acumulacao-es1ruo` — ver o
 resumo final da sessão para o estado exacto de integração (PR aberto,
 merged, ou sem PR).*
+
+---
+
+*Última revisão: 2026-09-06 — Anel 3, parte B: sobrevivência e subsídio por
+morte, cluster `/p/reformas.html`. Três páginas novas —
+`pensao-de-sobrevivencia.html`, `subsidio-por-morte.html`,
+`quem-tem-direito-por-parentesco.html` — dependentes do Decreto-Lei n.º
+322/90, de 18 de outubro, na redação em vigor (última alteração
+conhecida: Decreto-Lei n.º 40/2025). Regra metodológica do brief seguida
+à letra: a consolidação do DRE é a fonte de decisão sobre o que está em
+vigor hoje, os diplomas alteradores servem só para reconstruir a
+cronologia — nunca para determinar isoladamente a redação actual.
+`WebFetch`/`curl` continuam completamente bloqueados nesta sessão para
+`diariodarepublica.pt` (mesma limitação documentada em dezenas de
+sessões anteriores), por isso o texto integral do diploma não foi lido
+directamente; todo o conteúdo foi triangulado por múltiplas fontes
+independentes via `WebSearch` (Santander, CGD, DECO PROteste, Montepio,
+Doutor Finanças, CA Vida, entre outras), incluindo confirmação directa
+das percentagens, prazos e datas de vigência dadas pelo brief — nenhuma
+divergência encontrada.
+
+**pensao-de-sobrevivencia.html**: prazo de garantia de 36 meses (72 no
+seguro social voluntário, art. 16.º); pensão de base a partir da pensão
+de invalidez/velhice do falecido, com fórmula proporcional (R/60) para
+carreiras <60 meses (art. 24.º, n.º 3); tabela completa das 11
+percentagens por grupo de titulares (arts. 25.º a 27.º), com a simetria
+"sem cônjuge, a percentagem dos descendentes duplica" destacada; sem
+prazo de caducidade desde o DL 133/2012 (art. 48.º, n.º 1); cessação por
+casamento/união de facto (art. 41.º, alínea a), com a cronologia
+DL133/2012→Lei82-B/2014 explicitada, nunca atribuída só ao primeiro
+diploma. O limite da pensão do ex-cônjuge (art. 29.º, n.º 5) — a "Falha
+1" registada no brief — é tratado com o mesmo cuidado: existência
+confirmada (aditado pelo DL 133/2012), redação exacta em vigor marcada
+como "por confirmar directamente na consolidação", sem desenvolvimento
+nem link para as páginas de cônjuge/união de facto (ainda bloqueadas,
+sem fonte — Decreto Regulamentar n.º 1/94 e Lei n.º 7/2001 — por
+instruir).
+
+**subsidio-por-morte.html**: prestação única, 3 × IAS (art. 32.º),
+prazo de 180 dias (art. 48.º, n.º 2). Secção dedicada à cronologia do
+valor — a "Falha 2" do brief — corrige de propósito a atribuição comum
+do valor actual ao DL 133/2012: esse diploma introduziu uma fórmula
+transitória (6 × RR, máx. 6 × IAS), em vigor só 7 meses (01-07-2012 a
+31-01-2013); o valor fixo de 3 × IAS é do DL 13/2013, desde 01-02-2013.
+Tabela de desambiguação das 4 prestações por morte (pensão de
+sobrevivência/DL322-90, subsídio por morte/DL322-90 art.32, reembolso
+de despesas de funeral/DL322-90 art.54 n.2, subsídio de funeral/DL
+176/2003 art.16) — nunca fundidas. Nota sobre o DL 104/2026 (remissão
+normativa do subsídio de funeral para o limite do art. 54.º, n.º 2, sem
+alterar o DL 322/90 em si) — "citar um artigo noutro diploma não
+transforma a citação em alteração".
+
+**quem-tem-direito-por-parentesco.html**: hierarquia de 3 grupos
+(cônjuge/ex-cônjuge → descendentes → ascendentes, nunca acumulando o 3.º
+com os dois primeiros); idade dos descendentes (art. 12.º, na redação do
+DL 53/2023, de 5 de julho — a última alteração conhecida a este artigo,
+confirmada por triangulação): sem condição até aos 18, dos 18 aos 25 se
+estudante, dos 25 aos 27 em pós-graduação/mestrado/doutoramento/estágio
+obrigatório, sem limite com deficiência.
+
+**Detecção 3 do brief (art. 41.º) replicada nesta sessão**: a hipótese
+inicial de que a cessação por casamento/união de facto seria só redação
+do DL 133/2012 foi corrigida ao confirmar, por `WebSearch`, uma segunda
+alteração pela Lei n.º 82-B/2014 — a página cita as duas, nunca só a
+primeira.
+
+Integração: `data/clusters.json` (3 páginas novas no cluster
+`reformas`), `sincronizar_clusters.py`/`sincronizar_nav.py`/
+`inserir_botao_partilhar.py`/`adicionar_canonicas.py`/
+`adicionar_autoria_artigos.py`/`adicionar_article_jsonld.py`/
+`gerar_og_images.py --write` corridos — as 3 páginas já nasceram com nav,
+canónica, autoria, `Article` JSON-LD, botão de partilha e imagem OG
+correctos (zero alterações desses scripts às páginas novas);
+`sincronizar_clusters.py` regenerou `index.html` (`ATUALIZACOES:HOME`) e
+`p/reformas.html` (`PILLAR-LISTA`/`PILLAR-JSONLD`, 10→13 itens). `p/
+reformas.html` reorganizado: "Anel 3" renomeado para "Anel 3A" (invalidez
+e trabalho, DL 187/2007), novo card "Anel 3B" (sobrevivência e subsídio
+por morte, DL 322/90) com aviso explícito sobre as 3 páginas ainda
+bloqueadas (cônjuge, união de facto, duração — DR 1/94 e Lei 7/2001 por
+instruir); FAQ do pillar (visível + JSON-LD, paridade confirmada)
+corrigida para deixar de afirmar "sempre com o artigo do DL 187/2007
+citado" como se fosse o único diploma do guia — passa a citar os dois,
+consoante o tema. `fontes.html` ganhou 7 cartões novos (DL 322/90,
+DL 133/2012, DL 13/2013, Lei 82-B/2014, DL 53/2023, DL 104/2026, Lei
+7/2001) — `tests/test_fontes_coerencia.py` confirmou e exigiu cada um
+(nenhum diploma citado ficou de fora nem foi parar à allow-list de
+excepções). `sitemap.xml`, `scripts/pesquisa.js` actualizados.
+
+Novo canário em `tests/test_valores_ancora.py`
+(`test_pensao_sobrevivencia_meta_description_percentagens_batem_com_a_tabela`
++ variante `og:description`) — as percentagens 20%/80% citadas no
+`<meta name="description">`/`og:description` de
+`pensao-de-sobrevivencia.html` não derivam do IAS (vêm directamente da
+lei, sem fórmula), por isso o canário é de consistência com a tabela do
+corpo — confirmado a falhar de propósito (valor adulterado para "99%")
+e revertido.
+
+
+---
+
+*Correcção (2026-09-06, mesmo dia) — três correcções a `subsidio-por-morte.html`,
+verificadas pelo Nuno na leitura integral da consolidação do DL 322/90
+no DRE (`WebFetch` continua bloqueado nesta sessão para
+`diariodarepublica.pt`, mesma limitação de sempre — a leitura foi feita
+pelo Nuno, não por esta sessão). Todas as três decorrem do
+**Decreto-Lei n.º 79/2019**, o alterador mais extenso do diploma depois
+do DL 133/2012, que a triangulação por `WebSearch` da sessão anterior
+nunca tinha detectado — confirma, mais uma vez, a regra metodológica do
+brief: um diploma alterador nunca é fonte de decisão sobre o texto
+vigente, só a consolidação.
+
+1. **Termo inicial dos prazos** (arts. 48.º, n.º 2, e 54.º, n.º 3): os
+   180 dias do subsídio por morte e os 90 dias do reembolso de despesas
+   de funeral contam-se da **data do registo do óbito**, não da data do
+   falecimento — datas que podem divergir por vários dias. Corrigido em
+   7 sítios (FAQ visível + JSON-LD, resumo rápido, resposta rápida,
+   checklist, dois parágrafos de corpo), com a atribuição da redacção
+   trocada de "Decreto-Lei n.º 133/2012" para "Decreto-Lei n.º 79/2019"
+   onde aplicável.
+2. **Art. 34.º está revogado** pelo DL 79/2019 — o piso de 1 × IAS na
+   remuneração de referência, usado como explicação do "porquê" da
+   fórmula transitória de 2012 colapsar sempre no mesmo valor, já não
+   existe. Parágrafo inteiro removido (não substituído — a explicação
+   aritmética deixou de ter base legal; a cronologia do art. 32.º em si
+   mantém-se válida e intocada).
+3. **Art. 54.º, n.º 4 mudou de sentido**: a redacção de 2012 mandava
+   *deduzir* ao subsídio por morte o valor limite do reembolso, na
+   falta de comprovativo das despesas de funeral. A redacção em vigor
+   (DL 79/2019) é diferimento, não dedução: sem esse comprovativo, o
+   subsídio só é pago depois de terminar o prazo de 90 dias do
+   reembolso, sem que este tenha sido requerido — nunca um valor
+   reduzido. Corrigido nos 3 sítios onde aparecia (FAQ visível +
+   JSON-LD, parágrafo de corpo).
+
+`fontes.html` — cartão do Decreto-Lei n.º 79/2019 expandido para
+reflectir também a sua relação com o DL 322/90 (antes só mencionava o
+Decreto-Lei n.º 187/2007). Nenhuma outra página do site continha estes
+três erros — confirmado por grep antes de fechar (só
+`subsidio-por-morte.html` cita os arts. 34.º/48.º/54.º/n.º 4 do
+DL 322/90).
+
+Verificado antes do commit: os 3 blocos JSON-LD continuam válidos,
+paridade 1:1 FAQ visível↔JSON-LD confirmada, `.resposta-rapida` com 55
+palavras (dentro do limite de 60), `verificar_datas.detectar_alertas()`
+sem alertas em nenhum mês de 2026, 0px de overflow a 375px, zero erros
+de consola (Chromium real). Suite completa + `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` — ver o resultado exacto no
+commit desta correcção. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch
+`claude/anel-3b-sobrevivencia-subsidio-uy2dbl` — sem PR, por instrução
+explícita.

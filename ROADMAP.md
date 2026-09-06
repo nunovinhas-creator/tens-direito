@@ -342,6 +342,35 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   tráfego de cada cluster para o respectivo hub, com âncora descritiva
   (ex.: "guia completo de Família e Crianças"), não mais um card
   genérico.
+- **Cluster Reformas e Pensões — Anel 3B, 3 páginas bloqueadas**
+  (`pensao-de-sobrevivencia.html`, `subsidio-por-morte.html` e
+  `quem-tem-direito-por-parentesco.html` publicadas a 2026-09-06,
+  cobrindo o núcleo do Decreto-Lei n.º 322/90 — ver CLAUDE.md, secção
+  "Anel 3B" no pillar `p/reformas.html`):
+  - `pensao-sobrevivencia-conjuge.html` — bloqueada até instruir o
+    **Decreto Regulamentar n.º 1/94, de 18 de janeiro** (titularidade
+    do ex-cônjuge) **e** confirmar directamente na consolidação do DRE
+    a redacção exacta em vigor do **art. 29.º, n.º 5** (limite da
+    pensão do ex-cônjuge ao valor da pensão de alimentos — existência
+    confirmada, aditada pelo Decreto-Lei n.º 133/2012, mas o texto
+    actualmente em vigor nunca foi lido directamente nesta sessão,
+    `WebFetch` bloqueado para `diariodarepublica.pt`).
+  - `pensao-sobrevivencia-uniao-de-facto.html` — bloqueada até instruir
+    a **Lei n.º 7/2001, de 11 de maio** (prova da união de facto, para
+    que o art. 8.º, n.º 2, do DL 322/90 remete expressamente) — nunca
+    inferir os requisitos probatórios do próprio DL 322/90.
+  - `duracao-da-pensao-de-sobrevivencia.html` — decisão editorial em
+    aberto: só criar como página autónoma se a análise do articulado
+    (quando a página do cônjuge for instruída) justificar; caso
+    contrário, integra essa página. Zona de maior risco de erro do
+    diploma (duração vitalícia ou temporária, conforme idade e duração
+    do casamento) — nunca publicar sem o articulado à frente.
+
+  Sem prazo — nenhuma das três tem gatilho automático; resolver =
+  sessão dedicada com acesso real (humano ou browser interactivo) ao
+  texto consolidado do DRE, seguindo a mesma regra metodológica desta
+  série ("a consolidação decide o que está em vigor hoje, nunca um
+  diploma alterador isolado").
 ---
 
 ## 📅 DATAS FIXAS

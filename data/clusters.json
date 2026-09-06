@@ -140,7 +140,10 @@
         {"slug": "mais-cedo-ou-mais-tarde.html", "titulo": "Reformar mais cedo ou mais tarde", "tipo": "artigo", "destaque": false},
         {"slug": "invalidez-relativa-ou-absoluta.html", "titulo": "Invalidez relativa ou absoluta", "tipo": "artigo", "destaque": false},
         {"slug": "pensao-e-trabalho.html", "titulo": "Pensão e trabalho", "tipo": "artigo", "destaque": false},
-        {"slug": "quando-a-invalidez-vira-velhice.html", "titulo": "Quando a invalidez vira velhice", "tipo": "artigo", "destaque": false}
+        {"slug": "quando-a-invalidez-vira-velhice.html", "titulo": "Quando a invalidez vira velhice", "tipo": "artigo", "destaque": false},
+        {"slug": "pensao-de-sobrevivencia.html", "titulo": "Pensão de sobrevivência", "tipo": "artigo", "destaque": false},
+        {"slug": "subsidio-por-morte.html", "titulo": "Subsídio por morte", "tipo": "artigo", "destaque": false},
+        {"slug": "quem-tem-direito-por-parentesco.html", "titulo": "Quem tem direito por parentesco", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["idosos-incapacidade-cuidadores"]
     }

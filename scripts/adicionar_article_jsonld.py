@@ -119,6 +119,9 @@ DATAS_PUBLICACAO = {
     "invalidez-relativa-ou-absoluta.html": "2026-09-05",
     "pensao-e-trabalho.html": "2026-09-05",
     "quando-a-invalidez-vira-velhice.html": "2026-09-05",
+    "pensao-de-sobrevivencia.html": "2026-09-06",
+    "subsidio-por-morte.html": "2026-09-06",
+    "quem-tem-direito-por-parentesco.html": "2026-09-06",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')
