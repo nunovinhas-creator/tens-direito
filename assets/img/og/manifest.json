@@ -204,6 +204,11 @@
     "pagina": "documentos/requerimento-reavaliacao-escalao-ase.html",
     "titulo": "Modelo de pedido de reavaliação do escalão de ASE (grátis)"
   },
+  "duracao-da-pensao-de-sobrevivencia": {
+    "chip": "Reformas e Pensões",
+    "pagina": "duracao-da-pensao-de-sobrevivencia.html",
+    "titulo": "Duração da Pensão de Sobrevivência: quanto tempo dura"
+  },
   "fontes": {
     "chip": null,
     "pagina": "fontes.html",
@@ -338,6 +343,16 @@
     "chip": "Reformas e Pensões",
     "pagina": "pensao-e-trabalho.html",
     "titulo": "Pensão e Trabalho: o que podes (e não podes) acumular"
+  },
+  "pensao-sobrevivencia-conjuge": {
+    "chip": "Reformas e Pensões",
+    "pagina": "pensao-sobrevivencia-conjuge.html",
+    "titulo": "Pensão de Sobrevivência do Cônjuge: condições e o limite do ex-cônjuge"
+  },
+  "pensao-sobrevivencia-uniao-de-facto": {
+    "chip": "Reformas e Pensões",
+    "pagina": "pensao-sobrevivencia-uniao-de-facto.html",
+    "titulo": "União de Facto e Pensão de Sobrevivência: como comprovar"
   },
   "porta-65": {
     "chip": "Habitação",

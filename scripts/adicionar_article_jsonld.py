@@ -122,6 +122,9 @@ DATAS_PUBLICACAO = {
     "pensao-de-sobrevivencia.html": "2026-09-06",
     "subsidio-por-morte.html": "2026-09-06",
     "quem-tem-direito-por-parentesco.html": "2026-09-06",
+    "duracao-da-pensao-de-sobrevivencia.html": "2026-09-06",
+    "pensao-sobrevivencia-conjuge.html": "2026-09-06",
+    "pensao-sobrevivencia-uniao-de-facto.html": "2026-09-06",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')

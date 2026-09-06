@@ -488,6 +488,21 @@ var paginas = [
    titulo: 'Quem Tem Direito por Parentesco: descendentes e ascendentes',
    descricao: 'Filhos têm direito até aos 18 anos sem condições, até aos 25 se estudarem, e sem limite com deficiência. Ascendentes só recebem se não houver cônjuge nem filhos com direito.',
    keywords: 'quem tem direito pensão sobrevivência descendentes ascendentes idade filhos estudante deficiência',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/duracao-da-pensao-de-sobrevivencia.html',
+   titulo: 'Duração da Pensão de Sobrevivência: quanto tempo dura',
+   descricao: '5 anos se tinha menos de 35 anos à data da morte, sem limite de tempo se tinha 35 ou mais. A prorrogação com filhos, e o que a extingue antes do prazo.',
+   keywords: 'duração pensão sobrevivência 5 anos vitalícia idade 35 anos prorrogação cessação suspensão',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/pensao-sobrevivencia-conjuge.html',
+   titulo: 'Pensão de Sobrevivência do Cônjuge: condições e o limite do ex-cônjuge',
+   descricao: '60% da pensão de base para 1 cônjuge/ex-cônjuge, 70% se forem 2 ou mais. A pensão do ex-cônjuge nunca excede a pensão de alimentos que recebia.',
+   keywords: 'pensão sobrevivência cônjuge ex-cônjuge condições percentagem limite pensão de alimentos',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/pensao-sobrevivencia-uniao-de-facto.html',
+   titulo: 'União de Facto e Pensão de Sobrevivência: como comprovar',
+   descricao: 'Viver há mais de 2 anos com o beneficiário é o requisito central — hoje prova-se com declaração da junta de freguesia, sem tribunal. Impedimentos e como requerer.',
+   keywords: 'união de facto pensão sobrevivência prova junta de freguesia impedimentos requerer',
    cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'}
 ];
 
