@@ -473,6 +473,21 @@ var paginas = [
    titulo: 'Quando a Invalidez Vira Velhice: a conversão automática',
    descricao: 'A pensão de invalidez transforma-se em pensão de velhice, sem pedido, no mês seguinte àquele em que atinges a idade normal de reforma. O que muda e o que se mantém.',
    keywords: 'invalidez vira velhice conversão convolação automática pensão idade normal factor sustentabilidade',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/pensao-de-sobrevivencia.html',
+   titulo: 'Pensão de Sobrevivência: quem tem direito e como se calcula',
+   descricao: 'Cônjuge, ex-cônjuge, descendentes e ascendentes: percentagens de 20% a 80% da pensão de base, prazo de garantia de 36 meses e sem prazo para pedir.',
+   keywords: 'pensão de sobrevivência quem tem direito percentagens cônjuge descendentes ascendentes prazo de garantia',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/subsidio-por-morte.html',
+   titulo: 'Subsídio por Morte: quem recebe, quanto e como pedir',
+   descricao: 'Prestação única de 3 vezes o IAS, com prazo de 180 dias para pedir. Como se distingue da pensão de sobrevivência, do subsídio de funeral e do reembolso de despesas de funeral.',
+   keywords: 'subsídio por morte valor IAS prazo 180 dias reembolso despesas funeral subsídio funeral',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/quem-tem-direito-por-parentesco.html',
+   titulo: 'Quem Tem Direito por Parentesco: descendentes e ascendentes',
+   descricao: 'Filhos têm direito até aos 18 anos sem condições, até aos 25 se estudarem, e sem limite com deficiência. Ascendentes só recebem se não houver cônjuge nem filhos com direito.',
+   keywords: 'quem tem direito pensão sobrevivência descendentes ascendentes idade filhos estudante deficiência',
    cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'}
 ];
 
