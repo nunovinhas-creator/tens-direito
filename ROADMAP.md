@@ -342,35 +342,28 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   tráfego de cada cluster para o respectivo hub, com âncora descritiva
   (ex.: "guia completo de Família e Crianças"), não mais um card
   genérico.
-- **Cluster Reformas e Pensões — Anel 3B, 3 páginas bloqueadas**
-  (`pensao-de-sobrevivencia.html`, `subsidio-por-morte.html` e
-  `quem-tem-direito-por-parentesco.html` publicadas a 2026-09-06,
-  cobrindo o núcleo do Decreto-Lei n.º 322/90 — ver CLAUDE.md, secção
-  "Anel 3B" no pillar `p/reformas.html`):
-  - `pensao-sobrevivencia-conjuge.html` — bloqueada até instruir o
-    **Decreto Regulamentar n.º 1/94, de 18 de janeiro** (titularidade
-    do ex-cônjuge) **e** confirmar directamente na consolidação do DRE
-    a redacção exacta em vigor do **art. 29.º, n.º 5** (limite da
-    pensão do ex-cônjuge ao valor da pensão de alimentos — existência
-    confirmada, aditada pelo Decreto-Lei n.º 133/2012, mas o texto
-    actualmente em vigor nunca foi lido directamente nesta sessão,
-    `WebFetch` bloqueado para `diariodarepublica.pt`).
-  - `pensao-sobrevivencia-uniao-de-facto.html` — bloqueada até instruir
-    a **Lei n.º 7/2001, de 11 de maio** (prova da união de facto, para
-    que o art. 8.º, n.º 2, do DL 322/90 remete expressamente) — nunca
-    inferir os requisitos probatórios do próprio DL 322/90.
-  - `duracao-da-pensao-de-sobrevivencia.html` — decisão editorial em
-    aberto: só criar como página autónoma se a análise do articulado
-    (quando a página do cônjuge for instruída) justificar; caso
-    contrário, integra essa página. Zona de maior risco de erro do
-    diploma (duração vitalícia ou temporária, conforme idade e duração
-    do casamento) — nunca publicar sem o articulado à frente.
+- **Cluster Reformas e Pensões — Anel 3C, 2 loose ends menores da
+  Lei n.º 7/2001** (as 3 páginas foram publicadas a 2026-09-06 — ver
+  "CONCLUÍDO RECENTEMENTE"; isto é só o que ficou por fechar):
+  - **Confirmação directa na consolidação do DRE** dos arts. 2.º,
+    2.º-A e 6.º da Lei n.º 7/2001 — esta sessão triangulou por
+    `WebSearch` (`WebFetch` bloqueado para todos os domínios, não só
+    `diariodarepublica.pt` — confirmado com testes a `en.wikipedia.org`
+    e outros domínios não-governamentais), com múltiplas fontes
+    independentes concordantes; nota de estatuto de fonte publicada em
+    `pensao-sobrevivencia-uniao-de-facto.html`. Resolver = sessão com
+    acesso real ao DRE (humano ou browser interactivo).
+  - **Citação exacta do acórdão do STJ** que reconduziu o início do
+    pagamento da pensão da união de facto ao art. 36.º, n.º 1, do
+    DL 322/90 (em vez do art. 6.º do Decreto Regulamentar n.º 1/94,
+    que ainda pressupõe sentença) — a página cita "há jurisprudência",
+    sem número/data, por não ter sido possível confirmar uma fonte de
+    publicação fiável nesta sessão (várias pistas via `WebSearch`, sem
+    chegar a um acórdão que combinasse exactamente os dois artigos).
+    Resolver = sessão com acesso a `dgsi.pt`/`stj.pt`.
 
-  Sem prazo — nenhuma das três tem gatilho automático; resolver =
-  sessão dedicada com acesso real (humano ou browser interactivo) ao
-  texto consolidado do DRE, seguindo a mesma regra metodológica desta
-  série ("a consolidação decide o que está em vigor hoje, nunca um
-  diploma alterador isolado").
+  Sem prazo — nenhum dos dois é bloqueante para o conteúdo já
+  publicado, que está deliberadamente honesto sobre estes dois pontos.
 ---
 
 ## 📅 DATAS FIXAS
@@ -394,6 +387,21 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Cluster Reformas e Pensões — Anel 3, parte C (fecho do Anel 3) —
+  2026-09-06.** 3 páginas novas: `duracao-da-pensao-de-sobrevivencia.html`,
+  `pensao-sobrevivencia-conjuge.html`,
+  `pensao-sobrevivencia-uniao-de-facto.html` — fecham o Anel 3B
+  (publicado no mesmo dia, sessão anterior), que tinha ficado
+  deliberadamente incompleto sem a duração exacta nem as condições de
+  cônjuge/união de facto. Fontes: DL 322/90 e Decreto Regulamentar
+  n.º 1/94 (verificados directamente na consolidação do DRE, conforme
+  o brief) e Lei n.º 7/2001 (triangulada por `WebSearch` — `WebFetch`
+  confirmado bloqueado para todos os domínios testados, não só
+  diariodarepublica.pt). Ver detalhe completo em CLAUDE.md, secção
+  "Anel 3C" do pillar `p/reformas.html`, e "TRABALHO FUTURO REGISTADO"
+  acima para os 2 loose ends menores (confirmação directa da Lei
+  n.º 7/2001; citação do acórdão do STJ).
 
 - **Triagem da Issue #158 (`dre_habitacao_garantia`) — 2026-09-03.**
   Confirmado com os dados reais do dia: dos 24 itens devolvidos pela

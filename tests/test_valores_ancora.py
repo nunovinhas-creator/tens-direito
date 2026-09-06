@@ -1657,3 +1657,14 @@ def test_pensao_sobrevivencia_og_description_percentagens_batem_com_a_tabela():
     assert _percentagens(og_desc) == [20.0, 80.0], og_desc
     assert "<td>1 descendente, havendo cônjuge/ex-cônjuge</td><td>20%</td>" in html
     assert "<td>3 ou mais descendentes, sem cônjuge/ex-cônjuge</td><td>80%</td>" in html
+
+
+# Pensão de sobrevivência do cônjuge (Anel 3, parte C, 2026-09-06): 60%/70%
+# vêm directamente dos arts. 25.º e 28.º do DL 322/90 — mesmo canário de
+# consistência (nunca deriva do IAS).
+
+def test_pensao_sobrevivencia_conjuge_meta_description_percentagens_batem_com_o_corpo():
+    html = _ler("pensao-sobrevivencia-conjuge.html")
+    desc = _meta_description("pensao-sobrevivencia-conjuge.html")
+    assert _percentagens(desc) == [60.0, 70.0], desc
+    assert "60% da pensão de base para 1 titular; 70% se forem 2 ou mais" in html

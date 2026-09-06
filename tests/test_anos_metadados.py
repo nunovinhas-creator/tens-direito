@@ -64,6 +64,10 @@ EXCECOES_ANOS_HISTORICOS = {
     ("invalidez-relativa-ou-absoluta.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
     ("pensao-e-trabalho.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
     ("quando-a-invalidez-vira-velhice.html", 2007): "Decreto-Lei n.º 187/2007 — número do diploma, não uma data de vigência",
+    # Anel 3, parte C (2026-09-06) — "Lei n.º 7/2001" citada na meta
+    # description (diploma que rege a prova da união de facto), não uma
+    # data de vigência.
+    ("pensao-sobrevivencia-uniao-de-facto.html", 2001): "Lei n.º 7/2001 — número do diploma, não uma data de vigência",
 }
 
 

@@ -143,7 +143,10 @@
         {"slug": "quando-a-invalidez-vira-velhice.html", "titulo": "Quando a invalidez vira velhice", "tipo": "artigo", "destaque": false},
         {"slug": "pensao-de-sobrevivencia.html", "titulo": "Pensão de sobrevivência", "tipo": "artigo", "destaque": false},
         {"slug": "subsidio-por-morte.html", "titulo": "Subsídio por morte", "tipo": "artigo", "destaque": false},
-        {"slug": "quem-tem-direito-por-parentesco.html", "titulo": "Quem tem direito por parentesco", "tipo": "artigo", "destaque": false}
+        {"slug": "quem-tem-direito-por-parentesco.html", "titulo": "Quem tem direito por parentesco", "tipo": "artigo", "destaque": false},
+        {"slug": "duracao-da-pensao-de-sobrevivencia.html", "titulo": "Duração da pensão de sobrevivência", "tipo": "artigo", "destaque": false},
+        {"slug": "pensao-sobrevivencia-conjuge.html", "titulo": "Pensão de sobrevivência do cônjuge", "tipo": "artigo", "destaque": false},
+        {"slug": "pensao-sobrevivencia-uniao-de-facto.html", "titulo": "União de facto e pensão de sobrevivência", "tipo": "artigo", "destaque": false}
       ],
       "relacionados": ["idosos-incapacidade-cuidadores"]
     }
