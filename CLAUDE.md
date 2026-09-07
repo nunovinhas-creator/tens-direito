@@ -10533,3 +10533,156 @@ tests/ --select E,F,W --ignore E501 .` limpo.
 `False` (inalterados — sessão sem scraper). Trabalho feito na branch
 designada pelo ambiente remoto desta sessão,
 `claude/anel-4-regimes-complementares-5gssae`.
+
+---
+
+*Última revisão: 2026-09-07 — reescrita estrutural correctiva do Anel 4
+("regimes complementares", cluster Reformas e Pensões), na sequência de
+uma auditoria à entrada de 2026-09-06 acima (preservada tal como foi
+escrita, nunca reescrita — a correcção vive só nesta entrada nova,
+mesma disciplina do resto do histórico deste ficheiro). A auditoria
+encontrou **7 erros estruturais**, não pontuais, em 4 páginas — a
+instrução foi reescrever de raiz a partir das fontes primárias, nunca
+corrigir frase a frase:
+
+1. **"A totalização nunca aumenta o valor pago por Portugal"** — falso.
+   O art. 52.º, n.º 3, do Regulamento (CE) n.º 883/2004 obriga ao
+   **mais alto** entre a prestação independente (só lei nacional) e a
+   pro rata (totalização); a totalização pode aumentar o que Portugal
+   paga, nunca só reduzir.
+2. **"Portugal paga sempre a fracção dos anos cá descontados"** —
+   mesmo erro, a fórmula pro rata é só um dos dois cálculos possíveis
+   (art. 52.º, n.º 1, alíneas a) e b)), nunca automaticamente aplicada.
+3. **Cronologia da pensão unificada invertida** — a titularidade
+   (a quem/quando é atribuída, incapacidade) sempre seguiu o último
+   regime (art. 4.º, n.os 4-5, DL 361/98, nunca alterado); é só o
+   **cálculo do valor** que mudou — art. 7.º (regime único pelas regras
+   do último regime) foi revogado pela Lei n.º 83-C/2013, o art. 9.º,
+   n.º 1, em vigor manda somar as parcelas calculadas separadamente por
+   cada regime.
+4. **"Metade do excedente"** na pensão unificada — não existe no
+   diploma, removido por inteiro, sem inventar garantia de substituição.
+5. **"60 meses em cada regime"** — errado; são 60 meses no regime que
+   efectivamente atribui a pensão (art. 5.º, n.º 1), nunca
+   simultaneamente nos dois.
+6. **Taxonomia de "três grupos" de subscritores da CGA** — errado; são
+   **duas** categorias, com fronteira a 1 de setembro de 1993 (art. 5.º,
+   Lei n.º 60/2005): inscritos até essa data têm pensão em duas
+   parcelas (regime CGA até 31/12/2005 + regime geral desde 1/1/2006);
+   inscritos a partir de 1/9/1993 têm a pensão inteira pelas regras do
+   regime geral, nunca em duas parcelas.
+7. **Regra de dispensa "21/20 anos"** atribuída ao Protocolo pós-Brexit
+   — errado; pertence ao Anexo VIII do Regulamento (CE) n.º 883/2004
+   (UE/EEE/Suíça), movida para `carreiras-contributivas-estrangeiro.html`
+   e removida por completo de `reforma-reino-unido-brexit.html`
+   (confirmado por grep, zero ocorrências de "21 anos"/"20 anos" nessa
+   página).
+
+**Metodologia GRAU 1/2/3, visível no corpo de cada página, nunca só no
+ROADMAP**: GRAU 1 = lido directamente na fonte primária (DRE/EUR-Lex);
+GRAU 2 = reformulado de fontes secundárias, afirmado como facto mas sem
+ser leitura literal do texto oficial; GRAU 3 = questão genuinamente por
+confirmar, sinalizada explicitamente, **nunca preenchida por analogia**.
+Qualquer hedge de GRAU 2/3 tem de repetir-se em todos os sítios onde o
+facto reaparece (FAQ, checklist, resumo) — uma reafirmação sem o hedge
+noutro sítio é, por si só, um bug (exactamente o que aconteceu com a
+regra 21/20 mal atribuída no rascunho original).
+
+**`carreiras-contributivas-estrangeiro.html`** — reescrita integral:
+Regulamento (CE) n.º 883/2004 (art. 2.º âmbito pessoal, art. 3.º/1
+âmbito material, art. 52.º os dois cálculos + o mais alto, Anexo VIII
+dispensa do cálculo duplo com a excepção 21/20 anos citada ao pormenor
+e correctamente atribuída, art. 57.º períodos <1 ano, art. 58.º
+complemento até à pensão mínima, Anexos VI/VII); Regulamento (CE) n.º
+987/2009 (art. 45.º pedido único, art. 47.º instituição de contacto,
+art. 48.º resumo consolidado + direito de revisão, art. 50.º prestação
+autónoma sem esperar por outros países); GRAU 2 — extensão a
+EEE (Anexo VI do Acordo EEE) e Suíça (Anexo II do Acordo de Livre
+Circulação), extensão confirmada como facto, texto exacto da adaptação
+não lido.
+
+**`reforma-reino-unido-brexit.html`** — reescrita integral: Acordo de
+Saída (art. 30.º critério fixo no fim do período de transição, 31 de
+dezembro de 2020, nunca uma história; art. 31.º os Regulamentos
+883/2004 e 987/2009 continuam a aplicar-se, os mesmos, não "similares");
+Protocolo TCA (arts. 488.º-490.º âmbito, art. 779.º sobrevive à
+denúncia geral do Acordo). Card GRAU 3 explícito: por confirmar se o
+Protocolo tem equivalente ao art. 52.º, n.º 3 (direito ao valor mais
+alto) ou ao Anexo VIII (dispensa do cálculo duplo) do Regulamento
+883/2004 — nunca preenchido por analogia.
+
+**`pensao-unificada.html`** — reescrita integral: DL 361/98 (arts. 1.º/
+2.º âmbito, art. 4.º totalização + titularidade sempre pelo último
+regime, art. 5.º mínimo de 60 meses no regime que atribui, art. 6.º
+pedido nunca automático, arts. 7.º/9.º história do cálculo do valor,
+art. 18.º recurso ao primeiro regime se não houver direito à unificada,
+art. 30.º revoga DL 159/92 e Portaria 2/93, nunca a Portaria 642/83).
+
+**`caixa-geral-aposentacoes.html`** — reescrita integral: Lei n.º
+60/2005 (art. 2.º fecho a novas inscrições desde 1/1/2006, art. 5.º as
+duas categorias com fronteira em 1/9/1993 e as duas fórmulas, art. 3.º
++ Anexo I idade de acesso progressiva, art. 4.º + Anexo II tempo de
+serviço progressivo, art. 7.º salvaguarda 36 anos+60 anos a 31/12/2005
+independente de quando a aposentação é requerida, art. 6.º
+sobrevivência, art. 8.º corte de 4,5%/ano na aposentação compulsiva).
+Card "O que não foi lido" — o Estatuto da Aposentação nunca foi lido
+por inteiro, só o que a Lei n.º 60/2005 cita directamente pode ser
+afirmado; removida por completo a alegação sem fonte "5 anos de
+serviço, ou 3 anos em incapacidade" (não encontrada na Lei n.º 60/2005).
+
+**Falsos positivos do canário de datas expiradas, corrigidos de novo**
+(a reescrita integral introduziu texto novo, por isso precisou de nova
+verificação — não é o mesmo trabalho já documentado na entrada
+anterior, que cobria o rascunho original): confirmado com
+`detectar_alertas()` real, executado directamente (nunca só inspecção
+visual), contra as 4 páginas nos 4 meses de revisão (1/7/8/9) e nos
+anos 2026/2027 — 11 ocorrências corrigidas ao todo (6 em
+`reforma-reino-unido-brexit.html`, 5 em
+`caixa-geral-aposentacoes.html`), sempre reescrevendo a prosa em torno
+para trazer um marcador já existente (`período de transição`, `novas
+inscrições`, `lei n.º`) para dentro da janela de 220 caracteres —
+nunca inventando marcadores novos em `scripts/verificar_datas.py`.
+Confirmado depois: zero alertas inesperados; o único disparo
+remanescente é o desejado (carimbo "Verificado a 7 de setembro de
+2026" a envelhecer para 2027).
+
+Integração completa: `data/clusters.json` (edição cirúrgica de texto),
+`scripts/sincronizar_clusters.py` (regenerou `index.html`
+`ATUALIZACOES:HOME` e `p/reformas.html` `PILLAR-LISTA`/`PILLAR-JSONLD`
+— idempotência confirmada, zero alterações às 4 páginas em qualquer
+corrida dos scripts de sincronização), `scripts/sincronizar_nav.py`/
+`scripts/inserir_botao_partilhar.py`/`scripts/adicionar_canonicas.py`/
+`scripts/adicionar_autoria_artigos.py`/`scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO` = 2026-09-07), `scripts/gerar_og_images.py --write`
+(2 imagens regeneradas — só as páginas cujo título mudou), `sitemap.xml`,
+`scripts/pesquisa.js` (keywords reescritas para reflectir o conteúdo
+corrigido: "pro rata", "21 20", "regulamento 883/2004", "montante mais
+alto", "soma das parcelas", "1993"). `p/reformas.html` — as 3
+mini-descrições do card "Anel 4" (hand-authored, fora do
+`PILLAR-LISTA` automático) reescritas para deixar de repetir os erros
+#1/#3/#6. `fontes.html` — 12 cartões revistos com as descrições
+correctas, mais um cartão novo para o Decreto-Lei n.º 35/2002 (citado
+pela primeira vez nesta reescrita). 5 excepções novas/mantidas em
+`tests/test_anos_metadados.py::EXCECOES_ANOS_HISTORICOS` (2004, 2005,
+2006, 1993, 2020 — todas número de diploma ou data histórica fixa,
+nunca uma data de vigência a esquecer), confirmadas contra o texto real
+das páginas.
+
+Nenhum valor em euros em nenhuma das 4 páginas (regra do cluster) —
+todos os valores expressos em múltiplos do IAS ou por remissão à
+Segurança Social Direta. Registado em `ROADMAP.md` → "TRABALHO FUTURO
+REGISTADO": Estatuto da Aposentação (nunca lido por inteiro), texto
+oficial do Protocolo SSC do TCA (nunca lido), Anexo VI do Acordo EEE/
+Anexo II do Acordo Suíça (nunca lidos em fonte oficial) — os 3 pontos
+GRAU 2/3 desta sessão, cada um com a justificação completa.
+
+**Suite completa**: `python3 -m pytest tests/ -q` — **4363 passed, 4
+skipped** em 608,47s (10m08s), zero falhas; os 4 skips confirmados os
+mesmos 4 estruturais de sempre. `ruff check scripts/ tests/ --select
+E,F,W --ignore E501 .` limpo. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch
+`claude/anel-4-regimes-complementares-5gssae` (a mesma da entrada
+anterior, nomeada explicitamente pelo pedido desta sessão) — **SEM
+PR — branch não integrada em `main`** (instrução explícita desta
+sessão: não abrir PR).
