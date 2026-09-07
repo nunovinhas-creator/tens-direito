@@ -152,13 +152,30 @@ MARCADORES_HISTORICOS = [
     # H2 ficar fora da janela de 220 caracteres desta ocorrência específica
     # (em caixa-geral-aposentacoes.html o mesmo facto já ficava suprimido
     # pelos marcadores "lei\s+n\.?º"/"se inscreveu", por estar mais perto).
-    # Uma cláusula de salvaguarda é, por definição, um requisito fixado a
-    # uma data histórica que nunca volta a mudar — nunca "expira". Confirmado
-    # por grep ao repositório inteiro antes de aplicar: a palavra só aparece
-    # em `caixa-geral-aposentacoes.html` (já suprimida por outros marcadores)
-    # e uma vez em `reforma-reino-unido-brexit.html`, sem nenhuma data de
-    # mês+ano nas proximidades — zero risco de mascarar um prazo real.
-    r"\bsalvaguarda\b",
+    #
+    # Restrição (issue #172, revisão pós-merge, 2026-09-07): a versão
+    # original desta entrada era a palavra solta `\bsalvaguarda\b` — a única
+    # da lista sem nenhuma especificidade de frase, ao contrário de todas as
+    # outras (ex.: "novas inscrições", "período de transição"). Este módulo
+    # não tem nenhum mecanismo de restrição por ficheiro (`_esta_suprimido`
+    # nunca recebe o nome da página — confirmado por leitura do código);
+    # qualquer marcador aqui é sempre global, para qualquer HTML do site.
+    # Por isso a supressão é feita pela ESPECIFICIDADE do padrão, mesmo
+    # princípio de todas as entradas acima: exige a forma real da cláusula,
+    # "salvaguarda [transitória] de <número>", em vez da palavra a solo.
+    # Isto exclui deliberadamente o uso verbal de "salvaguarda" (ex.:
+    # reforma-reino-unido-brexit.html, "o n.º 2 salvaguarda direitos
+    # relativos a períodos anteriores" — sem "de" a seguir, nunca corresponde)
+    # e qualquer menção genérica futura ("salvaguarda dos direitos do
+    # utilizador", "salvaguarda de dados") que pudesse coincidir, por acaso,
+    # com uma data de mês+ano genuinamente expirada na mesma janela de 220
+    # caracteres — risco real da palavra solta, confirmado com um caso
+    # sintético antes desta restrição. As 3 ocorrências reais no site
+    # continuam cobertas: `fontes.html` ("salvaguarda de 36") e as duas
+    # ocorrências equivalentes em `caixa-geral-aposentacoes.html` (essa
+    # página já ficava suprimida de qualquer forma pelos marcadores
+    # "lei\s+n\.?º"/"se inscreveu" mais próximos — confirmado sem regressão).
+    r"\bsalvaguarda\s+(?:transit[óo]ria\s+)?de\s+\d",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.
