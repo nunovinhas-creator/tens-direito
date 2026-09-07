@@ -523,7 +523,12 @@ var paginas = [
    titulo: 'Caixa Geral de Aposentações: quem está abrangido e como funciona',
    descricao: 'A CGA fechou a novas inscrições em 1 de janeiro de 2006. Quem já era subscritor mantém regras próprias, com duas fronteiras — 2006 e, antes dela, 1993.',
    keywords: 'caixa geral aposentações CGA função pública 2006 1993 fecho subscritores lei 60/2005 convergência',
-   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'}
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'artigo'},
+  {url: '/simulador-condicoes-reforma.html',
+   titulo: 'Simulador de Condições de Acesso à Reforma',
+   descricao: 'Descobre se já podes reformar-te, e por que via — carreiras muito longas, flexibilização ou idade pessoal. Sem valores em euros, nunca desactualiza.',
+   keywords: 'simulador condições acesso reforma carreiras muito longas flexibilização idade pessoal prazo garantia decreto-lei 187/2007',
+   cluster: 'reformas', clusterNome: 'Reformas e Pensões', tipo: 'ferramenta'}
 ];
 
 var MIN_CARACTERES = 2;

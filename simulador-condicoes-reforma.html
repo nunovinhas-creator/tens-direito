@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
+  <script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <title>Simulador de Condições de Acesso à Reforma</title>
+  <meta name="description" content="Descobre se já podes reformar-te, e por que via — carreiras muito longas, flexibilização ou idade pessoal. Sem valores em euros, sem data de validade. Cálculos no browser, sem envio de dados.">
+  <meta property="og:title" content="Simulador de Condições de Acesso à Reforma">
+  <meta property="og:description" content="Responde a «já posso reformar-me, e por que via?» com base no Decreto-Lei n.º 187/2007. Nunca calcula valores — só condições de acesso, sempre exactas.">
+  <meta property="og:url" content="https://tensdireito.com/simulador-condicoes-reforma.html">
+  <link rel="canonical" href="https://tensdireito.com/simulador-condicoes-reforma.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:site_name" content="Tens Direito">
+  <meta property="og:image" content="https://tensdireito.com/assets/img/og/simulador-condicoes-reforma.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Simulador de Condições de Acesso à Reforma">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- JSON-LD WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulador de Condições de Acesso à Reforma",
+    "url": "https://tensdireito.com/simulador-condicoes-reforma.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"}
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Este simulador diz-me quanto vou receber de pensão?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Este é um simulador de condições de acesso — responde a «já posso reformar-me, e por que via?», nunca a «quanto vou receber?». Não calcula, estima nem sugere nenhum montante. Para o valor, pede uma simulação na Segurança Social Direta."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Porque é que o simulador não pede a idade normal de reforma?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Porque a idade normal muda todos os anos e só é publicada por portaria no 2.º ano civil anterior (art. 20.º n.º 9 do Decreto-Lei n.º 187/2007) — para quem se reforma daqui a uma década, ainda não existe. As condições que este simulador avalia (carreiras muito longas, flexibilização, prazo de garantia, idade pessoal) são limiares absolutos fixados no diploma, nunca revistos por portaria — por isso funcionam sem esse valor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O simulador considera o factor de sustentabilidade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O factor de sustentabilidade não é uma condição de acesso — não decide se já podes reformar-te, só pode reduzir o valor da pensão em certas vias. Por isso nunca é um input; aparece só no resultado, como informação qualitativa sobre se se aplica ou não a cada via encontrada."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Porque é que o simulador pede o serviço militar obrigatório?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Porque o art. 48.º do Decreto-Lei n.º 187/2007 manda contar esse tempo para o prazo de garantia, para as condições de acesso à flexibilização e às carreiras muito longas, e para o cálculo da pensão — mas só se não tiveste descontos nesse período, e só mediante requerimento próprio. Alguém com uma carreira longa mas dois anos de tropa por requerer pode estar a dois anos de distância de saber que já pode reformar-se."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador cobre a antecipação por desemprego de longa duração ou por profissão desgastante?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Cobre o regime geral de velhice e as antecipações por carreira (carreiras muito longas e flexibilização). As antecipações por desemprego involuntário de longa duração (art. 24.º, regime próprio em legislação avulsa) e por natureza penosa ou desgastante da actividade (art. 22.º) ficam fora — e, ao contrário das vias cobertas aqui, não estão isentas do factor de sustentabilidade."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Este simulador é vinculativo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. É uma estimativa educativa sobre condições de acesso, baseada exclusivamente nos dados introduzidos e no Decreto-Lei n.º 187/2007, de 10 de maio. Nunca substitui a Segurança Social Direta — só ela sabe o que está efectivamente registado em teu nome. Confirma sempre lá antes de tomar qualquer decisão."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Início", "item": "https://tensdireito.com"},
+      {"@type": "ListItem", "position": 2, "name": "Simuladores", "item": "https://tensdireito.com/simuladores.html"},
+      {"@type": "ListItem", "position": 3, "name": "Condições de Acesso à Reforma", "item": "https://tensdireito.com/simulador-condicoes-reforma.html"}
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Simulador de Condições de Acesso à Reforma",
+    "mainEntityOfPage": "https://tensdireito.com/simulador-condicoes-reforma.html",
+    "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
+    "datePublished": "2026-09-07",
+    "dateModified": "2026-09-07"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --teal-light: #F0FDF9;
+      --white: #fff;
+      --ink: #0F172A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --green: #16A34A;
+      --amber: #D97706;
+      --red: #DC2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; font-size: 16px; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .hero { padding: 3rem 1rem 2rem; text-align: center; background: var(--white); }
+    .hero h1 { font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 680px; margin: 0 auto 0.5rem; color: var(--ink); }
+    .hero-sub { font-size: 1rem; color: var(--muted); max-width: 580px; margin: 0 auto 1.5rem; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); font-size: 0.95rem; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; background: var(--white); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(15,118,110,.1); }
+    .form-group small { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .form-linha-dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-secao-titulo { font-size: 0.78rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.75rem 0 1rem; }
+    .form-secao-titulo:first-child { margin-top: 0; }
+    .checkbox-linha { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.4rem; }
+    .checkbox-linha input { width: auto; margin-top: 0.2rem; }
+    .checkbox-linha label { font-weight: 500; font-size: 0.9rem; margin-bottom: 0; }
+    .campo-condicional { background: #F9FAFB; border-radius: 8px; padding: 1.25rem; margin: 0.75rem 0 1.5rem; display: none; }
+    .campo-condicional.show { display: block; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.9rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+    .btn-primary { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary { background: #F3F4F6; color: var(--ink); }
+    .btn-secondary:hover { background: #E5E7EB; }
+    .btn-grupo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .resultado { display: none; animation: slideIn 0.3s ease-out; }
+    .resultado.show { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .semacesso-card { border-radius: var(--radius); padding: 1.75rem 2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,.1); background: linear-gradient(135deg, #7C2D12 0%, #9A3412 100%); color: var(--white); }
+    .semacesso-titulo { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .semacesso-detalhe { font-size: 0.92rem; opacity: 0.95; line-height: 1.65; }
+    .semacesso-detalhe p { margin-bottom: 0.5rem; }
+
+    .idade-resumo { background: #F9FAFB; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; font-size: 0.92rem; color: var(--ink); }
+    .idade-resumo strong { color: var(--teal-dark); }
+
+    .via-card { border-radius: var(--radius); padding: 1.75rem 2rem; margin-bottom: 1.5rem; color: var(--white); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+    .via-card.via-longa { background: linear-gradient(135deg, var(--teal) 0%, #114549 100%); }
+    .via-card.via-flex { background: linear-gradient(135deg, #1E3A8A 0%, #1E293B 100%); }
+    .via-titulo { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .via-artigo { font-size: 0.82rem; opacity: 0.85; margin-bottom: 1rem; }
+    .via-caveat { background: rgba(255,255,255,.14); border-left: 3px solid #FCD34D; border-radius: 0 6px 6px 0; padding: 0.7rem 1rem; font-size: 0.87rem; margin-bottom: 1rem; line-height: 1.5; }
+    .via-consequencias { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: rgba(255,255,255,.08); border-radius: 8px; overflow: hidden; }
+    .via-consequencias th { text-align: left; padding: 0.6rem 0.8rem; background: rgba(255,255,255,.12); font-weight: 700; }
+    .via-consequencias td { padding: 0.6rem 0.8rem; border-top: 1px solid rgba(255,255,255,.15); }
+    .via-consequencias .valor-bom { color: #6EE7B7; font-weight: 700; }
+    .via-consequencias .valor-mau { color: #FCA5A5; font-weight: 700; }
+
+    .idadepessoal-card { background: #F0FDF9; border: 1px solid #A7F3D0; border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+    .idadepessoal-card h3 { font-size: 1rem; font-weight: 800; color: var(--teal-dark); margin-bottom: 0.6rem; }
+    .idadepessoal-card p { font-size: 0.92rem; color: var(--ink); line-height: 1.65; margin-bottom: 0.4rem; }
+
+    .quantofalta-card { background: #FEF3C7; border-left: 4px solid var(--amber); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+    .quantofalta-card h3 { font-size: 1rem; font-weight: 800; color: #92400E; margin-bottom: 0.6rem; }
+    .quantofalta-card p { font-size: 0.92rem; color: #78350F; line-height: 1.65; }
+
+    .aviso-teto { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 0.9rem 1.25rem; border-radius: 0 6px 6px 0; margin-top: 1rem; font-size: 0.88rem; color: #92400E; line-height: 1.5; }
+    .aviso-info { background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 0 6px 6px 0; padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #1E40AF; margin-bottom: 1.5rem; }
+    .avisos-resultado .aviso-teto, .avisos-resultado .aviso-info { margin-top: 0; margin-bottom: 1rem; }
+    .info-box { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 1rem 1.25rem; border-radius: 0 6px 6px 0; margin-bottom: 1.5rem; font-size: 0.9rem; color: #92400E; line-height: 1.6; }
+    .info-box a { color: #b45309; text-decoration: underline; font-weight: 600; }
+
+    .formula-box { background: #F9FAFB; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .formula-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+    .formula-box table { width: 100%; border-collapse: collapse; font-size: 0.87rem; margin-bottom: 1rem; }
+    .formula-box th, .formula-box td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); }
+    .formula-box th { font-weight: 700; color: var(--muted); }
+    .formula-box ul { padding-left: 1.4rem; font-size: 0.9rem; color: var(--muted); }
+    .formula-box li { margin-bottom: 0.4rem; }
+
+    .ambito-box { background: #F9FAFB; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+    .ambito-box h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 0.75rem; }
+    .ambito-box p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    .faq-section { margin-top: 3rem; }
+    .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1.5rem; }
+    details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    details:last-child { border-bottom: none; }
+    summary { cursor: pointer; font-weight: 600; color: var(--ink); font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+    summary::after { content: "＋"; color: var(--teal); font-size: 1.1rem; flex-shrink: 0; margin-left: 1rem; }
+    details[open] summary::after { content: "－"; }
+    .faq-resposta { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 0.75rem; }
+    .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #856404; }
+    .disclaimer strong { color: #664d03; }
+    .erro-campo { color: var(--red); font-size: 0.85rem; margin-top: 0.35rem; display: none; }
+    .erro-campo.show { display: block; }
+    .form-group.tem-erro input, .form-group.tem-erro select { border-color: var(--red); }
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) { main { padding: 1.5rem 1rem; } .calc-card { padding: 1.5rem; } .form-linha-dupla { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="stylesheet" href="/assets/css/share.css">
+  <script src="/assets/js/share.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/branding.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <script src="/assets/js/nav.js" defer></script>
+  <script src="/scripts/pesquisa.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+
+  <!-- NAV:INICIO -->
+<div class="nav-wrap">
+    <nav>
+      <a href="/" class="logo" aria-label="Tens Direito — página inicial">
+        <svg width="34" height="34" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="9" fill="#0F766E"/>
+          <path d="M9 18 L16 25 L27 11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text"><span class="tens">Tens </span><span class="direito">Direito</span></div>
+      </a>
+
+      <div class="nav-links">
+        <div class="nav-dropdown" id="navApoiosDropdown">
+          <button class="nav-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="navApoiosDropdownMenu">Apoios</button>
+          <div class="nav-dropdown-menu" id="navApoiosDropdownMenu" role="menu">
+            <a href="/p/apoios-escolares.html" role="menuitem">Apoios Escolares</a>
+            <a href="/prestacao-social-unica.html" role="menuitem">Prestação Social Única</a>
+            <a href="/p/familia.html" role="menuitem">Família e Crianças</a>
+            <a href="/p/idosos-incapacidade-cuidadores.html" role="menuitem">Idosos, Incapacidade e Cuidadores</a>
+            <a href="/p/trabalho-rendimento.html" role="menuitem">Trabalho e Rendimento</a>
+            <a href="/p/habitacao.html" role="menuitem">Habitação</a>
+            <a href="/p/reformas.html" role="menuitem">Reformas e Pensões</a>
+          </div>
+        </div>
+        <a href="/comecar-aqui.html">Começa aqui</a>
+        <a href="/calendario-pagamentos-seguranca-social.html">📅 Calendário</a>
+        <a href="/simuladores.html">🧮 Simuladores</a>
+        <a href="/documentos.html">📄 Documentos</a>
+        <a href="/p/como-pedir.html">🔑 Como Pedir</a>
+        <a href="/noticias.html">Notícias</a>
+      </div>
+
+      <div class="nav-search" role="search" aria-label="Pesquisa da navegação">
+        <input type="search" id="campo-pesquisa-nav" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav')">
+        <div id="resultados-pesquisa-nav" class="nav-search-resultados"></div>
+      </div>
+
+      <a class="nav-whatsapp" href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=header_nav" target="_blank" rel="noopener" aria-label="Segue o canal do Tens Direito no WhatsApp">
+        <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.087.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.246c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.337-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </svg>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Menu mobile">
+      <div class="nav-search nav-search-movel" role="search" aria-label="Pesquisa do menu móvel">
+        <input type="search" id="campo-pesquisa-nav-movel" placeholder="Pesquisar…" aria-label="Pesquisar" autocomplete="off"
+          oninput="mostrarResultados(pesquisar(this.value), this.value, 'resultados-pesquisa-nav-movel')">
+        <div id="resultados-pesquisa-nav-movel" class="nav-search-resultados"></div>
+      </div>
+      <div class="nav-mobile-grid">
+        <a href="/calendario-pagamentos-seguranca-social.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📅</span><span>Calendário</span></a>
+        <a href="/simuladores.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🧮</span><span>Simuladores</span></a>
+        <a href="/documentos.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">📄</span><span>Documentos</span></a>
+        <a href="/p/como-pedir.html" class="nav-mobile-card"><span class="nav-mobile-card-icone" aria-hidden="true">🔑</span><span>Como Pedir</span></a>
+      </div>
+      <a href="/comecar-aqui.html" class="nav-mobile-destaque">Começa aqui</a>
+      <details class="nav-mobile-acordeao" id="navMobileApoios">
+        <summary><span aria-hidden="true">📋</span> Apoios</summary>
+    <a href="/p/apoios-escolares.html" class="nav-mobile-sub">Apoios Escolares</a>
+    <a href="/prestacao-social-unica.html" class="nav-mobile-sub">Prestação Social Única</a>
+    <a href="/p/familia.html" class="nav-mobile-sub">Família e Crianças</a>
+    <a href="/p/idosos-incapacidade-cuidadores.html" class="nav-mobile-sub">Idosos, Incapacidade e Cuidadores</a>
+    <a href="/p/trabalho-rendimento.html" class="nav-mobile-sub">Trabalho e Rendimento</a>
+    <a href="/p/habitacao.html" class="nav-mobile-sub">Habitação</a>
+    <a href="/p/reformas.html" class="nav-mobile-sub">Reformas e Pensões</a>
+      </details>
+      <a href="/noticias.html">Notícias</a>
+    </div>
+  </div>
+<!-- NAV:FIM -->
+
+  <header class="hero">
+    <p style="font-size:0.85rem;color:#6B7280;margin-bottom:0.5rem;"><a href="/" style="color:#6B7280;text-decoration:underline;">Início</a> › <a href="/simuladores.html" style="color:#6B7280;text-decoration:underline;">Simuladores</a> › Condições de Acesso à Reforma</p>
+    <h1>Simulador de Condições de Acesso à Reforma</h1>
+<!-- partilhar:inicio -->
+<div class="partilhar-artigo">
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+</div>
+<!-- partilhar:fim -->
+
+    <p class="hero-sub">Responde a «já posso reformar-me, e por que via?» — nunca a quanto vais receber. Mostra todas as vias em que cabes, com as consequências de cada uma. Todos os cálculos correm no teu navegador — nenhum dado é enviado.</p>
+  </header>
+
+  <main id="main-content">
+    <div class="info-box">
+      💡 <strong>Não é um simulador de valor</strong> — nunca calcula, estima ou sugere um montante em euros. As condições de acesso (carreiras muito longas, flexibilização, prazo de garantia, idade pessoal) são limiares fixados no Decreto-Lei n.º 187/2007, nunca revistos por portaria — por isso este simulador continua exacto sem edição, mesmo em 2040. <strong>Verificado a 07/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/p/reformas.html">ver o guia completo de Reformas e Pensões</a>
+    </div>
+
+    <div class="ambito-box">
+      <h2>Vai buscar o teu número de anos de carreira à Segurança Social Direta</h2>
+      <p>Este simulador não adivinha os teus anos de registo de remunerações — pede-tos directamente. Uma estimativa errada dá um resultado errado. Consulta a tua carreira contributiva na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a> antes de preencher o formulário abaixo.</p>
+    </div>
+
+    <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
+      ⚠️ Não foi possível carregar os parâmetros oficiais agora. Recarrega a página dentro de instantes — para nunca calcular com um valor desactualizado ou em falta, esta calculadora fica bloqueada até os parâmetros carregarem com sucesso.
+    </div>
+
+    <div class="calc-card">
+      <form id="formCondicoesReforma" novalidate>
+        <p class="form-secao-titulo">Data de nascimento</p>
+        <div class="form-linha-dupla">
+          <div class="form-group" id="grupoMesNascimento">
+            <label for="mesNascimento">Mês</label>
+            <select id="mesNascimento">
+              <option value="">Escolhe…</option>
+              <option value="1">Janeiro</option>
+              <option value="2">Fevereiro</option>
+              <option value="3">Março</option>
+              <option value="4">Abril</option>
+              <option value="5">Maio</option>
+              <option value="6">Junho</option>
+              <option value="7">Julho</option>
+              <option value="8">Agosto</option>
+              <option value="9">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+            <p class="erro-campo" id="erroMesNascimento"></p>
+          </div>
+          <div class="form-group" id="grupoAnoNascimento">
+            <label for="anoNascimento">Ano</label>
+            <input type="text" id="anoNascimento" inputmode="numeric" placeholder="1965" autocomplete="off">
+            <p class="erro-campo" id="erroAnoNascimento"></p>
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--muted);margin:-0.75rem 0 1.25rem;">Só mês e ano — nunca o dia. O dia não muda o resultado, e evita o erro de «faltar 1 ano» quando na verdade só faltam semanas.</p>
+
+        <p class="form-secao-titulo">Carreira contributiva</p>
+        <div class="form-group" id="grupoAnosCarreira">
+          <label for="anosCarreira">Anos civis com registo de remunerações</label>
+          <input type="text" id="anosCarreira" inputmode="numeric" placeholder="42" autocomplete="off">
+          <small>Vem da tua Segurança Social Direta — não estimes este número.</small>
+          <p class="erro-campo" id="erroAnosCarreira"></p>
+        </div>
+        <div class="form-group" id="grupoIdadeInicio">
+          <label for="idadeInicio">Idade a que começaste a descontar (opcional)</label>
+          <input type="text" id="idadeInicio" inputmode="numeric" placeholder="16" autocomplete="off">
+          <small>Só usado para testar a via b) das carreiras muito longas, que exige início antes dos 17 anos. Deixa em branco se não sabes.</small>
+          <p class="erro-campo" id="erroIdadeInicio"></p>
+        </div>
+
+        <p class="form-secao-titulo">Serviço militar obrigatório</p>
+        <div class="checkbox-linha">
+          <input type="checkbox" id="servicoMilitar">
+          <label for="servicoMilitar">Cumpriste serviço militar obrigatório em período em que <strong>não tinhas descontos</strong> para a Segurança Social nem para outro regime?</label>
+        </div>
+        <p style="font-size:0.85rem;color:var(--muted);margin:0.4rem 0 0;">Se a entidade empregadora continuou a descontar durante esse período, o tempo já está contado nos teus anos de carreira — não voltes a somá-lo aqui.</p>
+        <div class="form-group campo-condicional" id="grupoMesesServicoMilitar">
+          <label for="mesesServicoMilitar">Duração do serviço militar (meses)</label>
+          <input type="text" id="mesesServicoMilitar" inputmode="numeric" placeholder="18" autocomplete="off">
+          <small>Este tempo só conta mediante requerimento próprio ao abrigo do art. 48.º — o simulador avisa sempre quando isso é decisivo para o resultado.</small>
+          <p class="erro-campo" id="erroMesesServicoMilitar"></p>
+        </div>
+
+        <p class="form-secao-titulo">Situação profissional actual</p>
+        <div class="form-group" id="grupoMesmaEmpresa">
+          <label for="mesmaEmpresa">Ainda trabalhas na mesma empresa ou grupo empresarial?</label>
+          <select id="mesmaEmpresa">
+            <option value="">Escolhe…</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+          <small>Só relevante se antecipares a reforma — há uma proibição temporária de regresso à mesma empresa.</small>
+          <p class="erro-campo" id="erroMesmaEmpresa"></p>
+        </div>
+
+        <div class="btn-grupo">
+          <button type="submit" class="btn btn-primary" id="btnCalcularCondicoesReforma" disabled>🧮 Ver condições de acesso</button>
+          <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultado" class="resultado" aria-live="polite"></div>
+
+    <div class="ambito-box">
+      <h2>⚠️ Antecipações não cobertas por este simulador</h2>
+      <p>Este simulador cobre o regime geral de velhice e as antecipações por carreira (carreiras muito longas e flexibilização). As antecipações por <strong>desemprego involuntário de longa duração</strong> (art. 24.º do Decreto-Lei n.º 187/2007, regime próprio em legislação avulsa — Decreto-Lei n.º 220/2006, que não foi lido nesta ferramenta) e por <strong>natureza penosa ou desgastante da actividade</strong> (art. 22.º) ficam fora — e, ao contrário das vias que este simulador cobre, não estão isentas do factor de sustentabilidade, que o art. 35.º n.º 5 só afasta nas alíneas aí enumeradas. Consulta o <a href="/outras-antecipacoes.html">guia de outras antecipações</a> para o que se sabe sobre elas.</p>
+    </div>
+
+    <div class="formula-box">
+      <h2>Como o simulador avalia as condições</h2>
+      <table>
+        <thead><tr><th>Via</th><th>Condição</th><th>Norma</th></tr></thead>
+        <tbody>
+          <tr><td>Prazo de garantia</td><td>15 anos civis com registo</td><td>art. 19.º</td></tr>
+          <tr><td>Carreiras muito longas (a)</td><td>60 anos + 48 anos civis de carreira</td><td>art. 21.º-A n.º 1 a)</td></tr>
+          <tr><td>Carreiras muito longas (b)</td><td>60 anos + 46 anos civis, início antes dos 17</td><td>art. 21.º-A n.º 1 b)</td></tr>
+          <tr><td>Flexibilização</td><td>60 anos + 40 anos de registo de remunerações</td><td>art. 21.º n.º 2</td></tr>
+          <tr><td>Idade pessoal</td><td>−4 meses por cada ano acima de 40, nunca abaixo dos 60</td><td>art. 20.º n.º 8</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>Mostramos <strong>todas</strong> as vias em que cabes, não só a primeira — a escolha entre elas é tua, e as consequências diferem.</li>
+        <li>O <strong>factor de sustentabilidade</strong> nunca é uma condição de acesso — só aparece no resultado, como informação sobre se se aplica ou não a cada via.</li>
+        <li>O cálculo assume que os anos de carreira indicados <strong>não incluem tempo bonificado</strong> ao abrigo do art. 49.º — se incluírem, o resultado das carreiras muito longas pode estar sobrestimado (art. 21.º-A n.º 2).</li>
+        <li>A <strong>idade normal de reforma</strong> não é calculada — muda todos os anos por portaria. Consulta o <a href="/idade-normal.html">guia da idade normal</a> e a Segurança Social Direta para o valor do teu ano.</li>
+      </ul>
+    </div>
+
+    <section class="faq-section">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Este simulador diz-me quanto vou receber de pensão?</summary>
+        <div class="faq-resposta">
+          Não. Este é um simulador de condições de acesso — responde a «já posso reformar-me, e por que via?», nunca a «quanto vou receber?». Não calcula, estima nem sugere nenhum montante. Para o valor, pede uma simulação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a>.
+        </div>
+      </details>
+
+      <details>
+        <summary>Porque é que o simulador não pede a idade normal de reforma?</summary>
+        <div class="faq-resposta">
+          Porque a idade normal muda todos os anos e só é publicada por portaria no 2.º ano civil anterior (art. 20.º n.º 9 do Decreto-Lei n.º 187/2007) — para quem se reforma daqui a uma década, ainda não existe. As condições que este simulador avalia (carreiras muito longas, flexibilização, prazo de garantia, idade pessoal) são limiares absolutos fixados no diploma, nunca revistos por portaria — por isso funcionam sem esse valor.
+        </div>
+      </details>
+
+      <details>
+        <summary>O simulador considera o factor de sustentabilidade?</summary>
+        <div class="faq-resposta">
+          O factor de sustentabilidade não é uma condição de acesso — não decide se já podes reformar-te, só pode reduzir o valor da pensão em certas vias. Por isso nunca é um input; aparece só no resultado, como informação qualitativa sobre se se aplica ou não a cada via encontrada.
+        </div>
+      </details>
+
+      <details>
+        <summary>Porque é que o simulador pede o serviço militar obrigatório?</summary>
+        <div class="faq-resposta">
+          Porque o art. 48.º do Decreto-Lei n.º 187/2007 manda contar esse tempo para o prazo de garantia, para as condições de acesso à flexibilização e às carreiras muito longas, e para o cálculo da pensão — mas só se não tiveste descontos nesse período, e só mediante requerimento próprio. Alguém com uma carreira longa mas dois anos de tropa por requerer pode estar a dois anos de distância de saber que já pode reformar-se.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador cobre a antecipação por desemprego de longa duração ou por profissão desgastante?</summary>
+        <div class="faq-resposta">
+          Não. Cobre o regime geral de velhice e as antecipações por carreira (carreiras muito longas e flexibilização). As antecipações por desemprego involuntário de longa duração (art. 24.º, regime próprio em legislação avulsa) e por natureza penosa ou desgastante da actividade (art. 22.º) ficam fora — e, ao contrário das vias cobertas aqui, não estão isentas do factor de sustentabilidade.
+        </div>
+      </details>
+
+      <details>
+        <summary>Este simulador é vinculativo?</summary>
+        <div class="faq-resposta">
+          Não. É uma <strong>estimativa educativa</strong> sobre condições de acesso, baseada exclusivamente nos dados introduzidos e no Decreto-Lei n.º 187/2007, de 10 de maio. Nunca substitui a <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a> — só ela sabe o que está efectivamente registado em teu nome. Confirma sempre lá antes de tomar qualquer decisão.
+        </div>
+      </details>
+    </section>
+
+    <div class="disclaimer">
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa desenvolvida de forma independente. Não é oficial nem vinculativo. Os cálculos são baseados em legislação pública (Decreto-Lei n.º 187/2007, de 10 de maio, na redação em vigor), mas podem conter erros ou omissões. Simulação indicativa — confirma sempre a tua situação na Segurança Social Direta.
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="/sobre.html">Sobre</a> · <a href="/fontes.html">Fontes</a> · <a href="/privacidade.html">Privacidade</a> · <a href="/acessibilidade.html">Acessibilidade</a></p>
+    <p style="margin-top: 0.5rem;">tensdireito.com — Ferramenta educativa, não vinculativa</p>
+      <!-- NVLABS:FOOTER:INICIO -->
+    <a class="footer-nvlabs" href="/sobre.html#nvlabs" aria-label="An NV Labs project — saber mais sobre a NV Labs">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" role="img" aria-label="An NV Labs project">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="200" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">© 2026 Tens Direito</text>
+  <text x="200" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" fill="#1c1c1e" text-anchor="middle" letter-spacing="0.5">
+    An <tspan fill="#1ea3b2" font-weight="600" text-decoration="underline" dx="2" dy="0">NV Labs</tspan><tspan dx="2"> project</tspan>
+  </text>
+</svg>
+    </a>
+    <!-- NVLABS:FOOTER:FIM -->
+  </footer>
+
+  <script>
+    // ══════════════════════════════════════════════════════════════════════
+    // SIMULADOR DE CONDIÇÕES DE ACESSO À REFORMA — 1. CONSTANTES
+    // ══════════════════════════════════════════════════════════════════════
+    // PARAMETROS_CONDICOES_REFORMA — fonte única de verdade dos limiares.
+    // Nenhum valor legal aparece solto no meio da lógica — toda a função
+    // calcularCondicoesReforma() lê exclusivamente deste objecto, carregado
+    // em runtime de /dados/parametros.json (ver dados/parametros/pensoes.yaml),
+    // mesmo padrão de PARAMETROS_RSI/PARAMETROS_SUBSIDIO_DESEMPREGO.
+    //
+    // Deliberadamente SEM idade normal nem factor de sustentabilidade —
+    // nenhum dos dois é condição de acesso (ver brief da sessão e a FAQ
+    // "O simulador considera o factor de sustentabilidade?"). A idade
+    // normal muda todos os anos por portaria; o factor de sustentabilidade
+    // só entra no output, como informação qualitativa por via, nunca como
+    // input nem como cálculo.
+    //
+    // Nunca calcula com valores em falta: se o fetch falhar, mostra um
+    // erro visível (#avisoParametrosErro) e mantém o botão de calcular
+    // desactivado — mesmo padrão dos restantes simuladores.
+    let PARAMETROS_CONDICOES_REFORMA = null;
+
+    async function carregarParametrosCondicoesReforma() {
+      try {
+        const resp = await fetch('/dados/parametros.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const todos = await resp.json();
+        const p = todos.prestacoes && todos.prestacoes.pensoes;
+        if (!p) throw new Error("prestações.pensoes em falta em dados/parametros.json");
+        PARAMETROS_CONDICOES_REFORMA = {
+          prazoGarantiaVelhiceAnos: p.prazo_garantia_velhice_anos_civis,
+          clViaAIdadeMinima: p.carreiras_longas_via_a_idade_minima,
+          clViaAAnosMinimos: p.carreiras_longas_via_a_anos_civis_minimos,
+          clViaBIdadeMinima: p.carreiras_longas_via_b_idade_minima,
+          clViaBAnosMinimos: p.carreiras_longas_via_b_anos_civis_minimos,
+          clViaBIdadeInicioLimite: p.carreiras_longas_via_b_idade_inicio_limite,
+          flexIdadeMinima: p.flexibilizacao_idade_minima,
+          flexAnosMinimos: p.flexibilizacao_anos_registo_minimos,
+          idadePessoalReducaoMesesPorAno: p.idade_pessoal_reducao_meses_por_ano,
+          idadePessoalIdadeMinima: p.idade_pessoal_idade_minima_absoluta,
+          mesmaEmpresaAnosProibicao: p.antecipada_mesma_empresa_anos_proibicao,
+        };
+        const botao = document.getElementById('btnCalcularCondicoesReforma');
+        if (botao) botao.disabled = false;
+        return true;
+      } catch (erro) {
+        mostrarErroParametrosCondicoesReforma(erro);
+        return false;
+      }
+    }
+
+    function mostrarErroParametrosCondicoesReforma(erro) {
+      const aviso = document.getElementById('avisoParametrosErro');
+      if (aviso) aviso.style.display = 'block';
+      const botao = document.getElementById('btnCalcularCondicoesReforma');
+      if (botao) botao.disabled = true;
+      console.error('Simulador Condições de Acesso à Reforma: falha a carregar parâmetros oficiais —', erro);
+    }
+
+    document.addEventListener('DOMContentLoaded', carregarParametrosCondicoesReforma);
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 2. MENSAGENS — centralizadas, nunca repetidas noutras funções
+    // ══════════════════════════════════════════════════════════════════════
+    const MENSAGENS_CONDICOES_REFORMA = {
+      erros: {
+        mesNascimentoObrigatorio: 'Escolhe o mês de nascimento.',
+        anoNascimentoObrigatorio: 'Indica o ano de nascimento.',
+        anoNascimentoInvalido: 'O ano de nascimento tem de ser um número inteiro válido.',
+        anoNascimentoForaDeIntervalo: 'O ano de nascimento não pode ser no futuro nem anterior a 1900.',
+        anosCarreiraObrigatorio: 'Indica os teus anos civis com registo de remunerações.',
+        anosCarreiraInvalido: 'O número de anos de carreira tem de ser um número inteiro, sem casas decimais, e não pode ser negativo.',
+        idadeInicioInvalida: 'A idade de início tem de ser um número inteiro, sem casas decimais, e não pode ser negativa.',
+        mesesServicoMilitarObrigatorio: 'Indica a duração do serviço militar, em meses.',
+        mesesServicoMilitarInvalido: 'A duração do serviço militar tem de ser um número inteiro de meses, sem casas decimais, e não pode ser negativa.',
+        mesmaEmpresaObrigatorio: 'Indica se ainda trabalhas na mesma empresa ou grupo empresarial.',
+      },
+      fiabilidade: 'Esta simulação baseia-se exclusivamente nos dados introduzidos e no Decreto-Lei n.º 187/2007, de 10 de maio, na redação em vigor. Confirma sempre na Segurança Social Direta — só ela sabe o que está efectivamente registado em teu nome.',
+      avisoMesmaEmpresa: function (anos) {
+        return '⚠️ Antecipares a reforma implica não poderes trabalhar, a qualquer título, na mesma empresa ou grupo empresarial durante ' + anos + ' anos (art. 62.º n.º 3). É obrigatório cessar funções em 60 dias após o deferimento (art. 79.º n.º 1), há dever de comunicar um eventual regresso ao Centro Nacional de Pensões (art. 79.º n.º 2), e responsabilidade solidária de quem receber o teu serviço (art. 62.º n.º 5).';
+      },
+      avisoTempoBonificado: 'Este resultado assume que os anos de carreira indicados não incluem tempo bonificado ao abrigo do art. 49.º — se incluírem, pode estar sobrestimado (art. 21.º-A n.º 2).',
+    };
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 3. UTILITÁRIOS
+    // ══════════════════════════════════════════════════════════════════════
+
+    // arredondarAnos: elimina resíduos de ponto flutuante em valores
+    // expressos em anos (ex.: meses de tropa convertidos em fracção de
+    // ano) — 2 casas decimais, suficiente para 1/12 ≈ 0,08.
+    function arredondarAnos(valor) {
+      return Math.round((valor + Number.EPSILON) * 100) / 100;
+    }
+
+    // calcularIdadeAnosMeses: idade em anos e meses COMPLETOS, calculada
+    // só a partir de mês/ano (nunca do dia — "o dia não é preciso", ver
+    // brief). Devolve também totalMeses, útil para "quanto falta".
+    // Pré-condição: nenhuma (datas no futuro dão diff negativo, tratado
+    // como 0 — a validação de input já impede um nascimento no futuro).
+    function calcularIdadeAnosMeses(anoNascimento, mesNascimento, anoReferencia, mesReferencia) {
+      var totalMesesNascimento = anoNascimento * 12 + (mesNascimento - 1);
+      var totalMesesReferencia = anoReferencia * 12 + (mesReferencia - 1);
+      var diferenca = totalMesesReferencia - totalMesesNascimento;
+      if (diferenca < 0) diferenca = 0;
+      return { anos: Math.floor(diferenca / 12), meses: diferenca % 12, totalMeses: diferenca };
+    }
+
+    // dataDeHojeAnoMes: único ponto com efeito lateral (lê o relógio).
+    function dataDeHojeAnoMes() {
+      var agora = new Date();
+      return { ano: agora.getFullYear(), mes: agora.getMonth() + 1 };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 4. VALIDAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    var REGEX_INTEIRO_NAO_NEGATIVO = /^\d+$/;
+
+    // validarInputCondicoesReforma: única camada autorizada a decidir
+    // "vazio → erro obrigatório" vs. "inválido → erro de formato" (mesmo
+    // padrão de validarInputRSI/validarInputSubsidioDesemprego — nunca
+    // `parseInt(x) || 0`). Recebe SEMPRE strings/booleans em bruto. Nunca
+    // lança excepção. Saída: { valido, erros: [{campo, mensagem}],
+    // valoresNormalizados }.
+    function validarInputCondicoesReforma(bruto) {
+      var erros = [];
+      var hoje = bruto.anoReferencia && bruto.mesReferencia
+        ? { ano: bruto.anoReferencia, mes: bruto.mesReferencia }
+        : dataDeHojeAnoMes();
+
+      var mesNascimentoStr = (bruto.mesNascimento || '').trim();
+      var mesNascimentoNormalizado = null;
+      if (mesNascimentoStr === '') {
+        erros.push({ campo: 'mesNascimento', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.mesNascimentoObrigatorio });
+      } else {
+        mesNascimentoNormalizado = parseInt(mesNascimentoStr, 10);
+      }
+
+      var anoNascimentoStr = (bruto.anoNascimento || '').trim();
+      var anoNascimentoNormalizado = null;
+      if (anoNascimentoStr === '') {
+        erros.push({ campo: 'anoNascimento', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.anoNascimentoObrigatorio });
+      } else if (!REGEX_INTEIRO_NAO_NEGATIVO.test(anoNascimentoStr)) {
+        erros.push({ campo: 'anoNascimento', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.anoNascimentoInvalido });
+      } else {
+        anoNascimentoNormalizado = parseInt(anoNascimentoStr, 10);
+        if (anoNascimentoNormalizado < 1900 || anoNascimentoNormalizado > hoje.ano) {
+          erros.push({ campo: 'anoNascimento', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.anoNascimentoForaDeIntervalo });
+          anoNascimentoNormalizado = null;
+        }
+      }
+
+      var anosCarreiraStr = (bruto.anosCarreira || '').trim();
+      var anosCarreiraNormalizado = null;
+      if (anosCarreiraStr === '') {
+        erros.push({ campo: 'anosCarreira', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.anosCarreiraObrigatorio });
+      } else if (!REGEX_INTEIRO_NAO_NEGATIVO.test(anosCarreiraStr)) {
+        erros.push({ campo: 'anosCarreira', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.anosCarreiraInvalido });
+      } else {
+        anosCarreiraNormalizado = parseInt(anosCarreiraStr, 10);
+      }
+
+      var idadeInicioStr = (bruto.idadeInicio || '').trim();
+      var idadeInicioNormalizado = null;
+      if (idadeInicioStr !== '') {
+        if (!REGEX_INTEIRO_NAO_NEGATIVO.test(idadeInicioStr)) {
+          erros.push({ campo: 'idadeInicio', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.idadeInicioInvalida });
+        } else {
+          idadeInicioNormalizado = parseInt(idadeInicioStr, 10);
+        }
+      }
+
+      var servicoMilitarSemDescontos = !!bruto.servicoMilitar;
+      var mesesServicoMilitarStr = (bruto.mesesServicoMilitar || '').trim();
+      var mesesServicoMilitarNormalizado = 0;
+      if (servicoMilitarSemDescontos) {
+        if (mesesServicoMilitarStr === '') {
+          erros.push({ campo: 'mesesServicoMilitar', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.mesesServicoMilitarObrigatorio });
+        } else if (!REGEX_INTEIRO_NAO_NEGATIVO.test(mesesServicoMilitarStr)) {
+          erros.push({ campo: 'mesesServicoMilitar', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.mesesServicoMilitarInvalido });
+        } else {
+          mesesServicoMilitarNormalizado = parseInt(mesesServicoMilitarStr, 10);
+        }
+      }
+
+      var mesmaEmpresaStr = (bruto.mesmaEmpresa || '').trim();
+      if (mesmaEmpresaStr === '') {
+        erros.push({ campo: 'mesmaEmpresa', mensagem: MENSAGENS_CONDICOES_REFORMA.erros.mesmaEmpresaObrigatorio });
+      }
+
+      return {
+        valido: erros.length === 0,
+        erros: erros,
+        valoresNormalizados: {
+          mesNascimento: mesNascimentoNormalizado,
+          anoNascimento: anoNascimentoNormalizado,
+          anosCarreira: anosCarreiraNormalizado,
+          idadeInicioDescontos: idadeInicioNormalizado,
+          servicoMilitarSemDescontos: servicoMilitarSemDescontos,
+          mesesServicoMilitar: mesesServicoMilitarNormalizado,
+          mesmaEmpresa: mesmaEmpresaStr === 'sim',
+        },
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 5. CÁLCULO — função pura, testada em
+    //    tests/test_simulador_condicoes_reforma_calculo.py
+    // ══════════════════════════════════════════════════════════════════════
+
+    // calcularCondicoesReforma: NUNCA toca no DOM, nunca produz HTML nem
+    // texto de interface — só dados estruturados. Entradas: params
+    // (PARAMETROS_CONDICOES_REFORMA) + input já validado e normalizado,
+    // mais anoReferencia/mesReferencia (o "hoje" da simulação). Saída:
+    // objecto estruturado (ver campos comentados abaixo). Mostra SEMPRE
+    // todas as vias em que a pessoa cabe, nunca só a primeira (pedido
+    // explícito do brief) — nunca decide por quem simula.
+    function calcularCondicoesReforma(params, input) {
+      var idade = calcularIdadeAnosMeses(input.anoNascimento, input.mesNascimento, input.anoReferencia, input.mesReferencia);
+
+      var anosServicoMilitarConvertidos = input.servicoMilitarSemDescontos
+        ? arredondarAnos(input.mesesServicoMilitar / 12)
+        : 0;
+      var anosSemServicoMilitar = input.anosCarreira;
+      var anosConsiderados = arredondarAnos(input.anosCarreira + anosServicoMilitarConvertidos);
+
+      var resultado = {
+        idade: idade,
+        anosCarreiraDeclarados: input.anosCarreira,
+        servicoMilitarConsiderado: input.servicoMilitarSemDescontos,
+        anosServicoMilitarConvertidos: anosServicoMilitarConvertidos,
+        anosConsiderados: anosConsiderados,
+        vias: [],
+        idadePessoal: null,
+        quantoFalta: null,
+        avisoMesmaEmpresa: false,
+      };
+
+      // PASSO 0 — prazo de garantia (art. 19.º). Sem isto, nenhuma via
+      // de acesso à velhice está disponível — para tudo aqui.
+      var prazoGarantiaCumprido = anosConsiderados >= params.prazoGarantiaVelhiceAnos.valor;
+      resultado.prazoGarantiaCumprido = prazoGarantiaCumprido;
+      if (!prazoGarantiaCumprido) {
+        resultado.semAcesso = true;
+        resultado.anosEmFaltaPrazoGarantia = arredondarAnos(params.prazoGarantiaVelhiceAnos.valor - anosConsiderados);
+        return resultado;
+      }
+      resultado.semAcesso = false;
+
+      // PASSO 1 — Carreiras muito longas (art. 21.º-A n.º 1). Via a) e
+      // via b) partilham as mesmas consequências (mesmo regime) — mostra-
+      // -se uma única via, com as subvias em que a pessoa cabe.
+      var idadeOkA = idade.anos >= params.clViaAIdadeMinima.valor;
+      var anosOkA = anosConsiderados >= params.clViaAAnosMinimos.valor;
+      var viaA = idadeOkA && anosOkA;
+
+      var idadeOkB = idade.anos >= params.clViaBIdadeMinima.valor;
+      var anosOkB = anosConsiderados >= params.clViaBAnosMinimos.valor;
+      // Limite EXCLUSIVO — < 17, nunca <= 17.
+      var inicioOkB = input.idadeInicioDescontos !== null && input.idadeInicioDescontos < params.clViaBIdadeInicioLimite.valor;
+      var viaB = idadeOkB && anosOkB && inicioOkB;
+
+      if (viaA || viaB) {
+        var subvias = [];
+        if (viaA) subvias.push('a');
+        if (viaB) subvias.push('b');
+
+        var viaASemTropa = idadeOkA && (anosSemServicoMilitar >= params.clViaAAnosMinimos.valor);
+        var viaBSemTropa = idadeOkB && (anosSemServicoMilitar >= params.clViaBAnosMinimos.valor) && inicioOkB;
+        var dependeServicoMilitarCML = anosServicoMilitarConvertidos > 0 && !(viaASemTropa || viaBSemTropa);
+
+        resultado.vias.push({
+          id: 'carreiras_muito_longas',
+          subvias: subvias,
+          dependeServicoMilitar: dependeServicoMilitarCML,
+          fatorSustentabilidade: 'nao_aplica',
+          fatorReducao: 'nao_aplica',
+          minimoGarantido: true,
+        });
+      }
+
+      // PASSO 2 — Flexibilização da idade (art. 21.º n.º 2). Pode
+      // coexistir com carreiras muito longas — mostrar as duas.
+      var idadeOkFlex = idade.anos >= params.flexIdadeMinima.valor;
+      var anosOkFlex = anosConsiderados >= params.flexAnosMinimos.valor;
+      if (idadeOkFlex && anosOkFlex) {
+        var anosOkFlexSemTropa = anosSemServicoMilitar >= params.flexAnosMinimos.valor;
+        var dependeServicoMilitarFlex = anosServicoMilitarConvertidos > 0 && idadeOkFlex && !anosOkFlexSemTropa;
+        resultado.vias.push({
+          id: 'flexibilizacao',
+          dependeServicoMilitar: dependeServicoMilitarFlex,
+          fatorSustentabilidade: 'nao_aplica',
+          fatorReducao: 'aplica_definitivo',
+          minimoGarantido: false,
+        });
+      }
+
+      // PASSO 3 — Idade pessoal (art. 20.º n.º 8), sempre informativo:
+      // expressa como redução RELATIVA à idade normal em vigor no ano da
+      // reforma (desconhecida hoje), nunca como um valor absoluto — e
+      // sempre com o piso legal de 60 anos, mesmo quando a redução
+      // calculada não chega lá (o piso é um facto legal permanente, não
+      // uma consequência deste caso concreto).
+      if (anosConsiderados > 40) {
+        var anosExcedentes = arredondarAnos(anosConsiderados - 40);
+        resultado.idadePessoal = {
+          anosExcedentes: anosExcedentes,
+          reducaoMeses: Math.round(anosExcedentes * params.idadePessoalReducaoMesesPorAno.valor),
+          idadeMinimaAbsoluta: params.idadePessoalIdadeMinima.valor,
+        };
+      }
+
+      // Aviso comum às duas antecipações (art. 62.º n.º 3) — só faz
+      // sentido se pelo menos uma via de antecipação estiver disponível.
+      resultado.avisoMesmaEmpresa = !!input.mesmaEmpresa && resultado.vias.length > 0;
+
+      // PASSO 4 — "quanto falta", só quando NENHUMA via de acesso
+      // antecipado está disponível (a informação mais accionável quando
+      // não há nenhuma via já aberta) — em anos de carreira (até à
+      // flexibilização, o limiar mais baixo: 40 anos) e em idade (até
+      // aos 60), nunca inventando um valor de idade normal.
+      if (resultado.vias.length === 0) {
+        var mesesFaltamIdade = Math.max(0, params.flexIdadeMinima.valor * 12 - idade.totalMeses);
+        resultado.quantoFalta = {
+          idade: { anos: Math.floor(mesesFaltamIdade / 12), meses: mesesFaltamIdade % 12 },
+          anosCarreira: Math.max(0, arredondarAnos(params.flexAnosMinimos.valor - anosConsiderados)),
+        };
+      }
+
+      return resultado;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 6. RENDERIZAÇÃO — só esta camada produz HTML/texto de interface
+    // ══════════════════════════════════════════════════════════════════════
+
+    var NOMES_VIA = {
+      carreiras_muito_longas: 'Carreiras muito longas',
+      flexibilizacao: 'Flexibilização da idade',
+    };
+
+    function renderConsequenciasTabela(via) {
+      var fsTexto = via.fatorSustentabilidade === 'nao_aplica'
+        ? '<span class="valor-bom">Não se aplica</span>'
+        : via.fatorSustentabilidade;
+      var reducaoTexto = via.fatorReducao === 'nao_aplica'
+        ? '<span class="valor-bom">Não se aplica</span>'
+        : '<span class="valor-mau">Aplica-se — 0,5% por mês, definitivo</span>';
+      var minimoTexto = via.minimoGarantido
+        ? '<span class="valor-bom">Garantido</span>'
+        : '<span class="valor-mau">Não garantido</span>';
+      var html = '<table class="via-consequencias"><thead><tr><th></th><th></th></tr></thead><tbody>';
+      html += '<tr><td>Factor de sustentabilidade</td><td>' + fsTexto + '</td></tr>';
+      html += '<tr><td>Factor de redução</td><td>' + reducaoTexto + '</td></tr>';
+      html += '<tr><td>Valor mínimo de pensão</td><td>' + minimoTexto + '</td></tr>';
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function renderViaCarreirasMuitoLongas(via) {
+      var subviasTexto = via.subvias.length === 2 ? 'a) e b)' : (via.subvias[0] === 'a' ? 'a)' : 'b)');
+      var html = '<div class="via-card via-longa">';
+      html += '<div class="via-titulo">✅ Carreiras muito longas — via ' + subviasTexto + '</div>';
+      html += '<div class="via-artigo">art. 21.º-A n.º 1</div>';
+      if (via.dependeServicoMilitar) {
+        html += '<div class="via-caveat">⚠️ Só chegas a esta via a contar o teu serviço militar — que só conta mediante requerimento próprio ao abrigo do art. 48.º. Sem esse requerimento, esta via ainda não está disponível.</div>';
+      }
+      html += '<div class="via-caveat">' + MENSAGENS_CONDICOES_REFORMA.avisoTempoBonificado + '</div>';
+      html += renderConsequenciasTabela(via);
+      html += '<p style="margin-top:0.9rem;font-size:0.85rem;opacity:0.9;">É o melhor regime de antecipação que existe: sem corte, sem factor de sustentabilidade, e com mínimo de pensão garantido.</p>';
+      html += '</div>';
+      return html;
+    }
+
+    function renderViaFlexibilizacao(via) {
+      var html = '<div class="via-card via-flex">';
+      html += '<div class="via-titulo">✅ Flexibilização da idade</div>';
+      html += '<div class="via-artigo">art. 21.º n.º 2</div>';
+      if (via.dependeServicoMilitar) {
+        html += '<div class="via-caveat">⚠️ Só chegas a esta via a contar o teu serviço militar — que só conta mediante requerimento próprio ao abrigo do art. 48.º. Sem esse requerimento, esta via ainda não está disponível.</div>';
+      }
+      html += '<div class="via-caveat">A antecipação por flexibilização implica um corte de 0,5% por cada mês de antecipação, e o corte é definitivo (art. 36.º n.os 2 e 3).</div>';
+      html += renderConsequenciasTabela(via);
+      html += '<p style="margin-top:0.9rem;font-size:0.85rem;opacity:0.9;">Ao contrário das carreiras muito longas, esta via não tem valor mínimo de pensão garantido (art. 44.º n.º 3 não cobre esta via) — a informação mais consequente para quem tem carreira longa e salários baixos.</p>';
+      html += '</div>';
+      return html;
+    }
+
+    function renderIdadePessoal(idadePessoal) {
+      var html = '<div class="idadepessoal-card">';
+      html += '<h3>📉 A tua idade pessoal (informativo)</h3>';
+      html += '<p>A tua carreira excede os 40 anos em ' + idadePessoal.anosExcedentes + ' ano(s). A tua idade pessoal é a <strong>idade normal em vigor menos ' + idadePessoal.reducaoMeses + ' meses</strong> (art. 20.º n.º 8), com o limite inferior de <strong>' + idadePessoal.idadeMinimaAbsoluta + ' anos</strong> — nunca desce abaixo disso, seja qual for a redução calculada.</p>';
+      html += '<p style="font-size:0.85rem;color:var(--muted)">A idade normal do teu ano de reforma ainda não é conhecida — só é publicada por portaria no 2.º ano civil anterior. Consulta o <a href="/idade-normal.html">guia da idade normal</a> e a Segurança Social Direta para o valor concreto.</p>';
+      html += '</div>';
+      return html;
+    }
+
+    function renderQuantoFalta(quantoFalta) {
+      var html = '<div class="quantofalta-card">';
+      html += '<h3>⏳ Ainda não tens nenhuma via de antecipação disponível</h3>';
+      var partes = [];
+      if (quantoFalta.idade.anos > 0 || quantoFalta.idade.meses > 0) {
+        var idadeTxt = '';
+        if (quantoFalta.idade.anos > 0) idadeTxt += quantoFalta.idade.anos + ' ano(s)';
+        if (quantoFalta.idade.meses > 0) idadeTxt += (idadeTxt ? ' e ' : '') + quantoFalta.idade.meses + ' mes(es)';
+        partes.push('<strong>' + idadeTxt + '</strong> de idade');
+      }
+      if (quantoFalta.anosCarreira > 0) {
+        partes.push('<strong>' + quantoFalta.anosCarreira + ' ano(s)</strong> de carreira');
+      }
+      if (partes.length > 0) {
+        html += '<p>Falta(m) ' + partes.join(' e ') + ' para chegares à via mais próxima (flexibilização, 60 anos + 40 anos de registo de remunerações).</p>';
+      } else {
+        html += '<p>Estás muito perto da via mais próxima (flexibilização, 60 anos + 40 anos de registo de remunerações) — confirma os teus dados na Segurança Social Direta.</p>';
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function renderSemAcesso(r) {
+      var html = '<div class="semacesso-card">';
+      html += '<div class="semacesso-titulo">❌ Ainda não cumpres o prazo de garantia</div>';
+      html += '<div class="semacesso-detalhe">';
+      html += '<p>São precisos <strong>15 anos civis</strong> com registo de remunerações para teres acesso à pensão de velhice, por qualquer via (art. 19.º do Decreto-Lei n.º 187/2007). Tens ' + r.anosConsiderados + ' ano(s) considerados — faltam <strong>' + r.anosEmFaltaPrazoGarantia + ' ano(s)</strong>.</p>';
+      html += '<p>Sem o prazo de garantia cumprido, nenhuma das vias de antecipação (carreiras muito longas, flexibilização) nem a idade normal estão disponíveis — é a primeira condição a cumprir, antes de qualquer outra.</p>';
+      html += '</div></div>';
+      return html;
+    }
+
+    // renderResultado: constrói o HTML de #resultado a partir do objecto
+    // estruturado devolvido por calcularCondicoesReforma(). Mostra sempre
+    // o resumo de idade/carreira primeiro, depois todas as vias
+    // disponíveis lado a lado (nunca só a primeira), depois o
+    // informativo de idade pessoal, depois "quanto falta" quando
+    // aplicável.
+    function renderResultado(r) {
+      if (r.semAcesso) {
+        return renderSemAcesso(r);
+      }
+
+      var html = '<div class="idade-resumo">';
+      html += 'Tens <strong>' + r.idade.anos + ' anos e ' + r.idade.meses + ' mes(es)</strong> e <strong>' + r.anosConsiderados + ' anos</strong> considerados para efeitos de acesso';
+      if (r.servicoMilitarConsiderado && r.anosServicoMilitarConvertidos > 0) {
+        html += ' (' + r.anosCarreiraDeclarados + ' anos de carreira + ' + r.anosServicoMilitarConvertidos + ' ano(s) de serviço militar, sujeito a requerimento)';
+      }
+      html += '.</div>';
+
+      r.vias.forEach(function (via) {
+        if (via.id === 'carreiras_muito_longas') html += renderViaCarreirasMuitoLongas(via);
+        else if (via.id === 'flexibilizacao') html += renderViaFlexibilizacao(via);
+      });
+
+      if (r.vias.length === 0) {
+        html += '<div class="aviso-info">Ainda não tens acesso a nenhuma via de antecipação (carreiras muito longas ou flexibilização) — as duas exigem, no mínimo, 60 anos de idade. O acesso pela idade normal continua disponível quando a atingires; consulta o <a href="/idade-normal.html">guia da idade normal</a>.</div>';
+      }
+
+      if (r.idadePessoal) {
+        html += renderIdadePessoal(r.idadePessoal);
+      }
+
+      if (r.quantoFalta) {
+        html += renderQuantoFalta(r.quantoFalta);
+      }
+
+      if (r.avisoMesmaEmpresa) {
+        html += '<div class="aviso-teto">' + MENSAGENS_CONDICOES_REFORMA.avisoMesmaEmpresa(PARAMETROS_CONDICOES_REFORMA.mesmaEmpresaAnosProibicao.valor) + '</div>';
+      }
+
+      html += '<div class="aviso-info">' + MENSAGENS_CONDICOES_REFORMA.fiabilidade + '</div>';
+      html += '<p style="font-size:0.9rem;color:#6B7280;line-height:1.6;margin-top:1rem;">Confirma sempre esta simulação na <a href="https://www.seg-social.pt" target="_blank" rel="noopener" style="color:#0F766E;font-weight:600;">Segurança Social Direta</a> — só ela sabe o que está registado em teu nome.</p>';
+
+      return html;
+    }
+
+    function limparErrosFormulario() {
+      document.querySelectorAll('.erro-campo').forEach(function (el) {
+        el.textContent = '';
+        el.classList.remove('show');
+      });
+      document.querySelectorAll('.form-group').forEach(function (el) {
+        el.classList.remove('tem-erro');
+      });
+    }
+
+    function renderErrosFormulario(erros) {
+      erros.forEach(function (erro) {
+        var elErro = document.getElementById('erro' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        var grupo = document.getElementById('grupo' + erro.campo.charAt(0).toUpperCase() + erro.campo.slice(1));
+        if (elErro) {
+          elErro.textContent = erro.mensagem;
+          elErro.classList.add('show');
+        }
+        if (grupo) grupo.classList.add('tem-erro');
+      });
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 7. EVENTOS
+    // ══════════════════════════════════════════════════════════════════════
+    function limparResultadoCondicoesReforma() {
+      var resultDiv = document.getElementById('resultado');
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+      limparErrosFormulario();
+    }
+
+    function alternarMesesServicoMilitar() {
+      var marcado = document.getElementById('servicoMilitar').checked;
+      document.getElementById('grupoMesesServicoMilitar').classList.toggle('show', marcado);
+    }
+
+    function calcularCondicoesReformaFormulario(evento) {
+      evento.preventDefault();
+
+      if (!PARAMETROS_CONDICOES_REFORMA) {
+        mostrarErroParametrosCondicoesReforma(new Error('parâmetros ainda não carregados'));
+        return;
+      }
+
+      limparErrosFormulario();
+
+      var bruto = {
+        mesNascimento: document.getElementById('mesNascimento').value,
+        anoNascimento: document.getElementById('anoNascimento').value,
+        anosCarreira: document.getElementById('anosCarreira').value,
+        idadeInicio: document.getElementById('idadeInicio').value,
+        servicoMilitar: document.getElementById('servicoMilitar').checked,
+        mesesServicoMilitar: document.getElementById('mesesServicoMilitar').value,
+        mesmaEmpresa: document.getElementById('mesmaEmpresa').value,
+      };
+
+      var validacao = validarInputCondicoesReforma(bruto);
+      var resultDiv = document.getElementById('resultado');
+
+      if (!validacao.valido) {
+        renderErrosFormulario(validacao.erros);
+        resultDiv.classList.remove('show');
+        resultDiv.innerHTML = '';
+        var primeiroErro = document.getElementById('grupo' + validacao.erros[0].campo.charAt(0).toUpperCase() + validacao.erros[0].campo.slice(1));
+        if (primeiroErro) primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var hoje = dataDeHojeAnoMes();
+      var input = Object.assign({}, validacao.valoresNormalizados, { anoReferencia: hoje.ano, mesReferencia: hoje.mes });
+
+      var r = calcularCondicoesReforma(PARAMETROS_CONDICOES_REFORMA, input);
+      resultDiv.innerHTML = renderResultado(r);
+      resultDiv.classList.add('show');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'calc_resultado', { calculadora: 'condicoes_reforma' });
+        gtag('event', 'simulacao_concluida', { simulador: 'condicoes_reforma', elegivel: !r.semAcesso });
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // 8. INICIALIZAÇÃO
+    // ══════════════════════════════════════════════════════════════════════
+    // Guarda de existência (nunca assumida): permite injectar só este
+    // <script> numa página sem formulário (testes de unidade das funções
+    // puras) sem lançar excepção.
+    var formularioCondicoesReforma = document.getElementById('formCondicoesReforma');
+    if (formularioCondicoesReforma) {
+      formularioCondicoesReforma.addEventListener('submit', calcularCondicoesReformaFormulario);
+      document.getElementById('servicoMilitar').addEventListener('change', alternarMesesServicoMilitar);
+      document.getElementById('btnLimpar').addEventListener('click', function () {
+        formularioCondicoesReforma.reset();
+        document.getElementById('grupoMesesServicoMilitar').classList.remove('show');
+        limparResultadoCondicoesReforma();
+      });
+    }
+  </script>
+
+</body>
+</html>

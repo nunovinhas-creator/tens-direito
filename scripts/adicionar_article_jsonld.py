@@ -129,6 +129,7 @@ DATAS_PUBLICACAO = {
     "reforma-reino-unido-brexit.html": "2026-09-07",
     "pensao-unificada.html": "2026-09-07",
     "caixa-geral-aposentacoes.html": "2026-09-07",
+    "simulador-condicoes-reforma.html": "2026-09-07",
 }
 
 _RE_OG_TITLE = re.compile(r'<meta property="og:title" content="([^"]+)">')
