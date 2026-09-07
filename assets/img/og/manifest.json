@@ -474,6 +474,11 @@
     "pagina": "simulador-ase.html",
     "titulo": "Simulador de Ação Social Escolar (ASE) 2026/2027"
   },
+  "simulador-condicoes-reforma": {
+    "chip": "Reformas e Pensões",
+    "pagina": "simulador-condicoes-reforma.html",
+    "titulo": "Simulador de Condições de Acesso à Reforma"
+  },
   "simulador-csi": {
     "chip": "Idosos, Incapacidade e Cuidadores",
     "pagina": "simulador-csi.html",

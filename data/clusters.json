@@ -150,7 +150,8 @@
         {"slug": "carreiras-contributivas-estrangeiro.html", "titulo": "Carreira contributiva no estrangeiro", "tipo": "artigo", "destaque": false},
         {"slug": "reforma-reino-unido-brexit.html", "titulo": "Reforma e o Reino Unido", "tipo": "artigo", "destaque": false},
         {"slug": "pensao-unificada.html", "titulo": "Pensão unificada", "tipo": "artigo", "destaque": false},
-        {"slug": "caixa-geral-aposentacoes.html", "titulo": "Caixa Geral de Aposentações", "tipo": "artigo", "destaque": false}
+        {"slug": "caixa-geral-aposentacoes.html", "titulo": "Caixa Geral de Aposentações", "tipo": "artigo", "destaque": false},
+        {"slug": "simulador-condicoes-reforma.html", "titulo": "Simulador de Condições de Acesso à Reforma", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["idosos-incapacidade-cuidadores"]
     }

@@ -1,0 +1,147 @@
+# Parâmetros ESTRUTURAIS das condições de acesso à reforma por velhice —
+# padrão OpenFisca de parâmetros com vigência, mesmo princípio de
+# csi.yaml/rsi.yaml/desemprego.yaml/habitacao.yaml.
+#
+# Diploma-base: Decreto-Lei n.º 187/2007, de 10 de maio, na redação
+# consolidada verificada directamente no DRE. Fonte fornecida ao
+# repositório já pré-verificada (ficheiro de trabalho `pensoes-lei.yml`,
+# não commitado): redação confirmada na republicação integral pelo
+# Decreto-Lei n.º 16-A/2021 (DR 1.ª série n.º 39, 1.º Suplemento,
+# 25-02-2021, págs. 11-(7) a 11-(37)), com a última alteração posterior
+# (Decreto-Lei n.º 40/2025, de 26 de março) confirmada a NÃO tocar em
+# nenhum dos artigos aqui citados (aditou só o art. 91.º-A, prova de
+# vida de residentes no estrangeiro) — verificação directa no DRE feita
+# a 2026-09-04, transcrita para este ficheiro nesta sessão (2026-09-07).
+#
+# Âmbito deliberadamente restrito: só os limiares que o simulador de
+# condições de acesso (`simulador-condicoes-reforma.html`) consome —
+# nunca a idade normal em vigor nem o factor de sustentabilidade, que
+# mudam todos os anos por portaria e não são condição de acesso (ver
+# nota do simulador e o "Aviso de âmbito" do próprio brief). São
+# limiares absolutos fixados no diploma, nunca revistos por portaria —
+# por isso `vigencia_inicio` reflecte a data da redação verificada
+# (a republicação de 2021), não uma data de actualização anual.
+
+prazo_garantia_velhice_anos_civis:
+  descricao: "Prazo de garantia para acesso à pensão de velhice — anos civis com registo de remunerações"
+  unidade: "anos civis"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 15
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 19.º"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+carreiras_longas_via_a_idade_minima:
+  descricao: "Carreiras muito longas, via a) — idade mínima"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 a)"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+carreiras_longas_via_a_anos_civis_minimos:
+  descricao: "Carreiras muito longas, via a) — anos civis de carreira mínimos"
+  unidade: "anos civis"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 48
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 a)"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+carreiras_longas_via_b_idade_minima:
+  descricao: "Carreiras muito longas, via b) — idade mínima"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+carreiras_longas_via_b_anos_civis_minimos:
+  descricao: "Carreiras muito longas, via b) — anos civis de carreira mínimos, com início antes dos 17 anos"
+  unidade: "anos civis"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 46
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+# Limite EXCLUSIVO — a via b) exige início da carreira em idade
+# INFERIOR a este valor (< 17), nunca "até 17 anos, inclusive". Começar
+# a descontar no mês em que se fazem 17 anos já não conta.
+carreiras_longas_via_b_idade_inicio_limite:
+  descricao: "Carreiras muito longas, via b) — idade-limite (exclusiva) de início da carreira contributiva"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 17
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+flexibilizacao_idade_minima:
+  descricao: "Regime de flexibilização da idade de reforma — idade mínima"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º n.º 2"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+flexibilizacao_anos_registo_minimos:
+  descricao: "Regime de flexibilização da idade de reforma — anos de registo de remunerações mínimos"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 40
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º n.º 2"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+idade_pessoal_reducao_meses_por_ano:
+  descricao: "Idade pessoal — redução da idade normal, em meses, por cada ano civil de carreira acima dos 40"
+  unidade: "meses/ano"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 4
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 20.º n.º 8"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+idade_pessoal_idade_minima_absoluta:
+  descricao: "Idade pessoal — piso legal, nunca inferior a este valor, seja qual for a redução calculada"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 20.º n.º 8"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"
+
+antecipada_mesma_empresa_anos_proibicao:
+  descricao: "Antecipação da pensão (flexibilização/carreiras muito longas) — anos de proibição de regresso à mesma empresa ou grupo empresarial"
+  unidade: "anos"
+  valores:
+    - vigencia_inicio: "2021-02-25"
+      valor: 3
+      referencia_legal: "Decreto-Lei n.º 187/2007, de 10 de maio, art. 62.º n.º 3"
+      fonte_url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275"
+      fonte_url_complementar: "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf"
+      verificado_em: "2026-09-04"

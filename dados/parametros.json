@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-06",
+  "gerado_em": "2026-09-07",
   "prestacoes": {
     "abono": {
       "escalao1_limite_cenario_pedidos_novos_2026": {
@@ -937,6 +937,118 @@
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/97-2026-1124493227",
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-20"
+      }
+    },
+    "pensoes": {
+      "prazo_garantia_velhice_anos_civis": {
+        "descricao": "Prazo de garantia para acesso à pensão de velhice — anos civis com registo de remunerações",
+        "unidade": "anos civis",
+        "valor": 15,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 19.º",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "carreiras_longas_via_a_idade_minima": {
+        "descricao": "Carreiras muito longas, via a) — idade mínima",
+        "unidade": "anos",
+        "valor": 60,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 a)",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "carreiras_longas_via_a_anos_civis_minimos": {
+        "descricao": "Carreiras muito longas, via a) — anos civis de carreira mínimos",
+        "unidade": "anos civis",
+        "valor": 48,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 a)",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "carreiras_longas_via_b_idade_minima": {
+        "descricao": "Carreiras muito longas, via b) — idade mínima",
+        "unidade": "anos",
+        "valor": 60,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "carreiras_longas_via_b_anos_civis_minimos": {
+        "descricao": "Carreiras muito longas, via b) — anos civis de carreira mínimos, com início antes dos 17 anos",
+        "unidade": "anos civis",
+        "valor": 46,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "carreiras_longas_via_b_idade_inicio_limite": {
+        "descricao": "Carreiras muito longas, via b) — idade-limite (exclusiva) de início da carreira contributiva",
+        "unidade": "anos",
+        "valor": 17,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º-A n.º 1 b)",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "flexibilizacao_idade_minima": {
+        "descricao": "Regime de flexibilização da idade de reforma — idade mínima",
+        "unidade": "anos",
+        "valor": 60,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º n.º 2",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "flexibilizacao_anos_registo_minimos": {
+        "descricao": "Regime de flexibilização da idade de reforma — anos de registo de remunerações mínimos",
+        "unidade": "anos",
+        "valor": 40,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 21.º n.º 2",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "idade_pessoal_reducao_meses_por_ano": {
+        "descricao": "Idade pessoal — redução da idade normal, em meses, por cada ano civil de carreira acima dos 40",
+        "unidade": "meses/ano",
+        "valor": 4,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 20.º n.º 8",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "idade_pessoal_idade_minima_absoluta": {
+        "descricao": "Idade pessoal — piso legal, nunca inferior a este valor, seja qual for a redução calculada",
+        "unidade": "anos",
+        "valor": 60,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 20.º n.º 8",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
+      },
+      "antecipada_mesma_empresa_anos_proibicao": {
+        "descricao": "Antecipação da pensão (flexibilização/carreiras muito longas) — anos de proibição de regresso à mesma empresa ou grupo empresarial",
+        "unidade": "anos",
+        "valor": 3,
+        "vigencia_inicio": "2021-02-25",
+        "referencia_legal": "Decreto-Lei n.º 187/2007, de 10 de maio, art. 62.º n.º 3",
+        "fonte_url": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275",
+        "fonte_url_complementar": "https://files.diariodarepublica.pt/1s/2021/02/03901/0000200037.pdf",
+        "verificado_em": "2026-09-04"
       }
     },
     "psu": {

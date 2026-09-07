@@ -490,6 +490,7 @@ para esses três casos.
 | `reforma-reino-unido-brexit.html` | Reforma e o Reino Unido: o Protocolo pós-Brexit | 7 set. 2026 |
 | `pensao-unificada.html` | Pensão Unificada: CGA e Segurança Social numa só pensão | 7 set. 2026 |
 | `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 7 set. 2026 |
+| `simulador-condicoes-reforma.html` | Simulador de Condições de Acesso à Reforma | 7 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -10686,3 +10687,119 @@ sessão sem scraper). Trabalho feito na branch
 anterior, nomeada explicitamente pelo pedido desta sessão) — **SEM
 PR — branch não integrada em `main`** (instrução explícita desta
 sessão: não abrir PR).
+
+---
+
+*Última revisão: 2026-09-07 — novo `simulador-condicoes-reforma.html`,
+8.º simulador do site e 1.ª ferramenta do cluster `reformas` (fecha-o,
+per o brief da sessão). Recebidos nesta sessão dois ficheiros já
+pré-verificados pelo Nuno: `pensoes-lei.yml` (parâmetros estruturais do
+regime de invalidez/velhice, DL 187/2007, com citação de artigo e
+metadados de verificação directa no DRE a 2026-09-04) e um brief
+completo do simulador. Nenhum WebSearch/WebFetch foi necessário — os
+valores vieram directamente da fonte já verificada fornecida à sessão,
+mesmo padrão de outras sessões que receberam pacotes pré-fact-checked
+do Nuno.
+
+**Diferença de género face aos 8 simuladores anteriores**: este não
+calcula nenhum valor em euros — responde só a «já posso reformar-me, e
+por que via?» (condições de acesso). Nunca pede a idade normal de
+reforma nem o factor de sustentabilidade como input — nenhum dos dois
+é condição de acesso (a idade normal muda todos os anos por portaria e
+não é modelada; o factor de sustentabilidade só entra no output, como
+informação qualitativa por via, nunca como cálculo) — por isso o
+simulador continua exacto sem edição, em qualquer ano.
+
+`dados/parametros/pensoes.yaml` — novo, 11 parâmetros, âmbito
+deliberadamente restrito ao que o simulador consome (prazo de garantia
+de 15 anos, as duas vias de carreiras muito longas — 60+48 e 60+46 com
+início antes dos 17 —, flexibilização 60+40, redução de 4 meses/ano da
+idade pessoal com piso de 60 anos, e o prazo de 3 anos de proibição de
+regresso à mesma empresa) — nunca a idade normal nem o factor de
+sustentabilidade, que não são limiares fixados no diploma. Todos os 11
+parâmetros com `referencia_legal`/`fonte_url` (a versão consolidada do
+DRE já citada em `p/reformas.html`) e `verificado_em: "2026-09-04"` (a
+data real da verificação no ficheiro fornecido, não a data desta
+sessão) — `vigencia_inicio: "2021-02-25"` uniforme (a data da
+republicação onde a redacção actual foi confirmada), já que são
+limiares absolutos, nunca revistos por portaria.
+
+**Lógica implementada exactamente como desenhada no brief** — avaliação
+em cascata (prazo de garantia → carreiras muito longas → flexibilização
+→ idade pessoal informativa → "quanto falta" só quando nada se aplica),
+**mostrando sempre todas as vias em que a pessoa cabe**, nunca só a
+primeira. O serviço militar (art. 48.º) é tratado como o brief exigia —
+nunca a pergunta «fez tropa?», mas «cumpriste serviço militar em
+período sem descontos?», com um campo condicional de duração em meses;
+o simulador compara o resultado com e sem esse tempo e assinala
+`dependeServicoMilitar` quando ele é decisivo, avisando que só conta
+mediante requerimento próprio. Os 5 casos-limite obrigatórios do brief
+(fronteira dos 17 anos — `< 17`, nunca `<= 17`; serviço militar
+decisivo; piso dos 60 anos na idade pessoal, com as duas informações
+sempre juntas; prazo de garantia não cumprido; elegibilidade
+simultânea por carreiras muito longas e flexibilização) foram escritos
+como testes ANTES de qualquer ajuste ao código e **passaram à primeira
+tentativa** — nenhuma correcção de lógica foi necessária depois de
+escritos.
+
+Estrutura da página: card de âmbito ("vai buscar os teus anos à SSD,
+não os estimes"), formulário (mês+ano de nascimento — nunca o dia, "o
+dia não é preciso" — anos de carreira, idade de início opcional,
+serviço militar, mesma empresa), resultado com um `via-card` por via
+disponível (tabela de consequências: factor de sustentabilidade/factor
+de redução/mínimo garantido), bloco informativo de idade pessoal
+(redução relativa + piso, nunca um valor absoluto), bloco "quanto
+falta" quando não há nenhuma via ainda, e um card fixo e sempre visível
+sobre as antecipações NÃO cobertas (desemprego de longa duração — art.
+24.º — e profissão desgastante — art. 22.º — nenhuma das duas isenta
+do factor de sustentabilidade, ao contrário das vias que este
+simulador cobre). Mesmo padrão arquitectural dos simuladores recentes:
+`fetch('/dados/parametros.json')` em runtime, botão nasce `disabled`
+até carregar com sucesso, `validarInputCondicoesReforma()` nunca
+converte vazio/inválido em 0 silenciosamente, função pura
+`calcularCondicoesReforma()` nunca toca no DOM.
+
+Integração: `data/clusters.json` (`simulador-condicoes-reforma.html`,
+tipo `ferramenta`, cluster `reformas`); `scripts/sincronizar_clusters.py`
+corrido com sucesso — actualizou `index.html` (`ATUALIZACOES:HOME`) e
+`p/reformas.html` (`PILLAR-LISTA`/`PILLAR-JSONLD`, 20→21 itens, badge
+"Ferramenta"); `sincronizar_nav.py`/`inserir_botao_partilhar.py`/
+`adicionar_canonicas.py`/`adicionar_autoria_artigos.py`/
+`adicionar_article_jsonld.py` confirmados a **zero alterações** — a
+página já nasceu com nav, botão de partilha, canónica, autoria e
+`Article` JSON-LD correctos. `scripts/gerar_og_images.py --write` gerou
+a imagem própria. `p/reformas.html` ganhou também um 5.º mini-card
+manual no Anel 1 (fora do `PILLAR-LISTA` automático, mesmo padrão já
+usado nos outros clusters para dar visibilidade extra a um simulador
+dentro do "guia" mais relevante). `simuladores.html` (hub — 9.º card,
+`hasPart` JSON-LD, "Oito"→"Nove" no `<h1>`/description/og/parágrafo de
+fecho) e a secção "Simuladores e Calculadoras" do `index.html` (9.º
+cartão) actualizados. `sitemap.xml` e `scripts/pesquisa.js`
+actualizados. `scripts/gerar_base_dados.py` corrido para reflectir os
+11 parâmetros novos em `dados/tensdireito.db` (Dados Abertos).
+
+Testes: `tests/test_simulador_condicoes_reforma_calculo.py`, novo, 31
+casos — os 5 casos-limite obrigatórios do brief, canário dos 11
+limiares de produção contra `dados/parametros.json`, cálculo de idade
+em anos/meses completos (nunca o dia), "quanto falta", aviso "mesma
+empresa" (só com via disponível), e validação de input completa
+(obrigatórios, formatos, decimais rejeitados, campo condicional do
+serviço militar). Nenhuma entrada nova necessária em
+`tests/test_valores_ancora.py`/`tests/test_anos_metadados.py` — a
+página não usa nenhum valor em €/% nem ano civil anterior ao corrente
+em `<title>`/meta description (confirmado a passar sem excepção).
+`tests/test_acessibilidade.py` — 0 violações críticas/sérias nas 4
+páginas tocadas (`simulador-condicoes-reforma.html`, `p/reformas.html`,
+`simuladores.html`, `index.html`). `tests/test_eventos_ga4.py`
+reconfirmado sem regressões (evento `simulacao_concluida` com
+`elegivel` = prazo de garantia cumprido).
+
+Suite completa: `python3 -m pytest tests/ -q` — **4422 passed, 4
+skipped** em 646,96s (10m46s), zero falhas; guardrail de skips
+(`scripts/verificar_skips_permitidos.py`) confirma os 4 skips reais a
+bater certo, elemento a elemento, com a allow-list — nenhum skip novo.
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/new-session-t59zm0` (designada pelo ambiente remoto desta
+sessão).
