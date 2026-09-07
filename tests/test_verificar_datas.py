@@ -565,6 +565,37 @@ def test_marcador_anterior_a_suprime_data_limite_de_contrato():
     assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
 
 
+# ── Marcador "salvaguarda" (issue #170, 2026-09-07) ──
+# fontes.html (card "Lei n.º 60/2005") cita "a salvaguarda de 36 anos de
+# serviço + 60 de idade a 31 de dezembro de 2005 (art. 7.º)" — cláusula
+# transitória com data-limite histórica fixa, mesma família das fronteiras
+# da CGA já cobertas ("novas inscrições"/"se inscreveu"), mas o parágrafo é
+# longo o suficiente para o "Lei n.º 60/2005" do H2 ficar fora da janela de
+# 220 caracteres desta ocorrência específica.
+
+
+def test_fontes_real_nao_gera_alerta_issue_170():
+    html = _ler_pagina_real("fontes.html")
+    for mes in (1, 7, 8, 9):
+        assert detectar_alertas(html, "fontes.html", 2026, mes) is None
+
+
+def test_marcador_salvaguarda_suprime_data_historica():
+    conteudo = (
+        "<p>Fixa a salvaguarda de 36 anos de serviço e 60 anos de idade a "
+        "31 de dezembro de 2005 (art. 7.º).</p>"
+    )
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
+
+
+def test_data_antiga_sem_salvaguarda_continua_a_alertar():
+    # Guarda contra sobre-supressão: uma data antiga genuína sem a palavra
+    # "salvaguarda" por perto continua a disparar normalmente — o marcador
+    # novo não afecta a detecção fora do seu contexto real.
+    conteudo = "<p>O prazo de candidatura terminou em dezembro de 2005.</p>"
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is not None
+
+
 def test_main_cobre_p_e_documentos(tmp_path, monkeypatch):
     # O fluxo main() real (não só detectar_alertas) tem de percorrer
     # raiz, p/ e documentos/ — com o nome relativo correcto no alerta.
