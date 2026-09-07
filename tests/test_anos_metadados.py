@@ -68,6 +68,12 @@ EXCECOES_ANOS_HISTORICOS = {
     # description (diploma que rege a prova da união de facto), não uma
     # data de vigência.
     ("pensao-sobrevivencia-uniao-de-facto.html", 2001): "Lei n.º 7/2001 — número do diploma, não uma data de vigência",
+    # Anel 4 — regimes complementares (2026-09-07, reescrita estrutural).
+    ("caixa-geral-aposentacoes.html", 2005): "Lei n.º 60/2005 — número do diploma, não uma data de vigência",
+    ("caixa-geral-aposentacoes.html", 2006): "1 de janeiro de 2006 — data histórica fixa do fecho da CGA a novas inscrições, nunca se repete nem muda",
+    ("caixa-geral-aposentacoes.html", 1993): "1 de setembro de 1993 — data histórica fixa da segunda fronteira interna da CGA (art. 5.º, Lei n.º 60/2005), nunca se repete nem muda",
+    ("carreiras-contributivas-estrangeiro.html", 2004): "Regulamento (CE) n.º 883/2004 — ano do regulamento, não uma data de vigência",
+    ("reforma-reino-unido-brexit.html", 2020): "31 de dezembro de 2020 — data histórica fixa do fim do período de transição do Brexit, nunca se repete nem muda",
 }
 
 

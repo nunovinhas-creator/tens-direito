@@ -364,6 +364,33 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 
   Sem prazo — nenhum dos dois é bloqueante para o conteúdo já
   publicado, que está deliberadamente honesto sobre estes dois pontos.
+- **Cluster Reformas e Pensões — Anel 4, regimes complementares —
+  reescrito de raiz a 2026-09-07** após auditoria de fontes primárias
+  (DRE + EUR-Lex) ter encontrado erros estruturais na 1.ª versão de
+  2026-09-06 (ver CLAUDE.md, entrada de correcção de 2026-09-07, e a
+  entrada original de 2026-09-06 mantida como registo histórico do que
+  estava errado). 3 pontos por ler em fonte oficial, registados nesta
+  reescrita, sem prazo:
+  - **Estatuto da Aposentação** — nunca lido nesta série. A Lei n.º
+    60/2005 (lida integralmente) cita-o e revoga normas suas
+    específicas, mas o texto completo do Estatuto (regras de
+    aposentação compulsiva além do art. 56.º, disciplina, outras
+    matérias) nunca foi confirmado em fonte primária —
+    `caixa-geral-aposentacoes.html` só afirma o que vem citado
+    directamente na Lei n.º 60/2005.
+  - **Texto oficial do Protocolo de Coordenação da Segurança Social
+    (Protocolo SSC) do Acordo de Comércio e Cooperação UE-Reino
+    Unido** — só o corpo do TCA (arts. 488.º-490.º, 779.º) e o Acordo
+    de Saída (arts. 30.º-31.º) foram lidos; não foi possível confirmar
+    se o Protocolo SSC tem equivalente ao art. 52.º, n.º 3, do
+    Regulamento 883/2004 (garantia do montante mais elevado) nem um
+    anexo equivalente ao Anexo VIII — sinalizado como questão aberta em
+    `reforma-reino-unido-brexit.html`, nunca preenchido por analogia.
+  - **Anexo VI do Acordo EEE e Anexo II do Acordo de Livre Circulação
+    UE-Suíça** — a extensão do Regulamento 883/2004 ao EEE e à Suíça
+    está confirmada como facto (via `WebSearch`, marcada GRAU 2 em
+    `carreiras-contributivas-estrangeiro.html`), mas o texto exacto da
+    adaptação nos dois anexos nunca foi lido em fonte oficial.
 ---
 
 ## 📅 DATAS FIXAS
@@ -402,6 +429,28 @@ PSU"**.
   "Anel 3C" do pillar `p/reformas.html`, e "TRABALHO FUTURO REGISTADO"
   acima para os 2 loose ends menores (confirmação directa da Lei
   n.º 7/2001; citação do acórdão do STJ).
+- **Cluster Reformas e Pensões — Anel 4, regimes complementares —
+  reescrito de raiz a 2026-09-07** (`carreiras-contributivas-estrangeiro.html`,
+  `reforma-reino-unido-brexit.html`, `pensao-unificada.html`,
+  `caixa-geral-aposentacoes.html`), pillar 13→20 itens. A 1.ª versão
+  (2026-09-06) tinha erros estruturais, encontrados por uma auditoria
+  de leitura directa do DRE/EUR-Lex: a totalização podia AUMENTAR o
+  valor pago por Portugal (não "nunca aumenta"); a fórmula do art. 52.º,
+  n.º 1, b), do Regulamento 883/2004 (pro rata sobre o montante teórico)
+  estava em falta; a dispensa do cálculo pro rata (Anexo VIII, 21+ anos
+  totais / ≤20 anos PT) estava mal atribuída ao Protocolo do Brexit em
+  vez do Regulamento 883/2004 (aplica-se à UE/EEE/Suíça); a cronologia
+  do art. 9.º do DL 361/98 (pensão unificada) estava invertida; e a
+  taxonomia das duas fronteiras da CGA (2006 e 1993, Lei n.º 60/2005)
+  estava incorrecta. Reescrito com fontes GRAU 1 (Reg. 883/2004 e Reg.
+  987/2009 lidos por inteiro; TCA arts. 488.º-490.º/779.º e Acordo de
+  Saída arts. 30.º-31.º; DL 361/98 consolidado; Lei n.º 60/2005
+  integral), GRAU 2 (extensão EEE/Suíça, triangulada) e GRAU 3 (uma
+  questão do Protocolo SSC deixada explicitamente por confirmar, nunca
+  preenchida por analogia) — graus sempre visíveis no corpo de cada
+  página, não só no ROADMAP. Ver CLAUDE.md, entrada de 2026-09-07, para
+  o detalhe completo; a entrada de 2026-09-06 mantém-se como registo
+  histórico do que estava errado, nunca reescrita.
 
 - **Triagem da Issue #158 (`dre_habitacao_garantia`) — 2026-09-03.**
   Confirmado com os dados reais do dia: dos 24 itens devolvidos pela
