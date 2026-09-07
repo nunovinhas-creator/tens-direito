@@ -144,6 +144,21 @@ MARCADORES_HISTORICOS = [
     # por isso esta âncora não colide com essa página (confirmado por
     # grep antes de aplicar).
     r"regulamento\s*\((?:ce|ue)\)\s*n\.?[ºo]",
+    # Cláusula de salvaguarda transitória com data-limite fixa (issue #170,
+    # fontes.html, 2026-09-07): "a salvaguarda de 36 anos de serviço + 60 de
+    # idade a 31 de dezembro de 2005 (art. 7.º)" — mesma família das
+    # fronteiras da CGA já cobertas acima (1993/2006), mas o parágrafo do
+    # card de fontes.html é longo o suficiente para o "Lei n.º 60/2005" do
+    # H2 ficar fora da janela de 220 caracteres desta ocorrência específica
+    # (em caixa-geral-aposentacoes.html o mesmo facto já ficava suprimido
+    # pelos marcadores "lei\s+n\.?º"/"se inscreveu", por estar mais perto).
+    # Uma cláusula de salvaguarda é, por definição, um requisito fixado a
+    # uma data histórica que nunca volta a mudar — nunca "expira". Confirmado
+    # por grep ao repositório inteiro antes de aplicar: a palavra só aparece
+    # em `caixa-geral-aposentacoes.html` (já suprimida por outros marcadores)
+    # e uma vez em `reforma-reino-unido-brexit.html`, sem nenhuma data de
+    # mês+ano nas proximidades — zero risco de mascarar um prazo real.
+    r"\bsalvaguarda\b",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.

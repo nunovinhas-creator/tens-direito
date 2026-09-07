@@ -10803,3 +10803,58 @@ bater certo, elemento a elemento, com a allow-list — nenhum skip novo.
 `False` (inalterados — sessão sem scraper). Trabalho feito na branch
 `claude/new-session-t59zm0` (designada pelo ambiente remoto desta
 sessão).
+
+---
+
+*Última revisão: 2026-09-07 (issue #170) — falso positivo do canário de
+datas expiradas em `fontes.html` ("Data com mês e ano", mês 9/2026).
+Investigação: listadas as 14 ocorrências reais de "mês de ano" da página
+mais as ~90 ocorrências de ano isolado — todas são citações de diploma
+(data de publicação, número de lei/decreto-lei/portaria) ou datas-limite
+substantivas fixadas pela própria lei; `fontes.html` não tem nenhum
+carimbo "Verificado a"/data de última consulta (confirmado por grep —
+é uma página institucional de lista de fontes, sem esse campo), por
+isso **nenhuma** categoria (a) existe nesta página para actualizar.
+
+O match concreto a disparar era "31 de dezembro de 2005" no card da
+Lei n.º 60/2005 — "a salvaguarda de 36 anos de serviço + 60 de idade a
+31 de dezembro de 2005 (art. 7.º)", uma data-limite de uma cláusula de
+salvaguarda transitória da Caixa Geral de Aposentações. Confirmado como
+falso positivo genuíno, mesma família das fronteiras da CGA já cobertas
+por `MARCADORES_HISTORICOS` ("novas inscrições"/"se inscreveu"/"inscritos
+a partir de", 2026-09-06) — o mesmo facto já estava correctamente
+suprimido em `caixa-geral-aposentacoes.html` (onde "Lei n.º 60/2005"/"se
+inscreveu" caem dentro da janela de 220 caracteres), mas o parágrafo de
+`fontes.html` é longo o suficiente para o H2 "Lei n.º 60/2005" ficar fora
+da janela desta ocorrência específica. Uma cláusula de salvaguarda é, por
+definição, um requisito fixado a uma data histórica que nunca volta a
+mudar — nunca "expira".
+
+Corrigido no detector, nunca no conteúdo: novo marcador `\bsalvaguarda\b`
+em `MARCADORES_HISTORICOS` (`scripts/verificar_datas.py`) — confirmado
+por grep ao repositório inteiro antes de aplicar (só 2 ficheiros usam a
+palavra: `caixa-geral-aposentacoes.html`, já suprimida por outros
+marcadores, e `reforma-reino-unido-brexit.html`, sem nenhuma data de
+mês+ano nas proximidades — zero risco de mascarar um prazo real). 3
+testes novos em `tests/test_verificar_datas.py`: `fontes.html` real sem
+alerta nos 4 meses de revisão (1/7/8/9), o marcador a suprimir
+correctamente uma citação sintética da mesma cláusula, e uma guarda
+anti-sobre-supressão (uma data antiga genuína sem a palavra "salvaguarda"
+por perto continua a alertar normalmente).
+
+**Nenhum conteúdo de `fontes.html` foi alterado** — todas as ~30
+citações de diploma/portaria da página (datas de publicação, valores
+substantivos como o limite de 0,35×IAS da Garantia para a Infância, os
+limiares do IMT Jovem, os artigos do DL n.º 322/90/187/2007/361/98,
+etc.) são categoria (b) e ficam por confirmar directamente no DRE numa
+sessão dedicada — nenhuma delas apresentava indício de estar
+substantivamente errada, só a data-limite histórica que disparou o
+detector. Suite completa: `python3 -m pytest tests/ -q` — **4425
+passed, 4 skipped** (671s), zero falhas, os mesmos 4 skips estruturais
+de sempre (3 testes novos face à baseline anterior de 4422); `ruff
+check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Trabalho feito na branch
+`claude/issue-170-fontes-datas-txy53c` (designada pelo ambiente remoto
+desta sessão) — PR aberto, referenciando "Closes #170", sem merge para
+`main`.
