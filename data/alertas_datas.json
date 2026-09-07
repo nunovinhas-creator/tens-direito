@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "pagina": "fontes.html",
+    "tipo": "data_mes_ano",
+    "titulo": "📅 REVER: fontes.html — Data com mês e ano",
+    "corpo": "A página `fontes.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Data com mês e ano\n**Mês actual:** 9/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário.",
+    "classificacao": {
+      "data": "janeiro de 2022",
+      "estado": "STATIC_REFERENCE",
+      "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p>\n      <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p>\n    </div>\n    <div class=\"card\">\n      <span class=\"tag\""
+    },
+    "decisao": {
+      "estado": "STATIC_REFERENCE",
+      "acao": "IGNORAR",
+      "contexto": {
+        "data": "janeiro de 2022",
+        "estado": "STATIC_REFERENCE",
+        "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p>\n      <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p>\n    </div>\n    <div class=\"card\">\n      <span class=\"tag\""
+      }
+    }
+  }
+]
