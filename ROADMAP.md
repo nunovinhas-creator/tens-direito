@@ -342,61 +342,55 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   tráfego de cada cluster para o respectivo hub, com âncora descritiva
   (ex.: "guia completo de Família e Crianças"), não mais um card
   genérico.
-- **Cluster Reformas e Pensões — Anel 3B, 3 páginas bloqueadas**
-  (`pensao-de-sobrevivencia.html`, `subsidio-por-morte.html` e
-  `quem-tem-direito-por-parentesco.html` publicadas a 2026-09-06,
-  cobrindo o núcleo do Decreto-Lei n.º 322/90 — ver CLAUDE.md, secção
-  "Anel 3B" no pillar `p/reformas.html`):
-  - `pensao-sobrevivencia-conjuge.html` — bloqueada até instruir o
-    **Decreto Regulamentar n.º 1/94, de 18 de janeiro** (titularidade
-    do ex-cônjuge) **e** confirmar directamente na consolidação do DRE
-    a redacção exacta em vigor do **art. 29.º, n.º 5** (limite da
-    pensão do ex-cônjuge ao valor da pensão de alimentos — existência
-    confirmada, aditada pelo Decreto-Lei n.º 133/2012, mas o texto
-    actualmente em vigor nunca foi lido directamente nesta sessão,
-    `WebFetch` bloqueado para `diariodarepublica.pt`).
-  - `pensao-sobrevivencia-uniao-de-facto.html` — bloqueada até instruir
-    a **Lei n.º 7/2001, de 11 de maio** (prova da união de facto, para
-    que o art. 8.º, n.º 2, do DL 322/90 remete expressamente) — nunca
-    inferir os requisitos probatórios do próprio DL 322/90.
-  - `duracao-da-pensao-de-sobrevivencia.html` — decisão editorial em
-    aberto: só criar como página autónoma se a análise do articulado
-    (quando a página do cônjuge for instruída) justificar; caso
-    contrário, integra essa página. Zona de maior risco de erro do
-    diploma (duração vitalícia ou temporária, conforme idade e duração
-    do casamento) — nunca publicar sem o articulado à frente.
+- **Cluster Reformas e Pensões — Anel 3C, 2 loose ends menores da
+  Lei n.º 7/2001** (as 3 páginas foram publicadas a 2026-09-06 — ver
+  "CONCLUÍDO RECENTEMENTE"; isto é só o que ficou por fechar):
+  - **Confirmação directa na consolidação do DRE** dos arts. 2.º,
+    2.º-A e 6.º da Lei n.º 7/2001 — esta sessão triangulou por
+    `WebSearch` (`WebFetch` bloqueado para todos os domínios, não só
+    `diariodarepublica.pt` — confirmado com testes a `en.wikipedia.org`
+    e outros domínios não-governamentais), com múltiplas fontes
+    independentes concordantes; nota de estatuto de fonte publicada em
+    `pensao-sobrevivencia-uniao-de-facto.html`. Resolver = sessão com
+    acesso real ao DRE (humano ou browser interactivo).
+  - **Citação exacta do acórdão do STJ** que reconduziu o início do
+    pagamento da pensão da união de facto ao art. 36.º, n.º 1, do
+    DL 322/90 (em vez do art. 6.º do Decreto Regulamentar n.º 1/94,
+    que ainda pressupõe sentença) — a página cita "há jurisprudência",
+    sem número/data, por não ter sido possível confirmar uma fonte de
+    publicação fiável nesta sessão (várias pistas via `WebSearch`, sem
+    chegar a um acórdão que combinasse exactamente os dois artigos).
+    Resolver = sessão com acesso a `dgsi.pt`/`stj.pt`.
 
-  Sem prazo — nenhuma das três tem gatilho automático; resolver =
-  sessão dedicada com acesso real (humano ou browser interactivo) ao
-  texto consolidado do DRE, seguindo a mesma regra metodológica desta
-  série ("a consolidação decide o que está em vigor hoje, nunca um
-  diploma alterador isolado").
-- **Cluster Reformas e Pensões — Anel 4, regimes complementares, publicado
-  a 2026-09-06** (`carreiras-contributivas-estrangeiro.html`,
-  `reforma-reino-unido-brexit.html`, `pensao-unificada.html`,
-  `caixa-geral-aposentacoes.html` — ver CLAUDE.md, secção "Anel 4" no
-  pillar `p/reformas.html`, para o raciocínio completo). Dois pontos
-  registados, não fechados nesta sessão:
-  - **Regra de dispensa do cálculo proporcional do Protocolo TCA
-    Reino Unido (21 anos totais / ≤20 anos em Portugal)** — tem origem
-    numa síntese de terceiros sobre uma orientação técnica da DGSS
-    (`WebFetch`/`eur-lex.europa.eu`/`diariodarepublica.pt` bloqueados
-    nesta sessão), nunca confirmada por leitura directa do texto do
-    Protocolo. Sinalizada como tal na página
-    (`reforma-reino-unido-brexit.html`). Confirmar com acesso real ao
-    Protocolo antes de a tratar como definitiva.
-  - **CGA como anel autónomo** — o brief pedia para avaliar no final se
-    a Caixa Geral de Aposentações justifica um anel próprio, dada a
-    dimensão do Estatuto da Aposentação. Publicada nesta sessão como
-    1 página dentro do Anel 4 (`caixa-geral-aposentacoes.html`), com os
-    4 blocos exigidos (quem está abrangido / lei aplicável / regra de
-    cálculo / regras transitórias) — decisão desta sessão: proporcional
-    ao universo decrescente de subscritores, sem prazo para reavaliar.
-    Se uma sessão futura aprofundar regimes especiais (magistratura,
-    forças armadas, forças de segurança) ou o litígio da reinscrição
-    pós-2006 (Lei n.º 45/2024, Acórdãos TC n.os 689/2025 e 325/2026,
-    ainda em evolução), aí sim pode justificar-se desdobrar em mais do
-    que uma página.
+  Sem prazo — nenhum dos dois é bloqueante para o conteúdo já
+  publicado, que está deliberadamente honesto sobre estes dois pontos.
+- **Cluster Reformas e Pensões — Anel 4, regimes complementares —
+  reescrito de raiz a 2026-09-07** após auditoria de fontes primárias
+  (DRE + EUR-Lex) ter encontrado erros estruturais na 1.ª versão de
+  2026-09-06 (ver CLAUDE.md, entrada de correcção de 2026-09-07, e a
+  entrada original de 2026-09-06 mantida como registo histórico do que
+  estava errado). 3 pontos por ler em fonte oficial, registados nesta
+  reescrita, sem prazo:
+  - **Estatuto da Aposentação** — nunca lido nesta série. A Lei n.º
+    60/2005 (lida integralmente) cita-o e revoga normas suas
+    específicas, mas o texto completo do Estatuto (regras de
+    aposentação compulsiva além do art. 56.º, disciplina, outras
+    matérias) nunca foi confirmado em fonte primária —
+    `caixa-geral-aposentacoes.html` só afirma o que vem citado
+    directamente na Lei n.º 60/2005.
+  - **Texto oficial do Protocolo de Coordenação da Segurança Social
+    (Protocolo SSC) do Acordo de Comércio e Cooperação UE-Reino
+    Unido** — só o corpo do TCA (arts. 488.º-490.º, 779.º) e o Acordo
+    de Saída (arts. 30.º-31.º) foram lidos; não foi possível confirmar
+    se o Protocolo SSC tem equivalente ao art. 52.º, n.º 3, do
+    Regulamento 883/2004 (garantia do montante mais elevado) nem um
+    anexo equivalente ao Anexo VIII — sinalizado como questão aberta em
+    `reforma-reino-unido-brexit.html`, nunca preenchido por analogia.
+  - **Anexo VI do Acordo EEE e Anexo II do Acordo de Livre Circulação
+    UE-Suíça** — a extensão do Regulamento 883/2004 ao EEE e à Suíça
+    está confirmada como facto (via `WebSearch`, marcada GRAU 2 em
+    `carreiras-contributivas-estrangeiro.html`), mas o texto exacto da
+    adaptação nos dois anexos nunca foi lido em fonte oficial.
 ---
 
 ## 📅 DATAS FIXAS
@@ -421,20 +415,42 @@ PSU"**.
 
 ## ✅ CONCLUÍDO RECENTEMENTE
 
+- **Cluster Reformas e Pensões — Anel 3, parte C (fecho do Anel 3) —
+  2026-09-06.** 3 páginas novas: `duracao-da-pensao-de-sobrevivencia.html`,
+  `pensao-sobrevivencia-conjuge.html`,
+  `pensao-sobrevivencia-uniao-de-facto.html` — fecham o Anel 3B
+  (publicado no mesmo dia, sessão anterior), que tinha ficado
+  deliberadamente incompleto sem a duração exacta nem as condições de
+  cônjuge/união de facto. Fontes: DL 322/90 e Decreto Regulamentar
+  n.º 1/94 (verificados directamente na consolidação do DRE, conforme
+  o brief) e Lei n.º 7/2001 (triangulada por `WebSearch` — `WebFetch`
+  confirmado bloqueado para todos os domínios testados, não só
+  diariodarepublica.pt). Ver detalhe completo em CLAUDE.md, secção
+  "Anel 3C" do pillar `p/reformas.html`, e "TRABALHO FUTURO REGISTADO"
+  acima para os 2 loose ends menores (confirmação directa da Lei
+  n.º 7/2001; citação do acórdão do STJ).
 - **Cluster Reformas e Pensões — Anel 4, regimes complementares —
-  2026-09-06.** 4 páginas novas (`carreiras-contributivas-estrangeiro.html`,
+  reescrito de raiz a 2026-09-07** (`carreiras-contributivas-estrangeiro.html`,
   `reforma-reino-unido-brexit.html`, `pensao-unificada.html`,
-  `caixa-geral-aposentacoes.html`), pillar 13→17 itens — ver CLAUDE.md,
-  secção "Anel 4" no pillar `p/reformas.html`, para o detalhe completo.
-  Achado central da Linha 2: o diploma que regula a atribuição da pensão
-  unificada (que o art. 63.º, n.º 2, do DL 187/2007 nunca identifica) é
-  o Decreto-Lei n.º 361/98 — a Portaria n.º 642/83 do brief era só uma
-  categoria de indexação legada, nunca a lei aplicável. Dois falsos
-  positivos reais do canário de datas expiradas corrigidos antes do
-  commit (datas históricas fixas — fim do período de transição do
-  Brexit, fecho da CGA em 2006 — nunca "expiram"); 4 marcadores novos em
-  `MARCADORES_HISTORICOS`, cada um confirmado sem colisão site-wide
-  antes de aplicar. Suite completa sem regressões, `ruff` limpo.
+  `caixa-geral-aposentacoes.html`), pillar 13→20 itens. A 1.ª versão
+  (2026-09-06) tinha erros estruturais, encontrados por uma auditoria
+  de leitura directa do DRE/EUR-Lex: a totalização podia AUMENTAR o
+  valor pago por Portugal (não "nunca aumenta"); a fórmula do art. 52.º,
+  n.º 1, b), do Regulamento 883/2004 (pro rata sobre o montante teórico)
+  estava em falta; a dispensa do cálculo pro rata (Anexo VIII, 21+ anos
+  totais / ≤20 anos PT) estava mal atribuída ao Protocolo do Brexit em
+  vez do Regulamento 883/2004 (aplica-se à UE/EEE/Suíça); a cronologia
+  do art. 9.º do DL 361/98 (pensão unificada) estava invertida; e a
+  taxonomia das duas fronteiras da CGA (2006 e 1993, Lei n.º 60/2005)
+  estava incorrecta. Reescrito com fontes GRAU 1 (Reg. 883/2004 e Reg.
+  987/2009 lidos por inteiro; TCA arts. 488.º-490.º/779.º e Acordo de
+  Saída arts. 30.º-31.º; DL 361/98 consolidado; Lei n.º 60/2005
+  integral), GRAU 2 (extensão EEE/Suíça, triangulada) e GRAU 3 (uma
+  questão do Protocolo SSC deixada explicitamente por confirmar, nunca
+  preenchida por analogia) — graus sempre visíveis no corpo de cada
+  página, não só no ROADMAP. Ver CLAUDE.md, entrada de 2026-09-07, para
+  o detalhe completo; a entrada de 2026-09-06 mantém-se como registo
+  histórico do que estava errado, nunca reescrita.
 
 - **Triagem da Issue #158 (`dre_habitacao_garantia`) — 2026-09-03.**
   Confirmado com os dados reais do dia: dos 24 itens devolvidos pela

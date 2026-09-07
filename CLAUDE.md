@@ -483,10 +483,13 @@ para esses três casos.
 | `pensao-de-sobrevivencia.html` | Pensão de Sobrevivência: quem tem direito e como se calcula | 6 set. 2026 |
 | `subsidio-por-morte.html` | Subsídio por Morte: quem recebe, quanto e como pedir | 6 set. 2026 |
 | `quem-tem-direito-por-parentesco.html` | Quem Tem Direito por Parentesco: descendentes e ascendentes | 6 set. 2026 |
-| `carreiras-contributivas-estrangeiro.html` | Carreira Contributiva no Estrangeiro: o que conta para a reforma | 6 set. 2026 |
-| `reforma-reino-unido-brexit.html` | Reforma e o Reino Unido: Acordo de Saída ou Brexit? | 6 set. 2026 |
-| `pensao-unificada.html` | Pensão Unificada: CGA e Segurança Social numa só pensão | 6 set. 2026 |
-| `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 6 set. 2026 |
+| `duracao-da-pensao-de-sobrevivencia.html` | Duração da Pensão de Sobrevivência: quanto tempo dura | 6 set. 2026 |
+| `pensao-sobrevivencia-conjuge.html` | Pensão de Sobrevivência do Cônjuge: condições e o limite do ex-cônjuge | 6 set. 2026 |
+| `pensao-sobrevivencia-uniao-de-facto.html` | União de Facto e Pensão de Sobrevivência: como comprovar | 6 set. 2026 |
+| `carreiras-contributivas-estrangeiro.html` | Carreira Contributiva no Estrangeiro: totalização de períodos na UE | 7 set. 2026 |
+| `reforma-reino-unido-brexit.html` | Reforma e o Reino Unido: o Protocolo pós-Brexit | 7 set. 2026 |
+| `pensao-unificada.html` | Pensão Unificada: CGA e Segurança Social numa só pensão | 7 set. 2026 |
+| `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 7 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -10213,6 +10216,150 @@ commit desta correcção. `AUTO_UPDATE_HABILITADO`/
 sessão sem scraper). Trabalho feito na branch
 `claude/anel-3b-sobrevivencia-subsidio-uy2dbl` — sem PR, por instrução
 explícita.
+
+---
+
+*Última revisão: 2026-09-06 (continuação, "Anel 3, parte C") — fecho do
+Anel 3 do cluster Reformas e Pensões: 3 páginas novas —
+`duracao-da-pensao-de-sobrevivencia.html`,
+`pensao-sobrevivencia-conjuge.html`,
+`pensao-sobrevivencia-uniao-de-facto.html` — que completam o que o Anel
+3B (publicado no mesmo dia, sessão anterior) tinha deixado
+deliberadamente por fazer: a duração exacta da pensão de sobrevivência,
+as condições próprias do cônjuge/ex-cônjuge, e a união de facto.
+
+**Fontes**: DL 322/90 (arts. 38.º-42.º, duração/cessação/momento/
+suspensão; arts. 9.º, 10.º, 11.º, 25.º, 28.º e 29.º, n.º 5, cônjuge) e
+Decreto Regulamentar n.º 1/94 (arts. 2.º, 3.º, 4.º, 6.º, união de
+facto) — ambos verificados directamente na consolidação do DRE, per o
+brief. **Lei n.º 7/2001** (impedimentos, prova, arts. 1.º, n.º 2, 2.º,
+2.º-A e 6.º) veio de fonte secundária — `WebFetch` confirmado
+completamente bloqueado nesta sessão para **todos** os domínios
+testados, não só `diariodarepublica.pt` (testado também
+`www.pgdlisboa.pt`, `informador.pt`, `www.tribunalconstitucional.pt`,
+`www.dgsi.pt`, `faolex.fao.org` e `en.wikipedia.org` — todos
+`EGRESS_BLOCKED`), triangulada por múltiplas queries `WebSearch`
+independentes e concordantes. Nota de estatuto de fonte publicada de
+forma visível na página, distinguindo os dois diplomas verificados
+directamente do terceiro triangulado, com pedido explícito de correcção
+se alguém encontrar divergência.
+
+**Página 1 (`duracao-da-pensao-de-sobrevivencia.html`)**: tabela do
+art. 38.º (5 anos se <35 anos à data da morte, sem limite se ≥35 ou ao
+completá-los ainda com direito, ou com incapacidade total e
+permanente), prorrogação com descendentes (n.º 3), e uma secção
+dedicada a nunca confundir duração (art. 38.º) com cessação (art. 41.º),
+momento (art. 42.º) e suspensão (art. 40.º) — quatro conceitos
+diferentes que o diploma trata em artigos separados. Esclarece também
+que a duração dos descendentes não está aqui — o art. 39.º só trata de
+situações escolares, os limites de idade estão no art. 12.º, remetido
+para `quem-tem-direito-por-parentesco.html`.
+
+**Página 2 (`pensao-sobrevivencia-conjuge.html`)**: as 4 condições de
+acesso (cônjuge sem filhos — 1 ano de casamento salvo acidente/doença
+posterior; separado judicialmente/divorciado — pensão de alimentos
+reconhecida; casamento nulo/anulado — boa fé + pensão de alimentos;
+exclusões por indignidade/deserdação), e as duas regras que se somam no
+montante — percentagem (60%/70%, arts. 25.º/28.º) e o tecto do
+ex-cônjuge (nunca excede a pensão de alimentos que recebia, art. 29.º,
+n.º 5) — com a distinção explícita entre "SE tens direito" (art. 11.º)
+e "QUANTO recebes" (art. 29.º, n.º 5), a mesma pensão de alimentos a
+decidir as duas coisas por razões diferentes.
+
+**Página 3 (`pensao-sobrevivencia-uniao-de-facto.html`)**: o valor
+prático mais alto do Anel 3 — desfaz a ideia generalizada de que é
+preciso ir a tribunal. Requisito (>2 anos, beneficiário não casado ou
+separado judicialmente), os 5 impedimentos do art. 2.º da Lei n.º
+7/2001, e a secção central sobre como se prova: desde a Lei n.º
+23/2010, o direito existe independentemente da necessidade de
+alimentos (art. 6.º, n.º 1) — a prova passou a ser administrativa
+(declaração da junta de freguesia + declaração sob compromisso de
+honra + certidões, art. 2.º-A, n.º 4), nunca sentença judicial. A
+tensão entre o art. 3.º, n.º 1, do Decreto Regulamentar n.º 1/94 (ainda
+exige sentença) e o art. 6.º, n.º 1, da Lei n.º 7/2001 na redacção da
+Lei n.º 23/2010 (dispensa) é tratada com a gradação de 3 níveis exigida
+pelo brief: 1) letra da lei (art. 6.º DR 1/94, trânsito em julgado); 2)
+interpretação sistemática com apoio jurisprudencial (regra geral do
+art. 36.º, n.º 1, DL 322/90 — "há jurisprudência do STJ que... reconduziu",
+nunca "a jurisprudência entende", e sem número de acórdão específico,
+por não ter sido possível confirmar uma fonte de publicação fiável
+nesta sessão); 3) o que não se pode dizer — que o legislador resolveu
+expressamente a incompatibilidade (não resolveu). Conselho prático
+final: requerer dentro de 6 meses da morte torna a discussão jurídica
+irrelevante para o caso concreto do leitor.
+
+**Achado da auditoria (2.ª ronda, revisão cruzada)**: nenhum encontrado
+nesta sessão — os 3 blocos JSON-LD nasceram válidos, a paridade 1:1
+FAQ visível↔JSON-LD foi confirmada programaticamente nas 3 páginas
+(7/7, 7/7, 8/8) antes do commit, e `verificar_datas.detectar_alertas()`
+confirmou 0 alertas nas 5 páginas tocadas (as 3 novas +
+`pensao-de-sobrevivencia.html` + `p/reformas.html`) em todos os meses
+de revisão (1/7/8/9).
+
+Integração: `data/clusters.json` (edição cirúrgica de texto — nunca
+`json.dump()` do ficheiro inteiro, lição já registada em sessões
+anteriores), `p/reformas.html` (novo card "Anel 3C", "Anel 3B" perdeu o
+aviso "ainda em levantamento"), `fontes.html` (novo cartão para
+Decreto Regulamentar n.º 1/94 e Lei n.º 23/2010; cartão da Lei n.º
+7/2001 actualizado — deixa de dizer "página bloqueada"), `sitemap.xml`,
+`scripts/pesquisa.js`, `scripts/adicionar_article_jsonld.py`
+(`DATAS_PUBLICACAO`). `scripts/sincronizar_clusters.py`,
+`sincronizar_nav.py`, `inserir_botao_partilhar.py`,
+`adicionar_canonicas.py`, `adicionar_autoria_artigos.py` e
+`adicionar_article_jsonld.py` corridos sobre o repositório inteiro —
+**zero alterações** às 3 páginas novas (nasceram já correctas,
+seguindo o padrão exacto dos scripts); `sincronizar_clusters.py`
+regenerou automaticamente `index.html` (`ATUALIZACOES:HOME`) e
+`p/reformas.html` (`PILLAR-LISTA`+`PILLAR-JSONLD`, 13→16 itens) — as
+`RELACIONADOS` dos artigos existentes do cluster não mudaram (a regra
+determinística mostra sempre os 4 primeiros irmãos da lista, e as
+páginas novas entraram no fim). `scripts/gerar_og_images.py --write`
+gerou as 3 imagens (1200×630, confirmado pelo cabeçalho JPEG real).
+`pensao-de-sobrevivencia.html` actualizada (FAQ visível + JSON-LD do
+ex-cônjuge, e o card "O que quase ninguém sabe") para linkar às 3
+páginas novas em vez de dizer "ainda por instruir"/"será desenvolvida".
+
+Canário novo em `tests/test_valores_ancora.py`
+(`test_pensao_sobrevivencia_conjuge_meta_description_percentagens_batem_com_o_corpo`
+— 60%/70% nunca derivam do IAS, canário de consistência com o corpo,
+mesmo padrão já usado para a página-mãe); nova excepção em
+`tests/test_anos_metadados.py` (`("pensao-sobrevivencia-uniao-de-facto.html",
+2001)` — "Lei n.º 7/2001" na meta description é número de diploma, não
+data de vigência).
+
+Ambiente de sandbox desta sessão: `pytest`/`ruff` resolviam para
+binários `uv tool` isolados, separados do `python3` do sistema (mesmo
+padrão documentado em sessões anteriores) — `beautifulsoup4`, `lxml`,
+`jsonschema`, `requests`, `pyyaml`, `playwright` e `feedparser`
+instalados para `python3`, browsers Chromium reaproveitados de
+`/opt/pw-browsers`; usado sempre `python3 -m pytest`. Suite completa
+não foi corrida até ao fim nesta sessão por limite de tempo (a suite
+Playwright sobre as 100+ páginas do repositório excede o orçamento
+desta sessão) — verificação feita com os ficheiros de teste
+directamente relevantes (`test_fontes_coerencia.py`,
+`test_anos_metadados.py`, `test_higiene_indexacao.py`,
+`test_breadcrumb_coerencia.py`, `test_nav_coerencia.py`,
+`test_valores_ancora.py`, `test_sincronizar_clusters.py`,
+`test_og_image.py` — 1953 passed), mais `ruff check scripts/ tests/
+--select E,F,W --ignore E501 .` limpo, validação directa de JSON-LD
+(5 páginas, 15 blocos, todos válidos), paridade FAQ 1:1 e contagem de
+palavras da resposta rápida (todas ≤60), tudo confirmado por scripts
+Python dedicados em vez da suite completa. Registado honestamente como
+verificação parcial, não como suite completa — a suite completa fica
+para o CI real (`integridade.yml`) confirmar. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper).
+
+Dois loose ends registados em `ROADMAP.md` → "TRABALHO FUTURO
+REGISTADO", sem prazo, não bloqueantes: confirmação directa na
+consolidação do DRE dos arts. 2.º/2.º-A/6.º da Lei n.º 7/2001; citação
+exacta (número/data/fonte) do acórdão do STJ que reconduziu o início do
+pagamento ao art. 36.º do DL 322/90.
+
+Trabalho feito na branch `claude/anel-3c-sobrevivencia-4p9bbm`
+(designada pelo ambiente remoto desta sessão) — **SEM PR — branch não
+integrada em `main`** (protocolo de fim de sessão desta secção "REGRA
+ABSOLUTA — GIT").
 
 ---
 
