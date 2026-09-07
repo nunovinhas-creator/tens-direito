@@ -10858,3 +10858,88 @@ check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
 `claude/issue-170-fontes-datas-txy53c` (designada pelo ambiente remoto
 desta sessão) — PR aberto, referenciando "Closes #170", sem merge para
 `main`.
+
+---
+
+*Última revisão: 2026-09-07 (continuação) — sessão de correcção pontual a
+`fontes.html`, começando exactamente onde a entrada anterior tinha
+parado: 6 cartões corrigidos/completados no cluster Reformas e no
+cluster Habitação. `WebFetch`/`curl` confirmados bloqueados nesta sessão
+para todos os domínios testados (`diariodarepublica.pt`, `www.cga.pt`) —
+mesma limitação de sempre; as duas confirmações pedidas explicitamente
+antes de publicar foram feitas por triangulação `WebSearch` (nunca
+leitura directa no DRE):
+
+1) **Decreto-Lei n.º 79/2019, de 14 de junho** — confirmado por 4 fontes
+independentes (dre.pt indexado, cga.pt, SPGL, homepagejuridica.pt),
+Diário da República n.º 113/2019, Série I. 2) **Lei n.º 73-A/2025 =
+OE2026 com actualização de 2% dos escalões de IMT** — confirmado por 8
+fontes profissionais/financeiras independentes (OCC, EY, Doutor
+Finanças, PwC, Crowe, Apcmc, Macedo Vitorino, RFF Lawyers), valores
+330.539€/660.982€ batem certo com os já publicados em `imt-jovem.html`.
+
+Correcções aplicadas: **DL 18/2023** ganhou a data (3 de março, DR n.º
+45/2023, Série I, pp. 40-43 — confirmado pelo próprio nome do ficheiro
+PDF em files.dre.pt, "0004000043" = páginas 40-43) e a frase errada
+"condições reguladas por diploma próprio ainda não verificado" foi
+substituída pela relação real: o regime foi criado pela **Lei n.º
+5/2022, de 7 de janeiro** (novo cartão, idade ≥60 anos/incapacidade
+≥80%/15 anos de carreira), e o DL 18/2023 é a sua regulamentação, mais
+de um ano depois. **DL 79/2019** ganhou a data confirmada. **DL 97/2026**
+— a nota "com efeitos desde 1 de setembro de 2026" estava mal atribuída
+a tudo; reescrita para distinguir as três datas reais (dedução de rendas
+aos rendimentos de 2026; IVA a 6% desde 1 de julho de 2026; regimes CIA
+— Contratos de Investimento para Arrendamento, facto novo, nunca antes
+citado no site — e RSAA desde 1 de setembro de 2026); acrescentada a lei
+de autorização, **Lei n.º 9-A/2026, de 6 de março** (novo cartão, link
+para o PDF real em files.diariodarepublica.pt). **DL 44/2024** (garantia
+pública) ganhou a nota do prazo-limite (contratos celebrados até 31 de
+dezembro de 2026, com possibilidade de prorrogação) — facto já publicado
+e verificado em `garantia-publica-credito-habitacao.html`, só importado
+para fontes.html; a data foi registada em `ROADMAP.md` → "DATAS FIXAS"
+(vigilância explícita, cruzada com o sentinela `dre_habitacao_garantia`).
+**DL 48-A/2024** (IMT Jovem) corrigido — os valores de 2026 (330.539€/
+660.982€) vêm da Lei n.º 73-A/2025, nunca deste diploma; **novo cartão
+para a Lei n.º 73-A/2025** (resolve, de caminho, uma excepção já aberta
+em `EXCECOES_DIPLOMAS_FONTES` desde o levantamento de 30/08/2026 —
+removida de `tests/test_fontes_coerencia.py`, critério de "resolvido"
+cumprido). Ressalva Açores/Madeira acrescentada com nota de estatuto de
+fonte ("sujeita a confirmação directa no DRE") — usado o valor **826.228€**
+já publicado e investigado em `imt-jovem.html` (arredondamento das
+tabelas práticas da AT), não os "826.227€" do pedido original, que
+correspondem à divergência de arredondamento já resolvida numa sessão
+anterior (2026-07-20); reportado aqui para nunca se repetir a confusão.
+
+**Falso positivo apanhado antes do commit, não depois**: o texto
+"contratos de crédito formalizados até 31 de dezembro de 2026" (1.ª
+versão da correcção do DL 44/2024) disparava `data_mes_ano` em
+`verificar_datas.py` a partir de janeiro de 2027 — "formalizados até"
+não bate com nenhum marcador de `MARCADORES_HISTORICOS`. Corrigido
+reescrevendo para "celebrados até", reutilizando o marcador já existente
+`celebrados?\s+at[ée]\b` (mesma família das Issues #51/#52) — nunca
+inventado marcador novo para um caso que a vocabulário já cobre.
+Confirmado com `detectar_alertas()` real sobre os 12 meses × 2026-2028:
+zero alertas depois da correcção.
+
+Regra aplicada uniformemente: qualquer facto novo/corrigido nesta sessão
+que não foi lido directamente no DRE (bloqueado) ganhou a nota "Triangulado
+por fontes secundárias independentes — acesso directo a
+diariodarepublica.pt bloqueado nesta sessão", mesmo padrão já usado nos
+cartões da Lei n.º 7/2001 e do Estatuto da Aposentação.
+
+**Fora do âmbito desta sessão, sinalizado e não corrigido**: a nova
+redacção do cartão do DL 18/2023 em `fontes.html` diverge agora de
+`outras-antecipacoes.html`, que continua a descrever a via de
+antecipação por deficiência como dependente de "regulamentação própria,
+que ainda não verificámos" (JSON-LD e texto visível, 3 ocorrências) — a
+tarefa desta sessão foi explicitamente scoped a `fontes.html`; corrigir
+esse artigo fica registado para uma sessão dedicada.
+
+Suite completa: `python3 -m pytest tests/ -q` — **4427 passed, 4
+skipped** (601s), zero falhas, os mesmos 4 skips estruturais de sempre
+(confirmados elemento a elemento contra `tests/skips_permitidos.json`);
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Trabalho feito na branch
+`claude/corrigir-fontes-html-otwjr9` (designada pelo ambiente remoto
+desta sessão) — PR aberto contra `main`, sem merge.
