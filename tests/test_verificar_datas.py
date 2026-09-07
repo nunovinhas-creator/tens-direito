@@ -596,6 +596,46 @@ def test_data_antiga_sem_salvaguarda_continua_a_alertar():
     assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is not None
 
 
+def test_marcador_salvaguarda_restrito_nunca_suprime_mencao_generica():
+    """Restrição pós-merge (revisão do #172, 2026-09-07): o marcador deixou
+    de ser a palavra solta `\\bsalvaguarda\\b` (global, sem especificidade,
+    a única entrada da lista assim) e passou a exigir a forma real da
+    cláusula transitória — "salvaguarda [transitória] de <número>". Uma
+    menção genérica de "salvaguarda" (uso verbal, ou substantivo sem "de
+    <número>" a seguir) perto de uma data com mês+ano genuinamente expirada
+    tem de continuar a disparar — nunca mascarada só por a palavra aparecer
+    nas proximidades. Este teste falha se o marcador voltar a ser a palavra
+    solta (regressão exactamente oposta ao objectivo desta restrição)."""
+    generica = (
+        "<p>Aviso de independência: sem prejuízo da salvaguarda dos "
+        "direitos do utilizador, o prazo de candidatura terminou em "
+        "dezembro de 2005.</p>"
+    )
+    assert detectar_alertas(generica, "sintetica.html", ANO, MES) is not None
+
+    # Uso verbal real ("salvaguarda direitos", sem "de <número>" a seguir —
+    # a mesma forma gramatical já presente em reforma-reino-unido-brexit.html,
+    # "o n.º 2 salvaguarda direitos relativos a períodos anteriores de
+    # residência legal"), isolado de qualquer outro marcador da lista
+    # (sem "anterior/posterior a", "desde", "até", "revogado", etc.).
+    verbal = (
+        "<p>O artigo 2.º salvaguarda direitos dos utilizadores registados "
+        "em dezembro de 2005.</p>"
+    )
+    assert detectar_alertas(verbal, "sintetica.html", ANO, MES) is not None
+
+
+def test_marcador_salvaguarda_restrito_continua_a_cobrir_a_clausula_real():
+    """A restrição não pode perder o caso real que o marcador existe para
+    cobrir — a forma exacta usada em fontes.html/caixa-geral-aposentacoes.html,
+    "salvaguarda de <número> anos", continua suprimida."""
+    conteudo = (
+        "<p>Fixa a salvaguarda de 36 anos de serviço e 60 anos de idade a "
+        "31 de dezembro de 2005 (art. 7.º).</p>"
+    )
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
+
+
 def test_main_cobre_p_e_documentos(tmp_path, monkeypatch):
     # O fluxo main() real (não só detectar_alertas) tem de percorrer
     # raiz, p/ e documentos/ — com o nome relativo correcto no alerta.
