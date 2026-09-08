@@ -165,11 +165,24 @@ imt_exclusao_terrenos:
 # escalões de 7% e 8% são, POR LEI (art. 9.º-A do CIMT remete para os
 # escalões do art. 17.º), os próprios limites do IMT Jovem — reutilizar
 # imt_isencao_total_limite_eur / imt_isencao_parcial_limite_eur, nunca
-# duplicar aqui. Tabela das REGIÕES AUTÓNOMAS deliberadamente NÃO
-# parametrizada: as parcelas a abater RA não foram confirmadas de forma
-# conclusiva no PASSO 0 (só os limites do IMT Jovem RA, acima) — o
-# simulador cobre só o Continente, com nota visível a apontar para a
-# secção RA do guia.
+# duplicar aqui.
+#
+# Tabela das REGIÕES AUTÓNOMAS — parametrizada nesta sessão (2026-09-08).
+# A razão da ausência anterior ("as parcelas a abater RA não foram
+# confirmadas de forma conclusiva no PASSO 0") já não se aplica: a AT
+# publica os 7 escalões RA completos (limites/taxas/parcelas a abater) no
+# folheto "Os meus direitos e deveres na aquisição de um prédio" (janeiro
+# 2026, Ofício Circulado n.º 40129/2026, de 6 de janeiro) — ver bloco
+# "REGIÕES AUTÓNOMAS" mais abaixo, logo a seguir a is_aquisicao_taxa_pct.
+# As TAXAS marginais são nacionais e idênticas às do Continente (art.
+# 17.º do CIMT aplica-se a todo o território; só os LIMITES são elevados
+# nas RA, por força da Lei n.º 21/90) — por isso as entradas RA
+# reutilizam imt_geral_hpp_esc*_taxa_pct, nunca duplicam uma taxa já
+# parametrizada (mesmo princípio da não-duplicação da "parcela a abater"
+# do IMT Jovem — ver tests/test_valores_ancora.py). O simulador de IMT
+# Jovem continua, à data desta sessão, a cobrir só o Continente — ligar
+# esta tabela à coluna "sem isenção" para as Regiões Autónomas fica
+# registado para uma sessão dedicada, fora do âmbito desta.
 
 imt_geral_hpp_limite_isento_eur:
   descricao: "Tabela geral de IMT (habitação própria e permanente, Continente) — 1.º escalão: até este valor não há IMT"
@@ -328,6 +341,124 @@ is_aquisicao_taxa_pct:
       referencia_legal: "Verba 1.1 da Tabela Geral do Imposto do Selo (Código do Imposto do Selo); isenção jovem aditada ao CIS pelo Decreto-Lei n.º 48-A/2024, de 25 de julho"
       fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105"
       verificado_em: "2026-07-20"
+
+# --- Tabela geral de IMT 2026 — habitação própria e permanente, REGIÕES ---
+# --- AUTÓNOMAS (Açores e Madeira) ---
+# (2026-09-08) Fonte: folheto da AT "Os meus direitos e deveres na
+# aquisição de um prédio" (janeiro 2026), Ofício Circulado n.º 40129/2026,
+# de 6 de janeiro — os mesmos 7 escalões do Continente (art. 17.º, n.º 1,
+# al. a) do CIMT), com os limites elevados em 25% nas RA (Lei n.º 21/90,
+# de 4 de agosto), tal como já parametrizado para os limiares do IMT
+# Jovem RA (imt_ra_isencao_total_limite_eur / imt_ra_isencao_parcial_
+# limite_eur, acima). Escalões publicados no folheto:
+#   até 132.933€ — 0% — sem parcela (isento)
+#   132.933€ a 181.838€ — 2% — abater 2.658,66€
+#   181.838€ a 247.934€ — 5% — abater 8.113,80€
+#   247.934€ a 413.174€ — 7% — abater 13.072,48€
+#   413.174€ a 826.228€ — 8% — abater 17.204,22€
+#   826.228€ a 1.438.566€ — 6% (taxa única, sem parcela)
+#   superior a 1.438.566€ — 7,5% (taxa única, sem parcela)
+# Auto-consistência confirmada (mesmo método já usado no Continente):
+# abater_n = abater_{n-1} + limite_{n-1} × Δtaxa — trancada por teste em
+# tests/test_valores_ancora.py.
+#
+# TAXAS marginais deliberadamente NÃO duplicadas aqui — são as mesmas do
+# Continente (imt_geral_hpp_esc2_taxa_pct/esc3_taxa_pct/esc4_taxa_pct/
+# esc5_taxa_pct/esc6_taxa_pct/esc7_taxa_pct, acima), reutilizadas
+# directamente pelo simulador/testes; só os LIMITES e as PARCELAS A
+# ABATER são específicos das RA. Os limites superiores dos escalões de
+# 7% e 8% RA são, pela mesma construção legal do Continente (art. 9.º-A
+# remete para os escalões do art. 17.º), os próprios limites do IMT
+# Jovem RA — reutilizar imt_ra_isencao_total_limite_eur /
+# imt_ra_isencao_parcial_limite_eur, nunca duplicar aqui.
+
+imt_geral_hpp_ra_limite_isento_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — 1.º escalão: até este valor não há IMT"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 132933
+      referencia_legal: "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc2_limite_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 2.º escalão (taxa marginal de 2%, reutiliza imt_geral_hpp_esc2_taxa_pct)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 181838
+      referencia_legal: "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc2_abater_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 2.º escalão"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 2658.66
+      referencia_legal: "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2% × 132.933€)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc3_limite_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 3.º escalão (taxa marginal de 5%, reutiliza imt_geral_hpp_esc3_taxa_pct)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 247934
+      referencia_legal: "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc3_abater_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 3.º escalão"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 8113.80
+      referencia_legal: "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2.658,66€ + 181.838€ × 3%)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc4_abater_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 4.º escalão (limite superior = imt_ra_isencao_total_limite_eur, por construção legal do art. 9.º-A; taxa = imt_geral_hpp_esc4_taxa_pct, 7%)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 13072.48
+      referencia_legal: "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 8.113,80€ + 247.934€ × 2%)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc5_abater_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 5.º escalão (limite superior = imt_ra_isencao_parcial_limite_eur, por construção legal do art. 9.º-A; taxa = imt_geral_hpp_esc5_taxa_pct, 8%)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 17204.22
+      referencia_legal: "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 13.072,48€ + 413.174€ × 1%)"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
+
+imt_geral_hpp_ra_esc6_limite_eur:
+  descricao: "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 6.º escalão (taxa única de 6% sobre o valor total, sem parcela a abater; taxa = imt_geral_hpp_esc6_taxa_pct)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 1438566
+      referencia_legal: "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096"
+      fonte_url_complementar: "https://info.portaldasfinancas.gov.pt"
+      verificado_em: "2026-09-08"
 
 # --- Garantia Pública no crédito habitação jovem (até 100% de financiamento) ---
 
