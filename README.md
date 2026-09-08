@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **07 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **08 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -95,6 +95,7 @@ Actualizado automaticamente a partir do repositório em **07 de setembro de 2026
 | [`senha-seguranca-social-direta.html`](senha-seguranca-social-direta.html) | Como pedir (e recuperar) a senha da Segurança Social Direta |
 | [`simulador-abono.html`](simulador-abono.html) | Simulador de Abono de Família 2026 |
 | [`simulador-ase.html`](simulador-ase.html) | Simulador de Ação Social Escolar (ASE) 2026/2027 |
+| [`simulador-condicoes-reforma.html`](simulador-condicoes-reforma.html) | Simulador de Condições de Acesso à Reforma |
 | [`simulador-csi.html`](simulador-csi.html) | Simulador do Complemento Solidário para Idosos (CSI) 2026 |
 | [`simulador-imt-jovem.html`](simulador-imt-jovem.html) | Simulador de IMT Jovem 2026 — quanto poupas na primeira casa |
 | [`simulador-psu.html`](simulador-psu.html) | Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026) |
@@ -426,6 +427,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 07 de setembro de 2026 às 12:56 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 08 de setembro de 2026 às 11:57 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
