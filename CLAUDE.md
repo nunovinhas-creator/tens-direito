@@ -669,6 +669,37 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 
 **✓ Confirmados após fact-checking completo (2026-06-28)**: Todos os valores de referência foram verificados e confirmados em páginas publicadas. Nenhuma discrepância encontrada entre valores scraped e valores publicados. CSI e PSU fact-checked e publicadas.
 
+### Verificação directa de diplomas — `files.dre.pt` em vez de `dr/detalhe/`
+
+Correcção ao método de verificação primária (2026-09-08): as páginas
+`diariodarepublica.pt/dr/detalhe/...` são uma SPA que exige JavaScript
+para renderizar o texto do diploma — um `WebFetch`/`curl` simples a essas
+páginas nunca devolve o conteúdo real (mesmo quando o domínio não está
+bloqueado pela rede da sessão), só a shell vazia. **`files.dre.pt`** (e o
+espelho `files.diariodarepublica.pt`) serve o PDF estático da própria
+série do Diário da República — um ficheiro binário, sem JS nenhum a
+renderizar, fetchável directamente. É o canal a preferir para confirmar
+o texto de um diploma, não `dr/detalhe/`. Padrão do URL, já usado em
+vários cartões de `fontes.html` (ex.: DL 119/2021, DL 18/2023):
+`https://files.dre.pt/1s/AAAA/MM/NNNNN/PPPPPPQQQQQQ.pdf` — série (`1s`
+= Série I), ano, mês, número do DR com padding, e o intervalo de
+páginas do diploma dentro desse DR (`PPPPPP`-`QQQQQQ`, 6 dígitos cada).
+
+**Honestidade sobre o que esta sessão confirmou de facto**: tentado um
+`WebFetch` real a um URL `files.dre.pt` já usado no site
+(`https://files.dre.pt/1s/2021/12/24200/0003100034.pdf`) e a um URL
+`dr/detalhe/` (DL n.º 79/2019) — **os dois** devolveram
+`EGRESS_BLOCKED` desta sessão, o mesmo bloqueio total de rede já
+documentado para dezenas de domínios em sessões anteriores (nunca
+específico a `.gov.pt`). Por isso esta sessão **não confirmou** por si
+própria que `files.dre.pt` é acessível — só regista a recomendação,
+consistente com o padrão já em uso no site e com o motivo técnico
+(PDF estático vs. SPA) — para ser testada num ambiente com rede real
+(ex.: runner do GitHub Actions, onde `WebFetch`/`curl` já se confirmaram
+a funcionar dezenas de vezes neste histórico) antes de se assumir como
+garantidamente resolvido. Nunca documentar aqui como "confirmado
+funcional" sem esse teste real.
+
 ### Regra de links
 NUNCA inventar subpaths de portais oficiais.
 Quando um subpath devolve erro: usar a homepage do domínio.
@@ -10943,3 +10974,49 @@ skipped** (601s), zero falhas, os mesmos 4 skips estruturais de sempre
 `False` (inalterados). Trabalho feito na branch
 `claude/corrigir-fontes-html-otwjr9` (designada pelo ambiente remoto
 desta sessão) — PR aberto contra `main`, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — corrigida uma
+inconsistência real face à "regra aplicada uniformemente" da entrada
+anterior: o cartão da **Lei n.º 73-A/2025** em `fontes.html`, apesar de
+confirmado só por triangulação (nunca leitura directa no DRE, exactamente
+como o DL 79/2019), tinha ficado sem a nota de estatuto de fonte —
+corrigido, acrescentada a mesma frase já usada no cartão do DL 79/2019
+("Triangulado por fontes secundárias independentes — acesso directo a
+diariodarepublica.pt bloqueado nesta sessão."). Citação do DL 79/2019
+também upgradada de "Publicado no Diário da República n.º 113/2019,
+Série I." para a coordenada completa "..., de 2019-06-14" — confirmado
+por `verificar_datas.detectar_alertas()` (2026-2028, todos os meses) que
+o novo formato ISO não introduz nenhum falso positivo (o padrão
+`data_numerica` exige barras `DD/MM/AAAA`, nunca hífens).
+
+**Novo achado, registado em CLAUDE.md → "FONTES VERIFICADAS E APROVADAS"**:
+as páginas `diariodarepublica.pt/dr/detalhe/...` são uma SPA que exige
+JavaScript para renderizar o texto do diploma — nunca legíveis por um
+fetch simples, mesmo quando o domínio não está bloqueado. `files.dre.pt`
+(PDF estático da própria série do DR, já usado nalguns cartões deste
+ficheiro) é o canal a preferir daqui para a frente. **Honestidade sobre
+o que esta sessão confirmou**: tentado `WebFetch` real a um URL
+`files.dre.pt` já em uso no site e a um URL `dr/detalhe/` (DL 79/2019) —
+os dois devolveram `EGRESS_BLOCKED` desta sessão, o mesmo bloqueio total
+de rede já documentado para dezenas de domínios — por isso esta sessão
+não confirmou por si própria a diferença de acessibilidade entre os
+dois; a recomendação fica registada para ser testada num ambiente com
+rede real (ex.: runner do GitHub Actions) antes de se assumir resolvida
+por completo.
+
+**Issue separada aberta, fora do âmbito deste PR** — [#175](https://github.com/nunovinhas-creator/tens-direito/issues/175):
+`imt-jovem.html` afirma o mesmo facto da Lei n.º 73-A/2025 (+2% nos
+escalões de IMT, limiares 330.539€/660.982€) desde 2026-07-20, também
+só por triangulação, mas sem nenhuma nota de estatuto de fonte — nunca
+corrigido nesta sessão, por estar fora do âmbito ("corrigir
+`fontes.html`"); fica registado para uma sessão dedicada, que deve
+também confirmar `dados/parametros/habitacao.yaml`.
+
+`tests/test_fontes_coerencia.py` (108 passed) e
+`tests/test_verificar_datas.py` (51 passed) reconfirmados sem
+regressões; suite completa + `ruff` corridos de novo antes do commit
+final. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados). Mesma branch
+`claude/corrigir-fontes-html-otwjr9`, mesmo PR #174, sem merge.
