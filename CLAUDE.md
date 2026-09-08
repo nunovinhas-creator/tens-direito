@@ -11095,3 +11095,47 @@ antes da suite completa. `AUTO_UPDATE_HABILITADO`/
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
 sessão sem scraper). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
 mesmo PR #174, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — resultado da
+verificação primária da **Lei n.º 73-A/2025** (a única, das duas
+confirmações pedidas na sessão anterior deste PR, que voltou a ser
+posta à prova): fecho **parcial**, não total — o diploma confirma-se em
+GRAU 1, os valores que ele fixaria continuam GRAU 2 (Issue #175 mantida
+aberta com essa distinção, ver abaixo).
+
+Cartão em `fontes.html` reescrito para separar as duas coisas, nunca
+misturadas como estavam: **confirmado** — é mesmo a Lei do Orçamento do
+Estado para 2026, publicada no Diário da República n.º 250, Suplemento,
+1.ª série, lida em fonte primária (PDF, files.diariodarepublica.pt);
+**por confirmar** — os limiares concretos do IMT Jovem para 2026
+(330.539€/660.982€, face a 324.058€/648.022€ em 2025) atribuídos à
+actualização de 2% dos escalões gerais de IMT por esta lei mantêm-se
+triangulados por fontes secundárias independentes, com a mesma nota de
+estatuto de fonte de sempre — a leitura primária confirmou a
+identidade do diploma, não o articulado que fixa esses números.
+`Decreto-Lei n.º 79/2019` **intocado** nesta correcção — mantém a
+coordenada (DR n.º 113/2019, Série I) e a nota de triangulação, por não
+ter sido posto à prova.
+
+**Issue #175 actualizada, não fechada**: o comentário registado deixa
+explícito que a lacuna original ("`imt-jovem.html` cita a Lei n.º
+73-A/2025 sem nota de estatuto de fonte") **não está resolvida** por
+esta verificação — só o diploma em `fontes.html` mudou de GRAU; os
+valores continuam por confirmar directamente no articulado, tanto em
+`fontes.html` como em `imt-jovem.html`/`dados/parametros/habitacao.yaml`
+(os dois pontos que a Issue já listava). Fechar a Issue por completo
+continua a exigir ler o articulado da lei (não só a 1.ª página/ementa)
+e confirmar os valores concretos dos escalões de IMT — trabalho ainda
+não feito.
+
+Verificado antes do commit: `tests/test_fontes_coerencia.py`/
+`test_verificar_datas.py`/`test_anos_metadados.py`/
+`test_valores_ancora.py` (377 testes) sem regressões; `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo; suite completa —
+**4427 passed, 4 skipped** (689s/11m28s), zero falhas, guardrail de
+skips confirmado a bater certo, elemento a elemento, com a allow-list.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
+mesmo PR #174, sem merge.
