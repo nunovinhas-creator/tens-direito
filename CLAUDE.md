@@ -669,6 +669,51 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 
 **✓ Confirmados após fact-checking completo (2026-06-28)**: Todos os valores de referência foram verificados e confirmados em páginas publicadas. Nenhuma discrepância encontrada entre valores scraped e valores publicados. CSI e PSU fact-checked e publicadas.
 
+### Verificação directa de diplomas — `files.dre.pt` em vez de `dr/detalhe/`
+
+Correcção ao método de verificação primária (2026-09-08): as páginas
+`diariodarepublica.pt/dr/detalhe/...` são uma SPA que exige JavaScript
+para renderizar o texto do diploma — um `WebFetch`/`curl` simples a essas
+páginas nunca devolve o conteúdo real (mesmo quando o domínio não está
+bloqueado pela rede da sessão), só a shell vazia. **`files.dre.pt`** (e o
+espelho `files.diariodarepublica.pt`) serve o PDF estático da própria
+série do Diário da República — um ficheiro binário, sem JS nenhum a
+renderizar, fetchável directamente. É o canal a preferir para confirmar
+o texto de um diploma, não `dr/detalhe/`. Padrão do URL, já usado em
+vários cartões de `fontes.html` (ex.: DL 119/2021, DL 18/2023):
+`https://files.dre.pt/1s/AAAA/MM/NNNNN/PPPPPPQQQQQQ.pdf` — série (`1s`
+= Série I), ano, mês, número do DR com padding, e o intervalo de
+páginas do diploma dentro desse DR (`PPPPPP`-`QQQQQQ`, 6 dígitos cada).
+
+**Confirmado (2026-09-08, continuação do mesmo PR #174)**: `files.dre.pt`
+está acessível — o PDF integral do Decreto-Lei n.º 18/2023 foi lido por
+inteiro em fonte primária, fora do sandbox (ver o cartão actualizado
+deste diploma em `fontes.html`, com os factos que só uma leitura
+completa dá — número de ordem das alterações ao Decreto-Lei n.º 187/2007
+e ao Estatuto da Aposentação, e o conteúdo dos arts. 5.º/6.º).
+**Correcção à leitura da entrada anterior**: `EGRESS_BLOCKED` nas
+tentativas de `WebFetch`/`curl` desta e de outras sessões — a
+`files.dre.pt` e a dezenas de outros domínios, documentado em toda a
+extensão deste ficheiro — é uma limitação da rede do sandbox onde o
+Code corre, nunca prova de que o domínio, o diploma ou o método (PDF
+estático em vez de SPA) estão indisponíveis. O método continua válido;
+só não é executável a partir desta sessão.
+
+**Regra permanente**: a verificação primária de um diploma no DRE (ou
+em qualquer fonte oficial atrás de `EGRESS_BLOCKED`) nunca é feita pelo
+Code a partir desta sessão — é feita fora dela (pelo Nuno, ou por outro
+processo com acesso real à rede) e entregue ao Code já como facto
+confirmado, com o artigo/diploma citado ao pormenor. O Code nunca
+reconstrói, infere ou triangula um facto que já lhe foi entregue como
+verificado — só o transcreve fielmente na página, com a atribuição
+correcta ("Lido por inteiro em fonte primária", GRAU 1 na metodologia
+descrita na secção "Anel 4" mais abaixo). Sem essa entrega externa, e
+com o sandbox bloqueado, o site continua a seguir a regra normal:
+triangulação por `WebSearch` (GRAU 2, sempre identificada como tal) ou
+a questão fica marcada por confirmar (GRAU 3) — nunca preenchida por
+analogia, e nunca apresentada como "lida directamente" sem o ter sido
+de facto.
+
 ### Regra de links
 NUNCA inventar subpaths de portais oficiais.
 Quando um subpath devolve erro: usar a homepage do domínio.
@@ -10858,3 +10903,239 @@ check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
 `claude/issue-170-fontes-datas-txy53c` (designada pelo ambiente remoto
 desta sessão) — PR aberto, referenciando "Closes #170", sem merge para
 `main`.
+
+---
+
+*Última revisão: 2026-09-07 (continuação) — sessão de correcção pontual a
+`fontes.html`, começando exactamente onde a entrada anterior tinha
+parado: 6 cartões corrigidos/completados no cluster Reformas e no
+cluster Habitação. `WebFetch`/`curl` confirmados bloqueados nesta sessão
+para todos os domínios testados (`diariodarepublica.pt`, `www.cga.pt`) —
+mesma limitação de sempre; as duas confirmações pedidas explicitamente
+antes de publicar foram feitas por triangulação `WebSearch` (nunca
+leitura directa no DRE):
+
+1) **Decreto-Lei n.º 79/2019, de 14 de junho** — confirmado por 4 fontes
+independentes (dre.pt indexado, cga.pt, SPGL, homepagejuridica.pt),
+Diário da República n.º 113/2019, Série I. 2) **Lei n.º 73-A/2025 =
+OE2026 com actualização de 2% dos escalões de IMT** — confirmado por 8
+fontes profissionais/financeiras independentes (OCC, EY, Doutor
+Finanças, PwC, Crowe, Apcmc, Macedo Vitorino, RFF Lawyers), valores
+330.539€/660.982€ batem certo com os já publicados em `imt-jovem.html`.
+
+Correcções aplicadas: **DL 18/2023** ganhou a data (3 de março, DR n.º
+45/2023, Série I, pp. 40-43 — confirmado pelo próprio nome do ficheiro
+PDF em files.dre.pt, "0004000043" = páginas 40-43) e a frase errada
+"condições reguladas por diploma próprio ainda não verificado" foi
+substituída pela relação real: o regime foi criado pela **Lei n.º
+5/2022, de 7 de janeiro** (novo cartão, idade ≥60 anos/incapacidade
+≥80%/15 anos de carreira), e o DL 18/2023 é a sua regulamentação, mais
+de um ano depois. **DL 79/2019** ganhou a data confirmada. **DL 97/2026**
+— a nota "com efeitos desde 1 de setembro de 2026" estava mal atribuída
+a tudo; reescrita para distinguir as três datas reais (dedução de rendas
+aos rendimentos de 2026; IVA a 6% desde 1 de julho de 2026; regimes CIA
+— Contratos de Investimento para Arrendamento, facto novo, nunca antes
+citado no site — e RSAA desde 1 de setembro de 2026); acrescentada a lei
+de autorização, **Lei n.º 9-A/2026, de 6 de março** (novo cartão, link
+para o PDF real em files.diariodarepublica.pt). **DL 44/2024** (garantia
+pública) ganhou a nota do prazo-limite (contratos celebrados até 31 de
+dezembro de 2026, com possibilidade de prorrogação) — facto já publicado
+e verificado em `garantia-publica-credito-habitacao.html`, só importado
+para fontes.html; a data foi registada em `ROADMAP.md` → "DATAS FIXAS"
+(vigilância explícita, cruzada com o sentinela `dre_habitacao_garantia`).
+**DL 48-A/2024** (IMT Jovem) corrigido — os valores de 2026 (330.539€/
+660.982€) vêm da Lei n.º 73-A/2025, nunca deste diploma; **novo cartão
+para a Lei n.º 73-A/2025** (resolve, de caminho, uma excepção já aberta
+em `EXCECOES_DIPLOMAS_FONTES` desde o levantamento de 30/08/2026 —
+removida de `tests/test_fontes_coerencia.py`, critério de "resolvido"
+cumprido). Ressalva Açores/Madeira acrescentada com nota de estatuto de
+fonte ("sujeita a confirmação directa no DRE") — usado o valor **826.228€**
+já publicado e investigado em `imt-jovem.html` (arredondamento das
+tabelas práticas da AT), não os "826.227€" do pedido original, que
+correspondem à divergência de arredondamento já resolvida numa sessão
+anterior (2026-07-20); reportado aqui para nunca se repetir a confusão.
+
+**Falso positivo apanhado antes do commit, não depois**: o texto
+"contratos de crédito formalizados até 31 de dezembro de 2026" (1.ª
+versão da correcção do DL 44/2024) disparava `data_mes_ano` em
+`verificar_datas.py` a partir de janeiro de 2027 — "formalizados até"
+não bate com nenhum marcador de `MARCADORES_HISTORICOS`. Corrigido
+reescrevendo para "celebrados até", reutilizando o marcador já existente
+`celebrados?\s+at[ée]\b` (mesma família das Issues #51/#52) — nunca
+inventado marcador novo para um caso que a vocabulário já cobre.
+Confirmado com `detectar_alertas()` real sobre os 12 meses × 2026-2028:
+zero alertas depois da correcção.
+
+Regra aplicada uniformemente: qualquer facto novo/corrigido nesta sessão
+que não foi lido directamente no DRE (bloqueado) ganhou a nota "Triangulado
+por fontes secundárias independentes — acesso directo a
+diariodarepublica.pt bloqueado nesta sessão", mesmo padrão já usado nos
+cartões da Lei n.º 7/2001 e do Estatuto da Aposentação.
+
+**Fora do âmbito desta sessão, sinalizado e não corrigido**: a nova
+redacção do cartão do DL 18/2023 em `fontes.html` diverge agora de
+`outras-antecipacoes.html`, que continua a descrever a via de
+antecipação por deficiência como dependente de "regulamentação própria,
+que ainda não verificámos" (JSON-LD e texto visível, 3 ocorrências) — a
+tarefa desta sessão foi explicitamente scoped a `fontes.html`; corrigir
+esse artigo fica registado para uma sessão dedicada.
+
+Suite completa: `python3 -m pytest tests/ -q` — **4427 passed, 4
+skipped** (601s), zero falhas, os mesmos 4 skips estruturais de sempre
+(confirmados elemento a elemento contra `tests/skips_permitidos.json`);
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Trabalho feito na branch
+`claude/corrigir-fontes-html-otwjr9` (designada pelo ambiente remoto
+desta sessão) — PR aberto contra `main`, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — corrigida uma
+inconsistência real face à "regra aplicada uniformemente" da entrada
+anterior: o cartão da **Lei n.º 73-A/2025** em `fontes.html`, apesar de
+confirmado só por triangulação (nunca leitura directa no DRE, exactamente
+como o DL 79/2019), tinha ficado sem a nota de estatuto de fonte —
+corrigido, acrescentada a mesma frase já usada no cartão do DL 79/2019
+("Triangulado por fontes secundárias independentes — acesso directo a
+diariodarepublica.pt bloqueado nesta sessão."). Citação do DL 79/2019
+também upgradada de "Publicado no Diário da República n.º 113/2019,
+Série I." para a coordenada completa "..., de 2019-06-14" — confirmado
+por `verificar_datas.detectar_alertas()` (2026-2028, todos os meses) que
+o novo formato ISO não introduz nenhum falso positivo (o padrão
+`data_numerica` exige barras `DD/MM/AAAA`, nunca hífens).
+
+**Novo achado, registado em CLAUDE.md → "FONTES VERIFICADAS E APROVADAS"**:
+as páginas `diariodarepublica.pt/dr/detalhe/...` são uma SPA que exige
+JavaScript para renderizar o texto do diploma — nunca legíveis por um
+fetch simples, mesmo quando o domínio não está bloqueado. `files.dre.pt`
+(PDF estático da própria série do DR, já usado nalguns cartões deste
+ficheiro) é o canal a preferir daqui para a frente. **Honestidade sobre
+o que esta sessão confirmou**: tentado `WebFetch` real a um URL
+`files.dre.pt` já em uso no site e a um URL `dr/detalhe/` (DL 79/2019) —
+os dois devolveram `EGRESS_BLOCKED` desta sessão, o mesmo bloqueio total
+de rede já documentado para dezenas de domínios — por isso esta sessão
+não confirmou por si própria a diferença de acessibilidade entre os
+dois; a recomendação fica registada para ser testada num ambiente com
+rede real (ex.: runner do GitHub Actions) antes de se assumir resolvida
+por completo.
+
+**Issue separada aberta, fora do âmbito deste PR** — [#175](https://github.com/nunovinhas-creator/tens-direito/issues/175):
+`imt-jovem.html` afirma o mesmo facto da Lei n.º 73-A/2025 (+2% nos
+escalões de IMT, limiares 330.539€/660.982€) desde 2026-07-20, também
+só por triangulação, mas sem nenhuma nota de estatuto de fonte — nunca
+corrigido nesta sessão, por estar fora do âmbito ("corrigir
+`fontes.html`"); fica registado para uma sessão dedicada, que deve
+também confirmar `dados/parametros/habitacao.yaml`.
+
+`tests/test_fontes_coerencia.py` (108 passed) e
+`tests/test_verificar_datas.py` (51 passed) reconfirmados sem
+regressões; suite completa + `ruff` corridos de novo antes do commit
+final. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
+reconfirmados `False` (inalterados). Mesma branch
+`claude/corrigir-fontes-html-otwjr9`, mesmo PR #174, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — corrigida a
+ressalva desta entrada sobre `files.dre.pt`, com uma verificação primária
+feita fora desta sessão: o PDF integral do Decreto-Lei n.º 18/2023 foi
+lido por inteiro em fonte primária. `files.dre.pt` está confirmado
+acessível — o `EGRESS_BLOCKED` que as tentativas de `WebFetch`/`curl`
+desta e de outras sessões continuam a devolver é uma limitação da rede
+do sandbox onde o Code corre, nunca prova de que o domínio ou o método
+(PDF estático vs. SPA) estão indisponíveis; corrigido em
+"FONTES VERIFICADAS E APROVADAS" → "Verificação directa de diplomas",
+substituindo a ressalva "esta sessão não confirmou... antes de se
+assumir como garantidamente resolvido" pelo facto confirmado e por uma
+**regra permanente, nova**: a verificação primária de um diploma no DRE
+nunca é feita pelo Code a partir desta sessão — é sempre feita fora
+(pelo Nuno, ou por outro processo com acesso real à rede) e entregue ao
+Code já como facto confirmado, com o artigo citado ao pormenor; o Code
+nunca reconstrói nem infere o que já lhe foi entregue verificado, só o
+transcreve fielmente, com a atribuição GRAU 1 correcta.
+
+Cartão do Decreto-Lei n.º 18/2023 em `fontes.html` actualizado com os
+factos que essa leitura primária deu, nenhum deles disponível antes: é a
+**11.ª alteração** ao Decreto-Lei n.º 187/2007 e a **50.ª** ao Estatuto
+da Aposentação (art. 40.º do Decreto-Lei n.º 498/72); o **artigo 5.º**
+afasta desta via a redução por penalizações de antecipação e o factor de
+sustentabilidade; o **artigo 6.º** proíbe a acumulação com actividade
+profissional a qualquer título, com perda do direito enquanto essa
+acumulação durar; e o **artigo 1.º** confirma directamente que o diploma
+regulamenta a Lei n.º 5/2022 — removido o resto da frase "condições
+reguladas por diploma próprio ainda não verificado", que já tinha sido
+corrigida na entrada anterior deste PR mas cuja causa (a relação exacta
+entre os dois diplomas) só ficou confirmada por leitura directa agora. A
+nota "Triangulado por fontes secundárias independentes" deu lugar a
+"Lido por inteiro em fonte primária (PDF, files.dre.pt)" — cartão passa
+de GRAU 2 a GRAU 1. A data (3 de março, DR n.º 45/2023) e o link para
+`diariodarepublica.pt/dr/detalhe/...` já estavam correctos desde a
+entrada anterior deste PR — nenhum dos dois foi tocado.
+
+**Continua fora do âmbito, sinalizado de novo**: `outras-antecipacoes.html`
+mantém-se sem alteração (a tarefa desta sessão foi explicitamente scoped
+a `fontes.html`) — a divergência já registada na entrada anterior deste
+PR fica agora mais acentuada: essa página descreve a via de antecipação
+por deficiência com o badge "Por verificar"/GRAU 3 ("regulamentação
+própria, que ainda não verificámos", JSON-LD e texto visível, 3
+ocorrências), enquanto `fontes.html` já está em GRAU 1 para o mesmo
+diploma. Corrigir esse artigo continua registado para uma sessão
+dedicada.
+
+Suite completa: `python3 -m pytest tests/ -q --junitxml=...` — **4427
+passed, 4 skipped** (672,85s/11m13s), zero falhas; guardrail de skips
+(`scripts/verificar_skips_permitidos.py`) confirmado a bater certo,
+elemento a elemento, com os mesmos 4 skips estruturais da allow-list
+(`tests/skips_permitidos.json`, inalterada); `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo; `tests/test_fontes_
+coerencia.py`/`test_verificar_datas.py`/`test_anos_metadados.py`/
+`test_valores_ancora.py` (377 testes) reconfirmados sem regressões
+antes da suite completa. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
+mesmo PR #174, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — resultado da
+verificação primária da **Lei n.º 73-A/2025** (a única, das duas
+confirmações pedidas na sessão anterior deste PR, que voltou a ser
+posta à prova): fecho **parcial**, não total — o diploma confirma-se em
+GRAU 1, os valores que ele fixaria continuam GRAU 2 (Issue #175 mantida
+aberta com essa distinção, ver abaixo).
+
+Cartão em `fontes.html` reescrito para separar as duas coisas, nunca
+misturadas como estavam: **confirmado** — é mesmo a Lei do Orçamento do
+Estado para 2026, publicada no Diário da República n.º 250, Suplemento,
+1.ª série, lida em fonte primária (PDF, files.diariodarepublica.pt);
+**por confirmar** — os limiares concretos do IMT Jovem para 2026
+(330.539€/660.982€, face a 324.058€/648.022€ em 2025) atribuídos à
+actualização de 2% dos escalões gerais de IMT por esta lei mantêm-se
+triangulados por fontes secundárias independentes, com a mesma nota de
+estatuto de fonte de sempre — a leitura primária confirmou a
+identidade do diploma, não o articulado que fixa esses números.
+`Decreto-Lei n.º 79/2019` **intocado** nesta correcção — mantém a
+coordenada (DR n.º 113/2019, Série I) e a nota de triangulação, por não
+ter sido posto à prova.
+
+**Issue #175 actualizada, não fechada**: o comentário registado deixa
+explícito que a lacuna original ("`imt-jovem.html` cita a Lei n.º
+73-A/2025 sem nota de estatuto de fonte") **não está resolvida** por
+esta verificação — só o diploma em `fontes.html` mudou de GRAU; os
+valores continuam por confirmar directamente no articulado, tanto em
+`fontes.html` como em `imt-jovem.html`/`dados/parametros/habitacao.yaml`
+(os dois pontos que a Issue já listava). Fechar a Issue por completo
+continua a exigir ler o articulado da lei (não só a 1.ª página/ementa)
+e confirmar os valores concretos dos escalões de IMT — trabalho ainda
+não feito.
+
+Verificado antes do commit: `tests/test_fontes_coerencia.py`/
+`test_verificar_datas.py`/`test_anos_metadados.py`/
+`test_valores_ancora.py` (377 testes) sem regressões; `ruff check
+scripts/ tests/ --select E,F,W --ignore E501 .` limpo; suite completa —
+**4427 passed, 4 skipped** (689s/11m28s), zero falhas, guardrail de
+skips confirmado a bater certo, elemento a elemento, com a allow-list.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
+mesmo PR #174, sem merge.
