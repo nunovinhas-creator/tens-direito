@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-07",
+  "gerado_em": "2026-09-08",
   "prestacoes": {
     "abono": {
       "escalao1_limite_cenario_pedidos_novos_2026": {
@@ -857,6 +857,86 @@
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105",
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-20"
+      },
+      "imt_geral_hpp_ra_limite_isento_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — 1.º escalão: até este valor não há IMT",
+        "unidade": "EUR",
+        "valor": 132933,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc2_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 2.º escalão (taxa marginal de 2%, reutiliza imt_geral_hpp_esc2_taxa_pct)",
+        "unidade": "EUR",
+        "valor": 181838,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc2_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 2.º escalão",
+        "unidade": "EUR",
+        "valor": 2658.66,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2% × 132.933€)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc3_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 3.º escalão (taxa marginal de 5%, reutiliza imt_geral_hpp_esc3_taxa_pct)",
+        "unidade": "EUR",
+        "valor": 247934,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc3_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 3.º escalão",
+        "unidade": "EUR",
+        "valor": 8113.8,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 2.658,66€ + 181.838€ × 3%)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc4_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 4.º escalão (limite superior = imt_ra_isencao_total_limite_eur, por construção legal do art. 9.º-A; taxa = imt_geral_hpp_esc4_taxa_pct, 7%)",
+        "unidade": "EUR",
+        "valor": 13072.48,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 8.113,80€ + 247.934€ × 2%)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc5_abater_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — parcela a abater do 5.º escalão (limite superior = imt_ra_isencao_parcial_limite_eur, por construção legal do art. 9.º-A; taxa = imt_geral_hpp_esc5_taxa_pct, 8%)",
+        "unidade": "EUR",
+        "valor": 17204.22,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026 — tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro (parcela = 13.072,48€ + 413.174€ × 1%)",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
+      },
+      "imt_geral_hpp_ra_esc6_limite_eur": {
+        "descricao": "Tabela geral de IMT (HPP, Regiões Autónomas) — limite superior do 6.º escalão (taxa única de 6% sobre o valor total, sem parcela a abater; taxa = imt_geral_hpp_esc6_taxa_pct)",
+        "unidade": "EUR",
+        "valor": 1438566,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Lei n.º 21/90, de 4 de agosto (limites dos escalões de IMT elevados em 25% nas Regiões Autónomas) + art. 17.º, n.º 1, al. a) do CIMT, na redação da Lei n.º 73-A/2025 (OE 2026); folheto da AT \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, tabelas práticas no Ofício Circulado n.º 40129/2026, de 6 de janeiro",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096",
+        "fonte_url_complementar": "https://info.portaldasfinancas.gov.pt",
+        "verificado_em": "2026-09-08"
       },
       "garantia_idade_minima_anos": {
         "descricao": "Garantia Pública — idade mínima (inclusive) de cada titular do crédito",

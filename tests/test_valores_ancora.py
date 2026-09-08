@@ -787,6 +787,22 @@ def test_imt_jovem_limites_ra_sao_25_por_cento_acima_do_continente():
         )
 
 
+def test_imt_jovem_parcela_a_abater_bate_com_o_folheto_da_at():
+    """A AT publica a isenção parcial do IMT Jovem também como "parcela a
+    abater" sobre o valor de aquisição TOTAL (tax = valor × 8% − abater),
+    equivalente a aplicar 8% só ao excedente acima do limite de isenção
+    total — mas nunca guardado como parâmetro próprio (seria uma 2.ª
+    fonte para o mesmo facto): este teste deriva a parcela dos limiares
+    já parametrizados (limite × taxa) e falha se algum dos dois divergir
+    dos valores publicados pela AT no folheto "Os meus direitos e
+    deveres na aquisição de um prédio" (janeiro 2026, Ofício Circulado
+    n.º 40129/2026, de 6 de janeiro): 26.443,12€ (Continente) e
+    33.053,92€ (Regiões Autónomas)."""
+    taxa = _param_habitacao("imt_taxa_sobre_excedente_pct") / 100
+    assert round(_param_habitacao("imt_isencao_total_limite_eur") * taxa, 2) == 26443.12
+    assert round(_param_habitacao("imt_ra_isencao_total_limite_eur") * taxa, 2) == 33053.92
+
+
 def test_imt_jovem_exclusao_de_terrenos_presente_na_pagina():
     """A exclusão de terrenos para construção (informação vinculativa da
     AT, out. 2025) está registada no YAML e tem de estar visível na
@@ -827,6 +843,84 @@ def test_habitacao_pillar_menciona_os_mesmos_limiares_das_paginas_filhas():
     pillar = _ler("p/habitacao.html")
     assert f"{_param_habitacao('imt_isencao_total_limite_eur'):,}".replace(",", ".") in pillar
     assert _param_habitacao("garantia_percentagem_max_pct") in _percentagens(pillar)
+
+
+# ── Cluster Habitação — Tabela geral de IMT nas Regiões Autónomas ──────────
+# (2026-09-08). A tabela geral (não-jovem) das RA ficou de fora na Sessão 2
+# (2026-07-20) por falta de confirmação conclusiva das parcelas a abater —
+# fechado agora com o folheto oficial da AT "Os meus direitos e deveres na
+# aquisição de um prédio" (janeiro 2026, Ofício Circulado n.º 40129/2026,
+# de 6 de janeiro). Ver dados/parametros/habitacao.yaml para o detalhe.
+
+def test_imt_geral_hpp_ra_bate_com_o_folheto_da_at_janeiro_2026():
+    """Confirma os limiares/parcelas da tabela geral de IMT (HPP) nas
+    Regiões Autónomas contra o folheto oficial da AT — lidos de
+    dados/parametros.json, nunca uma cópia à parte. Os limites
+    superiores dos escalões de 7%/8% e as taxas marginais (todas) são
+    reutilizados de parâmetros já existentes (nunca duplicados) — por
+    isso não são reafirmados aqui, só os valores genuinamente novos
+    desta sessão."""
+    p = _param_habitacao
+    assert p("imt_geral_hpp_ra_limite_isento_eur") == 132933
+    assert p("imt_geral_hpp_ra_esc2_limite_eur") == 181838
+    assert p("imt_geral_hpp_ra_esc2_abater_eur") == 2658.66
+    assert p("imt_geral_hpp_ra_esc3_limite_eur") == 247934
+    assert p("imt_geral_hpp_ra_esc3_abater_eur") == 8113.80
+    assert p("imt_geral_hpp_ra_esc4_abater_eur") == 13072.48
+    assert p("imt_geral_hpp_ra_esc5_abater_eur") == 17204.22
+    assert p("imt_geral_hpp_ra_esc6_limite_eur") == 1438566
+
+
+def test_imt_geral_hpp_ra_limites_sao_25_por_cento_acima_do_continente():
+    """Mesma regra de arredondamento já confirmada para os limiares do
+    IMT Jovem (Lei n.º 21/90 — RA = Continente × 1,25, arredondado ao
+    euro, meio-euro para cima) aplica-se também aos limiares da tabela
+    geral de IMT (não-jovem). Os limites dos escalões 4/5 (=7%/8%) não
+    entram aqui — são, por lei, os próprios limiares do IMT Jovem RA já
+    testados em test_imt_jovem_limites_ra_sao_25_por_cento_acima_do_continente,
+    nunca duplicados como parâmetro geral."""
+    import math
+    for continente, ra in [
+        ("imt_geral_hpp_limite_isento_eur", "imt_geral_hpp_ra_limite_isento_eur"),
+        ("imt_geral_hpp_esc2_limite_eur", "imt_geral_hpp_ra_esc2_limite_eur"),
+        ("imt_geral_hpp_esc3_limite_eur", "imt_geral_hpp_ra_esc3_limite_eur"),
+        ("imt_geral_hpp_esc6_limite_eur", "imt_geral_hpp_ra_esc6_limite_eur"),
+    ]:
+        esperado = math.floor(_param_habitacao(continente) * 1.25 + 0.5)
+        assert _param_habitacao(ra) == esperado, (
+            f"{ra}={_param_habitacao(ra)} ≠ {continente}×1,25 arredondado ({esperado})"
+        )
+
+
+def test_imt_geral_hpp_ra_parcelas_a_abater_derivam_exactamente_dos_limites():
+    """Mesmo princípio de auto-consistência já usado para o Continente
+    (tests/test_simulador_imt_jovem_calculo.py::
+    test_parcelas_a_abater_derivam_exactamente_dos_limites):
+    abater_n = abater_{n-1} + limite_{n-1} × Δtaxa. As TAXAS marginais
+    são as mesmas do Continente (só os LIMITES mudam nas RA) — por isso
+    lidas de imt_geral_hpp_esc*_taxa_pct, nunca de um parâmetro RA
+    próprio (que nunca foi criado, de propósito)."""
+    p = _param_habitacao
+    limite_isento = p("imt_geral_hpp_ra_limite_isento_eur")
+    esc2_taxa = p("imt_geral_hpp_esc2_taxa_pct")
+    esc2_limite = p("imt_geral_hpp_ra_esc2_limite_eur")
+    esc2_abater = p("imt_geral_hpp_ra_esc2_abater_eur")
+    esc3_taxa = p("imt_geral_hpp_esc3_taxa_pct")
+    esc3_limite = p("imt_geral_hpp_ra_esc3_limite_eur")
+    esc3_abater = p("imt_geral_hpp_ra_esc3_abater_eur")
+    esc4_taxa = p("imt_geral_hpp_esc4_taxa_pct")
+    esc4_abater = p("imt_geral_hpp_ra_esc4_abater_eur")
+    esc4_limite = p("imt_ra_isencao_total_limite_eur")  # reutilizado, por lei
+    esc5_taxa = p("imt_geral_hpp_esc5_taxa_pct")
+    esc5_abater = p("imt_geral_hpp_ra_esc5_abater_eur")
+
+    assert round(esc2_abater, 2) == round(limite_isento * esc2_taxa / 100, 2)
+    assert round(esc3_abater, 2) == round(
+        esc2_abater + esc2_limite * (esc3_taxa - esc2_taxa) / 100, 2)
+    assert round(esc4_abater, 2) == round(
+        esc3_abater + esc3_limite * (esc4_taxa - esc3_taxa) / 100, 2)
+    assert round(esc5_abater, 2) == round(
+        esc4_abater + esc4_limite * (esc5_taxa - esc4_taxa) / 100, 2)
 
 
 def test_nenhum_parametro_vigente_fica_sem_verificado_em():
