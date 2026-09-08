@@ -685,20 +685,34 @@ vários cartões de `fontes.html` (ex.: DL 119/2021, DL 18/2023):
 = Série I), ano, mês, número do DR com padding, e o intervalo de
 páginas do diploma dentro desse DR (`PPPPPP`-`QQQQQQ`, 6 dígitos cada).
 
-**Honestidade sobre o que esta sessão confirmou de facto**: tentado um
-`WebFetch` real a um URL `files.dre.pt` já usado no site
-(`https://files.dre.pt/1s/2021/12/24200/0003100034.pdf`) e a um URL
-`dr/detalhe/` (DL n.º 79/2019) — **os dois** devolveram
-`EGRESS_BLOCKED` desta sessão, o mesmo bloqueio total de rede já
-documentado para dezenas de domínios em sessões anteriores (nunca
-específico a `.gov.pt`). Por isso esta sessão **não confirmou** por si
-própria que `files.dre.pt` é acessível — só regista a recomendação,
-consistente com o padrão já em uso no site e com o motivo técnico
-(PDF estático vs. SPA) — para ser testada num ambiente com rede real
-(ex.: runner do GitHub Actions, onde `WebFetch`/`curl` já se confirmaram
-a funcionar dezenas de vezes neste histórico) antes de se assumir como
-garantidamente resolvido. Nunca documentar aqui como "confirmado
-funcional" sem esse teste real.
+**Confirmado (2026-09-08, continuação do mesmo PR #174)**: `files.dre.pt`
+está acessível — o PDF integral do Decreto-Lei n.º 18/2023 foi lido por
+inteiro em fonte primária, fora do sandbox (ver o cartão actualizado
+deste diploma em `fontes.html`, com os factos que só uma leitura
+completa dá — número de ordem das alterações ao Decreto-Lei n.º 187/2007
+e ao Estatuto da Aposentação, e o conteúdo dos arts. 5.º/6.º).
+**Correcção à leitura da entrada anterior**: `EGRESS_BLOCKED` nas
+tentativas de `WebFetch`/`curl` desta e de outras sessões — a
+`files.dre.pt` e a dezenas de outros domínios, documentado em toda a
+extensão deste ficheiro — é uma limitação da rede do sandbox onde o
+Code corre, nunca prova de que o domínio, o diploma ou o método (PDF
+estático em vez de SPA) estão indisponíveis. O método continua válido;
+só não é executável a partir desta sessão.
+
+**Regra permanente**: a verificação primária de um diploma no DRE (ou
+em qualquer fonte oficial atrás de `EGRESS_BLOCKED`) nunca é feita pelo
+Code a partir desta sessão — é feita fora dela (pelo Nuno, ou por outro
+processo com acesso real à rede) e entregue ao Code já como facto
+confirmado, com o artigo/diploma citado ao pormenor. O Code nunca
+reconstrói, infere ou triangula um facto que já lhe foi entregue como
+verificado — só o transcreve fielmente na página, com a atribuição
+correcta ("Lido por inteiro em fonte primária", GRAU 1 na metodologia
+descrita na secção "Anel 4" mais abaixo). Sem essa entrega externa, e
+com o sandbox bloqueado, o site continua a seguir a regra normal:
+triangulação por `WebSearch` (GRAU 2, sempre identificada como tal) ou
+a questão fica marcada por confirmar (GRAU 3) — nunca preenchida por
+analogia, e nunca apresentada como "lida directamente" sem o ter sido
+de facto.
 
 ### Regra de links
 NUNCA inventar subpaths de portais oficiais.
@@ -11020,3 +11034,64 @@ regressões; suite completa + `ruff` corridos de novo antes do commit
 final. `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA`
 reconfirmados `False` (inalterados). Mesma branch
 `claude/corrigir-fontes-html-otwjr9`, mesmo PR #174, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (continuação, mesmo PR #174) — corrigida a
+ressalva desta entrada sobre `files.dre.pt`, com uma verificação primária
+feita fora desta sessão: o PDF integral do Decreto-Lei n.º 18/2023 foi
+lido por inteiro em fonte primária. `files.dre.pt` está confirmado
+acessível — o `EGRESS_BLOCKED` que as tentativas de `WebFetch`/`curl`
+desta e de outras sessões continuam a devolver é uma limitação da rede
+do sandbox onde o Code corre, nunca prova de que o domínio ou o método
+(PDF estático vs. SPA) estão indisponíveis; corrigido em
+"FONTES VERIFICADAS E APROVADAS" → "Verificação directa de diplomas",
+substituindo a ressalva "esta sessão não confirmou... antes de se
+assumir como garantidamente resolvido" pelo facto confirmado e por uma
+**regra permanente, nova**: a verificação primária de um diploma no DRE
+nunca é feita pelo Code a partir desta sessão — é sempre feita fora
+(pelo Nuno, ou por outro processo com acesso real à rede) e entregue ao
+Code já como facto confirmado, com o artigo citado ao pormenor; o Code
+nunca reconstrói nem infere o que já lhe foi entregue verificado, só o
+transcreve fielmente, com a atribuição GRAU 1 correcta.
+
+Cartão do Decreto-Lei n.º 18/2023 em `fontes.html` actualizado com os
+factos que essa leitura primária deu, nenhum deles disponível antes: é a
+**11.ª alteração** ao Decreto-Lei n.º 187/2007 e a **50.ª** ao Estatuto
+da Aposentação (art. 40.º do Decreto-Lei n.º 498/72); o **artigo 5.º**
+afasta desta via a redução por penalizações de antecipação e o factor de
+sustentabilidade; o **artigo 6.º** proíbe a acumulação com actividade
+profissional a qualquer título, com perda do direito enquanto essa
+acumulação durar; e o **artigo 1.º** confirma directamente que o diploma
+regulamenta a Lei n.º 5/2022 — removido o resto da frase "condições
+reguladas por diploma próprio ainda não verificado", que já tinha sido
+corrigida na entrada anterior deste PR mas cuja causa (a relação exacta
+entre os dois diplomas) só ficou confirmada por leitura directa agora. A
+nota "Triangulado por fontes secundárias independentes" deu lugar a
+"Lido por inteiro em fonte primária (PDF, files.dre.pt)" — cartão passa
+de GRAU 2 a GRAU 1. A data (3 de março, DR n.º 45/2023) e o link para
+`diariodarepublica.pt/dr/detalhe/...` já estavam correctos desde a
+entrada anterior deste PR — nenhum dos dois foi tocado.
+
+**Continua fora do âmbito, sinalizado de novo**: `outras-antecipacoes.html`
+mantém-se sem alteração (a tarefa desta sessão foi explicitamente scoped
+a `fontes.html`) — a divergência já registada na entrada anterior deste
+PR fica agora mais acentuada: essa página descreve a via de antecipação
+por deficiência com o badge "Por verificar"/GRAU 3 ("regulamentação
+própria, que ainda não verificámos", JSON-LD e texto visível, 3
+ocorrências), enquanto `fontes.html` já está em GRAU 1 para o mesmo
+diploma. Corrigir esse artigo continua registado para uma sessão
+dedicada.
+
+Suite completa: `python3 -m pytest tests/ -q --junitxml=...` — **4427
+passed, 4 skipped** (672,85s/11m13s), zero falhas; guardrail de skips
+(`scripts/verificar_skips_permitidos.py`) confirmado a bater certo,
+elemento a elemento, com os mesmos 4 skips estruturais da allow-list
+(`tests/skips_permitidos.json`, inalterada); `ruff check scripts/
+tests/ --select E,F,W --ignore E501 .` limpo; `tests/test_fontes_
+coerencia.py`/`test_verificar_datas.py`/`test_anos_metadados.py`/
+`test_valores_ancora.py` (377 testes) reconfirmados sem regressões
+antes da suite completa. `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
+mesmo PR #174, sem merge.
