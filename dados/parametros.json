@@ -849,7 +849,7 @@
         "verificado_em": "2026-07-20"
       },
       "is_aquisicao_taxa_pct": {
-        "descricao": "Imposto do Selo da AQUISIÇÃO de imóveis (verba 1.1 da Tabela Geral do Imposto do Selo) — 0,8% sobre o maior entre o preço e o VPT; no IMT Jovem, a isenção parcial aplica esta taxa só ao excedente acima do limite de isenção total (cenário confirmado na Sessão 1 e já publicado em imt-jovem.html)",
+        "descricao": "Imposto do Selo da AQUISIÇÃO de imóveis (verba 1.1 da Tabela Geral do Imposto do Selo) — 0,8% sobre o maior entre o preço e o VPT; no IMT Jovem, a isenção parcial aplica esta taxa só ao excedente acima do limite de isenção total (cenário confirmado na Sessão 1 e já publicado em imt-jovem.html). Tecnicamente, a AT descreve-a como uma dedução à coleta com um valor máximo de 2.644,31€ (folheto \"Os meus direitos e deveres na aquisição de um prédio\", janeiro 2026, Ofício Circulado n.º 40129/2026, de 6 de janeiro) — nunca guardado como parâmetro próprio, derivado em tests/test_valores_ancora.py::test_imt_jovem_deducao_selo_bate_com_o_folheto_da_at (imt_isencao_total_limite_eur × esta taxa)",
         "unidade": "%",
         "valor": 0.8,
         "vigencia_inicio": "2024-08-01",
