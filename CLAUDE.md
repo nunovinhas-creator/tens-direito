@@ -11139,3 +11139,68 @@ skips confirmado a bater certo, elemento a elemento, com a allow-list.
 `AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
 `False` (inalterados). Mesma branch `claude/corrigir-fontes-html-otwjr9`,
 mesmo PR #174, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (sessão separada, branch própria) — precisão
+ao cartão da Garantia Pública em `fontes.html`, sobre o prazo-limite já
+conhecido (31 de dezembro de 2026). As duas correcções foram aplicadas
+ao cartão da **Portaria n.º 236-A/2024/1** — a fonte concreta desta
+cláusula, não o Decreto-Lei n.º 44/2024 em si (esse cartão, que já
+mencionava o prazo de forma mais genérica, ficou intocado): 1) citação
+literal da cláusula de vigência do protocolo — "até 31 de dezembro de
+2026, 'ou outra data que posteriormente corresponder ao termo de uma
+eventual prorrogação'" — em vez da formulação vaga já existente ("a lei
+prevê a possibilidade de prorrogação"); 2) precisão nova, nunca antes
+publicada no site: o que conta para este prazo é sempre a data da
+escritura e do contrato de crédito, nunca a do CPCV nem a do início do
+processo de compra.
+
+**Achado durante a verificação, corrigido antes do commit**: a 1.ª
+versão da frase introduzia um falso positivo real no canário de datas
+expiradas — confirmado com `verificar_datas.detectar_alertas()`, nunca
+assumido. O h2 "Portaria n.º 236-A/2024/1" ficava a 256 caracteres da
+nova ocorrência "dezembro de 2026", fora da janela de 220 caracteres de
+`_esta_suprimido()` — disparava `data_mes_ano` a partir de 2027, mesma
+classe de bug já documentada para a Issue #170 (parágrafos longos
+empurram o marcador de supressão para fora da janela). Corrigido
+reformulando a frase para trazer "celebrados até" (marcador já existente
+em `MARCADORES_HISTORICOS`, `celebrados?\s+at[ée]\b`) para junto da
+própria data — nunca um marcador novo, reaproveitando o vocabulário já
+coberto (mesma disciplina já registada nesta secção para casos
+análogos). Confirmado depois: zero alertas nos 3 anos testados
+(2026/2027/2028), nos 4 meses de revisão (1/7/8/9).
+
+`ROADMAP.md` → "DATAS FIXAS" (a entrada de 31 de dezembro de 2026 já
+existia desde 2026-07-20) actualizada com a mesma precisão — base legal
+correcta (Portaria n.º 236-A/2024/1, não só "a lei"), a distinção
+escritura/contrato vs. CPCV/início do processo, e uma nota nova: a
+decisão sobre prorrogação só deve surgir com a proposta de Orçamento do
+Estado para 2027, esperada em outubro de 2026 — nunca antes disso, para
+não gerar expectativa de novidade prematura numa próxima sessão que
+reveja este gatilho.
+
+Nenhuma outra página tocada — `garantia-publica-credito-habitacao.html`
+e `dados/parametros/habitacao.yaml` ficam fora do âmbito desta sessão
+(tarefa explicitamente scoped a "cartão da garantia pública em
+fontes.html").
+
+**Issue separada aberta, por instrução explícita — nunca implementada**:
+indício, de fonte secundária e por confirmar, de novas regras de taxa de
+esforço/prazos máximos no crédito à habitação desde 1 de agosto de 2026,
+também aplicáveis a jovens até 35 anos — se confirmado, afecta todo o
+cluster Habitação sobre crédito (Garantia Pública, IMT Jovem), não só a
+Garantia Pública. [Issue #178](https://github.com/nunovinhas-creator/tens-direito/issues/178)
+(label `verificar`, prioridade alta assinalada no título) — nada
+implementado, nenhuma página tocada por esse indício.
+
+Suite completa: **4431 passed, 4 skipped** (629,83s/10m30s), zero
+falhas; guardrail de skips (`scripts/verificar_skips_permitidos.py`)
+confirmado a bater certo, elemento a elemento, com os mesmos 4 skips
+estruturais da allow-list (`tests/skips_permitidos.json`, inalterada);
+`ruff check scripts/ tests/ --select E,F,W --ignore E501 .` limpo
+(nenhum `.py` alterado nesta sessão). `AUTO_UPDATE_HABILITADO`/
+`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
+sessão sem scraper). Trabalho feito na branch
+`claude/garantia-publica-data-limite-8rgwds` (designada pelo ambiente
+remoto desta sessão) — PR novo, sem merge.
