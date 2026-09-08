@@ -1,0 +1,2370 @@
+[
+  {
+    "pagina": "acao-social-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2016/2017",
+    "contexto": "agrupamento é recomendada.\" } }, { \"@type\": \"Question\", \"name\": \"A ASE cobre os manuais escolares?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Desde 2016/2017, os manuais escolares são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) via programa MEGA, independentemente do escalão ASE. Os manuais são fornecidos em regime de empréstimo pela escola. O apoio de",
+    "ordinal": 1
+  },
+  {
+    "pagina": "acao-social-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2016/2017",
+    "contexto": "15 dias úteis a contar da data de matrícula. Confirma sempre junto do teu agrupamento.</p> </div> <div class=\"faq-item\"> <h3>A ASE paga os manuais escolares?</h3> <p>Não directamente. Desde 2016/2017, os manuais são gratuitos para <em>todos</em> os alunos do ensino público (1.º ao 12.º ano) através do <a href=\"/manuais-escolares-mega.html\">programa MEGA</a>, independentemente do escalão. O apoio de \"material escolar",
+    "ordinal": 2
+  },
+  {
+    "pagina": "acao-social-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2016/2017",
+    "contexto": "yle=\"background:#e6f4f1;border-left:4px solid #0F766E;border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;margin-top:1rem;font-size:0.92rem;color:#1a5c56;\"> <strong>Manuais escolares (programa MEGA):</strong> desde 2016/2017, os manuais escolares são gratuitos para <strong>todos</strong> os alunos do ensino público (1.º ao 12.º ano) via plataforma MEGA — <strong>independentemente do escalão ASE</strong>. O apoio de \"material escolar\" da ASE",
+    "ordinal": 3
+  },
+  {
+    "pagina": "acao-social-escolar.html",
+    "marcador": "já\\s+benefici",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "027</h2> <div class=\"prazo-destaque\"> <strong>Novas candidaturas:</strong> até 30 de setembro de 2026 </div> <ul> <li><strong>Renovação automática:</strong> quem já beneficiou de ASE em 2025/2026 poderá ter renovação automática para o mesmo escalão, sem necessidade de nova candidatura — desde que não haja alteração dos rendimentos do agregado. Confirma com o agrupamento.</li> <li><strong>Alteração de esc",
+    "ordinal": 1
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "\", \"name\": \"Posso candidatar-me ao Apoio Extraordinário à Renda em 2026?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023. Este apoio destina-se exclusivamente a contratos de arrendamento para habitação permanente celebrados até essa data — não aceita novos beneficiários com contratos mais recentes.\" } }, { \"@ty",
+    "ordinal": 1
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "class=\"botao-partilhar\" aria-label=\"Partilhar este artigo\">📤 Partilhar este artigo</button> </div> <!-- partilhar:fim --> <div class=\"resposta-direta\"> <p>Se o teu contrato de arrendamento é posterior a 15 de março de 2023, <strong>não podes candidatar-te</strong> a este apoio — está fechado a novos beneficiários. O programa mantém-se em vigor e continua a pagar quem já foi aprovado, mas o Governo anunciou em fevereiro de 2026 que o vai r",
+    "ordinal": 2
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "nzenta\"> <h2>Dúvidas frequentes</h2> <details> <summary><h3>Posso candidatar-me em 2026?</h3></summary> <div class=\"resposta\"> <p>Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023. Este apoio nunca aceitou contratos mais recentes — não é uma questão de o programa ter fechado recentemente, é uma restrição que sempre existiu na sua concepção.</p> </div> </details> <details> <su",
+    "ordinal": 3
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "celebrados?\\s+at[ée]\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "\", \"name\": \"Posso candidatar-me ao Apoio Extraordinário à Renda em 2026?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023. Este apoio destina-se exclusivamente a contratos de arrendamento para habitação permanente celebrados até essa data — não aceita novos beneficiários com contratos mais recentes.\" } }, { \"@ty",
+    "ordinal": 1
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "celebrados?\\s+at[ée]\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "ordinário à Renda (PAER) foi criado para ajudar famílias com dificuldade em suportar o aumento das rendas, mas destina-se exclusivamente a <strong>contratos de arrendamento para habitação permanente celebrados até 15 de março de 2023</strong>. Contratos mais recentes nunca estiveram abrangidos.</p> <p>O programa mantém-se em vigor e continua a pagar aos beneficiários já aprovados, com pagamentos previstos até 31 de dezembro de 2028. Em julho de",
+    "ordinal": 2
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "revisão urgente",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "\"Answer\", \"text\": \"A Provedoria de Justiça recebeu cerca de mil queixas sobre o regime, denunciando atrasos e irregularidades que afectaram sobretudo pessoas idosas, e pediu formalmente uma revisão urgente em agosto de 2025. O Governo reconheceu falhas no desenho da medida e anunciou, em fevereiro de 2026, a intenção de a revogar e integrar os beneficiários actuais num novo programa.\" } }, { \"@type\": \"Question\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "revisão urgente",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "mary> <div class=\"resposta\"> <p>A Provedoria de Justiça recebeu cerca de mil queixas sobre atrasos e irregularidades no processamento, que afectaram sobretudo pessoas idosas, e pediu uma revisão urgente em agosto de 2025. O Governo reconheceu falhas no desenho da medida.</p> </div> </details> <details> <summary><h3>O que acontece a quem já recebe o apoio quando for revogado?</h3></summary> <div class=\"resposta",
+    "ordinal": 2
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2024",
+    "contexto": "sde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p> </div> <!-- REGIMES ESPECIAIS --> <div class=\"card\"> <span class=\"badge\">Regimes especiais</span> <h2>Independentes, desempregados, pensionistas e outras situações</h2> <h3>Trabalhad",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "dade mínima:</strong> 16 anos</li> <li><strong>Retroatividade:</strong> pode pedir-se até 5 dias após o início da ausência</li> <li><strong>Comunicação à Segurança Social:</strong> automática desde 29 de julho de 2025 — não precisas de fazer mais nada</li> <li><strong>Comunicação ao empregador:</strong> à data desta verificação, <em>não</em> é automática — recebes um código por SMS ou e-mail que tens de facultar ao empregador",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "urança Social.\", \"step\": [ { \"@type\": \"HowToStep\", \"position\": 1, \"name\": \"Marca uma consulta\", \"text\": \"Recorre ao teu médico de família, a uma urgência do SNS, ou — desde 1 de março de 2024 — a um prestador do sector privado ou social. Todos podem emitir o Certificado de Incapacidade Temporária (CIT).\" }, { \"@type\": \"HowToStep\", \"position\": 2, \"name\": \"O médico avalia e",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "ico durante a gravidez</td><td>Até à data provável do parto</td></tr> </tbody> </table> </div> <p class=\"nota-tabela\">Base legal: Portaria n.º 11/2024, de 18 de janeiro, em vigor desde 1 de março de 2024. Se atingires o limite máximo de dias sem recuperares, és encaminhado para avaliação de pensão de invalidez.</p> </div> <!-- COMO PEDIR --> <div class=\"card passos\"> <span class=\"badge\">Como pedir</sp",
+    "ordinal": 2
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "<div class=\"card passos\"> <span class=\"badge\">Como pedir</span> <h2>Passo a passo</h2> <ol> <li><span><strong>Marca uma consulta</strong> — médico de família, urgência do SNS, ou, desde 1 de março de 2024, um prestador do sector privado ou social. Todos podem emitir o CIT.</span></li> <li><span><strong>O médico avalia e, se justificado, emite o CIT</strong> por via electrónica, com um período inicial (regra geral",
+    "ordinal": 3
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "p class=\"checklist-progresso\" aria-live=\"polite\">0 de 6 concluídos</p> <ul class=\"checklist-lista\"> <li><label><input type=\"checkbox\"><span>Marcaste consulta (médico de família, urgência do SNS, ou — desde março de 2024 — privado/social) e recebeste o CIT electrónico?</span></label></li> <li><label><input type=\"checkbox\"><span>Entregaste o CIT (ou o código de acesso) ao empregador no prazo de 5 dias úteis a contar do 1.º dia de",
+    "ordinal": 4
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "direito ao subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar a falta perante os serviços da Segurança Social, com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.\" } }, { \"@type\": \"Question\", \"name\": \"Posso viajar para o estrangeiro estando de baixa médica?\", \"acceptedA",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "<strong>Faltar a uma convocatória sem justificação</strong> suspende de imediato o subsídio de doença. Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "obrigatória. Faltar sem justificação suspende de imediato o subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.</p> <p class=\"fonte-inline\">Verificado 05/07/2026 — Decreto-Lei n.º 8/2024</p> </div> </details> <details> <summ",
+    "ordinal": 3
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2024",
+    "contexto": "sde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p> </div> <!-- REGIMES ESPECIAIS --> <div class=\"card\"> <span class=\"badge\">Regimes especiais</span> <h2>Independentes, desempregados, pensionistas e outras situações</h2> <h3>Trabalhad",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "<strong>Faltar a uma convocatória sem justificação</strong> suspende de imediato o subsídio de doença. Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "obrigatória. Faltar sem justificação suspende de imediato o subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.</p> <p class=\"fonte-inline\">Verificado 05/07/2026 — Decreto-Lei n.º 8/2024</p> </div> </details> <details> <summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2024",
+    "contexto": "sde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p> </div> <!-- REGIMES ESPECIAIS --> <div class=\"card\"> <span class=\"badge\">Regimes especiais</span> <h2>Independentes, desempregados, pensionistas e outras situações</h2> <h3>Trabalhad",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "ico durante a gravidez</td><td>Até à data provável do parto</td></tr> </tbody> </table> </div> <p class=\"nota-tabela\">Base legal: Portaria n.º 11/2024, de 18 de janeiro, em vigor desde 1 de março de 2024. Se atingires o limite máximo de dias sem recuperares, és encaminhado para avaliação de pensão de invalidez.</p> </div> <!-- COMO PEDIR --> <div class=\"card passos\"> <span class=\"badge\">Como pedir</sp",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "<strong>Faltar a uma convocatória sem justificação</strong> suspende de imediato o subsídio de doença. Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "exist(?:e|ia|iam)\\s+antes\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2024",
+    "contexto": "do Serviço de Verificação de Incapacidades Temporárias.</p> <ul> <li><strong>Quando pode ocorrer:</strong> a partir do 4.º dia de baixa — já não existe o limite mínimo de 30 dias que existia antes de 1 de abril de 2024</li> <li><strong>Convocatória:</strong> por SMS ou e-mail (nos contactos registados na Segurança Social), com antecedência mínima de 2 dias úteis</li> <li><strong>Tipo de exame:</strong> presencial, por",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2024",
+    "contexto": "sde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p> </div> <!-- REGIMES ESPECIAIS --> <div class=\"card\"> <span class=\"badge\">Regimes especiais</span> <h2>Independentes, desempregados, pensionistas e outras situações</h2> <h3>Trabalhad",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "<strong>Faltar a uma convocatória sem justificação</strong> suspende de imediato o subsídio de doença. Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online. </div> <p style=\"margin-top:.5rem;font-size:.9rem;color:#5C6770;\">Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "obrigatória. Faltar sem justificação suspende de imediato o subsídio de doença. Tens 2 dias úteis, a contar da data da convocatória, para justificar com prova documental (por exemplo, declaração de internamento). Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.</p> <p class=\"fonte-inline\">Verificado 05/07/2026 — Decreto-Lei n.º 8/2024</p> </div> </details> <details> <summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "baixa-medica-subsidio-doenca.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2024",
+    "contexto": "ico durante a gravidez</td><td>Até à data provável do parto</td></tr> </tbody> </table> </div> <p class=\"nota-tabela\">Base legal: Portaria n.º 11/2024, de 18 de janeiro, em vigor desde 1 de março de 2024. Se atingires o limite máximo de dias sem recuperares, és encaminhado para avaliação de pensão de invalidez.</p> </div> <!-- COMO PEDIR --> <div class=\"card passos\"> <span class=\"badge\">Como pedir</sp",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bolsa-de-estudo-ensino-superior.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "a é feita exclusivamente online, na plataforma BeOn (dges.gov.pt/wwwbeon). Para 2026/2027, o prazo foi fixado entre 14 de agosto e 2 de outubro de 2026 (Despacho n.º 7994/2026) — mais tarde do que em anos anteriores (em 2025/2026 decorreu entre 25 de junho e 30 de setembro). É possível candidatar-se depois, entre 3 de outubro e 31 de maio, mas o valor da bolsa é então proporcional ao período remanescente do ano letivo.\" } },",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bolsa-de-estudo-ensino-superior.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "vamente online, na plataforma <a href=\"https://www.dges.gov.pt/wwwbeon/\" target=\"_blank\" rel=\"noopener\">BeOn</a>. Para 2026/2027: entre 14 de agosto e 2 de outubro de 2026 (Despacho n.º 7994/2026) — mais tarde do que em 2025/2026 (25 de junho a 30 de setembro). É possível candidatar-se depois, até 31 de maio, mas o valor é proporcional ao período remanescente do ano letivo.</p> </div> <div class=\"faq-item\"> <h3>O que muda na",
+    "ordinal": 2
+  },
+  {
+    "pagina": "bolsa-de-estudo-ensino-superior.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "adge\">Prazos</span> <h2>Quando candidatar</h2> <p style=\"margin-bottom:0.85rem;color:#495057;font-size:0.93rem;\">O prazo de 2026/2027 (Despacho n.º 7994/2026) começa mais tarde do que em anos anteriores — em 2025/2026 decorreu entre 25 de junho e 30 de setembro.</p> <div class=\"tabela-wrap\"> <table> <thead> <tr> <th>Situação</th> <th>Prazo</th> <th>Efeito n",
+    "ordinal": 3
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": ", \"text\": \"Sim, mas não por um despacho próprio da bolsa — actualiza-se sozinho todos os anos com a Portaria do IAS (publicada tipicamente em dezembro/janeiro), porque o valor é sempre 2,5 × o IAS em vigor. Em 2025/2026 (IAS 2025 = 522,50 €) foi 1.306,25 €; em 2026/2027 (IAS 2026 = 537,13 €, já em vigor) é 1.342,83 €: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%).\" } },",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "m 3 prestações: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%). O valor actualiza-se sozinho todos os anos com a Portaria do IAS — nunca com um despacho próprio da bolsa. Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.</p> </div> <div class=\"faq-item\"> <h3>Que média preciso para a bolsa de mérito?</h3> <p>Se vens do 10.º ou 11.º ano: <strong>≥ 14 valores</strong",
+    "ordinal": 2
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "ixado pelo Despacho n.º 8452-A/2015 — não existe um despacho próprio da bolsa, nem revisão anual do multiplicador. Actualiza-se sozinho todos os anos com a Portaria do IAS (tipicamente publicada em dezembro/janeiro). Em 2025/2026, com IAS 2025 = 522,50 €, o valor tinha sido 1.306,25 €. </div> </div> <!-- COMO CANDIDATAR --> <div class=\"card passos\"> <span class=\"badge\">Passo a passo</span> <h2>Como candidatar</h2>",
+    "ordinal": 3
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "portaria",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": ", \"text\": \"Sim, mas não por um despacho próprio da bolsa — actualiza-se sozinho todos os anos com a Portaria do IAS (publicada tipicamente em dezembro/janeiro), porque o valor é sempre 2,5 × o IAS em vigor. Em 2025/2026 (IAS 2025 = 522,50 €) foi 1.306,25 €; em 2026/2027 (IAS 2026 = 537,13 €, já em vigor) é 1.342,83 €: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%).\" } },",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "portaria",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "m 3 prestações: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%). O valor actualiza-se sozinho todos os anos com a Portaria do IAS — nunca com um despacho próprio da bolsa. Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.</p> </div> <div class=\"faq-item\"> <h3>Que média preciso para a bolsa de mérito?</h3> <p>Se vens do 10.º ou 11.º ano: <strong>≥ 14 valores</strong",
+    "ordinal": 2
+  },
+  {
+    "pagina": "bolsa-de-merito.html",
+    "marcador": "portaria",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "ixado pelo Despacho n.º 8452-A/2015 — não existe um despacho próprio da bolsa, nem revisão anual do multiplicador. Actualiza-se sozinho todos os anos com a Portaria do IAS (tipicamente publicada em dezembro/janeiro). Em 2025/2026, com IAS 2025 = 522,50 €, o valor tinha sido 1.306,25 €. </div> </div> <!-- COMO CANDIDATAR --> <div class=\"card passos\"> <span class=\"badge\">Passo a passo</span> <h2>Como candidatar</h2>",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "× T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "= RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "pois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei que a idade de acesso é hoje a mesma do regime geral, desde 2015?</span></label></li> <li><label><input type=\"checkbox\"><span>Se saí",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "7 min</span> </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note\" aria-label=\"Resumo rápido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "contexto": "ensão da CGA?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Subiu progressivamente de 60 anos e 6 meses em 2006 até aos 65 anos em 2015 (art. 3.º e Anexo I da Lei n.º 60/2005). Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o tempo de serviço mínimo exigi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "contexto": ">Requisito</th><th>Evolução</th><th>Base legal</th></tr> </thead> <tbody> <tr><td>Idade de acesso</td><td>Subida progressiva de 60 anos e 6 meses (2006) até aos 65 anos (2015). Desde 1 de janeiro de 2015, a mesma idade normal do regime geral, com o mesmo prazo de garantia.</td><td>Art. 3.º e Anexo I</td></tr> <tr><td>Tempo de serviço mínimo</td><td>Subida progressiva de 36,5 anos (2006) para 40 anos (2013).<",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "contexto": "é a idade de acesso à pensão da CGA?</summary> <div class=\"resposta\"> <p>Subiu progressivamente de 60 anos e 6 meses em 2006 até aos 65 anos em 2015 (art. 3.º e Anexo I da Lei n.º 60/2005). Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver <a href=\"/idade-normal.html\">Idade normal de reforma</a>), com o mesmo prazo de garantia.</p> </div> </details> <details> <summary>Qual é o",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "<ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "ido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei que a idade de acesso é hoje a mesma do regime geral, desde 2015?</span></label></li> <li><label><input type=\"checkbox\"><span>Se saí",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "rviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P2 = RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "× T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "da, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "= RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "olidada, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "rviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P2 = RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "st-progresso\" aria-live=\"polite\">0 de 5 concluídos</p> <ul class=\"checklist-lista\"> <li><label><input type=\"checkbox\"><span>Sei se comecei a trabalhar na função pública em data anterior ou posterior a 1 de janeiro de 2006?</span></label></li> <li><label><input type=\"checkbox\"><span>Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "× T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "na função pública em data anterior ou posterior a 1 de janeiro de 2006?</span></label></li> <li><label><input type=\"checkbox\"><span>Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></lab",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "= RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bposterior a\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "alhar na função pública em data anterior ou posterior a 1 de janeiro de 2006?</span></label></li> <li><label><input type=\"checkbox\"><span>Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></lab",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "=\"badge\">4 · Salvaguarda de 2005</span> <h2>Quem já cumpria os requisitos antigos mantém-nos, seja qual for a data do pedido</h2> <div class=\"formula-box\">36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005</div> <p>Art. 7.º, n.os 1 e 2, da Lei n.º 60/2005: quem, nessa data, já contava esses dois requisitos, pode aposentar-se pelo regime em vigor à data de referência — <strong>independentemente de quando vier a reque",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "pois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei que a idade de acesso é hoje a mesma do regime geral, desde 2015?</span></label></li> <li><label><input type=\"checkbox\"><span>Se saí",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "na função pública em data anterior ou posterior a 1 de janeiro de 2006?</span></label></li> <li><label><input type=\"checkbox\"><span>Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></lab",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "alhar na função pública em data anterior ou posterior a 1 de janeiro de 2006?</span></label></li> <li><label><input type=\"checkbox\"><span>Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></lab",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "class=\"badge\">4 · Salvaguarda de 2005</span> <h2>Quem já cumpria os requisitos antigos mantém-nos, seja qual for a data do pedido</h2> <div class=\"formula-box\">36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005</div> <p>Art. 7.º, n.os 1 e 2, da Lei n.º 60/2005: quem, nessa data, já contava esses dois requisitos, pode aposentar-se pelo regime em vigor à data de referência — <strong>independentemente de quando vier a reque",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei que a idade de acesso é hoje a mesma do regime geral, desde 2015?</span></label></li> <li><label><input type=\"checkbox\"><span>Se saí",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "sposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "me\": \"Se já era subscritor antes de 2006, que fórmula se aplica à minha carreira?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "<details> <summary>Se já era subscritor antes de 2006, que fórmula se aplica à minha carreira?</summary> <div class=\"resposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "\"name\": \"Se já era subscritor antes de 2006, que fórmula se aplica à minha carreira?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "<details> <summary>Se já era subscritor antes de 2006, que fórmula se aplica à minha carreira?</summary> <div class=\"resposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "Answer\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "ss=\"resposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "sposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "rviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P2 = RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "× T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "da, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "= RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "olidada, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "Answer\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "ss=\"resposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "contexto": "data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: <strong>1 de setembro de 1993</strong>.</p> <h3>Inscritos ATÉ 31 de agosto de 1993</h3> <p>A pensão é a soma de duas parcelas:</p> <div class=\"formula-box\">P1 = R × T1/C</div> <p class=\"nota-tabela\">Pelo tempo de serviço até 31 de dezembro de 2005. R = remuneração relevante do Estatu",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "contexto": "<div class=\"card\"> <span class=\"badge\">5 · Sobrevivência</span> <h2>Metade de P1, mais P2 pelas regras do regime geral</h2> <p>Para quem tem a carreira dividida em duas parcelas (inscritos até 31 de agosto de 1993, art. 6.º da Lei n.º 60/2005), a pensão de sobrevivência da CGA corresponde a <strong>50% de P1</strong>, mais o valor que resultar de aplicar a P2 as regras de sobrevivência do regime geral. A <strong>titularidade e as",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "e\": \"Há alguma salvaguarda para quem já tinha muitos anos de serviço em 2005?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Sim — o art. 7.º, n.os 1 e 2, da Lei n.º 60/2005. Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação. Esta salvaguarda continua a valer hoje, mesmo décadas depo",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "ng>.</p> <h3>Inscritos ATÉ 31 de agosto de 1993</h3> <p>A pensão é a soma de duas parcelas:</p> <div class=\"formula-box\">P1 = R × T1/C</div> <p class=\"nota-tabela\">Pelo tempo de serviço até 31 de dezembro de 2005. R = remuneração relevante do Estatuto da Aposentação, deduzida da quota; T1 = anos de serviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "=\"badge\">4 · Salvaguarda de 2005</span> <h2>Quem já cumpria os requisitos antigos mantém-nos, seja qual for a data do pedido</h2> <div class=\"formula-box\">36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005</div> <p>Art. 7.º, n.os 1 e 2, da Lei n.º 60/2005: quem, nessa data, já contava esses dois requisitos, pode aposentar-se pelo regime em vigor à data de referência — <strong>independentemente de quando vier a reque",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "sposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 5
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "<details> <summary>Há alguma salvaguarda para quem já tinha muitos anos de serviço em 2005?</summary> <div class=\"resposta\"> <p>Sim — o art. 7.º, n.os 1 e 2, da Lei n.º 60/2005. Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação. Esta salvaguarda continua a valer hoje, mesmo décadas depo",
+    "ordinal": 6
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "ink rel=\"sitemap\" type=\"application/xml\" href=\"/sitemap.xml\"> <title>Caixa Geral de Aposentações: quem está abrangido e como funciona</title> <meta name=\"description\" content=\"A CGA fechou a novas inscrições em 1 de janeiro de 2006. Quem já era subscritor mantém regras próprias, com duas fronteiras — 2006 e, antes dela, 1993 (Lei n.º 60/2005).\"> <meta property=\"og:title\" content=\"Caixa Geral de Aposentações: quem está abrangido e como funciona\">",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "og:title\" content=\"Caixa Geral de Aposentações: quem está abrangido e como funciona\"> <meta property=\"og:description\" content=\"Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).\"> <meta property=\"og:url\" content=\"https://tensdireito.com/caixa-geral-aposentacoes.html\"> <link rel=\"canonical\" href=\"https://tensdireito.com/caixa-geral-aposentacoes.html",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "@type\": \"Answer\", \"text\": \"Não, salvo situações de reinscrição em disputa judicial (ver mais abaixo). Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais qu",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "artilhar:fim --> <div class=\"resposta-direta resposta-rapida\"> <span class=\"resposta-rapida-label\">⚡ Resposta rápida</span> <p class=\"resposta-rapida-texto\">A CGA fechou a novas inscrições em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social. Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a deci",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "7 min</span> </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note\" aria-label=\"Resumo rápido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é ca",
+    "ordinal": 5
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "p\"> <table> <thead> <tr><th>Norma</th><th>O que faz</th></tr> </thead> <tbody> <tr><td>Art. 2.º, n.º 1, Lei n.º 60/2005</td><td>A CGA deixa, a partir de 1 de janeiro de 2006, de aceitar novas inscrições.</td></tr> <tr><td>Art. 2.º, n.º 2</td><td>Quem inicia funções a partir dessa data é obrigatoriamente inscrito no regime geral da Segurança Social.</td></tr> <tr><td>",
+    "ordinal": 6
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "rviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P2 = RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do",
+    "ordinal": 7
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "<div class=\"resposta\"> <p>Não, salvo situações de reinscrição em disputa judicial (ver mais abaixo). Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais qu",
+    "ordinal": 8
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "contexto": "ensão da CGA?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Subiu progressivamente de 60 anos e 6 meses em 2006 até aos 65 anos em 2015 (art. 3.º e Anexo I da Lei n.º 60/2005). Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o tempo de serviço mínimo exigi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "contexto": "é a idade de acesso à pensão da CGA?</summary> <div class=\"resposta\"> <p>Subiu progressivamente de 60 anos e 6 meses em 2006 até aos 65 anos em 2015 (art. 3.º e Anexo I da Lei n.º 60/2005). Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver <a href=\"/idade-normal.html\">Idade normal de reforma</a>), com o mesmo prazo de garantia.</p> </div> </details> <details> <summary>Qual é o",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "5).\"> <meta property=\"og:title\" content=\"Caixa Geral de Aposentações: quem está abrangido e como funciona\"> <meta property=\"og:description\" content=\"Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).\"> <meta property=\"og:url\" content=\"https://tensdireito.com/caixa-geral-aposentacoes.html\"> <link rel=\"canonical\" href=\"https://tensdireito.com/caixa-",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "s em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social. Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.</p> <span class=\"resposta-rapida-tempo\">📖 Leitura completa: 7 min</span> </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "<ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "nde de quando entraste</h2> <p>Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: <strong>1 de setembro de 1993</strong>.</p> <h3>Inscritos ATÉ 31 de agosto de 1993</h3> <p>A pensão é a soma de duas parcelas:</p> <div class=\"formula-box\">P1 = R × T1/C</div> <p class=\"nota-tabela\">Pelo tempo de serviço até",
+    "ordinal": 5
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "× T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 6
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "lo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 7
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "da, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 8
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "0/2005).\"> <meta property=\"og:title\" content=\"Caixa Geral de Aposentações: quem está abrangido e como funciona\"> <meta property=\"og:description\" content=\"Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).\"> <meta property=\"og:url\" content=\"https://tensdireito.com/caixa-geral-aposentacoes.html\"> <link rel=\"canonical\" href=\"https://tensdireito.com/caixa-",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.\" } }, { \"@type\": \"Question\", \"name\": \"Qual é a idade d",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "rições em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social. Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.</p> <span class=\"resposta-rapida-tempo\">📖 Leitura completa: 7 min</span> </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "ido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "depende de quando entraste</h2> <p>Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: <strong>1 de setembro de 1993</strong>.</p> <h3>Inscritos ATÉ 31 de agosto de 1993</h3> <p>A pensão é a soma de duas parcelas:</p> <div class=\"formula-box\">P1 = R × T1/C</div> <p class=\"nota-tabela\">Pelo tempo de serviço até",
+    "ordinal": 5
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "= RR × T2 × N</div> <p class=\"nota-tabela\">Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.</p> <h3>Inscritos A PARTIR de 1 de setembro de 1993</h3> <p>A pensão é calculada <strong>inteiramente</strong> pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas separadas, mesmo que uma parte da carreira seja anterior a 200",
+    "ordinal": 6
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.</p> </div> </details> <details> <summary>Qual é a idade de ac",
+    "ordinal": 7
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "olidada, lida integralmente — arts. 2.º, 3.º, 4.º, 5.º, 6.º, 7.º, 8.º, 9.º e Anexos I e II<br> · Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993<br> · Decreto-Lei n.º 35/2002, de 19 de fevereiro — regras de cálculo aplicadas à parcela P2<br> · Lei n.º 45/2024, de 27 de dezembro — tentativa de restrição à reinscrição, declarada inconstitucional<br>",
+    "ordinal": 8
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "Answer\", \"text\": \"Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "\"name\": \"Há alguma salvaguarda para quem já tinha muitos anos de serviço em 2005?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Sim — o art. 7.º, n.os 1 e 2, da Lei n.º 60/2005. Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação. Esta salvaguarda continua a valer hoje, mesmo décadas depo",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "</strong>.</p> <h3>Inscritos ATÉ 31 de agosto de 1993</h3> <p>A pensão é a soma de duas parcelas:</p> <div class=\"formula-box\">P1 = R × T1/C</div> <p class=\"nota-tabela\">Pelo tempo de serviço até 31 de dezembro de 2005. R = remuneração relevante do Estatuto da Aposentação, deduzida da quota; T1 = anos de serviço até essa data, limitados a C; C = número fixado no Anexo II da própria Lei n.º 60/2005.</p> <div class=\"formula-box\">P",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "class=\"badge\">4 · Salvaguarda de 2005</span> <h2>Quem já cumpria os requisitos antigos mantém-nos, seja qual for a data do pedido</h2> <div class=\"formula-box\">36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005</div> <p>Art. 7.º, n.os 1 e 2, da Lei n.º 60/2005: quem, nessa data, já contava esses dois requisitos, pode aposentar-se pelo regime em vigor à data de referência — <strong>independentemente de quando vier a reque",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "ss=\"resposta\"> <p>Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º). Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral). Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteir",
+    "ordinal": 5
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "<details> <summary>Há alguma salvaguarda para quem já tinha muitos anos de serviço em 2005?</summary> <div class=\"resposta\"> <p>Sim — o art. 7.º, n.os 1 e 2, da Lei n.º 60/2005. Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação. Esta salvaguarda continua a valer hoje, mesmo décadas depo",
+    "ordinal": 6
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "ink rel=\"sitemap\" type=\"application/xml\" href=\"/sitemap.xml\"> <title>Caixa Geral de Aposentações: quem está abrangido e como funciona</title> <meta name=\"description\" content=\"A CGA fechou a novas inscrições em 1 de janeiro de 2006. Quem já era subscritor mantém regras próprias, com duas fronteiras — 2006 e, antes dela, 1993 (Lei n.º 60/2005).\"> <meta property=\"og:title\" content=\"Caixa Geral de Aposentações: quem está abrangido e como funciona\">",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "artilhar:fim --> <div class=\"resposta-direta resposta-rapida\"> <span class=\"resposta-rapida-label\">⚡ Resposta rápida</span> <p class=\"resposta-rapida-texto\">A CGA fechou a novas inscrições em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social. Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a deci",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "7 min</span> </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note\" aria-label=\"Resumo rápido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é ca",
+    "ordinal": 3
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "p\"> <table> <thead> <tr><th>Norma</th><th>O que faz</th></tr> </thead> <tbody> <tr><td>Art. 2.º, n.º 1, Lei n.º 60/2005</td><td>A CGA deixa, a partir de 1 de janeiro de 2006, de aceitar novas inscrições.</td></tr> <tr><td>Art. 2.º, n.º 2</td><td>Quem inicia funções a partir dessa data é obrigatoriamente inscrito no regime geral da Segurança Social.</td></tr> <tr><td>",
+    "ordinal": 4
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "<ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "ido\"> <ul> <li>🚪 <strong>Fechada a novas inscrições desde 1 de janeiro de 2006</strong> — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).</li> <li>📅 <strong>Segunda fronteira, mais antiga: 1 de setembro de 1993</strong> (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.</li> <li>🎂 <strong>Idade de acesso</strong>: subiu progressivamente de 60 anos e 6 meses (2006) até a",
+    "ordinal": 1
+  },
+  {
+    "pagina": "calendario-escolar-apoios.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2024/2025",
+    "contexto": "{ \"@type\": \"Answer\", \"text\": \"Entre 11 e 15 de setembro de 2026 — cada escola fixa o dia exato dentro deste intervalo, segundo o Despacho n.º 8368/2024, de 25 de julho (calendário escolar plurianual 2024/2025 a 2027/2028).\" } }, { \"@type\": \"Question\", \"name\": \"O passe sub-23 tem prazo de candidatura?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não tem praz",
+    "ordinal": 1
+  },
+  {
+    "pagina": "calendario-escolar-apoios.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2024/2025",
+    "contexto": "rong>Fontes e verificação:</strong><br> <a href=\"https://diariodarepublica.pt/dr/detalhe/despacho/8368-2024-873447631\" target=\"_blank\" rel=\"noopener\">Despacho n.º 8368/2024, de 25 de julho</a> — calendário escolar 2024/2025 a 2027/2028<br> <a href=\"https://diariodarepublica.pt/dr/detalhe/despacho/9989-2025-932720956\" target=\"_blank\" rel=\"noopener\">Despacho n.º 9989/2025, de 21 de agosto</a> — altera o 1.º período de 2025/2026 (não af",
+    "ordinal": 2
+  },
+  {
+    "pagina": "calendario-escolar-apoios.html",
+    "marcador": "despacho",
+    "tipo": "ano_letivo",
+    "correspondencia": "2025/2026",
+    "contexto": "escolar 2024/2025 a 2027/2028<br> <a href=\"https://diariodarepublica.pt/dr/detalhe/despacho/9989-2025-932720956\" target=\"_blank\" rel=\"noopener\">Despacho n.º 9989/2025, de 21 de agosto</a> — altera o 1.º período de 2025/2026 (não afeta 2026/2027)<br> <a href=\"https://diariodarepublica.pt/dr/detalhe/despacho/4472-a-2026-1081867449\" target=\"_blank\" rel=\"noopener\">Despacho n.º 4472-A/2026, de 6 de abril</a> — calendário de matrículas 202",
+    "ordinal": 1
+  },
+  {
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2009",
+    "contexto": "2.º, 57.º, 58.º e Anexos VI, VII e VIII<br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a> — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º<br> · <a href=\"https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275\" target=\"_blank\" rel=\"noopener",
+    "ordinal": 1
+  },
+  {
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "16 de setembro de 2009",
+    "contexto": "0.º, 52.º, 57.º, 58.º e Anexos VI, VII e VIII<br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a> — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º<br> · <a href=\"https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275\" target=\"_blank\" rel=\"noopener",
+    "ordinal": 1
+  },
+  {
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2004",
+    "contexto": "icadas — 7 de setembro de 2026</strong><br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a> — Regulamento (CE) n.º 883/2004, do Parlamento Europeu e do Conselho, de 29 de abril de 2004 — coordenação dos sistemas de segurança social, lido por inteiro, incluindo arts. 2.º, 3.º, 44.º, 50.º, 52.º, 57.º, 58.º e Anexos VI, VII e VIII<br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noope",
+    "ordinal": 1
+  },
+  {
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2009",
+    "contexto": "2.º, 57.º, 58.º e Anexos VI, VII e VIII<br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a> — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º<br> · <a href=\"https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275\" target=\"_blank\" rel=\"noopener",
+    "ordinal": 1
+  },
+  {
+    "pagina": "carreiras-contributivas-estrangeiro.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "prazo_outono",
+    "correspondencia": "16 de setembro de 2009",
+    "contexto": "0.º, 52.º, 57.º, 58.º e Anexos VI, VII e VIII<br> · <a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a> — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º<br> · <a href=\"https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2007-34524275\" target=\"_blank\" rel=\"noopener",
+    "ordinal": 1
+  },
+  {
+    "pagina": "certidao-situacao-tributaria.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "}, { \"@type\": \"Question\", \"name\": \"Quanto tempo é válida a certidão?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"4 meses a partir da data de emissão, desde 1 de julho de 2025 — antes eram só 3 meses. É a mesma validade da declaração equivalente emitida pela Segurança Social (Declaração de Situação Contributiva).\" } }, { \"@type\": \"Question\", \"name\": \"Como p",
+    "ordinal": 1
+  },
+  {
+    "pagina": "certidao-situacao-tributaria.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "ita</strong>, pedida online no Portal das Finanças.</li> <li>⚡ <strong>Sai na hora</strong> se a tua situação estiver regularizada.</li> <li>📅 <strong>Vale 4 meses</strong> — validade alargada desde 1 de julho de 2025 (antes eram 3 meses).</li> </ul> </div> <p class=\"verif\">Verificado a 19/07/2026 pela redação do <a href=\"/sobre.html#metodo\">Tens Direito</a> · Fontes: <a href=\"https://www.portaldasfinancas.gov.pt\" styl",
+    "ordinal": 2
+  },
+  {
+    "pagina": "certidao-situacao-tributaria.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "nancas.gov.pt</p> </div> </details> <details> <summary>Quanto tempo é válida a certidão?</summary> <div class=\"resposta\"> <p>4 meses a partir da data de emissão, desde 1 de julho de 2025 — antes eram só 3 meses. É a mesma validade da declaração equivalente emitida pela Segurança Social (Declaração de Situação Contributiva).</p> <p class=\"fonte-inline\">Verificado 19/07/2026</p> </div>",
+    "ordinal": 3
+  },
+  {
+    "pagina": "declaracao-situacao-contributiva.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "\"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"4 meses a partir da data de emissão. É a mesma validade da certidão equivalente emitida pelas Finanças (Certidão de Dívida e Não Dívida), desde 1 de julho de 2025.\" } }, { \"@type\": \"Question\", \"name\": \"Posso pedir a declaração se tiver dívidas à Segurança Social?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Sim",
+    "ordinal": 1
+  },
+  {
+    "pagina": "declaracao-situacao-contributiva.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "da a declaração?</summary> <div class=\"resposta\"> <p>4 meses a partir da data de emissão. É a mesma validade da certidão equivalente emitida pelas Finanças (Certidão de Dívida e Não Dívida), desde 1 de julho de 2025.</p> <p class=\"fonte-inline\">Verificado 14/07/2026</p> </div> </details> <details> <summary>Posso pedir a declaração se tiver dívidas à Segurança Social?</summary> <div cla",
+    "ordinal": 2
+  },
+  {
+    "pagina": "declaracao-situacao-contributiva.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2025",
+    "contexto": "os — muitas candidaturas (concursos públicos, alguns apoios) pedem os dois em conjunto. A certidão das Finanças pede-se no <strong>Portal das Finanças</strong> (Certidões → Certidão de Dívida e Não Dívida) e, desde 1 de julho de 2025, tem também validade de 4 meses.</p> </div> <!-- RELACIONADOS:INICIO --> <div class=\"cluster-relacionados\"> <h2>Artigos relacionados</h2> <ul> <li><a href=\"/senha-seguranca-social-direta",
+    "ordinal": 3
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "ade Tributária?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Perdes o direito à dedução enquanto o contrato não estiver comunicado — mas não precisas de esperar pelo senhorio. Desde 1 de agosto de 2025, podes comunicar tu mesmo o contrato no Portal das Finanças, através da função «Comunicação de Locatário ou Sublocatário», assim que o prazo do senhorio (fim do mês seguinte ao início do arrendamento) tiver passado sem",
+    "ordinal": 1
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "o teu NIF e a tua senha de acesso.\" }, { \"@type\": \"HowToStep\", \"position\": 3, \"name\": \"Usa a função «Comunicação de Locatário ou Sublocatário»\", \"text\": \"Disponível desde 1 de agosto de 2025 (Portaria n.º 106/2025/1, de 13 de março), na área de Imposto do Selo/Arrendamento. Indica o motivo da comunicação (ausência de comunicação pelo senhorio) e identifica o imóvel.\" }, { \"@type\": \"HowTo",
+    "ordinal": 2
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "e Aduaneira (AT)</strong>. Normalmente é o senhorio quem tem essa obrigação, até ao fim do mês seguinte ao início do contrato — mas se ele não o fizer, o teu direito à dedução não fica bloqueado.</p> <p>Desde 1 de agosto de 2025, o próprio inquilino pode comunicar o contrato, através da função <strong>«Comunicação de Locatário ou Sublocatário»</strong> no Portal das Finanças (Portaria n.º 106/2025/1, de 13 de março) — assim que o prazo do senho",
+    "ordinal": 3
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "car o contrato à Autoridade Tributária?</summary> <div class=\"resposta\"> <p>Perdes o direito à dedução enquanto o contrato não estiver comunicado — mas não precisas de esperar pelo senhorio. Desde 1 de agosto de 2025, podes comunicar tu mesmo o contrato no Portal das Finanças, através da função «Comunicação de Locatário ou Sublocatário», assim que o prazo do senhorio (fim do mês seguinte ao início do arrendamento) tiver passado sem",
+    "ordinal": 4
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "o teu NIF e a tua senha de acesso.\" }, { \"@type\": \"HowToStep\", \"position\": 3, \"name\": \"Usa a função «Comunicação de Locatário ou Sublocatário»\", \"text\": \"Disponível desde 1 de agosto de 2025 (Portaria n.º 106/2025/1, de 13 de março), na área de Imposto do Selo/Arrendamento. Indica o motivo da comunicação (ausência de comunicação pelo senhorio) e identifica o imóvel.\" }, { \"@type\": \"HowTo",
+    "ordinal": 1
+  },
+  {
+    "pagina": "deducao-rendas-irs.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 2025",
+    "contexto": "e Aduaneira (AT)</strong>. Normalmente é o senhorio quem tem essa obrigação, até ao fim do mês seguinte ao início do contrato — mas se ele não o fizer, o teu direito à dedução não fica bloqueado.</p> <p>Desde 1 de agosto de 2025, o próprio inquilino pode comunicar o contrato, através da função <strong>«Comunicação de Locatário ou Sublocatário»</strong> no Portal das Finanças (Portaria n.º 106/2025/1, de 13 de março) — assim que o prazo do senho",
+    "ordinal": 2
+  },
+  {
+    "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2023",
+    "contexto": "e.html#nvlabs\"}, \"publisher\": {\"@id\": \"https://tensdireito.com/sobre.html#nvlabs\"} } </script> <!-- PORTÃO DE VERIFICAÇÃO — candidata #6 da Sessão 2, pivot. Confirmado via pesquisa (2026-07-06): desde julho de 2023 a Segurança Social Direta tem uma \"Declaração de Situação Familiar\" própria (Perfil > Agregado e relações familiares) como canal principal e mais completo para comunicar alterações ao agregado; existem també",
+    "ordinal": 1
+  },
+  {
+    "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2023",
+    "contexto": "à Segurança Social?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"A Declaração de Situação Familiar na Segurança Social Direta (Perfil > Agregado e relações familiares), disponível desde julho de 2023, é o canal mais rápido e completo. Esta carta é uma alternativa por escrito, útil sem acesso à Segurança Social Direta ou para deixar um registo formal.\" } }, { \"@type\": \"Question\", \"",
+    "ordinal": 2
+  },
+  {
+    "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2023",
+    "contexto": "</div> <div class=\"aviso-pivot\"> ⚠️ <strong>O canal mais rápido é a Segurança Social Direta.</strong> A Declaração de Situação Familiar (Perfil → Agregado e relações familiares) é o canal principal desde julho de 2023. Para recalcular especificamente o <strong>escalão do abono de família</strong>, usa antes a nossa <a href=\"/documentos/carta-acompanhamento-reavaliacao-abono.html\">carta de acompanhamento do Modelo GF58-DGSS</a>. Esta",
+    "ordinal": 3
+  },
+  {
+    "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2023",
+    "contexto": "pida de comunicar uma alteração à Segurança Social?</summary> <div class=\"faq-resposta\">A Declaração de Situação Familiar na Segurança Social Direta (Perfil &gt; Agregado e relações familiares), disponível desde julho de 2023, é o canal mais rápido e completo. Esta carta é uma alternativa por escrito, útil sem acesso à Segurança Social Direta ou para deixar um registo formal.</div> </details> <details> <summary>Esta cart",
+    "ordinal": 4
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "contexto": "o</h2> <p>Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Lei n.º 45/2024, de",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 13/2013, de 25 de janeiro</h2> <p>Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "pan class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 35/2002, de 19 de fevereiro</h2> <p>Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div c",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2023",
+    "contexto": "187/2007 — regulamenta o regime de antecipação da reforma por deficiência criado pela Lei n.º 5/2022, de 7 de janeiro (art. 1.º). Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023. É a 11.ª alteração ao Decreto-Lei n.º 187/2007 e a 50.ª ao Estatuto da Aposentação (art. 40.º do Decreto-Lei n.º 498/72). O artigo 5.º afasta desta via a redução por penalizações de antecipação e o factor de sustentabi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2014",
+    "contexto": "(que mandava calcular a pensão unificada inteira pelas regras do último regime); desde então, o valor é a soma das parcelas calculadas separadamente por cada regime (art. 9.º, n.º 1, em vigor). Fixou também, desde 7 de março de 2014, a mesma idade de acesso à pensão na CGA e na Segurança Social.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <sp",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "contexto": "P2) ou inteiramente pelas regras do regime geral; a subida progressiva da idade de acesso (art. 3.º, Anexo I) e do tempo de serviço mínimo (art. 4.º, Anexo II); a salvaguarda de 36 anos de serviço + 60 de idade a 31 de dezembro de 2005 (art. 7.º); as regras de sobrevivência (art. 6.º); e o corte de 4,5%/ano (máx. 25%) na aposentação compulsiva (art. 8.º, que altera o art. 56.º do Estatuto). Lida por inteiro em fonte primária.</p> <p><a href=\"htt",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "contexto": "(P1 + P2) ou inteiramente pelas regras do regime geral; a subida progressiva da idade de acesso (art. 3.º, Anexo I) e do tempo de serviço mínimo (art. 4.º, Anexo II); a salvaguarda de 36 anos de serviço + 60 de idade a 31 de dezembro de 2005 (art. 7.º); as regras de sobrevivência (art. 6.º); e o corte de 4,5%/ano (máx. 25%) na aposentação compulsiva (art. 8.º, que altera o art. 56.º do Estatuto). Lida por inteiro em fonte primária.</p> <p><a href=\"htt",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bse\\s+inscreveu\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 13/2013, de 25 de janeiro</h2> <p>Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "pan class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 35/2002, de 19 de fevereiro</h2> <p>Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div c",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "mento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 13/2",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2023",
+    "contexto": "187/2007 — regulamenta o regime de antecipação da reforma por deficiência criado pela Lei n.º 5/2022, de 7 de janeiro (art. 1.º). Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023. É a 11.ª alteração ao Decreto-Lei n.º 187/2007 e a 50.ª ao Estatuto da Aposentação (art. 40.º do Decreto-Lei n.º 498/72). O artigo 5.º afasta desta via a redução por penalizações de antecipação e o factor de sustentabi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2023",
+    "contexto": "187/2007 — regulamenta o regime de antecipação da reforma por deficiência criado pela Lei n.º 5/2022, de 7 de janeiro (art. 1.º). Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023. É a 11.ª alteração ao Decreto-Lei n.º 187/2007 e a 50.ª ao Estatuto da Aposentação (art. 40.º do Decreto-Lei n.º 498/72). O artigo 5.º afasta desta via a redução por penalizações de antecipação e o factor de sustentabi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "dre\\.pt",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "contexto": "o</h2> <p>Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Lei n.º 45/2024, de",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 13/2013, de 25 de janeiro</h2> <p>Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.</p>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "a.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Lei n.º 60/2005, de 29 de dezembro</h2> <p>Fecha a Caixa Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º). Fixa uma segunda fronteira interna, 1 de setembro de 1993 (art. 5.º), que decide se a pensão é calculada em duas p",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "pan class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 35/2002, de 19 de fevereiro</h2> <p>Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div c",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "mento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Decreto-Lei n.º 13/2",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2023",
+    "contexto": "187/2007 — regulamenta o regime de antecipação da reforma por deficiência criado pela Lei n.º 5/2022, de 7 de janeiro (art. 1.º). Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023. É a 11.ª alteração ao Decreto-Lei n.º 187/2007 e a 50.ª ao Estatuto da Aposentação (art. 40.º do Decreto-Lei n.º 498/72). O artigo 5.º afasta desta via a redução por penalizações de antecipação e o factor de sustentabi",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "contexto": "a.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Lei n.º 60/2005, de 29 de dezembro</h2> <p>Fecha a Caixa Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º). Fixa uma segunda fronteira interna, 1 de setembro de 1993 (art. 5.º), que decide se a pensão é calculada em duas p",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "contexto": "Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º). Fixa uma segunda fronteira interna, 1 de setembro de 1993 (art. 5.º), que decide se a pensão é calculada em duas parcelas (P1 + P2) ou inteiramente pelas regras do regime geral; a subida progressiva da idade de acesso (art. 3.º, Anexo I) e do tempo de serviço mínimo (art. 4.º,",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "novas\\s+inscri[çc][õo]es",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "contexto": "aixa Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º). Fixa uma segunda fronteira interna, 1 de setembro de 1993 (art. 5.º), que decide se a pensão é calculada em duas parcelas (P1 + P2) ou inteiramente pelas regras do regime geral; a subida progressiva da idade de acesso (art. 3.º, Anexo I) e do tempo de serviço mínimo (art. 4.º,",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "ião Europeia</h2> <p>Regula a transição do Reino Unido para fora da UE — o art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do Reino Unido exactamente no termo do período de transição (31 de dezembro de 2020), mantendo essa cobertura enquanto a situação continuar sem interrupção (n.º 2); o art. 31.º determina que continuam a aplicar-se os próprios Regulamentos (CE) n.os 883/2004 e 987/2009. Corpo do Acordo lido directamente",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "da União Europeia</h2> <p>Regula a transição do Reino Unido para fora da UE — o art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do Reino Unido exactamente no termo do período de transição (31 de dezembro de 2020), mantendo essa cobertura enquanto a situação continuar sem interrupção (n.º 2); o art. 31.º determina que continuam a aplicar-se os próprios Regulamentos (CE) n.os 883/2004 e 987/2009. Corpo do Acordo lido directamente",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "data_mes_ano",
+    "correspondencia": "abril de 2004",
+    "contexto": "f=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Regulamento (CE) n.º 883/2004, de 29 de abril de 2004</h2> <p>Coordenação dos sistemas de segurança social entre os Estados-membros da União Europeia — âmbito pessoal e material (arts. 2.º e 3.º), totalização de períodos, os dois métodos de cálculo — independente e p",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2009",
+    "contexto": "><a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Regulamento (CE) n.º 987/2009, de 16 de setembro de 2009</h2> <p>Regras de aplicação do Regulamento (CE) n.º 883/2004 — pedido único e instituição de contacto (arts. 45.º e 47.º), decisão paralela por cada instituição e pagamento sem demora da prestação autónoma (arts.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
+    "tipo": "prazo_outono",
+    "correspondencia": "16 de setembro de 2009",
+    "contexto": "<p><a href=\"https://eur-lex.europa.eu\" target=\"_blank\" rel=\"noopener\">eur-lex.europa.eu</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Regulamento (CE) n.º 987/2009, de 16 de setembro de 2009</h2> <p>Regras de aplicação do Regulamento (CE) n.º 883/2004 — pedido único e instituição de contacto (arts. 45.º e 47.º), decisão paralela por cada instituição e pagamento sem demora da prestação autónoma (arts.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "imt-jovem.html",
+    "marcador": "informa[çc][ãa]o\\s+vinculativa",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "a de <strong>terreno para construção não beneficia do IMT Jovem</strong> — a isenção só cobre prédios urbanos ou frações destinados a habitação. A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que um terreno para construção não é, no momento da compra, um prédio destinado a habitação — e que é irrelevante a construção da moradia já estar em curso à data da escritura. Quem compra um lote para construir paga o",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "\"text\": \"É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.\" } }, { \"@type\": \"Question\", \"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "osta\"> <p>É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.</p> <p class=\"fonte-inline\">Base legal: Decreto-Lei n.º",
+    "ordinal": 2
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "\"text\": \"É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.\" } }, { \"@type\": \"Question\", \"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "os estatutários de pessoas colectivas (Subsídio por Cessação de Actividade Profissional, art. 11.º-A do Decreto-Lei n.º 12/2013) — e a quem já recebia o subsídio quando o Decreto-Lei n.º 119/2021 entrou em vigor, a 1 de janeiro de 2022.</p> <div class=\"aviso-atencao\"> A majoração <strong>nunca é automática</strong> — depende sempre de requerimento próprio e da prova das condições (art. 28.º-A, n.º 7), mesmo quando reúnes todas as condiçõ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "osta\"> <p>É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.</p> <p class=\"fonte-inline\">Base legal: Decreto-Lei n.º",
+    "ordinal": 3
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "\"text\": \"É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.\" } }, { \"@type\": \"Question\", \"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "osta\"> <p>É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.</p> <p class=\"fonte-inline\">Base legal: Decreto-Lei n.º",
+    "ordinal": 2
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "\"text\": \"É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.\" } }, { \"@type\": \"Question\", \"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "os estatutários de pessoas colectivas (Subsídio por Cessação de Actividade Profissional, art. 11.º-A do Decreto-Lei n.º 12/2013) — e a quem já recebia o subsídio quando o Decreto-Lei n.º 119/2021 entrou em vigor, a 1 de janeiro de 2022.</p> <div class=\"aviso-atencao\"> A majoração <strong>nunca é automática</strong> — depende sempre de requerimento próprio e da prova das condições (art. 28.º-A, n.º 7), mesmo quando reúnes todas as condiçõ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "contexto": "osta\"> <p>É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022. Aplica-se nas situações previstas nesse artigo — nunca é um novo tecto máximo, é um acréscimo ao valor calculado antes da aplicação dos limites legais.</p> <p class=\"fonte-inline\">Base legal: Decreto-Lei n.º",
+    "ordinal": 3
+  },
+  {
+    "pagina": "numero-utente-sns.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2016",
+    "contexto": "</a> para o passo a passo completo deste atalho.</p> </div> <!-- RECÉM-NASCIDOS --> <div class=\"card\"> <span class=\"badge\">Recém-nascidos</span> <h2>E os recém-nascidos?</h2> <p>Desde 1 de junho de 2016, o número de utente de um recém-nascido é atribuído <strong>automaticamente</strong>, logo no hospital, através do processo \"Nascer Cidadão\" — assim que o registo civil do bebé fica concluído, o Registo Nacional de Uten",
+    "ordinal": 1
+  },
+  {
+    "pagina": "p/apoios-escolares.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2016/2017",
+    "contexto": "\"ver-guia\">Guia completo da bolsa de mérito: valor, requisitos de nota e prazos →</a> </div> <div class=\"apoio-mini\"> <span class=\"badge\">MEGA</span> <h2>Manuais escolares gratuitos (MEGA)</h2> <p>Desde 2016/2017, todos os alunos do 1.º ao 12.º ano no ensino público recebem os manuais em regime de empréstimo, sem custo e sem candidatura. Os vales digitais ficam disponíveis em julho/agosto no portal manuaisescolares.pt. No final",
+    "ordinal": 1
+  },
+  {
+    "pagina": "p/habitacao.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "m (18-35 anos) ou o Porta 65+ (sem limite de idade, para quebra de rendimentos ou monoparentalidade) — têm candidaturas contínuas, sem prazo. O Apoio Extraordinário à Renda só serve quem já tem contrato anterior a 15 de março de 2023.\" } }, { \"@type\": \"Question\", \"name\": \"Posso acumular estes apoios?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"O Apoio Extraordinári",
+    "ordinal": 1
+  },
+  {
+    "pagina": "p/habitacao.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "undo sem limite de idade, para quem sofreu quebra de rendimentos ou é família monoparental. A dedução de rendas no IRS sobe para 900 € em 2026. O Apoio Extraordinário à Renda destina-se só a contratos anteriores a 15 de março de 2023 — está fechado a novos beneficiários.</p> <p style=\"margin-top:.6rem\">Do lado da <strong>compra</strong>: o IMT Jovem isenta de IMT e Imposto do Selo até 330.539 € (2026), e a Garantia Pública permite financiamento",
+    "ordinal": 2
+  },
+  {
+    "pagina": "p/habitacao.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "enda?</h3> <p>Na maioria dos casos, o <a href=\"/porta-65.html\">Porta 65 Jovem ou Porta 65+</a> — têm candidaturas contínuas, sem prazo. O Apoio Extraordinário à Renda só serve quem já tem contrato anterior a 15 de março de 2023.</p> </div> <div class=\"faq-item\"> <h3>Posso acumular estes apoios?</h3> <p>O Apoio Extraordinário à Renda e o Porta 65 destinam-se a situações diferentes e têm critérios próprios — confirma sempre",
+    "ordinal": 3
+  },
+  {
+    "pagina": "p/habitacao.html",
+    "marcador": "celebrados?\\s+at[ée]\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "car o contrato →</a> </div> <div class=\"apoio-mini\"> <span class=\"badge\">Fechado a novos candidatos</span> <h3>Apoio Extraordinário à Renda</h3> <p>Só para contratos de arrendamento celebrados até 15 de março de 2023. O programa mantém-se em vigor e a pagar quem já foi aprovado, mas o Governo anunciou em fevereiro de 2026 a intenção de o revogar e substituir por um novo regime.</p> <a href=\"/apoio-extraordinario-renda.html\" clas",
+    "ordinal": 1
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2024",
+    "contexto": "igo</button> </div> <!-- partilhar:fim --> <div class=\"resposta-direta\"> O passe sub-23 é gratuito para todos os jovens dos <strong>4 aos 23 anos inclusive</strong>, estudantes ou não. Em vigor desde 1 de dezembro de 2024 (Pacote Mobilidade Verde). Tem de ser carregado todos os meses e validado em cada viagem — mesmo sendo gratuito. </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note",
+    "ordinal": 1
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de dezembro de 2024",
+    "contexto": "e artigo</button> </div> <!-- partilhar:fim --> <div class=\"resposta-direta\"> O passe sub-23 é gratuito para todos os jovens dos <strong>4 aos 23 anos inclusive</strong>, estudantes ou não. Em vigor desde 1 de dezembro de 2024 (Pacote Mobilidade Verde). Tem de ser carregado todos os meses e validado em cada viagem — mesmo sendo gratuito. </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note",
+    "ordinal": 1
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2024",
+    "contexto": "igo</button> </div> <!-- partilhar:fim --> <div class=\"resposta-direta\"> O passe sub-23 é gratuito para todos os jovens dos <strong>4 aos 23 anos inclusive</strong>, estudantes ou não. Em vigor desde 1 de dezembro de 2024 (Pacote Mobilidade Verde). Tem de ser carregado todos os meses e validado em cada viagem — mesmo sendo gratuito. </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note",
+    "ordinal": 1
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2024",
+    "contexto": "<li>Jovens dos <strong>4 aos 23 anos</strong> (válido até ao último dia do mês em que se completam 24 anos)</li> <li>Estudantes <strong>e</strong> não estudantes</li> <li>Em vigor desde <strong>1 de dezembro de 2024</strong></li> </ul> <div class=\"aviso\" style=\"margin-top:1rem;\"> <strong>Excepção até aos 25 anos:</strong> alunos de ciclos integrados de <strong>Medicina, Medicina Dentária, Medicina Veterinária, C",
+    "ordinal": 2
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "em vigor desde",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de dezembro de 2024",
+    "contexto": "e artigo</button> </div> <!-- partilhar:fim --> <div class=\"resposta-direta\"> O passe sub-23 é gratuito para todos os jovens dos <strong>4 aos 23 anos inclusive</strong>, estudantes ou não. Em vigor desde 1 de dezembro de 2024 (Pacote Mobilidade Verde). Tem de ser carregado todos os meses e validado em cada viagem — mesmo sendo gratuito. </div> </div> </header> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note",
+    "ordinal": 1
+  },
+  {
+    "pagina": "passe-sub23.html",
+    "marcador": "em vigor desde",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de dezembro de 2024",
+    "contexto": "> <li>Jovens dos <strong>4 aos 23 anos</strong> (válido até ao último dia do mês em que se completam 24 anos)</li> <li>Estudantes <strong>e</strong> não estudantes</li> <li>Em vigor desde <strong>1 de dezembro de 2024</strong></li> </ul> <div class=\"aviso\" style=\"margin-top:1rem;\"> <strong>Excepção até aos 25 anos:</strong> alunos de ciclos integrados de <strong>Medicina, Medicina Dentária, Medicina Veterinária, C",
+    "ordinal": 2
+  },
+  {
+    "pagina": "porta-65.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2023",
+    "contexto": "mainEntity\": [ { \"@type\": \"Question\", \"name\": \"Qual é o prazo para me candidatar ao Porta 65 Jovem?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não há prazo. Desde junho de 2023 as candidaturas ao Porta 65 Jovem funcionam em contínuo, sem janelas temporais — podes candidatar-te em qualquer altura do ano. Desde setembro de 2024, as candidaturas são avaliadas mensalmente.\" } },",
+    "ordinal": 1
+  },
+  {
+    "pagina": "porta-65.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2023",
+    "contexto": "uiseres.</p> <div class=\"zona-cinzenta\"> <h2>Dúvidas frequentes</h2> <details> <summary><h3>Qual é o prazo para me candidatar?</h3></summary> <div class=\"resposta\"> <p>Não há prazo. Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano. Desde setembro de 2024, a avaliação passou a ser mensal, em vez de por fases anuais como acontecia antes.</p>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "porta-65.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2024",
+    "contexto": ": { \"@type\": \"Answer\", \"text\": \"Não há prazo. Desde junho de 2023 as candidaturas ao Porta 65 Jovem funcionam em contínuo, sem janelas temporais — podes candidatar-te em qualquer altura do ano. Desde setembro de 2024, as candidaturas são avaliadas mensalmente.\" } }, { \"@type\": \"Question\", \"name\": \"Qual a diferença entre Porta 65 Jovem e Porta 65+?\", \"acceptedAnswer\": { \"@type\": \"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "porta-65.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2024",
+    "contexto": "ara me candidatar?</h3></summary> <div class=\"resposta\"> <p>Não há prazo. Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano. Desde setembro de 2024, a avaliação passou a ser mensal, em vez de por fases anuais como acontecia antes.</p> </div> </details> <details> <summary><h3>Qual a diferença entre Porta 65 Jovem e Porta 65+?</h3></summary>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "o de Saída?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Estar sujeito à legislação de um Estado-membro ou do Reino Unido no momento exacto em que terminou o período de transição — 31 de dezembro de 2020 (art. 30.º do Acordo de Saída). É um critério pontual, fixado nessa data, não uma apreciação genérica de \\\"ter tido uma ligação ao Reino Unido antes do Brexit\\\".\" } }, { \"@type\": \"Question\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "gimes se aplica ao meu caso?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não há uma resposta genérica — depende de factos concretos da tua situação no fim do período de transição, 31 de dezembro de 2020 (se já estavas sujeito à legislação de um dos lados nessa data) e da continuidade sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competent",
+    "ordinal": 2
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "pida\"> <span class=\"resposta-rapida-label\">⚡ Resposta rápida</span> <p class=\"resposta-rapida-texto\">Se já estavas sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição (31 de dezembro de 2020), continuas coberto pelo Regulamento europeu (Acordo de Saída), sem interrupção. Situações novas seguem o Protocolo do Acordo de Comércio e Cooperação — semelhante, mas com um ponto que fica deliberadamente por confirma",
+    "ordinal": 3
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "<main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note\" aria-label=\"Resumo rápido\"> <ul> <li>📅 <strong>Critério pontual</strong>: estar sujeito à legislação de um dos lados exactamente a 31 de dezembro de 2020, fim do período de transição (art. 30.º, Acordo de Saída).</li> <li>🛡️ <strong>Acordo de Saída</strong> — aplica os próprios Regulamentos (CE) n.os 883/2004 e 987/2009 (art. 31.º), enquanto a situação continuar",
+    "ordinal": 4
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "o mesmo que se aplicaria a outro país europeu. </div> <div class=\"card\"> <span class=\"badge\">O critério — art. 30.º, Acordo de Saída</span> <h2>Um instantâneo no fim do período de transição — 31 de dezembro de 2020</h2> <p>O critério do Acordo de Saída não é \"ter tido, em algum momento, uma ligação ao Reino Unido antes do Brexit\" — é mais estrito. O art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do R",
+    "ordinal": 5
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "o Unido antes do Brexit\" — é mais estrito. O art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do Reino Unido <strong>no termo do período de transição</strong>, ou seja, exactamente a <strong>31 de dezembro de 2020</strong>. É um critério pontual, fixado nessa data — não uma apreciação genérica sobre o passado.</p> <div class=\"aviso-atencao\"> <strong>⚠️ A cobertura não é automaticamente vitalícia.</strong> O art. 30.",
+    "ordinal": 6
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "antes ou depois?</h2> <p>Não há uma resposta genérica — a fronteira depende de factos concretos: se já estavas sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição, exactamente a 31 de dezembro de 2020, e se essa situação se manteve sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competentes, caso a caso — nunca por uma regra fixa aplicáve",
+    "ordinal": 7
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "4 concluídos</p> <ul class=\"checklist-lista\"> <li><label><input type=\"checkbox\"><span>Sei se já estava sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição, exactamente a 31 de dezembro de 2020?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se essa situação se manteve sem interrupção desde então?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei junto",
+    "ordinal": 8
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "critério exacto do Acordo de Saída?</summary> <div class=\"resposta\"> <p>Estar sujeito à legislação de um Estado-membro ou do Reino Unido no momento exacto em que terminou o período de transição — 31 de dezembro de 2020 (art. 30.º do Acordo de Saída). É um critério pontual, fixado nessa data, não uma apreciação genérica de \"ter tido uma ligação ao Reino Unido antes do Brexit\".</p> </div> </details> <details>",
+    "ordinal": 9
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2020",
+    "contexto": "omo sei qual dos dois regimes se aplica ao meu caso?</summary> <div class=\"resposta\"> <p>Não há uma resposta genérica — depende de factos concretos da tua situação no fim do período de transição, 31 de dezembro de 2020 (se já estavas sujeito à legislação de um dos lados nessa data) e da continuidade sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competent",
+    "ordinal": 10
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2020",
+    "contexto": "lication/xml\" href=\"/sitemap.xml\"> <title>Reforma e o Reino Unido: o Protocolo pós-Brexit</title> <meta name=\"description\" content=\"Quem já estava sujeito à legislação de um dos lados no fim do período de transição (31/12/2020) mantém-se coberto pelo Regulamento europeu. Os restantes casos seguem o Protocolo do Acordo de Comércio e Cooperação.\"> <meta property=\"og:title\" content=\"Reforma e o Reino Unido: o Protocolo pós-Brexit\"> <meta pro",
+    "ordinal": 1
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "Acordo de Saída?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Estar sujeito à legislação de um Estado-membro ou do Reino Unido no momento exacto em que terminou o período de transição — 31 de dezembro de 2020 (art. 30.º do Acordo de Saída). É um critério pontual, fixado nessa data, não uma apreciação genérica de \\\"ter tido uma ligação ao Reino Unido antes do Brexit\\\".\" } }, { \"@type\": \"Question\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "ois regimes se aplica ao meu caso?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não há uma resposta genérica — depende de factos concretos da tua situação no fim do período de transição, 31 de dezembro de 2020 (se já estavas sujeito à legislação de um dos lados nessa data) e da continuidade sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competent",
+    "ordinal": 2
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "sta-rapida\"> <span class=\"resposta-rapida-label\">⚡ Resposta rápida</span> <p class=\"resposta-rapida-texto\">Se já estavas sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição (31 de dezembro de 2020), continuas coberto pelo Regulamento europeu (Acordo de Saída), sem interrupção. Situações novas seguem o Protocolo do Acordo de Comércio e Cooperação — semelhante, mas com um ponto que fica deliberadamente por confirma",
+    "ordinal": 3
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "er> <main id=\"main-content\"> <div class=\"resumo-rapido\" role=\"note\" aria-label=\"Resumo rápido\"> <ul> <li>📅 <strong>Critério pontual</strong>: estar sujeito à legislação de um dos lados exactamente a 31 de dezembro de 2020, fim do período de transição (art. 30.º, Acordo de Saída).</li> <li>🛡️ <strong>Acordo de Saída</strong> — aplica os próprios Regulamentos (CE) n.os 883/2004 e 987/2009 (art. 31.º), enquanto a situação continuar",
+    "ordinal": 4
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "efeito o mesmo que se aplicaria a outro país europeu. </div> <div class=\"card\"> <span class=\"badge\">O critério — art. 30.º, Acordo de Saída</span> <h2>Um instantâneo no fim do período de transição — 31 de dezembro de 2020</h2> <p>O critério do Acordo de Saída não é \"ter tido, em algum momento, uma ligação ao Reino Unido antes do Brexit\" — é mais estrito. O art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do R",
+    "ordinal": 5
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "o Reino Unido antes do Brexit\" — é mais estrito. O art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do Reino Unido <strong>no termo do período de transição</strong>, ou seja, exactamente a <strong>31 de dezembro de 2020</strong>. É um critério pontual, fixado nessa data — não uma apreciação genérica sobre o passado.</p> <div class=\"aviso-atencao\"> <strong>⚠️ A cobertura não é automaticamente vitalícia.</strong> O art. 30.",
+    "ordinal": 6
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "meçou antes ou depois?</h2> <p>Não há uma resposta genérica — a fronteira depende de factos concretos: se já estavas sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição, exactamente a 31 de dezembro de 2020, e se essa situação se manteve sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competentes, caso a caso — nunca por uma regra fixa aplicáve",
+    "ordinal": 7
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": ">0 de 4 concluídos</p> <ul class=\"checklist-lista\"> <li><label><input type=\"checkbox\"><span>Sei se já estava sujeito à legislação de Portugal ou do Reino Unido no fim do período de transição, exactamente a 31 de dezembro de 2020?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei se essa situação se manteve sem interrupção desde então?</span></label></li> <li><label><input type=\"checkbox\"><span>Confirmei junto",
+    "ordinal": 8
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "l é o critério exacto do Acordo de Saída?</summary> <div class=\"resposta\"> <p>Estar sujeito à legislação de um Estado-membro ou do Reino Unido no momento exacto em que terminou o período de transição — 31 de dezembro de 2020 (art. 30.º do Acordo de Saída). É um critério pontual, fixado nessa data, não uma apreciação genérica de \"ter tido uma ligação ao Reino Unido antes do Brexit\".</p> </div> </details> <details>",
+    "ordinal": 9
+  },
+  {
+    "pagina": "reforma-reino-unido-brexit.html",
+    "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2020",
+    "contexto": "mary>Como sei qual dos dois regimes se aplica ao meu caso?</summary> <div class=\"resposta\"> <p>Não há uma resposta genérica — depende de factos concretos da tua situação no fim do período de transição, 31 de dezembro de 2020 (se já estavas sujeito à legislação de um dos lados nessa data) e da continuidade sem interrupção desde então. A avaliação é feita pela Segurança Social portuguesa, em articulação com as autoridades britânicas competent",
+    "ordinal": 10
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "artão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "y>É verdade que alguns Cartões de Cidadão têm de ser renovados antes do prazo, mesmo sem terem caducado?</summary> <div class=\"resposta\"> <p>Não, para o Cartão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, mas o IRN desmentiu-as publicamente: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem MRZ desde 2007 — a categori",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "30 de dezembro de 2025",
+    "contexto": "ra o Cartão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2018",
+    "contexto": "so a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018). Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, co",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2018",
+    "contexto": "ao Cartão de Cidadão normal. Só afecta duas excepções raras — o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (emissão cessada a 31 de dezembro de 2018). Só estes têm mesmo de ser renovados/substituídos até <strong>3 de agosto de 2026</strong>.</li> <li><strong>Cartão com MRZ mas sem chip de contacto</strong> (emitido até 10 de junho de 2024): mantém-se válido",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": ": o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018). Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "cessou a 31 de dezembro de 2018). Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas europeias. Se tens dúvidas sobre o teu caso em concreto, confirma em gov.pt ou irn.justica.gov.pt.\" } }, { \"@type\": \"Qu",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "cessada a 31 de dezembro de 2018). Só estes têm mesmo de ser renovados/substituídos até <strong>3 de agosto de 2026</strong>.</li> <li><strong>Cartão com MRZ mas sem chip de contacto</strong> (emitido até 10 de junho de 2024): mantém-se válido até à data impressa, no limite até <strong>3 de agosto de 2031</strong>.</li> <li><strong>Cartão emitido a partir de 11 de junho de 2024</strong> (modelo actual, com chip de dupla interface):",
+    "ordinal": 3
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "RZ mas sem chip de contacto</strong> (emitido até 10 de junho de 2024): mantém-se válido até à data impressa, no limite até <strong>3 de agosto de 2031</strong>.</li> <li><strong>Cartão emitido a partir de 11 de junho de 2024</strong> (modelo actual, com chip de dupla interface): cumpre já todas as normas europeias, segue sempre a validade impressa.</li> </ul> <p class=\"nota-tabela\">Em caso de dúvida sobre o teu caso em concreto,",
+    "ordinal": 4
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "de 2007 — a categoria \"sem MRZ\" só afecta duas excepções raras (Cartão de Cidadão do Tratado de Porto Seguro, para cidadãos brasileiros, e o antigo Bilhete de Identidade vitalício). Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas. Confirma o teu caso em gov.pt ou irn.justica.gov.pt.</p> <p cla",
+    "ordinal": 5
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "adãos brasileiros, e o antigo Bilhete de Identidade vitalício). Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas. Confirma o teu caso em gov.pt ou irn.justica.gov.pt.</p> <p class=\"fonte-inline\">Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE",
+    "ordinal": 6
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2018",
+    "contexto": "por isso a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018). Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, co",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2018",
+    "contexto": "icável ao Cartão de Cidadão normal. Só afecta duas excepções raras — o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (emissão cessada a 31 de dezembro de 2018). Só estes têm mesmo de ser renovados/substituídos até <strong>3 de agosto de 2026</strong>.</li> <li><strong>Cartão com MRZ mas sem chip de contacto</strong> (emitido até 10 de junho de 2024): mantém-se válido",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "circularam\\s+not[íi]cias",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "artões de Cidadão têm de ser renovados antes do prazo, mesmo sem terem caducado?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não, para o Cartão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "circularam\\s+not[íi]cias",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "artão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "circularam\\s+not[íi]cias",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "7/2007, de 5 de fevereiro (regime jurídico do Cartão de Cidadão), na redação atual · Regulamento (UE) 2025/1208.</p> <div class=\"aviso-info\"> <strong>✅ Esclarecimento oficial:</strong> circularam notícias, em dezembro de 2025, sobre uma obrigação de renovar o Cartão de Cidadão até 3 de agosto de 2026 por causa de novas regras europeias. O IRN desmentiu-as publicamente — o cartão <strong>mantém-se válido até à data impressa nele</strong>, sem",
+    "ordinal": 3
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "circularam\\s+not[íi]cias",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2025",
+    "contexto": "y>É verdade que alguns Cartões de Cidadão têm de ser renovados antes do prazo, mesmo sem terem caducado?</summary> <div class=\"resposta\"> <p>Não, para o Cartão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, mas o IRN desmentiu-as publicamente: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem MRZ desde 2007 — a categori",
+    "ordinal": 4
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "circularam\\s+not[íi]cias",
+    "tipo": "prazo_outono",
+    "correspondencia": "30 de dezembro de 2025",
+    "contexto": "ra o Cartão de Cidadão normal. Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele. O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \\\"sem MRZ\\\" só afecta duas excepções raras: o Cartão de Cidadão emitido",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "contexto": "adãos brasileiros, e o antigo Bilhete de Identidade vitalício). Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas. Confirma o teu caso em gov.pt ou irn.justica.gov.pt.</p> <p class=\"fonte-inline\">Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE",
+    "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_numerica",
+    "correspondencia": "30/12/2025",
+    "contexto": "itidos a partir de 11 de junho de 2024 já cumprem todas as normas. Confirma o teu caso em gov.pt ou irn.justica.gov.pt.</p> <p class=\"fonte-inline\">Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208</p> </div> </details> <details> <summary>Preciso de marcar hora para renovar presencialmente?</summary> <div class=\"resposta\"> <p>É r",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-imt-jovem.html",
+    "marcador": "informa[çc][ãa]o\\s+vinculativa",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "omprar um terreno para construir a casa conta para a isenção?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Não. A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que a compra de terreno para construção está excluída do IMT Jovem — mesmo que a construção da casa já esteja em curso à data da escritura. A isenção só cobre prédios urbanos ou frações destinados a habitação.\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-imt-jovem.html",
+    "marcador": "informa[çc][ãa]o\\s+vinculativa",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2025",
+    "contexto": "ils> <summary>Comprar um terreno para construir a casa conta para a isenção?</summary> <div class=\"faq-resposta\"> Não. A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que a compra de terreno para construção está <strong>excluída</strong> do IMT Jovem — mesmo que a construção da casa já esteja em curso à data da escritura. A isenção só cobre prédios urbanos ou frações destinados a ha",
+    "ordinal": 2
+  },
+  {
+    "pagina": "simulador-subsidio-desemprego.html",
+    "marcador": "\\bfoi\\s+revogad[ao]\\s+em\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2018",
+    "contexto": "na (13/07/2026): DECO // PROteste, ABANCA, CGD, Montepio, Doutor Finanças, Fed Finance — // sem divergências. Confirmado também que a redução de 10% aos 180 // dias (medida histórica de 2012) foi REVOGADA em janeiro de 2018 — // não é modelada, nem deve voltar a sê-lo sem um facto novo e // confirmado (ver CLAUDE.md, auditoria da Fase 1 dessa sessão). // // Migração para o padrão OpenFisca (2026-08-24, ver // dados/para",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "{ \"@type\": \"Answer\", \"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "mary> <div class=\"resposta\"> <p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o subsídio por morte?\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídio por morte?</summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "\"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o sub",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "<p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídi",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "{ \"@type\": \"Answer\", \"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "mary> <div class=\"resposta\"> <p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o subsídio por morte?\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídio por morte?</summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "\"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o sub",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "<p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídi",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "{ \"@type\": \"Answer\", \"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "mary> <div class=\"resposta\"> <p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o subsídio por morte?\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídio por morte?</summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "\"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o sub",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "<p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídi",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "{ \"@type\": \"Answer\", \"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "fevereiro de 2013",
+    "contexto": "mary> <div class=\"resposta\"> <p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o subsídio por morte?\",",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "contexto": "es o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídio por morte?</summ",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "\"text\": \"3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).\" } }, { \"@type\": \"Question\", \"name\": \"Qual é o prazo para pedir o sub",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "contexto": "<p>3 vezes o valor do Indexante dos Apoios Sociais (IAS), pago de uma só vez (art. 32.º do Decreto-Lei n.º 322/90, na redação em vigor). Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).</p> </div> </details> <details> <summary>Qual é o prazo para pedir o subsídi",
+    "ordinal": 2
+  }
+]
