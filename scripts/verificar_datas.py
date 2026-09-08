@@ -53,7 +53,6 @@ REGEX_MES_ANO = (
 MARCADORES_HISTORICOS = [
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"despacho", r"\bdl\s*n",
     r"lei\s+n\.?º", r"diário da república", r"dre\.pt", r"em vigor desde",
-    r"já\s+benefici",
     r"\bdesde\s+(?:\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|"
     r"agosto|setembro|outubro|novembro|dezembro)\s+de\s+\d)",
     # Elegibilidade fixa por data-limite de contrato — nunca muda com o tempo,

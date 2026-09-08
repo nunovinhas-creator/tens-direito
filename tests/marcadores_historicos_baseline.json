@@ -24,14 +24,6 @@
     "ordinal": 3
   },
   {
-    "pagina": "acao-social-escolar.html",
-    "marcador": "já\\s+benefici",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "contexto": "027</h2> <div class=\"prazo-destaque\"> <strong>Novas candidaturas:</strong> até 30 de setembro de 2026 </div> <ul> <li><strong>Renovação automática:</strong> quem já beneficiou de ASE em 2025/2026 poderá ter renovação automática para o mesmo escalão, sem necessidade de nova candidatura — desde que não haja alteração dos rendimentos do agregado. Confirma com o agrupamento.</li> <li><strong>Alteração de esc",
-    "ordinal": 1
-  },
-  {
     "pagina": "apoio-extraordinario-renda.html",
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
