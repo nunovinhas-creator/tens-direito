@@ -2900,6 +2900,27 @@ a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
   com o IMT Jovem. Base legal: DL n.º 44/2024, Portaria n.º
   236-A/2024/1.
 
+**Simulador de IMT Jovem — âmbito Continente-só é decisão deliberada, não
+falta de dados (2026-09-08, Issue #177)**: `dados/parametros/habitacao.yaml`
+tem, desde o PR #176, a tabela geral de IMT (HPP) das Regiões Autónomas
+por inteiro (`imt_geral_hpp_ra_*`, 8 parâmetros), verificada contra o
+folheto oficial da AT "Os meus direitos e deveres na aquisição de um
+prédio" (janeiro 2026, Ofício Circulado n.º 40129/2026) — com
+testes-canário próprios em `tests/test_valores_ancora.py`. Apesar
+disso, `simulador-imt-jovem.html` continua a calcular só para o
+Continente: a razão original (parcelas a abater RA por confirmar) já
+não existe desde o PR #176, mas a limitação em si mantém-se, agora por
+opção deliberada de âmbito — manter o formulário simples, com um único
+conjunto de escalões, sem selector de região. Os 4 sítios que
+explicavam a limitação (`#avisoRegiao`, FAQ visível + JSON-LD,
+comentário JS, lista de limitações) foram reescritos para reflectir a
+razão real, deixam claro ao utilizador dos Açores/Madeira que o
+resultado não se aplica ao seu caso, e apontam para o guia do IMT
+Jovem, para os Dados Abertos (onde a tabela RA já vive, verificada) e
+para a Autoridade Tributária. Se um dia se quiser estender o simulador
+às Regiões Autónomas, os parâmetros já existem — falta só ligar a
+coluna "sem isenção" a um selector de região.
+
 ### Backlog — histórico (plano "Expansão do Cluster Habitação" fechado a 20 jul 2026)
 
 O plano de 3 sessões está **concluído** — registo mantido para memória:
@@ -11203,4 +11224,58 @@ estruturais da allow-list (`tests/skips_permitidos.json`, inalterada);
 `REVALIDACAO_CARIMBO_HABILITADA` reconfirmados `False` (inalterados —
 sessão sem scraper). Trabalho feito na branch
 `claude/garantia-publica-data-limite-8rgwds` (designada pelo ambiente
+remoto desta sessão) — PR novo, sem merge.
+
+---
+
+*Última revisão: 2026-09-08 (fecho da Issue #177) — corrigida a
+justificação, desactualizada desde o PR #176, de `simulador-imt-jovem.html`
+continuar limitado ao Continente. **Decisão: mantém-se assim** — mas por
+opção deliberada de âmbito, nunca por falta de dados. A razão original
+citada nos 4 sítios do simulador ("as parcelas a abater da tabela geral
+RA não foram confirmadas de forma conclusiva") deixou de ser verdadeira
+com o PR #176 (2026-09-08, mesmo dia): `dados/parametros/habitacao.yaml`
+tem hoje a tabela geral de IMT (HPP) das Regiões Autónomas por inteiro
+(`imt_geral_hpp_ra_*`, 8 parâmetros), verificada contra o folheto
+oficial da AT "Os meus direitos e deveres na aquisição de um prédio"
+(janeiro 2026, Ofício Circulado n.º 40129/2026), com testes-canário
+próprios em `tests/test_valores_ancora.py` — a lacuna de dados que
+justificava a exclusão já não existe.
+
+Reescritos os 4 sítios listados na Issue #177 — `#avisoRegiao` (aviso
+visível no formulário), FAQ "Este simulador serve para os Açores e a
+Madeira?" (visível + `FAQPage` JSON-LD), o comentário JS que documenta
+`PARAMETROS_IMT_JOVEM`, e a nota da lista de limitações ("Não inclui...")
+— para deixar claro que (1) é uma decisão deliberada de âmbito, para
+manter o formulário simples com um único conjunto de escalões, sem
+selector de região; (2) o resultado do simulador **não se aplica** ao
+caso de quem compra nos Açores ou na Madeira (os limites lá são 25%
+mais altos); e (3) para onde ir em vez disso — a nota sobre as Regiões
+Autónomas no guia do IMT Jovem, a tabela completa nos Dados Abertos do
+site (onde a tabela RA já vive, verificada), ou confirmar o valor exacto
+na Autoridade Tributária. Docstring de
+`tests/test_simulador_imt_jovem_calculo.py` actualizada a par, com a
+mesma correcção (Issue #177/PR #176 citados directamente, em vez da
+alegação "parcelas não confirmadas"). Nota nova em CLAUDE.md → "CLUSTER
+HABITAÇÃO" regista a mesma decisão, para nunca se voltar a assumir que a
+exclusão é por falta de dados: os parâmetros RA existem e estão
+verificados; a não utilização no simulador é deliberada — estender o
+simulador às RA fica registado como possível trabalho futuro (parâmetros
+já prontos), sem prazo, não decidido nesta sessão.
+
+Nenhum valor de cálculo do simulador foi tocado — só texto explicativo e
+comentários; `imt-jovem.html` (o guia) também não foi tocado, fora do
+âmbito desta Issue. Suite completa (`pytest tests/ -q`, ambiente local
+com `playwright`/`beautifulsoup4`/`lxml`/`jsonschema`/`feedparser`/
+`pytest` instalados nesta sessão, Chromium reaproveitado de
+`/opt/pw-browsers`) e `ruff check scripts/ tests/ --select E,F,W
+--ignore E501 .` corridos antes do commit — ver o resultado exacto no
+commit desta sessão. Os 27 testes de
+`tests/test_simulador_imt_jovem_calculo.py` e os testes de acessibilidade/
+higiene/canários/breadcrumb/nav/pesquisa/og-image das páginas tocadas
+reconfirmados sem regressões antes da suite completa.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Issue #177 fechada com
+comentário a registar a decisão e a razão. Trabalho feito na branch
+`claude/imt-jovem-scope-limitation-0j8gzy` (designada pelo ambiente
 remoto desta sessão) — PR novo, sem merge.
