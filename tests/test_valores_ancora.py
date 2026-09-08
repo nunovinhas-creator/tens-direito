@@ -812,6 +812,25 @@ def test_imt_jovem_exclusao_de_terrenos_presente_na_pagina():
     assert "informação vinculativa" in html.lower(), "referência à informação vinculativa da AT ausente"
 
 
+def test_imt_jovem_deducao_selo_bate_com_o_folheto_da_at():
+    """O folheto da AT "Os meus direitos e deveres na aquisição de um
+    prédio" (janeiro 2026, Ofício Circulado n.º 40129/2026, de 6 de
+    janeiro) descreve a isenção do Imposto do Selo da aquisição (verba
+    1.1 da TGIS, 0,8%) como uma dedução à coleta com um valor máximo de
+    2.644,31 € — mesmo princípio de test_imt_jovem_parcela_a_abater_
+    bate_com_o_folheto_da_at: nunca guardado como parâmetro próprio
+    (seria uma 2.ª fonte para o mesmo facto), derivado aqui do limite de
+    isenção total × a taxa do Selo já parametrizados. Falha sozinho se
+    qualquer um dos dois divergir do valor publicado pela AT."""
+    taxa_selo = _param_habitacao("is_aquisicao_taxa_pct") / 100
+    deducao_maxima = round(_param_habitacao("imt_isencao_total_limite_eur") * taxa_selo, 2)
+    assert deducao_maxima == 2644.31
+    html = _ler("imt-jovem.html")
+    assert deducao_maxima in _valores_eur(html), (
+        f"dedução máxima do Selo ({deducao_maxima}€) ausente do corpo de imt-jovem.html"
+    )
+
+
 def test_garantia_publica_meta_description_percentagem_e_valor_imovel():
     desc = _meta_description("garantia-publica-credito-habitacao.html")
     assert _param_habitacao("garantia_percentagem_max_pct") in _percentagens(desc), desc

@@ -53,6 +53,14 @@
       },
       {
         "@type": "Question",
+        "name": "A isenção do Imposto do Selo funciona da mesma forma que a do IMT?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Quase — mas tecnicamente é uma dedução à coleta, não uma isenção directa. O Imposto do Selo da aquisição (verba 1.1 da Tabela Geral do Imposto do Selo, normalmente 0,8% do valor do imóvel) é liquidado sobre o valor total, mas dedutido até um máximo de 2.644,31 € — exactamente 0,8% dos 330.539 € isentos. Na prática, dá o mesmo resultado: nada a pagar até 330.539 €, e Imposto do Selo normal sobre o excedente acima desse valor."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Herdei uma quota de um imóvel, perco a isenção?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -81,6 +89,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Não, nos primeiros 6 anos. A casa tem de se manter como a tua habitação própria e permanente durante esse período — arrendá-la (ou dar-lhe outro destino) antes disso faz-te perder a isenção, com excepção de situações previstas na lei, como venda do imóvel, alteração do agregado familiar ou mudança do local de trabalho para mais de 100 km de distância."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Em que situações posso perder a isenção depois da escritura?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Há três condições a cumprir nos 6 anos seguintes à escritura, e falhar qualquer uma faz perder o benefício retroactivamente: 1) afetar o imóvel a habitação própria e permanente dentro de 6 meses; 2) manter esse destino durante os 6 anos seguintes, sem vender, arrendar nem mudar a finalidade (fora das exceções legais); 3) não voltar a ser considerado dependente, para efeitos do artigo 13.º do Código do IRS, em nenhum momento desse período."
         }
       }
     ]
@@ -122,7 +138,7 @@
         "@type": "HowToStep",
         "position": 5,
         "name": "Mantém o destino do imóvel durante 6 anos",
-        "text": "Não vendas, arrendes, nem mudes a finalidade da casa nos 6 anos seguintes (fora das exceções legais), e mantém-te não-dependente em IRS durante esse período."
+        "text": "Não vendas, arrendes, nem mudes a finalidade da casa nos 6 anos seguintes (fora das exceções legais), e mantém-te não-dependente (artigo 13.º do Código do IRS) durante esse período."
       }
     ]
   }
@@ -165,7 +181,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-20",
-    "dateModified": "2026-07-20"
+    "dateModified": "2026-09-08"
   }
   </script>
 
@@ -353,7 +369,7 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
-    <p class="verif">Verificado a 20/07/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/IMT_Jovem/Pages/default.aspx" style="color:#0F766E">portaldasfinancas.gov.pt</a> · <a href="https://diariodarepublica.pt" style="color:#0F766E">diariodarepublica.pt</a>.</p>
+    <p class="verif">Verificado a 08/09/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · Fontes: <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/IMT_Jovem/Pages/default.aspx" style="color:#0F766E">portaldasfinancas.gov.pt</a> · <a href="https://diariodarepublica.pt" style="color:#0F766E">diariodarepublica.pt</a>.</p>
 
     <!-- QUANTO POUPAS -->
     <div class="card">
@@ -372,7 +388,7 @@ footer a{color:#5C6770}
       </div>
       <p style="margin-top:.75rem"><strong>Exemplo real:</strong> uma casa de 340.000 € paga apenas 832,57 € de IMT e Imposto do Selo combinados com esta isenção, em vez dos 16.156,65 € que pagaria pela tabela geral sem ela — uma poupança de 15.324,08 €.</p>
       <div class="aviso-info">🧮 <strong>Faz as contas ao teu caso:</strong> o nosso <a href="/simulador-imt-jovem.html">simulador de IMT Jovem</a> compara o que pagas com e sem a isenção e mostra a poupança exacta — cálculos no teu navegador, sem envio de dados.</div>
-      <p class="nota-tabela">Exemplo com base no cálculo publicado pela Doutor Finanças para 2026 (ver fontes). O valor exacto sem a isenção depende do escalão da tabela geral de IMT — consulta o simulador oficial do Portal das Finanças para confirmar o teu caso.</p>
+      <p class="nota-tabela">Exemplo calculado com os escalões e parcelas a abater publicados pela Autoridade Tributária no folheto "Os meus direitos e deveres na aquisição de um prédio" (janeiro 2026), Ofício Circulado n.º 40129/2026, de 6 de janeiro.</p>
     </div>
 
     <!-- QUEM TEM DIREITO -->
@@ -382,12 +398,12 @@ footer a{color:#5C6770}
       <p>Tens de cumprir as <strong>4 condições</strong> em simultâneo:</p>
       <ul>
         <li><strong>Idade até 35 anos</strong> (inclusive), verificada à data da escritura;</li>
-        <li><strong>Não seres dependente</strong> para efeitos de IRS no ano da compra;</li>
-        <li><strong>Não seres nem teres sido proprietário ou coproprietário</strong> de imóvel habitacional nos últimos 3 anos — mesmo uma quota pequena, ou um imóvel sem valor de mercado relevante, conta;</li>
+        <li><strong>Não seres dependente</strong> para efeitos do artigo 13.º do Código do IRS (CIRS) no ano da compra;</li>
+        <li><strong>Não seres titular de direito de propriedade nem de "figura parcelar"</strong> (um direito real menor sobre o imóvel — por exemplo, usufruto ou direito de uso e habitação) sobre um prédio urbano habitacional, nem à data da escritura, nem em qualquer momento dos 3 anos anteriores — mesmo uma quota pequena, ou um imóvel sem valor de mercado relevante, conta;</li>
         <li>A casa vai ser a tua <strong>habitação própria e permanente</strong> — não serve para investimento nem segunda habitação.</li>
       </ul>
       <div class="aviso-atencao">
-        <strong>Duas armadilhas comuns:</strong> se voltares a ser considerado dependente em IRS nos 6 anos seguintes à compra, perdes a isenção retroactivamente. E uma herança já <em>partilhada</em> conta como propriedade, mesmo que seja só "um monte de pedras" — ver a pergunta sobre heranças, mais abaixo.
+        <strong>Duas armadilhas comuns:</strong> se voltares a ser considerado dependente (artigo 13.º do CIRS) nos 6 anos seguintes à compra, perdes a isenção retroactivamente. E uma herança já <em>partilhada</em> conta como propriedade, mesmo que seja só "um monte de pedras" — ver a pergunta sobre heranças, mais abaixo.
       </div>
     </div>
 
@@ -420,7 +436,7 @@ footer a{color:#5C6770}
         <li><span><strong>Confirma o escalão</strong>, usando o maior valor entre o preço acordado e o VPT do imóvel.</span></li>
         <li><span><strong>A isenção é pedida antes da escritura</strong>, na liquidação do Modelo 1 de IMT — normalmente é o notário, o solicitador ou o próprio banco do crédito habitação quem trata disto, identificando o regime de jovem na declaração.</span></li>
         <li><span><strong>Afeta a casa a habitação própria e permanente em 6 meses</strong> a contar da escritura.</span></li>
-        <li><span><strong>Mantém o destino da casa durante 6 anos</strong> — não vendas, arrendes, nem mudes a sua finalidade fora das exceções legais (venda do imóvel, alteração do agregado familiar, mudança do local de trabalho para mais de 100 km).</span></li>
+        <li><span><strong>Mantém o destino da casa durante 6 anos</strong> — não vendas, arrendes, nem mudes a sua finalidade fora das exceções legais (venda do imóvel, alteração do agregado familiar, mudança do local de trabalho para mais de 100 km) — e mantém-te não-dependente (artigo 13.º do CIRS) durante esse mesmo período.</span></li>
       </ol>
     </div>
 
@@ -492,6 +508,14 @@ footer a{color:#5C6770}
       </details>
 
       <details>
+        <summary>A isenção do Imposto do Selo funciona da mesma forma que a do IMT?</summary>
+        <div class="resposta">
+          <p>Quase — mas tecnicamente é uma <strong>dedução à coleta</strong>, não uma isenção directa. O Imposto do Selo da aquisição (verba 1.1 da Tabela Geral do Imposto do Selo, normalmente 0,8% do valor do imóvel) é liquidado sobre o valor total, mas dedutido até um máximo de <strong>2.644,31 €</strong> — exactamente 0,8% dos 330.539 € isentos. Na prática, dá o mesmo resultado: nada a pagar até 330.539 €, e Imposto do Selo normal sobre o excedente acima desse valor.</p>
+          <p class="fonte-inline">Verificado 08/09/2026 — folheto da AT "Os meus direitos e deveres na aquisição de um prédio" (janeiro 2026), Ofício Circulado n.º 40129/2026, de 6 de janeiro</p>
+        </div>
+      </details>
+
+      <details>
         <summary>Herdei uma quota de um imóvel, perco a isenção?</summary>
         <div class="resposta">
           <p>Depende se a herança já foi partilhada. Enquanto a herança estiver <strong>indivisa</strong> (ainda não foi feita a partilha entre herdeiros), continuas elegível para a isenção, mesmo tendo uma quota nela. Se a herança já foi <strong>partilhada</strong> e ficaste com uma fração determinada de um imóvel — mesmo que pequena, mesmo "um monte de pedras" — a Autoridade Tributária considera-te proprietário e perdes o direito à isenção.</p>
@@ -522,6 +546,14 @@ footer a{color:#5C6770}
           <p class="fonte-inline">Verificado 20/07/2026 — Decreto-Lei n.º 48-A/2024</p>
         </div>
       </details>
+
+      <details>
+        <summary>Em que situações posso perder a isenção depois da escritura?</summary>
+        <div class="resposta">
+          <p>Há três condições a cumprir nos 6 anos seguintes à escritura, e falhar qualquer uma faz perder o benefício retroactivamente: <strong>1)</strong> afetar o imóvel a habitação própria e permanente dentro de 6 meses; <strong>2)</strong> manter esse destino durante os 6 anos seguintes, sem vender, arrendar nem mudar a finalidade (fora das exceções legais — ver a pergunta sobre arrendar, acima); <strong>3)</strong> não voltar a ser considerado dependente, para efeitos do artigo 13.º do Código do IRS, em nenhum momento desse período.</p>
+          <p class="fonte-inline">Verificado 08/09/2026 — folheto da AT "Os meus direitos e deveres na aquisição de um prédio" (janeiro 2026), Ofício Circulado n.º 40129/2026, de 6 de janeiro</p>
+        </div>
+      </details>
     </section>
 
     <!-- RELACIONADOS:INICIO -->
@@ -541,11 +573,12 @@ footer a{color:#5C6770}
 
     <!-- FONTE -->
     <div class="fonte-bloco">
-      <strong>Fontes verificadas — 20 julho 2026</strong><br>
+      <strong>Fontes verificadas — 8 setembro 2026</strong><br>
       · <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/IMT_Jovem/Pages/default.aspx" target="_blank" rel="noopener">portaldasfinancas.gov.pt</a> — IMT Jovem<br>
       · <a href="https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-a-2024-873616105" target="_blank" rel="noopener">diariodarepublica.pt</a> — Decreto-Lei n.º 48-A/2024, de 25 de julho<br>
       · <a href="https://diariodarepublica.pt/dr/detalhe/decreto-lei/48-d-2024-874170160" target="_blank" rel="noopener">diariodarepublica.pt</a> — Decreto-Lei n.º 48-D/2024, de 31 de julho (emolumentos de registo)<br>
-      · <a href="https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096" target="_blank" rel="noopener">diariodarepublica.pt</a> — Lei n.º 73-A/2025 (Orçamento do Estado 2026, actualização dos escalões)
+      · <a href="https://diariodarepublica.pt/dr/detalhe/lei/73-a-2025-993270096" target="_blank" rel="noopener">diariodarepublica.pt</a> — Lei n.º 73-A/2025 (Orçamento do Estado 2026, actualização dos escalões)<br>
+      · Folheto da Autoridade Tributária "Os meus direitos e deveres na aquisição de um prédio" (janeiro 2026) — Ofício Circulado n.º 40129/2026, de 6 de janeiro (escalões, parcelas a abater e condições de perda do benefício)
     </div>
 
     <div class="disclaimer">
