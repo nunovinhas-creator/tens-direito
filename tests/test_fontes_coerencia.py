@@ -107,7 +107,6 @@ EXCECOES_DIPLOMAS_FONTES: dict[str, str] = {
     "Decreto-Lei n.º 4/2015": _MOTIVO_LEVANTAMENTO,
     "Decreto-Lei n.º 48-D/2024": _MOTIVO_LEVANTAMENTO,
     "Decreto-Lei n.º 55/2009": _MOTIVO_LEVANTAMENTO,
-    "Decreto-Lei n.º 74-A/2017": _MOTIVO_LEVANTAMENTO,
     "Decreto-Lei n.º 8/2024": _MOTIVO_LEVANTAMENTO,
     "Despacho n.º 3026/2024": _MOTIVO_LEVANTAMENTO,
     "Despacho n.º 4472-A/2026": _MOTIVO_LEVANTAMENTO,

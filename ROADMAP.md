@@ -171,6 +171,16 @@ filtro que capture notícias genuinamente novas sem sobrepor o gatilho
 Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 "quando" tomada:
 
+- **Issue #178 — âmbito por fechar** (ver "CONCLUÍDO RECENTEMENTE" para o
+  que já foi feito, 2026-09-08): confirmar se a Recomendação
+  Macroprudencial n.º 1/2026 (LTV/DSTI/prazos máximos) tem alguma
+  implicação específica para `imt-jovem.html`/`simulador-imt-jovem.html`
+  (acumulável com a Garantia Pública — se o contexto de "quanto
+  financiamento consegues" mudar, pode valer a pena uma nota cruzada) e
+  para `p/habitacao.html` (secção "🔑 Comprar"); decidir se algum dos
+  novos limiares (LTV 90%/80%, DSTI 45%, prazos 40/35 anos) deve ser
+  parametrizado em `dados/parametros/habitacao.yaml` — nenhum foi
+  adicionado nesta sessão, por instrução explícita.
 - **`MUDOU` nunca cria Issue** — só fica em `avisos.log`
   (`mudanca_estrutural:`); não existe hoje um tipo de Issue nem consumidor
   para esse padrão — ver CLAUDE.md **"SEG-SOCIAL — ESTRATÉGIA DE FETCH"**
@@ -415,6 +425,48 @@ PSU"**.
 ---
 
 ## ✅ CONCLUÍDO RECENTEMENTE
+
+- **Issue #178 (Recomendação Macroprudencial n.º 1/2026, Banco de
+  Portugal) — parcialmente resolvida, âmbito Garantia Pública —
+  2026-09-08.** `garantia-publica-credito-habitacao.html` reescrita com a
+  explicação que faltava: LTV máximo recomendado (90% HPP/80% outras
+  finalidades — é isso que a garantia permite ultrapassar), eliminação
+  desde 1/08/2026 da excepção que permitia financiar 100% imóveis
+  detidos pelos próprios bancos, DSTI máximo recomendado 45% (era 50%,
+  com margem única de 10% do montante concedido por instituição em cada
+  semestre — nunca descrito como "desceu de 15% para 10%", o regime
+  anterior de 2018 era escalonado por tipo de crédito, um mecanismo
+  diferente), prazos máximos recomendados (40 anos até aos 35 anos, 35
+  anos acima), e o facto central de transição: conta a data da avaliação
+  de solvabilidade, não a do contrato — um processo cuja avaliação foi
+  feita antes de 1 de agosto de 2026 pode continuar abrangido pelas
+  regras anteriores. Novos cartões em `fontes.html`: Recomendação
+  Macroprudencial n.º 1/2026, Decreto-Lei n.º 74-A/2017 e Aviso do Banco
+  de Portugal n.º 4/2017 (os dois últimos já citados na página desde a
+  sua publicação, sem cartão próprio — `Decreto-Lei n.º 74-A/2017`
+  removido de `EXCECOES_DIPLOMAS_FONTES` em
+  `tests/test_fontes_coerencia.py`, agora resolvido).
+
+  **Estatuto da fonte, conforme instrução explícita desta sessão**:
+  bportugal.pt bloqueia acesso automatizado, incluindo o PDF da
+  Recomendação — os factos vêm triangulados por comunicado oficial do
+  Banco de Portugal e imprensa especializada (localizados via
+  `WebSearch`, com URLs reais confirmados — não inventados —, incluindo
+  o comunicado `bportugal.pt/comunicado/banco-de-portugal-reve-...` e o
+  Aviso `bportugal.pt/aviso/42017`), nunca lidos directamente no
+  documento original. Marcado como tal em 3 sítios: o novo card em
+  "Os limites do Banco de Portugal" na própria página, o `fonte-bloco`
+  no fim da página, e o cartão de `fontes.html`.
+
+  **Âmbito desta sessão foi só `garantia-publica-credito-habitacao.html`
+  + `fontes.html`** — a Issue #178 também aponta `imt-jovem.html`/
+  `simulador-imt-jovem.html`, `p/habitacao.html` e `dados/parametros/
+  habitacao.yaml` como potencialmente afectados; nenhum foi tocado, e
+  nenhum parâmetro novo foi adicionado ao YAML, por instrução explícita
+  ("Sem parametrizar nada no YAML nesta ronda") — ver "TRABALHO FUTURO
+  REGISTADO" abaixo. Issue #178 fica aberta no GitHub, sem comentário
+  nem fecho por esta sessão — só existia lá até agora, esta entrada é o
+  primeiro apontador no repositório.
 
 - **Cluster Reformas e Pensões — Anel 3, parte C (fecho do Anel 3) —
   2026-09-06.** 3 páginas novas: `duracao-da-pensao-de-sobrevivencia.html`,
