@@ -30,10 +30,12 @@ reproduz esses três números ao cêntimo (ver
 test_exemplo_publicado_340000_reproduzido_ao_centimo), o que tranca a
 coerência artigo↔simulador.
 
-Cobertura regional: SÓ CONTINENTE (decisão do PASSO 0 — as parcelas a
-abater da tabela geral RA não foram confirmadas de forma conclusiva; os
-limites RA do IMT Jovem estão no YAML e na página do guia, mas o
-simulador nunca compara contra uma tabela não confirmada).
+Cobertura regional: SÓ CONTINENTE — decisão de ÂMBITO, não falta de dados
+(Issue #177, 2026-09-08). A tabela geral de IMT das Regiões Autónomas
+está hoje parametrizada e verificada em dados/parametros/habitacao.yaml
+(imt_geral_hpp_ra_*, PR #176, ver também test_valores_ancora.py); o
+simulador continua a não a usar, por decisão deliberada de manter um
+único conjunto de escalões (nunca por falta de dados confirmados).
 
 Se o Chromium do Playwright não estiver disponível no ambiente onde os
 testes correm, o módulo inteiro é ignorado (skip) em vez de falhar.

@@ -71,7 +71,7 @@
         "name": "Este simulador serve para os Açores e a Madeira?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Este simulador usa os escalões do Continente. Nas Regiões Autónomas os limites são 25% mais altos — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso o resultado aqui é conservador para quem compra nos Açores ou na Madeira. Vê a nota sobre as Regiões Autónomas no guia do IMT Jovem e confirma o teu caso no Portal das Finanças."
+          "text": "Não. Este simulador cobre só o Continente — uma opção deliberada de âmbito, para manter o formulário simples com um único conjunto de escalões, não por falta de dados: os limites e a tabela geral de IMT das Regiões Autónomas já estão confirmados e disponíveis nos Dados Abertos do site. Nos Açores e na Madeira os limites são 25% mais altos — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso este resultado não se aplica ao teu caso. Vê a nota sobre as Regiões Autónomas no guia do IMT Jovem, consulta a tabela completa nos Dados Abertos, ou confirma o valor exacto na Autoridade Tributária."
         }
       },
       {
@@ -309,7 +309,7 @@
     </div>
 
     <div class="aviso-info" id="avisoRegiao">
-      🏝️ Este simulador usa os escalões do <strong>Continente</strong>. Nos <strong>Açores e na Madeira</strong> os limites são 25% mais altos (isenção total até 413.174 €, parcial até 826.228 € em 2026) — o resultado aqui é conservador para quem compra nas Regiões Autónomas. <a href="/imt-jovem.html">Vê a nota sobre as Regiões Autónomas no guia</a>.
+      🏝️ Este simulador cobre só o <strong>Continente</strong> — opção deliberada, para manter o formulário simples com um único conjunto de escalões, não por falta de dados. Não se aplica ao teu caso se compras nos <strong>Açores ou na Madeira</strong>: aí os limites são <strong>25% mais altos</strong> (isenção total até 413.174 €, parcial até 826.228 € em 2026). <a href="/imt-jovem.html">Vê os teus limites no guia do IMT Jovem</a> ou confirma o valor exacto na Autoridade Tributária.
     </div>
 
     <div id="avisoParametrosErro" class="aviso-teto" style="display:none;" role="alert">
@@ -355,7 +355,7 @@ Acima de 660.982 € → tabela geral de IMT, sem isenção</code>
       <ul>
         <li>A coluna "sem isenção" usa a <strong>tabela geral de IMT 2026</strong> para habitação própria e permanente no Continente (taxas marginais de 2% a 8% com parcela a abater; taxa única de 6% acima de 660.982 € e de 7,5% acima de 1.150.853 €) — art. 17.º do CIMT, tabelas práticas da AT (Ofício Circulado n.º 40129/2026).</li>
         <li>O Imposto do Selo da compra é <strong>0,8%</strong> da mesma base; com a isenção parcial, aplica-se só ao excedente.</li>
-        <li>Não inclui: os limites 25% mais altos dos <strong>Açores e da Madeira</strong> (ver aviso acima), o Imposto do Selo do <strong>crédito habitação</strong> (0,6% do capital financiado, sempre devido), emolumentos de registo, nem a compra de <strong>terrenos para construção</strong> — excluída do IMT Jovem por informação vinculativa da AT.</li>
+        <li>Não inclui: os limites 25% mais altos dos <strong>Açores e da Madeira</strong> — por decisão deliberada de âmbito, não falta de dados (ver aviso acima) —, o Imposto do Selo do <strong>crédito habitação</strong> (0,6% do capital financiado, sempre devido), emolumentos de registo, nem a compra de <strong>terrenos para construção</strong> — excluída do IMT Jovem por informação vinculativa da AT.</li>
         <li>A isenção pede-se na declaração <strong>Modelo 1 do IMT, antes da escritura</strong> — ver o <a href="/imt-jovem.html">guia completo do IMT Jovem</a>.</li>
       </ul>
     </div>
@@ -380,7 +380,7 @@ Acima de 660.982 € → tabela geral de IMT, sem isenção</code>
       <details>
         <summary>Este simulador serve para os Açores e a Madeira?</summary>
         <div class="faq-resposta">
-          Este simulador usa os escalões do Continente. Nas Regiões Autónomas os limites são <strong>25% mais altos</strong> — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso o resultado aqui é conservador para quem compra nos Açores ou na Madeira. Vê a <a href="/imt-jovem.html">nota sobre as Regiões Autónomas no guia</a> e confirma o teu caso no Portal das Finanças.
+          Não. Este simulador cobre só o Continente — uma opção deliberada de âmbito, para manter o formulário simples com um único conjunto de escalões, não por falta de dados: os limites e a tabela geral de IMT das Regiões Autónomas já estão confirmados e disponíveis nos <a href="/dados.html">Dados Abertos</a> do site. Nos <strong>Açores e na Madeira</strong> os limites são <strong>25% mais altos</strong> — em 2026, isenção total até 413.174 € e parcial até 826.228 € — por isso este resultado não se aplica ao teu caso. Vê a <a href="/imt-jovem.html">nota sobre as Regiões Autónomas no guia</a> ou confirma o valor exacto na Autoridade Tributária.
         </div>
       </details>
 
@@ -434,14 +434,15 @@ Acima de 660.982 € → tabela geral de IMT, sem isenção</code>
     // visível (#avisoParametrosErro) e mantém o botão desactivado — um
     // estado de erro nunca pode parecer sucesso.
     //
-    // Cobertura regional: SÓ CONTINENTE, por decisão do PASSO 0 da Sessão 2
-    // (2026-07-20) — os limites do IMT Jovem nas Regiões Autónomas estão
-    // confirmados (413.174€/826.228€, no YAML e na página do guia), mas as
-    // parcelas a abater da tabela geral RA não foram confirmadas de forma
-    // conclusiva contra as tabelas práticas oficiais; sem a coluna "sem
-    // isenção" verificada, o selector de região ficaria a comparar contra
-    // números não confirmados. O aviso #avisoRegiao explica isto ao
-    // utilizador, com link para a nota RA do guia.
+    // Cobertura regional: SÓ CONTINENTE — decisão de ÂMBITO, não falta de
+    // dados (Issue #177, 2026-09-08). A tabela geral de IMT das Regiões
+    // Autónomas está hoje parametrizada e verificada em
+    // dados/parametros/habitacao.yaml (imt_geral_hpp_ra_*, PR #176) — a
+    // razão original desta limitação (parcelas a abater RA não
+    // confirmadas) deixou de existir. Mantém-se só Continente para não
+    // duplicar o formulário com um selector de região; o aviso
+    // #avisoRegiao explica isto ao utilizador e aponta para o guia, os
+    // Dados Abertos e a Autoridade Tributária.
     let PARAMETROS_IMT_JOVEM = null;
 
     async function carregarParametrosIMTJovem() {
