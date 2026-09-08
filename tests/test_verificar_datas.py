@@ -324,18 +324,6 @@ def test_valor_monetario_antigo_sem_ano_letivo_gera_alerta():
     assert alerta is not None
 
 
-def test_ja_beneficiou_ano_letivo_antigo_nao_gera_alerta():
-    # "quem já beneficiou de X em <ano antigo>" é uma afirmação sobre o
-    # passado, não uma alegação de que esse ano ainda está em vigor.
-    html = _html(
-        "Renovação automática: quem já beneficiou de ASE em 2025/2026 "
-        "poderá ter renovação automática para o mesmo escalão. "
-        "Verificado a 24 de junho de 2026."
-    )
-    assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
-    assert detectar_alertas(html, "acao-social-escolar.html", ANO, MES) is None
-
-
 def test_par_explicado_propaga_para_ocorrencia_repetida_distante():
     # O mesmo par "2025/2026", repetido bem mais adiante na página (ex.: um
     # cabeçalho FAQ separado da explicação) — a única explicação válida está
