@@ -14,16 +14,41 @@ Frases como "rendimentos de 2025 para prestações de 2026" ou "Em 2025,
 o valor era X" nunca precisam de um marcador de supressão dedicado: não
 têm nome de mês nem formato de data reconhecido por nenhum PADRAO, por
 isso nunca entram no ramo de "ano antigo" a começar.
+
+Issue #183, passo 2 — portão de confirmação: um marcador de
+MARCADORES_HISTORICOS só suprime PERMANENTEMENTE uma ocorrência se a
+própria data protegida for anterior (ou igual) ao carimbo "Verificado a"
+da página. Uma data posterior a esse carimbo descreve um compromisso
+ainda por cumprir à última verificação — um prazo em vigor que a lei
+pode prorrogar, nunca um facto já fechado (ex.: "contratos celebrados
+até 31 de dezembro de 2026", garantia-publica-credito-habitacao.html:
+o mesmo marcador `celebrados?\\s+at[ée]\\b` que fecha correctamente o
+PAER, já ultrapassado, mascarava para sempre um prazo que ainda nem
+chegou). Nesse caso o marcador comporta-se como MARCADORES_PENDENTE:
+suprimido só até a data passar, depois exposto. Sem carimbo (só
+fontes.html, entre as páginas com citações de diploma), preserva-se o
+comportamento anterior — nunca "sem carimbo = expõe tudo", que
+regrediria as dezenas de citações permanentes dessa página só por lhe
+faltar a referência; ver o carimbo acrescentado a fontes.html no mesmo
+commit desta correcção.
+
+Âmbito deliberado, sem data prevista de expansão: só os 3 tipos com uma
+data própria e sem ambiguidade — data_mes_ano, data_numerica,
+prazo_outono. `ano_letivo` (par de anos, sem dia) e `valor_ias` (ano
+solto na janela, sem grupo dedicado) ficam de fora — nenhum caso
+concreto os exige, e derivar uma data única a partir deles seria
+ambíguo (ver CLAUDE.md, secção do portão de confirmação).
 """
 
 import glob
 import json
 import os
 import re
-from datetime import datetime
+from datetime import date, datetime
 
 from classificar_datas import classificar_data_estruturada
 from decisao_datas import decidir_acao_estruturada
+from sincronizar_clusters import verificado_em_do_texto
 
 # Ficheiros que o pipeline gera — ignorar
 AUTO_GERADOS = ["index.html", "noticias.html", "404.html"]
@@ -188,7 +213,6 @@ MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
 # adicionar esses marcadores como substring solta só introduzia risco de
 # mascarar datas antigas genuinamente desactualizadas sem beneficiar nenhum
 # caso real (ver histórico do commit).
-MARCADORES_SUPRESSAO_DIRETA = MARCADORES_HISTORICOS + MARCADORES_EXEMPLO
 
 # Conteúdo que já assume, de forma explícita, que está pendente de confirmação.
 # "confirmar" no infinitivo (pendente) — não "confirmado" (já feito).
@@ -258,6 +282,27 @@ def _proxima_data_esperada(texto):
     return melhor
 
 
+def _data_da_ocorrencia(padrao, m):
+    """Data (aproximada ao dia 1 quando o padrão não captura o dia) da
+    própria correspondência em avaliação — usada pelo portão de
+    confirmação de `_esta_suprimido()` (issue #183, passo 2) para a
+    comparar contra o carimbo "Verificado a" da página. Só definida para
+    os 3 tipos com data própria sem ambiguidade; devolve None para
+    qualquer outro (o portão fica então um no-op, comportamento
+    inalterado)."""
+    tipo = padrao["tipo"]
+    try:
+        if tipo == "data_mes_ano":
+            return date(int(m.group(2)), MESES[m.group(1).lower()], 1)
+        if tipo == "data_numerica":
+            return date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+        if tipo == "prazo_outono":
+            return date(int(m.group(3)), MESES[m.group(2).lower()], int(m.group(1)))
+    except ValueError:
+        return None
+    return None
+
+
 def _dentro_de_link(conteudo, inicio):
     """Um token de data dentro do texto visível de um <a> é uma citação a outra
     página/recurso (ex.: link para outro artigo pelo seu próprio nome), não uma
@@ -268,14 +313,25 @@ def _dentro_de_link(conteudo, inicio):
     return ultima_abertura != -1 and ultima_abertura > ultimo_fecho
 
 
-def _esta_suprimido(conteudo, inicio, fim, ano, mes):
+def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verificado_em=None):
     if _dentro_de_link(conteudo, inicio):
         return True
 
     janela = _janela_contexto(conteudo, inicio, fim)
 
-    if _tem_algum(MARCADORES_SUPRESSAO_DIRETA, janela):
-        return True
+    if _tem_algum(MARCADORES_EXEMPLO, janela):
+        return True  # data hipotética de exemplo — nunca passa pelo portão
+
+    if _tem_algum(MARCADORES_HISTORICOS, janela):
+        if data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em:
+            # Compromisso ainda por cumprir à data da última verificação desta
+            # página — um marcador histórico (ex.: `celebrados? at[ée]`) pode
+            # descrever tanto um limite já fechado para sempre (PAER) como um
+            # prazo em vigor que a lei ainda pode prorrogar (Garantia Pública)
+            # — a mesma frase serve os dois. Comporta-se então como
+            # MARCADORES_PENDENTE: suprimido só até a data passar.
+            return datetime(ano, mes, 1) < datetime(data_ocorrencia.year, data_ocorrencia.month, 1)
+        return True  # comportamento anterior — permanente
 
     if _tem_algum(MARCADORES_PENDENTE, janela):
         data_esperada = _proxima_data_esperada(janela)
@@ -287,7 +343,7 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes):
     return False
 
 
-def _pagina_tem_alerta(conteudo, padrao, ano, mes):
+def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
     tipo = padrao["tipo"]
 
     if tipo == "ano_letivo":
@@ -333,7 +389,11 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes):
         ano_match = int(m.group(padrao["ano_grupo"]))
         if ano_match >= ano:
             continue  # data actual ou futura
-        if _esta_suprimido(conteudo, m.start(), m.end(), ano, mes):
+        if _esta_suprimido(
+            conteudo, m.start(), m.end(), ano, mes,
+            data_ocorrencia=_data_da_ocorrencia(padrao, m),
+            verificado_em=verificado_em,
+        ):
             continue
         return True
     return False
@@ -352,10 +412,11 @@ def _contexto_representativo(conteudo, padrao):
 
 def detectar_alertas(conteudo, nome_pagina, ano, mes):
     """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado."""
+    verificado_em = verificado_em_do_texto(conteudo)
     for padrao in PADROES:
         if mes not in REVER_EM[padrao["tipo"]]:
             continue
-        if _pagina_tem_alerta(conteudo, padrao, ano, mes):
+        if _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em):
             alerta = {
                 "pagina": nome_pagina,
                 "tipo": padrao["tipo"],

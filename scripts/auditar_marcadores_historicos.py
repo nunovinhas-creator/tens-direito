@@ -20,6 +20,17 @@ supressão pela entrada exacta que a causa.
 por `_esta_suprimido`) ficam deliberadamente fora — o âmbito desta
 auditoria é só `MARCADORES_HISTORICOS`, por instrução da Issue #183.
 
+Issue #183, passo 2 — portão de confirmação espelhado: `_esta_suprimido()`
+já não trata um marcador de `MARCADORES_HISTORICOS` como permanente sem
+mais nada — só o é se a data protegida for anterior (ou igual) ao carimbo
+"Verificado a" da página; posterior a isso, expira à mesma data (ver
+`scripts/verificar_datas.py`). Sem espelhar esse portão aqui, esta
+auditoria continuaria a registar como "suprimida" uma ocorrência que
+`_esta_suprimido()` já expôs de facto — o baseline mentiria sobre o que a
+produção realmente faz. `_fica_exposta_ao_portao()` decide isto por
+correspondência (não reutiliza `_esta_suprimido()` directamente — essa
+função não devolve qual marcador respondeu, só um booleano agregado).
+
 Ano de referência FIXO (nunca `datetime.now()`): mesma disciplina já usada
 em `tests/test_verificar_datas.py` (`ANO = 2026`, fixo) — um teste de
 regressão não pode ficar dependente do calendário. Se `ANO_REFERENCIA`
@@ -39,16 +50,18 @@ import json
 import re
 import sys
 from collections import Counter
+from datetime import date
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
-from sincronizar_clusters import encontrar_paginas  # noqa: E402
+from sincronizar_clusters import encontrar_paginas, verificado_em_do_texto  # noqa: E402
 from verificar_datas import (  # noqa: E402
     AUTO_GERADOS,
     MARCADORES_HISTORICOS,
     PADROES,
+    _data_da_ocorrencia,
     _janela_contexto,
 )
 
@@ -91,16 +104,39 @@ def _normalizar_contexto(texto: str) -> str:
     return re.sub(r"\s+", " ", texto).strip()
 
 
+def _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano: int) -> bool:
+    """Mesma decisão do portão de confirmação de `_esta_suprimido()`
+    (issue #183, passo 2), aplicada aqui à data de referência fixa desta
+    auditoria — nunca ao calendário real. Sem `data_ocorrencia` (tipo sem
+    data própria) ou sem `verificado_em` (página sem carimbo — hoje só
+    páginas sem citações de diploma) preserva-se o comportamento anterior:
+    o marcador continua a contar como supressão permanente, nunca
+    "sem carimbo = expõe tudo". Esta auditoria não tem um "mês" próprio
+    (só `ANO_REFERENCIA`, fixo por desenho) — usa o último dia do ano de
+    referência como o ponto no tempo a comparar, o mais tarde possível
+    dentro desse ano; um prazo que só ultrapassa isso num ano posterior
+    continua correctamente suprimido nesta auditoria."""
+    if data_ocorrencia is None or verificado_em is None:
+        return False
+    if data_ocorrencia <= verificado_em:
+        return False  # já era um facto fechado à última verificação — permanente
+    return data_ocorrencia <= date(ano, 12, 31)
+
+
 def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) -> list[dict]:
     """Todas as (ocorrência antiga, marcador) desta página — sem `ordinal`
     ainda, essa desambiguação de duplicados exactos é feita a nível do
     corpus inteiro em `auditar_corpus()`."""
+    verificado_em = verificado_em_do_texto(conteudo)
     registos = []
     for padrao in PADROES:
         for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
             if not _e_ocorrencia_antiga(padrao, m, conteudo, ano):
                 continue
             janela = _janela_contexto(conteudo, m.start(), m.end())
+            data_ocorrencia = _data_da_ocorrencia(padrao, m)
+            if _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
+                continue  # já não é permanente à data de referência — ver docstring do módulo
             for marcador in MARCADORES_HISTORICOS:
                 if re.search(marcador, janela, re.IGNORECASE):
                     registos.append({

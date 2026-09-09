@@ -11279,3 +11279,133 @@ reconfirmados sem regressões antes da suite completa.
 comentário a registar a decisão e a razão. Trabalho feito na branch
 `claude/imt-jovem-scope-limitation-0j8gzy` (designada pelo ambiente
 remoto desta sessão) — PR novo, sem merge.
+
+---
+
+*Última revisão: 2026-09-09 — Issue #183, passo 2: portão de confirmação
+em `scripts/verificar_datas.py`, para `MARCADORES_HISTORICOS` deixar de
+tratar como permanente qualquer data protegida por um marcador de
+citação de diploma ou de fronteira (`portaria`/`decreto-lei`/`lei n.º`/
+`despacho`/`celebrados? at[ée]`/`posterior a`/`anterior(es) a`/etc.),
+independentemente de a data em causa já estar resolvida ou ser um
+compromisso ainda em aberto.
+
+**Correcção ao diagnóstico original da Issue #183** (investigado, nunca
+assumido, antes de implementar): o texto da Issue atribuía o
+silenciamento do prazo de 31/12/2026 da Garantia Pública em
+`fontes.html` aos marcadores `Portaria`/`Decreto-Lei`. Testado
+directamente contra `_esta_suprimido()` antes de qualquer código: nos
+dois cartões desse tema, o `<h2>` com o diploma fica a mais de 220
+caracteres da data (parágrafo longo) — o marcador que dispara de facto
+é `celebrados?\s+at[ée]\b`, o mesmo que já fecha correctamente o PAER
+(prazo definitivamente ultrapassado e fechado, `apoio-extraordinario-
+renda.html`). A mesma frase serve dois factos semanticamente opostos —
+um limite já encerrado para sempre vs. um prazo em vigor que a lei
+ainda pode prorrogar — e nenhuma regex distingue isto pela redacção
+sozinha.
+
+**Mecanismo**: um marcador de `MARCADORES_HISTORICOS` só suprime
+PERMANENTEMENTE uma ocorrência (`data_mes_ano`/`data_numerica`/
+`prazo_outono` — os 3 únicos tipos com data própria sem ambiguidade)
+se essa data for anterior (ou igual) ao carimbo "Verificado a" da
+própria página, extraído por uma nova `sincronizar_clusters.
+verificado_em_do_texto()` (núcleo de `extrair_verificado_em()`,
+separado para operar sobre conteúdo já em memória, sem reabrir
+ficheiro — usado por `verificar_datas.py`, que importa a função em vez
+de reimplementar o parser de 3 formatos). Uma data posterior ao
+carimbo é um compromisso ainda por cumprir à última verificação —
+comporta-se então como `MARCADORES_PENDENTE`: suprimido só até a data
+passar, depois exposto. Sem carimbo (fail-safe), preserva-se o
+comportamento anterior — permanente — nunca "sem carimbo = expõe
+tudo": testado directamente contra o corpus real antes de decidir isto
+por segurança, não por conveniência — `fontes.html` tem 39 citações
+permanentes genuínas (Decreto-Lei/Lei/Regulamento (CE) de 1993 a 2023)
+que ficariam todas expostas por engano se a omissão de carimbo
+significasse "duvidar de tudo".
+
+**`fontes.html` ganha o seu primeiro carimbo `Verificado a`** —
+pré-condição do mecanismo (é a única página do corpus com citações de
+diploma sem nenhum carimbo próprio), nunca uma auditoria de conteúdo.
+Nota importante para não confundir no futuro: `<p class="updated">
+Verificado a 9 de setembro de 2026</p>`, acrescentado depois do
+disclaimer, **não afirma que as dezenas de cartões da página foram
+revistos contra as fontes oficiais nesta data** — afirma só que a
+página passou a ter um ponto de referência para o portão de
+confirmação funcionar. Os factos de cada cartão continuam a ter a
+proveniência que já tinham (verificados nas sessões que os
+acrescentaram, documentadas nas entradas de revisão deste ficheiro).
+Colocado deliberadamente longe de qualquer citação de diploma (testado
+com `_janela_contexto` real antes de decidir a posição) — o topo de
+`<main>` e o hero foram testados primeiro e rejeitados por caírem
+dentro do alcance de "Diário da República"/"Portaria"/`.hero`
+respectivamente (o segundo por motivo de contraste, não de marcador).
+
+**Achado colateral, não corrigido nesta sessão**: o mesmo `grep` que
+confirmou a posição segura de `fontes.html` revelou que **53 páginas
+do site já têm o seu próprio carimbo "Verificado a" dentro do alcance
+de um marcador histórico** (ex.: `caixa-geral-aposentacoes.html`,
+`carreiras-contributivas-estrangeiro.html`) — um facto pré-existente,
+não introduzido por este portão: confirmado com o código de ANTES desta
+sessão que essas duas páginas já não geravam nenhum alerta nem em 2028,
+porque o próprio carimbo de revisão anual fica mascarado por "Lei n.º"/
+"Regulamento (CE)" perto. O portão novo não piora isto (não muda o
+resultado para essas 53 páginas, confirmado por diff completo do corpus
+antes/depois) mas também não o resolve — fica registado para decisão
+futura, fora do âmbito desta Issue.
+
+**Âmbito deliberado, sem data prevista de expansão**: só os 3 tipos com
+data própria e sem ambiguidade (`data_mes_ano`, `data_numerica`,
+`prazo_outono`). `ano_letivo` (par de anos, ex. "2025/2026", sem dia
+próprio) e `valor_ias` (ano solto na janela, sem grupo de regex
+dedicado) ficam fora desta iteração — nenhum caso concreto da Issue os
+exige, e derivar uma data única e sem ambiguidade a partir de qualquer
+um dos dois exigiria uma decisão de desenho à parte (ex.: que dia do
+ano lectivo representa o par "2025/2026"?), nunca uma extensão mecânica
+do portão actual.
+
+**Resultado do baseline — diff vazio, não as 39 entradas antecipadas na
+proposta**: a proposta original estimava "39 entradas mudariam", mas
+essa simulação testava um desenho REJEITADO (sem carimbo em
+`fontes.html`, com o fail-safe a tratar "sem carimbo" como "expõe
+tudo"). Com o desenho efectivamente implementado — carimbo acrescentado
++ fail-safe que preserva o comportamento anterior — as 39 citações de
+`fontes.html` já estavam no baseline aprovado desde o PR #184 e
+continuam correctamente permanentes (todas anteriores a
+9 de setembro de 2026). `scripts/auditar_marcadores_historicos.py`
+ganhou o mesmo portão espelhado (`_fica_exposta_ao_portao()`, com o
+mesmo `verificado_em_do_texto()` e a mesma `_data_da_ocorrencia()`
+importada de `verificar_datas.py` — nunca reimplementada) para o
+baseline nunca mentir sobre o que `_esta_suprimido()` faz de facto;
+como este script fixa `ANO_REFERENCIA=2026` por desenho (nunca
+`datetime.now()`, ver docstring do próprio módulo), o portão nunca
+altera nenhuma das 295 supressões desse ano fixo — confirmado por
+`auditar_corpus()` a devolver exactamente as mesmas 295 entradas antes
+e depois, 0 novas, 0 órfãs.
+
+**Verificado directamente contra o calendário real (2027-2028), fora do
+baseline fixo**: a correcção funciona — `garantia-publica-credito-
+habitacao.html` passa a alertar de forma consistente a partir de 2027
+(hoje continua correctamente silenciado, a data ainda não chegou);
+`apoio-extraordinario-renda.html` (PAER, prazo genuinamente fechado)
+nunca começa a alertar por causa do portão — o alerta que já tinha a
+partir de 2027 vem de outra causa, pré-existente, confirmada idêntica
+antes e depois desta sessão (o próprio carimbo da página a envelhecer,
+mecanismo normal e desejado). Diff completo do corpus (945 combinações
+página×ano×mês) confirma só 35 diferenças, todas explicadas: 5 são o
+alvo desta correcção (`fontes.html`); 20 (4 páginas × 5 combinações)
+são a mesma classe de correcção a alcançar, correctamente, outro prazo
+real e ainda em aberto — a produção de efeitos do Decreto-Lei n.º
+166/2026 a 31/12/2026 (artigo 63.º), citado em `psu-quem-tem-
+direito.html`, `psu-vs-abono-familia.html`, `simulador-psu.html` e
+`simulador-rsi.html` — registado na Issue #186, não corrigido aqui; as
+restantes 10 são reclassificações cosméticas em
+páginas que já alertavam de qualquer forma antes desta sessão
+(`bolsa-de-merito.html`, `renovar-cartao-cidadao.html`), sem nenhuma
+mudança na decisão final de alertar ou não.
+
+Suite completa + `ruff check scripts/ tests/ --select E,F,W --ignore
+E501 .` — ver o resultado exacto no commit desta sessão.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/prazo-verificacao-issue183-passo2` (designada pelo ambiente
+remoto desta sessão) — PR novo, sem merge.
