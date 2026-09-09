@@ -1,147 +1,5 @@
 [
   {
-    "data": "2026-08-25",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 13,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 14,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 13,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 11
-    },
-    "candidatos": [
-      {
-        "titulo": "Recebe apoios da Segurança Social? Veja aqui o calendário dos pagamentos do próximo mês de setembro - Executive Digest",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-18"
-      },
-      {
-        "titulo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos - Barlavento",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-24",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto - O Mirante",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-08-24",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=educacao"
-      },
-      {
-        "titulo": "Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência - recordeuropa.com",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-22",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Nova lei para auxílio-desemprego - Portugal Resident",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-19",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-19"
-      },
-      {
-        "titulo": "Recebeu uma chamada telefónica sobre declaração de IRS? É fraude - CNN Portugal",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-08-21",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-22"
-      },
-      {
-        "titulo": "Datas dos Pagamentos da Segurança Social em setembro já estão definidas - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento solidário para idosos: como funciona e quem tem direito? - DECO PROteste",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-21",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos: quem tem direito em 2026 - SAPO",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-24",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Medicamentos gratuitos para idosos com complemento solidário limitados a genéricos ou preço de referência - SIC Notícias",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-08-18",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos - Barlavento",
-        "feed_nome": "subsidio_desemprego",
-        "score": 2
-      },
-      {
-        "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto - O Mirante",
-        "feed_nome": "acao_social_escolar",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-08-26",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1806,5 +1664,86 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-09-09",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 13,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - leak.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-09",
+        "score": 5,
+        "decisao": "vencedor",
+        "motivo": "score=5, categoria=apoios"
+      },
+      {
+        "titulo": "Podes receber este apoio da Segurança Social para rendimentos mais baixos desde que cumpras estes critérios - Magazine.HD",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-08",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-05",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - leak.pt",
+        "feed_nome": "psu_pensoes",
+        "score": 5
+      }
+    ]
   }
 ]

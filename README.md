@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **08 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **09 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -281,6 +281,7 @@ tens-direito/
 │   ├── atualizar_branding_nvlabs.py
 │   ├── atualizar_calendario.py
 │   ├── atualizar_claude_md.py
+│   ├── auditar_marcadores_historicos.py
 │   ├── auto_update_engine.py
 │   ├── classificador_resposta.py
 │   ├── classificar_datas.py
@@ -427,6 +428,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 08 de setembro de 2026 às 11:57 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 09 de setembro de 2026 às 12:07 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
