@@ -33,6 +33,7 @@ from gerar_noticias import (
     normalizar_titulo,
     normalizar_url,
     ordenar_itens,
+    recalcular_cluster_ids,
     registar_candidatos_log,
     registar_saude_feeds_hoje,
     regenerar_noticias_html,
@@ -286,6 +287,95 @@ def test_detectar_cluster_trabalho_rendimento_para_salario_minimo():
 def test_detectar_cluster_idosos_para_csi_com_titulo_real_do_diagnostico():
     titulo = "Complemento Solidário para Idosos sobe em janeiro: confira os valores"
     assert detectar_cluster(titulo, "") == "idosos-incapacidade-cuidadores"
+
+
+# ── Fronteira de palavra em CLUSTER_KEYWORDS (2026-09-09) ─────────────────
+#
+# Bug real encontrado em data/noticias.json: `detectar_cluster()` usava
+# `kw in text` directamente, nunca `_contem_keyword()` — por isso a keyword
+# "ase" (Ação Social Escolar) apanhava qualquer palavra que a contivesse
+# como substring ("fase", "base", "quase", "baseadas", ...), classificando
+# 2 itens genuinamente sobre desemprego/IRS como "apoios-escolares". A
+# mesma fronteira aplicada a "reforma" zerava o cluster "reformas" por
+# completo (medido antes de aplicar) — os 2 itens reais sobre pensionistas
+# só batem em "reforma" via a palavra "Reformados", sem fronteira ao fim
+# ("reforma" nunca é substring de "reformados" com \b nos dois lados) — daí
+# a keyword nova "reformado" em CLUSTER_KEYWORDS["reformas"].
+
+def test_detectar_cluster_apoios_escolares_ase_como_sigla_isolada():
+    """"ase" como sigla isolada (ASE, Ação Social Escolar) continua a
+    classificar apoios-escolares — título real de data/noticias.json."""
+    titulo = "Candidaturas à ASE 2026/2027 abrem em setembro — prazo até 30 de setembro"
+    assert detectar_cluster(titulo, "") == "apoios-escolares"
+
+
+def test_detectar_cluster_apoios_escolares_nunca_confunde_ase_com_substring():
+    """Nenhuma destas frases deve classificar apoios-escolares só por
+    conter "ase" como substring — "quase"/"baseadas" são os 2 casos reais
+    encontrados em data/noticias.json; "fase"/"base"/"frase"/"ênfase" são
+    os exemplos adicionais que motivaram a correcção."""
+    titulos_sem_ase_real = [
+        "O desemprego aumentou em quase 58,000 pessoas em setembro.",
+        "DREM divulga as estatísticas do rendimento para 2024 baseadas na declaração de IRS",
+        "O país entra numa nova fase de crescimento económico",
+        "O valor tem por base o IAS de 2026",
+        "Como se traduz esta frase do português para o inglês",
+        "A subida de preços dá ênfase à urgência da reforma fiscal",
+    ]
+    for titulo in titulos_sem_ase_real:
+        assert detectar_cluster(titulo, "") != "apoios-escolares", titulo
+
+
+def test_detectar_cluster_reformas_para_reformados_titulos_reais():
+    """Os 2 itens reais de data/noticias.json que só batem em "reforma"
+    via a palavra "Reformados" — sem a keyword "reformado" nova, ficariam
+    sem cluster nenhum assim que "reforma" ganhasse fronteira de palavra."""
+    titulos_reais = [
+        "Reformados recebem pensão e subsídio de férias este mês",
+        "Reformados recebem pensões a dobrar a partir de quarta-feira",
+    ]
+    for titulo in titulos_reais:
+        assert detectar_cluster(titulo, "") == "reformas", titulo
+
+
+def test_detectar_cluster_reformas_para_reforma_como_palavra_isolada():
+    """"reforma" sozinha, sem nenhuma keyword de outro cluster à volta,
+    continua a classificar reformas — a fronteira de palavra não apagou o
+    caso simples, só a colisão com substrings não relacionadas."""
+    assert detectar_cluster("Idade de reforma sobe outra vez em 2027", "") == "reformas"
+
+
+def test_detectar_cluster_reforma_como_mudanca_legislativa_nunca_vai_para_reformas():
+    """"reforma" no sentido de "mudança legislativa" (não "pensão de
+    velhice") é um caso real do site — título real de data/noticias.json.
+    A ordem de CLUSTER_KEYWORDS (prestacao-social-unica antes de reformas)
+    já resolve a ambiguidade: "prestação social única" vence primeiro."""
+    titulo = "Prestação social única: reforma altera 13 apoios do Estado"
+    assert detectar_cluster(titulo, "") == "prestacao-social-unica"
+
+
+def test_recalcular_cluster_ids_devolve_so_os_itens_que_mudam():
+    itens = [
+        _item("2026-07-01", "O desemprego aumentou em quase 58,000 pessoas em setembro.", cluster_id="apoios-escolares"),
+        _item("2026-07-02", "Reformados recebem pensão e subsídio de férias este mês", cluster_id=None),
+        _item("2026-07-03", "Candidaturas à ASE 2026/2027 abrem em setembro", cluster_id="apoios-escolares"),
+    ]
+    mudancas = recalcular_cluster_ids(itens)
+    titulos_mudados = {item.titulo for item, _antigo, _novo in mudancas}
+    assert titulos_mudados == {
+        "O desemprego aumentou em quase 58,000 pessoas em setembro.",
+        "Reformados recebem pensão e subsídio de férias este mês",
+    }
+    for item, antigo, novo in mudancas:
+        if "desemprego" in item.titulo:
+            # "desemprego" é ele próprio keyword de trabalho-rendimento —
+            # deixa de ser apoios-escolares, mas continua classificado.
+            assert (antigo, novo) == ("apoios-escolares", "trabalho-rendimento")
+        else:
+            assert (antigo, novo) == (None, "reformas")
+    # item já correcto (cluster_id gravado bate com detectar_cluster actual)
+    # não aparece na lista de mudanças — nunca reescrito à toa.
+    assert not any(item.titulo.startswith("Candidaturas à ASE") for item, _, _ in mudancas)
 
 
 def test_cluster_keywords_cobre_todos_os_clusters_do_site():

@@ -29,8 +29,10 @@ de cada feed (`data/feeds_saude_hoje.json`, consumido por
 (`data/noticias_candidatos.json`) — para que "nenhuma notícia hoje" seja
 sempre distinguível de uma avaria, nunca um resultado silencioso.
 
-    python scripts/gerar_noticias.py          # corrida normal (fetch + selecção + sync)
-    python scripts/gerar_noticias.py --sync   # só resincroniza as saídas com o JSON actual, sem fetch
+    python scripts/gerar_noticias.py                              # corrida normal (fetch + selecção + sync)
+    python scripts/gerar_noticias.py --sync                       # só resincroniza as saídas com o JSON actual, sem fetch
+    python scripts/gerar_noticias.py --recalcular-clusters --dry-run  # mostra o que mudaria em cluster_id, sem escrever
+    python scripts/gerar_noticias.py --recalcular-clusters        # recalcula cluster_id de todos os itens e ressincroniza
 
 Escreve em index.html só dentro do bloco NOTICIA-HOME, entre marcadores —
 nunca fora deles (ver SECCOES_PERMITIDAS e _verificar_escrita_confinada)."""
@@ -250,10 +252,44 @@ def _e_noticia_de_pais_estrangeiro(texto: str) -> bool:
 # aparecer dentro de palavras comuns não relacionadas).
 _REGEX_PALAVRA_IAS = re.compile(r"\bias\b")
 
+# "ase" (ASE, Ação Social Escolar) tem o mesmo problema — descoberto em
+# `data/noticias.json` (2026-09-09, auditoria a `CLUSTER_KEYWORDS`): 2 itens
+# genuinamente sobre desemprego/IRS ("...aumentou em quase 58.000 pessoas...",
+# "...estatísticas... baseadas na declaração de IRS") ficavam classificados
+# `apoios-escolares` só por "ase" ser substring de "quase"/"baseadas" — o
+# mesmo defeito já corrigido para "ias", nunca antes aplicado a
+# `CLUSTER_KEYWORDS` (que usava `kw in texto` directamente, sem passar por
+# esta função). A mesma keyword "ase" também vive em `CAT_KEYWORDS["educacao"]`
+# — corrigida de graça pela mesma alteração, mesma categoria "educacao"
+# nunca devia ter sido atribuída a esses 2 itens.
+_REGEX_PALAVRA_ASE = re.compile(r"\base\b")
+
+# "reforma" é uma palavra portuguesa genuína (não um acrónimo arbitrário como
+# "ias"/"ase"), mas o mesmo risco de substring existe na direcção inversa:
+# sem fronteira, "reforma" apanha corretamente "reformados"/"reformas"
+# (mesma família de palavra, tópico genuíno de pensões) mas também qualquer
+# uso de "reforma" no sentido de "mudança legislativa" (ex.: "reforma da
+# Prestação Social Única", "reforma do arrendamento") — sentido totalmente
+# diferente do cluster "reformas" (pensões/reforma por velhice). Como o
+# cluster `prestacao-social-unica` vem sempre primeiro em `CLUSTER_KEYWORDS`
+# (e "habitacao" antes de "reformas"), esses casos já ficam corretamente
+# absorvidos por esses clusters antes de chegar a "reformas" — a fronteira
+# aqui só existe para nunca deixar "reforma" solto a decidir sozinho.
+# Precisou de `CLUSTER_KEYWORDS["reformas"]` ganhar "reformado" (2026-09-09)
+# para os 2 itens reais de pensionistas ("Reformados recebem pensão...")
+# continuarem classificados — sem essa keyword nova, a fronteira aqui
+# zerava o cluster por completo (confirmado por medição directa antes de
+# aplicar, nunca assumido).
+_REGEX_PALAVRA_REFORMA = re.compile(r"\breforma\b")
+
 
 def _contem_keyword(kw: str, texto: str) -> bool:
     if kw == "ias":
         return bool(_REGEX_PALAVRA_IAS.search(texto))
+    if kw == "ase":
+        return bool(_REGEX_PALAVRA_ASE.search(texto))
+    if kw == "reforma":
+        return bool(_REGEX_PALAVRA_REFORMA.search(texto))
     return kw in texto
 
 CAT_KEYWORDS = {
@@ -281,6 +317,15 @@ CAT_LABELS = {
 # "habitacao" estava em falta (gap encontrado 2026-07-04, ao ligar o feed
 # `habitacao_arrendamento`) — o cluster existe em data/clusters.json desde
 # 3 jul 2026 (p/habitacao.html) mas nunca tinha sido adicionado aqui.
+#
+# `detectar_cluster()` passa cada keyword por `_contem_keyword()` (2026-09-09,
+# ver comentário junto a `_REGEX_PALAVRA_ASE`/`_REGEX_PALAVRA_REFORMA` acima)
+# — a maioria continua substring simples (nenhuma outra colide com palavras
+# comuns não relacionadas), só "ase" e "reforma" exigem fronteira de palavra.
+# "reformado" é keyword nova, exigida pela fronteira de "reforma": sem ela,
+# os 2 itens reais de pensionistas ("Reformados recebem pensão/pensões...")
+# deixariam de bater em nada — "reforma" com fronteira nunca é substring de
+# "reformados" (falta o "s" final para fechar a fronteira).
 CLUSTER_KEYWORDS = {
     "prestacao-social-unica": ["psu", "prestação social única"],
     "apoios-escolares": ["ase", "ação social escolar", "bolsa de mérito", "manuais escolares", "manuais gratuitos", "passe sub-23", "passe sub23"],
@@ -289,7 +334,7 @@ CLUSTER_KEYWORDS = {
     "trabalho-rendimento": ["subsídio de desemprego", "desemprego", "iefp", "rsi", "rendimento social de inserção", "salário mínimo"],
     "habitacao": ["porta 65", "apoio ao arrendamento", "apoio à renda", "arrendamento", "ihru"],
     "como-pedir": ["chave móvel digital", "cartão de cidadão", "niss", "segurança social direta", "iban"],
-    "reformas": ["reforma", "pensão de velhice", "idade da reforma", "idade normal de reforma", "factor de sustentabilidade"],
+    "reformas": ["reforma", "reformado", "pensão de velhice", "idade da reforma", "idade normal de reforma", "factor de sustentabilidade"],
 }
 
 MESES_PT = [
@@ -480,7 +525,7 @@ def detect_category(entry) -> str:
 def detectar_cluster(titulo: str, resumo: str) -> Optional[str]:
     text = (titulo + " " + resumo).lower()
     for cluster_id, kws in CLUSTER_KEYWORDS.items():
-        if any(kw in text for kw in kws):
+        if any(_contem_keyword(kw, text) for kw in kws):
             return cluster_id
     return None
 
@@ -977,6 +1022,25 @@ def sincronizar_saidas(
     atualizar_index_home(itens_ordenados, caminho=index_caminho)
 
 
+def recalcular_cluster_ids(itens: List[ItemNoticia]) -> List[Tuple[ItemNoticia, Optional[str], Optional[str]]]:
+    """Recalcula `cluster_id` de cada item com `detectar_cluster()` actual —
+    nunca altera nada em memória sozinho, só devolve os itens cuja
+    classificação mudaria (item, cluster_id antigo, cluster_id novo).
+
+    Precisa de correr sempre que `CLUSTER_KEYWORDS`/`_contem_keyword()`
+    mudarem (ex.: fronteira de palavra em "ase"/"reforma", 2026-09-09) —
+    sem isto, itens já gravados ficam com uma classificação errada
+    indefinidamente, à espera de uma notícia nova do mesmo tema para
+    nunca mais a corrigir. Utilizável como passo manual isolado:
+    `python scripts/gerar_noticias.py --recalcular-clusters [--dry-run]`."""
+    mudancas = []
+    for item in itens:
+        novo = detectar_cluster(item.titulo, item.resumo)
+        if novo != item.cluster_id:
+            mudancas.append((item, item.cluster_id, novo))
+    return mudancas
+
+
 # ── Observabilidade permanente (Fase 3, 2026-07-04) ───────────────────────
 
 def registar_saude_feeds_hoje(
@@ -1069,6 +1133,26 @@ def registar_candidatos_log(
 def main() -> None:
     if "--sync" in sys.argv:
         sincronizar_saidas()
+        return
+
+    if "--recalcular-clusters" in sys.argv:
+        dry_run = "--dry-run" in sys.argv
+        itens = carregar_itens()
+        mudancas = recalcular_cluster_ids(itens)
+        if not mudancas:
+            print("cluster_id: nenhuma alteração — todos os itens já batem com detectar_cluster() actual.")
+            return
+        for item, antigo, novo in mudancas:
+            print(f"{antigo!r:35} -> {novo!r:35} | {item.titulo}")
+        print(f"\n{len(mudancas)} item(ns) mudariam de cluster_id.")
+        if dry_run:
+            print("--dry-run: nada escrito.")
+            return
+        for item, _antigo, novo in mudancas:
+            item.cluster_id = novo
+        guardar_itens(itens)
+        sincronizar_saidas(itens)
+        print("cluster_id actualizado e saídas (noticias.html/index.html) ressincronizadas.")
         return
 
     itens_existentes = carregar_itens()
