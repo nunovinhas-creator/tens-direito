@@ -272,15 +272,16 @@ def render_destaques_home(clusters: List[Cluster]) -> str:
     return "\n".join(cartoes)
 
 
-def extrair_verificado_em(caminho: Path) -> Optional[date]:
-    """Data da última ocorrência de 'Verificado a ...' no ficheiro — é a
-    que fica mais perto do bloco de fontes no fim do corpo, a canónica
-    da página (as ocorrências anteriores são notas por secção). Devolve
-    None se o ficheiro não existir ou não tiver nenhuma data válida —
-    nunca inventa nem assume "hoje"."""
-    if not caminho.exists():
-        return None
-    conteudo = caminho.read_text(encoding="utf-8")
+def verificado_em_do_texto(conteudo: str) -> Optional[date]:
+    """Núcleo de extrair_verificado_em(), sobre texto já em memória — a
+    última ocorrência de 'Verificado a ...' é a que fica mais perto do
+    bloco de fontes no fim do corpo, a canónica da página (as ocorrências
+    anteriores são notas por secção). Devolve None se não houver nenhuma
+    data válida — nunca inventa nem assume "hoje".
+
+    Separado de extrair_verificado_em() (issue #183, passo 2) para
+    scripts/verificar_datas.py poder reutilizar o mesmo parser de 3
+    formatos sem reabrir um ficheiro que já tem em memória."""
     matches = list(_REGEX_VERIFICADO.finditer(conteudo))
     if not matches:
         return None
@@ -295,6 +296,15 @@ def extrair_verificado_em(caminho: Path) -> Optional[date]:
         return date(ano, mes, dia)
     except ValueError:
         return None
+
+
+def extrair_verificado_em(caminho: Path) -> Optional[date]:
+    """Data da última ocorrência de 'Verificado a ...' no ficheiro. Devolve
+    None se o ficheiro não existir ou não tiver nenhuma data válida —
+    nunca inventa nem assume "hoje"."""
+    if not caminho.exists():
+        return None
+    return verificado_em_do_texto(caminho.read_text(encoding="utf-8"))
 
 
 def render_atualizacoes_home(clusters: List[Cluster], raiz: Path = RAIZ, limite: int = MAX_ATUALIZACOES) -> str:
