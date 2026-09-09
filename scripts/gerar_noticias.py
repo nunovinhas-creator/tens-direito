@@ -51,6 +51,9 @@ from html import unescape
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sincronizar_clusters import Cluster, carregar_clusters  # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 NOTICIAS_JSON = RAIZ / "data" / "noticias.json"
 FEEDS_SAUDE_HOJE_JSON = RAIZ / "data" / "feeds_saude_hoje.json"
@@ -482,6 +485,38 @@ def detectar_cluster(titulo: str, resumo: str) -> Optional[str]:
     return None
 
 
+def carregar_mapa_clusters() -> Dict[str, Cluster]:
+    """`cluster_id → Cluster`, a partir de `data/clusters.json` (fonte
+    única) — mesma `carregar_clusters()` já usada por
+    `sincronizar_clusters.py`/`sincronizar_nav.py`, nunca reimplementada
+    aqui. Usada para resolver `cluster.pillar`/`cluster.nome` do bloco
+    "pertence ao guia" de cada card — nunca uma URL construída à mão a
+    partir do `cluster_id`."""
+    return {c.id: c for c in carregar_clusters()}
+
+
+def _bloco_pertence_guia(
+    item: ItemNoticia, mapa_clusters: Optional[Dict[str, Cluster]], indent: str = "            "
+) -> str:
+    """Mesmo padrão `.pertence-guia` já usado nos artigos (ver
+    `assets/css/clusters.css`/`sincronizar_clusters.render_badge()`) — aqui
+    com "Relacionado com" em vez de "Este artigo pertence ao guia",
+    porque `cluster_id` é uma classificação best-effort por palavra-chave
+    (`detectar_cluster()`), nunca uma associação editorial confirmada como
+    a dos artigos. Sem `cluster_id` (item ainda não classificado) ou sem
+    correspondência em `data/clusters.json` (id desactualizado/removido
+    entretanto) devolve string vazia — nunca inventa uma ligação."""
+    if not item.cluster_id or not mapa_clusters:
+        return ""
+    cluster = mapa_clusters.get(item.cluster_id)
+    if cluster is None:
+        return ""
+    return (
+        f'<p class="pertence-guia">Relacionado com o guia '
+        f'<a href="{cluster.pillar}">{html.escape(cluster.nome)}</a>.</p>\n{indent}'
+    )
+
+
 def fetch_entries() -> Tuple[List[dict], List[SaudeFeed]]:
     """Vai a cada feed uma única vez — devolve as entradas (para pontuação/
     selecção) e a saúde de cada feed (para `data/feeds_saude_hoje.json`,
@@ -780,10 +815,11 @@ def label_mes(chave: str) -> str:
 
 # ── Renderização HTML a partir do JSON ─────────────────────────────────────
 
-def render_destaque(item: ItemNoticia) -> str:
+def render_destaque(item: ItemNoticia, mapa_clusters: Optional[Dict[str, Cluster]] = None) -> str:
     cat_label = CAT_LABELS.get(item.categoria, "Apoios Sociais")
     data_str = _iso_para_pt(item.data_iso)
     titulo_completo = f"{item.titulo} - {item.fonte_nome}" if item.fonte_nome else item.titulo
+    bloco_guia = _bloco_pertence_guia(item, mapa_clusters)
     return f"""<!-- DESTAQUE-INICIO -->
           <article class="destaque-card" data-cat="{item.categoria}">
             <div class="destaque-meta">
@@ -792,17 +828,18 @@ def render_destaque(item: ItemNoticia) -> str:
             </div>
             <h2 class="destaque-titulo">{html.escape(titulo_completo)}</h2>
             <p class="destaque-resumo">{html.escape(item.resumo)}…</p>
-            <a href="{html.escape(item.url)}" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
+            {bloco_guia}<a href="{html.escape(item.url)}" class="destaque-link" target="_blank" rel="noopener noreferrer">Ler notícia completa →</a>
             <p class="disclaimer-noticia">Resumo informativo. Lê a notícia completa na fonte antes de tomar decisões.</p>
           </article>
         <!-- DESTAQUE-FIM -->"""
 
 
-def render_arquivo_card(item: ItemNoticia) -> str:
+def render_arquivo_card(item: ItemNoticia, mapa_clusters: Optional[Dict[str, Cluster]] = None) -> str:
     cat_label = CAT_LABELS.get(item.categoria, "Apoios Sociais")
     data_str = _iso_para_pt(item.data_iso)
     titulo_completo = f"{item.titulo} - {item.fonte_nome}" if item.fonte_nome else item.titulo
     ano, mes, _ = item.data_iso.split("-")
+    bloco_guia = _bloco_pertence_guia(item, mapa_clusters)
     return f"""          <article class="arquivo-card" data-cat="{item.categoria}" data-mes="{ano}-{mes}">
             <div class="arquivo-meta">
               <span class="cat-badge cat-{item.categoria}"><span class="cat-dot"></span><span class="cat-label">{cat_label}</span></span>
@@ -810,7 +847,7 @@ def render_arquivo_card(item: ItemNoticia) -> str:
             </div>
             <h3 class="arquivo-titulo">{html.escape(titulo_completo)}</h3>
             <p class="arquivo-resumo">{html.escape(item.resumo)}…</p>
-            <a href="{html.escape(item.url)}" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
+            {bloco_guia}<a href="{html.escape(item.url)}" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>"""
 
 
@@ -819,19 +856,23 @@ def _iso_para_pt(data_iso: str) -> str:
     return f"{dt.day} {MESES_ABREV_PT[dt.month]}. {dt.year}"
 
 
-def render_arquivo(itens: List[ItemNoticia]) -> str:
+def render_arquivo(itens: List[ItemNoticia], mapa_clusters: Optional[Dict[str, Cluster]] = None) -> str:
     """Todos os itens excepto o mais recente (esse vai para o destaque),
     ordenados por data desc e agrupados por mês com um cabeçalho por
     grupo (marcador data-mes já presente em cada card — os cabeçalhos
     aqui são só a versão estática/sem-JS; ver assets de noticias.html
-    para a versão dinâmica usada durante a paginação)."""
+    para a versão dinâmica usada durante a paginação). `mapa_clusters`
+    carrega-se uma única vez aqui (não por card) quando não vier já
+    resolvido de `regenerar_noticias_html()`."""
     if not itens:
         return ""
+    if mapa_clusters is None:
+        mapa_clusters = carregar_mapa_clusters()
     resto = itens[1:]
     blocos = []
     for chave, grupo in agrupar_por_mes(resto):
         blocos.append(f'          <h3 class="mes-header" data-mes="{chave}">{label_mes(chave)}</h3>')
-        blocos.extend(render_arquivo_card(i) for i in grupo)
+        blocos.extend(render_arquivo_card(i, mapa_clusters) for i in grupo)
     return "\n".join(blocos)
 
 
@@ -862,15 +903,19 @@ def regenerar_noticias_html(itens: List[ItemNoticia], caminho: Path = RAIZ / "no
     conteudo = caminho.read_text(encoding="utf-8")
     original = conteudo
 
+    # Uma só leitura de data/clusters.json por regeneração — partilhada
+    # pelo destaque e pelo arquivo inteiro, nunca recarregada por card.
+    mapa_clusters = carregar_mapa_clusters()
+
     if itens_ordenados:
-        novo_destaque = render_destaque(itens_ordenados[0])
+        novo_destaque = render_destaque(itens_ordenados[0], mapa_clusters)
         conteudo = re.sub(
             r"<!-- DESTAQUE-INICIO -->[\s\S]*?<!-- DESTAQUE-FIM -->",
             lambda m: novo_destaque,
             conteudo,
         )
 
-    novo_arquivo = render_arquivo(itens_ordenados)
+    novo_arquivo = render_arquivo(itens_ordenados, mapa_clusters)
     conteudo = re.sub(
         r"(<!-- ARQUIVO-INICIO -->)[\s\S]*?(<!-- ARQUIVO-FIM -->)",
         lambda m: f"{m.group(1)}\n{novo_arquivo}\n        {m.group(2)}",

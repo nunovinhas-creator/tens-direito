@@ -82,6 +82,13 @@ main{max-width:900px;margin:2rem auto;padding:0 1rem}
 .destaque-link{font-size:.88rem;font-weight:700;color:var(--teal)}
 .destaque-link:hover{color:var(--teal-dark)}
 .disclaimer-noticia{font-size:.78rem;color:var(--muted);margin-top:.6rem;font-style:italic}
+/* Classificação por cluster (best-effort, scripts/gerar_noticias.py::detectar_cluster) —
+   mesmo padrão .pertence-guia de assets/css/clusters.css, redefinido aqui (não
+   carregado) porque aquela folha assume o hero escuro dos artigos; sobre o
+   fundo branco dos cards, as suas cores (#EDF6F5/#fff) ficariam ilegíveis. */
+.pertence-guia{font-size:.82rem;color:var(--muted);margin:.1rem 0}
+.pertence-guia a{color:var(--teal);font-weight:700}
+.pertence-guia a:hover{color:var(--teal-dark)}
 /* Arquivo — uma só classe de card para itens manuais e gerados */
 .arquivo-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
 .arquivo-header h2{font-size:1rem;font-weight:800;color:var(--ink)}
@@ -254,6 +261,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Mais De 32 Mil Crianças E Jovens Abrangidos Pelo Abono De Família Nos Açores - Diário dos Açores</h3>
             <p class="arquivo-resumo">Mais De 32 Mil Crianças E Jovens Abrangidos Pelo Abono De Família Nos Açores Diário dos Açores…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxPTU96UGJyOHJ0Q25MdHZ6MVR1cXFOSXpUYmpPaXp2RnBoajVvUXlFSG9UOWFPYXdVcjNMTUZsRWZJaWZXMkxCQ1VxS0ZuanBoLVpDR2tWdVplc2FEU19MRkdyZ3VJNDVJYWNmdXhmX1RqWDN0UGxhUUlvcG96OVNiNnNHS0pWZUp3NnhCeVgtUk42REFqTGVSV2VJeDl3Uzd5eGd2MG1uWVNlVXpLeHR5dHhqYnZ3QQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="habitacao" data-mes="2026-09">
@@ -263,6 +271,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Novas regras para o mercado de arrendamento já em vigor - Idealista</h3>
             <p class="arquivo-resumo">Novas regras para o mercado de arrendamento já em vigor Idealista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/habitacao.html">Habitação</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMizgFBVV95cUxQbXd4Q3hnZjhYR0Vua196T0xSaGdYNUp0NXZtTF8zMDFiMXBZTGZrS1I2WjcxQU1Qb21ydjd5Rm9XLXpfbmxFcTc4NDRnR0tjUmYyRk82WjRISzV3LWZ3RDFRMXhWcTVCVGo2SHNabDhTWjlhczZNWFh2N2FlQ0wxbU5wVG9ZazU3MTZqVjRQODgxV0gxWmxwOU1yOWJNNy1pSWNZWV94MEdTeXN4dktvbzU5N0JSRldhYk15Y3hNU1BESDRiU2ticE1nWE81d9IB0wFBVV95cUxPRHhEVWprRU5rcFdCN1o4TGVoMnR2TFcyWkZiOXdwS1dfUVBqQnRtaTdVelRQMnJIQ1h2SHNNdlEwb3l1cml2QXJqclI4MHdhdkliaV9MUFgycDBpY19RaXNNeUZjbnJhdFJiU1YwZ3FMV1pwTHRSaEdOd0YxaUpGYW5SM0lncm5PbUptbjQ1RVNKeVNUcVRJcEp4SjlPYmZRbUQ4ZE96alk1M1lJbXRiT0xNVWJUVHQySHc1Y0oxejVVejQ4TWVBMkN2aElFUUhYMkFR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-09">
@@ -282,6 +291,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) - Human Resources Portugal</h3>
             <p class="arquivo-resumo">Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) Human Resources Portugal…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxQX3oyazBDWnFSVGpYMk5hZUI0NVF4LVp1ajlTWUJfeFFFRVBJRjZLNkd2eXdEQmIySHZiRTU3YVJ0MUg0OURvbHcyTnJZaWZ2N2hYdFI5LWJTSjVIbXU5d1l1U0pCaXpmNUJ4eXpfcV9OOHI1RUJuNmtHamRBaDlWNzh1RFByZV9aSjVWYnZGV0pUTjMtRFpKbG0tdjlqU1V6WjBCYmtEeHdXSzVYd2VhWGp3TjBrX0NPbXZwMTRoLWwtcnJ5V2k5V1VkTEstQllWUEgtSWZB?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -300,6 +310,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Renda universitária: apoios que podes pedir em Portugal - Idealista</h3>
             <p class="arquivo-resumo">Renda universitária: apoios que podes pedir em Portugal Idealista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxQMDJ6RXMzX2hPS2o3Y19JLWFwT3JUdTRvNW9taXUyYVNpRXU1WEZMZHdPYUduN3EyZE5fRXZ3QVNwaU1pQU03Q004MFdVQ1BDQnFXbEV1b3U2LUhmcHVfYjVkUjdOM1hXRTRvajA1N01aamduc2ktdU5JT2VWdVkxRFNUT05QUkp1T3BKSktaaVhyZDd5RW5iX3dYMHNDY3FhdG0wUlhQNHloSXRNZUNlcTBaZF80TlcyOTFJSDVId0TSAcYBQVVfeXFMT2lkLUpYbWpzQ0gwYklZd0hyLXlkWWJ5R211N2sxbU5mRTZlbmNQRmZGaXBMZUZUYVdFVEhDcTZwaGREWGpOS2pNZ0wxaWk0anZhZWFFTHJrQzU3aHpjbU9YWkJtMnlVM0F1T1BsQVptZnJxMXVIM0JORldISEkzQ3RBdnZXSnVMUXRSaXpGNVRjWG1iLTZCNzRtQnBlS3hCd2ltVjZ5YUVlV3ZVdmhMakRUam5iVGx6SXNPLVFZMWluMnhFR0tn?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-08">
@@ -336,6 +347,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Subsídio de desemprego: esta novidade pode dar-te mais 10% extra - 4gnews</h3>
             <p class="arquivo-resumo">Subsídio de desemprego: esta novidade pode dar-te mais 10% extra 4gnews…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNQjFpcEhwbG9wOXhJc2N2WGViRW55SFlBZnFqcEpzdjZPVHZySkR4SnprTGRlM1J0a1J5dnJHOGxJcFloaEg4My1raS1RSnFFeU82ejVDRXNkRUs1aG83T3g0NWJmSmlKS3d3YkQ0MnFzWWlQUzl5RTNfZUoySExTZlNIdVh3a3lP?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -345,6 +357,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única: estas são as novas regras para beneficiários e famílias - CNN Portugal</h3>
             <p class="arquivo-resumo">Prestação Social Única: estas são as novas regras para beneficiários e famílias CNN Portugal…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi-gFBVV95cUxPQjFJOWd5TldWZmJnY1NVbG9sUDZNYmpGWXh5SzRuQjJNbDVYQldoU091U0pFckNnU0thMlYtWnZNWUx5S2VTcUhDaWhEb3ppMWk0a2ljSEktN2Y1di1OUW1Hei1uMWN1UEVrV2xkaGtWSjRjZUZJaXYtVGZ1dzJpM3VKZUFWWVhlckg5aTBVYXZEVi1QYXhZTHdsQWxrTWM4aU1QUnY5bnloa1JSN0hqd3RhVkRzdC1NTXNkLWRGN2ROZzJId3JCN3huLTQ1ZS0ycFZlTVRYSllqY040MFZ4MDV6cVNNX2ZRcm5jbTlyeTFENy1aZi11NnBn?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -354,6 +367,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única (PSU) deixa desempregados mais desprotegidos - recordeuropa.com</h3>
             <p class="arquivo-resumo">Prestação Social Única (PSU) deixa desempregados mais desprotegidos recordeuropa.com…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxOVEFHUFZZWGJUaWNPVUtRcjR2c1N2SzMwM0wwUkVJUWtZNDFlWXUybHk3TGpMOVlKM012UkhQRFllSU92TlRyZDNUV1IwZ0lDV3hqWWJNdGtEU0t2VVNrVDF1OVhWZ1AzY0tIRnZ0RzBHaHRoZzI3dFd2YWxjR2p5V2cxV3hQbzZvZ1pUZEROX1pWUGZnMmJiZHY0NDMtZ01VdlRNeDZXeEF2eENnSmpraklRSlk3Y01ZSS1TNHhCbUEwNUZl?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-08">
@@ -390,6 +404,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos - Barlavento</h3>
             <p class="arquivo-resumo">CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos Barlavento…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE4zeERhSkVaWnZYZkxuLW83cElPaS1pZ0JFcnNCeWNEZTNneG8zZk9DanJIRElPV21GRVFXQVl0UWQtdktuaTRIeGpiWFBoVkVncUNkeFZ5SWdPODM5b3pwaVJsZVdKT0FpYlVWcW1uaTdnMHJqZ0NF?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-08">
@@ -408,6 +423,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência - recordeuropa.com</h3>
             <p class="arquivo-resumo">Medicamentos gratuitos para idosos com complemento solidário ficam limitados a genéricos ou ao preço de referência recordeuropa.com…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/idosos-incapacidade-cuidadores.html">Idosos, Incapacidade e Cuidadores</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMihgJBVV95cUxQR0daZXYzTlZxR2NSWGd5MFdzTnZkaGRsQ2xacnZoMlpsU1pwaTR0YnhVU2F3ZXdwQ19EQXFidHBFN0F4Y3A1Qk9XTk16QUR5cnJTalFVNEw5UlVtRnEzb3JySHRtbm54aktJMnBLVERNSjBWZm9iSnR0ZmlPbWRkWnhlemxVVG1GSlZUeTdHbVdTMzZoTzhOZDJHYjZvUnlKNC1YbHh6ZlBfRTYtaURoUEJUalRJdFlLVGlwVGZhc0oxanFBZU43alU5RUhqTUJpTDFkcENvaWl1VHN2N3Z5clJJRjVzOWpUR1RaNENHTWI3SDVJM19IMmVZVkIyOXJja2hvMm13?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -417,6 +433,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação social única junta 13 apoios e substitui o RSI no fim de 2026 - SAPO</h3>
             <p class="arquivo-resumo">Prestação social única junta 13 apoios e substitui o RSI no fim de 2026 SAPO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxQYThpS3AzSEhLX1BhRk85elByNVhEYUdlU0ZBcUFJY2JwMG04RF9yMjJRNzNLeGhOQ0d4UGowWlBBZEQ0ZG9kMkJ1cVFpMEdjMG9NMTluOW0wck45Z2Fkd1J3WTk1a29jQ3FHcWxDZTlsLWRGX1B0V01hSElnRjlZT3RJR1MwdTZXT0ZES3ZUWDd1eXJGOVRPdUhHSjc3QXowbjQ4?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -426,6 +443,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única chega no final de 2026: vê o que muda - Idealista</h3>
             <p class="arquivo-resumo">Prestação Social Única chega no final de 2026: vê o que muda Idealista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxNY29HVFI0WHF5Z0JTQWhJeXdpeE5uU2FnUFk1QklZaEtKX2hVVkRqQ1ZJT25HSDAyNWs0SHNSOXU2VzJOU2x0cGJ2OThLNEtZeG1zNW9Edk9CbVZmeXZrbjFqaEM5RWhXMEduN2dYci1EcS15eFljeEVWQVBNc3lKUHpqSWlXUkp4MUpZczZHR2FueHJHMUdUaFZ2ajhMb3pEZEJ1b3Iya3pmZlB5eXpRR0NHU2FCeVpRQTlaWVlmWjJucmZBWkw0?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -435,6 +453,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Nova lei para auxílio-desemprego - Portugal Resident</h3>
             <p class="arquivo-resumo">Nova lei para auxílio-desemprego Portugal Resident…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTFBMVXd3UTdrM0ZiTklKdFgyNEhKbFV6VWNjX2Mta2hLUzNlRG5XYVNsYnpIbEJlT0dYUmlKTUVZSVB6Yl9jZFhRbW15alVDLVpkRmV4VWdNRW9mMU5YSThqaXEwZEZZZTQtX3g3Y3dsNUZpRldjcGNtVUxjWkk0V2s?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -453,6 +472,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 - Economia e Finanças</h3>
             <p class="arquivo-resumo">Prestação Social Única Oficial: com impacto a partir de 31 de dezembro de 2026 Economia e Finanças…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxOMzlRSXNFRmhFWUdxMzJNRDFaaUxxdVI0X2U4WVZzSGlVaE9vTGFEVW9Va1IwdUE4bkQwcWtfUk9NMHV2NVM3NFBwYVZNczVjWUNVTkh3UHJ1blFRbTM5WVBJU2RSc2Zsd0VlVGZtSTRSM1ppU1pXdU9BQXoyT1g0UnA2YW5jY2VyM1pIUzJmcGE3SjhoWEVzN0FlcWVXTTBjWUFGUWhlV2g4MnZRQk9ieTR3?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="habitacao" data-mes="2026-08">
@@ -480,6 +500,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Salário mínimo em Portugal: governo propõe € 665 - Portugal Resident</h3>
             <p class="arquivo-resumo">Salário mínimo em Portugal: governo propõe € 665 Portugal Resident…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxOUnRxYXowZE1jX2NUYzA4eUdqQV9PdWxZMXdkZXBSMUF0Yk1qaEhtaGRHVjdVdm9Ba2hkNWpmbVAwZ1N0WVREamM0OFY0TENudUNFQVVfd3B0VGVGb2M3eWdnTXRyMHNEdVBQcmpLMnNUUnhtQ1N4UVRick9vX3MzYnVjOHpkRERkeDZDSmNGZ0RKOWs5ZE1wcTAzdmdVQlZkQkxySUNOd0tLX25lM0E?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -489,6 +510,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal. - Portugal Resident</h3>
             <p class="arquivo-resumo">Milhares de pessoas não estão recebendo auxílio-desemprego em Portugal. Portugal Resident…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxNeW9WNDhESUhYbFJWRW15Q1EyeWJ6SmxzRTNTdS1McllEejFnOTA4RXJIM09CU1M1V1RzaW1oRThzSWNaRUZoOXJuVlNkdHlUNkZUM2xTM3JLLVJPcGx1RkFROHU3d09MM0pla0R1cGRGU2pNcS1OYzdKUDNUckJEMjRNek1hbjc5QkhPUlU3UThtZ1A2ZEZCQURDVXhsN2ZIN2ZPOFJTSTZkd1laS3pnVzc1cTR3MUJ4bTN3Z1lQWUU?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -498,6 +520,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego - RTP</h3>
             <p class="arquivo-resumo">Empresários e sócios gerentes passam a ter direito ao subsídio de desemprego RTP…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxQUHpCQUUtd0c1TUc0MkRhSHJzLW9MQkFSNnluTTg0MWRXUFBRT3pLQXRxUUFONHVwTzU2b0Vtc2ZmaThBN0xIbjlrYkRQTlFXYnFxeXdYblFsTzc0SjY4Z1MyclVZbXNJOXpSdVpsOGZvVHIxdTM3cFhGcXh2bVQ3MF9VZ2pqNHNyVWZZTTdhejQ1T2ljREZUVEJETExnSUJ4N3dHU0tvUjgxRHd0QS11Q1FpVXJBMDF1LVd2VWRR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -507,6 +530,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro - ECO</h3>
             <p class="arquivo-resumo">Prestação Social Única entra em vigor hoje, mas só chega ao terreno a 31 de dezembro ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNZ0NhREllOXhhcGVGTU1QejJPZkFod01kX292OXR5Z3NFbm5PTlZvVzFvQ0RaTHVrYlJLMllhd2lFdHBVOFpnR09aZ1B5UWdKMGVQSl8zR3YyNlRtWnAxSk1jOWY0eFJOeU52Y1AtaS1BZm05SWV5emF1T0VmWEtzNEwwZXQyQXh2NWk1OWJETm1jdktyUl8tMU9JaTFEZFZXWnZBeGFWeWN0VU9MLUlBcDAzcU9aQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -516,6 +540,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Abono de família: quem tem direito, como pedir e quanto recebe em 2026? - DECO PROteste</h3>
             <p class="arquivo-resumo">Abono de família: quem tem direito, como pedir e quanto recebe em 2026? DECO PROteste…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxPVEVVaG10Q3Y4Vk92RkJra1I1OHRfUVU5ZkdHR3U4U0xFOU44dy1uTm16VjhBaHR4YkxBUk42eWdmWWtaY1FGSlNncThRVUxpSHNQUnJuYVg0dHJwdDJaT2ZBTnRsamVsTEJGNjUzSE84cUlwckl0Z1lJODlfLVdVankwOEg3Zw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -525,6 +550,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única - Público</h3>
             <p class="arquivo-resumo">RSI e pensões de velhice e invalidez vão ser convertidas oficiosamente em Prestação Social Única Público…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi2gFBVV95cUxPbk11OGdCOGV2NndQd2tWZFp1aC1Qd1JuQW0xWlJfZW1UM1FwdUlHRjk3cERXUTdHZkJKcWZ3WHlULU9waWhkOXVXZFRtaG5GUFJ6RGQyaFU3ZTBRSUN1d01xRkNkMVd2dDlOUTJyTDUtSUxmNnVRM3I3dGpzVGVLa1E5dVExd2tPVDZnQklFcFRfUUlPMVFYUk45MTNtX19XaFVtX044eXJmUmd2X09wc3QxVVlPVy00N2NSZDBBdmpwRnlXUzlzWVpxcHAxa2VKeDFKb05TQjJXQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -534,6 +560,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única junta RSI e várias pensões a partir do final do ano - O Vilaverdense</h3>
             <p class="arquivo-resumo">Prestação Social Única junta RSI e várias pensões a partir do final do ano O Vilaverdense…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxNZURnSWNDV2d4ei01RFgtZ0tMOHpQQWVBNjgxdmhDSVNDampUN3g3ZHpWM0J0MDFnQVRpQzZYVE4yMHdpYmxpMlpic2loZ2lwNHVCV3dTRVZqWEhudkdLZ3FLYkpkQ2otSEZuZ1VZNDVBaHRPMS1xOGJnQk5yaWczU1pnd0tLUTJpWXpRTEYxeGhpY2E4QjFodWhMc3RiVERwbGc?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -543,6 +570,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única - campeaoprovincias.pt</h3>
             <p class="arquivo-resumo">Beneficiários de RSI e pensões sociais passam a receber Prestação Social Única campeaoprovincias.pt…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxOd1pVSFVyNXh1M0NjSkpUeVVSV3pVb1FvTklFQURpR3g0Qm1ZVkJOVHJXS1hTTWdXLVlrc09JdHBjSkVGbHYwM3BuWERqVUZuTGJ0UjN6b25iaXpZZ1F0NEJNNW84RDV2blo2d3VzYlQzTnpueWhTZlBabzBnOERTejlpSG82SjhrazZYYXVGQ0w0U1dGb09sVzAzdTJpN21ic25mRTRxb0E3MFJEUGJVREpxQmNfNUFlcUFTZG5pMk4?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -552,6 +580,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Há novidades no Abono de Família Pré-Natal: saiba o que muda - Executive Digest</h3>
             <p class="arquivo-resumo">Há novidades no Abono de Família Pré-Natal: saiba o que muda Executive Digest…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxNV0FfdUdQNFgtLWhoQkJWMThxSV9pbEtHS01sNnVnYkNHZTljLXdqeWY4SG9SN2luazNVMWVDdk1pdDN4c3c1d0JpNF9FRzZwTnBQR0VYTFNYUXhtLUpoSk50cllBNTRjeUJnOEF3bExLeF9ybXhEb3QwTkRmUVdJSEtMZVg0a05rUm5wRW5XRjRwcDJEc0pBMXphbGcyc2FQZ2FpbUNvNFdYejVwSVhF?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -561,6 +590,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Salário mínimo em Portugal aumentou menos que na maioria da UE - Idealista</h3>
             <p class="arquivo-resumo">Salário mínimo em Portugal aumentou menos que na maioria da UE Idealista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMizwFBVV95cUxObm5uaTEwd3JKVG9JUTBaZ2gycV9UZWtzWWxSaHRXdW1adlhncEdOTHEyZmpwS0YtQV9lZWRyZC1OM1p3U01tLVVQVE92ZTNUN1p5bFB3YVBzZFloZDJWWXhqU05KY2dnVDY3YUVwLWZHNlNUSW5KZ3BMUWd1aG4zVFpUZ2xxZFpmRXJKLWF6Q1FFYTdLTEJBMlRPb0RDanRmbmJHc3VLbkMyLVNqSU9xLW5aYUV3eENEWXp1S2tPSEFjSDk5Q1VadnpfMGdaOEnSAc8BQVVfeXFMTm5ubmkxMHdySlRvSVEwWmdoMnFfVGVrc1lsUmh0V3VtWnZYZ3BHTkxxMmZqcEtGLUFfZWVkcmQtTjNad1NNbS1VUFRPdmUzVDdaeWxQd2FQc2RZaGQyVll4alNOSmNnZ1Q2N2FFcC1mRzZTVEluSmdwTFFndWhuM1RaVGdscWRaZkVySi1hekNRRWE3S0xCQTJUT29EQ2p0Zm5iR3N1S25DMi1TaklPcS1uWmFFd3hDRFl6dUtrT0hBY0g5OUNVWnZ6XzBnWjhJ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -570,6 +600,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300 - eco.sapo.pt</h3>
             <p class="arquivo-resumo">Meo pediu 500 saídas com subsídio de desemprego. Governo autorizou 300 eco.sapo.pt…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxNSkEwQXBISV9jWFNvYlBUR2Q3eUFCLV9tVnJ3cUNUZXljUFFsOEl2WUxacXk0V2l2eWRWZzk5cldyY0lSN2Q4V3Z0T055QVVPUTA1NW5xUjM2azl5NDUtVGVmZVJ0NVJpQVRyTEFDcE9uTUpxdmU5bzJOOGNnSTdReno5Yy1YNWcyWHZYa3FsYkpWbUlGaFdzbmFrOEZOZmFweW5n?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -579,6 +610,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Subsídio de desemprego cortado a mais de seis mil pessoas em 2024 - Rádio Comercial</h3>
             <p class="arquivo-resumo">Subsídio de desemprego cortado a mais de seis mil pessoas em 2024 Rádio Comercial…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxOS2cxQjVpUjBkRUFRTzUtYzNzWFVkeGVRTGNlR0pMaVFWWXJQOU1kNGdBQ0x2MERPckFOTzBxU0RfeG92WXJwQW45dnZlNTR6MkZVdEVxaTJuWl9jY2lDY01kU0RmN2tfaHlnYWtsbUNLdUpTa08yU1phbndWRm01Z3QyazBrTkMtNFJkdmlNVGdmMThUX05ta1VYTGhuUEtaVW9kcE5lMlJDLTg?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="educacao" data-mes="2026-08">
@@ -588,6 +620,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">O desemprego aumentou em quase 58,000 pessoas em setembro. - portugalresident.com</h3>
             <p class="arquivo-resumo">O desemprego aumentou em quase 58,000 pessoas em setembro. portugalresident.com…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/apoios-escolares.html">Apoios Escolares</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOUko0T3RaY0pQSGV5UmRKcmJZb0M2dzlkdEtkVEotakh0VkhXNUtPczdaS01ObGE4RDh5UkZ0UHhTcHJtdF9JX1RnaU0wZzB6WHRDXzJabHNtZndnakpjZ3lBQlJNU0p4bjV1ak9wd1hPOTZ2cHdBYkdTdGN5MHFKeXVrQXFXUHZGd0o0dlpMYklVbUNjc2x6djdn?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -597,6 +630,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%) - Human Resources Portugal</h3>
             <p class="arquivo-resumo">Está a receber subsídio de desemprego? Saiba se tem direito a majoração (mais 10%) Human Resources Portugal…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxNbU9pOGFPZW1vOUFXeWV6Q1hCMF9QZGNRbGdxUEgyVVVHTEltLXIwZ2lxYWJCRG9WaEU2blhhUFVYTDBoY3VLQU1wdWlTcjAwMDltamxzSWJQcC0xU2Jtc1B0X251aHBEVlN0bEczMUNXdXctNzhGeFJIRDlrQWFEV3h5VWxFSi1uV3lOLUR6VmlRNVdBQXV3Wjl3YS1nNXU5WUpVQ0FxdFhxdw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -606,6 +640,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Atribuição do abono de família pré-natal passa a poder ser feita de forma automática - ECO</h3>
             <p class="arquivo-resumo">Atribuição do abono de família pré-natal passa a poder ser feita de forma automática ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxPR2NVSnVCUmhqbmtndVhuT1R1MV9pWDZESUJnVGtmRGVVXzY3YWZMSUgxbGY0YjBNMEhEVlRDQkJrOEh1WURqbkU0a3VscXF0YTJ6bjVyTVR5eHl1ckZERjIzaWxwU01VY0lsQk5oUXJNM1p6dWpvWklFalZwTGFNdjFIVG9fTWZYU2FYQ2E2T0p5ZW83M3lTeldmQmd0SFhmdU5UejVZMlBTNy1iY2FHM01uSG9Hdkk?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -615,6 +650,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Presidente da República promulga decreto-lei que cria a Prestação Social Única - RTP</h3>
             <p class="arquivo-resumo">Presidente da República promulga decreto-lei que cria a Prestação Social Única RTP…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNalMzMDFOWVJTaTY3UlNjWkdhNGV3dGZhZ3JVeFJIMWo4c0RsSjB3TnZPNHFQVXhESE01VGhzS19ENkZPV2swSWEwTjJRN1ZQS0JnR0F5UVQ1UTlvN0JudHNZeXpUd2lRNkVjOXpvZ0daTTRIeDM5ZTd4dkRHZndnNVJURVctV0RuN3EtbndyUElpYkVIbXc5RUZubnRXU1h2eFBWYWVBUi14S3BheVhIRnpqamRmcTBlN1JwcXFhb1FxUQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -624,6 +660,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Chega considera que há caminho para andar com Governo sobre prestação social única - RTP</h3>
             <p class="arquivo-resumo">Chega considera que há caminho para andar com Governo sobre prestação social única RTP…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxNUXBZQjJYZ09lMmt6ckRFTmt3dGc4QkREdnByNXpJT0FQbUg5X1E5eVlzc0g0NEQ5RF9rdE9jbXF6UG1EcWxqVGJlaUMxT0ktOS1qMFg4UXA3d085VjZ4ajU4Rk9lU1hVM0lXdGVVclNaMTJnVnVtYl9kTXFJQTZaSkw4a1V4TjRwRlVaQjhzUnpZOVYxWW5MdnJFS01ST1hrZHM2RldhSnFzUzVMU2JNTFRFSWotQnkwRmZtZ1RRaXJDSmd1Mkxj?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -633,6 +670,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma - ECO</h3>
             <p class="arquivo-resumo">Seguro dá “luz verde” à nova Prestação Social Única, mas alerta que ninguém deve ser prejudicado pela reforma ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxQNVFpM1F5WW1Cdjc1bUVESllrS2oxeEpEWjdHeDNmMnVSZ2NFQ2JkX3RfOXhrTERiMDc1TGZRYXFWdE1GX2JCb093LWVyZjdqYzdIMUpTSzV4UENKZjJoODZRZl94NmRPc3N1dnNaU3pOb3JvMUlOSUtuNElHSEwxdUJMa2xlV2o4dnZRYmt2Q3FWTk94ZTZhcUdqaTBCbVZub0hsT2djUUw0dVhRM2ZBUnl3YVRsWW9pbnRYZkEyT2J5Mko4UkRkbXoxUG1OakN0SXk2Zw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -642,6 +680,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo - Jornal de Negócios</h3>
             <p class="arquivo-resumo">Nova Prestação Social Única poderá reduzir apoios para 6% dos beneficiários futuros, diz Governo Jornal de Negócios…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi5wFBVV95cUxNOFlXaVhaUkVSMWhfempyeW11cXRCOWVpU283bDVaRUlWczdEZ3RQMDRxeExlWmVOUUtqZDY0QUZQZGN5UTdhVTFsZzhwX3N4dTQtaDJNTC01TXcwUm9weWdDRlFzV3FFNmxSeW1RRHRVOGl5M3hsQmh5RDJVTnVabzNrV0Z0bk5xV0RUT09Sd3ptRmQxWUVYMEk3WjRzWVN2YVJxNDdHc21JSUhQeFNEQ0EtT24xRURpWFRxazJIbnpfMWZoM1o2dndfcmIxY19jOHV2Q3VpLVBjSU1lZHhKMGltUUo1a1HSAeIBQVVfeXFMTThkWl84UEE2RkJmYjhDcnU2LVZiYWtaTEE4d2RJbDBSUTRhNUVwaDhicG9qRjh5dXQ5TlRUNUthUnhaT2xFMWt1OUNwYm5TZGdRZWVFeFRheTNONUl0bTVrY3d0Y1Y0TzFoVFpEWXVfT0V5TjFSQi03b2lOQXp1QzI2WG9iVE9JQi1qVXVBeFh5OGg2TGp3TUdyZGFaQTIzS3VoVG5DdjZtVEJRTF9nbjJwT05UWEpESjJYMGhQVVptRUJHU3R0UU5mbF9SQWVqa1dPN2U3S0F2Y0dqOTlGSmQzQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -651,6 +690,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Maioria da UE aumentou salário mínimo mais do que Portugal - Jornal Económico</h3>
             <p class="arquivo-resumo">Maioria da UE aumentou salário mínimo mais do que Portugal Jornal Económico…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRVJPc1Z1OHIwbHFrYVBubDJhLS1fLXE2U2ZGWlpaTUF2MS12XzcybHBvenVyc2MwcTlWMUhmUkp0dFhpQ0ZUOHdSVVdUa1lLNkdmNk5tWkJOb3lDNzNxSm9YdFZnYVFLdl9FZlNIS3pOWEV5Y1AxVlJNMC1pQ0FobUgwejQwTWFVa3Q3eDlSRjUxTXJWazhqYTdiYTVfRlRLZlk4S0VrUDVOdDBpU0ZXZ05fWUJPNGRXUThCcGVPWk5iWGQ1WFBKRkx1cTdiY1ZvUkE?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -660,6 +700,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">abono de família - CNN Portugal</h3>
             <p class="arquivo-resumo">abono de família CNN Portugal…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMidkFVX3lxTE90YS1NMWJwUklrcmR6dnVSTi1MeGdXak45WUxENVFOVGJwVFhnSWFRSFJMamVvRGtFRkFsTDdTbzV5S0lrajhEa0dLaUhVa29mWEdEZmRIaFNxLU9fVnJscjFNU0pTd0k1cVBnYnBkeDJZYXBQLXc?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -669,6 +710,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - Jornal Económico</h3>
             <p class="arquivo-resumo">Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? Jornal Económico…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPaHB2SGNCenowQWFFNFNfcUl1bjR1dmZLRXZLYW10N2sxdFR0Z0FTY1lqZHRSTW0wWF9BQlVlaW5CQVlsbC0tV3k5UjJoZl84WUVFOFgteTItYTFvc0tYNk5YeWRXanhfU1hncFZXd1pFTzNETmh5LXJOTk5lZnhQQkJ0Z3NLZi1TZGxjQw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -678,6 +720,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Guia do subsídio de desemprego teve erro durante um ano e meio - Jornal de Notícias</h3>
             <p class="arquivo-resumo">Guia do subsídio de desemprego teve erro durante um ano e meio Jornal de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxQQVo2SHF0bUlza3hfNDVIanBlSEQ1REcxc08yWVZ6QlBYM3VCcnkzQXFtU19sZTQ0enlzbC0tb2N1UVhzZjJFbDZKZWMzbHlxbXV2TF9uRUVPSjJ6bV9XUnA1dlZLZjNzLWN6RzdFSUg0RHdOREhGaTUyRTBYa3dhTk14Wk5RQmNvLTh2UV9pbjRGemh4SFEtRzJkNG0tM1lyODVaODZINUbSAZgBQVVfeXFMTnJXcEdpS1lPQXZDeUMxMk1YZHc5U0lBR3p0SFgta05Nbjc4Q0dRS2NrVXVRdDF4cGZ1OGRKZDdIQVczLTNfeF80OWpVWUJZMERkN1JSNkVOLXAtT0V2aHZrMnFCSEVFN1o0YTlieDBwUjNVZEI0TVN6MThSM21ycktTNTJBQjUzbDJVdlAtamlaRkxfM29SVlY?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -687,6 +730,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Governo reconhece erro nos guias sobre subsídio de desemprego - SIC Notícias</h3>
             <p class="arquivo-resumo">Governo reconhece erro nos guias sobre subsídio de desemprego SIC Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMirgFBVV95cUxNTzRuX25KX1B2cXVHdkc5dVYwLXF3NG5jMzNJZ2J1c2Voa3hJM2lxZmtxa25TSGhPMHQ0SVlka01QdHZYdXRlNXUwNHo3VHZFRm12bUduRFZxQzB6amhUcDlpQWxxRXlQZ3lTcXVRZmd0bXlfQTV2TXlad1d4NUo3NFZUZExWbHhKekhZWW9TcGFVRDFoa2V5MTRnLVVDV0hwR2h0Ul9EVW1FTDBTZ2c?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -696,6 +740,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Governo admite erro no site da Segurança Social sobre subsídio de desemprego - Jornal SOL</h3>
             <p class="arquivo-resumo">Governo admite erro no site da Segurança Social sobre subsídio de desemprego Jornal SOL…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxNT25lYXI5bGQyb0ZrbVZMamtxc0YyckY0emtHVVZ4MXkyUFdmM3Ffb2gwSHU0TG0tOGdQR0hVdE5VV0pjUzZ1bVN4SzNRc2NPdjl2Mll1LVI2VFFMQ21jSDJ6Tzk5SUt4NndLZjlybXROTnlxRUZMM1IyclFmUTZVZ1cxNzlNUkVLRTlYQWg2VHlUVDNqRVEyOXEyNVUwemQ0dWpGTlVieEx1X2dBS3ZNcUhHQnZuWFBKLUZnVi16MmtpZy01SnZRTWQ0UWZHcG01Y0J6Tkt3eHc4R2d0WHBTdw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-08">
@@ -705,6 +750,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Esgotado o subsídio de desemprego, há outro apoio: Conheça-o - Notícias ao Minuto</h3>
             <p class="arquivo-resumo">Esgotado o subsídio de desemprego, há outro apoio: Conheça-o Notícias ao Minuto…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxPXzRmNmlfczZ2TGw1OFBSb3FEaVAyNHJLeGJZQnJRQXhYOFhKUFNYRDVFXzhVN0FnZ2xHeVlZaHlnaHFrZG5YSUtwUEtRMzB6eWdWRUdReVdZc2U5Xy1TYUNMMHlwMU8xSk1yLXVvQU1RYU5fa1dOZW9hcUg5T21nQzU0c3l1ZkJQQUVPTHJzbDJleTFVMy1RS0luam04aUplWXN6YlBMRURmdTFa?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-08">
@@ -723,6 +769,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única junta 13 apoios e terá referência de 268,6 euros - Doutor Finanças</h3>
             <p class="arquivo-resumo">Prestação Social Única junta 13 apoios e terá referência de 268,6 euros Doutor Finanças…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi7AFBVV95cUxQU1RMX2UxV3NqNlZidDY1aGRhWVZORVcwQXFlQnBFdU5nTm55b0ozWXFmVGFyV0pROXdxa3k1a2JEQTU0MUNxbFpnbEZVUGRBQ185Q2RmQTNGbTJpTU1HTU5KQi1TVHJBaF83Q3d6WElYMWxEeWVTM19hLTZ0QkZfckM3UmgwQVh0VmlSSFV2ZnFiQkVubHVSbnQ5V1g1NElUZ2xDMG5Jd1Y4UE1XR0x3cWNvTy10MDd2ZzBBdFZVVU1CNWs3QW5SekR6WGU3ZTJnN1ZwX0NMY3VfZnhpdkJBOFh1TUVrSXFCMDBlTA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="legislacao" data-mes="2026-08">
@@ -732,6 +779,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos - Jornal de Negócios</h3>
             <p class="arquivo-resumo">Complemento Solidário para Idosos abrange mais 105 mil beneficiários em dois anos Jornal de Negócios…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/idosos-incapacidade-cuidadores.html">Idosos, Incapacidade e Cuidadores</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxPdUU4X09sMEw2MEt4Q29HVVBYaWpVSzBYbVRjNi00WUZEcTg0eDRMSEdnTGZMbktuUnN2cmZQZHNmVFJYY3d4WmFfcDJYUkoyR2ZoUGdYUTlONFFMN2lJSFp3M2VBTG41RkwxSmJnejhLYWxxZ185WFBkcmFudWoxSzVoQW1hb201MnVrS0Q3TDU4VjdDREZIcUdjVHpLcmFCYm9hMFZ2clBlV1oxR0hWNHYxR2d2NWtfZHZ6VEhoUjlhS282MDdkOW5ZU0huRFplYVdNUlZTOWVWWjBtNUp5eNIB2wFBVV95cUxNU0VaRXI2LVF4LUZkTTFDNVMwOElyUDBEcVlVOUtCSEVkWC1Kd2tuN2hVU3htb21RZ003UDUxN0VKTmhmdDJYY1JwaFdkcmlNbGk1TjFFZzJTa1hvWXBkeTg5SHd3czdOcGY5WWgxblI2YlZmbk5tSjgxUGI1eUo4TnFsdEpSY25YMHhpS1I4SmRmVElHS1VoMHl5Mm1tSjJCNlVWUVZnbnpXdmU5ZXpZNk1ZRE1OWkJBNVRKTmRNRGFaYW1nZHh0bmtkN01lcTVObTljdDJhSGlUYm8?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <h3 class="mes-header" data-mes="2026-07">Julho 2026</h3>
@@ -742,6 +790,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo - ECO</h3>
             <p class="arquivo-resumo">Luxemburgo tem o salário mínimo mais alto da UE. Bulgária tem o mais baixo ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxOYVJ3ZHhRVFBybGlBWlduNW5rNlloRHF0UWVfc014NEhkTWNGTjBCc3RmS3RPa3FpNUFzMWIzRHhhT2RaNVlvUW1LVE9EUmJCYm1iWGJfNTUydkc4QnpGM0xJdGFqZllaY0kyaHNVbzJVWlpmQXZkM2QybUtIa0ZwTXRoeDRZNHNxWEhEQjQ0MmFTNGpJWUdVYmhGLWI1X05PeHZCdFlkSjA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -751,6 +800,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única vai ter valor de referência de 268 euros - Diário de Notícias</h3>
             <p class="arquivo-resumo">Prestação Social Única vai ter valor de referência de 268 euros Diário de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxQYzRTOUdnOWcyQVlqWktFbFJDTTVVZ0V2QTVGZ0UtNFpvalhOT0g3WTRiOFB3VDVWbVVOREtMcTBVMHR3b2xUWmNiSjg0OHJYaWs4ZGVZYzBkaWxrc0VwS2ZpeW9mZm1WRzI2dVVPX1FTNXlnMGxWandFU0V6b2VPQk9DWnZMTXJTcHJVOTJLZlE2MklCQkE?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -760,6 +810,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros - CNN Portugal</h3>
             <p class="arquivo-resumo">PSU aumenta 8,5% face ao RSI. Pensão vai ter valor de referência de 268,6 euros CNN Portugal…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxNb3ZmQWJ0bWd5NWxUblRFaWM3Zm9BeWNxYUdpdGhoQW1PeGZnNXN6ZHNjTkY1cXVKTWFqTUt6d3oxYmFkZGhtSjlPRnVFY2x0YjRlRERBVUtVbXRNVzhERnRqSWtBOHlSZkNmcnh0TzBqM2tIY0M5TjdMNXM5WFR4X0taTVI4ZkEtV2VPRV9lbzRFMFVNOTgzTi1yVHowWXYweHEyV3lhd0dxOG9zMVJVUjBuOXFNSlNJWUR4dzR1aU5qOXBTNFVDSlpEenJoYkpubHVURXllNDRFdi1oejRDYmF6RzhodjJmV21WdWpQZkdYdFBVU3JHZA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-07">
@@ -778,6 +829,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Patrões do turismo avisam: salário mínimo acima de 970 euros exige medidas para competitividade das empresas - ECO</h3>
             <p class="arquivo-resumo">Patrões do turismo avisam: salário mínimo acima de 970 euros exige medidas para competitividade das empresas ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxNd1A3LTlKcF85ZWZmN2k5T2hPQzNpMS1LdDlDS3pQWkdhYldMYU9CSFlqbnBDNUZKSVpBRjhoV1ItMzdISkMtSFVmaVVmWUZROThzVU5GV3JjSU1sMkdpNllJMHF0Q2FWQlhKZkZJNVlianZ1SzB3T1NYcjFWTzVOS3FiQko5Ulo4WDJuQmlvVDA3UmIzVm1aQnpHYjFfbjZRdUxTdFd2TWJBcVQxWkJEbk9lLW12U2ZfOVVQc0JvOGdrMDVQWGk2RW9PV29KdDFCQV9jWUJ3?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="educacao" data-mes="2026-07">
@@ -787,6 +839,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">DREM divulga as estatísticas do rendimento para 2024 baseadas na declaração de IRS - dnoticias.pt</h3>
             <p class="arquivo-resumo">DREM divulga as estatísticas do rendimento para 2024 baseadas na declaração de IRS dnoticias.pt…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/apoios-escolares.html">Apoios Escolares</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQzZBb2hJOWF1a0MwOWh3WVZYYTVRLW50cEJiLXhVV2pNZ19FRXRaVUVERUZlQmFKdUNERWxHb0NpMWV1X1VwU3ZsS0E4NTVEVGY1VEJoMHp5U3VkRWVwcGNySm1OZWdwXzl2SDZNUXZjcWFkWHZ0REtRR2hOMU5RYUtPZkJ5cGZ4QVBLTk1xX1BfMW42ZWUtYjd0NGlCeEJVczdZZXRfXzBRU1htQVdMTUl4cTRJeFhXM1lrTzZiYVNNWm8?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -796,6 +849,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão - ECO</h3>
             <p class="arquivo-resumo">Salário mínimo acima de 970 euros já em 2027? Economistas recomendam prudência e alertam para compressão ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxOLTMwbUNLOExtd21fYUs0RFE2TWl0VkY4a1VhcG14ek5mMEtkS1VJcDZaMnZnLUJqNVI0UkFjR1huNGdERVdtcjF0NzJRUDNaVmJNMmpwMi0zS2JFbVR5WVJwU2xOWXpXUmRIVm5IS0lnVVhXUFA0V3dpTGhjN19PWnFINHRJQWZLR3pNU1BCdjFCVmxTQ3dIdG9PZHZaSk1pZGJneXdIYk9hU2tETUswMGx1UXBNME1YSzVEWTExU1FsOG5QelozbG9UR3F5WXFk?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -805,6 +859,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Majoração do subsídio de desemprego: Segurança Social passa a avisar automaticamente - Ekonomista</h3>
             <p class="arquivo-resumo">Majoração do subsídio de desemprego: Segurança Social passa a avisar automaticamente Ekonomista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMif0FVX3lxTE4wdjQ2TFhxS3Q1aTkzSVJNRjFEbC04VjEtZnhvN0pOQVBuVGdtWmhHdy1EamlmVFVWZV85bEdwMTBUcGUxdTBzUXVpSHJJbTlyRDFNZjhreldVeGNBa1BxT2hNRUhQOWpXRjhZV1JyU1RXQWZPVnA3Q0NQVmNKMG8?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -850,6 +905,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Patrões descartam salário mínimo acima de 970 euros em 2027 - ECO</h3>
             <p class="arquivo-resumo">Patrões descartam salário mínimo acima de 970 euros em 2027 ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxNR09wX3pwcUpTZGFXUVlNUUZMckNqTXlyVEVUNzhUVHpvVDItTExNS3Z1N3dPblJpdWZoX0VBSHpsLXUtM0I0MzVHZVA5YXNrMVVVWjdLV09nOGh6LTdnNUlBZ2RkWUc1OEFncGt5NFQ2cE8xd25hOU1qOXR4Rl82UXhWYjdlMExuRk90XzBWSHdVMFZCb1E?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -859,6 +915,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo - Expresso</h3>
             <p class="arquivo-resumo">CGTP exige aumento imediato do salário mínimo para 1050 euros após abertura do Governo Expresso…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi3AFBVV95cUxQeTRtRmFDOW0wMjAyckFJd24tU3hvVG1Udmpzc2plR2ozYnJtM19DRlVUYTV5bUpKNG1OR2o5NUtHWDdQRVYtNGxtNjFJS25qX3kxRkpheE1VeHZja3Aya3Y3R29Tb3hIVk1xSVJ5X3RoQUhyM2NRS1I3RUFkd3c3YUlrUkxRTm52dF9QR085N2M5V0JXSEs3YmJrdDhfVTZwa3dVa1J4ZjZJYkdfZXptMnJsRGo1YmYtNnc4QnlFcTRzSHJTWW5wY3pXak92bzgtMWJyWFpxb1BjV1VY?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="habitacao" data-mes="2026-07">
@@ -886,6 +943,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Como funciona a atribuição automática do abono de família pré-natal? - Doutor Finanças</h3>
             <p class="arquivo-resumo">Como funciona a atribuição automática do abono de família pré-natal? Doutor Finanças…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxPbkFPeWEtekU1VHZPRUl4RllPdjU2VGFzOVB3bVJKSlpqSjdoZFp4NDlrRGtQUThpX3NDbDFyOE4xc0w4dy12bFBOSzBXV244cUpSTktROTV1eTFGR3FYNHBsTW1GYnhZa0lYcTR4MllFUGVGdGd3N0xXSE9pVm9JRnIxVEhLeURFcFRMel9mWkZoT01YbFNfdXBfNFhhUEk5Y1VETmxJVlluLVZyZnFNM095U0JCaHhqOUhYS3V1ODU1VjQtaGtJazdPa2ZyRTkzdXhNSVVRYw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -895,6 +953,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única - Igreja Açores</h3>
             <p class="arquivo-resumo">Comissão Nacional Justiça e Paz destaca criação “positiva” da Prestação Social Única Igreja Açores…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxQRFA3LVdaMkFscGtjX3R2ei1NUUtFcWZLY0g4OWdfSV8wUXo5NkI3Mk1jX0lGSUJ6aFZpU3ZUQ1VpWnhKNmpBUmNHOVZMVzQwVTVyaDlpWk9vMmQ3RGpHaUJVSHJEOWJyeUluSko3UTZvanR0YXZzZDE0UnJYZkxIWTRzZkRXZ0ctSGwydFM4eGhQQVkwRV9ER09VaExkc1dDQ3k3aVJXWlN5Rk1YNDI3Zw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -904,6 +963,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Salário mínimo vai subir em 2027? A resposta da ministra do Trabalho - SIC Notícias</h3>
             <p class="arquivo-resumo">Salário mínimo vai subir em 2027? A resposta da ministra do Trabalho SIC Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxPZ0hudDRyd1B5Vm56TVdwTFdZdksyYlRiendCYW02d2VlMUxlUHVwSDdzU245b0NXd05MNUh5aWFiMkVmRTRmYWxrelA4QjB1ekxFaWdwMWI4X2JRamVYbkFJb01rbVRYRmxnd0NUc3pDbXhXOHJDZUZIRWxXdkFmVHVhV19SNHFMbjFER1dZVENBVlhMd2Zva2MtclJDc1EwWHF2a3hOTV93SVRCYnRQdW1MeExEWkpPOTdhTmphSmFENG1SRDJPejNBMA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -913,6 +973,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Os abonos de família e de regresso às aulas vão ser aumentados em 2027 - contacto.lu</h3>
             <p class="arquivo-resumo">Os abonos de família e de regresso às aulas vão ser aumentados em 2027 contacto.lu…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMivAFBVV95cUxQdGxVUkJCRjhhOEVXQ0JRYU9zcWlTWms3RnVuSHlDRXh2NFhkc08tbmhjSmRENnNKUUZJWEVCMzdQby1nQjFCTm11NjRCM09yYUlwOXhUTzdHQVdYbXI2MDFnd2VmZ200QmpPcFhXaHJ1LWNEYW5TdGF2MXM1NENYTUVfOG1Jd3ZHZzViWkRHRXB6b2dXaUEyeVh3SG1KTTZqUks3NWg0RF80OV80OEdzXzhMX3p6ODdZaGR1Uw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -922,6 +983,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Número de pessoas a receber subsídio de desemprego continua a cair - Fama Rádio e Televisão</h3>
             <p class="arquivo-resumo">Número de pessoas a receber subsídio de desemprego continua a cair Fama Rádio e Televisão…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxQMWpTMWZWUkVIWmdHRVdneWpYWlhuak9WY1RfeHhSWVFrc1h6YU9tWkV2bmlER2JyVjIwVDR4YUllc05GYW55a1pqSHFqVkwwNEl2UC0tOWdjcDVqSEdwbFZMRVhOSExEYVM5Vk5IV2pIUlo4QU82Vk5GenhhVUQ4RGtvNzg1ZExMOU9QdjJpb1Bha3VMNzZNbEh6YXRRYm9L0gGmAUFVX3lxTE5wSHQ4TGotLU4ySlRmNVV6TVpCVm5Kd0UxTHBCd0c4NFg2Y3BDU3JPUy00SWlMMzhOLUhhMy1XV2RKUGlnS2wwZDdQRU4yS3pEZ3d4YXJvY0wxeFJZM0FpMUI4SEZkSFZQbWZqU2JkZzBnNmVKWUpjSEhiamh5WHFEMWxyNUppR3AtYnExMlJkVU9pcGdlRkI3MHZReXhFR3RKektfUGc?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -931,6 +993,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Apoios ao desemprego atingem mínimos do último ano em Portugal - Rádio Festival</h3>
             <p class="arquivo-resumo">Apoios ao desemprego atingem mínimos do último ano em Portugal Rádio Festival…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxQUlJBZHowSGxNcmZlNHkxY1ZDUm9uUWFGNHJ6X0I5T092TUM4OXllQW9UTHJvclRlWWF4dk9ZYkNWaFdJMVFIZ3FYR2ZoNENObVAwODdqOE5rU1N2bVhvT28zajBaWUlpTFFHRUhfcXVRWjhDWS1nSnh4UTkzTmVtbnB1ZXVOY1hOaWoxTFplNDk2TkxQSGZmbG9vRlpxeWpMZDBUTjhLSjZjVjA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="emprego" data-mes="2026-07">
@@ -940,6 +1003,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe - 4gnews</h3>
             <p class="arquivo-resumo">Há trabalhadores que perdem dinheiro no subsídio de desemprego por não saberem este simples detalhe 4gnews…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNbU1FVlV6QnQxUXZvRC14U2R3anZsakZWTVBaQ25FUDVLRjZETjdlNjByYTRBT2dVZS13cEVrNFVzanNyM1VodWV6TkFXanE4ZGVkcy1WalRNVG13VktsRnlTUWxqYjJGcVlHeEVfUERyYTFxRHZ2RmJRMmQ2UXlDdnRaX212ejN3NjBJZVVwLVktUEJkc0hfYkxwMHJIaF9pSGRwZWpZQTlrT09uekRTbUg5aG1Zckk?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="habitacao" data-mes="2026-07">
@@ -949,6 +1013,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Mexidas no arrendamento. Tudo o que muda com o programa &quot;Construir Portugal&quot; - Diário de Notícias</h3>
             <p class="arquivo-resumo">Mexidas no arrendamento. Tudo o que muda com o programa &quot;Construir Portugal&quot; Diário de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/habitacao.html">Habitação</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxPZEd6TndHMG5VYUN6UDFTWU1JbG1FWGdRYkh4V2drcGpJOERLUmN4aUdqejUxclN1dGRIVWJZaUZwcm1PR3Y0SnFMYWpYODNuMTMwOVZCNllXVVJ0QlpMTWdqbFh0T0JkQTNUVWtoNmRwdzk2TjlISTE0MkFhQk14Z1Q2R3Rnd3NfeUk4TTMxcHN4RGgtcms0a1J3VVFiWElqZW9v?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="habitacao" data-mes="2026-07">
@@ -967,6 +1032,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Arrendamento: Governo aprova reforma para aumentar a oferta de habitação - XXV Governo Constitucional</h3>
             <p class="arquivo-resumo">Arrendamento: Governo aprova reforma para aumentar a oferta de habitação XXV Governo Constitucional…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/habitacao.html">Habitação</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxOUXBHaGpxYW04eTQ3SnRnQVNCNWxERk5EaWtPRERkbXNXMnNnTHpwTWMtMkp3V3MzejQwZzkyWnlVYWVOdXRIVHdOMmk3amRGQVZ3LVpiZFBoUkx1QUxBY0c3QmxxQVhabldOaWZQZS1XWFFmMjFCSFE5SjZhdXBobDFHYUxmczg3NkMxMllwaUUtZi1QeEY3MDJYclRPU3o2WlpQQ2NvenhhQ1ZteEVlS3VmRXZxYnlhTTZoVEFn?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -985,6 +1051,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? - ECO</h3>
             <p class="arquivo-resumo">Eurocâmara aprova regras para subsídio de desemprego de trabalhadores transfronteiriços. O que muda? ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/trabalho-rendimento.html">Trabalho e Rendimento</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiygFBVV95cUxNY1IwUUFkZENiWFBvMlhRM2IxWk1hUkV5QWM3V2F6WWNvejZXWmlRQWlWS2k3RF84THdwblFVQ0lXcTR1ZWZqa1g2TF9PRmlkU1dZdDBNWjA0RExiM0F0NkVBR25pd1FVdUttMFNvY0swVGdVREFzSjBmYmV2OTlWUzlubDVBX0dkNW9sZFgzY0xNRFVZNGVGREtnaU1Gc3ZhcEUzMzBxdjlfRzNrZE1XVlNfTnRycnEyVHZwQUF0V3JwR2lqajBvUEl3?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -1012,6 +1079,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Já está a par? Vêm aí mudanças no abono de família (eis o que se sabe) - Notícias ao Minuto</h3>
             <p class="arquivo-resumo">Já está a par? Vêm aí mudanças no abono de família (eis o que se sabe) Notícias ao Minuto…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiuAFBVV95cUxNTU5hYUpCS3FFci1YMkplZWR0Z1MxQkRIajk0anBaZEpXNTQ4d09YNEdibG9ER0dFOFBYcXdKRHNUZG95c1B4cENMZkY0Y3JYeGpPakNxTFJmbjZWN3V5bWg0YzBqZ3FYdXBoUW9HZnk3ZU8xOUhTVDlnYnpoY3pUY2t4V3I3VmRXTWIwVzJQaEVIc3VNOWhid2ZuZkRsVGd3VWhmRDhPZmtwd0hPbW9pYXo3LWExV0lm?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-07">
@@ -1030,6 +1098,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Governo está a rever abono e alarga pagamento automático a mais famílias - Diário de Notícias</h3>
             <p class="arquivo-resumo">Governo está a rever abono e alarga pagamento automático a mais famílias Diário de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxQTXh1ckN5X0ozQm83Zmc2cEhKZ2N1RTQ0VVZQN1dmTjhzOTRrLXlZZ1JyR3duS2VJVkdCN2lPOTNYLV94TVBNV2lOUld6NWFPN2J3aUlic24xcjJPdm91azZQQzV2VkVRZTRqaGxXM0xxcTRnU1cxTXhockkxdVczOTBlcERjdTVNV2FUdFhiLTZ3MHpuQU82ajNVVFRNdVJrN2Rr?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <h3 class="mes-header" data-mes="2026-06">Junho 2026</h3>
@@ -1040,6 +1109,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única: o acordo e a oportunidade desta reforma - Expresso</h3>
             <p class="arquivo-resumo">Prestação Social Única: o acordo e a oportunidade desta reforma Expresso…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxOcHd1VHZFNFRWVEdVYmJ2MzQ4QWlfbnllRUNzQV9IWVpKUWZZQnNfUkJuSUtZMkluZjE0MkRaaUZlaEREaEJQYWZwbU1sVUZkQm8tcmJVM1BpS044Vy1ZSUxaSmUtNndvQmlTQXVqS3BZNE9DTjB3QmZYYTRRcGk2Mk5Bdk1uNlNEOTA5RU9USm1PZ3hDNmxDdUlIYlFSQTh0QWJPWjJKcjFhVGpoajVR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="fiscal" data-mes="2026-06">
@@ -1103,6 +1173,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 - Vale do Sousa TV</h3>
             <p class="arquivo-resumo">Felgueiras abre candidaturas aos apoios da Ação Social Escolar para 2026/2027 Vale do Sousa TV…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/apoios-escolares.html">Apoios Escolares</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQdnBNd29iSTJtZnlHWkRwcEhEVE1rN2MzdFI2NjFDYi1EeG9SUW5hZC1fQ1BJcTNsSzVQRGJwZUZ6a183eGdnOEt6MnJwQUxYS3pXSGdJNklLNkpkZ2JoNWs0RUhoekpIZWE1ZEFVMGtNNW8yWi1zR1BlOHVjeF8wU0VfdFBZLUFwaXBsekdRUG5VenBMV2xrTlMyb2JpY29VNHdQZmlDRGhFOU1NTzIyMVZzOVJkSVE?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1112,6 +1183,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação social única: reforma altera 13 apoios do Estado - dnoticias.pt</h3>
             <p class="arquivo-resumo">Prestação social única: reforma altera 13 apoios do Estado dnoticias.pt…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxPbFluSG9DZFNPeWZIWENOOFk4b2tLVHV1TVQ0LWdYTmVwUUhROVNrNkNDSkRMbWpkc281QXZWcHVDTlktUGJZeHNKdGxXRnVyZ1Vjd0NoaDAzNk5FcjJPakhuUGdJYVlyXy1SQnlPYk41OFJ3YkVRcW1LSzR2UUIwalU1MTNldU9kY2VhUmxLV1MxMHlJd1FBV1hJMUplcGNLY1E?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1121,6 +1193,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação social única: o que vai mudar nos apoios sociais? - DECO PROteste</h3>
             <p class="arquivo-resumo">Prestação social única: o que vai mudar nos apoios sociais? DECO PROteste…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPeXpqcFY4cGtkQXc3SE16Z2RHMmNzRGlFbUZ2dDU1eHNRX0dXVzJzQUVYOWVQbC1YX0JvUWxwWnJXR21aNDJ5c2xFRy1YSjR6YlU1UFNqVl9ZUFc4NUIzeHJhdGc5R1JOZm9remItOGlteThuT2I0NUZZMnBocjFMN3c2RFR6ellFS2tKUlJzc011ZEJ2c3ZWTWlkd3E5cEF2UmM3cHRMU2lmcldVVDc4MA?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1130,6 +1203,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais - Ekonomista</h3>
             <p class="arquivo-resumo">Prestação Social Única avança: tudo o que deve saber sobre a reforma dos apoios sociais Ekonomista…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPSF9QMWk5eGVUSmIwMWdNWTc1b2ZIaThSTzJMSWt4ZjVRMGRpMHd5UXZPczNRYVNuLWpzSlBsbDBtTmF1T2lxRFN1elBfNUNCazVycm9jRVEtbEVXbXpkQ1A0V3VSYmZR?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="legislacao" data-mes="2026-06">
@@ -1139,6 +1213,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">PSU aprovada no Parlamento: 13 apoios sociais passam a um só - Tens Direito</h3>
             <p class="arquivo-resumo">O Parlamento aprovou a 25 de junho a lei que autoriza o Governo a criar a Prestação Social Única, que unifica 13 apoios sociais não contributivos. A medida aguarda publicação em Diário da República e…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="/prestacao-social-unica.html" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1148,6 +1223,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Do trabalho social ao canal de denúncias, como vai funcionar a Prestação Social Única? - Diário de Notícias</h3>
             <p class="arquivo-resumo">Do trabalho social ao canal de denúncias, como vai funcionar a Prestação Social Única? Diário de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxPcklnR1NQVWVnOWppQjRkOUUyREo5dGpEdHpqZHl5NEFITVEyQUI5cEtRdVUwYTl6RG41RGl0UW14MDBYa3ZDUUJXWWZDTUtLUnpIZHJQemRlb1lidVZVUElaUU40VURGYXR4QllkZzhUbmoxNmlpdHRsbFZlTUpuUWJzbDhsYXNSSWx3eE9ucGtoTFNudHdyLXFnYkRBbDBfcmt1RlhmUHhmT1lYQnVEZWNn?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1157,6 +1233,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros - Jornal de Notícias</h3>
             <p class="arquivo-resumo">Acesso a apoios sociais da PSU não depende de descontos de portugueses ou de estrangeiros Jornal de Notícias…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiwgFBVV95cUxNbnJYc01qT0FfbHdScDEyTzNBVENSdWM2b0xOdmVuTTd0UnNTbkFIcjJsY2FnOW1XOGpTZlZsWlZzemduQUNJd2kwUXpYRC1nSWtLS1oycWs5UDJvN2VGQm9yRHB6N0haRkpJclVZT3ljTHlrNGRFN2hMd0JZOTNLb1BwZERTYzczaHp1QVJ4SFlsNS1IbUpYbnA2M091UFpNYVQ1bVRodXpvek1KZVB5T2RfVDhOUmt1RW4tV3lFRlJnQQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1166,6 +1243,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Os 13 apoios que se juntam na prestação social única - Observador</h3>
             <p class="arquivo-resumo">Os 13 apoios que se juntam na prestação social única Observador…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxOa1FETEZnamM2UE02OUFIRkZyN2V2T21WN2dzUHFrSWZuS0FMMGFXRDlaTFBBdndadFN5YjBLM0dpRWZnTFB4c2ctTF9uNk52bEpXWFhzdlExT2R5REJsX0NMUWhSdS16XzFTbzBxZVhXZU92cG9zaWhaQ3pzMUF4bk15YjBUQW15ck5kMzJvU2VQYk8tZ210MWl3UkZyOVBQeUR6RjBjQkpEZ0tRd0lJTWNBTGoxMUZuY2QzVkZWb09VczZwTHl4dU1XVDlqbkU1QTFHWFZYdWF1RUZHQW9BOENsYkRrZHJUQ0RvTmstUHJzbTlyZWwtNg?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="educacao" data-mes="2026-06">
@@ -1175,6 +1253,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Candidaturas à ASE 2026/2027 abrem em setembro — prazo até 30 de setembro - dge.mec.pt</h3>
             <p class="arquivo-resumo">As candidaturas à Ação Social Escolar para o ano letivo 2026/2027 abrem com o início das aulas. O prazo termina a 30 de setembro. Famílias com escalão do abono atribuído podem candidatar-se nos serviços da escola.…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/apoios-escolares.html">Apoios Escolares</a>.</p>
             <a href="https://www.dge.mec.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1193,6 +1272,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">IAS sobe para 537,13 € em 2026 — escalões de apoios actualizados - seg-social.pt</h3>
             <p class="arquivo-resumo">O Indexante dos Apoios Sociais foi fixado em 537,13 € para 2026, afectando os limites de elegibilidade e os valores de apoios como o abono de família, o RSI e o subsídio de desemprego.…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/familia.html">Família e Crianças</a>.</p>
             <a href="https://www.seg-social.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1202,6 +1282,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Ministra justifica PSU com ineficácia de Portugal na redução da pobreza através de apoios sociais - ECO</h3>
             <p class="arquivo-resumo">Ministra justifica PSU com ineficácia de Portugal na redução da pobreza através de apoios sociais ECO…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMiyAFBVV95cUxPLXcwNk9sejdPcThuOUwtVVJyVzFrMkh2Umk3V2wycDNUUWJCOURLemFnQVNIUGlkZHBmdTVsVkpZd2pSLUpuLVpHREdQanR3bG5ZU01JamJoNWJnNC1KeFk0V2QzZlh0RDA0ZklIdHkzYWcteWtYNVhhSUtkVjBLMGVZVjBtdEI1Zmtid3d1dHlqaHhmYTcwZFVyMFo0RG1jNkppR0puX2JwQXdJcnhHc0ZYVXgzZWl2NmgyM2FJYkdMd1ROWnN4QQ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="educacao" data-mes="2026-06">
@@ -1211,6 +1292,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Bolsas de mérito 2026: candidaturas abertas até 30 de setembro nas escolas - dge.mec.pt</h3>
             <p class="arquivo-resumo">Alunos do ensino secundário com escalão A ou B da ASE e aprovação em todas as disciplinas podem candidatar-se à bolsa de mérito. O valor estimado para 2026/2027 é de 1.342,83 € pagos em 3 prestações.…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/p/apoios-escolares.html">Apoios Escolares</a>.</p>
             <a href="https://www.dge.mec.pt" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1220,6 +1302,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Governo quer unir 13 apoios num só: como vai funcionar a nova Prestação Social Única? - Euronews</h3>
             <p class="arquivo-resumo">Governo quer unir 13 apoios num só: como vai funcionar a nova Prestação Social Única? Euronews…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxQVnMwY0VVd2xXU2VRRE9uUERHMk5pSVlVU2Q4RzgyTUtjbGt3NlVfR3R3QlEzd3Nzc1dfNlBDakloQmxJVFRSWlB3bU92SmJVLU1fb3JYVVpGekEyZGNZMEU1NTlmVnZJT3oxRFEtYnRzYUpxNy1TWDVzb09hME8yVDRNQU9Mb2NVWDlCR0I4dVRzM0xWVWtPYmczNS0xUV9TU3lzU1dJc09QR0ZaWGJGalRsdjhhcGlQaGJaa0g2NmJKU2tqU2RZ?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1229,6 +1312,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Prestação Social Única: quem tem direito, como vai funcionar e o que muda nos apoios sociais - Renascença</h3>
             <p class="arquivo-resumo">Prestação Social Única: quem tem direito, como vai funcionar e o que muda nos apoios sociais Renascença…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi2AFBVV95cUxNMFFwS1c3QkJUVEw1N1lQb3J4Q1hzVHpoLVRMQlBENGpkM0kzV2xFbG96SnE1ME1SLVJMMVUyU3ptSlpJRGJHU0UxRVpQVDFRS3g5ZkJlYUI4Ri1qVVdaU1pNX3ppQXUwczhWdEF1dEwwcUp0TDFFcGdfeW5nRGFmVU5tbWNTMXRyTUFyNm80WmVncWtFSkhBZ09vcGxnTEJnRjFFWUxzQjRmRVNwSy1mYzlRSFV4S2JINDVnZlkzX0plQmM2dzY0UW9UX0R3QlFXTXIyUkdMV2bSAdwBQVVfeXFMTXZ0cm9LQmhvNnUzZ2tnaDhxRG5udVpJamRvZF83WjBfSVdWS1dOQVNRQ040dEJ3R3pqNzRtNHVydU1WZGs2STVSSlBiaWdjbm5ESVJuN3VGZmlRUXFRa3BXNWJOWVdtanA4ZHZZXzFMcjBsUzlwQndKbWgxUGhRZWhFUDFWV1VEeHd1SlJQdHpCZ1NPdWlmQWFGa0ltaXlpcmhpdVBRV0lEVFc5czc3Q2IxbTZUUS01OGlsSFhxZDM4NEFISmRmeDhnNTZXWTExQ2pTaUhqaGtKVFN3Qw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
           <article class="arquivo-card" data-cat="apoios" data-mes="2026-06">
@@ -1247,6 +1331,7 @@ footer a{color:var(--muted)}
             </div>
             <h3 class="arquivo-titulo">Chega admite viabilizar Prestação Social Única se PSD limitar apoios sociais a imigrantes - Jornal SOL</h3>
             <p class="arquivo-resumo">Chega admite viabilizar Prestação Social Única se PSD limitar apoios sociais a imigrantes Jornal SOL…</p>
+            <p class="pertence-guia">Relacionado com o guia <a href="/prestacao-social-unica.html">Prestação Social Única</a>.</p>
             <a href="https://news.google.com/rss/articles/CBMi8gFBVV95cUxQZHhENXB0WUxiNFRHUEZxWm02T1o3TGFMNzBUMnVOenBTV3pDcWpHcV9vcWFYV2ZIU2twSkR2UXJnUVRpeWFPUXBhcjlDWHFfQ1lLbjhHcTNwTmxjQ0JlQ29RQm1fUHRFdndFT1F1eFZPcFRyZXJGbEdWM2xDb2V3S1h5bEVSUlczaDhsZnhQTXZfWmNsX3pTeEdKVVdkT1NfLW83LU9DTkFaaWZMNzNQb1FiVV9BQW5OWW5paGhPenE5VHhIb2tUQVhGbkNfRl9FTTNFalBmbDFkZEozdG1DcXdTNWUzeVh2RnNSbFlFVlA0Zw?oc=5" class="arquivo-link" target="_blank" rel="noopener noreferrer">Ler →</a>
           </article>
         <!-- ARQUIVO-FIM -->
