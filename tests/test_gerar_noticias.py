@@ -18,9 +18,11 @@ from gerar_noticias import (
     MAX_VENCEDORES_POR_DIA,
     ItemNoticia,
     SaudeFeed,
+    _bloco_pertence_guia,
     agrupar_por_mes,
     analisar_candidatos_na_janela,
     carregar_itens,
+    carregar_mapa_clusters,
     construir_item_de_entry,
     detect_category,
     detectar_cluster,
@@ -35,6 +37,7 @@ from gerar_noticias import (
     registar_saude_feeds_hoje,
     regenerar_noticias_html,
     render_arquivo,
+    render_arquivo_card,
     render_destaque,
     score_entry,
     selecionar_vencedores,
@@ -42,6 +45,7 @@ from gerar_noticias import (
     sincronizar_saidas,
     titulos_semelhantes,
 )
+from sincronizar_clusters import Cluster
 
 RAIZ = Path(__file__).parent.parent
 
@@ -464,6 +468,81 @@ def test_render_arquivo_exclui_o_mais_recente_e_agrupa_por_mes():
     assert "Maio 2026" in html_out
 
 
+# ── Badge de cluster nos cards ("pertence ao guia", best-effort) ──────────
+
+def _cluster(id_="familia", pillar="/p/familia.html", nome="Família e Crianças"):
+    return Cluster(
+        id=id_, nome=nome, descricao_curta="", icone="👶", pillar=pillar,
+        paginas=[], relacionados=[],
+    )
+
+
+def test_bloco_pertence_guia_vazio_sem_cluster_id():
+    """Item nunca classificado (cluster_id=None) não mostra nada — nunca
+    inventa uma ligação."""
+    assert _bloco_pertence_guia(_item("2026-07-01", "X", cluster_id=None), {"familia": _cluster()}) == ""
+
+
+def test_bloco_pertence_guia_vazio_sem_mapa():
+    """Sem mapa de clusters carregado (None ou {}), nunca mostra nada —
+    mesmo com cluster_id preenchido."""
+    item = _item("2026-07-01", "X", cluster_id="familia")
+    assert _bloco_pertence_guia(item, None) == ""
+    assert _bloco_pertence_guia(item, {}) == ""
+
+
+def test_bloco_pertence_guia_vazio_cluster_id_desactualizado():
+    """cluster_id que já não existe em data/clusters.json (removido/
+    renomeado) — nunca mostra um link para um cluster inexistente."""
+    item = _item("2026-07-01", "X", cluster_id="cluster-que-nao-existe")
+    assert _bloco_pertence_guia(item, {"familia": _cluster()}) == ""
+
+
+def test_bloco_pertence_guia_usa_pillar_e_nome_do_cluster_sem_construir_url():
+    """Com cluster_id resolvido, usa `cluster.pillar`/`cluster.nome`
+    directamente — nunca uma URL montada a partir do id."""
+    item = _item("2026-07-01", "X", cluster_id="familia")
+    bloco = _bloco_pertence_guia(item, {"familia": _cluster()})
+    assert '<a href="/p/familia.html">Família e Crianças</a>' in bloco
+    assert "pertence-guia" in bloco
+
+
+def test_render_destaque_com_cluster_mostra_bloco_pertence_guia():
+    item = _item("2026-07-01", "PSU aprovada", cluster_id="prestacao-social-unica")
+    mapa = {"prestacao-social-unica": _cluster(id_="prestacao-social-unica", pillar="/prestacao-social-unica.html", nome="Prestação Social Única")}
+    html_out = render_destaque(item, mapa)
+    assert '<a href="/prestacao-social-unica.html">Prestação Social Única</a>' in html_out
+
+
+def test_render_destaque_sem_cluster_id_nao_mostra_bloco():
+    html_out = render_destaque(_item("2026-07-01", "PSU aprovada", cluster_id=None), {"familia": _cluster()})
+    assert "pertence-guia" not in html_out
+
+
+def test_render_arquivo_card_com_cluster_mostra_bloco_pertence_guia():
+    item = _item("2026-06-20", "Abono sobe em 2026", cluster_id="familia")
+    html_out = render_arquivo_card(item, {"familia": _cluster()})
+    assert '<a href="/p/familia.html">Família e Crianças</a>' in html_out
+
+
+def test_render_arquivo_card_sem_mapa_clusters_nao_mostra_bloco():
+    """Chamar render_arquivo_card sem mapa (None, omissão por defeito)
+    nunca falha nem inventa nada — mesmo com cluster_id preenchido."""
+    item = _item("2026-06-20", "Abono sobe em 2026", cluster_id="familia")
+    html_out = render_arquivo_card(item)
+    assert "pertence-guia" not in html_out
+
+
+def test_carregar_mapa_clusters_reflete_data_clusters_json_real():
+    """Sem mocks — confirma que o mapa vem mesmo de data/clusters.json
+    (fonte única) e que os clusters reais do site (ex.: 'familia') lá
+    estão, com pillar a começar por '/'."""
+    mapa = carregar_mapa_clusters()
+    assert "familia" in mapa
+    assert mapa["familia"].pillar.startswith("/")
+    assert mapa["familia"].nome
+
+
 # ── Persistência JSON ──────────────────────────────────────────────────────
 
 def test_guardar_e_carregar_itens_round_trip(tmp_path):
@@ -510,6 +589,26 @@ def test_regenerar_noticias_html_idempotente(tmp_path):
     assert conteudo1 == conteudo2
     assert "Notícia A" in conteudo1  # destaque = mais recente
     assert "Notícia B" in conteudo1  # arquivo = resto
+
+
+def test_regenerar_noticias_html_mostra_bloco_pertence_guia_ponta_a_ponta(tmp_path):
+    """Via `regenerar_noticias_html()` (não as funções de render isoladas)
+    — `carregar_mapa_clusters()` lê sempre `data/clusters.json` real, mesmo
+    em testes isolados em `tmp_path` (só noticias.html/os itens é que são
+    isolados, nunca a fonte de clusters). 'familia' é um cluster estável do
+    site (ver `test_carregar_mapa_clusters_reflete_data_clusters_json_real`)."""
+    caminho = tmp_path / "noticias.html"
+    caminho.write_text(_NOTICIAS_HTML_BASE, encoding="utf-8")
+    itens = ordenar_itens([
+        _item("2026-06-20", "Notícia com cluster", cluster_id="familia"),
+        _item("2026-07-01", "Notícia mais recente sem cluster", cluster_id=None),
+    ])
+    regenerar_noticias_html(itens, caminho=caminho)
+    conteudo = caminho.read_text(encoding="utf-8")
+    assert 'class="pertence-guia"' in conteudo
+    assert 'href="/p/familia.html"' in conteudo
+    # o destaque (mais recente) não tem cluster_id — não pode ganhar um link
+    assert conteudo.count('class="pertence-guia"') == 1
 
 
 # ── sincronizar_saidas — resync de index.html + noticias.html a partir ────
