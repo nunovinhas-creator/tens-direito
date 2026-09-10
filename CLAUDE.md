@@ -4825,7 +4825,7 @@ nunca escreve nada).
 
 ---
 
-*Última revisão automática: 2026-09-09*
+*Última revisão automática: 2026-09-10*
 
 ---
 
