@@ -1,27 +1,5 @@
 [
   {
-    "data": "2026-08-27",
-    "saude_feeds": {
-      "abono_familia": "MORTO",
-      "subsidio_desemprego": "MORTO",
-      "rsi": "MORTO",
-      "psu_pensoes": "MORTO",
-      "acao_social_escolar": "MORTO",
-      "cuidador_informal": "MORTO",
-      "porta65_arrendamento": "MORTO",
-      "irs_fiscalidade": "MORTO",
-      "ias_valor_referencia": "MORTO",
-      "calendario_pagamentos_seg_social": "MORTO",
-      "habitacao_arrendamento": "MORTO",
-      "salario_minimo": "MORTO",
-      "csi_idosos": "MORTO"
-    },
-    "candidatos_por_feed": {},
-    "fora_da_janela_por_feed": {},
-    "candidatos": [],
-    "vencedores": []
-  },
-  {
     "data": "2026-08-28",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1662,5 +1640,107 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-09-11",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 13,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - leak.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-09",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-09"
+      },
+      {
+        "titulo": "Município de Alcoutim reforça apoios à educação e ação social escolar - radiohorizonte.com",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-10",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=educacao"
+      },
+      {
+        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes - Economia e Finanças",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-09",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-05",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-05"
+      },
+      {
+        "titulo": "Os países com os salários mínimos mais elevados: Suíça lidera ranking - Idealista",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-10",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Município de Alcoutim reforça apoios à educação e ação social escolar - radiohorizonte.com",
+        "feed_nome": "acao_social_escolar",
+        "score": 2
+      },
+      {
+        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes - Economia e Finanças",
+        "feed_nome": "salario_minimo",
+        "score": 2
+      }
+    ]
   }
 ]

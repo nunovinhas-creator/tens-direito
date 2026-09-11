@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-10",
+      "titulo": "Município de Alcoutim reforça apoios à educação e ação social escolar",
+      "fonte_nome": "radiohorizonte.com",
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQYTdtd0xxN1hVdzhUNmxUODZicEZhMmFoQm0xTE1YRkNJWTZBeXFHYlNEMGM4bC1JZnVEYTlKUnZqb1lxMGFmbGZST3JHbGlwYko2VGRMTG9ZdVZtNlJaLUhZWGU2UnBTc1hSVDJuS2xwRENvcklWR2RvcnVtal9RcURyZUNocm1PRHh1TWd4WndVb01JdmN6Wmk1eS1aaGt5Y1FhaFA0ME55Q0R2b2IwcmJad2w2Qjk2ME9PT2xsU0Q0MVFsdEx5c0U4TjJrTWN4ZHFELWhSMmdCUzcyaVV5NzV2Wmw?oc=5",
+      "resumo": "Município de Alcoutim reforça apoios à educação e ação social escolar radiohorizonte.com",
+      "categoria": "educacao",
+      "cluster_id": "apoios-escolares"
+    },
+    {
+      "data_iso": "2026-09-09",
+      "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQc3pjVEhqejYwYWF3a1dRYm1BdDVna0RzRFh5cGNfaWRlcTZWZDBpZlBxUEhKUE5KTEp1d3M3aGhtQUh4bDhmeWFNWTJVM1JKN1hNVVdlVDhLbWZGR1RvUW5NLWpMb1NsX3lkT2k2X0JCbW5MX0pfZXZWQlNnLWVhX2o1bFRQeEJuZmM2N0NULXROZ3QwSjdZ?oc=5",
+      "resumo": "Salário Mínimo 2027 subirá e terá três valores diferentes Economia e Finanças",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-09-09",
       "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só",
       "fonte_nome": "leak.pt",
