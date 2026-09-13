@@ -1575,229 +1575,99 @@ correr ambos.
 
 ## FRESCURA DA HOMEPAGE — NOTÍCIAS E ATUALIZAÇÕES
 
-Reformulação de 2026-07-02: o antigo bloco "Notícia do dia" no
-`index.html` era HTML estático desde 25/06 — nenhum script alguma vez
-lhe tocava (confirmado por diagnóstico antes de mexer: `noticias.html`,
-esse sim, já era actualizado diariamente pelo pipeline desde
-2026-06-30, com título/link/data a mudar de facto a cada corrida —
-só a homepage é que nunca reflectia isso). A homepage passou a ter
-**duas fontes de frescura, ambas automáticas e nenhuma inventa datas**:
+Duas fontes de frescura na homepage, ambas automáticas e nenhuma inventa
+datas: A) "Últimas notícias", de `data/noticias.json`; B) "Atualizado
+recentemente", do carimbo real de cada artigo. Diagnóstico e narrativa da
+reformulação original (2026-07-02) e das correcções seguintes de feeds/
+selecção (2026-07-04) vivem em `HISTORICO.md`, não aqui.
 
 ### A) "Últimas notícias" — `data/noticias.json` + `gerar_noticias.py` + `NOTICIA-HOME:INICIO/FIM`
 
-**Fase 1 (2026-07-02)**: `data/noticias.json` passou a ser a fonte de
-verdade — `noticias.html` deixou de ser a própria base de dados (patch
-incremental do HTML anterior) e passa a ser **gerado do JSON** a cada
-corrida (destaque + arquivo agrupado por mês, ordenado por data real
-desc — nunca por ordem de inserção). `index.html` mostra os 2-3 itens
-mais recentes (antes era só 1).
+`data/noticias.json` é a fonte de verdade — `noticias.html` (destaque +
+arquivo por mês, ordenado por data real desc) e o bloco `NOTICIA-HOME` de
+`index.html` (2-3 itens mais recentes) são sempre **gerados** a partir dele,
+nunca editados directamente. `sincronizar_saidas()` é o único ponto que
+regenera as duas saídas a partir do JSON em disco — idempotente, chamado
+sempre no fim de `main()` (com ou sem vencedor novo no dia, para nunca
+ficarem presas a conteúdo antigo se o JSON mudar por outra via); disponível
+como passo manual isolado via `python scripts/gerar_noticias.py --sync`.
 
-Cada item: `data_iso`, `titulo` (sem o sufixo "- Fonte" do Google
-News), `fonte_nome`, `url`, `resumo`, `categoria` (para os filtros do
-`noticias.html`) e `cluster_id` (classificação best-effort por
-palavra-chave — `CLUSTER_KEYWORDS` — preparada para a Fase 3 ligar
-cada notícia ao guia do cluster; ainda não renderizada em lado nenhum).
+Cada item: `data_iso`, `titulo` (sem sufixo "- Fonte"), `fonte_nome`, `url`,
+`resumo`, `categoria` (filtros de `noticias.html`) e `cluster_id`
+(classificação best-effort — ver bloco próprio abaixo).
 
-**Migração** (`scripts/migrar_noticias.py`, corre uma única vez, nunca
-no pipeline): parseou o `noticias.html` legado nos dois formatos de
-card que coexistiam (`arquivo-card`, do script; `noticia-card`,
-manuscrito antes do script existir), descartou 1 registo vazio/
-corrompido (placeholder `"Notícia anterior"` com `href="#"`, resíduo
-de um bug antigo do extractor do destaque) e deduplicou os restantes
-14 — 4 eram duplicados reais (mesma notícia publicada em dias
-diferentes, sem dedup nenhum a proteger) — mantendo sempre a
-ocorrência de **data mais antiga** (primeira publicação real). Resultado:
-**10 itens únicos**. Ver `tests/test_migrar_noticias.py`.
+**Selecção** (`selecionar_vencedores()`): até `MAX_VENCEDORES_POR_DIA` (3)
+vencedores por corrida, no máximo 1 por categoria — slots são sempre
+oportunistas, nunca quota: uma categoria sem candidato com score positivo,
+dentro da janela de recência (`JANELA_RECENCIA_DIAS`, 7 dias) e não
+duplicado fica simplesmente vazia, nunca se publica algo fraco só para
+preencher diversidade. Dedup (`encontrar_duplicado()`) por título
+normalizado (`difflib`, limiar 0.90) e por URL canónico exacto — mas só
+quando o URL não é a homepage genérica de um domínio
+(`_url_e_especifica()`), para não confundir duas fontes distintas que citam
+o mesmo domínio. `FEEDS` tem um feed por tema do site — ver essa constante
+em `gerar_noticias.py` para a lista actual, nunca fixar aqui a contagem (já
+divergiu uma vez sem ninguém dar por isso). `LIMITE_ENTRADAS_POR_FEED` (15)
+é quantas entradas de cada feed são examinadas por corrida.
 
-**Dedup no pipeline** (`encontrar_duplicado()` — o bug mais grave
-encontrado no diagnóstico da Fase 0: a mesma notícia chegou a ser
-"republicada" 4× em dias diferentes): compara o candidato vencedor
-contra `data/noticias.json` por **título normalizado** (minúsculas,
-sem pontuação, `difflib` com limiar de 0.90 de semelhança — sempre
-válido) e por **URL canónico exacto**, mas só quando o URL não é a
-homepage genérica de um domínio (`_url_e_especifica()`) — descoberto
-durante a migração: dois artigos manuscritos genuinamente diferentes
-citavam ambos `dge.mec.pt` como fonte e o URL sozinho dava-os como
-duplicados um do outro. Se o vencedor inicial for duplicado,
-`selecionar_vencedor()` passa ao candidato seguinte com score
-positivo; se todos forem duplicados ou não houver nenhum com score
-positivo, o resultado é `None` — **"nenhuma notícia hoje" é aceitável,
-nunca se força um candidato fraco ou repetido**.
+**`cluster_id`**: `detectar_cluster()` percorre `CLUSTER_KEYWORDS` e passa
+cada keyword por `_contem_keyword()` — a maioria é substring simples, mas
+qualquer keyword que colida com palavras comuns (hoje: "ias", "ase",
+"reforma") exige fronteira de palavra (`\bkw\b`) para não apanhar
+"baseadas"/"quase"/"reformados" por engano. **Regra para qualquer keyword
+nova**: se puder ser substring de uma palavra comum não relacionada,
+precisa da mesma fronteira — foi a falta dela que classificou 2 notícias de
+desemprego/IRS como apoios-escolares só por "ase" ser substring de "quase"/
+"baseadas" (corrigido 2026-09-09, #190). Desde #189 (mesma data),
+`cluster_id` é renderizado nos cards de `noticias.html` — bloco "Relacionado
+com o guia X" (`.pertence-guia`, sourced de `data/clusters.json` via
+`carregar_clusters()`, nunca uma URL construída à mão); sem `cluster_id` ou
+com um id removido de `clusters.json`, o card não mostra nada. `python
+scripts/gerar_noticias.py --recalcular-clusters [--dry-run]` recalcula o
+`cluster_id` de itens já gravados sem esperar por notícia nova.
 
-**Observabilidade**: cada corrida regista no log (`imprimir_relatorio()`)
-o nº de candidatos por feed, os 3 melhores com o respectivo score, cada
-rejeição por dedup com o motivo (`"duplicado de AAAA-MM-DD"`) e o
-vencedor final com o motivo. Antes da Fase 1 não havia nenhuma
-visibilidade sobre quantos candidatos existiam nem porque um venceu.
+**Guardrail**: `escrever_ficheiro_seguro()` é uma allow-list estrita — ver
+"REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS" no topo deste ficheiro
+para a lista exacta de ficheiros de escrita livre e a secção confinada de
+`index.html`; qualquer nome fora dessas duas listas é sempre bloqueado.
 
-Mostra sempre a data real da notícia (nunca "hoje") e liga directamente
-à fonte externa (nunca um link interno inventado). Se não houver
-vencedor, `data/noticias.json` não é tocado.
-
-**`sincronizar_saidas()`** — ponto único que regenera `noticias.html` e
-o bloco `NOTICIA-HOME` a partir do JSON actual em disco; idempotente
-(zero alterações se já estiverem sincronizados) e independente de
-qualquer corrida de RSS. `main()` chama-o **sempre no fim, com ou sem
-vencedor novo no dia** — corrigido um bug real desta sessão: antes,
-`main()` terminava a corrida assim que não havia vencedor, sem nunca
-regenerar as saídas; se o JSON tivesse mudado por outra via (ex.:
-`migrar_noticias.py`, edição manual), `noticias.html`/`index.html`
-ficavam presos ao conteúdo antigo indefinidamente, só se resincronizando
-por coincidência no dia em que a corrida também encontrasse notícia
-nova. Utilizável como passo manual isolado, sem tocar no RSS:
-`python scripts/gerar_noticias.py --sync`. `migrar_noticias.py` chama-o
-automaticamente no fim da migração — nunca mais é preciso um passo
-manual à parte para sincronizar depois de migrar. Testado em
-`tests/test_gerar_noticias.py` (idempotência + carrega do JSON em
-disco quando não recebe itens explícitos + o item mais recente do
-JSON tem sempre de aparecer no bloco NOTICIA-HOME após a chamada).
-
-**Guardrail estendido** (mudança de segurança, reforçada na Fase 1):
-`escrever_ficheiro_seguro()` em `gerar_noticias.py` é agora uma
-allow-list estrita — `FICHEIROS_AUTO_GERADOS` (`noticias.html`,
-`noticias.json`, escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`,
-só dentro de `NOTICIA-HOME:INICIO/FIM`, via `_verificar_escrita_confinada()`).
-Qualquer nome fora das duas listas é **sempre bloqueado** — corrigido
-um "fallthrough" que antes escrevia livremente qualquer ficheiro não-
-HTML não listado (nunca chegou a ser explorado na prática, porque o
-próprio script nunca chamava a função com outro nome, mas era uma
-allow-list incompleta). Coberto por `tests/test_gerar_noticias_guardrail.py`.
-
-**Bugs de correspondência de classes encontrados e corrigidos em
-`noticias.html`** (nenhum introduzido pela Fase 1 — todos pré-existentes,
-descobertos ao regenerar o ficheiro a partir do JSON): o JS de
-paginação/filtros seleccionava `.noticia-card`, mas o script gerava
-`.arquivo-card` — a contagem por categoria e a paginação só "viam" os
-3 cards manuscritos antigos, nunca os gerados automaticamente; o CSS
-não tinha nenhuma regra para `.arquivo-card` (cards sem estilo nenhum);
-`.cat-badge.apoios` (CSS) nunca correspondia a `class="cat-badge
-cat-apoios"` (HTML real) — os badges de categoria nunca mostravam cor;
-`#destaque-wrap` era referenciado no JS mas não existia no HTML — o
-destaque nunca era escondido ao filtrar por categoria. Unificada a
-classe (`arquivo-card`, uma só, para itens manuscritos e gerados),
-corrigidos os 3 selectores, confirmado no browser (Playwright): 9/9
-cards visíveis pela contagem e pela paginação, badge com cor correcta,
-destaque a esconder/mostrar correctamente ao filtrar.
+**Observabilidade**: cada corrida regista no log candidatos por feed,
+rejeições com motivo (score, duplicado, fora da janela de recência) e os
+vencedores finais. `data/feeds_saude_hoje.json` — snapshot diário por feed
+(`OK`/`MORTO`; XML malformado conta sempre como `MORTO`, mesmo com HTTP
+200) — consumido por `gerir_estado_feeds.py` (máquina de estados,
+`data/estado_feeds.json`, Issue `feed-morto` só ao 3.º dia consecutivo,
+fecho automático ao recuperar). `data/noticias_candidatos.json` — log
+auditável dos últimos 14 dias corridos, classifica **todos** os candidatos
+dentro da janela de recência (`vencedor`/`rejeitado_score`/
+`rejeitado_duplicado`/`nao_escolhido`) — para "o sistema viu a notícia X?"
+ter sempre resposta.
 
 ### B) "Atualizado recentemente" — `sincronizar_clusters.py` + `ATUALIZACOES:HOME:INICIO/FIM`
 
-3-4 artigos com o "Verificado a ..." mais recente (extraído do corpo
-real de cada página `tipo: "artigo"`, nunca do RSS, nunca inventado) —
-sempre verdadeiro por construção, porque reflecte edições reais do
-site. `extrair_verificado_em()` aceita os 3 formatos usados nos
-artigos publicados (`DD/MM/AAAA`, "D de mês de AAAA", "D mês AAAA") e
-usa sempre a **última** ocorrência no ficheiro (a mais próxima do
-bloco de fontes no fim do corpo — as anteriores são notas por secção).
-Ordem determinística: data decrescente, slug como desempate — nunca
-aleatória, para a saída ser idempotente. Escrito por
-`scripts/sincronizar_clusters.py` (script de **sessão manual**, não do
-pipeline automático — ver "REGRA DE OURO").
+3-4 artigos com o "Verificado a ..." mais recente (extraído do corpo real de
+cada página `tipo: "artigo"`, nunca do RSS, nunca inventado) — sempre
+verdadeiro por construção, porque reflecte edições reais do site.
+`extrair_verificado_em()` aceita os 3 formatos usados nos artigos publicados
+(`DD/MM/AAAA`, "D de mês de AAAA", "D mês AAAA") e usa sempre a **última**
+ocorrência no ficheiro (a mais próxima do bloco de fontes no fim do corpo —
+as anteriores são notas por secção). Ordem determinística: data
+decrescente, slug como desempate — nunca aleatória, para a saída ser
+idempotente. Escrito por `scripts/sincronizar_clusters.py` (script de
+**sessão manual**, não do pipeline automático — ver "REGRA DE OURO").
 
 **Posição na homepage**: logo a seguir a "Guias principais"
-(`DESTAQUES:HOME`) e antes de "Como funciona" — a leitura mais literal
-de "depois dos destaques, antes dos prazos" (⏰ "Datas a não perder" é
-a secção `urgente-banda`, mais abaixo).
+(`DESTAQUES:HOME`) e antes de "Como funciona".
 
 ### Regra de honestidade
 
-Nenhum dos dois blocos mostra alguma vez "hoje" ou uma data inventada.
-Se uma fonte falhar (RSS sem itens relevantes, ou um artigo sem
-"Verificado a" reconhecível), o bloco correspondente simplesmente não
-é actualizado nessa corrida — mantém o último conteúdo real. Zero
-factos de memória, mesma regra do resto do site.
-
-### Fontes RSS — diagnóstico e correcção de 2026-07-04
-
-Sintoma reportado pelo Nuno: uma notícia real sobre abono de família (2
-jul) nunca foi apanhada pelo pipeline, apesar de correr diariamente com
-sucesso. Diagnóstico feito com fetch real num `workflow_dispatch`
-temporário (política de rede da sessão de desenvolvimento bloqueia
-`news.google.com`/`dre.pt` — mesma limitação já documentada, só o
-runner real é fiável para isto):
-
-1. **`data/noticias.json` confirmado a actualizar diariamente**, mas
-   sempre com artigos cada vez mais antigos sobre a PSU (8 jun a 29
-   jun, um por dia) — nunca conteúdo genuinamente novo.
-2. **Causa raiz, com evidência real**: os 3 feeds genéricos antigos
-   (`apoios sociais portugal`, `segurança social portugal`, `IRS
-   subsidios portugal 2026`) devolviam a notícia de abono real (quando
-   existia) na posição 78+ de 100 — muito além de qualquer limite
-   realista (`fetch_entries()` só examinava as primeiras 10). Um feed
-   dedicado por tema (`abono de família portugal`) encontrou a mesma
-   notícia (ou uma da mesma janela temporal, 1 jul) **na 1.ª posição**
-   — confirma que a especificidade da query, não o limite por feed, é
-   o factor decisivo.
-3. **Factor agravante confirmado**: a selecção nunca considerava a
-   data — só o score de keywords — por isso um artigo de PSU de há 2
-   meses (muitas keywords: "prestação", "apoio", "psu", etc.) continua
-   a vencer todos os dias em vez de notícias mais recentes e mais
-   específicas com score mais baixo.
-4. **DRE confirmado morto em 3 investigações diferentes** (XML
-   malformado, `not well-formed (invalid token)`, sempre no mesmo
-   ponto) — testados também 2 URLs alternativos do DRE, ambos com o
-   mesmo erro. Candidatos a fonte oficial testados e mortos:
-   `seg-social.pt/rss` (entidade XML indefinida), `portugal.gov.pt/.../rss`
-   (404). **Não existe hoje um substituto oficial vivo** — não é falta
-   de tentativa, é confirmado por fetch real.
-
-**Correcção aplicada** (`scripts/gerar_noticias.py`):
-- `FEEDS` passa de 3 pesquisas genéricas + DRE para **7 feeds, um por
-  tema do site** (`abono_familia`, `subsidio_desemprego`, `rsi`,
-  `psu_pensoes`, `acao_social_escolar`, `cuidador_informal`,
-  `porta65_arrendamento`) — todos testados com fetch real antes de
-  entrar no código. DRE removido sem substituto (documentado, não um
-  placeholder morto).
-- **Corte de recência** (`JANELA_RECENCIA_DIAS = 7`): candidatos mais
-  antigos que 7 dias são rejeitados mesmo com score alto — elimina o
-  "banco" de artigos antigos da PSU. Motivo registado no log
-  (`"antigo (antes de AAAA-MM-DD, janela de 7 dias)"`).
-- `LIMITE_ENTRADAS_POR_FEED` sobe de 10 para 15 (margem de segurança
-  barata — o diagnóstico mostrou que a query específica, não este
-  limite, era o que importava).
-- Testado com os títulos e datas **reais** capturados no diagnóstico
-  como fixtures (`tests/test_gerar_noticias.py`) — o artigo de PSU de
-  maio é rejeitado pelo corte de recência mesmo com score mais alto do
-  que o artigo de abono de julho, que vence.
-
-**Observabilidade permanente** (Fase 3, mesmo padrão de
-`gerir_estado_fontes.py`):
-- `data/feeds_saude_hoje.json` — snapshot diário por feed (`OK`/`MORTO`,
-  motivo, n.º de entradas) — um feed com `bozo=True` (erro de parsing
-  XML, o caso do DRE) conta sempre como `MORTO`, **mesmo com HTTP 200**.
-- `scripts/gerir_estado_feeds.py` (Step 3a do pipeline) — máquina de
-  estados pura (`data/estado_feeds.json`), mesma lógica de
-  `gerir_estado_fontes.py`: só cria Issue `feed-morto` ao 3.º dia
-  consecutivo, fecho automático ao recuperar. Sem dados de saúde da
-  corrida (ex.: `gerar_noticias.py` falhou antes de escrever), mantém o
-  último estado conhecido — nunca inventa "tudo OK" nem "tudo morto".
-- `data/noticias_candidatos.json` — log auditável dos últimos 14 dias
-  (retenção por dias corridos, não por n.º de corridas — 2 corridas no
-  mesmo dia, ex.: `workflow_dispatch` manual, nunca expulsam uma
-  entrada de um dia mais antigo fora de tempo). **Revisto em
-  2026-07-04** para auditoria completa: em vez de só top 3 + rejeitados
-  parciais (o `selecionar_vencedor()` original pára assim que encontra
-  um vencedor, por isso nunca classificava os candidatos a seguir),
-  `analisar_candidatos_na_janela()` classifica **todos** os candidatos
-  dentro da janela de recência (título, feed, data, score, decisão —
-  `vencedor`/`rejeitado_score`/`rejeitado_duplicado`/`nao_escolhido`),
-  para que "o sistema viu a notícia X?" tenha sempre resposta. Os
-  candidatos fora da janela ficam só como contagem por feed
-  (`fora_da_janela_por_feed`) — o título deles já não interessa para
-  auditoria, nunca poderiam vencer. `analisar_candidatos_na_janela()`
-  reimplementa deliberadamente a mesma lógica de `selecionar_vencedor()`
-  em vez de a reutilizar — o objectivo é classificar tudo, não só
-  encontrar o primeiro vencedor (early-exit deixaria de fazer sentido).
-
-Testado em `tests/test_gerar_noticias.py` (corte de recência, saúde de
-feed, classificação completa de candidatos, retenção por dias),
-`tests/test_estado_feeds.py` (máquina de estados, mesmos casos de
-`test_estado_fontes.py`) e `tests/test_gerar_noticias_guardrail.py`
-(allow-list dos 2 novos ficheiros).
-
-**Verificado no pipeline real** (`workflow_dispatch` de
-`pipeline-diario.yml`, não só no runner de diagnóstico): ver a entrada
-de 2026-07-04 "diagnóstico e correcção do sistema de notícias" em
-`HISTORICO.md` para o resultado real, não assumido.
+Nenhum dos dois blocos mostra alguma vez "hoje" ou uma data inventada. Se
+uma fonte falhar (RSS sem itens relevantes, ou um artigo sem "Verificado a"
+reconhecível), o bloco correspondente simplesmente não é actualizado nessa
+corrida — mantém o último conteúdo real. A) liga sempre directamente à
+fonte externa, nunca um link interno inventado; sem vencedor no dia,
+`data/noticias.json` não é tocado. Zero factos de memória, mesma regra do
+resto do site.
 
 ---
 
