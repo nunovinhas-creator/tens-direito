@@ -28,10 +28,6 @@ AAAA-MM-DD — ...*` ao **fim** deste ficheiro, nunca ao `CLAUDE.md`.
 
 ---
 
-*Última revisão automática: 2026-09-13*
-
----
-
 *Última revisão: 2026-07-05 — criado `ROADMAP.md` (índice único, privado,
 nunca servido — é `.md`, fora do sitemap/pesquisa.js/qualquer link de
 página), consolidando os gatilhos e o trabalho pendente já espalhados por
@@ -6310,3 +6306,7 @@ E501 .` — ver o resultado exacto no commit desta sessão.
 `False` (inalterados — sessão sem scraper). Trabalho feito na branch
 `claude/prazo-verificacao-issue183-passo2` (designada pelo ambiente
 remoto desta sessão) — PR novo, sem merge.
+
+---
+
+*Última revisão automática: 2026-09-13*

@@ -118,8 +118,9 @@ verificar). Antes de qualquer trabalho novo:
 - Verificar o estado de integração da sessão anterior:
   `git log --oneline -5 main` e comparar com o último resumo relevante
   no `ROADMAP.md` (secção "✅ CONCLUÍDO RECENTEMENTE" ou equivalente).
-- Se o `ROADMAP.md` (ou a última entrada de revisão do `CLAUDE.md`)
-  indicar uma branch "SEM PR — branch não integrada" que ainda não
+- Se o `ROADMAP.md` (ou a última entrada de revisão do `HISTORICO.md` —
+  desde o #194, é lá que o diário de sessões vive, nunca no fim do
+  `CLAUDE.md`) indicar uma branch "SEM PR — branch não integrada" que ainda não
   aparece em `main`: **PARAR e reportar ao utilizador antes de começar
   trabalho novo** — nunca presumir que entretanto foi integrada.
 - Nunca construir trabalho novo sobre o pressuposto de que a branch da
@@ -136,7 +137,7 @@ uma limpeza falhada deixe um workflow órfão a correr em `main` — um erro que
 pareceria sucesso. Esta é a única excepção à regra "NUNCA criar branches"
 deste ficheiro — nenhuma outra tarefa a herda por analogia. Substitui o
 padrão usado em sessões anteriores (documentado em várias entradas de revisão
-mais abaixo neste ficheiro: `diagnostico-dre-psu-temp.yml`,
+de `HISTORICO.md`: `diagnostico-dre-psu-temp.yml`,
 `diagnostico-fontes-temp.yml`, `diagnostico-igefe-temp.yml`,
 `diagnostico-calendario-temp.yml`, `diagnostico-logo-temp.yml` — todos
 committed directamente em `main` e apagados no fim); essas entradas ficam
@@ -201,8 +202,8 @@ JSON, para não partir com caracteres especiais no nome.
 workflow, mesmo padrão já usado para o guardrail de skips: branch de
 teste totalmente integrada em `main` → confirmado apagada sozinha, sem
 Issue; branch de teste com 1 commit único → confirmado NÃO apagada e
-Issue única aberta com a contagem certa. Ver entrada de revisão
-correspondente para os run_ids reais.
+Issue única aberta com a contagem certa. Ver a entrada de 2026-07-06 em
+`HISTORICO.md` para os run_ids reais.
 
 Estado do repositório confirmado nesta sessão, antes de qualquer teste
 (via API `list_branches` + `git ls-remote --heads origin`, não por
@@ -1794,8 +1795,9 @@ feed, classificação completa de candidatos, retenção por dias),
 (allow-list dos 2 novos ficheiros).
 
 **Verificado no pipeline real** (`workflow_dispatch` de
-`pipeline-diario.yml`, não só no runner de diagnóstico): ver entrada de
-revisão no fim deste ficheiro para o resultado real, não assumido.
+`pipeline-diario.yml`, não só no runner de diagnóstico): ver a entrada
+de 2026-07-04 "diagnóstico e correcção do sistema de notícias" em
+`HISTORICO.md` para o resultado real, não assumido.
 
 ---
 
@@ -2149,7 +2151,8 @@ ao interagir com o gerador. Genérico sobre as 3 páginas via
 filosofia de `test_simulador_csi_calculo.py`. Mais: `test_nav_tem_link_documentos`
 novo em `tests/test_nav_coerencia.py` (mesmo padrão de
 `test_nav_tem_link_simuladores`). Suite completa reconfirmada sem
-regressões (ver entrada de revisão no fim deste ficheiro), ruff limpo.
+regressões (ver a entrada de 2026-07-06 "Sessão 2 do Gerador de
+Documentos" em `HISTORICO.md`), ruff limpo.
 
 ---
 
@@ -2285,7 +2288,7 @@ protegido como qualquer outra. **Fase 5 — concluída (2026-07-12):**
 primeiro pagamento"), página evergreen cross-cluster com tabela por
 prestação (desemprego/doença/parental/abono/RSI/pensão/CSI) e
 cross-links nos dois sentidos com o calendário — ver a entrada de
-revisão no fim deste ficheiro.
+2026-07-12 "Fase 5 de `CALENDARIO-PAGAMENTOS-SPEC.md`" em `HISTORICO.md`.
 
 **Cross-link PSU (2026-07-18)** — nota não-alarmista junto às 4 linhas da
 tabela "Quando recebo a minha prestação?" cujo regime **não-contributivo**
@@ -2624,9 +2627,15 @@ princípio — mais escrutínio, com promulgação obrigatória do PR e possíve
 apreciação parlamentar do próprio decreto-lei.
 
 O texto integral da Lei n.º 36/2026 (artigos 1.º a 3.º) confirma, ao
-pormenor, o que o site já documentava e acrescenta factos novos — ver
-entrada de revisão de 28/07/2026 no fim deste ficheiro para o detalhe
-completo. Resumo: a lista dos 13 apoios (artigo 1.º/2) bate certo com a
+pormenor, o que o site já documentava e acrescenta factos novos — ver a
+entrada de 2026-07-28 em `HISTORICO.md` para o detalhe completo.
+**Por reconciliar com o Decreto-Lei n.º 166/2026 (Issue #195)**: os 6
+factos abaixo foram confirmados pela Lei n.º 36/2026, uma autorização
+legislativa intermédia — ninguém confirmou ainda, afirmação a afirmação,
+quais o decreto-lei manteve tal e qual, quais refinou, e quais deixaram
+de ser relevantes (ex.: o ponto das ponderações de "adultos
+equivalentes", abaixo marcado "ainda por fixar", pode já estar fixado em
+`dados/parametros/psu.yaml`). Resumo: a lista dos 13 apoios (artigo 1.º/2) bate certo com a
 soma das 8 alíneas legais (a alínea dos subsídios de parentalidade
 desdobra-se em 6 apoios distintos); o mecanismo de dispensa das actividades
 de solidariedade social para incapacidade ≥80% (com avaliação individual
@@ -2658,8 +2667,8 @@ Cluster publicado: 1 jul 2026 (pillar + 4 páginas filhas); + `psu-trabalho-soci
 (5.ª página filha — ver "PÁGINAS PUBLICADAS"). As 6 páginas do cluster
 (pillar + 5 filhas) foram actualizadas a 18/07/2026 com a milestone da
 promulgação, a 28/07/2026 com a publicação da Lei n.º 36/2026 em DR, e a
-2026-08-13/16 com os valores reais do decreto-lei (Fase 2) — ver
-entradas de revisão no fim deste ficheiro. **Mais 3 páginas novas
+2026-08-13/16 com os valores reais do decreto-lei (Fase 2) — ver as
+entradas correspondentes a essas datas em `HISTORICO.md`. **Mais 3 páginas novas
 publicadas na Fase 2**: `como-pedir-psu.html` e
 `calendario-pagamentos-psu.html` (Commit 2/5), e `simulador-psu.html`
 activado — `index,follow`, fórmula real, banner de vigência ligado a
@@ -2831,8 +2840,9 @@ Estas páginas mantêm-se inalteradas — os subsistemas/apoios são explicitame
 
 A secção "PSI e a Prestação Social Única" de `prestacao-social-para-a-inclusao.html`
 tratava a exclusão da PSI como **provisória**, à espera do decreto-lei
-(ver o antigo item 9 do "Plano de acção" abaixo, e a entrada de revisão de
-2026-07-04 mais abaixo neste ficheiro). Facto novo, verificado pelo Nuno a
+(ver o antigo item 9 do "Plano de acção" abaixo, e a entrada de 2026-07-04
+"nova página `prestacao-social-para-a-inclusao.html`" em `HISTORICO.md`).
+Facto novo, verificado pelo Nuno a
 18/07/2026 (lista oficial via ECO + proposta do Governo + Guia Prático do
 ISS da PSI): **a PSI não está entre as 13 prestações da PSU — e não é uma
 questão em aberto**. O perímetro da PSU foi fixado pela autorização
@@ -3085,8 +3095,8 @@ entretanto):
 
 O anteprojecto de reforma laboral ("Trabalho XXI") sobre autodeclaração
 fraudulenta como justa causa de despedimento **deixou de ser um ponto a
-re-verificar** — foi removido da página em 2026-07-05 (ver entrada de
-revisão no fim deste ficheiro): a Proposta de Lei n.º 77/XVII/1.ª foi
+re-verificar** — foi removido da página em 2026-07-05 (ver a entrada de
+2026-07-05 "sessão de correcções pontuais" em `HISTORICO.md`): a Proposta de Lei n.º 77/XVII/1.ª foi
 chumbada na Assembleia da República, não é lei nem proposta viva. Não
 reintroduzir sem um facto novo e confirmado.
 
@@ -3246,7 +3256,7 @@ O plano de 3 sessões está **concluído** — registo mantido para memória:
 | ~~Regime Simplificado de Arrendamento Acessível (RSAA)~~ | **Concluído (Sessão 3)** — nota de caixa em `deducao-rendas-irs.html`, sem página própria dedicada (benefício do senhorio, não do inquilino — fora do foco do cluster) | Ver "Estado real verificado" acima |
 | ~~1.º Direito~~ | **Concluído (Sessão 3)** — `primeiro-direito.html` | Ver "Estado real verificado" acima |
 | ~~Dedução de rendas em IRS~~ | **Concluído (Sessão 3)** — `deducao-rendas-irs.html` | Ver "Estado real verificado" acima |
-| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver entrada de revisão da Sessão 2 no fim deste ficheiro |
+| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver a entrada de 2026-07-20 "Sessão 2 (revista)" em `HISTORICO.md` |
 | ~~Watchlist automática DRE~~ | **Concluído e calibrado contra um runner real (2026-07-20, sessão de integração)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. A 1.ª corrida real (`workflow_dispatch`) confirmou um falso positivo genuíno em `dre_habitacao_paer`: a pesquisa de frase exacta funcionou correctamente e devolveu o DL n.º 20-B/2023 (diploma fundador do PAER, confirmado por `WebSearch`) e as suas alterações já conhecidas (2023-2025) — sem corte de recência, isto criaria a mesma Issue todos os dias, porque a suposição original ("qualquer Decreto-Lei nos resultados é sinal de novidade", válida para o `dre_psu` porque a PSU ainda não tem diploma nenhum) não se aplica a uma lei já em vigor há anos. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só conta "novo" um item datado a partir da activação da watchlist; um item sem data reconhecível nunca é descartado em silêncio (mesmo invariante "nenhum estado de erro pode parecer sucesso"). `dre_psu` confirmado 100% inalterado (sem corte de recência, testado). Issue #73 fechada com a explicação. `dre_habitacao_garantia` devolveu zero resultados na 1.ª corrida (comportamento seguro, nunca disparou) — causa por investigar sem prioridade. 6 testes de regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no total), incluindo fixture com os dados reais desta corrida; ver ROADMAP.md → "Automáticos" | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
 
 **Correcção à linha "Watchlist automática DRE" da tabela acima
@@ -3370,7 +3380,7 @@ um texto inventado pela automação, nunca publicado sozinho.
    limites de IMT Jovem nas Regiões Autónomas, o piso do subsídio de
    doença (RMMG, não IAS), ou os 13 apoios da PSU confirmados pela Lei
    n.º 36/2026 — todas já documentadas nas respectivas entradas de
-   revisão deste ficheiro.
+   revisão em `HISTORICO.md`.
 3. **Calendário de pagamentos da Segurança Social, uma vez por mês** —
    no primeiro dia útil do mês (simplificado a segunda-sexta, sem
    calendário de feriados portugueses — limitação conhecida, ver
@@ -4467,7 +4477,7 @@ sessões anteriores.
    `simulador-subsidio-doenca.html` para o padrão de parâmetros YAML +
    fetch, um por commit, mesmo padrão do CSI.~~ **`simulador-subsidio-doenca.html`
    e `simulador-abono.html` migrados a 2026-07-19** (sessão "Parâmetros
-   YAML + auditoria factual") — ver essa entrada de revisão. `simulador-ase.html`
+   YAML + auditoria factual") — ver essa entrada em `HISTORICO.md`. `simulador-ase.html`
    continua por migrar, bloqueado à espera do despacho anual da DGEstE
    (ver ROADMAP.md).
 2. Confirmar em produção real (depois do deploy) que o Datasette Lite
