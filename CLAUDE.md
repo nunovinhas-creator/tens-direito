@@ -2032,172 +2032,119 @@ Documentos" em `HISTORICO.md`), ruff limpo.
 
 ## CALENDÁRIO DE PAGAMENTOS DA SEGURANÇA SOCIAL
 
-Página evergreen `calendario-pagamentos-seguranca-social.html` (Fases
-0+1+2 de `CALENDARIO-PAGAMENTOS-SPEC.md`, 2026-07-12 — documento
-externo, mesmo padrão de `MELHORIAS-SPEC.md`). URL única que acumula
-autoridade; o conteúdo do mês é injectado, nunca reescrito à mão.
+Página evergreen `calendario-pagamentos-seguranca-social.html` — URL
+única que acumula autoridade; o conteúdo do mês é sempre injectado,
+nunca reescrito à mão. Narrativa completa (triangulação inicial de
+julho 2026, diagnóstico que corrigiu a data-alvo do scraping, histórico
+do scraper) vive em `HISTORICO.md`, não aqui.
 
-**Invariante crítico**: a página NUNCA mostra um mês passado como
-corrente, e nenhuma data vem de memória — só da fonte oficial da
-Segurança Social (ver `docs/FONTE-CALENDARIO.md`, Fase 0: notícia
-mensal no portal antigo + página Calendário do portal novo `/ptss/pssd/`;
-⚠️ o slug da notícia é reciclável entre meses — validar sempre o mês no
-CONTEÚDO, nunca no URL). Sem dados do mês corrente, a página degrada
-para um bloco explícito "consultar fonte oficial" com link — nunca uma
-tabela velha silenciosa.
+**Invariante crítico**: a página nunca mostra um mês passado como
+corrente, e nenhuma data vem de memória — só da fonte oficial pública
+`https://www.seg-social.pt/ptss/pssd/pagamentos` (ver
+`docs/FONTE-CALENDARIO.md`). Sem dados do mês corrente, degrada para um
+bloco explícito "consultar fonte oficial" — nunca uma tabela velha
+silenciosa.
 
 ### Arquitectura
 
 - **`data/calendario_pagamentos.json`** — fonte de verdade
   (`atualizado_em`, `fonte_url`, `meses[].pagamentos[]` com
-  dia/prestações/método/nota). Julho 2026 triangulado por ≥5 fontes
-  independentes que reproduzem o calendário oficial (seg-social.pt
-  bloqueado nesta sessão — mesmo padrão de fact-check documentado para
-  o cluster Habitação). **Agosto deliberadamente ausente**: as únicas
-  fontes eram indistinguíveis de previsão por regra de dias fixos.
-- **`scripts/atualizar_calendario.py`** — injecção idempotente (2.ª
-  corrida = zero alterações, `--dry-run` disponível), confinada a dois
-  marcadores: `CAL:META:INICIO/FIM` (title + meta description com o mês
-  corrente) e `CAL:CORPO:INICIO/FIM` (tabela do mês, secção "Quando
-  recebo a minha prestação?" com as âncoras da spec —
+  dia/prestações/método/nota).
+- **`scripts/atualizar_calendario.py`** — injecção idempotente
+  (`--dry-run` disponível), confinada a `CAL:META:INICIO/FIM` (title +
+  meta description com o mês corrente) e `CAL:CORPO:INICIO/FIM` (tabela
+  do mês; secção "Quando recebo a minha prestação?" com 10 âncoras —
   `#pensoes`/`#csi`/`#psi`/`#abono-familia`/`#subsidio-desemprego`/
-  `#subsidio-doenca`/`#rsi`/`#apoio-renda`/`#cuidador-informal` — e o
-  mês seguinte quando disponível). Validação dura antes de escrever
-  (allow-list `PRESTACOES`, dias 1-31, listas não vazias, `fonte_url`
-  só de seg-social.pt, mês duplicado) — falha sem tocar no HTML.
-  Meses passados nunca são renderizados, mesmo presentes no JSON.
+  `#subsidio-doenca`/`#parentalidade-social`/`#rsi`/`#apoio-renda`/
+  `#cuidador-informal`, `VISTA_PRESTACOES` — e o mês seguinte quando
+  disponível). Validação dura antes de escrever (allow-list
+  `PRESTACOES`, dias 1-31, listas não vazias, `fonte_url` só de
+  seg-social.pt, mês duplicado) — falha sem tocar no HTML. Meses
+  passados nunca são renderizados, mesmo presentes no JSON.
 - **`og:title` estável, sem mês** (decisão deliberada): o manifest das
-  imagens og (`tests/test_og_image.py`) exige og:title == manifest —
-  um og:title mensal obrigaria a regenerar a imagem (Chromium) todos os
-  meses. Só `<title>`/description variam com o mês.
-- **Destaque "Próximo pagamento" no topo** (2026-07-12, pedido do Nuno —
-  é a informação por que a maioria vem à página): logo no início do
-  conteúdo, antes da tabela, o injector escreve duas camadas, ambas sem
-  rede — (1) estática, sempre visível mesmo sem JS, com todas as datas
-  do mês num relance (`.cal-destaque-linha`); (2) `#cal-dados` (JSON com
-  `dia`+`resumo` curto por pagamento) que o script de runtime lê para
-  **promover a próxima data a contar de hoje** (`.cal-destaque-proximo`:
-  "📅 Próximo pagamento: 16 de julho · …"). Só promove quando o mês
-  renderizado é o mês corrente do visitante — num mês velho (aviso de
-  desatualização activo) ou no estado degradado nunca inventa um
-  "próximo", e a camada estática mantém-se. `RESUMO_CURTO` em
-  `atualizar_calendario.py` dá os rótulos curtos (a tabela mantém os
-  nomes longos). Testado com Chromium real (promoção do dia certo,
-  ausência de promoção num mês velho, linha estática sempre visível,
-  0px de overflow a 375px).
-- **Guarda JS em runtime** (progressive enhancement, zero rede): script
-  inline compara `#cal-corrente[data-mes]` com a data do visitante e
-  mostra `#cal-aviso-desatualizado` se a página tiver ficado velha —
-  testado com Chromium real (cópia adulterada com mês anterior mostra o
-  aviso; estado normal não).
-- **`tests/test_calendario_frescura.py`** — canário de frescura (FALHA
-  quando o mês renderizado < mês real: CI vermelho força actualização —
-  provado a falhar de propósito com `data-mes` adulterado, e revertido),
-  sincronização página↔script↔JSON, estado degradado (JSON vazio ou só
-  com meses passados nunca rende tabela), e os caminhos de falha da
-  validação. Adiantado da Fase 4 só este núcleo do invariante; o resto
-  (Playwright mobile no CI, workflow) fica para a sessão da Fase 3+4.
+  imagens og (`tests/test_og_image.py`) exige `og:title == manifest` —
+  um título mensal obrigaria a regenerar a imagem todos os meses. Só
+  `<title>`/description variam com o mês.
+- **Destaque "Próximo pagamento"** no topo, antes da tabela: camada
+  estática (sempre visível mesmo sem JS, com todas as datas do mês) +
+  `#cal-dados` (JSON `dia`+`resumo` curto por pagamento) que um script
+  de runtime lê para promover a próxima data a contar de hoje — só
+  quando o mês renderizado é o mês corrente do visitante; num mês velho
+  (aviso de desatualização activo) ou em estado degradado nunca inventa
+  um "próximo", e a camada estática mantém-se.
+- **Guarda JS em runtime** (progressive enhancement, zero rede): compara
+  `#cal-corrente[data-mes]` com a data do visitante e mostra
+  `#cal-aviso-desatualizado` se a página tiver ficado velha.
+- **`tests/test_calendario_frescura.py`** — canário de frescura (falha
+  se o mês renderizado for anterior ao mês real), sincronização
+  página↔script↔JSON, estado degradado (JSON vazio ou só com meses
+  passados nunca rende tabela), caminhos de falha da validação, e
+  Playwright mobile (375px sem overflow, âncoras, guarda JS).
 - Integração: `EXCLUIDAS` em `sincronizar_clusters.py` (página
   utilitária cross-cluster, mesma categoria de `simuladores.html`),
   nav/sitemap/pesquisa.js/og-image próprios, cross-links nos dois
-  sentidos com 7 páginas de prestações (parágrafo "📅 Em que dia do mês
-  é pago?" antes do bloco de fontes, com âncora directa) + botão em
-  `comecar-aqui.html` (link sem âncora — o grafo de órfãs de
-  `test_higiene_indexacao.py` não segue hrefs com `#fragmento`, achado
-  real desta sessão).
+  sentidos com as páginas de prestações (parágrafo "📅 Em que dia do mês
+  é pago?", com âncora directa) + botão em `comecar-aqui.html` (link sem
+  âncora — o grafo de órfãs de `test_higiene_indexacao.py` não segue
+  hrefs com `#fragmento`).
 
-### Fases 3+4 — IMPLEMENTADAS (2026-07-12, mesma data das Fases 0-2)
+### Scraping automático
 
-**FONTE PÚBLICA REAL — scraping automático (2026-07-12, pista do Nuno;
-detalhe em `docs/FONTE-CALENDARIO.md`)**: `https://www.seg-social.pt/ptss/pssd/pagamentos`
-é uma página PÚBLICA (HTTP 200, NÃO redirecciona para o gateway de
-login), SPA com um separador por mês; ao clicar num mês mostra a tabela
-oficial (dia → prestações → método), com as datas publicadas antes do
-início do mês. Uma ronda de diagnóstico anterior tinha concluído,
-erradamente, que "scraping é impossível" — porque testou `/pagamentos2`,
-`/noticias` e o "Calendário" de valores-a-receber (esses de facto
-inúteis), mas **não** este URL. Confirmado num runner e implementado
-scraping automático de verdade; o fluxo manual passa a ser só o
-*fallback*.
+Fonte pública real: `https://www.seg-social.pt/ptss/pssd/pagamentos` —
+SPA com um separador por mês, sem gateway de login; o fluxo manual
+(sonda + Issue) é só o *fallback*.
 
-- **`scripts/scraper_calendario.py`** — `parse_innertext()` (função pura:
-  texto do painel do mês → schema do JSON; testada com o texto REAL de
-  agosto) + `raspar_mes()` (Playwright: clica no separador do mês, espera
-  pelo cabeçalho do mês E por uma linha de método + settle, extrai).
+- **`scripts/scraper_calendario.py`** — `parse_innertext()` (texto do
+  painel do mês → schema do JSON) + `raspar_mes()` (Playwright: clica no
+  separador, espera pelo cabeçalho do mês e por uma linha de método).
   Mapeamento estrito `NOME_PARA_SLUG`; prestação fora da allow-list, mês
   vazio ou método órfão fazem **falhar** (`ScraperError`) — nunca
-  descarta em silêncio (INVARIANTE). Prestação nova real já apanhada por
-  aqui: "Subsídio por Suspensão da Atividade Cultural" (dia 21 de agosto).
+  descarta em silêncio.
 - **`.github/workflows/calendario-mensal.yml`** — dia 25 + retry 28
   (alvo: mês seguinte) e dia 1 às 05:30 (alvo: mês corrente — vira a
   página quando o JSON já tem o mês novo); `workflow_dispatch` com
-  input `forcar_seguinte`. Se o JSON tem o mês alvo → injecção
-  idempotente + `pytest tests/test_calendario_frescura.py` + guardrail
-  (falha se QUALQUER ficheiro fora do JSON + página aparecer
-  modificado) + commit/push + `garantir_deploy_pages.sh` + smoke
-  inline; fecha automaticamente a Issue `calendario-manual` do mês.
-  Se não tem → **tenta o scraper**; sucesso grava o mês no JSON e segue
-  `dados_ok`. Só se o scraper falhar → **nunca commit parcial**: sonda
-  as rotas oficiais e abre/actualiza (dedup por título) a Issue
-  `calendario-manual` com o erro do scraper + sonda + prompt pronto.
-  `concurrency: main-writes`.
-- **`scripts/verificar_calendario_mensal.py`** — decide o mês alvo
-  (dia ≥ 20 → mês seguinte); se o JSON não o tem, chama
+  `forcar_seguinte`. Se o JSON tem o mês alvo → injecção idempotente +
+  `pytest tests/test_calendario_frescura.py` + guardrail (falha se
+  qualquer ficheiro fora do JSON + página aparecer modificado) +
+  commit/push + `garantir_deploy_pages.sh` + smoke inline; fecha
+  automaticamente a Issue `calendario-manual` do mês. Se não tem →
+  tenta o scraper; sucesso grava o mês no JSON. Só se o scraper falhar
+  → **nunca commit parcial**: sonda as rotas oficiais e abre/actualiza
+  (dedup por título) a Issue `calendario-manual` com o erro do scraper
+  + sonda + prompt pronto. `concurrency: main-writes`.
+- **`scripts/verificar_calendario_mensal.py`** — decide o mês alvo (dia
+  ≥ 20 → mês seguinte); se o JSON não o tem, chama
   `tentar_scraper_e_gravar()` (grava só dados que passem a validação);
   fallback = sonda `/ptss/pssd/noticias` + Issue. Emite `estado`/
   `mes_alvo` via `GITHUB_OUTPUT`.
-- Provado ponta-a-ponta num runner: **agosto de 2026 foi raspado ao
-  vivo da fonte oficial, validado, injectado e commitado automaticamente**
-  (`fonte_url` do JSON passou para `/ptss/pssd/pagamentos`; run mensal
-  29201776013 → commit do bot `3f1dca8`; Issue manual de agosto fechada
-  sozinha). `tests/test_scraper_calendario.py` tranca o parser com o
-  texto real + os caminhos de falha. Fase 4 completa:
-  `tests/test_calendario_frescura.py` tem os testes Playwright mobile
-  (375px sem overflow, 9 âncoras, navegação por âncora, guarda JS com
-  mês velho em memória).
 
 Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
-protegido como qualquer outra. **Fase 5 — concluída (2026-07-12):**
-`pagamento-apos-deferimento.html` ("Pedido deferido: quando cai o
-primeiro pagamento"), página evergreen cross-cluster com tabela por
-prestação (desemprego/doença/parental/abono/RSI/pensão/CSI) e
-cross-links nos dois sentidos com o calendário — ver a entrada de
-2026-07-12 "Fase 5 de `CALENDARIO-PAGAMENTOS-SPEC.md`" em `HISTORICO.md`.
+protegido como qualquer outra. `pagamento-apos-deferimento.html`
+("Pedido deferido: quando cai o primeiro pagamento") é a página irmã
+evergreen — tabela por prestação (desemprego/doença/parental/abono/
+RSI/pensão/CSI) e cross-links nos dois sentidos com o calendário.
 
-**Cross-link PSU (2026-07-18)** — nota não-alarmista junto às 4 linhas da
-tabela "Quando recebo a minha prestação?" cujo regime **não-contributivo**
-está confirmado na lista dos 13 apoios (RSI, pensão social de velhice/
-invalidez, subsídio social de desemprego, subsídios sociais de
-parentalidade): "🔄 Vai ser integrado na PSU — o pagamento continua normal
-até ao decreto-lei", com link à pillar `/prestacao-social-unica.html`.
-CSI e PSI ficam deliberadamente de fora — o CSI está excluído da PSU
-(confirmado em audição parlamentar) e a PSI ainda não tem a inclusão/
-exclusão confirmada pelo decreto-lei. Implementado em `PSU_NOTAS`
-(`scripts/atualizar_calendario.py`), aplicado dentro de
-`_seccao_por_prestacao()` — sobrevive a qualquer regeneração mensal do
-`calendario-mensal.yml`, nunca um add-on manual que a próxima corrida
-apagaria (mesmo princípio da REGRA DE OURO: nada de manual dentro de uma
-zona `CAL:CORPO:*`). Nova linha "Subsídios de parentalidade" acrescentada
-a `VISTA_PRESTACOES` — a batch `desemprego_doenca_parentalidade_acao_social_*`
-já pagava prestações de parentalidade mas não tinha linha própria na
-tabela (só desemprego/doença); ganhou também o cross-link recíproco em
-`subsidio-parental.html` (mesmo padrão "📅 Em que dia do mês é pago?" já
-usado nas outras 7 páginas de prestações). 6.ª FAQ acrescentada (JSON-LD +
-visível, paridade 1:1 confirmada) sobre mudança de IBAN, com link para
-`/iban-seguranca-social.html` (nav path verificado contra esse guia:
-Segurança Social Direta → Perfil → Conta Bancária — não inventado).
-`dateModified`/"Verificado a" avançados para 18/07/2026.
+**Cross-link PSU**: nas 4 linhas cujo regime **não-contributivo** consta
+da lista dos 13 apoios (pensão social de velhice/invalidez, subsídio
+social de desemprego, subsídios sociais de parentalidade, RSI), uma
+nota aponta para `/prestacao-social-unica.html` confirmando a conversão
+oficiosa a partir de 31 de dezembro de 2026 (artigo 57.º do Decreto-Lei
+n.º 166/2026, hoje já publicado e em vigor — ver "IMPACTO DA PSU" para o
+estado do diploma). CSI e PSI ficam de fora das 4 linhas — ver
+"PENDÊNCIA PSI vs PSU — FECHADA" na mesma secção para a distinção entre
+exclusão explícita (CSI) e exclusão por omissão (PSI). Implementado
+dentro do próprio gerador (`PSU_NOTAS` em `atualizar_calendario.py`,
+aplicado em `_seccao_por_prestacao()`) — sobrevive a qualquer
+regeneração mensal do `calendario-mensal.yml`, nunca um add-on manual
+que a próxima corrida apagaria.
 
 ---
 
 ## MEDIÇÃO DE CONVERSÃO — EVENTOS GA4
 
-Instrumentação de conversão (2026-07-16, sessão de medição — sem qualquer
-alteração de layout/conteúdo/Schema). Objectivo: ter baseline fiável de
-conversão para, em meados de agosto, decidir a simplificação da homepage. Os
-eventos foram acrescentados **nos JS já existentes de cada funcionalidade**,
-nunca num ficheiro global novo — menos superfície nova, nenhum `eventos.js`
-partilhado criado.
+Instrumentação de conversão, sem qualquer alteração de layout/conteúdo/
+Schema. Cada evento vive no JS já existente da funcionalidade respectiva
+— nunca um `eventos.js` global partilhado.
 
 **Padrão obrigatório de qualquer evento novo**: guarda `typeof gtag ===
 'function'` antes de chamar (o gtag.js carrega sempre com Consent Mode v2
@@ -2209,14 +2156,15 @@ simulador, nunca um valor introduzido).
 
 | Evento | Onde | Parâmetros | Notas |
 |---|---|---|---|
-| `simulacao_concluida` | inline nos 6 simuladores publicados (abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia); **omitido** em subsidio_doenca e rsi — não têm veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). `simulador-psu.html` fica de fora (noindex, não publicado). |
+| `simulacao_concluida` | inline nos 9 simuladores publicados (abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego, imt_jovem, psu, condicoes_reforma), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia), imt_jovem e condicoes_reforma; **omitido** em subsidio_doenca, rsi e psu — sem veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). |
+| `menu_tool_click` | `assets/js/nav.js`, clique nos cartões da grelha de ferramentas do menu móvel e no link "Começa aqui" (`.nav-mobile-card`/`.nav-mobile-destaque`) | `tool_destino` (basename do próprio `href`, nunca um ID fixo por cartão) | Só no menu móvel, não no desktop. |
 | `partilha_clique` | `assets/js/share.js`, nos dois pontos de sucesso (Web Share API e cópia para a área de transferência) | `pagina` (pathname) | Nunca no fallback da caixa manual (falha de cópia) nem em cancelamento (AbortError). Nunca envia o título. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
 | `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
 
-**`documento_gerado` — deliberadamente NÃO implementado** (decisão do Nuno
-nesta sessão): o gerador de documentos tem a invariante dura, documentada e
-testada, de **zero pedidos de rede depois do load**
+**`documento_gerado` — deliberadamente NÃO implementado**: o gerador de
+documentos tem a invariante dura, documentada e testada, de **zero pedidos
+de rede depois do load**
 (`tests/test_gerador_documentos.py::test_zero_pedidos_de_rede_ao_interagir_com_o_gerador`),
 que sustenta a promessa "os dados que preenches nunca saem do teu
 dispositivo". Um evento GA4 é um pedido de rede (mesmo o ping sem cookies em
@@ -2229,7 +2177,7 @@ tranca essa decisão.
 **Testes**: `tests/test_eventos_ga4.py` (asserções sobre o fonte, portáteis,
 sem Playwright — guarda `typeof gtag`, slug/parâmetro certos, e um varrimento
 global anti-dados-pessoais com denylist de tokens de input/DOM) +
-`tests/test_share_js.py` (5 testes funcionais Chromium para `partilha_clique`:
+`tests/test_share_js.py` (testes funcionais Chromium para `partilha_clique`:
 dispara no clipboard e no Web Share, nunca em cancelamento nem no fallback
 manual, e corre sem gtag definido).
 
@@ -2252,17 +2200,16 @@ Os eventos disparam sozinhos, mas marcá-los como **key events** (conversões)
 não é possível por código — é na interface do GA4 (Admin → Events → marcar
 como key event). Marcar: `simulacao_concluida`, `comecar_aqui_percurso` (o
 evento final, `etapa: 'fim'`) e — quando/se instrumentado — `documento_gerado`
-(hoje não existe, ver acima). `partilha_clique` e `cal_home_clique` são úteis
-como micro-conversões, opcional marcá-los.
+(hoje não existe, ver acima). `menu_tool_click`, `partilha_clique` e
+`cal_home_clique` são úteis como micro-conversões, opcional marcá-los.
 
 ---
 
 ## SCHEMA.ORG — GRAFO DO SITE (WebSite + CollectionPage)
 
-Intervenção cirúrgica de 2026-07-16 (Sessão 2 — só JSON-LD ao nível do
-site; o JSON-LD dos artigos, `FAQPage`/`HowTo`/`BreadcrumbList`/`Article`,
-está correcto e **não foi tocado**). O défice era ao nível do grafo do
-site, não dos artigos.
+JSON-LD ao nível do site (grafo entre páginas) — o JSON-LD de cada artigo
+(`FAQPage`/`HowTo`/`BreadcrumbList`/`Article`) é assunto à parte, correcto
+e não relacionado com esta secção.
 
 ### WebSite único, na homepage
 
@@ -2270,35 +2217,24 @@ site, não dos artigos.
   `https://tensdireito.com/#website`, `publisher` a referenciar a
   `Organization` da NV Labs por `@id`
   (`https://tensdireito.com/sobre.html#nvlabs`, definida em `sobre.html`).
-- **`potentialAction` (`SearchAction`) — adicionado a 2026-07-16, removido
-  a 2026-07-18.** Na altura, o `urlTemplate`
-  (`https://tensdireito.com/?pesquisa={search_term_string}`) foi verificado
-  contra um handler real (`index.html` lê `?pesquisa=` no
-  `DOMContentLoaded`, injecta o termo no campo de pesquisa do hero via
-  `pesquisa.js`) — nunca inventado. Removido depois de o GSC reportar
+  Nunca dois `WebSite` com `@id` diferentes — `sobre.html` mantém só
+  `AboutPage` + `Organization` (a entidade NV Labs continua resolvível
+  lá).
+- **Sem `potentialAction` (`SearchAction`)** — existiu entre 2026-07-16 e
+  2026-07-18, removido depois de o GSC reportar
   `https://tensdireito.com/?pesquisa={search_term_string}` como "Rastreada
   — atualmente não indexada": a Google descontinuou a sitelinks search box
-  em outubro de 2024, por isso o markup deixou de ter função e só gerava
-  uma URL fantasma nos relatórios de cobertura. A funcionalidade de
-  pesquisa em si (`?pesquisa=`, `pesquisa.js`) **não foi tocada** — só o
-  `potentialAction` estruturado, dirigido ao Google, é que saiu; o
-  `canonical` da homepage (`https://tensdireito.com/`, sem query params)
-  já absorve qualquer variante `?pesquisa=...` que o Google tenha
+  em outubro de 2024, o markup deixou de ter função. A funcionalidade de
+  pesquisa em si (`?pesquisa=`, `pesquisa.js`) nunca foi tocada — só o
+  `potentialAction` estruturado saiu; o `canonical` da homepage (sem query
+  params) absorve qualquer variante `?pesquisa=...` que o Google tenha
   rastreado. Nenhum script gera este bloco (é escrito à mão em
-  `index.html`, como sempre foi) — não havia origem a corrigir.
-- **Decisão da Tarefa 1, ponto 3 — opção (a)** (2026-07-16): o `WebSite`
-  que vivia em `sobre.html` (sem `@id`) foi **removido**; passa a haver um
-  único `WebSite` no site, na homepage, com `@id`. Nunca dois `WebSite`
-  com `@id` diferentes. `sobre.html` mantém `AboutPage` + `Organization`
-  (a entidade NV Labs continua resolvível lá). `tests/test_sobre_jsonld.py`
-  actualizado (validava 3 blocos em `sobre.html`; agora valida 2 lá + o
-  `WebSite` com `@id`/`publisher` na `index.html`, sem `potentialAction`
-  desde 2026-07-18).
+  `index.html`).
 - Cuidado de manutenção: o `pipeline-diario.yml` (Step 6, `sed`)
   actualiza o campo `"dateModified"` deste bloco `WebSite` em `index.html`
-  — a linha foi preservada intacta, o `sed` continua a funcionar.
+  — não mexer na linha sem confirmar que o `sed` continua a apanhá-la.
 
-### CollectionPage + ItemList nas 6 pillar pages
+### CollectionPage + ItemList nas pillar pages
 
 - Gerado a partir de `data/clusters.json` (fonte única) por
   `render_pillar_jsonld()` em `scripts/sincronizar_clusters.py`, injectado
@@ -2311,26 +2247,25 @@ site, não dos artigos.
   `mainEntity` = `ItemList` cujos `itemListElement` são as páginas do
   cluster, `position` sequencial (1..N) e `url` absoluto — 1:1 com
   `clusters.json`, incluindo simuladores (`tipo: "ferramenta"`), tal como
-  o `PILLAR-LISTA`. As 6 pillars: as 5 em `p/*.html` + `prestacao-social-unica.html`
-  (pillar em raiz). Cada pillar fica com `Article` + `FAQPage` +
-  `BreadcrumbList` + `CollectionPage` — sem duplicar tipos (não havia
-  `WebPage`/`CollectionPage` antes).
+  o `PILLAR-LISTA`. Aplica-se a **todos** os pillars de
+  `data/clusters.json` (fonte única — nunca fixar aqui a contagem de
+  clusters, ver "SISTEMA DE CLUSTERS"). Cada pillar fica com `Article` +
+  `FAQPage` + `BreadcrumbList` + `CollectionPage` — sem duplicar tipos.
 - Testes: `tests/test_sincronizar_clusters.py` estendido — injecção,
-  idempotência do novo bloco, 1:1 `ItemList`↔`clusters.json` (unidade em
-  `tmp_path` **e** guarda sobre os 6 pillars reais), e pillar com
+  idempotência do bloco, 1:1 `ItemList`↔`clusters.json` (unidade em
+  `tmp_path` **e** guarda sobre os pillars reais), e pillar com
   `PILLAR-LISTA` mas sem `PILLAR-JSONLD` é reportada sem escrever (a
-  presença dos dois marcadores passa a ser obrigatória numa pillar).
+  presença dos dois marcadores é obrigatória numa pillar).
   `test_breadcrumb_coerencia.py` reconfirmado sem regressão.
 
 ### PASSO MANUAL PARA O NUNO — validar depois do deploy
 
 Depois do deploy, validar no **Rich Results Test**
 (search.google.com/test/rich-results) e/ou no **Search Console** (relatório
-de dados estruturados): a homepage (`WebSite`, sem `SearchAction` desde
-2026-07-18) e uma ou duas pillar pages (`CollectionPage` +
-`ItemList`). Não é possível validar por código contra a Google — a
-validação local é estrutural (JSON real, `@id` coerentes, `position`
-sequencial, URLs absolutos).
+de dados estruturados): a homepage (`WebSite`, sem `SearchAction`) e uma ou
+duas pillar pages (`CollectionPage` + `ItemList`). Não é possível validar
+por código contra a Google — a validação local é estrutural (JSON real,
+`@id` coerentes, `position` sequencial, URLs absolutos).
 
 ---
 
@@ -2930,9 +2865,8 @@ Registo histórico do plano original, com o estado real de cada item:
 
 ## GATILHO AUTOBAIXA
 
-Registado a 2026-07-05 — mesmo padrão do "Cluster PSU — páginas em
-espera": um gatilho documentado para uma página futura, **não criada
-nesta sessão nem antes de disparar**.
+Gatilho documentado para uma página futura — `autobaixa.html` continua
+por criar; mesmo padrão do "Cluster PSU — páginas em espera".
 
 **Página em espera**: `autobaixa.html` — landing dedicada às queries
 "autobaixa" / "autodeclaração de doença", hoje cobertas apenas pela
@@ -2957,22 +2891,19 @@ sobre quando o volume justifica uma página dedicada.
 4. Cross-links nos dois sentidos (pilar → landing na secção resumida;
    landing → pilar como "guia completo do subsídio de doença").
 5. Cluster: `trabalho-rendimento` (mesmo do pilar), `tipo: "artigo"`.
-6. Checklist obrigatória completa (GA4, JSON-LD, disclaimer, "Verificado
-   a", canónica, autoria, sitemap, pesquisa.js, testes).
+6. Checklist obrigatória completa de qualquer página nova de conteúdo —
+   ver "CHECKLIST OBRIGATÓRIA ANTES DE QUALQUER COMMIT".
 
-**Pontos ⚠️ a re-verificar nesse momento** (já documentados em
-`baixa-medica-subsidio-doenca.html`, mas com potencial de terem mudado
-entretanto):
-- Comunicação da autodeclaração ao empregador — à data de 05/07/2026,
-  não automática (código SMS/e-mail); confirmar se entretanto passou a
-  automática antes de reafirmar na landing.
+**Ponto ⚠️ a re-verificar nesse momento**: comunicação da autodeclaração
+ao empregador — na última verificação de `baixa-medica-subsidio-doenca.html`
+continuava não automática (código por SMS/e-mail que o trabalhador
+tem de facultar); confirmar se entretanto passou a automática antes de
+reafirmar na landing.
 
 O anteprojecto de reforma laboral ("Trabalho XXI") sobre autodeclaração
-fraudulenta como justa causa de despedimento **deixou de ser um ponto a
-re-verificar** — foi removido da página em 2026-07-05 (ver a entrada de
-2026-07-05 "sessão de correcções pontuais" em `HISTORICO.md`): a Proposta de Lei n.º 77/XVII/1.ª foi
-chumbada na Assembleia da República, não é lei nem proposta viva. Não
-reintroduzir sem um facto novo e confirmado.
+fraudulenta como justa causa de despedimento foi removido da página
+(Proposta de Lei n.º 77/XVII/1.ª chumbada na Assembleia da República) —
+não reintroduzir sem um facto novo e confirmado.
 
 ---
 
