@@ -714,6 +714,15 @@ a questão fica marcada por confirmar (GRAU 3) — nunca preenchida por
 analogia, e nunca apresentada como "lida directamente" sem o ter sido
 de facto.
 
+**`bportugal.pt` (Banco de Portugal) bloqueia acesso automatizado por
+detecção de bots — mesma natureza da limitação acima, incluindo os
+PDFs**: um comunicado oficial do Banco de Portugal costuma aparecer
+indexado em resultados de `WebSearch` (o título/excerto é legível), mas
+o PDF em si não é legível a partir de nenhuma sessão — mesmo tratamento
+que `dr/detalhe/`: sem acesso directo ao ficheiro, o facto nunca passa
+de GRAU 2 (triangulado) ou fica GRAU 3 (por confirmar), nunca GRAU 1,
+mesmo que o comunicado apareça citado por múltiplas fontes secundárias.
+
 ### Regra de links
 NUNCA inventar subpaths de portais oficiais.
 Quando um subpath devolve erro: usar a homepage do domínio.
@@ -740,6 +749,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
 11. **Valor legal em `<title>` ou meta description**: qualquer valor em € ou % com origem legal (IAS, um tecto/piso derivado do IAS, ou um valor próprio de Portaria/limiar) usado num `<title>` ou `<meta name="description">` tem de estar coberto por um teste em `tests/test_valores_ancora.py` — nunca pode ficar um valor "solto" em metadados, invisível a qualquer teste, a ficar errado em silêncio quando a lei mudar (ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION").
 12. **Ano civil em `<title>` ou meta description**: um `<title>`/description de uma prestação com valores anuais deve incluir o ano corrente quando fizer sentido editorial (os utilizadores pesquisam com o ano, ex.: "cuidador informal 2026") — páginas atemporais (institucionais, hubs, quiz) ficam de fora por critério editorial, não por omissão. Qualquer ano civil *anterior* ao ano corrente num `<title>`/description tem de estar numa excepção explícita em `tests/test_anos_metadados.py` (citação de diploma legal ou facto histórico permanente) — nunca um esquecimento silencioso (ver secção "CANÁRIO DE ANOS EM METADADOS").
+13. **O próprio site nunca é fonte**: uma afirmação já publicada noutra página deste site nunca conta como confirmação de um facto novo — se essa página afirmou algo sem fonte primária, repeti-lo aqui não o confirma, só duplica a mesma incerteza. Cada afirmação remete sempre para a fonte primária (ou para uma triangulação identificada como tal, GRAU 2/3 — ver "FONTES VERIFICADAS E APROVADAS"), nunca para outra página do próprio site como prova.
 
 ### Não fazer
 - Não usar Jekyll ou qualquer SSG
@@ -3226,6 +3236,8 @@ chamada de rede — os testes correm inteiramente em `tmp_path`, `main()`
 aceita `raiz`/`hoje`/`saida` explícitos (mesmo padrão de
 `gerir_estado_fontes.main()`), sem monkeypatch de constantes de módulo.
 
+### E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL
+
 Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
 mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
 **NV Labs** — estúdio independente português, responsável editorial do
@@ -4010,6 +4022,24 @@ apagados, só deixam de ser o "vigente").
   (verificado 25/06/2026, com `fonte`/`verificado_em` já anexados em
   `simulador-csi.html::PARAMETROS_CSI`) — a confirmação humana já
   existia, migrada tal e qual, nunca recalculada.
+- **Nada derivável de outro parâmetro é guardado como parâmetro**: um
+  valor calculável a partir de um parâmetro já existente (ex.: um tecto
+  que é sempre `multiplicador × IAS`) nunca ganha entrada própria em
+  `dados/parametros/*.yaml` — a relação fica trancada por um teste
+  (`tests/test_valores_ancora.py`, que recalcula e compara), nunca por
+  um segundo valor a manter sincronizado à mão. Só o `multiplicador`
+  (ou a constante fixa na lei) é parâmetro; o resultado é sempre
+  derivado em runtime ou no teste, nunca duplicado no YAML.
+- **Um parâmetro só existe se houver código que o consuma**: uma
+  entrada em `dados/parametros/*.yaml` exige um consumidor real — um
+  simulador/página via `dados/parametros.json`, um teste-âncora, ou, no
+  mínimo, os exportadores de Dados Abertos (`gerar_parametros_json.py`/
+  `gerar_base_dados.py`, que publicam qualquer YAML por desenho, mesmo
+  antes de um simulador o usar — caso de `imt_geral_hpp_ra_*` em
+  `habitacao.yaml`). Nunca um valor especulativo sem nenhum consumidor,
+  real ou de exportação (mesmo problema já documentado para
+  `source_adapter.py`, secção "IDEIAS RECUPERADAS — cascata de
+  fontes").
 - `scripts/gerar_parametros_json.py` consolida `dados/parametros/*.yaml`
   num único `dados/parametros.json` (um valor **vigente** por
   parâmetro — a entrada com `vigencia_inicio` mais recente já iniciada);
