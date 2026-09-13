@@ -3114,14 +3114,23 @@ artigos-filho de compra (`imt-jovem.html`,
 (`primeiro-direito.html`) — **7 páginas no total** (+ hub + simulador),
 sexto cluster do site, reorganizado em três secções no hub: 🏠 Arrendar
 / 🔑 Comprar / 🏚️ Situações de carência. Fact-check prévio obrigatório
-(bloqueante, ver "REGRAS DE CONTEÚDO") feito via `WebSearch` em todas as
-sessões — `WebFetch` está completamente bloqueado neste ambiente de
-sessão (403 em qualquer URL, incluindo domínios fora de `.gov.pt`, ex.:
-`en.wikipedia.org` — não é um bloqueio específico a portais oficiais, é
-o próprio `WebFetch` que não funciona nesta sessão). As páginas citam
-sempre a URL oficial como fonte, mesmo sem acesso directo — mesmo
-padrão já usado no site para fontes que devolvem 403 a bots (ver
-"FONTES VERIFICADAS E APROVADAS").
+(bloqueante, ver "REGRAS DE CONTEÚDO"). `WebFetch`/`curl` estão
+bloqueados nesta sessão para qualquer URL — observado como `403` em jul
+2026 e como `EGRESS_BLOCKED` desde então (sintomas diferentes da mesma
+limitação de rede do sandbox, nunca um bloqueio específico a portais
+oficiais nem a `dre.pt`/`bportugal.pt` em particular — confirmado até
+para domínios sem relação nenhuma com o Estado, ex.:
+`en.wikipedia.org`). Isto inclui `files.dre.pt`: é o canal a preferir
+para ler um diploma (fetchável directamente, sem SPA a renderizar),
+mas só quando alguém FORA do sandbox o lê e entrega o facto já
+confirmado ao Code (GRAU 1) — a partir desta sessão fica tão bloqueado
+como `dr/detalhe/` ou `bportugal.pt`. Sem essa entrega externa, o
+fact-check é feito por triangulação `WebSearch` (GRAU 2, sempre
+identificada como tal) ou fica marcado por confirmar (GRAU 3) — ver
+"FONTES VERIFICADAS E APROVADAS" → "Verificação directa de diplomas"
+para a metodologia completa. As páginas citam sempre a URL oficial
+como fonte, mesmo sem acesso directo — mesmo padrão já usado no site
+para fontes que devolvem 403 a bots.
 
 **Regra de dados (20 jul 2026, reforçada na Sessão 2)**: qualquer valor
 legal do IMT Jovem ou da Garantia Pública (limiares em €, percentagens,
@@ -3135,6 +3144,16 @@ directamente numa página nova sem primeiro confirmar (ou acrescentar)
 a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
 `verificado_em` — é o que `tests/test_valores_ancora.py` verifica
 (secção "Cluster Habitação").
+
+**Excepção conhecida, rastreada (Issue #197)**: os 2 primeiros bullets
+de "Estado real verificado" abaixo — Porta 65 Jovem/Porta 65+ e o Apoio
+Extraordinário à Renda (PAER) — não seguem esta regra. Os factos que
+citam (datas de candidatura contínua, condições de acesso, data de
+fecho a novos beneficiários) vivem só em prosa, sem entrada em
+`dados/parametros/habitacao.yaml` nem canário em
+`tests/test_valores_ancora.py`, ao contrário dos outros 4 bullets (IMT
+Jovem, Garantia Pública, Dedução de rendas no IRS, 1.º Direito). Nada
+os impede hoje de ficar desactualizados em silêncio.
 
 ### Estado real verificado (jul 2026)
 
@@ -3259,33 +3278,88 @@ O plano de 3 sessões está **concluído** — registo mantido para memória:
 | ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver a entrada de 2026-07-20 "Sessão 2 (revista)" em `HISTORICO.md` |
 | ~~Watchlist automática DRE~~ | **Concluído e calibrado contra um runner real (2026-07-20, sessão de integração)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. A 1.ª corrida real (`workflow_dispatch`) confirmou um falso positivo genuíno em `dre_habitacao_paer`: a pesquisa de frase exacta funcionou correctamente e devolveu o DL n.º 20-B/2023 (diploma fundador do PAER, confirmado por `WebSearch`) e as suas alterações já conhecidas (2023-2025) — sem corte de recência, isto criaria a mesma Issue todos os dias, porque a suposição original ("qualquer Decreto-Lei nos resultados é sinal de novidade", válida para o `dre_psu` porque a PSU ainda não tem diploma nenhum) não se aplica a uma lei já em vigor há anos. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só conta "novo" um item datado a partir da activação da watchlist; um item sem data reconhecível nunca é descartado em silêncio (mesmo invariante "nenhum estado de erro pode parecer sucesso"). `dre_psu` confirmado 100% inalterado (sem corte de recência, testado). Issue #73 fechada com a explicação. `dre_habitacao_garantia` devolveu zero resultados na 1.ª corrida (comportamento seguro, nunca disparou) — causa por investigar sem prioridade. 6 testes de regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no total), incluindo fixture com os dados reais desta corrida; ver ROADMAP.md → "Automáticos" | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
 
-**Correcção à linha "Watchlist automática DRE" da tabela acima
-(2026-09-01, Issues #147/#148)**: a "causa por investigar sem
+**Correcção à linha "Watchlist automática DRE" da tabela acima — 3
+rondas, a última já fechada (2026-09-01, Issues #147/#148; 2026-09-02,
+Issue #151; 2026-09-03, Issue #158)**: a "causa por investigar sem
 prioridade" do `dre_habitacao_garantia` estava investigada há muito —
 44 dias consecutivos, zero resultados, sempre, desde a criação. O
-termo pesquisava a **citação** do diploma por número
+termo original pesquisava a **citação** do diploma por número
 (`'"Decreto-Lei n.º 44/2024"'`), nunca uma frase temática — mesmo
 padrão que também cegou `dre_psu_regulamentacao` (ver secção "IMPACTO
-DA PSU" para o diagnóstico completo, com prova directa via dado real:
-`dre_psu` encontrou, no mesmo dia e com o mesmo motor, um item que a
-citação-por-número equivalente nunca encontrou). Corrigido trocando o
-termo para a designação temática do apoio — `'"Garantia Pública no
-crédito habitação"'` (a mesma frase que `scripts/preparar_canal.py` já
-usa como rótulo humano desta fonte), mesmo padrão comprovado de
-`dre_psu`/`dre_habitacao_paer`/`dre_ias`. **Ainda não confirmado contra
-um scrape real** — rede bloqueada para diariodarepublica.pt nesta
-sessão também; ao contrário de `dre_psu_regulamentacao` (que herdou a
-prova indirecta de `dre_psu`, mesmo termo), não há dado real equivalente
-disponível para "Garantia Pública" — a 1.ª corrida real do pipeline
-depois desta correcção é que confirma. Se devolver o próprio DL 44/2024
-ou uma alteração já conhecida com data completa posterior a
-"2026-07-20" (o `desde` actual do `detectar_decreto_lei`), pode ser
-necessário subir esse corte, mesmo tratamento já dado a
-`dre_psu_regulamentacao` (comentário em `scripts/scraper_playwright.py`
-junto a essa entrada). Novo guardrail permanente,
-`tests/test_dre_termos_pesquisa.py`, impede qualquer sentinela DRE
-(actual ou futuro) de voltar a usar um termo com forma de citação de
-diploma.
+DA PSU" para o diagnóstico completo: `dre_psu` encontrou, no mesmo dia
+e com o mesmo motor, um item que a citação-por-número equivalente nunca
+encontrou). Corrigido a 2026-09-01 trocando o termo para a designação
+temática do apoio, `'"Garantia Pública no crédito habitação"'` — mas
+**sem confirmação directa contra o motor real**, e continuou cego mais
+4 dias (Issue #151).
+
+**Corrigido de vez a 2026-09-02 (Issue #151), calibrado num runner
+real**: isolado o diagnóstico em contextos de browser limpos (achado
+metodológico à parte: pesquisas sucessivas na mesma `page`/`context`
+partilhada podem cair na página canónica de "zero resultados" do DRE
+mesmo com um termo correcto — a produção sobrevive porque
+`scrape_playwright()` tenta até 3 vezes com 30-120s de espera entre
+tentativas, o que um diagnóstico ingénuo não replica). Com isolamento
+correcto, `"Garantia Pública no crédito habitação"` confirmou-se **0
+resultados genuíno**, não artefacto de sessão. Em vez de continuar a
+adivinhar candidatos, extraído o texto real do DL 44/2024 na própria
+página de detalhe em dre.pt: a expressão legal exacta, usada
+repetidamente no diploma, é **"garantia pessoal do Estado"** (nunca
+"garantia pública", termo genérico demais — devolve 29 resultados sem
+nenhum relacionado com este DL). Testado contra o motor real: devolve
+24 resultados à 1.ª tentativa, incluindo a Portaria n.º 236-A/2024/1 —
+a que regulamenta este mesmo DL — prova directa e não-inferida de que a
+frase está correcta. **Termo em produção desde então**
+(`scripts/scraper_playwright.py`, `_FONTE_CONFIGS`/`FONTES_PLAYWRIGHT`,
+`termo`/`ancora_conteudo`): `'"garantia pessoal do Estado"'`;
+`data_minima`/corte de recência mantido em `"2026-07-20"`, sem
+alteração. **Lição reforçada**: mesmo uma correcção que já passa o
+guardrail de forma (`tests/test_dre_termos_pesquisa.py` — nunca um
+termo com forma de citação) ainda precisa de confirmação directa contra
+o motor real antes de ser dada como resolvida — o guardrail apanha a
+forma errada, nunca a semântica errada.
+
+**Triagem da Issue #158 (2026-09-03)** confirmou que o detector
+DEDICADO (`detectar_decreto_lei`, o que filtra por tipo Decreto-Lei +
+corte de recência) nunca disparou por engano — sempre esteve correcto.
+O ruído real vinha de um mecanismo diferente e sem filtro nenhum: o
+diff GENÉRICO "Detectar mudanças e registar" de `pipeline-diario.yml`,
+que compara `itens_lista` em bruto para TODAS as fontes DRE
+monitorizadas sem filtrar por tipo de acto legal. Dos 24 itens
+devolvidos por "garantia pessoal do Estado", 22 eram Resoluções do
+Conselho de Ministros sem relação nenhuma com o DL 44/2024; só 2 eram
+Portarias genuínas — a já conhecida 236-A/2024/1, e uma nova, **a
+Portaria n.º 187/2025/1** (1.ª alteração à 236-A/2024/1), nunca antes
+citada em `dados/parametros/habitacao.yaml`. Corrigido com uma allow-
+list scoped só a esta fonte (`DRE_SLUGS_PESQUISA` + `ACTO_LEGAL_REGEX`
+no diff genérico de `pipeline-diario.yml`) — **deliberadamente não
+generalizado** às outras 4 fontes DRE de pesquisa interactiva sem
+confirmar primeiro o perfil de ruído real de cada uma (`dre_habitacao_paer`
+tem um caso real, um "Regulamento" da Série II, que este mesmo filtro
+apagaria sem querer — ver `tests/test_diff_mudancas_issue.py`, Issue
+#114). Testes novos: `tests/test_diff_mudancas_allow_list_dre.py`.
+Issue #158 fechada.
+
+**Gap ainda aberto, rastreado por Issue própria (#198)**: a Portaria
+n.º 187/2025/1 continua por fact-checar e por acrescentar a
+`dados/parametros/habitacao.yaml` — confirmada só por `WebSearch`
+(síntese de fontes secundárias, nunca o texto legal directo; `WebFetch`
+continua bloqueado para `diariodarepublica.pt` e mirrors testados nesta
+sessão). Antes de acrescentar `fonte_url_complementar` (mesmo padrão do
+CSI): confirmar em sessão com acesso real ao texto se altera algum dos
+6 valores já publicados da Garantia Pública (idade 18-35, tecto
+450.000€, 15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) — nunca
+assumir que é só alteração de forma. Ver também ROADMAP.md →
+"TRABALHO FUTURO REGISTADO".
+
+Se `dre_habitacao_garantia` devolver o próprio DL 44/2024 ou uma
+alteração já conhecida com data completa posterior a "2026-07-20" (o
+`desde` actual do `detectar_decreto_lei`), pode ser necessário subir
+esse corte, mesmo tratamento já dado a `dre_psu_regulamentacao`
+(comentário em `scripts/scraper_playwright.py` junto a essa entrada).
+Guardrail permanente, `tests/test_dre_termos_pesquisa.py`, impede
+qualquer sentinela DRE (actual ou futuro) de voltar a usar um termo com
+forma de citação de diploma.
 
 **Registado para o futuro, sem prazo, sem decisão tomada**: nova tabela
 de rendas máximas de referência do Porta 65 (publicação anual, fora do
