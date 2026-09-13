@@ -1983,11 +1983,20 @@ Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão do link
 "🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no hub
 `/documentos.html`, e cross-links manuais a partir de
 `abono-de-familia.html` e `complemento-solidario-idosos.html` para as
-duas cartas de acompanhamento respectivas. *Registado para o futuro*:
-se o número de minutas crescer muito, vale a pena generalizar
-`Pagina.slug` para aceitar caminhos relativos completos e dar-lhes
-cluster membership a sério (badge "Ferramenta" no `PILLAR-LISTA`,
-contagem no cartão da homepage) — não decidido, sem prazo.
+duas cartas de acompanhamento respectivas — ver `ROADMAP.md` para o
+trabalho futuro registado de generalizar `Pagina.slug`.
+
+### Regras do portão de verificação — activas para qualquer minuta futura
+
+- **Nunca apresentar uma minuta como substituto de um Mod. oficial** —
+  quando existe um formulário próprio (Mod. numerado) para o mesmo
+  pedido, a minuta é sempre uma carta de acompanhamento desse Mod.,
+  nunca uma alternativa a ele. É o critério que decide se uma candidata
+  precisa de "pivot" (ver os resultados por candidata mais abaixo).
+- **O recurso ao SVI nunca é cross-linkado com `amim.html`, deliberadamente**
+  — são dois sistemas de junta médica diferentes (SVI é da Segurança
+  Social, para prestações contributivas; AMIM é da Saúde, atestado
+  multiuso); cruzá-los confundiria o leitor sobre qual processo seguir.
 
 ### PORTÃO DE VERIFICAÇÃO — resultado das 3 candidatas da Sessão 1
 
@@ -2124,14 +2133,9 @@ higiene/nav/pesquisa/acessibilidade parametrizados sobre as páginas
 reais); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
 limpo.
 
-**Excluída à partida, conforme instrução do prompt**: procurações e
-qualquer documento com efeitos de representação legal — nunca
-avaliadas nem candidatas, decisão tomada antes de qualquer
-verificação.
-
 ### Disclaimer obrigatório
 
-Presente em texto idêntico nas 4 páginas E no texto gerado de cada
+Presente em texto idêntico nas 12 páginas E no texto gerado de cada
 minuta (verificado por `tests/test_gerador_documentos.py::test_disclaimer_presente_na_pagina_e_no_texto_gerado`):
 > "Este documento é um modelo informativo e não substitui aconselhamento
 > jurídico. Confirme sempre os requisitos junto da Segurança Social ou de
