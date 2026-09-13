@@ -3114,23 +3114,39 @@ artigos-filho de compra (`imt-jovem.html`,
 (`primeiro-direito.html`) — **7 páginas no total** (+ hub + simulador),
 sexto cluster do site, reorganizado em três secções no hub: 🏠 Arrendar
 / 🔑 Comprar / 🏚️ Situações de carência. Fact-check prévio obrigatório
-(bloqueante, ver "REGRAS DE CONTEÚDO"). `WebFetch`/`curl` estão
-bloqueados nesta sessão para qualquer URL — observado como `403` em jul
-2026 e como `EGRESS_BLOCKED` desde então (sintomas diferentes da mesma
-limitação de rede do sandbox, nunca um bloqueio específico a portais
-oficiais nem a `dre.pt`/`bportugal.pt` em particular — confirmado até
-para domínios sem relação nenhuma com o Estado, ex.:
-`en.wikipedia.org`). Isto inclui `files.dre.pt`: é o canal a preferir
-para ler um diploma (fetchável directamente, sem SPA a renderizar),
-mas só quando alguém FORA do sandbox o lê e entrega o facto já
-confirmado ao Code (GRAU 1) — a partir desta sessão fica tão bloqueado
-como `dr/detalhe/` ou `bportugal.pt`. Sem essa entrega externa, o
-fact-check é feito por triangulação `WebSearch` (GRAU 2, sempre
-identificada como tal) ou fica marcado por confirmar (GRAU 3) — ver
-"FONTES VERIFICADAS E APROVADAS" → "Verificação directa de diplomas"
-para a metodologia completa. As páginas citam sempre a URL oficial
-como fonte, mesmo sem acesso directo — mesmo padrão já usado no site
-para fontes que devolvem 403 a bots.
+(bloqueante, ver "REGRAS DE CONTEÚDO") — com uma distinção que importa
+manter separada, nunca os três casos ao mesmo nível.
+
+**Ilegíveis por fetch simples, de qualquer lado, sessão ou não**:
+`diariodarepublica.pt/dr/detalhe/...` é uma SPA que exige JavaScript a
+renderizar (um `fetch`/`curl` devolve só a shell vazia, mesmo fora do
+sandbox); `bportugal.pt` bloqueia acesso automatizado por detecção de
+bots, incluindo os PDFs. Nos dois casos o obstáculo é do próprio site,
+não da rede do Code — nenhum acesso automatizado, de lado nenhum,
+resolve isto.
+
+**Ilegível só a partir desta sessão**: `files.dre.pt` **funciona** —
+serve o PDF estático da própria série do Diário da República, sem JS
+nenhum a renderizar, e é hoje a única via de leitura primária de um
+diploma que existe de facto (já confirmado a devolver o texto integral
+de um diploma quando lido fora do sandbox — ver "FONTES VERIFICADAS E
+APROVADAS" → "Verificação directa de diplomas"). O que bloqueia o
+acesso a partir daqui é só a configuração de rede do sandbox onde o
+Code corre (`EGRESS_BLOCKED`, observado como `403` em jul 2026 —
+confirmado até para domínios sem relação nenhuma com o Estado, ex.:
+`en.wikipedia.org`), nunca uma recusa do domínio em si. **Nunca tratar
+`files.dre.pt` como morto** — está bloqueado a partir desta sessão, não
+inacessível.
+
+A regra é a mesma de "FONTES VERIFICADAS": a leitura primária de um
+diploma via `files.dre.pt` faz-se sempre fora do Code — pelo Nuno, ou
+por outro processo com acesso real à rede — e é entregue já como facto
+confirmado (GRAU 1). Sem essa entrega, o fact-check destas páginas é
+feito por triangulação `WebSearch` (GRAU 2, sempre identificada como
+tal) ou fica marcado por confirmar (GRAU 3) — nunca por analogia. As
+páginas citam sempre a URL oficial como fonte, mesmo sem acesso
+directo — mesmo padrão já usado no site para fontes que devolvem 403 a
+bots.
 
 **Regra de dados (20 jul 2026, reforçada na Sessão 2)**: qualquer valor
 legal do IMT Jovem ou da Garantia Pública (limiares em €, percentagens,
