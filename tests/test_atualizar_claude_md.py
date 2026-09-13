@@ -1,7 +1,8 @@
 """
 Testes para scripts/atualizar_claude_md.py — regressão ao bug que gerava
-linhas "Última revisão automática" duplicadas no CLAUDE.md sempre que o
-pipeline corria mais do que uma vez no mesmo dia.
+linhas "Última revisão automática" duplicadas no HISTORICO.md sempre que
+o pipeline corria mais do que uma vez no mesmo dia (o script escrevia no
+CLAUDE.md até à Fase 1 da separação histórico/referência, 2026-09-13).
 """
 import sys
 from pathlib import Path

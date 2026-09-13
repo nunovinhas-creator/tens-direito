@@ -796,8 +796,8 @@ jobs:
                   print(f'index.html: destaque já actualizado [{destaque.get("id","fallback")}] — sem alterações')
           PYEOF
 
-      # ── Step 6b: Actualizar CLAUDE.md ───────────────────────────────────────
-      - name: Actualizar CLAUDE.md
+      # ── Step 6b: Actualizar HISTORICO.md ─────────────────────────────────────
+      - name: Actualizar HISTORICO.md
         run: python3 scripts/atualizar_claude_md.py
 
       # ── Step 6b2: Preparar rascunho do canal de WhatsApp ─────────────────────
@@ -820,7 +820,7 @@ jobs:
         run: |
           python3 -c "
           import subprocess, sys
-          AUTO_GERADOS = ['index.html', 'noticias.html', 'CLAUDE.md', 'README.md']
+          AUTO_GERADOS = ['index.html', 'noticias.html', 'HISTORICO.md', 'README.md']
           result = subprocess.run(
               ['git', 'diff', '--name-only', 'HEAD'],
               capture_output=True, text=True
@@ -842,7 +842,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ index.html noticias.html README.md CLAUDE.md
+          git add data/ index.html noticias.html README.md HISTORICO.md
           if git diff --staged --quiet; then
             echo "Sem alterações para commitar."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
