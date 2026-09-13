@@ -1,11 +1,29 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-12",
+      "titulo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece",
+      "fonte_nome": "Leak.pt",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPV2tUdWk1TGpIcW5aY2ctUXBUbjlPWVExeFFVaHk4dndYR2l4aGZhcFM1Mm5PTEN0ODN1a3V5UkVzT3JQRkpZTmxwemdqSGk2UG5NZkhaV192WkpKdWxGQlhhVkp1Z1hqQW9pLVBpMHBta0xjaXZGcHh6S2tNUG1EaVI1SmdxT3ZVQXVEQVhISExzYmpra3cwX0tTTWpmdw?oc=5",
+      "resumo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece Leak.pt",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-09-11",
       "titulo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional",
       "fonte_nome": "Expresso",
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPUUc1REJMcS1kLTR4UThfbWppU0tyXzhhS2E3VzlOSDdJN3hIdFJBdlMyZWY2dFNjQnFWRVVuYzQ2SXJzdGxOSHVmdTd6Ti1kcGRxeEUyejljekFidWNOcy1ydkFPMjA5NnlmdldkTkxKWlBUZUpQQ1BwYkZ4bFJydkEzUDBSdTk4cE1yWEFCZDNaNllyQmN2OTUxeVhLQW5hZU4wRzB1aW9zckhGZ055V19fZFV2bkREaUtnUTE4ZFVEcWpUeE9JaEFvZUpOTUY1LUdQOHViR25FSzZMeVJwZ1VPY2FVdG5IRnRkOFh0OA?oc=5",
       "resumo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional Expresso",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-11",
+      "titulo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNZ1FFU1ozWDRhWWNoSVczNlhOSHAyQmc3X01sOHNKeUVEdFhabG1Ob1RGeEdoZFNlekVoOTg1NGlHNzh4VHNDYUkxaThFc1NNT3VnZzFQM3BjU0V2X0lxcVhHMHAwSE5JWDZLMnA3NElIdzFJaHc4WGNhVW5NdG9TOFA5SjFyUkhzRWdvUk40ZS02TktGNEVVNkROSFpWOUN0YUJ0TG11NnJhaVJ5dFNwcld3SWdtMWNIbHkxN2RIM1RUay1FMzBfUk9rQTdtNVJoWVY1akx5UUhkUk9IV3Rv?oc=5",
+      "resumo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 CNN Portugal",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
