@@ -401,6 +401,12 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
     está confirmada como facto (via `WebSearch`, marcada GRAU 2 em
     `carreiras-contributivas-estrangeiro.html`), mas o texto exacto da
     adaptação nos dois anexos nunca foi lido em fonte oficial.
+- **Confirmar que o Datasette Lite abre `dados/tensdireito.db` sem erro de
+  CORS** — pendente desde a publicação da Fase 3 de Dados Abertos
+  (2026-07-19): `https://lite.datasette.io/?url=https://tensdireito.com/dados/tensdireito.db`
+  nunca foi testado directamente contra produção real (sandbox sem acesso
+  à internet completo, mesma limitação de sempre) — ver CLAUDE.md
+  **"DADOS ABERTOS"** → Fase 3.
 ---
 
 ## 📅 DATAS FIXAS
