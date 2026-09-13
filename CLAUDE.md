@@ -4479,11 +4479,12 @@ apagados, só deixam de ser o "vigente").
   `complemento-solidario-idosos.html`; `dados/parametros.json` está
   sincronizado com os YAML (`--check`); e nenhum parâmetro vigente fica
   sem `verificado_em` (réplica visível na suite da guarda dura do PASSO 0).
-- **Não migrado nesta sessão** (registado para o futuro, um simulador
-  por commit, mesmo padrão do CSI): `simulador-abono.html`,
-  `simulador-ase.html`, `simulador-subsidio-doenca.html` continuam com
-  `PARAMETROS_*` como objecto JS inline — a afirmação "HTML e JS nunca
-  contêm valores, só referências" aplica-se hoje só ao CSI.
+- **Migração dos simuladores — estado actual**: `simulador-csi.html`
+  (este commit), `simulador-abono.html` e `simulador-subsidio-doenca.html`
+  (migrados a 2026-07-19, sessão "Parâmetros YAML + auditoria factual")
+  já usam `fetch('/dados/parametros.json')`. Só `simulador-ase.html`
+  continua com valores inline (`CONFIG`, nunca `PARAMETROS_*`) — ver
+  `ROADMAP.md` para o estado da migração pendente.
 
 ### Fase 3 — Publicação: `dados.html` + SQLite + Datasette Lite
 
@@ -4547,9 +4548,7 @@ qual pelo GitHub Pages):
   de que o Datasette Lite consegue mesmo ler o ficheiro de outro
   domínio, nunca testado directamente contra produção real nesta sessão
   (sandbox sem acesso à internet completo, mesma limitação documentada
-  em várias sessões anteriores) — **PASSO MANUAL PARA O NUNO**:
-  confirmar que `https://lite.datasette.io/?url=https://tensdireito.com/dados/tensdireito.db`
-  abre mesmo depois do deploy.
+  em várias sessões anteriores) — confirmação pendente, ver `ROADMAP.md`.
 
 ### Efeito lateral corrigido no mesmo commit — sem relação com dados abertos
 
@@ -4563,17 +4562,7 @@ sessões anteriores.
 
 ### O que fica registado para o futuro, sem prazo
 
-1. ~~Migrar `simulador-abono.html`/`simulador-ase.html`/
-   `simulador-subsidio-doenca.html` para o padrão de parâmetros YAML +
-   fetch, um por commit, mesmo padrão do CSI.~~ **`simulador-subsidio-doenca.html`
-   e `simulador-abono.html` migrados a 2026-07-19** (sessão "Parâmetros
-   YAML + auditoria factual") — ver essa entrada em `HISTORICO.md`. `simulador-ase.html`
-   continua por migrar, bloqueado à espera do despacho anual da DGEstE
-   (ver ROADMAP.md).
-2. Confirmar em produção real (depois do deploy) que o Datasette Lite
-   abre `dados/tensdireito.db` sem erro de CORS — não verificável do
-   sandbox desta sessão.
-3. `gitleaks` (job "Verificar Segredos") — confirmar que o novo
+1. `gitleaks` (job "Verificar Segredos") — confirmar que o novo
    binário `dados/tensdireito.db` nunca é lido como texto/escaneado
    por engano (SQLite é binário; não observado nenhum problema nos
    testes locais, mas nunca confirmado em CI real por esta sessão).
