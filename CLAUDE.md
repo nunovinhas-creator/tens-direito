@@ -1796,11 +1796,10 @@ tocados.
 
 ## GERADOR DE DOCUMENTOS
 
-Diferenciador do site (2026-07-06, Sessão 1 de 2 —
-`PROMPTGERADORDOCUMENTOSv1.md`): minutas de requerimentos, reclamações e
-cartas dirigidas à Segurança Social, geradas 100% no browser. Ver
-`ROADMAP.md` → "GERADOR DE DOCUMENTOS — ESTADO" para o índice rápido do
-que falta para a Sessão 2.
+Minutas de requerimentos, reclamações e cartas dirigidas à Segurança
+Social, geradas 100% no browser (`PROMPTGERADORDOCUMENTOSv1.md`, documento
+externo, nunca commitado). Ver `ROADMAP.md` → "GERADOR DE DOCUMENTOS —
+ESTADO" para o índice rápido do que falta.
 
 ### Arquitectura — motor único config-driven
 
@@ -1833,31 +1832,27 @@ Nenhuma minuta tem JS próprio:
 zero chamadas de rede depois do load, mesmo ao gerar o documento — por
 isso o motor **nunca** dispara eventos GA4 ao clicar em "Gerar
 documento" (ao contrário dos simuladores, que disparam `calc_resultado`
-via `gtag`). Decisão deliberada desta sessão: o próprio prompt exige um
-teste de rede que falha com qualquer pedido, e um evento GA4 é uma
-chamada de rede real — a mensagem "os dados que preenches nunca saem do
-teu dispositivo" tem de ser verificada a sério, não só quanto ao
-conteúdo do formulário. Zero `localStorage`/`sessionStorage` — estado
-só em memória (mesmo padrão de `checklist.js`).
+via `gtag`) — um evento GA4 é uma chamada de rede real, e a mensagem "os
+dados que preenches nunca saem do teu dispositivo" tem de ser verdade a
+sério, não só quanto ao conteúdo do formulário. Zero
+`localStorage`/`sessionStorage` — estado só em memória (mesmo padrão de
+`checklist.js`).
 
-### Integração no sistema de clusters — decisão desta sessão
+### Integração no sistema de clusters
 
 `cluster_da_pagina()`/`processar_pagina()` em `sincronizar_clusters.py`
 comparam `Pagina.slug` só contra `caminho.name` (basename) — desenhado
-para páginas na raiz, nunca precisou de suportar sub-caminhos como
-`documentos/...` (ao contrário do `pillar`, que já tinha uma função
-própria, `cluster_do_pillar()`, para caminhos com `/`). Estender o
-matching de `paginas[].slug` para aceitar sub-caminhos é um refactor à
-parte, fora do âmbito desta sessão. Por isso as 4 páginas do gerador
-(`documentos.html` + as 3 minutas) ficam em `EXCLUIDAS` — mesma
-categoria de `comecar-aqui.html`/`simuladores.html` — e a integração é
-feita inteiramente por fora do sistema de clusters: nav (link "📄
-Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão do link
-"🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no hub
-`/documentos.html`, e cross-links manuais a partir de
-`abono-de-familia.html` e `complemento-solidario-idosos.html` para as
-duas cartas de acompanhamento respectivas — ver `ROADMAP.md` para o
-trabalho futuro registado de generalizar `Pagina.slug`.
+para páginas na raiz, nunca preparado para sub-caminhos como
+`documentos/...` (ao contrário do `pillar`, que já tem uma função
+própria, `cluster_do_pillar()`, para caminhos com `/`). Por isso as
+páginas do gerador (`documentos.html` + cada minuta) ficam em
+`EXCLUIDAS` — mesma categoria de `comecar-aqui.html`/`simuladores.html`
+— e a integração é feita inteiramente por fora do sistema de clusters:
+nav (link "📄 Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão
+do link "🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no
+hub `/documentos.html`, e cross-links manuais a partir das páginas de
+prestações relevantes — ver `ROADMAP.md` para o trabalho futuro
+registado de generalizar `Pagina.slug`.
 
 ### Regras do portão de verificação — activas para qualquer minuta futura
 
@@ -1871,140 +1866,38 @@ trabalho futuro registado de generalizar `Pagina.slug`.
   Social, para prestações contributivas; AMIM é da Saúde, atestado
   multiuso); cruzá-los confundiria o leitor sobre qual processo seguir.
 
-### PORTÃO DE VERIFICAÇÃO — resultado das 3 candidatas da Sessão 1
+### Minutas publicadas — estado do portão de verificação
 
-Núcleo do prompt original, as 3 candidatas de maior prioridade,
-verificadas uma a uma antes de escrever qualquer template:
+12 minutas publicadas em `documentos/`, nenhuma rejeitada. 6 sem pivot
+(nenhum Mod. oficial equivalente):
 
-1. **Reclamação de decisão da Segurança Social** — **publicada
-   integralmente** (`documentos/reclamacao-decisao-seguranca-social.html`).
-   Verificado via pesquisa a fontes que reproduzem o texto consolidado
-   do Código do Procedimento Administrativo (Decreto-Lei n.º 4/2015, de
-   7 de janeiro): o artigo 191.º consagra a reclamação em regime geral,
-   **sem exigir formulário próprio** — um texto livre e fundamentado é
-   um canal legítimo, com prazo geral de 15 dias úteis "quando a lei
-   não estabeleça prazo diferente" e decisão em 30 dias (artigo 192.º,
-   n.º 2); recurso hierárquico nos artigos 193.º a 198.º. É a única das
-   3 candidatas que não precisou de pivot.
-2. **Pedido de reavaliação de escalão de abono de família** — **pivot
-   obrigatório**, diferente do que o prompt original assumia (só
-   sinalizava pivot como "provável" para a CSI). Achado: o nosso
-   próprio artigo já fact-checked `abono-de-familia.html` documenta
-   que a reavaliação usa o **Modelo GF58-DGSS** (disponível em
-   seg-social.pt) e que o canal normal e mais rápido é o **pedido
-   online** na Segurança Social Direta (Família → Abono de Família →
-   Pedido de reavaliação do escalão), com uma carência de 90 dias desde
-   a última verificação/alteração. Publicada como
-   `documentos/carta-acompanhamento-reavaliacao-abono.html` — carta de
-   acompanhamento do Modelo GF58-DGSS, nunca um substituto, com aviso
-   destacado (`.aviso-pivot`) a apontar primeiro para o canal online.
-3. **CSI** — **pivot confirmado**, exactamente como o prompt
-   antecipava. O nosso próprio artigo já fact-checked
-   `complemento-solidario-idosos.html` documenta "Modelos CSI 1, CSI
-   1/1 e CSI 1/2 (obrigatório)" — requerimento inicial de prestação,
-   caso típico da regra do portão ("nunca apresentar uma minuta como
-   substituto de um Mod. oficial"). Publicada como
-   `documentos/carta-acompanhamento-csi.html` — carta de
-   acompanhamento, com link directo para `seg-social.pt/formularios`.
+| Minuta | Base legal / canal |
+|---|---|
+| `reclamacao-decisao-seguranca-social.html` | CPA art. 191.º-192.º (DL 4/2015) — regime geral, sem Mod. próprio, prazo 15 dias úteis |
+| `recurso-hierarquico-seguranca-social.html` | CPA art. 193.º-198.º |
+| `exposicao-atraso-processamento.html` | CPA art. 128.º-129.º (prazo geral de 90 dias) |
+| `requerimento-reavaliacao-escalao-ase.html` | processo descentralizado por agrupamento de escolas, sem Mod. nacional da DGE |
+| `pedido-acesso-documentos-administrativos.html` | Lei n.º 26/2016 (LADA), art. 12.º/15.º, prazo 10 dias úteis |
+| `requerimento-generico-seguranca-social.html` | catch-all, direito de petição (art. 52.º CRP) — nunca substitui um Mod. existente nem contesta uma decisão já tomada |
+| `pedido-declaracao-comprovativo-prestacoes.html` | sem Mod. numerado — página recomenda a Segurança Social Direta como canal mais rápido, esta minuta como alternativa em papel |
 
-**Nenhuma candidata ficou de fora na Sessão 1** — as 3 do núcleo
-passaram o portão (2 com pivot, 1 sem).
+6 com pivot para carta de acompanhamento de um Mod. oficial (regra do
+portão acima):
 
-### PORTÃO DE VERIFICAÇÃO — resultado das candidatas 4-12 (Sessão 2, 2026-07-06)
+| Minuta | Mod. oficial que acompanha |
+|---|---|
+| `carta-acompanhamento-reavaliacao-abono.html` | Modelo GF58-DGSS (`abono-de-familia.html`) |
+| `carta-acompanhamento-csi.html` | Modelos CSI 1/CSI 1.1/CSI 1.2 (`complemento-solidario-idosos.html`) |
+| `carta-acompanhamento-divida-prestacoes.html` | Mod. IMP.PN.01.01 |
+| `carta-acompanhamento-comunicacao-alteracao.html` | Mod. GF 37-DGSS/GF 54-DGSS (ou "Declaração de Situação Familiar" na SS Direta) |
+| `carta-acompanhamento-svi-recurso.html` | Mod. SVI 55-DGSS, prazo de 10 dias (mais curto que os 15 dias do regime geral) |
 
-As 9 candidatas de expansão do prompt foram todas verificadas e
-publicadas — **nenhuma rejeitada**, 6 sem pivot e 3 com pivot:
+**Excluída à partida, nunca avaliada**: procurações e qualquer documento
+com efeitos de representação legal.
 
-4. **Recurso hierárquico de decisão da Segurança Social** — publicado
-   sem pivot (`documentos/recurso-hierarquico-seguranca-social.html`).
-   Artigos 193.º a 198.º do CPA, sem Mod. próprio — complementa a
-   reclamação já publicada (dirigido ao superior hierárquico, não ao
-   mesmo órgão que decidiu).
-5. **Pedido de pagamento de dívida à SS em prestações** — **pivot**
-   (`documentos/carta-acompanhamento-divida-prestacoes.html`).
-   Confirmado Mod. próprio: "Requerimento para Pagamento em
-   Prestações" (IMP.PN.01.01), submetido via Segurança Social Direta
-   ou por email para igfss-divida@seg-social.pt.
-6. **Comunicação de alteração de agregado/morada/rendimentos** —
-   **pivot** (`documentos/carta-acompanhamento-comunicacao-alteracao.html`).
-   Desde jul. 2023 existe a "Declaração de Situação Familiar" na
-   Segurança Social Direta como canal principal; formulários mais
-   antigos ligados a encargos familiares (Mod. GF 37-DGSS, Mod. GF
-   54-DGSS) também encontrados — sem Mod. universal único, tratado
-   como pivot por prudência (mesma lição do GF58).
-7. **Exposição por atraso no processamento de prestação** — publicado
-   sem pivot (`documentos/exposicao-atraso-processamento.html`).
-   Artigos 128.º (prazo geral de 90 dias) e 129.º (dever de decisão)
-   do CPA — sem Mod. próprio.
-8. **Reclamação de decisão do SVI / junta médica** — **pivot**
-   (`documentos/carta-acompanhamento-svi-recurso.html`). Confirmado
-   Mod. SVI 55-DGSS obrigatório ("Requerimento — Comissão de
-   Reavaliação/Comissão de Recurso"), prazo de **10 dias** — mais
-   curto do que os 15 dias da reclamação em regime geral, destacado na
-   página. Distinto do processo de recurso do AMIM (JMAI, Ministério
-   da Saúde, 30 dias) — **nunca cross-linkado com `amim.html`
-   deliberadamente**, para não conflacionar os dois sistemas de junta
-   médica diferentes (SVI é da Segurança Social, para prestações
-   contributivas; AMIM é da Saúde, atestado multiuso).
-9. **Pedido de reavaliação de escalão ASE** — publicado sem pivot
-   (`documentos/requerimento-reavaliacao-escalao-ase.html`). Processo
-   descentralizado por agrupamento de escolas, sem Mod. nacional da
-   DGE — página recomenda confirmar se a escola tem impresso próprio.
-10. **Pedido de consulta do processo / acesso a documentos (CPA)** —
-    publicado sem pivot (`documentos/pedido-acesso-documentos-administrativos.html`).
-    Lei n.º 26/2016 (LADA), artigo 12.º exige só requerimento escrito
-    (sem Mod. numerado), artigo 15.º fixa prazo de 10 dias úteis.
-11. **Requerimento genérico à Segurança Social** — publicado sem pivot
-    (`documentos/requerimento-generico-seguranca-social.html`).
-    Template catch-all, direito de petição (artigo 52.º CRP) — página
-    avisa explicitamente para nunca ser usado a substituir um Mod.
-    oficial existente nem para contestar uma decisão já tomada.
-12. **Pedido de declaração/comprovativo de situação de prestações** —
-    publicado sem pivot forte (`documentos/pedido-declaracao-comprovativo-prestacoes.html`).
-    Sem Mod. numerado — emitido em auto-serviço pela Segurança Social
-    Direta; a página recomenda esse canal como mais rápido e trata
-    esta minuta como alternativa em papel.
-
-**Excluída à partida** (decisão do prompt original, nunca avaliada):
-procurações e qualquer documento com efeitos de representação legal.
-
-### Integração e cross-links da Sessão 2
-
-Mesmo padrão da Sessão 1: as 9 páginas novas entram em `EXCLUIDAS` de
-`sincronizar_clusters.py` (mesma limitação de sub-caminhos já
-documentada acima), hub `/documentos.html` ganhou 9 cards novos,
-`sitemap.xml`/`scripts/pesquisa.js` actualizados. Cross-links
-adicionados: `reclamacao-decisao-seguranca-social.html` → recurso
-hierárquico (FAQ); `acao-social-escolar.html` → requerimento de
-reavaliação de ASE (FAQ já existente sobre reavaliação); `abono-de-familia.html`
-→ carta de comunicação de alteração; e um aviso novo (`aviso-info`,
-reaproveitando a classe já existente onde disponível) em
-`rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`/
-`prestacao-social-para-a-inclusao.html` a apontar para a reclamação —
-nenhuma destas 4 páginas tinha até agora qualquer menção a "o que fazer
-se o pedido for indeferido".
-
-**Título da carta de CSI encurtado** (79 → 50 caracteres): a versão da
-Sessão 1 incluía o sufixo "— não substitui o Mod. CSI 1" no `<title>`,
-arriscando corte no Google (o `og:title` já usava a versão curta,
-inconsistência corrigida). Meta descriptions das 3 páginas da Sessão 1
-também revistas para CTR (mais curtas, lideram com a pergunta/benefício
-concreto, sem repetir "Gera uma..." em todas).
-
-**Achado real, corrigido antes do commit**: um teste falhou
-(`test_sem_ano_civil_desactualizado_em_title_ou_description`) porque a
-meta description do pedido de acesso a documentos cita "Lei n.º
-26/2016" — o canário de anos em metadados apanhou correctamente "2016"
-como um ano potencialmente desactualizado. Mesma categoria já
-documentada para `cuidador-informal.html`/`subsidio-desemprego.html`
-(número de diploma, não data de vigência) — nova excepção registada em
-`EXCECOES_ANOS_HISTORICOS` (`tests/test_anos_metadados.py`).
-
-Suite completa: **1738 passed, 4 skipped** (76 testes novos: 45 golden
-tests do gerador — 5 por página × 9 páginas novas — mais 31 de
-higiene/nav/pesquisa/acessibilidade parametrizados sobre as páginas
-reais); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
-limpo.
+Cross-links a partir das páginas de prestação relevantes (abono,
+CSI, RSI, subsídio de desemprego, baixa médica, PSI, ASE) apontam para
+a minuta correspondente; o hub `/documentos.html` lista as 12.
 
 ### Disclaimer obrigatório
 
@@ -2015,22 +1908,20 @@ listadas no hub `/documentos.html`) E no texto gerado de cada minuta
 > jurídico. Confirme sempre os requisitos junto da Segurança Social ou de
 > um advogado/solicitador."
 
-### Testes desta sessão
+### Testes
 
-`tests/test_gerador_documentos.py` (17 testes, Chromium real via
-Playwright, mesmo padrão de `test_acessibilidade.py` — nunca `file://`):
-formulário preenchido gera texto com todos os campos, campo obrigatório
-vazio bloqueia + mostra erro, NISS inválido bloqueia com mensagem de
-padrão, disclaimer presente na página e no texto gerado, botão Copiar
-existe e fica activo após gerar, consistência do hub (cada card aponta
-para ficheiro real, cada minuta linka de volta), e zero pedidos de rede
-ao interagir com o gerador. Genérico sobre as 3 páginas via
+`tests/test_gerador_documentos.py` — Chromium real via Playwright, mesmo
+padrão de `test_acessibilidade.py`, nunca `file://`: formulário
+preenchido gera texto com todos os campos, campo obrigatório vazio
+bloqueia + mostra erro, NISS inválido bloqueia com mensagem de padrão,
+disclaimer presente na página e no texto gerado, botão Copiar existe e
+fica activo após gerar, consistência do hub (cada card aponta para
+ficheiro real, cada minuta linka de volta), e zero pedidos de rede ao
+interagir com o gerador. Genérico sobre todas as páginas via
 `page.evaluate("CONFIG_DOCUMENTO")` — nunca hardcoded por minuta, mesma
-filosofia de `test_simulador_csi_calculo.py`. Mais: `test_nav_tem_link_documentos`
-novo em `tests/test_nav_coerencia.py` (mesmo padrão de
-`test_nav_tem_link_simuladores`). Suite completa reconfirmada sem
-regressões (ver a entrada de 2026-07-06 "Sessão 2 do Gerador de
-Documentos" em `HISTORICO.md`), ruff limpo.
+filosofia de `test_simulador_csi_calculo.py`. `test_nav_tem_link_documentos`
+em `tests/test_nav_coerencia.py` (mesmo padrão de
+`test_nav_tem_link_simuladores`) confirma o link na nav.
 
 ---
 
