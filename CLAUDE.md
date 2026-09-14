@@ -1516,6 +1516,72 @@ Decisão tomada página a página na Fase 5, sem alterar nenhum facto:
 no mesmo `<script>`, sem `[...]`) — passou a dois `<script>` separados,
 mesmo padrão usado noutras páginas com múltiplos tipos JSON-LD.
 
+### `sobre.html` — 5 blocos + excepção à regra de JSON-LD
+
+**Reescrito em 2026-07-03 (2.ª vez, tarde) por decisão do Nuno**: zero
+menções a GitHub/repositório/código aberto e zero menções a
+inteligência artificial/automação de redação em qualquer página
+pública — regra permanente registada em "REGRAS DE CONTEÚDO" → "Não
+fazer". Estrutura de 5 blocos mantida: 1) o que é o
+site; 2) quem está por trás — NV Labs (`id="nvlabs"`, sem link
+GitHub); 3) método de verificação (`id="metodo"`, bloco central —
+fontes exclusivamente oficiais, "a redação monitoriza diariamente"
+(nunca "sistema automático"), carimbo "Verificado a", o que o site não
+faz); 4) correcções (email ofuscado + marcador `CONTACTO-EMAIL`);
+5) contacto (`id="contacto"`, só o email ofuscado). Nenhuma pessoa,
+credencial ou e-mail inventados.
+
+`sobre.html` mantém JSON-LD — única página institucional a fazê-lo,
+excepção deliberada à regra "institucionais sem JSON-LD" desta secção:
+`AboutPage` (mainEntity → Organization), `Organization`
+(`@id=".../sobre.html#nvlabs"`, sem `sameAs` — o único que existia
+apontava para o repositório GitHub, removido nesta revisão) e
+`WebSite` (publisher → Organization). Válido porque `FAQPage`/`WebPage`
+herdam `author`/`publisher` de `CreativeWork` — confirmado por
+`tests/test_sobre_jsonld.py`, que carrega e valida os 3 blocos como
+JSON real, nunca uma cópia.
+
+### Marcador `CONTACTO-EMAIL` — preenchido e activo
+
+O email oficial **contacto@tensdireito.com** (forwarding ImprovMX →
+caixa pessoal, testado e activo desde 2026-07-03) é o único canal de
+contacto do site. Nunca aparece literal no HTML fonte de nenhuma
+página pública — `sobre.html` tem `<span class="email-ofuscado"
+data-user="contacto" data-dominio="tensdireito.com">`, preenchido em
+runtime por um `<script>` inline no fim do `<body>` (concatena
+`data-user + '@' + data-dominio`, monta o `mailto:` e o texto visível,
+substitui o `<span>` por um `<a>` real), com fallback `<noscript>`
+("contacto (arroba) tensdireito (ponto) com"). Sem dependências
+externas. O marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` mantém-se
+nos blocos "Correcções"/"Contacto" como âncora documental — nunca com
+o endereço literal dentro do comentário (um comentário HTML continua a
+ser texto simples no fonte, por isso quebraria a mesma regra).
+Qualquer outra página que precise de referenciar contacto liga para
+`/sobre.html#contacto` — nunca duplica o email nem o script de
+desofuscação. `tests/test_sobre_jsonld.py` confirma: literal
+`contacto@tensdireito.com` ausente de todo o HTML público, `mailto:`
+presente só dentro do `<script>` de desofuscação, marcador presente.
+
+### Footer — "An NV Labs project" passa a link
+
+`scripts/atualizar_branding_nvlabs.py` deixou de ser só bootstrap
+(insere uma vez, nunca mais toca) e passou a **sincronizador
+idempotente nos dois sentidos**: página sem marcadores → bootstrap;
+página já com marcadores → substitui o conteúdo entre
+`NVLABS:HEADER`/`NVLABS:FOOTER` pelo bloco canónico actual, no-op se já
+estiver igual (novo `--apenas-sincronizar` impede bootstrap acidental
+em páginas que nunca tiveram o bloco — usado para excluir `404.html`,
+que não tem `</footer>` nem badge NV Labs por não ter sido processada
+antes, fora do âmbito desta sessão). O bloco footer (`<div>` → `<a
+href="/sobre.html#nvlabs">`) envolve agora o SVG existente — o texto
+"An NV Labs project" mantém-se exactamente igual (decisão do Nuno),
+só passou a ser clicável. Corre com `--apenas-sincronizar --write` em
+qualquer página que já tenha o bloco (contagem real é sempre
+`grep -rl "sobre.html#nvlabs" --include="*.html"`, nunca fixada aqui);
+idempotência confirmada.
+`assets/css/branding.css` ajustado (`.footer-nvlabs` de `<div>` para
+`<a>`, com `:focus-visible`).
+
 ---
 
 ## FECHO DO PROJECTO — REORGANIZAÇÃO DA ARQUITECTURA DE INFORMAÇÃO (Fases 0-5)
@@ -2123,6 +2189,55 @@ e não relacionado com esta secção.
   `PILLAR-LISTA` mas sem `PILLAR-JSONLD` é reportada sem escrever (a
   presença dos dois marcadores é obrigatória numa pillar).
   `test_breadcrumb_coerencia.py` reconfirmado sem regressão.
+
+### E-E-A-T — NV Labs como entidade resolvível
+
+Sem autor pessoal público (decisão do Nuno, mantida), o E-E-A-T do
+site joga-se a nível de entidade + método. A **NV Labs** — estúdio
+independente português, responsável editorial do Tens Direito — é
+**resolvível**: "An NV Labs project" no footer liga a
+`sobre.html#nvlabs`, que tem secção própria (ver "PÁGINAS
+INSTITUCIONAIS") e JSON-LD `Organization` próprio. **Sem `sameAs`** —
+o único que chegou a existir apontava para o repositório GitHub,
+removido pela regra de zero menções a GitHub em página pública (ver
+"REGRAS DE CONTEÚDO" → "Não fazer"). Regra permanente: nunca inventar
+um perfil para preencher esse campo — sem um perfil público real da
+NV Labs, o `sameAs` fica ausente.
+
+### Autoria nos artigos — `scripts/adicionar_autoria_artigos.py`
+
+Novo script, âmbito automático (todas as páginas com `"@type":
+"FAQPage"` em `*.html`/`p/*.html` — contagem real é sempre
+`grep -rl '"@type": "FAQPage"' --include="*.html"`, nunca fixada aqui;
+`simulador-psu.html` fica fora por não ter JSON-LD nenhum,
+deliberadamente não publicado):
+
+1. Injecta `"author"`/`"publisher"` (`{"@id": ".../sobre.html#nvlabs"}`)
+   no bloco `FAQPage` — válido em Schema.org (`FAQPage` < `WebPage` <
+   `CreativeWork`, que já define ambas as propriedades).
+2. Acrescenta atribuição à **última** ocorrência de "Verificado a
+   [data]" de cada página (a canónica — mesmo critério de
+   `sincronizar_clusters.extrair_verificado_em()`, nunca uma nota de
+   secção `.fonte-inline`): `Verificado a [data] pela redação do
+   <a href="/sobre.html#metodo">Tens Direito</a>`.
+
+**Desvio deliberado da ordem proposta no brief original** ("Verificado
+pela redação do Tens Direito a [data]", atribuição antes da data): essa
+ordem quebra a contiguidade literal "Verificado a" + data de que
+dependem 3 sítios — `sincronizar_clusters._REGEX_VERIFICADO`,
+`auto_update_engine._REGEX_VERIFICADO_A` e o aviso (não bloqueante) de
+`validar-conteudo.yml`. Colocando a atribuição **depois** da data, a
+substring "Verificado a [data]" mantém-se 100% intacta e nenhuma das 3
+regexes precisou de ser alterada — confirmado por
+`tests/test_adicionar_autoria_artigos.py`, que reimporta as 2 regexes
+reais e a função `extrair_verificado_em()` e verifica que continuam a
+reconhecer o carimbo depois de alterado. Zero mudança de comportamento
+fora do texto visível.
+
+Páginas sem "Verificado a" próprio (`simulador-abono.html`,
+`simulador-ase.html`, pillar pages como `p/apoios-escolares.html`) só
+recebem o `author`/`publisher` no JSON-LD — não há carimbo nenhum para
+atribuir.
 
 ### PASSO MANUAL PARA O NUNO — validar depois do deploy
 
@@ -3023,10 +3138,10 @@ Quando (e se) links de afiliados forem introduzidos:
 
 ## CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO
 
-O convite ao canal (bloco `<!-- CANAL WHATSAPP -->` em `index.html` + 5
-artigos de maior tráfego — `prova-escolar.html`,
-`prestacao-social-para-a-inclusao.html`, `abono-de-familia.html`,
-`porta-65.html`, `subsidio-desemprego.html` —, PR #140, 2026-08-30)
+O convite ao canal (bloco `<!-- CANAL WHATSAPP -->` em `index.html` +
+nos artigos de maior tráfego — contagem real é sempre `grep -l
+"Avisamos só quando uma regra muda a sério" *.html` menos `index.html`,
+nunca fixada aqui; PR #140, 2026-08-30, acrescentou os primeiros)
 promete ao leitor: **"Avisamos só quando uma regra muda a sério — sem
 grupo, sem responderes a nada."** A partir do 1.º seguidor essa frase é
 uma obrigação editorial, não só copy — sem um critério explícito do que
@@ -3139,32 +3254,30 @@ razão).
 preenchida à MÃO por uma sessão editorial, **no mesmo commit** em que
 corrige uma página por causa de uma alteração legal confirmada — nunca
 por nenhuma automação. O campo `_nota` explica o mecanismo directamente
-no ficheiro (mesmo padrão de `data/destaque_evento.json`, que já usa um
-`_nota` para o mesmo fim) — decisão deliberada depois de uma lição real
-noutro ficheiro deste repositório: instruções que só existiam numa
-sessão anterior, sem nota nenhuma no próprio JSON, passaram 12 dias sem
-ninguém as ler. `preparar_canal.py` preserva `_nota` em toda e qualquer
-escrita (só o campo `entradas` muda) — nunca reescreve o documento a
-partir do zero, o que a apagaria em silêncio; trancado por
+no ficheiro (mesmo padrão de `data/destaque_evento.json`; razão da
+`_nota` — lição de uma sessão anterior sobre instruções invisíveis no
+próprio JSON — documentada em `HISTORICO.md`, 2026-08-31).
+`preparar_canal.py` preserva `_nota` em toda e qualquer escrita (só o
+campo `entradas` muda) — nunca reescreve o documento a partir do zero,
+o que a apagaria em silêncio; trancado por
 `test_nota_explicativa_sobrevive_ao_consumo_da_fila` e por
 `test_ficheiro_real_de_producao_tem_nota_explicativa` (este último corre
-sobre o ficheiro real, não uma cópia — falha se algum dia a nota for
-removida ou encolhida). `resumo` é o texto pronto a copiar (PT-PT
-simples, mesma régua de "LINGUAGEM PARA O UTILIZADOR"), escrito no
-momento de maior contexto (logo depois de confirmar o facto), não
-recriado a posteriori a partir de um diff. `scripts/preparar_canal.py`
-nunca decide se algo é "uma alteração real" — só consome a entrada mais
-antiga de `entradas` e formata. Isto substitui o antigo passo
-"considerar publicação" nas checklists dos 5 blocos de Issue dos
-sentinelas dirigidos (`pipeline-diario.yml`, Step 8) — cada um aponta
-para `data/canal_pendente.json` (**é aí que a decisão "confirmada uma
-alteração real" é tomada**, no mesmo passo da checklist) em vez de só
-"considerar".
+sobre o ficheiro real, não uma cópia). `resumo` é o texto pronto a
+copiar (PT-PT simples, mesma régua de "LINGUAGEM PARA O UTILIZADOR"),
+escrito no momento de maior contexto, não recriado a posteriori a
+partir de um diff. `scripts/preparar_canal.py` nunca decide se algo é
+"uma alteração real" — só consome a entrada mais antiga de `entradas`
+e formata. Isto substitui o antigo passo "considerar publicação" nas
+checklists de Issue dos sentinelas dirigidos listados em "Publica-se
+quando" (`pipeline-diario.yml`, Step 8) — cada um aponta para
+`data/canal_pendente.json` (**é aí que a decisão "confirmada uma
+alteração real" é tomada**) em vez de só "considerar".
 
 **Gatilho 1b — caminho automático, sem fila manual, `confirmado: false`
-(2026-08-31)**: quando um dos 5 sentinelas dirigidos escreve a sua
-chave de aviso em `data/scraped/avisos.log` no dia de hoje (mesmas 5
-chaves que já geram Issue própria no Step 8 — `dre_psu_decreto_detectado`,
+(2026-08-31)**: quando um dos sentinelas dirigidos listados em
+"Publica-se quando" escreve a sua chave de aviso em
+`data/scraped/avisos.log` no dia de hoje (mesmas chaves que já geram
+Issue própria no Step 8 — `dre_psu_decreto_detectado`,
 `dre_psu_regulamentacao_portaria_detectada`,
 `dre_habitacao_paer_decreto_detectado`,
 `dre_habitacao_garantia_decreto_detectado`, `dre_ias_portaria_detectada`),
@@ -3174,21 +3287,19 @@ Nunca confunde-se com 1a: nasce `confirmado: false`, com `sentinela`
 (a chave de aviso) e um texto que é só o excerto bruto detectado em
 dre.pt, nunca pronto a copiar. **O aviso "NÃO PUBLICAR AINDA" é
 obrigatório e vem sempre ANTES do texto** no corpo da Issue (Step 7h do
-workflow, ver abaixo) — motivado por os sentinelas já terem disparado
-por ruído confirmado depois de criada a Issue (Regulamento da Série II
-na Issue #114, o próprio DL 166/2026 já conhecido a reaparecer na Issue
-#132): um rascunho automático nunca pode ser tratado como pronto a
-publicar, mas também não faz sentido perder o sinal só porque ninguém
-preencheu 1a ainda.
+workflow, ver abaixo): um rascunho automático nunca pode ser tratado
+como pronto a publicar, mas também não faz sentido perder o sinal só
+porque ninguém preencheu 1a ainda (motivo — ruído real já confirmado
+nas Issues #114/#132 — documentado em `HISTORICO.md`, 2026-08-31).
 
 Deduplicado por **ocorrência**, não por dia: `data/canal_estado.json`
 guarda, em `sentinelas_rascunhadas` (`{chave_aviso: excerto}`), o
 último excerto para o qual este script já produziu um rascunho por
 sentinela — só volta a disparar quando o excerto detectado hoje for
 diferente do último rascunhado (um acto genuinamente novo, não o mesmo
-decreto-lei/portaria a persistir na pesquisa dia após dia, como
-aconteceu na prática antes do corte de recência da Issue #132 ser
-corrigido). A chave só é registada quando um rascunho é de facto
+decreto-lei/portaria a persistir na pesquisa dia após dia — caso real
+documentado em `HISTORICO.md`, Issue #132). A chave só é registada
+quando um rascunho é de facto
 produzido — se o sinal aparecer num dia em que 1a já ocupou o único
 slot diário, fica por rascunhar e continua elegível no dia seguinte
 (nunca perdido em silêncio).
@@ -3250,120 +3361,6 @@ nunca bloqueiam as seguintes, silêncio quando não há nada). Nenhuma
 chamada de rede — os testes correm inteiramente em `tmp_path`, `main()`
 aceita `raiz`/`hoje`/`saida` explícitos (mesmo padrão de
 `gerir_estado_fontes.main()`), sem monkeypatch de constantes de módulo.
-
-### E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL
-
-Sem autor pessoal público (decisão do Nuno, mantida), o E-E-A-T do
-site joga-se a nível de entidade + método. A **NV Labs** — estúdio
-independente português, responsável editorial do Tens Direito — é
-**resolvível**: "An NV Labs project" no footer liga a
-`sobre.html#nvlabs`, que tem secção própria e JSON-LD `Organization`
-próprio. **Sem `sameAs`** — o único que chegou a existir apontava para
-o repositório GitHub, removido pela regra de zero menções a GitHub em
-página pública (ver "REGRAS DE CONTEÚDO" → "Não fazer"). Regra
-permanente: nunca inventar um perfil para preencher esse campo — sem
-um perfil público real da NV Labs, o `sameAs` fica ausente.
-
-### `sobre.html` — 5 blocos + excepção à regra de JSON-LD
-
-**Reescrito em 2026-07-03 (2.ª vez, tarde) por decisão do Nuno**: zero
-menções a GitHub/repositório/código aberto e zero menções a
-inteligência artificial/automação de redação em qualquer página
-pública — regra permanente registada em "REGRAS DE CONTEÚDO" → "Não
-fazer". Estrutura de 5 blocos mantida: 1) o que é o
-site; 2) quem está por trás — NV Labs (`id="nvlabs"`, sem link
-GitHub); 3) método de verificação (`id="metodo"`, bloco central —
-fontes exclusivamente oficiais, "a redação monitoriza diariamente"
-(nunca "sistema automático"), carimbo "Verificado a", o que o site não
-faz); 4) correcções (email ofuscado + marcador `CONTACTO-EMAIL`);
-5) contacto (`id="contacto"`, só o email ofuscado). Nenhuma pessoa,
-credencial ou e-mail inventados.
-
-`sobre.html` mantém JSON-LD — única página institucional a fazê-lo,
-excepção deliberada à regra "institucionais sem JSON-LD" (ver secção
-"PÁGINAS INSTITUCIONAIS"): `AboutPage` (mainEntity → Organization),
-`Organization` (`@id=".../sobre.html#nvlabs"`, sem `sameAs` — o único
-que existia apontava para o repositório GitHub, removido nesta
-revisão) e `WebSite` (publisher → Organization). Válido porque
-`FAQPage`/`WebPage` herdam `author`/`publisher` de `CreativeWork` —
-confirmado por `tests/test_sobre_jsonld.py`, que carrega e valida os 3
-blocos como JSON real, nunca uma cópia.
-
-### Marcador `CONTACTO-EMAIL` — preenchido e activo
-
-O email oficial **contacto@tensdireito.com** (forwarding ImprovMX →
-caixa pessoal, testado e activo desde 2026-07-03) é o único canal de
-contacto do site. Nunca aparece literal no HTML fonte de nenhuma
-página pública — `sobre.html` tem `<span class="email-ofuscado"
-data-user="contacto" data-dominio="tensdireito.com">`, preenchido em
-runtime por um `<script>` inline no fim do `<body>` (concatena
-`data-user + '@' + data-dominio`, monta o `mailto:` e o texto visível,
-substitui o `<span>` por um `<a>` real), com fallback `<noscript>`
-("contacto (arroba) tensdireito (ponto) com"). Sem dependências
-externas. O marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` mantém-se
-nos blocos "Correcções"/"Contacto" como âncora documental — nunca com
-o endereço literal dentro do comentário (um comentário HTML continua a
-ser texto simples no fonte, por isso quebraria a mesma regra).
-Qualquer outra página que precise de referenciar contacto liga para
-`/sobre.html#contacto` — nunca duplica o email nem o script de
-desofuscação. `tests/test_sobre_jsonld.py` confirma: literal
-`contacto@tensdireito.com` ausente de todo o HTML público, `mailto:`
-presente só dentro do `<script>` de desofuscação, marcador presente.
-
-### Footer — "An NV Labs project" passa a link
-
-`scripts/atualizar_branding_nvlabs.py` deixou de ser só bootstrap
-(insere uma vez, nunca mais toca) e passou a **sincronizador
-idempotente nos dois sentidos**: página sem marcadores → bootstrap;
-página já com marcadores → substitui o conteúdo entre
-`NVLABS:HEADER`/`NVLABS:FOOTER` pelo bloco canónico actual, no-op se já
-estiver igual (novo `--apenas-sincronizar` impede bootstrap acidental
-em páginas que nunca tiveram o bloco — usado para excluir `404.html`,
-que não tem `</footer>` nem badge NV Labs por não ter sido processada
-antes, fora do âmbito desta sessão). O bloco footer (`<div>` → `<a
-href="/sobre.html#nvlabs">`) envolve agora o SVG existente — o texto
-"An NV Labs project" mantém-se exactamente igual (decisão do Nuno),
-só passou a ser clicável. Corre com `--apenas-sincronizar --write` em
-qualquer página que já tenha o bloco (contagem real é sempre
-`grep -rl "sobre.html#nvlabs" --include="*.html"`, nunca fixada aqui);
-idempotência confirmada.
-`assets/css/branding.css` ajustado (`.footer-nvlabs` de `<div>` para
-`<a>`, com `:focus-visible`).
-
-### Autoria nos artigos — `scripts/adicionar_autoria_artigos.py`
-
-Novo script, âmbito automático (todas as páginas com `"@type":
-"FAQPage"` em `*.html`/`p/*.html` — contagem real é sempre
-`grep -rl '"@type": "FAQPage"' --include="*.html"`, nunca fixada aqui;
-`simulador-psu.html` fica fora por não ter JSON-LD nenhum,
-deliberadamente não publicado):
-
-1. Injecta `"author"`/`"publisher"` (`{"@id": ".../sobre.html#nvlabs"}`)
-   no bloco `FAQPage` — válido em Schema.org (`FAQPage` < `WebPage` <
-   `CreativeWork`, que já define ambas as propriedades).
-2. Acrescenta atribuição à **última** ocorrência de "Verificado a
-   [data]" de cada página (a canónica — mesmo critério de
-   `sincronizar_clusters.extrair_verificado_em()`, nunca uma nota de
-   secção `.fonte-inline`): `Verificado a [data] pela redação do
-   <a href="/sobre.html#metodo">Tens Direito</a>`.
-
-**Desvio deliberado da ordem proposta no brief original** ("Verificado
-pela redação do Tens Direito a [data]", atribuição antes da data): essa
-ordem quebra a contiguidade literal "Verificado a" + data de que
-dependem 3 sítios — `sincronizar_clusters._REGEX_VERIFICADO`,
-`auto_update_engine._REGEX_VERIFICADO_A` e o aviso (não bloqueante) de
-`validar-conteudo.yml`. Colocando a atribuição **depois** da data, a
-substring "Verificado a [data]" mantém-se 100% intacta e nenhuma das 3
-regexes precisou de ser alterada — confirmado por
-`tests/test_adicionar_autoria_artigos.py`, que reimporta as 2 regexes
-reais e a função `extrair_verificado_em()` e verifica que continuam a
-reconhecer o carimbo depois de alterado. Zero mudança de comportamento
-fora do texto visível.
-
-Páginas sem "Verificado a" próprio (`simulador-abono.html`,
-`simulador-ase.html`, pillar pages como `p/apoios-escolares.html`) só
-recebem o `author`/`publisher` no JSON-LD — não há carimbo nenhum para
-atribuir.
 
 ---
 
@@ -3437,9 +3434,10 @@ nenhuma órfã por acidente.
 
 ### Passo 4b — Article JSON-LD
 
-Implementa a melhoria já registada na sessão E-E-A-T anterior (ver
-secção "E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL" → "Verificação
-pós-merge"): as 27 páginas de conteúdo (as que têm `FAQPage`) só tinham
+Implementa a melhoria já registada numa sessão anterior (achado por
+varrimento real das 27 páginas de conteúdo, ver `HISTORICO.md`, entrada
+de 2026-07-03 "fecho da sessão E-E-A-T"): as 27 páginas de conteúdo (as
+que têm `FAQPage`) só tinham
 `author`/`publisher` dentro do próprio `FAQPage`, que a Google Search
 Central documenta não consumir para autoria.
 
