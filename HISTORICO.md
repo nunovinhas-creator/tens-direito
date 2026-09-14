@@ -6318,4 +6318,4 @@ remoto desta sessão) — PR novo, sem merge.
 
 ---
 
-*Última revisão automática: 2026-09-13*
+*Última revisão automática: 2026-09-14*

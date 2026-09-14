@@ -1,134 +1,5 @@
 [
   {
-    "data": "2026-08-30",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 12,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 11,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Pensões e subsídios da Segurança Social: veja as datas de pagamento em setembro de 2026 - SAPO",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-28",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-28"
-      },
-      {
-        "titulo": "Pensões e apoios da Segurança Social: datas de pagamento em setembro de 2026 - 4gnews",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-28",
-        "score": 4,
-        "decisao": "vencedor",
-        "motivo": "score=4, categoria=apoios"
-      },
-      {
-        "titulo": "Prestação Social Única (PSU) deixa desempregados mais desprotegidos - recordeuropa.com",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-25",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Recebe apoios da Segurança Social? Já são conhecidas as datas de pagamento de Setembro - Human Resources Portugal",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-24",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "CGTP alerta que Prestação Social Única deixa desempregados mais desprotegidos - Barlavento",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-24",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Prestação Social Única: estas são as novas regras para beneficiários e famílias - CNN Portugal",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-27",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Social de Setembro de 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-08-25",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-25"
-      },
-      {
-        "titulo": "Inscrições para apoios à família e Acção Social Escolar de Arruda até 28 de Agosto - O Mirante",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-08-24",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-24"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Social de Setembro de 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-25",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-25"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Pensões e apoios da Segurança Social: datas de pagamento em setembro de 2026 - 4gnews",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 4
-      }
-    ]
-  },
-  {
     "data": "2026-08-31",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1666,6 +1537,172 @@
       },
       {
         "titulo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 - CNN Portugal",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-09-14",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 12,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 14,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 9,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - Leak.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-09",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-09"
+      },
+      {
+        "titulo": "Município de Alcoutim reforça apoios à educação e ação social escolar - Rádio Horizonte Algarve",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-10",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-10"
+      },
+      {
+        "titulo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece - Leak.pt",
+        "feed_nome": "ias_valor_referencia",
+        "data_iso": "2026-09-12",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-12"
+      },
+      {
+        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes - Economia e Finanças",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-09",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-09"
+      },
+      {
+        "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família - expresso.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-13",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Livre quer passe de mobilidade nacional, reforçar abono de família e rede pública de lares - dnoticias.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-13",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de família em 2026: quanto se recebe por filho (e porque setembro é especial) - Leak.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Já são conhecidas as datas dos pagamentos da Segurança Social em outubro - diariOnline Região Sul",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional - expresso.pt",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-11",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-11"
+      },
+      {
+        "titulo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 - CNN Portugal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-11",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-11"
+      },
+      {
+        "titulo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027 - sol.iol.pt",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-11",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "CGTP convoca manifestação nacional para 17 de outubro - RTP",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-11",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Os países com os salários mínimos mais elevados: Suíça lidera ranking - Idealista",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-10",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família - expresso.pt",
+        "feed_nome": "abono_familia",
+        "score": 1
+      },
+      {
+        "titulo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027 - sol.iol.pt",
         "feed_nome": "salario_minimo",
         "score": 1
       }

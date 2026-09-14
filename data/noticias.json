@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-13",
+      "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família",
+      "fonte_nome": "expresso.pt",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQc0J0N1c2MF90bi12UGpEaDBYbDJTNkFSNWZfV1U5UzhpSC11cFF5UmRhZTg5NXNJaC1pOEo4enhlaGRXLVpCWTBJVE04VE8wUWRjcDNUMmdKbGxmcmNRal90bGdaTktBVEZxVVhrejl2dFlHLVVMVkZvSDlpcEtxekFHYk9CempaWlVEcFg2WVhFeWNHMnZ6N0g4dTNscDBiNTV5SFphdjMySF9ydTdfMUlDY2NLeWt1NG9iNUNZQ01mbmkzZEhGZ1RNc3pBQkFZWV9IVTFEWWZZLWU5QkVn?oc=5",
+      "resumo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família expresso.pt",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-09-12",
       "titulo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece",
       "fonte_nome": "Leak.pt",
@@ -24,6 +33,15 @@
       "fonte_nome": "CNN Portugal",
       "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNZ1FFU1ozWDRhWWNoSVczNlhOSHAyQmc3X01sOHNKeUVEdFhabG1Ob1RGeEdoZFNlekVoOTg1NGlHNzh4VHNDYUkxaThFc1NNT3VnZzFQM3BjU0V2X0lxcVhHMHAwSE5JWDZLMnA3NElIdzFJaHc4WGNhVW5NdG9TOFA5SjFyUkhzRWdvUk40ZS02TktGNEVVNkROSFpWOUN0YUJ0TG11NnJhaVJ5dFNwcld3SWdtMWNIbHkxN2RIM1RUay1FMzBfUk9rQTdtNVJoWVY1akx5UUhkUk9IV3Rv?oc=5",
       "resumo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 CNN Portugal",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-11",
+      "titulo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027",
+      "fonte_nome": "sol.iol.pt",
+      "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxQTm1obXhTUWdyQV8wdEs1Zm5wemtPUFNvMG1PbGl3b2lUNTc5aENmUUNjV0pFZkhmMWNoMEFhQXZONTFzbkJHS2RYN25YNURtVTNCVDZmNERsdXVSbGpVaFVkb0lvNVFJc2N5elAwdHNtT3FPT3FhbzlFTEdKTlhrR3hpVTM3YVVzdDZCR2V1NUFIcUUtYVhIWEEyajFFdUtYaDNrZFdWaUVsaEozWk9SdENtRWdTRXJXVURENmlPMlhDaWxyQUJ2bjJybnBvNFBUZUlhN2dnRDVzb0MwV2gzd0NIWWtaVUtmaE9RdUNtc2hEVmxEeWlr?oc=5",
+      "resumo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027 sol.iol.pt",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
