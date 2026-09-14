@@ -3191,7 +3191,16 @@ incrementais (git scraping/`dados/observacoes/`, parâmetros legais em
 YAML no padrão OpenFisca migrando o CSI, publicação SQLite +
 `dados.html` com Datasette Lite). Ver secção "DADOS ABERTOS — GIT
 SCRAPING, PARÂMETROS OPENFISCA E PUBLICAÇÃO (FASES 1-3)" para o detalhe
-completo. Suite local completa: **2702 passed, 4 skipped, 0 failed**
+completo. As 8 fontes monitorizadas já tinham `_latest.json` reais em
+produção, por isso `dados/observacoes/*.json` nasceu com conteúdo real
+(nunca vazio) — confirmada a idempotência (2.ª corrida sem alterações),
+que um SHA forçado a divergir produz observação nova, e que o guard "sem
+`_latest.json` ainda" nunca lança excepção para uma fonte nova. Efeito
+lateral encontrado e corrigido no mesmo commit, sem relação com dados
+abertos: o bloco `ATUALIZACOES:HOME` de `index.html` estava
+desactualizado de uma sessão anterior (2 cartões a apontar para páginas
+já fora das 4 mais recentemente verificadas) — corrigido pela própria
+`sincronizar_clusters.py`. Suite local completa: **2702 passed, 4 skipped, 0 failed**
 (527s); `ruff check scripts/ tests/ --select E,F,W --ignore E501`
 limpo. **PR #69** (aberto contra `main`) — CI real ("Integridade do
 Código") confirmado verde nos 6 jobs aplicáveis (Suite de Testes,

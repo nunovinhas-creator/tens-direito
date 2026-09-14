@@ -1796,11 +1796,10 @@ tocados.
 
 ## GERADOR DE DOCUMENTOS
 
-Diferenciador do site (2026-07-06, Sessão 1 de 2 —
-`PROMPTGERADORDOCUMENTOSv1.md`): minutas de requerimentos, reclamações e
-cartas dirigidas à Segurança Social, geradas 100% no browser. Ver
-`ROADMAP.md` → "GERADOR DE DOCUMENTOS — ESTADO" para o índice rápido do
-que falta para a Sessão 2.
+Minutas de requerimentos, reclamações e cartas dirigidas à Segurança
+Social, geradas 100% no browser (`PROMPTGERADORDOCUMENTOSv1.md`, documento
+externo, nunca commitado). Ver `ROADMAP.md` → "GERADOR DE DOCUMENTOS —
+ESTADO" para o índice rápido do que falta.
 
 ### Arquitectura — motor único config-driven
 
@@ -1833,31 +1832,27 @@ Nenhuma minuta tem JS próprio:
 zero chamadas de rede depois do load, mesmo ao gerar o documento — por
 isso o motor **nunca** dispara eventos GA4 ao clicar em "Gerar
 documento" (ao contrário dos simuladores, que disparam `calc_resultado`
-via `gtag`). Decisão deliberada desta sessão: o próprio prompt exige um
-teste de rede que falha com qualquer pedido, e um evento GA4 é uma
-chamada de rede real — a mensagem "os dados que preenches nunca saem do
-teu dispositivo" tem de ser verificada a sério, não só quanto ao
-conteúdo do formulário. Zero `localStorage`/`sessionStorage` — estado
-só em memória (mesmo padrão de `checklist.js`).
+via `gtag`) — um evento GA4 é uma chamada de rede real, e a mensagem "os
+dados que preenches nunca saem do teu dispositivo" tem de ser verdade a
+sério, não só quanto ao conteúdo do formulário. Zero
+`localStorage`/`sessionStorage` — estado só em memória (mesmo padrão de
+`checklist.js`).
 
-### Integração no sistema de clusters — decisão desta sessão
+### Integração no sistema de clusters
 
 `cluster_da_pagina()`/`processar_pagina()` em `sincronizar_clusters.py`
 comparam `Pagina.slug` só contra `caminho.name` (basename) — desenhado
-para páginas na raiz, nunca precisou de suportar sub-caminhos como
-`documentos/...` (ao contrário do `pillar`, que já tinha uma função
-própria, `cluster_do_pillar()`, para caminhos com `/`). Estender o
-matching de `paginas[].slug` para aceitar sub-caminhos é um refactor à
-parte, fora do âmbito desta sessão. Por isso as 4 páginas do gerador
-(`documentos.html` + as 3 minutas) ficam em `EXCLUIDAS` — mesma
-categoria de `comecar-aqui.html`/`simuladores.html` — e a integração é
-feita inteiramente por fora do sistema de clusters: nav (link "📄
-Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão do link
-"🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no hub
-`/documentos.html`, e cross-links manuais a partir de
-`abono-de-familia.html` e `complemento-solidario-idosos.html` para as
-duas cartas de acompanhamento respectivas — ver `ROADMAP.md` para o
-trabalho futuro registado de generalizar `Pagina.slug`.
+para páginas na raiz, nunca preparado para sub-caminhos como
+`documentos/...` (ao contrário do `pillar`, que já tem uma função
+própria, `cluster_do_pillar()`, para caminhos com `/`). Por isso as
+páginas do gerador (`documentos.html` + cada minuta) ficam em
+`EXCLUIDAS` — mesma categoria de `comecar-aqui.html`/`simuladores.html`
+— e a integração é feita inteiramente por fora do sistema de clusters:
+nav (link "📄 Documentos" em `scripts/sincronizar_nav.py`, mesmo padrão
+do link "🧮 Simuladores"), `sitemap.xml`, `scripts/pesquisa.js`, cards no
+hub `/documentos.html`, e cross-links manuais a partir das páginas de
+prestações relevantes — ver `ROADMAP.md` para o trabalho futuro
+registado de generalizar `Pagina.slug`.
 
 ### Regras do portão de verificação — activas para qualquer minuta futura
 
@@ -1871,140 +1866,38 @@ trabalho futuro registado de generalizar `Pagina.slug`.
   Social, para prestações contributivas; AMIM é da Saúde, atestado
   multiuso); cruzá-los confundiria o leitor sobre qual processo seguir.
 
-### PORTÃO DE VERIFICAÇÃO — resultado das 3 candidatas da Sessão 1
+### Minutas publicadas — estado do portão de verificação
 
-Núcleo do prompt original, as 3 candidatas de maior prioridade,
-verificadas uma a uma antes de escrever qualquer template:
+12 minutas publicadas em `documentos/`, nenhuma rejeitada. 6 sem pivot
+(nenhum Mod. oficial equivalente):
 
-1. **Reclamação de decisão da Segurança Social** — **publicada
-   integralmente** (`documentos/reclamacao-decisao-seguranca-social.html`).
-   Verificado via pesquisa a fontes que reproduzem o texto consolidado
-   do Código do Procedimento Administrativo (Decreto-Lei n.º 4/2015, de
-   7 de janeiro): o artigo 191.º consagra a reclamação em regime geral,
-   **sem exigir formulário próprio** — um texto livre e fundamentado é
-   um canal legítimo, com prazo geral de 15 dias úteis "quando a lei
-   não estabeleça prazo diferente" e decisão em 30 dias (artigo 192.º,
-   n.º 2); recurso hierárquico nos artigos 193.º a 198.º. É a única das
-   3 candidatas que não precisou de pivot.
-2. **Pedido de reavaliação de escalão de abono de família** — **pivot
-   obrigatório**, diferente do que o prompt original assumia (só
-   sinalizava pivot como "provável" para a CSI). Achado: o nosso
-   próprio artigo já fact-checked `abono-de-familia.html` documenta
-   que a reavaliação usa o **Modelo GF58-DGSS** (disponível em
-   seg-social.pt) e que o canal normal e mais rápido é o **pedido
-   online** na Segurança Social Direta (Família → Abono de Família →
-   Pedido de reavaliação do escalão), com uma carência de 90 dias desde
-   a última verificação/alteração. Publicada como
-   `documentos/carta-acompanhamento-reavaliacao-abono.html` — carta de
-   acompanhamento do Modelo GF58-DGSS, nunca um substituto, com aviso
-   destacado (`.aviso-pivot`) a apontar primeiro para o canal online.
-3. **CSI** — **pivot confirmado**, exactamente como o prompt
-   antecipava. O nosso próprio artigo já fact-checked
-   `complemento-solidario-idosos.html` documenta "Modelos CSI 1, CSI
-   1/1 e CSI 1/2 (obrigatório)" — requerimento inicial de prestação,
-   caso típico da regra do portão ("nunca apresentar uma minuta como
-   substituto de um Mod. oficial"). Publicada como
-   `documentos/carta-acompanhamento-csi.html` — carta de
-   acompanhamento, com link directo para `seg-social.pt/formularios`.
+| Minuta | Base legal / canal |
+|---|---|
+| `reclamacao-decisao-seguranca-social.html` | CPA art. 191.º-192.º (DL 4/2015) — regime geral, sem Mod. próprio, prazo 15 dias úteis |
+| `recurso-hierarquico-seguranca-social.html` | CPA art. 193.º-198.º |
+| `exposicao-atraso-processamento.html` | CPA art. 128.º-129.º (prazo geral de 90 dias) |
+| `requerimento-reavaliacao-escalao-ase.html` | processo descentralizado por agrupamento de escolas, sem Mod. nacional da DGE |
+| `pedido-acesso-documentos-administrativos.html` | Lei n.º 26/2016 (LADA), art. 12.º/15.º, prazo 10 dias úteis |
+| `requerimento-generico-seguranca-social.html` | catch-all, direito de petição (art. 52.º CRP) — nunca substitui um Mod. existente nem contesta uma decisão já tomada |
+| `pedido-declaracao-comprovativo-prestacoes.html` | sem Mod. numerado — página recomenda a Segurança Social Direta como canal mais rápido, esta minuta como alternativa em papel |
 
-**Nenhuma candidata ficou de fora na Sessão 1** — as 3 do núcleo
-passaram o portão (2 com pivot, 1 sem).
+6 com pivot para carta de acompanhamento de um Mod. oficial (regra do
+portão acima):
 
-### PORTÃO DE VERIFICAÇÃO — resultado das candidatas 4-12 (Sessão 2, 2026-07-06)
+| Minuta | Mod. oficial que acompanha |
+|---|---|
+| `carta-acompanhamento-reavaliacao-abono.html` | Modelo GF58-DGSS (`abono-de-familia.html`) |
+| `carta-acompanhamento-csi.html` | Modelos CSI 1/CSI 1.1/CSI 1.2 (`complemento-solidario-idosos.html`) |
+| `carta-acompanhamento-divida-prestacoes.html` | Mod. IMP.PN.01.01 |
+| `carta-acompanhamento-comunicacao-alteracao.html` | Mod. GF 37-DGSS/GF 54-DGSS (ou "Declaração de Situação Familiar" na SS Direta) |
+| `carta-acompanhamento-svi-recurso.html` | Mod. SVI 55-DGSS, prazo de 10 dias (mais curto que os 15 dias do regime geral) |
 
-As 9 candidatas de expansão do prompt foram todas verificadas e
-publicadas — **nenhuma rejeitada**, 6 sem pivot e 3 com pivot:
+**Excluída à partida, nunca avaliada**: procurações e qualquer documento
+com efeitos de representação legal.
 
-4. **Recurso hierárquico de decisão da Segurança Social** — publicado
-   sem pivot (`documentos/recurso-hierarquico-seguranca-social.html`).
-   Artigos 193.º a 198.º do CPA, sem Mod. próprio — complementa a
-   reclamação já publicada (dirigido ao superior hierárquico, não ao
-   mesmo órgão que decidiu).
-5. **Pedido de pagamento de dívida à SS em prestações** — **pivot**
-   (`documentos/carta-acompanhamento-divida-prestacoes.html`).
-   Confirmado Mod. próprio: "Requerimento para Pagamento em
-   Prestações" (IMP.PN.01.01), submetido via Segurança Social Direta
-   ou por email para igfss-divida@seg-social.pt.
-6. **Comunicação de alteração de agregado/morada/rendimentos** —
-   **pivot** (`documentos/carta-acompanhamento-comunicacao-alteracao.html`).
-   Desde jul. 2023 existe a "Declaração de Situação Familiar" na
-   Segurança Social Direta como canal principal; formulários mais
-   antigos ligados a encargos familiares (Mod. GF 37-DGSS, Mod. GF
-   54-DGSS) também encontrados — sem Mod. universal único, tratado
-   como pivot por prudência (mesma lição do GF58).
-7. **Exposição por atraso no processamento de prestação** — publicado
-   sem pivot (`documentos/exposicao-atraso-processamento.html`).
-   Artigos 128.º (prazo geral de 90 dias) e 129.º (dever de decisão)
-   do CPA — sem Mod. próprio.
-8. **Reclamação de decisão do SVI / junta médica** — **pivot**
-   (`documentos/carta-acompanhamento-svi-recurso.html`). Confirmado
-   Mod. SVI 55-DGSS obrigatório ("Requerimento — Comissão de
-   Reavaliação/Comissão de Recurso"), prazo de **10 dias** — mais
-   curto do que os 15 dias da reclamação em regime geral, destacado na
-   página. Distinto do processo de recurso do AMIM (JMAI, Ministério
-   da Saúde, 30 dias) — **nunca cross-linkado com `amim.html`
-   deliberadamente**, para não conflacionar os dois sistemas de junta
-   médica diferentes (SVI é da Segurança Social, para prestações
-   contributivas; AMIM é da Saúde, atestado multiuso).
-9. **Pedido de reavaliação de escalão ASE** — publicado sem pivot
-   (`documentos/requerimento-reavaliacao-escalao-ase.html`). Processo
-   descentralizado por agrupamento de escolas, sem Mod. nacional da
-   DGE — página recomenda confirmar se a escola tem impresso próprio.
-10. **Pedido de consulta do processo / acesso a documentos (CPA)** —
-    publicado sem pivot (`documentos/pedido-acesso-documentos-administrativos.html`).
-    Lei n.º 26/2016 (LADA), artigo 12.º exige só requerimento escrito
-    (sem Mod. numerado), artigo 15.º fixa prazo de 10 dias úteis.
-11. **Requerimento genérico à Segurança Social** — publicado sem pivot
-    (`documentos/requerimento-generico-seguranca-social.html`).
-    Template catch-all, direito de petição (artigo 52.º CRP) — página
-    avisa explicitamente para nunca ser usado a substituir um Mod.
-    oficial existente nem para contestar uma decisão já tomada.
-12. **Pedido de declaração/comprovativo de situação de prestações** —
-    publicado sem pivot forte (`documentos/pedido-declaracao-comprovativo-prestacoes.html`).
-    Sem Mod. numerado — emitido em auto-serviço pela Segurança Social
-    Direta; a página recomenda esse canal como mais rápido e trata
-    esta minuta como alternativa em papel.
-
-**Excluída à partida** (decisão do prompt original, nunca avaliada):
-procurações e qualquer documento com efeitos de representação legal.
-
-### Integração e cross-links da Sessão 2
-
-Mesmo padrão da Sessão 1: as 9 páginas novas entram em `EXCLUIDAS` de
-`sincronizar_clusters.py` (mesma limitação de sub-caminhos já
-documentada acima), hub `/documentos.html` ganhou 9 cards novos,
-`sitemap.xml`/`scripts/pesquisa.js` actualizados. Cross-links
-adicionados: `reclamacao-decisao-seguranca-social.html` → recurso
-hierárquico (FAQ); `acao-social-escolar.html` → requerimento de
-reavaliação de ASE (FAQ já existente sobre reavaliação); `abono-de-familia.html`
-→ carta de comunicação de alteração; e um aviso novo (`aviso-info`,
-reaproveitando a classe já existente onde disponível) em
-`rsi.html`/`subsidio-desemprego.html`/`baixa-medica-subsidio-doenca.html`/
-`prestacao-social-para-a-inclusao.html` a apontar para a reclamação —
-nenhuma destas 4 páginas tinha até agora qualquer menção a "o que fazer
-se o pedido for indeferido".
-
-**Título da carta de CSI encurtado** (79 → 50 caracteres): a versão da
-Sessão 1 incluía o sufixo "— não substitui o Mod. CSI 1" no `<title>`,
-arriscando corte no Google (o `og:title` já usava a versão curta,
-inconsistência corrigida). Meta descriptions das 3 páginas da Sessão 1
-também revistas para CTR (mais curtas, lideram com a pergunta/benefício
-concreto, sem repetir "Gera uma..." em todas).
-
-**Achado real, corrigido antes do commit**: um teste falhou
-(`test_sem_ano_civil_desactualizado_em_title_ou_description`) porque a
-meta description do pedido de acesso a documentos cita "Lei n.º
-26/2016" — o canário de anos em metadados apanhou correctamente "2016"
-como um ano potencialmente desactualizado. Mesma categoria já
-documentada para `cuidador-informal.html`/`subsidio-desemprego.html`
-(número de diploma, não data de vigência) — nova excepção registada em
-`EXCECOES_ANOS_HISTORICOS` (`tests/test_anos_metadados.py`).
-
-Suite completa: **1738 passed, 4 skipped** (76 testes novos: 45 golden
-tests do gerador — 5 por página × 9 páginas novas — mais 31 de
-higiene/nav/pesquisa/acessibilidade parametrizados sobre as páginas
-reais); `ruff check scripts/ tests/ --select E,F,W --ignore E501 .`
-limpo.
+Cross-links a partir das páginas de prestação relevantes (abono,
+CSI, RSI, subsídio de desemprego, baixa médica, PSI, ASE) apontam para
+a minuta correspondente; o hub `/documentos.html` lista as 12.
 
 ### Disclaimer obrigatório
 
@@ -2015,22 +1908,20 @@ listadas no hub `/documentos.html`) E no texto gerado de cada minuta
 > jurídico. Confirme sempre os requisitos junto da Segurança Social ou de
 > um advogado/solicitador."
 
-### Testes desta sessão
+### Testes
 
-`tests/test_gerador_documentos.py` (17 testes, Chromium real via
-Playwright, mesmo padrão de `test_acessibilidade.py` — nunca `file://`):
-formulário preenchido gera texto com todos os campos, campo obrigatório
-vazio bloqueia + mostra erro, NISS inválido bloqueia com mensagem de
-padrão, disclaimer presente na página e no texto gerado, botão Copiar
-existe e fica activo após gerar, consistência do hub (cada card aponta
-para ficheiro real, cada minuta linka de volta), e zero pedidos de rede
-ao interagir com o gerador. Genérico sobre as 3 páginas via
+`tests/test_gerador_documentos.py` — Chromium real via Playwright, mesmo
+padrão de `test_acessibilidade.py`, nunca `file://`: formulário
+preenchido gera texto com todos os campos, campo obrigatório vazio
+bloqueia + mostra erro, NISS inválido bloqueia com mensagem de padrão,
+disclaimer presente na página e no texto gerado, botão Copiar existe e
+fica activo após gerar, consistência do hub (cada card aponta para
+ficheiro real, cada minuta linka de volta), e zero pedidos de rede ao
+interagir com o gerador. Genérico sobre todas as páginas via
 `page.evaluate("CONFIG_DOCUMENTO")` — nunca hardcoded por minuta, mesma
-filosofia de `test_simulador_csi_calculo.py`. Mais: `test_nav_tem_link_documentos`
-novo em `tests/test_nav_coerencia.py` (mesmo padrão de
-`test_nav_tem_link_simuladores`). Suite completa reconfirmada sem
-regressões (ver a entrada de 2026-07-06 "Sessão 2 do Gerador de
-Documentos" em `HISTORICO.md`), ruff limpo.
+filosofia de `test_simulador_csi_calculo.py`. `test_nav_tem_link_documentos`
+em `tests/test_nav_coerencia.py` (mesmo padrão de
+`test_nav_tem_link_simuladores`) confirma o link na nav.
 
 ---
 
@@ -2929,18 +2820,14 @@ não reintroduzir sem um facto novo e confirmado.
 
 ## CLUSTER HABITAÇÃO
 
-Criado a 3 jul 2026 — pillar `p/habitacao.html` + 2 artigos-filho
-(`porta-65.html`, `apoio-extraordinario-renda.html`). Expandido a 20 jul
-2026 (Sessão 1 do plano "Expansão do Cluster Habitação") com mais 2
-artigos-filho de compra (`imt-jovem.html`,
-`garantia-publica-credito-habitacao.html`), e fechado no mesmo dia
-(Sessão 3) com mais 2 artigos-filho — um de arrendamento
-(`deducao-rendas-irs.html`) e um de carência habitacional
-(`primeiro-direito.html`) — **7 páginas no total** (+ hub + simulador),
-sexto cluster do site, reorganizado em três secções no hub: 🏠 Arrendar
-/ 🔑 Comprar / 🏚️ Situações de carência. Fact-check prévio obrigatório
-(bloqueante, ver "REGRAS DE CONTEÚDO") — com uma distinção que importa
-manter separada, nunca os três casos ao mesmo nível.
+Pillar `p/habitacao.html` + 7 páginas-filho (`porta-65.html`,
+`apoio-extraordinario-renda.html`, `imt-jovem.html`,
+`garantia-publica-credito-habitacao.html`, `deducao-rendas-irs.html`,
+`primeiro-direito.html`, `simulador-imt-jovem.html`), hub reorganizado
+em três secções: 🏠 Arrendar / 🔑 Comprar / 🏚️ Situações de carência.
+Fact-check prévio obrigatório (bloqueante, ver "REGRAS DE CONTEÚDO") —
+com uma distinção que importa manter separada, nunca os três casos ao
+mesmo nível.
 
 **Ilegíveis por fetch simples, de qualquer lado, sessão ou não**:
 `diariodarepublica.pt/dr/detalhe/...` é uma SPA que exige JavaScript a
@@ -2973,7 +2860,7 @@ páginas citam sempre a URL oficial como fonte, mesmo sem acesso
 directo — mesmo padrão já usado no site para fontes que devolvem 403 a
 bots.
 
-**Regra de dados (20 jul 2026, reforçada na Sessão 2)**: qualquer valor
+**Regra de dados**: qualquer valor
 legal do IMT Jovem ou da Garantia Pública (limiares em €, percentagens,
 prazos, idades — **incluindo os limites das Regiões Autónomas e a
 tabela geral de IMT** de habitação própria e permanente, escalões/taxas/
@@ -3015,10 +2902,10 @@ os impede hoje de ficar desactualizados em silêncio.
   jul 2026). Provedoria de Justiça denunciou irregularidades graves em
   ago 2025 (~mil queixas); Governo anunciou em fev 2026 a intenção de
   revogar e substituir por novo programa — **ainda não publicado em DR
-  à data de verificação (20 jul 2026, reconfirmado na Sessão 3)**. Por
+  à data de verificação**. Por
   isso `apoio-extraordinario-renda.html` não é um guia de candidatura —
   é uma página "estado actual + alternativas", apontando para o Porta 65.
-  **Reforma "produto único" (Sessão 3, 20 jul 2026)**: o Governo
+  **Reforma "produto único"**: o Governo
   manifestou intenção de fundir Porta 65/Porta 65+/PAER/Arrendar para
   Subarrendar num único produto — confirmado só como intenção anunciada,
   **sem** projecto de lei nem consulta pública publicados; nota de
@@ -3034,7 +2921,7 @@ os impede hoje de ficar desactualizados em silêncio.
   DR** à data de verificação; `primeiro-direito.html` menciona-o com essa
   ressalva explícita, nunca como recurso já disponível.
 - **Dedução de rendas no IRS** (`deducao-rendas-irs.html`, publicada
-  20 jul 2026, Sessão 3): Decreto-Lei n.º 97/2026, de 20 de maio —
+  20 jul 2026): Decreto-Lei n.º 97/2026, de 20 de maio —
   **já publicado**, com efeitos desde 1 de janeiro de 2026 (excepto o
   IVA a 6%, desde 1 jul 2026). Sobe o limite de dedução (15% das rendas
   pagas) de **700€** (regime anterior, ainda o limite da declaração
@@ -3048,8 +2935,8 @@ os impede hoje de ficar desactualizados em silêncio.
   Arrendamento Acessível (RSAA)**, efeitos desde 1 set 2026 — isenção de
   IRS/IRC para senhorios com rendas até 80% da mediana do concelho;
   benefício do senhorio, não do inquilino, tratado como nota breve.
-- **1.º Direito** (`primeiro-direito.html`, publicada 20 jul 2026,
-  Sessão 3): DL n.º 37/2018 alterado por DL n.º 44/2025 (27 mar 2025,
+- **1.º Direito** (`primeiro-direito.html`, publicada 20 jul 2026):
+  DL n.º 37/2018 alterado por DL n.º 44/2025 (27 mar 2025,
   alarga o âmbito + regime especial de comparticipação). Gerido pelo
   IHRU, mas **candidatura nunca directa** — passa sempre pelo município,
   no âmbito de uma Estratégia Local de Habitação (ELH) já aprovada;
@@ -3107,105 +2994,48 @@ para a Autoridade Tributária. Se um dia se quiser estender o simulador
 às Regiões Autónomas, os parâmetros já existem — falta só ligar a
 coluna "sem isenção" a um selector de região.
 
-### Backlog — histórico (plano "Expansão do Cluster Habitação" fechado a 20 jul 2026)
+### Watchlist automática DRE
 
-O plano de 3 sessões está **concluído** — registo mantido para memória:
+`dre_habitacao_paer` (revogação do PAER/reforma "produto único") e
+`dre_habitacao_garantia` (alteração/prorrogação do DL n.º 44/2024) —
+mesmo mecanismo `pesquisa_interactiva` do `dre_psu` (ver "IMPACTO DA
+PSU"), com corte de recência `data_minima`/`"desde": "2026-07-20"` em
+`_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só
+conta "novo" um item datado a partir da activação da watchlist.
+`dre_habitacao_garantia` pesquisa a frase legal exacta **"garantia
+pessoal do Estado"** (nunca "garantia pública", termo genérico demais,
+nem a citação por número do diploma) — confirmada contra o motor real:
+devolve a Portaria n.º 236-A/2024/1, que regulamenta o DL 44/2024.
+`tests/test_dre_termos_pesquisa.py` é guardrail permanente: nenhuma
+fonte DRE (actual ou futura) com `pesquisa_interactiva` pode usar um
+termo em forma de citação de diploma ("n.º" + barra + ano) — foi essa
+forma, não um bloqueio real do DRE, que deixou este sentinela e
+`dre_psu_regulamentacao` cegos durante semanas.
 
-| Apoio/tarefa | Estado | Nota |
-|---|---|---|
-| ~~Regime Simplificado de Arrendamento Acessível (RSAA)~~ | **Concluído (Sessão 3)** — nota de caixa em `deducao-rendas-irs.html`, sem página própria dedicada (benefício do senhorio, não do inquilino — fora do foco do cluster) | Ver "Estado real verificado" acima |
-| ~~1.º Direito~~ | **Concluído (Sessão 3)** — `primeiro-direito.html` | Ver "Estado real verificado" acima |
-| ~~Dedução de rendas em IRS~~ | **Concluído (Sessão 3)** — `deducao-rendas-irs.html` | Ver "Estado real verificado" acima |
-| ~~Simulador de IMT Jovem (`simulador-imt-jovem.html`)~~ | **Concluído (Sessão 2)** — 7.º simulador do site, tabela geral de IMT 2026 verificada e parametrizada no YAML | Ver a entrada de 2026-07-20 "Sessão 2 (revista)" em `HISTORICO.md` |
-| ~~Watchlist automática DRE~~ | **Concluído e calibrado contra um runner real (2026-07-20, sessão de integração)** — `dre_habitacao_paer` (revogação do PAER/reforma "produto único") e `dre_habitacao_garantia` (alteração/prorrogação DL 44/2024), mesmo mecanismo `pesquisa_interactiva` do `dre_psu`. A 1.ª corrida real (`workflow_dispatch`) confirmou um falso positivo genuíno em `dre_habitacao_paer`: a pesquisa de frase exacta funcionou correctamente e devolveu o DL n.º 20-B/2023 (diploma fundador do PAER, confirmado por `WebSearch`) e as suas alterações já conhecidas (2023-2025) — sem corte de recência, isto criaria a mesma Issue todos os dias, porque a suposição original ("qualquer Decreto-Lei nos resultados é sinal de novidade", válida para o `dre_psu` porque a PSU ainda não tem diploma nenhum) não se aplica a uma lei já em vigor há anos. Corrigido com `data_minima`/`"desde": "2026-07-20"` em `_detectar_decreto_lei_generico` (`scripts/scraper_playwright.py`) — só conta "novo" um item datado a partir da activação da watchlist; um item sem data reconhecível nunca é descartado em silêncio (mesmo invariante "nenhum estado de erro pode parecer sucesso"). `dre_psu` confirmado 100% inalterado (sem corte de recência, testado). Issue #73 fechada com a explicação. `dre_habitacao_garantia` devolveu zero resultados na 1.ª corrida (comportamento seguro, nunca disparou) — causa por investigar sem prioridade. 6 testes de regressão novos em `tests/test_dre_habitacao_watchlist.py` (18 no total), incluindo fixture com os dados reais desta corrida; ver ROADMAP.md → "Automáticos" | Regulamentação do RSAA não incluída como gatilho — já publicada (DL 97/2026), nunca esteve pendente |
+O diff genérico "Detectar mudanças e registar" (`pipeline-diario.yml`)
+compara `itens_lista` em bruto para todas as fontes DRE sem filtrar por
+tipo de acto legal — dominado por ruído (ex.: Resoluções do Conselho de
+Ministros sem relação com o diploma vigiado). `dre_habitacao_garantia`
+tem uma allow-list scoped (`DRE_SLUGS_PESQUISA` + `ACTO_LEGAL_REGEX`, só
+Decreto-Lei/Lei/Portaria/Despacho) que filtra esse ruído antes do diff
+— **deliberadamente não generalizada** às outras 4 fontes DRE sem
+confirmar primeiro o perfil de ruído de cada uma (`dre_habitacao_paer`
+tem um caso real, um "Regulamento" da Série II, fora desta allow-list,
+que o mesmo filtro apagaria por engano — ver `tests/test_diff_mudancas_issue.py`).
 
-**Correcção à linha "Watchlist automática DRE" da tabela acima — 3
-rondas, a última já fechada (2026-09-01, Issues #147/#148; 2026-09-02,
-Issue #151; 2026-09-03, Issue #158)**: a "causa por investigar sem
-prioridade" do `dre_habitacao_garantia` estava investigada há muito —
-44 dias consecutivos, zero resultados, sempre, desde a criação. O
-termo original pesquisava a **citação** do diploma por número
-(`'"Decreto-Lei n.º 44/2024"'`), nunca uma frase temática — mesmo
-padrão que também cegou `dre_psu_regulamentacao` (ver secção "IMPACTO
-DA PSU" para o diagnóstico completo: `dre_psu` encontrou, no mesmo dia
-e com o mesmo motor, um item que a citação-por-número equivalente nunca
-encontrou). Corrigido a 2026-09-01 trocando o termo para a designação
-temática do apoio, `'"Garantia Pública no crédito habitação"'` — mas
-**sem confirmação directa contra o motor real**, e continuou cego mais
-4 dias (Issue #151).
+**Gap aberto (Issue #198)**: a Portaria n.º 187/2025/1 (1.ª alteração à
+236-A/2024/1, achada pela allow-list acima) continua por fact-checar e
+por acrescentar a `dados/parametros/habitacao.yaml` — confirmada só por
+`WebSearch`, nunca o texto legal directo. Antes de acrescentar
+`fonte_url_complementar` (mesmo padrão do CSI): confirmar se altera
+algum dos 6 valores já publicados da Garantia Pública (idade 18-35,
+tecto 450.000€, 15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) —
+nunca assumir que é só alteração de forma.
 
-**Corrigido de vez a 2026-09-02 (Issue #151), calibrado num runner
-real**: isolado o diagnóstico em contextos de browser limpos (achado
-metodológico à parte: pesquisas sucessivas na mesma `page`/`context`
-partilhada podem cair na página canónica de "zero resultados" do DRE
-mesmo com um termo correcto — a produção sobrevive porque
-`scrape_playwright()` tenta até 3 vezes com 30-120s de espera entre
-tentativas, o que um diagnóstico ingénuo não replica). Com isolamento
-correcto, `"Garantia Pública no crédito habitação"` confirmou-se **0
-resultados genuíno**, não artefacto de sessão. Em vez de continuar a
-adivinhar candidatos, extraído o texto real do DL 44/2024 na própria
-página de detalhe em dre.pt: a expressão legal exacta, usada
-repetidamente no diploma, é **"garantia pessoal do Estado"** (nunca
-"garantia pública", termo genérico demais — devolve 29 resultados sem
-nenhum relacionado com este DL). Testado contra o motor real: devolve
-24 resultados à 1.ª tentativa, incluindo a Portaria n.º 236-A/2024/1 —
-a que regulamenta este mesmo DL — prova directa e não-inferida de que a
-frase está correcta. **Termo em produção desde então**
-(`scripts/scraper_playwright.py`, `_FONTE_CONFIGS`/`FONTES_PLAYWRIGHT`,
-`termo`/`ancora_conteudo`): `'"garantia pessoal do Estado"'`;
-`data_minima`/corte de recência mantido em `"2026-07-20"`, sem
-alteração. **Lição reforçada**: mesmo uma correcção que já passa o
-guardrail de forma (`tests/test_dre_termos_pesquisa.py` — nunca um
-termo com forma de citação) ainda precisa de confirmação directa contra
-o motor real antes de ser dada como resolvida — o guardrail apanha a
-forma errada, nunca a semântica errada.
-
-**Triagem da Issue #158 (2026-09-03)** confirmou que o detector
-DEDICADO (`detectar_decreto_lei`, o que filtra por tipo Decreto-Lei +
-corte de recência) nunca disparou por engano — sempre esteve correcto.
-O ruído real vinha de um mecanismo diferente e sem filtro nenhum: o
-diff GENÉRICO "Detectar mudanças e registar" de `pipeline-diario.yml`,
-que compara `itens_lista` em bruto para TODAS as fontes DRE
-monitorizadas sem filtrar por tipo de acto legal. Dos 24 itens
-devolvidos por "garantia pessoal do Estado", 22 eram Resoluções do
-Conselho de Ministros sem relação nenhuma com o DL 44/2024; só 2 eram
-Portarias genuínas — a já conhecida 236-A/2024/1, e uma nova, **a
-Portaria n.º 187/2025/1** (1.ª alteração à 236-A/2024/1), nunca antes
-citada em `dados/parametros/habitacao.yaml`. Corrigido com uma allow-
-list scoped só a esta fonte (`DRE_SLUGS_PESQUISA` + `ACTO_LEGAL_REGEX`
-no diff genérico de `pipeline-diario.yml`) — **deliberadamente não
-generalizado** às outras 4 fontes DRE de pesquisa interactiva sem
-confirmar primeiro o perfil de ruído real de cada uma (`dre_habitacao_paer`
-tem um caso real, um "Regulamento" da Série II, que este mesmo filtro
-apagaria sem querer — ver `tests/test_diff_mudancas_issue.py`, Issue
-#114). Testes novos: `tests/test_diff_mudancas_allow_list_dre.py`.
-Issue #158 fechada.
-
-**Gap ainda aberto, rastreado por Issue própria (#198)**: a Portaria
-n.º 187/2025/1 continua por fact-checar e por acrescentar a
-`dados/parametros/habitacao.yaml` — confirmada só por `WebSearch`
-(síntese de fontes secundárias, nunca o texto legal directo; `WebFetch`
-continua bloqueado para `diariodarepublica.pt` e mirrors testados nesta
-sessão). Antes de acrescentar `fonte_url_complementar` (mesmo padrão do
-CSI): confirmar em sessão com acesso real ao texto se altera algum dos
-6 valores já publicados da Garantia Pública (idade 18-35, tecto
-450.000€, 15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) — nunca
-assumir que é só alteração de forma. Ver também ROADMAP.md →
-"TRABALHO FUTURO REGISTADO".
-
-Se `dre_habitacao_garantia` devolver o próprio DL 44/2024 ou uma
-alteração já conhecida com data completa posterior a "2026-07-20" (o
-`desde` actual do `detectar_decreto_lei`), pode ser necessário subir
-esse corte, mesmo tratamento já dado a `dre_psu_regulamentacao`
-(comentário em `scripts/scraper_playwright.py` junto a essa entrada).
-Guardrail permanente, `tests/test_dre_termos_pesquisa.py`, impede
-qualquer sentinela DRE (actual ou futuro) de voltar a usar um termo com
-forma de citação de diploma.
-
-**Registado para o futuro, sem prazo, sem decisão tomada**: nova tabela
-de rendas máximas de referência do Porta 65 (publicação anual, fora do
-alcance da watchlist DRE — é um PDF administrativo, não um decreto-lei;
-ver ROADMAP.md → "À espera de um sinal").
+**Registado para o futuro, sem prazo**: nova tabela de rendas máximas de
+referência do Porta 65 (publicação anual, fora do alcance da watchlist
+DRE — é um PDF administrativo, não um decreto-lei; ver `ROADMAP.md` →
+"À espera de um sinal").
 
 ---
 
@@ -4178,63 +4008,54 @@ integração funciona).
 
 ## DADOS ABERTOS — GIT SCRAPING, PARÂMETROS OPENFISCA E PUBLICAÇÃO (FASES 1-3)
 
-Sessão de infra-estrutura de dados abertos (2026-07-19), 3 fases
-incrementais — cada uma útil sozinha, todas concluídas nesta sessão.
-Objectivo: transformar o site de "páginas que informam" em "fonte de
-dados auditável", sem violar nenhuma regra existente (nunca um valor
-legal hardcoded fora da fonte canónica que esta sessão criou; nunca um
-estado de erro a parecer sucesso; `escrever_ficheiro_seguro()`/allow-
-lists próprias continuam a ser a única via de escrita automática).
+Três camadas, cada uma útil por si só: historial auditável em
+`dados/observacoes/`, parâmetros legais versionados em YAML, e publicação
+consolidada (JSON + SQLite). Nenhum valor legal fica hardcoded fora da
+fonte canónica destas camadas; nenhum estado de erro pode parecer sucesso
+(ver "INVARIANTE"); `escrever_ficheiro_seguro()`/allow-lists próprias
+continuam a ser a única via de escrita automática.
 
 ### Fase 1 — Git scraping: historial auditável (`dados/observacoes/`)
 
-O pipeline diário passa a commitar os dados extraídos das fontes
-oficiais, criando um historial público (`git log -- dados/observacoes/<slug>.json`)
-de quando cada valor mudou — um ficheiro por fonte monitorizada
+O pipeline diário commita os dados extraídos das fontes oficiais, criando
+um historial público (`git log -- dados/observacoes/<slug>.json`) de
+quando cada valor mudou — um ficheiro por fonte monitorizada
 (`SLUGS_MONITORIZADOS`, a mesma lista de `gerir_estado_fontes.py`),
 sobrescrito no lugar; **o historial vive no `git log`, nunca num array a
 crescer dentro do próprio JSON**.
 
 - `scripts/registar_observacao.py` — lê `data/scraped/<slug>_latest.json`
   e grava/actualiza `dados/observacoes/<slug>.json` só quando
-  `sha256_conteudo` mudar face ao já registado. **Regra de ruído**: nunca
-  precisou de normalização própria — `hash_conteudo` já é calculado por
-  `scraper_playwright.py` só sobre `conteudo_extraido` (título/
-  parágrafos/itens já limpos de tags/scripts), nunca sobre `data_acesso`/
-  URL/outros campos dinâmicos; o HTML bruto (timestamps, tokens CSRF)
-  nunca chega a este script. **Um bloqueio nunca aparece como sucesso**:
+  `sha256_conteudo` mudar face ao já registado. `hash_conteudo` é
+  calculado por `scraper_playwright.py` só sobre `conteudo_extraido`
+  (título/parágrafos/itens já limpos de tags/scripts), nunca sobre
+  `data_acesso`/URL/outros campos dinâmicos — sem normalização própria
+  neste script. **Um bloqueio nunca aparece como sucesso**:
   `data/scraped/<slug>_latest.json` só é escrito pelo scraper para
-  OK/OK_VIA_ARQUIVO (nunca BLOQUEADO — confirmado lendo
-  `scraper_playwright._guardar_resultado`/`_tratar_nao_ok`, nunca
-  assumido); `registar_observacao.py` confirma isso de novo a partir do
-  campo `status`, nunca assume `OK` por omissão — um estado inesperado
-  fica `DESCONHECIDO`, com `valores_extraidos: null` + `motivo`.
+  OK/OK_VIA_ARQUIVO (nunca BLOQUEADO — ver
+  `scraper_playwright._guardar_resultado`/`_tratar_nao_ok`);
+  `registar_observacao.py` confirma isso de novo a partir do campo
+  `status`, nunca assume `OK` por omissão — um estado inesperado fica
+  `DESCONHECIDO`, com `valores_extraidos: null` + `motivo`.
 - `dados/observacoes/schema.json` — JSON Schema (Draft 7) de cada
   observação; validado por `tests/test_observacoes_schema.py`
-  (`jsonschema`, nova dependência em `requirements.txt`) — JSON
-  malformado ou fora do schema é um teste vermelho, nunca um sucesso
-  silencioso, coberto pela suite normal do job "Suite de Testes
-  (pytest)" em `integridade.yml` (sem job novo).
-- `pipeline-diario.yml`, novo Step 1c ("Git scraping — registar
-  observações auditáveis"), logo a seguir ao scrape: corre o script e,
-  para cada ficheiro de `dados/observacoes/` que mudou, faz **um commit
-  por fonte** (`dados: atualização <slug> <data>`, autor
+  (`jsonschema`) — JSON malformado ou fora do schema é um teste
+  vermelho, coberto pela suite normal do job "Suite de Testes (pytest)"
+  em `integridade.yml`.
+- `pipeline-diario.yml`, Step 1c ("Git scraping — registar observações
+  auditáveis"), logo a seguir ao scrape: corre o script e, para cada
+  ficheiro de `dados/observacoes/` que mudou, faz **um commit por
+  fonte** (`dados: atualização <slug> <data>`, autor
   `github-actions[bot]`) — nunca um commit a misturar várias fontes, é
   essa granularidade que torna o `git log` de cada ficheiro legível como
   historial real. `scripts/verificar_injecao.py` (guardrail de prompt
-  injection) estendido a `dados/` (mesma categoria de conteúdo externo
-  de `data/scraped/`).
-- Bootstrap real desta sessão: as 8 fontes monitorizadas já tinham
-  `_latest.json` reais em produção — `dados/observacoes/*.json` nasceu
-  já com conteúdo real, não vazio. Confirmado nesta sessão: idempotência
-  (2.ª corrida = zero alterações), SHA forçado a divergir produz
-  observação nova, e o guard "sem `_latest.json` ainda" nunca lança
-  excepção (fonte nova no dia 1).
+  injection) cobre `dados/` na mesma categoria de conteúdo externo de
+  `data/scraped/`.
 
 ### Fase 2 — Padrão OpenFisca: parâmetros legais em YAML versionado
 
 Convenção OpenFisca (parâmetros com vigência, separados da lógica de
-cálculo) — **sem instalar a biblioteca OpenFisca**, só o padrão.
+cálculo) — sem instalar a biblioteca OpenFisca, só o padrão.
 `dados/parametros/<prestacao>.yaml`, um ficheiro por prestação; cada
 parâmetro tem uma lista `valores` com `vigencia_inicio`/`valor`/
 `referencia_legal`/`fonte_url`/`verificado_em` por entrada — permite
@@ -4245,14 +4066,7 @@ apagados, só deixam de ser o "vigente").
   (`exit 1`, nunca escreve) se qualquer entrada cuja vigência já tenha
   começado (`vigencia_inicio <= hoje`) não tiver `verificado_em`,
   `referencia_legal` ou `fonte_url` preenchidos — nunca publica um
-  placeholder como se fosse dado real. Confirmado a falhar de propósito
-  nesta sessão (verificado_em esvaziado manualmente, revertido).
-  `dados/parametros/csi.yaml` migrado nesta sessão **sem reverificação
-  de raiz** — os 4 valores (8.040€/14.070€/66 anos/80%) já estavam
-  fact-checked e publicados em `complemento-solidario-idosos.html`
-  (verificado 25/06/2026, com `fonte`/`verificado_em` já anexados em
-  `simulador-csi.html::PARAMETROS_CSI`) — a confirmação humana já
-  existia, migrada tal e qual, nunca recalculada.
+  placeholder como se fosse dado real.
 - **Nada derivável de outro parâmetro é guardado como parâmetro**: um
   valor calculável a partir de um parâmetro já existente (ex.: um tecto
   que é sempre `multiplicador × IAS`) nunca ganha entrada própria em
@@ -4268,7 +4082,7 @@ apagados, só deixam de ser o "vigente").
   `gerar_base_dados.py`, que publicam qualquer YAML por desenho, mesmo
   antes de um simulador o usar — caso de `imt_geral_hpp_ra_*` em
   `habitacao.yaml`). Nunca um valor especulativo sem nenhum consumidor,
-  real ou de exportação (mesmo problema já documentado para
+  real ou de exportação (mesmo problema documentado para
   `source_adapter.py`, secção "IDEIAS RECUPERADAS — cascata de
   fontes").
 - `scripts/gerar_parametros_json.py` consolida `dados/parametros/*.yaml`
@@ -4277,70 +4091,56 @@ apagados, só deixam de ser o "vigente").
   `--check` valida sem escrever (usado como rede de segurança em
   `tests/test_valores_ancora.py::test_dados_parametros_json_sincronizado_com_os_yaml`
   — esquecer de regenerar depois de editar um YAML fica vermelho).
-- **`simulador-csi.html` migrado** (o simulador escolhido, com 14 golden
-  tests pré-existentes): `PARAMETROS_CSI` deixou de ser um objecto JS
-  inline — passa a `let PARAMETROS_CSI = null`, populado por
-  `carregarParametrosCSI()` via `fetch('/dados/parametros.json')` no
-  `DOMContentLoaded`. **Nunca calcula com valores em falta** (invariante
-  1 da sessão): o botão "Calcular CSI" nasce `disabled`, só é activado
-  depois do fetch ter sucesso; se o fetch falhar, `#avisoParametrosErro`
-  (`.aviso-teto`, mesmo estilo já usado em `simulador-rsi.html`) fica
-  visível e o botão mantém-se desactivado; `calcularCSIFormulario()`
-  tem uma guarda própria (`if (!PARAMETROS_CSI) { ...; return; }`) como
-  segunda linha de defesa. A função pura `calcularCSI(params, input)`
-  **não foi tocada** — continua testável sem rede.
-- Golden tests (`tests/test_simulador_csi_calculo.py`) actualizados
-  para construir `params` directamente de `dados/parametros.json` (a
-  "nova fonte") em vez de ler um `PARAMETROS_CSI` global da página —
-  todos os 14 valores esperados permanecem **exactamente os mesmos**
-  (invariante 5 da sessão). 2 testes novos, servidos por um
-  `http.server` real (mesmo padrão de `test_acessibilidade.py`, nunca
-  `file://`): sucesso do fetch activa o botão e calcula correctamente
-  (mesmo exemplo já publicado, 203,33€/mês); falha do fetch
+- **Simuladores migrados para `fetch('/dados/parametros.json')`**
+  (padrão comum aos três: `let PARAMETROS_X = null`, populado em
+  `DOMContentLoaded`; o botão de cálculo nasce `disabled`, só activado
+  depois do fetch ter sucesso; se falhar, um aviso próprio fica visível
+  e o botão mantém-se desactivado; a função pura de cálculo nunca é
+  tocada — continua testável sem rede): `simulador-csi.html`,
+  `simulador-abono.html`, `simulador-subsidio-doenca.html`. Só
+  `simulador-ase.html` continua com valores inline (`CONFIG`, nunca
+  `PARAMETROS_*`) — ver `ROADMAP.md` para o estado da migração.
+- Golden tests de cada simulador migrado constroem `params` directamente
+  de `dados/parametros.json` (nunca de um objecto global da página),
+  mais 2 testes de runtime real por simulador (`http.server`, mesmo
+  padrão de `test_acessibilidade.py`, nunca `file://`): sucesso do
+  fetch activa o botão e calcula correctamente; falha do fetch
   (`page.route(...).abort()`) mantém o botão bloqueado e o formulário
   nunca produz resultado, mesmo tentando contornar o `disabled` via JS.
-- `tests/test_valores_ancora.py` ganhou 3 testes ligados à mesma fonte:
-  os 4 valores do CSI em `dados/parametros.json` continuam a bater com
-  `complemento-solidario-idosos.html`; `dados/parametros.json` está
-  sincronizado com os YAML (`--check`); e nenhum parâmetro vigente fica
-  sem `verificado_em` (réplica visível na suite da guarda dura do PASSO 0).
-- **Migração dos simuladores — estado actual**: `simulador-csi.html`
-  (este commit), `simulador-abono.html` e `simulador-subsidio-doenca.html`
-  (migrados a 2026-07-19, sessão "Parâmetros YAML + auditoria factual")
-  já usam `fetch('/dados/parametros.json')`. Só `simulador-ase.html`
-  continua com valores inline (`CONFIG`, nunca `PARAMETROS_*`) — ver
-  `ROADMAP.md` para o estado da migração pendente.
+- `tests/test_valores_ancora.py` cobre a mesma fonte: os valores de
+  cada prestação em `dados/parametros.json` continuam a bater com a
+  respectiva página publicada; `dados/parametros.json` está
+  sincronizado com os YAML (`--check`); nenhum parâmetro vigente fica
+  sem `verificado_em` (réplica visível da guarda dura do PASSO 0).
 
 ### Fase 3 — Publicação: `dados.html` + SQLite + Datasette Lite
 
 `scripts/gerar_base_dados.py` consolida `dados/parametros/*.yaml` (TODAS
 as vigências, não só a vigente — série temporal completa, diferente de
 `dados/parametros.json`) e o historial de `dados/observacoes/` numa base
-SQLite única, **sem servidor** (ficheiro binário estático, servido tal e
+SQLite única, sem servidor (ficheiro binário estático, servido tal e
 qual pelo GitHub Pages):
 
 - Tabela `parametros` (prestacao/parametro/descricao/unidade/valor/
   vigencia_inicio/referencia_legal/fonte_url/verificado_em) — uma linha
   por (prestação, parâmetro, vigência).
 - Tabela `historial` (fonte/commit_sha/data_commit/mensagem) — derivada
-  de `git log --format=... --name-only -- dados/observacoes/`,
-  **parseado, nunca reinventado** (o separador de campos usa `\x1e`/
-  `\x1f`, não `\x00` — `subprocess`/argv não aceita NUL embutido,
-  achado real desta sessão, corrigido antes do primeiro commit).
+  de `git log --format=... --name-only -- dados/observacoes/`, parseada
+  com um separador de campos `\x1e`/`\x1f` (nunca `\x00` —
+  `subprocess`/argv não aceita NUL embutido).
 - **Determinismo deliberado**: nenhuma tabela guarda um campo tipo
   `gerado_em`/timestamp de geração — por isso duas corridas sobre o
   mesmo estado do repositório produzem `dados/tensdireito.db`
-  **byte-idêntico** (confirmado por hash em
-  `tests/test_gerar_base_dados.py::test_gerar_e_deterministico`), a
-  mesma condição que já vale para `registar_observacao.py`: o pipeline
-  só precisa de commitar quando o conteúdo mudar de facto, nunca ruído
-  diário.
-- `pipeline-diario.yml`, novo Step 1d ("Publicar base de dados aberta"),
+  **byte-idêntico** (`tests/test_gerar_base_dados.py::test_gerar_e_deterministico`),
+  a mesma condição que já vale para `registar_observacao.py`: o
+  pipeline só precisa de commitar quando o conteúdo mudar de facto,
+  nunca ruído diário.
+- `pipeline-diario.yml`, Step 1d ("Publicar base de dados aberta"),
   logo a seguir ao Step 1c: corre `gerar_parametros_json.py` +
   `gerar_base_dados.py` e commita `dados/parametros.json`/
-  `dados/tensdireito.db` **só se algo mudou** — corre depois do Step 1c
-  de propósito, para a tabela `historial` do SQLite já reflectir o
-  commit de observações do próprio dia.
+  `dados/tensdireito.db` só se algo mudou — corre depois do Step 1c de
+  propósito, para a tabela `historial` do SQLite já reflectir o commit
+  de observações do próprio dia.
 - `dados.html` — página nova (cluster: nenhum, `EXCLUIDAS` em
   `sincronizar_clusters.py`, mesma categoria de `acessibilidade.html`/
   `sobre.html`): explica as 3 camadas, link directo para o Datasette
@@ -4355,42 +4155,17 @@ qual pelo GitHub Pages):
   definidas (`Organization` da NV Labs, `WebSite` único da homepage —
   ver secção "SCHEMA.ORG — GRAFO DO SITE"), elegível para o Google
   Dataset Search. Ligada a partir do footer de `index.html` (link "Dados
-  Abertos", junto de "Fontes"/"Privacidade") — sem isso ficaria órfã
-  (apanhado por `tests/test_higiene_indexacao.py`, corrigido antes do
-  commit). Nasceu já com canónica/OG-image própria/botão de partilha/nav
-  correctos, confirmado por `adicionar_canonicas.py`/`gerar_og_images.py
-  --write`/`sincronizar_nav.py`/`inserir_botao_partilhar.py`, todos a
-  **zero alterações**.
-- `scripts/smoke_producao.sh` estendido: `/dados.html`,
-  `/dados/parametros.json` e `/dados/tensdireito.db` entram em
-  `scripts/urls_criticas.txt`; `parametros.json` ganha uma verificação
-  extra — o corpo tem de parsear como JSON válido, não só devolver 200
-  (apanha um 200 com corpo truncado/corrompido, ex.: cache de CDN a
-  meio de um deploy); `tensdireito.db` ganha uma verificação de
-  `Access-Control-Allow-Origin` — **nunca falha o smoke test por isto**
-  (só `::warning::`), porque confirma comportamento da plataforma
-  (GitHub Pages), não do nosso código; útil como confirmação contínua
-  de que o Datasette Lite consegue mesmo ler o ficheiro de outro
-  domínio, nunca testado directamente contra produção real nesta sessão
-  (sandbox sem acesso à internet completo, mesma limitação documentada
-  em várias sessões anteriores) — confirmação pendente, ver `ROADMAP.md`.
-
-### Efeito lateral corrigido no mesmo commit — sem relação com dados abertos
-
-Ao correr `scripts/sincronizar_clusters.py` (passo obrigatório do
-checklist para qualquer página nova), o bloco `ATUALIZACOES:HOME` de
-`index.html` estava desactualizado de uma sessão anterior (2 cartões
-apontavam para páginas já não entre as 4 mais recentemente verificadas)
-— corrigido pela própria sincronização idempotente, sem relação com
-`dados.html`; registado aqui por transparência, mesma disciplina de
-sessões anteriores.
-
-### O que fica registado para o futuro, sem prazo
-
-1. `gitleaks` (job "Verificar Segredos") — confirmar que o novo
-   binário `dados/tensdireito.db` nunca é lido como texto/escaneado
-   por engano (SQLite é binário; não observado nenhum problema nos
-   testes locais, mas nunca confirmado em CI real por esta sessão).
+  Abertos", junto de "Fontes"/"Privacidade") — sem isso ficaria órfã,
+  apanhado por `tests/test_higiene_indexacao.py`.
+- `scripts/smoke_producao.sh`: `/dados.html`, `/dados/parametros.json`
+  e `/dados/tensdireito.db` em `scripts/urls_criticas.txt`;
+  `parametros.json` tem uma verificação extra — o corpo tem de parsear
+  como JSON válido, não só devolver 200 (apanha um 200 com corpo
+  truncado/corrompido, ex.: cache de CDN a meio de um deploy);
+  `tensdireito.db` tem uma verificação de `Access-Control-Allow-Origin`
+  — nunca falha o smoke test por isto (só `::warning::`), porque
+  confirma comportamento da plataforma (GitHub Pages), não do nosso
+  código.
 
 ---
 

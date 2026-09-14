@@ -193,6 +193,10 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   `gitleaks detect --source . --log-opts="--all"` localmente antes de tornar
   o repositório privado — ver CLAUDE.md **"AUDITORIA DE INFRAESTRUTURA"**
   achado 5.
+- **Gitleaks vs. `dados/tensdireito.db`** — confirmar que o job "Verificar
+  Segredos" nunca lê o binário SQLite como texto/o escaneia por engano;
+  nenhum problema observado nos testes locais, mas nunca confirmado em CI
+  real — ver CLAUDE.md **"DADOS ABERTOS"**.
 - **Variante clara de `clusters.css`** — se um dia se quiser dar
   breadcrumb/relacionados também aos simuladores, sem forçar hero escuro —
   ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 2.
