@@ -1189,16 +1189,17 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
 3. **Regras de relevância para "relacionados"** (determinísticas, sem
    aleatoriedade, máx. 4 links): 1.º irmãos do mesmo cluster, 2.º
    páginas dos `relacionados[]` explícitos do cluster.
-4. **Clusters actuais — todos os 6 pillars existem:**
+4. **Clusters actuais** — lista e contagem completas vivem sempre em
+   `data/clusters.json` (fonte única, ponto 1 acima) — nunca fixar aqui
+   um número de clusters/pillars, mesmo princípio já aplicado em
+   "SCHEMA.ORG — GRAFO DO SITE" → "CollectionPage + ItemList nas pillar
+   pages". Notas por cluster que vale a pena reter (não é a lista
+   completa — essa é sempre o próprio JSON):
 
-   | Cluster | Pillar |
-   |---|---|
-   | Apoios Escolares | `p/apoios-escolares.html` |
-   | Prestação Social Única | `prestacao-social-unica.html` |
-   | Família e Crianças | `p/familia.html` |
-   | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` (inclui `amim.html`) |
-   | Trabalho e Rendimento | `p/trabalho-rendimento.html` |
-   | Habitação | `p/habitacao.html` (criado 3 jul 2026 — Porta 65 Jovem/+ e Apoio Extraordinário à Renda) |
+   | Cluster | Pillar | Nota |
+   |---|---|---|
+   | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` | inclui `amim.html` |
+   | Habitação | `p/habitacao.html` | criado 3 jul 2026 — Porta 65 Jovem/+ e Apoio Extraordinário à Renda |
 
    Todos os pillars têm a lista de artigos entre `<!-- PILLAR-LISTA:INICIO/FIM -->`,
    gerada pelo `sincronizar_clusters.py` — nunca editar essa lista à mão.
