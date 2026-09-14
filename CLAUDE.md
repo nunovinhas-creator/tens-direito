@@ -1034,15 +1034,24 @@ metadados.
 
 ### Excepções a anos históricos — `EXCECOES_ANOS_HISTORICOS`
 
-4 excepções encontradas no scan, todas citações legítimas, nunca
-esquecimentos:
+O inventário completo (página, ano, motivo) vive só no dict
+`EXCECOES_ANOS_HISTORICOS`, no topo de `tests/test_anos_metadados.py`
+— nunca duplicado aqui. Mesma regra permanente já aplicada ao resto
+deste ficheiro (ver "AUTO-ACTUALIZAÇÃO DESTE FICHEIRO"): uma contagem
+ou lista solta na prosa diverge do código mais cedo ou mais tarde sem
+ninguém dar por isso — esta tabela chegou a citar 4 excepções (uma
+delas, `subsidio-desemprego.html`/2006, já nem existe no dict) quando o
+código real já tinha muitas mais. Quem precisar de saber quantas
+excepções existem, ou quais, lê o dict.
 
-| Página | Ano | Motivo |
-|---|---|---|
-| `apoio-extraordinario-renda.html` | 2023 | PAER fechado a novos candidatos desde 15/03/2023 — facto histórico permanente |
-| `complemento-solidario-idosos.html` | 2024 | Regra de rendimentos dos filhos deixou de contar desde 2024 — facto histórico permanente |
-| `cuidador-informal.html` | 2025 | Decreto-Lei n.º 138/2025 — número do diploma, não data de vigência |
-| `subsidio-desemprego.html` | 2006 | Decreto-Lei n.º 220/2006 — número do diploma, não data de vigência |
+Cada entrada só existe por um de dois motivos, sempre registados ao
+lado da própria entrada — nunca "esquecimento de actualizar":
+- **citação de diploma legal** — o ano faz parte do número do DL/Lei/
+  Portaria/Regulamento, não é uma data de vigência (ex.: "Decreto-Lei
+  n.º 138/2025");
+- **facto histórico permanente** — uma data fixa no passado que nunca
+  se repete nem muda (ex.: "PAER fechado a novos candidatos desde
+  15/03/2023").
 
 Cada excepção é validada por `test_excecoes_continuam_a_existir_na_pagina`
 — se o ano deixar de aparecer na página (ex.: reescrita da description),
