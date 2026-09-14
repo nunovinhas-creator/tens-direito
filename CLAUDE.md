@@ -561,6 +561,18 @@ para esses três casos.
 | `pensao-unificada.html` | Pensão Unificada: CGA e Segurança Social numa só pensão | 7 set. 2026 |
 | `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 7 set. 2026 |
 | `simulador-condicoes-reforma.html` | Simulador de Condições de Acesso à Reforma | 7 set. 2026 |
+| `simulador-psu.html` | Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026) | 3 jul. 2026 |
+| `simulador-subsidio-doenca.html` | Simulador de Subsídio de Doença 2026 | 5 jul. 2026 |
+| `simulador-subsidio-desemprego.html` | Simulador do Subsídio de Desemprego 2026 | 13 jul. 2026 |
+| `numero-utente-sns.html` | Número de utente do SNS: como pedir em 2026 | 18 jul. 2026 |
+| `certidao-situacao-tributaria.html` | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças | 19 jul. 2026 |
+| `marcar-atendimento-seguranca-social.html` | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial | 19 jul. 2026 |
+| `registo-criminal-online.html` | Certificado do Registo Criminal Online 2026: preço, prazo e como pedir | 19 jul. 2026 |
+| `calendario-pagamentos-psu.html` | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) | 13 ago. 2026 |
+| `como-pedir-psu.html` | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) | 13 ago. 2026 |
+| `amim-beneficios-fiscais.html` | Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC | 19 ago. 2026 |
+| `cartao-europeu-estacionamento.html` | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | 19 ago. 2026 |
+| `majoracao-subsidio-desemprego.html` | Majoração de 10% do subsídio de desemprego 2026 | 4 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -571,6 +583,14 @@ para esses três casos.
 
 *Tabela corrigida a 2026-07-02 — faltavam 7 páginas já publicadas (rsi, subsidio-desemprego,
 subsidio-parental, cuidador-informal, comecar-aqui, simulador-abono, simulador-ase).*
+
+*Tabela corrigida a 2026-09-14 — faltavam 12 páginas já publicadas, encontradas por
+comparação directa com os ficheiros reais do repositório. Duas ficam deliberadamente fora
+da tabela, nunca por esquecimento — razão de cada uma em
+`tests/test_higiene_indexacao.py::EXCLUSOES_TABELA_PAGINAS`: `simulador-rsi.html` (factos
+por confirmar, Issue #209) e `verificador-apoios.html` (página-fantasma de
+redirecionamento). Guardrail novo no mesmo ficheiro falha sozinho se a tabela voltar a
+divergir, nas duas direcções — mesmo padrão de `EXCLUSOES_SITEMAP`.*
 
 ---
 

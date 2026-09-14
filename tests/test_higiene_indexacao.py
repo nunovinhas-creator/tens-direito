@@ -21,7 +21,17 @@ segurança permanente. Falha se:
      `json.JSONDecodeError` em silêncio à procura de um tipo
      específico (BreadcrumbList) — nenhum garantia que TODOS os blocos
      de TODAS as páginas são JSON parseável. Este teste fecha essa
-     lacuna, sem filtrar por tipo.
+     lacuna, sem filtrar por tipo;
+  7. uma página pública não tiver linha na tabela "PÁGINAS PUBLICADAS"
+     de CLAUDE.md, sem estar em `EXCLUSOES_TABELA_PAGINAS`, ou uma
+     linha dessa tabela apontar para um ficheiro que já não existe —
+     lacuna real encontrada a 2026-09-14 (comparação directa tabela ×
+     ficheiros reais: 12 páginas publicadas, indexadas e no sitemap
+     nunca chegaram a ganhar linha, algumas sem nenhuma menção em
+     CLAUDE.md). Mesmo padrão de `EXCLUSOES_SITEMAP`/`EXCLUSOES_ORFAS`
+     — a tabela continua curada à mão (título curto, data de
+     publicação), nunca gerada; este teste só garante que nenhuma
+     página fica de fora em silêncio.
 
 Corre no job "testes-python" do CI (`integridade.yml`), a cada push a
 `main` — mesmo padrão de `test_nav_coerencia.py`/`test_breadcrumb_coerencia.py`.
@@ -245,3 +255,73 @@ def test_todos_os_blocos_ldjson_sao_json_valido(caminho):
             pytest.fail(
                 f"{caminho.name}: bloco ld+json #{i} não é JSON válido — {e}"
             )
+
+
+# ── Passo 7: tabela "PÁGINAS PUBLICADAS" de CLAUDE.md ───────────────────────
+#
+# CLAUDE.md documenta cada página pública numa tabela curada à mão
+# (ficheiro/título curto/data de publicação) — nunca gerada por script, a
+# curadoria do título fica. Sem guardrail nenhum, isto já divergiu da
+# realidade em silêncio: 12 páginas publicadas, indexadas e no sitemap
+# ficaram de fora da tabela (2026-09-14, algumas sem nenhuma outra menção
+# em todo o CLAUDE.md). Mesmo padrão de EXCLUSOES_SITEMAP/EXCLUSOES_ORFAS
+# — as duas direcções: uma página pública sem linha falha, e uma linha
+# sem ficheiro correspondente falha também.
+
+CLAUDE_MD = RAIZ / "CLAUDE.md"
+
+# Páginas públicas deliberadamente fora da tabela "PÁGINAS PUBLICADAS" —
+# justificação por página, nunca "esquecimento":
+EXCLUSOES_TABELA_PAGINAS = {
+    "simulador-rsi.html": (
+        "publicada e integrada (nav/sitemap/data/clusters.json/pesquisa.js), mas os "
+        "factos que cita nunca foram confirmados directamente — provavelmente a mesma "
+        "data de 31/12/2026 do DL 166/2026 já confirmada nas outras páginas do cluster "
+        "PSU, mas nunca verificada nesta página em concreto (ver CLAUDE.md, secção "
+        "'IMPACTO DA PSU', nota 'simulador-rsi.html fica de fora desta tabela, "
+        "deliberadamente', e Issue #209)"
+    ),
+    "verificador-apoios.html": (
+        "removida a 2026-08-19 (zero impressões em 3 meses no Search Console) — mesma "
+        "página-fantasma de redirecionamento já excluída de EXCLUSOES_SITEMAP/"
+        "EXCLUSOES_ORFAS acima, sem conteúdo editorial a documentar"
+    ),
+}
+
+
+def _tabela_paginas_publicadas_claude_md() -> set[str]:
+    texto = CLAUDE_MD.read_text(encoding="utf-8")
+    m = re.search(r"^## PÁGINAS PUBLICADAS\n\n(.*?)\n\n---", texto, re.S | re.M)
+    assert m, "secção 'PÁGINAS PUBLICADAS' não encontrada em CLAUDE.md"
+    linhas = re.findall(r"^\| `([^`]+\.html)` \|", m.group(1), re.M)
+    assert linhas, "tabela 'PÁGINAS PUBLICADAS' não tem nenhuma linha reconhecida"
+    return set(linhas)
+
+
+_TABELA_CLAUDE_MD = _tabela_paginas_publicadas_claude_md()
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_pagina_publica_esta_na_tabela_claude_md_ou_tem_exclusao_justificada(caminho):
+    rel = str(caminho.relative_to(RAIZ))
+    if rel in EXCLUSOES_TABELA_PAGINAS:
+        assert rel not in _TABELA_CLAUDE_MD, (
+            f"{rel} está marcada como exclusão deliberada da tabela 'PÁGINAS PUBLICADAS' "
+            "mas tem lá uma linha — actualizar EXCLUSOES_TABELA_PAGINAS ou a tabela"
+        )
+        return
+    assert rel in _TABELA_CLAUDE_MD, (
+        f"{rel} é uma página pública mas não tem linha na tabela 'PÁGINAS PUBLICADAS' de "
+        "CLAUDE.md, e não consta de EXCLUSOES_TABELA_PAGINAS — acrescentar a linha ou "
+        "justificar a exclusão"
+    )
+
+
+@pytest.mark.parametrize(
+    "ficheiro", sorted(_TABELA_CLAUDE_MD), ids=sorted(_TABELA_CLAUDE_MD)
+)
+def test_linha_da_tabela_claude_md_tem_ficheiro_correspondente(ficheiro):
+    assert (RAIZ / ficheiro).exists(), (
+        f"CLAUDE.md lista '{ficheiro}' na tabela 'PÁGINAS PUBLICADAS' mas o ficheiro não "
+        "existe — página removida/renomeada sem actualizar a tabela"
+    )
