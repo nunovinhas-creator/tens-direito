@@ -4178,63 +4178,54 @@ integração funciona).
 
 ## DADOS ABERTOS — GIT SCRAPING, PARÂMETROS OPENFISCA E PUBLICAÇÃO (FASES 1-3)
 
-Sessão de infra-estrutura de dados abertos (2026-07-19), 3 fases
-incrementais — cada uma útil sozinha, todas concluídas nesta sessão.
-Objectivo: transformar o site de "páginas que informam" em "fonte de
-dados auditável", sem violar nenhuma regra existente (nunca um valor
-legal hardcoded fora da fonte canónica que esta sessão criou; nunca um
-estado de erro a parecer sucesso; `escrever_ficheiro_seguro()`/allow-
-lists próprias continuam a ser a única via de escrita automática).
+Três camadas, cada uma útil por si só: historial auditável em
+`dados/observacoes/`, parâmetros legais versionados em YAML, e publicação
+consolidada (JSON + SQLite). Nenhum valor legal fica hardcoded fora da
+fonte canónica destas camadas; nenhum estado de erro pode parecer sucesso
+(ver "INVARIANTE"); `escrever_ficheiro_seguro()`/allow-lists próprias
+continuam a ser a única via de escrita automática.
 
 ### Fase 1 — Git scraping: historial auditável (`dados/observacoes/`)
 
-O pipeline diário passa a commitar os dados extraídos das fontes
-oficiais, criando um historial público (`git log -- dados/observacoes/<slug>.json`)
-de quando cada valor mudou — um ficheiro por fonte monitorizada
+O pipeline diário commita os dados extraídos das fontes oficiais, criando
+um historial público (`git log -- dados/observacoes/<slug>.json`) de
+quando cada valor mudou — um ficheiro por fonte monitorizada
 (`SLUGS_MONITORIZADOS`, a mesma lista de `gerir_estado_fontes.py`),
 sobrescrito no lugar; **o historial vive no `git log`, nunca num array a
 crescer dentro do próprio JSON**.
 
 - `scripts/registar_observacao.py` — lê `data/scraped/<slug>_latest.json`
   e grava/actualiza `dados/observacoes/<slug>.json` só quando
-  `sha256_conteudo` mudar face ao já registado. **Regra de ruído**: nunca
-  precisou de normalização própria — `hash_conteudo` já é calculado por
-  `scraper_playwright.py` só sobre `conteudo_extraido` (título/
-  parágrafos/itens já limpos de tags/scripts), nunca sobre `data_acesso`/
-  URL/outros campos dinâmicos; o HTML bruto (timestamps, tokens CSRF)
-  nunca chega a este script. **Um bloqueio nunca aparece como sucesso**:
+  `sha256_conteudo` mudar face ao já registado. `hash_conteudo` é
+  calculado por `scraper_playwright.py` só sobre `conteudo_extraido`
+  (título/parágrafos/itens já limpos de tags/scripts), nunca sobre
+  `data_acesso`/URL/outros campos dinâmicos — sem normalização própria
+  neste script. **Um bloqueio nunca aparece como sucesso**:
   `data/scraped/<slug>_latest.json` só é escrito pelo scraper para
-  OK/OK_VIA_ARQUIVO (nunca BLOQUEADO — confirmado lendo
-  `scraper_playwright._guardar_resultado`/`_tratar_nao_ok`, nunca
-  assumido); `registar_observacao.py` confirma isso de novo a partir do
-  campo `status`, nunca assume `OK` por omissão — um estado inesperado
-  fica `DESCONHECIDO`, com `valores_extraidos: null` + `motivo`.
+  OK/OK_VIA_ARQUIVO (nunca BLOQUEADO — ver
+  `scraper_playwright._guardar_resultado`/`_tratar_nao_ok`);
+  `registar_observacao.py` confirma isso de novo a partir do campo
+  `status`, nunca assume `OK` por omissão — um estado inesperado fica
+  `DESCONHECIDO`, com `valores_extraidos: null` + `motivo`.
 - `dados/observacoes/schema.json` — JSON Schema (Draft 7) de cada
   observação; validado por `tests/test_observacoes_schema.py`
-  (`jsonschema`, nova dependência em `requirements.txt`) — JSON
-  malformado ou fora do schema é um teste vermelho, nunca um sucesso
-  silencioso, coberto pela suite normal do job "Suite de Testes
-  (pytest)" em `integridade.yml` (sem job novo).
-- `pipeline-diario.yml`, novo Step 1c ("Git scraping — registar
-  observações auditáveis"), logo a seguir ao scrape: corre o script e,
-  para cada ficheiro de `dados/observacoes/` que mudou, faz **um commit
-  por fonte** (`dados: atualização <slug> <data>`, autor
+  (`jsonschema`) — JSON malformado ou fora do schema é um teste
+  vermelho, coberto pela suite normal do job "Suite de Testes (pytest)"
+  em `integridade.yml`.
+- `pipeline-diario.yml`, Step 1c ("Git scraping — registar observações
+  auditáveis"), logo a seguir ao scrape: corre o script e, para cada
+  ficheiro de `dados/observacoes/` que mudou, faz **um commit por
+  fonte** (`dados: atualização <slug> <data>`, autor
   `github-actions[bot]`) — nunca um commit a misturar várias fontes, é
   essa granularidade que torna o `git log` de cada ficheiro legível como
   historial real. `scripts/verificar_injecao.py` (guardrail de prompt
-  injection) estendido a `dados/` (mesma categoria de conteúdo externo
-  de `data/scraped/`).
-- Bootstrap real desta sessão: as 8 fontes monitorizadas já tinham
-  `_latest.json` reais em produção — `dados/observacoes/*.json` nasceu
-  já com conteúdo real, não vazio. Confirmado nesta sessão: idempotência
-  (2.ª corrida = zero alterações), SHA forçado a divergir produz
-  observação nova, e o guard "sem `_latest.json` ainda" nunca lança
-  excepção (fonte nova no dia 1).
+  injection) cobre `dados/` na mesma categoria de conteúdo externo de
+  `data/scraped/`.
 
 ### Fase 2 — Padrão OpenFisca: parâmetros legais em YAML versionado
 
 Convenção OpenFisca (parâmetros com vigência, separados da lógica de
-cálculo) — **sem instalar a biblioteca OpenFisca**, só o padrão.
+cálculo) — sem instalar a biblioteca OpenFisca, só o padrão.
 `dados/parametros/<prestacao>.yaml`, um ficheiro por prestação; cada
 parâmetro tem uma lista `valores` com `vigencia_inicio`/`valor`/
 `referencia_legal`/`fonte_url`/`verificado_em` por entrada — permite
@@ -4245,14 +4236,7 @@ apagados, só deixam de ser o "vigente").
   (`exit 1`, nunca escreve) se qualquer entrada cuja vigência já tenha
   começado (`vigencia_inicio <= hoje`) não tiver `verificado_em`,
   `referencia_legal` ou `fonte_url` preenchidos — nunca publica um
-  placeholder como se fosse dado real. Confirmado a falhar de propósito
-  nesta sessão (verificado_em esvaziado manualmente, revertido).
-  `dados/parametros/csi.yaml` migrado nesta sessão **sem reverificação
-  de raiz** — os 4 valores (8.040€/14.070€/66 anos/80%) já estavam
-  fact-checked e publicados em `complemento-solidario-idosos.html`
-  (verificado 25/06/2026, com `fonte`/`verificado_em` já anexados em
-  `simulador-csi.html::PARAMETROS_CSI`) — a confirmação humana já
-  existia, migrada tal e qual, nunca recalculada.
+  placeholder como se fosse dado real.
 - **Nada derivável de outro parâmetro é guardado como parâmetro**: um
   valor calculável a partir de um parâmetro já existente (ex.: um tecto
   que é sempre `multiplicador × IAS`) nunca ganha entrada própria em
@@ -4268,7 +4252,7 @@ apagados, só deixam de ser o "vigente").
   `gerar_base_dados.py`, que publicam qualquer YAML por desenho, mesmo
   antes de um simulador o usar — caso de `imt_geral_hpp_ra_*` em
   `habitacao.yaml`). Nunca um valor especulativo sem nenhum consumidor,
-  real ou de exportação (mesmo problema já documentado para
+  real ou de exportação (mesmo problema documentado para
   `source_adapter.py`, secção "IDEIAS RECUPERADAS — cascata de
   fontes").
 - `scripts/gerar_parametros_json.py` consolida `dados/parametros/*.yaml`
@@ -4277,70 +4261,56 @@ apagados, só deixam de ser o "vigente").
   `--check` valida sem escrever (usado como rede de segurança em
   `tests/test_valores_ancora.py::test_dados_parametros_json_sincronizado_com_os_yaml`
   — esquecer de regenerar depois de editar um YAML fica vermelho).
-- **`simulador-csi.html` migrado** (o simulador escolhido, com 14 golden
-  tests pré-existentes): `PARAMETROS_CSI` deixou de ser um objecto JS
-  inline — passa a `let PARAMETROS_CSI = null`, populado por
-  `carregarParametrosCSI()` via `fetch('/dados/parametros.json')` no
-  `DOMContentLoaded`. **Nunca calcula com valores em falta** (invariante
-  1 da sessão): o botão "Calcular CSI" nasce `disabled`, só é activado
-  depois do fetch ter sucesso; se o fetch falhar, `#avisoParametrosErro`
-  (`.aviso-teto`, mesmo estilo já usado em `simulador-rsi.html`) fica
-  visível e o botão mantém-se desactivado; `calcularCSIFormulario()`
-  tem uma guarda própria (`if (!PARAMETROS_CSI) { ...; return; }`) como
-  segunda linha de defesa. A função pura `calcularCSI(params, input)`
-  **não foi tocada** — continua testável sem rede.
-- Golden tests (`tests/test_simulador_csi_calculo.py`) actualizados
-  para construir `params` directamente de `dados/parametros.json` (a
-  "nova fonte") em vez de ler um `PARAMETROS_CSI` global da página —
-  todos os 14 valores esperados permanecem **exactamente os mesmos**
-  (invariante 5 da sessão). 2 testes novos, servidos por um
-  `http.server` real (mesmo padrão de `test_acessibilidade.py`, nunca
-  `file://`): sucesso do fetch activa o botão e calcula correctamente
-  (mesmo exemplo já publicado, 203,33€/mês); falha do fetch
+- **Simuladores migrados para `fetch('/dados/parametros.json')`**
+  (padrão comum aos três: `let PARAMETROS_X = null`, populado em
+  `DOMContentLoaded`; o botão de cálculo nasce `disabled`, só activado
+  depois do fetch ter sucesso; se falhar, um aviso próprio fica visível
+  e o botão mantém-se desactivado; a função pura de cálculo nunca é
+  tocada — continua testável sem rede): `simulador-csi.html`,
+  `simulador-abono.html`, `simulador-subsidio-doenca.html`. Só
+  `simulador-ase.html` continua com valores inline (`CONFIG`, nunca
+  `PARAMETROS_*`) — ver `ROADMAP.md` para o estado da migração.
+- Golden tests de cada simulador migrado constroem `params` directamente
+  de `dados/parametros.json` (nunca de um objecto global da página),
+  mais 2 testes de runtime real por simulador (`http.server`, mesmo
+  padrão de `test_acessibilidade.py`, nunca `file://`): sucesso do
+  fetch activa o botão e calcula correctamente; falha do fetch
   (`page.route(...).abort()`) mantém o botão bloqueado e o formulário
   nunca produz resultado, mesmo tentando contornar o `disabled` via JS.
-- `tests/test_valores_ancora.py` ganhou 3 testes ligados à mesma fonte:
-  os 4 valores do CSI em `dados/parametros.json` continuam a bater com
-  `complemento-solidario-idosos.html`; `dados/parametros.json` está
-  sincronizado com os YAML (`--check`); e nenhum parâmetro vigente fica
-  sem `verificado_em` (réplica visível na suite da guarda dura do PASSO 0).
-- **Migração dos simuladores — estado actual**: `simulador-csi.html`
-  (este commit), `simulador-abono.html` e `simulador-subsidio-doenca.html`
-  (migrados a 2026-07-19, sessão "Parâmetros YAML + auditoria factual")
-  já usam `fetch('/dados/parametros.json')`. Só `simulador-ase.html`
-  continua com valores inline (`CONFIG`, nunca `PARAMETROS_*`) — ver
-  `ROADMAP.md` para o estado da migração pendente.
+- `tests/test_valores_ancora.py` cobre a mesma fonte: os valores de
+  cada prestação em `dados/parametros.json` continuam a bater com a
+  respectiva página publicada; `dados/parametros.json` está
+  sincronizado com os YAML (`--check`); nenhum parâmetro vigente fica
+  sem `verificado_em` (réplica visível da guarda dura do PASSO 0).
 
 ### Fase 3 — Publicação: `dados.html` + SQLite + Datasette Lite
 
 `scripts/gerar_base_dados.py` consolida `dados/parametros/*.yaml` (TODAS
 as vigências, não só a vigente — série temporal completa, diferente de
 `dados/parametros.json`) e o historial de `dados/observacoes/` numa base
-SQLite única, **sem servidor** (ficheiro binário estático, servido tal e
+SQLite única, sem servidor (ficheiro binário estático, servido tal e
 qual pelo GitHub Pages):
 
 - Tabela `parametros` (prestacao/parametro/descricao/unidade/valor/
   vigencia_inicio/referencia_legal/fonte_url/verificado_em) — uma linha
   por (prestação, parâmetro, vigência).
 - Tabela `historial` (fonte/commit_sha/data_commit/mensagem) — derivada
-  de `git log --format=... --name-only -- dados/observacoes/`,
-  **parseado, nunca reinventado** (o separador de campos usa `\x1e`/
-  `\x1f`, não `\x00` — `subprocess`/argv não aceita NUL embutido,
-  achado real desta sessão, corrigido antes do primeiro commit).
+  de `git log --format=... --name-only -- dados/observacoes/`, parseada
+  com um separador de campos `\x1e`/`\x1f` (nunca `\x00` —
+  `subprocess`/argv não aceita NUL embutido).
 - **Determinismo deliberado**: nenhuma tabela guarda um campo tipo
   `gerado_em`/timestamp de geração — por isso duas corridas sobre o
   mesmo estado do repositório produzem `dados/tensdireito.db`
-  **byte-idêntico** (confirmado por hash em
-  `tests/test_gerar_base_dados.py::test_gerar_e_deterministico`), a
-  mesma condição que já vale para `registar_observacao.py`: o pipeline
-  só precisa de commitar quando o conteúdo mudar de facto, nunca ruído
-  diário.
-- `pipeline-diario.yml`, novo Step 1d ("Publicar base de dados aberta"),
+  **byte-idêntico** (`tests/test_gerar_base_dados.py::test_gerar_e_deterministico`),
+  a mesma condição que já vale para `registar_observacao.py`: o
+  pipeline só precisa de commitar quando o conteúdo mudar de facto,
+  nunca ruído diário.
+- `pipeline-diario.yml`, Step 1d ("Publicar base de dados aberta"),
   logo a seguir ao Step 1c: corre `gerar_parametros_json.py` +
   `gerar_base_dados.py` e commita `dados/parametros.json`/
-  `dados/tensdireito.db` **só se algo mudou** — corre depois do Step 1c
-  de propósito, para a tabela `historial` do SQLite já reflectir o
-  commit de observações do próprio dia.
+  `dados/tensdireito.db` só se algo mudou — corre depois do Step 1c de
+  propósito, para a tabela `historial` do SQLite já reflectir o commit
+  de observações do próprio dia.
 - `dados.html` — página nova (cluster: nenhum, `EXCLUIDAS` em
   `sincronizar_clusters.py`, mesma categoria de `acessibilidade.html`/
   `sobre.html`): explica as 3 camadas, link directo para o Datasette
@@ -4355,42 +4325,17 @@ qual pelo GitHub Pages):
   definidas (`Organization` da NV Labs, `WebSite` único da homepage —
   ver secção "SCHEMA.ORG — GRAFO DO SITE"), elegível para o Google
   Dataset Search. Ligada a partir do footer de `index.html` (link "Dados
-  Abertos", junto de "Fontes"/"Privacidade") — sem isso ficaria órfã
-  (apanhado por `tests/test_higiene_indexacao.py`, corrigido antes do
-  commit). Nasceu já com canónica/OG-image própria/botão de partilha/nav
-  correctos, confirmado por `adicionar_canonicas.py`/`gerar_og_images.py
-  --write`/`sincronizar_nav.py`/`inserir_botao_partilhar.py`, todos a
-  **zero alterações**.
-- `scripts/smoke_producao.sh` estendido: `/dados.html`,
-  `/dados/parametros.json` e `/dados/tensdireito.db` entram em
-  `scripts/urls_criticas.txt`; `parametros.json` ganha uma verificação
-  extra — o corpo tem de parsear como JSON válido, não só devolver 200
-  (apanha um 200 com corpo truncado/corrompido, ex.: cache de CDN a
-  meio de um deploy); `tensdireito.db` ganha uma verificação de
-  `Access-Control-Allow-Origin` — **nunca falha o smoke test por isto**
-  (só `::warning::`), porque confirma comportamento da plataforma
-  (GitHub Pages), não do nosso código; útil como confirmação contínua
-  de que o Datasette Lite consegue mesmo ler o ficheiro de outro
-  domínio, nunca testado directamente contra produção real nesta sessão
-  (sandbox sem acesso à internet completo, mesma limitação documentada
-  em várias sessões anteriores) — confirmação pendente, ver `ROADMAP.md`.
-
-### Efeito lateral corrigido no mesmo commit — sem relação com dados abertos
-
-Ao correr `scripts/sincronizar_clusters.py` (passo obrigatório do
-checklist para qualquer página nova), o bloco `ATUALIZACOES:HOME` de
-`index.html` estava desactualizado de uma sessão anterior (2 cartões
-apontavam para páginas já não entre as 4 mais recentemente verificadas)
-— corrigido pela própria sincronização idempotente, sem relação com
-`dados.html`; registado aqui por transparência, mesma disciplina de
-sessões anteriores.
-
-### O que fica registado para o futuro, sem prazo
-
-1. `gitleaks` (job "Verificar Segredos") — confirmar que o novo
-   binário `dados/tensdireito.db` nunca é lido como texto/escaneado
-   por engano (SQLite é binário; não observado nenhum problema nos
-   testes locais, mas nunca confirmado em CI real por esta sessão).
+  Abertos", junto de "Fontes"/"Privacidade") — sem isso ficaria órfã,
+  apanhado por `tests/test_higiene_indexacao.py`.
+- `scripts/smoke_producao.sh`: `/dados.html`, `/dados/parametros.json`
+  e `/dados/tensdireito.db` em `scripts/urls_criticas.txt`;
+  `parametros.json` tem uma verificação extra — o corpo tem de parsear
+  como JSON válido, não só devolver 200 (apanha um 200 com corpo
+  truncado/corrompido, ex.: cache de CDN a meio de um deploy);
+  `tensdireito.db` tem uma verificação de `Access-Control-Allow-Origin`
+  — nunca falha o smoke test por isto (só `::warning::`), porque
+  confirma comportamento da plataforma (GitHub Pages), não do nosso
+  código.
 
 ---
 
