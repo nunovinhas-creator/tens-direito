@@ -338,8 +338,8 @@ Pages já falhou silenciosamente **duas vezes** nesta fase do projecto
 `actions/deploy-pages@v5`) — sem qualquer sinal de erro no resto do
 pipeline, nenhum job vermelho, nenhuma Issue. Nas duas vezes só foi
 descoberto ao visitar a página manualmente e encontrar 404. Nenhum dos
-outros 5 workflows verifica a produção real — todos correm sobre o
-checkout local do repositório.
+outros workflows (ver tabela "Workflows" acima) verifica a produção
+real — todos correm sobre o checkout local do repositório.
 
 1. **`.github/workflows/smoke-producao.yml`** — três triggers:
    - `push` a `main` — dispara em todos os pushes, incluindo os do
@@ -368,10 +368,9 @@ checkout local do repositório.
    vez de esperar mais tempo para nada.
 3. **`scripts/urls_criticas.txt`** — uma página por linha, caminho
    relativo ao domínio; linhas vazias ou a começar por `#` são
-   ignoradas. Cobre: homepage, o hub `/simuladores.html`, os 3
-   simuladores, `/sitemap.xml` e 4 páginas evergreen de topo (abono,
-   RSI, subsídio de desemprego, baixa médica). Adicionar uma página
-   nova importante é só acrescentar uma linha aqui.
+   ignoradas. A lista de páginas cobertas vive só no próprio
+   ficheiro — nunca fixada aqui. Adicionar uma página nova importante
+   é só acrescentar uma linha aqui.
 
 ### RECUPERAÇÃO AUTOMÁTICA DO DEPLOY (2026-07-05) — sem intervenção manual
 
@@ -703,10 +702,10 @@ tens-direito/
 │   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
-│   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas 35 páginas (idempotente)
+│   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas páginas do site (idempotente)
 │   ├── adicionar_og_image.py ← bootstrap: insere o bloco og:image em páginas novas (idempotente)
 │   ├── gerar_og_images.py    ← gera assets/img/og/<slug>.jpg por página (Chromium real, manifest, idempotente)
-│   ├── adicionar_article_jsonld.py ← insere JSON-LD Article (author/publisher/datas) nas 27 páginas de conteúdo (idempotente)
+│   ├── adicionar_article_jsonld.py ← insere JSON-LD Article (author/publisher/datas) nas páginas de conteúdo com FAQPage (idempotente)
 │   ├── verificar_datas.py    ← Camada 1: deteção de datas/valores expirados
 │   ├── classificar_datas.py  ← Camada 2: classifica cada correspondência (EstadoData)
 │   ├── decisao_datas.py      ← Camada 3: estado → acção (AUTO_UPDATE_HABILITADO=False)
@@ -1229,6 +1228,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    |---|---|---|
    | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` | inclui `amim.html` |
    | Habitação | `p/habitacao.html` | criado 3 jul 2026 — Porta 65 Jovem/+ e Apoio Extraordinário à Renda |
+   | Prestação Social Única | `/prestacao-social-unica.html` | único pillar fora de `p/` — vive na raiz do site, não em `p/prestacao-social-unica.html`. É por isso que `data/clusters.json` tem mais clusters do que ficheiros existem em `p/` — nenhuma página falta, é só este pillar que mora noutro sítio |
 
    Todos os pillars têm a lista de artigos entre `<!-- PILLAR-LISTA:INICIO/FIM -->`,
    gerada pelo `sincronizar_clusters.py` — nunca editar essa lista à mão.
@@ -1258,7 +1258,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    nos simuladores — não decidido, sem prazo.
 
 **Estado actual (Fases 1 a 5 concluídas):** fundação de dados pronta,
-os 5 pillars existem com a lista de artigos sincronizada (com badge
+todos os pillars de `data/clusters.json` existem com a lista de artigos sincronizada (com badge
 "Ferramenta" nas páginas `tipo: "ferramenta"`), a `index.html` está
 reorganizada por clusters, e os 15 artigos (todos os `tipo: "artigo"`
 de `clusters.json`) têm breadcrumb visível + "pertence ao guia" +
@@ -1905,7 +1905,7 @@ registado de generalizar `Pagina.slug`.
 
 ### Minutas publicadas — estado do portão de verificação
 
-12 minutas publicadas em `documentos/`, nenhuma rejeitada. 6 sem pivot
+12 minutas publicadas em `documentos/`, nenhuma rejeitada. 7 sem pivot
 (nenhum Mod. oficial equivalente):
 
 | Minuta | Base legal / canal |
@@ -1918,7 +1918,7 @@ registado de generalizar `Pagina.slug`.
 | `requerimento-generico-seguranca-social.html` | catch-all, direito de petição (art. 52.º CRP) — nunca substitui um Mod. existente nem contesta uma decisão já tomada |
 | `pedido-declaracao-comprovativo-prestacoes.html` | sem Mod. numerado — página recomenda a Segurança Social Direta como canal mais rápido, esta minuta como alternativa em papel |
 
-6 com pivot para carta de acompanhamento de um Mod. oficial (regra do
+5 com pivot para carta de acompanhamento de um Mod. oficial (regra do
 portão acima):
 
 | Minuta | Mod. oficial que acompanha |
@@ -2311,7 +2311,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
 | `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |
-| `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega prazos de 6 páginas do cluster, revisão obrigatória sempre que qualquer um desses prazos mudar |
+| `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega os prazos das páginas do cluster escolar ligadas a partir do próprio artigo (nunca fixadas aqui), revisão obrigatória sempre que qualquer um desses prazos mudar |
 | `renovar-cartao-cidadao.html` | Nota de verificação para **3 de agosto de 2031** — prazo-limite real remanescente (cartões com MRZ mas sem chip de contacto, emitidos até 10/06/2024; Regulamento (UE) 2025/1208). Corrigido a 2026-07-18: o prazo de 3/08/2026 **não** se aplica ao Cartão de Cidadão normal (tem MRZ desde 2007) — só afecta duas excepções raras (CC do Tratado de Porto Seguro, BI vitalício), conforme esclarecimento oficial do IRN de 30/12/2025. `verificar_datas.py` continua a disparar em 2027 nos meses 1/7/8/9 (o texto ainda cita "2026") — sem acção obrigatória nessa altura, só confirmar que a secção "Preciso de renovar antes do prazo?" continua correcta | Sem gatilho de acção — nota de contexto, a rever se saírem novos esclarecimentos oficiais do IRN antes de 2031 |
 
 **Nota — `simulador-rsi.html` fica de fora desta tabela, deliberadamente**:
@@ -2889,8 +2889,9 @@ não reintroduzir sem um facto novo e confirmado.
 
 ## CLUSTER HABITAÇÃO
 
-Pillar `p/habitacao.html` + 7 páginas-filho (`porta-65.html`,
-`apoio-extraordinario-renda.html`, `imt-jovem.html`,
+Pillar `p/habitacao.html` + páginas-filho — lista completa e contagem
+sempre em `data/clusters.json`, cluster `habitacao` (hoje:
+`porta-65.html`, `apoio-extraordinario-renda.html`, `imt-jovem.html`,
 `garantia-publica-credito-habitacao.html`, `deducao-rendas-irs.html`,
 `primeiro-direito.html`, `simulador-imt-jovem.html`), hub reorganizado
 em três secções: 🏠 Arrendar / 🔑 Comprar / 🏚️ Situações de carência.
@@ -4350,10 +4351,11 @@ de bloqueio e ter um modo degradado honesto, não esconder bloqueios.
    equivalente acessível; `iefp_desemprego` revelou-se um falso positivo
    do próprio classificador (ver essa secção), não uma fonte bloqueada.
 
-Testes: `tests/test_scraper_fallback.py` (15 testes, mocks — sem rede real),
-cobre snapshot recente/antigo/inexistente, falha de rede na consulta
-Wayback, e a garantia de que a decisão nunca devolve `"estado": "OK"`
-directamente (só `OK_VIA_ARQUIVO` ou `BLOQUEADO`).
+Testes: `tests/test_scraper_fallback.py` (mocks — sem rede real; contagem
+real é sempre a do próprio ficheiro, nunca fixada aqui), cobre snapshot
+recente/antigo/inexistente, falha de rede na consulta Wayback, e a
+garantia de que a decisão nunca devolve `"estado": "OK"` directamente
+(só `OK_VIA_ARQUIVO` ou `BLOQUEADO`).
 
 ---
 
