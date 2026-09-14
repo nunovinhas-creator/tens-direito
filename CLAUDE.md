@@ -241,7 +241,7 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` (um feed RSS por tema do site — ver constante `FEEDS` — + corte de recência de 7 dias) → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
-| Checklist final | `assets/js/checklist.js` + `assets/css/checklist.css` — bloco `.checklist-final` (FASE 1 de `MELHORIAS-SPEC.md`, ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL"), sem localStorage |
+| Checklist final | `assets/js/checklist.js` + `assets/css/checklist.css` — bloco `.checklist-final` (ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL"), sem localStorage |
 | Gerador de Documentos | `assets/js/gerador-documentos.js` (motor único config-driven) + `assets/css/gerador-documentos.css` + hub `/documentos.html` + páginas em `documentos/*.html` — minutas 100% client-side, zero rede/localStorage (ver secção "GERADOR DE DOCUMENTOS") |
 
 **Ranking e apresentação da pesquisa (`scripts/pesquisa.js`)** — reformulado
@@ -613,7 +613,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
-- [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos da FASE 1 de `MELHORIAS-SPEC.md` — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
+- [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
 - [ ] Editou `<title>` ou `<meta name="description">` com um valor legal em € ou %? Tem de estar coberto por `tests/test_valores_ancora.py` — ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION"
 - [ ] Página nova de prestação com valores anuais? `<title>`/description devem incluir o ano corrente; qualquer ano civil anterior citado tem de ter excepção explícita em `tests/test_anos_metadados.py` — ver secção "CANÁRIO DE ANOS EM METADADOS"
 - [ ] Alterado algum `.py`? Correr `ruff check scripts/ --select E,F,W --ignore E501 .` — mesmo comando do job "Qualidade Python (Ruff)" em `integridade.yml` (nota: a `ruff-action` acrescenta a raiz do repo aos alvos, por isso `tests/` também é verificado, apesar do `scripts/` explícito no comando)
@@ -694,7 +694,7 @@ tens-direito/
 │   ├── css/share.css         ← estilo do botão/mensagens de partilha
 │   ├── css/clusters.css      ← estilo do breadcrumb/pertence/relacionados injectados nos artigos
 │   ├── css/nav.css           ← estilo da nav principal única (todas as páginas)
-│   └── css/checklist.css     ← estilo do bloco .checklist-final (FASE 1 de MELHORIAS-SPEC.md)
+│   └── css/checklist.css     ← estilo do bloco .checklist-final
 ├── scripts/
 │   ├── scraper_playwright.py ← Playwright + BS4, fontes em FONTES_PLAYWRIGHT/SLUGS_MONITORIZADOS (no próprio ficheiro)
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
@@ -1703,22 +1703,18 @@ resto do site.
 
 ---
 
-## RESPOSTA RÁPIDA + CHECKLIST FINAL (FASE 1 de MELHORIAS-SPEC.md)
+## RESPOSTA RÁPIDA + CHECKLIST FINAL
 
-Dois componentes reutilizáveis, aplicados nesta fase a 4 artigos:
-`baixa-medica-subsidio-doenca.html` (alvo explícito da spec) e os 3
-artigos com mais tráfego GSC confirmados pelo Nuno —
-`manuais-escolares-mega.html`, `acao-social-escolar.html`,
-`subsidio-desemprego.html`.
+Dois componentes reutilizáveis — padrão obrigatório em qualquer artigo
+novo de conteúdo, não um retrofit pontual (ver "CHECKLIST OBRIGATÓRIA
+ANTES DE QUALQUER COMMIT" para a obrigação; quais páginas já os têm é
+sempre `PAGINAS_ALVO` em `tests/test_resposta_rapida_checklist.py`,
+nunca uma contagem fixa aqui — ver "AUTO-ACTUALIZAÇÃO DESTE FICHEIRO").
 
 ### `.resposta-rapida` — reaproveita `.resposta-direta`, não duplica
 
-Achado antes de implementar: os ~28 artigos do site já têm um bloco
-`.resposta-direta` no hero (caixa teal, resposta directa de 2-3 frases)
-com exactamente o mesmo objectivo SEO (featured snippet) que a spec
-pede para `.resposta-rapida`. Decisão (confirmada com o Nuno): **nunca
-duplicar a caixa** — a mesma `.resposta-direta` ganhou a classe extra
-`resposta-rapida` mais dois elementos novos:
+A mesma `.resposta-direta` já existente no hero ganha a classe extra
+`resposta-rapida` mais dois elementos, nunca uma caixa duplicada:
 
 ```html
 <div class="resposta-direta resposta-rapida">
@@ -1732,29 +1728,15 @@ CSS inline por página (mesmo padrão de `.resposta-direta`, nunca um
 ficheiro partilhado — cada artigo já define os seus próprios
 componentes inline). Tempo de leitura calculado uma vez (palavras do
 `<main>` ÷ 200 ppm, arredondado) e escrito como texto estático — não é
-recalculado em runtime. **Achado de acessibilidade durante a
-implementação**: a 1.ª versão usava `opacity` no rótulo/tempo para
-hierarquia visual — reduzia o contraste do texto branco sobre o fundo
-teal (`#0F766E`) de 5.47:1 para 4.41:1, abaixo do mínimo AA de 4.5:1
-(apanhado por `tests/test_acessibilidade.py`, não por inspecção visual).
-Corrigido removendo o `opacity` — texto branco sólido, mesmo contraste
-já auditado e aprovado do resto do `.resposta-direta`.
+recalculado em runtime.
 
-### `.checklist-final` — novo, reutilizável via `assets/`
+### `.checklist-final` — `assets/css/checklist.css` + `assets/js/checklist.js`
 
-Ao contrário de `.resposta-direta`, este componente é genuinamente
-novo. Segue o padrão de `share.js`/`share.css` (ficheiro partilhado em
+Mesmo padrão de `share.js`/`share.css` (ficheiro partilhado em
 `assets/`, ligado via `<link>`/`<script>` no `<head>`, nunca duplicado
-inline por página):
-
-- **`assets/css/checklist.css`** — caixa no mesmo estilo de `.card`,
-  contador de progresso, lista de checkboxes com touch target ≥44px
-  (o `<label>` inteiro é o alvo clicável, não só a checkbox de 22px).
-- **`assets/js/checklist.js`** — actualiza o contador ("X de N
-  concluídos") em `change`, delegado em `document` (mesmo padrão de
-  `share.js`). **Estado só em memória** — nunca chama
-  `localStorage`/`sessionStorage`; recarregar a página repõe todas as
-  checkboxes por marcar, por desenho, exactamente como a spec exige.
+inline por página). **Estado só em memória** — `checklist.js` nunca
+chama `localStorage`/`sessionStorage`; recarregar a página repõe todas
+as checkboxes por marcar, por desenho.
 
 HTML por artigo (sem ficheiro de template — cada página escreve o seu
 próprio `<section class="checklist-final">`, com itens sourced do
@@ -1771,55 +1753,15 @@ próprio `<section class="checklist-final">`, com itens sourced do
 </section>
 ```
 
-Posicionado antes da secção "Dúvidas frequentes" nos 3 artigos que a
-têm; `manuais-escolares-mega.html` não tem uma secção de FAQ visível
-dedicada (só JSON-LD) — o checklist foi colocado antes de
-`RELACIONADOS`, ainda assim no fim do corpo do artigo, sem inventar uma
-secção que a página não tem.
-
-**Achado lateral, não relacionado com os blocos novos**: ao validar
-`acao-social-escolar.html` com o `vnu.jar` (HTML5), encontrado um bug
-pré-existente (não introduzido nesta sessão, confirmado por
-`git show HEAD`) — um `<div class="tabela-wrap">` (tabela) dentro de um
-`<span>` no passo 1 do "Como candidatar", inválido porque `<span>` só
-aceita conteúdo de fraseado. Corrigido trocando esse `<span>` por
-`<div>` (o `<ol>` já usa `display:flex` via `.passos li`, que
-"blockifica" o filho de qualquer forma — zero mudança visual) e
-ajustada a regra CSS `.passos li span` para `.passos li span, .passos
-li > div`, preservando a cor/alinhamento exactos.
-
-### Retrofit dos 3 artigos GSC — decisão do Nuno, não assumida
-
-A spec pedia "retrofit nos 3 artigos com mais tráfego GSC (confirmar
-quais na sessão)" — sem acesso ao Google Search Console, a sessão
-perguntou directamente e o Nuno confirmou os 3: `manuais-escolares-
-mega.html`, `acao-social-escolar.html`, `subsidio-desemprego.html`.
-Não são um palpite nem um valor por omissão.
+Posicionado antes da secção "Dúvidas frequentes"; numa página sem FAQ
+visível dedicada, antes de `RELACIONADOS`, ainda assim no fim do corpo
+do artigo — nunca inventar uma secção que a página não tem.
 
 ### Testes
 
-`tests/test_resposta_rapida_checklist.py` (37 casos, parametrizados
-sobre os 4 artigos reais): estrutural (rótulo + tempo presentes, ≤60
-palavras, caixa continua dentro do hero, checklist com checkboxes
-dentro de `<label>`, ordem antes do FAQ, assets ligados no `<head>`,
-`checklist.js` nunca chama `localStorage`/`sessionStorage`) e funcional
-via Chromium real (viewport mobile 390px sem overflow horizontal nos 2
-blocos, contador a actualizar ao marcar/desmarcar, e a garantia
-explícita de que um reload nunca preserva o estado das checkboxes —
-requisito "SEM localStorage" da spec, verificado a sério, não só por
-ausência da string no código). Suite existente (`test_nav_coerencia.py`,
-`test_breadcrumb_coerencia.py`, `test_higiene_indexacao.py`,
-`test_acessibilidade.py`) reconfirmada sem regressões nos 4 artigos
-tocados.
-
-### Critérios de aceitação da spec — confirmados
-
-- Blocos renderizam correctamente em mobile (viewport 390px) — testado
-  com Chromium real, sem overflow horizontal.
-- Validação HTML5 passa — confirmado com `vnu.jar` nas 4 páginas
-  (incluindo a correcção do bug pré-existente acima).
-- Zero dependências externas novas — `checklist.js`/`checklist.css` são
-  vanilla JS/CSS, mesmo padrão de `share.js`/`share.css`.
+`tests/test_resposta_rapida_checklist.py` — cobertura real sempre em
+`PAGINAS_ALVO`, nesse ficheiro; nunca fixar aqui a lista de páginas nem
+o número de casos.
 
 ---
 
