@@ -3253,14 +3253,16 @@ aceita `raiz`/`hoje`/`saida` explícitos (mesmo padrão de
 
 ### E-E-A-T — NV LABS COMO ENTIDADE RESOLVÍVEL
 
-Sessão de 2026-07-03: sem autor pessoal público (decisão do Nuno,
-mantida), o E-E-A-T do site joga-se a nível de entidade + método. A
-**NV Labs** — estúdio independente português, responsável editorial do
-Tens Direito — passa a ser **resolvível**: antes, "An NV Labs project"
-no footer não linkava para lado nenhum; agora tem secção própria em
-`sobre.html#nvlabs`, JSON-LD `Organization` e um `sameAs` real (o
-próprio repositório GitHub, único link "NV Labs" que existe de facto —
-nunca um perfil inventado).
+Sem autor pessoal público (decisão do Nuno, mantida), o E-E-A-T do
+site joga-se a nível de entidade + método. A **NV Labs** — estúdio
+independente português, responsável editorial do Tens Direito — é
+**resolvível**: "An NV Labs project" no footer liga a
+`sobre.html#nvlabs`, que tem secção própria e JSON-LD `Organization`
+próprio. **Sem `sameAs`** — o único que chegou a existir apontava para
+o repositório GitHub, removido pela regra de zero menções a GitHub em
+página pública (ver "REGRAS DE CONTEÚDO" → "Não fazer"). Regra
+permanente: nunca inventar um perfil para preencher esse campo — sem
+um perfil público real da NV Labs, o `sameAs` fica ausente.
 
 ### `sobre.html` — 5 blocos + excepção à regra de JSON-LD
 
@@ -3321,16 +3323,20 @@ que não tem `</footer>` nem badge NV Labs por não ter sido processada
 antes, fora do âmbito desta sessão). O bloco footer (`<div>` → `<a
 href="/sobre.html#nvlabs">`) envolve agora o SVG existente — o texto
 "An NV Labs project" mantém-se exactamente igual (decisão do Nuno),
-só passou a ser clicável. Corrido com `--apenas-sincronizar --write`
-nas 34 páginas que já tinham o bloco; idempotência confirmada.
+só passou a ser clicável. Corre com `--apenas-sincronizar --write` em
+qualquer página que já tenha o bloco (contagem real é sempre
+`grep -rl "sobre.html#nvlabs" --include="*.html"`, nunca fixada aqui);
+idempotência confirmada.
 `assets/css/branding.css` ajustado (`.footer-nvlabs` de `<div>` para
 `<a>`, com `:focus-visible`).
 
 ### Autoria nos artigos — `scripts/adicionar_autoria_artigos.py`
 
 Novo script, âmbito automático (todas as páginas com `"@type":
-"FAQPage"` em `*.html`/`p/*.html` — 27 no total, `simulador-psu.html`
-fica fora por não ter JSON-LD nenhum, deliberadamente não publicado):
+"FAQPage"` em `*.html`/`p/*.html` — contagem real é sempre
+`grep -rl '"@type": "FAQPage"' --include="*.html"`, nunca fixada aqui;
+`simulador-psu.html` fica fora por não ter JSON-LD nenhum,
+deliberadamente não publicado):
 
 1. Injecta `"author"`/`"publisher"` (`{"@id": ".../sobre.html#nvlabs"}`)
    no bloco `FAQPage` — válido em Schema.org (`FAQPage` < `WebPage` <
@@ -3358,71 +3364,6 @@ Páginas sem "Verificado a" próprio (`simulador-abono.html`,
 `simulador-ase.html`, pillar pages como `p/apoios-escolares.html`) só
 recebem o `author`/`publisher` no JSON-LD — não há carimbo nenhum para
 atribuir.
-
-Bug corrigido durante esta sessão (nunca chegou a `main`): a primeira
-versão do script inseria `"publisher": {...}` sem vírgula a seguir,
-partindo o JSON de 27 páginas — apanhado por validação local de JSON
-antes do commit, corrigido no próprio script (vírgula em falta) e
-reaplicado; `tests/test_adicionar_autoria_artigos.py` valida
-explicitamente que o JSON continua parseável depois da inserção.
-
-### Testes desta sessão
-
-`tests/test_sobre_jsonld.py` (JSON-LD de `sobre.html`, secções
-`#nvlabs`/`#metodo`, marcador `CONTACTO-EMAIL`, footer com link nas
-páginas reais), `tests/test_atualizar_branding_nvlabs.py` (bootstrap +
-sincronização idempotentes, isolado em memória) e
-`tests/test_adicionar_autoria_artigos.py` (unidade + rede de segurança
-sobre os artigos reais + compatibilidade das 2 regexes dependentes).
-704 testes a passar (69 novos), ruff limpo.
-
-### Verificação pós-merge (2026-07-03) — tipos de JSON-LD nas 27 páginas
-
-Confirmado por varrimento real das 27 páginas de conteúdo: os únicos
-tipos JSON-LD presentes são `FAQPage`, `HowTo`, `HowToStep`,
-`BreadcrumbList`, `ListItem`, `Question`, `Answer` — **nenhuma tem um
-objecto `Article` ou `WebPage` próprio**. O `author`/`publisher` da NV
-Labs injectado por `adicionar_autoria_artigos.py` vive hoje só dentro do
-`FAQPage` (schema.org-válido, `FAQPage` < `WebPage` < `CreativeWork`,
-mas a Google Search Central documenta que a Pesquisa Google **não
-consome autoria a partir de `FAQPage`** — só de tipos como `Article`/
-`NewsArticle`/`BlogPosting` ou `WebPage`).
-
-**Implementado em 2026-07-04** (ver secção "AUDITORIA DE INDEXAÇÃO E
-HIGIENE SEO TÉCNICA" mais abaixo) — `scripts/adicionar_article_jsonld.py`
-acrescenta o objecto `Article` a cada uma das 27 páginas de conteúdo,
-`datePublished` extraído da tabela "PÁGINAS PUBLICADAS" deste ficheiro
-(ISO 8601 parcial, `AAAA-MM`, quando só o mês é conhecido) e
-`dateModified` de `extrair_verificado_em()`.
-
-### Fast-forward para `main` e limpeza de branch (2026-07-03)
-
-`claude/new-session-2oea8g` (1 commit à frente de `origin/main` no
-momento do merge) foi integrada em `main` por fast-forward puro, sem
-PR, a pedido explícito do Nuno — mesmo padrão já usado noutras sessões
-para respeitar a "REGRA ABSOLUTA — GIT". Nota técnica: o `main` local
-desta sessão estava **desactualizado e com histórico não relacionado**
-(`git merge-base` não encontrou ancestral comum com `origin/main` —
-provavelmente um ref local nunca sincronizado desde uma reescrita de
-histórico anterior); resolvido com `git checkout -B main origin/main`
-antes do fast-forward — sem perda de trabalho, o `origin/main` remoto
-já continha tudo o que havia de real.
-
-Tentativa de apagar a branch remota `claude/new-session-2oea8g`:
-**403 na API** (mesma limitação já registada nas revisões anteriores
-deste ficheiro para `claude/nv-labs-branding-update-xq4kb4` e
-`claude/cool-cannon-zn5nfy` — sem `gh` CLI nem ferramenta MCP com
-permissão para apagar branches neste ambiente). Ficou registada para
-apagar manualmente.
-
-**Actualização (2026-07-04)**: confirmado via `list_branches` da API
-(não só `git fetch --prune` local) que o repositório remoto tem hoje
-**apenas `main`** — `claude/new-session-2oea8g` já não existe (apagada
-manualmente ou pela limpeza automática do GitHub entretanto, fora desta
-sessão), e o mesmo se aplica às restantes órfãs documentadas nesta
-secção e nas revisões anteriores (`claude/nv-labs-branding-update-xq4kb4`,
-`claude/cool-cannon-zn5nfy`, `claude/shadow-mode-issues-scraper-5u0syf`).
-Nenhuma branch por apagar manualmente neste momento.
 
 ---
 
