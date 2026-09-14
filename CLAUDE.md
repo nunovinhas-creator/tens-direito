@@ -2216,15 +2216,19 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 |---|---|---|
 | `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
 | `acao-social-escolar.html` | Setembro — prazo de candidatura ("até 30 de setembro"), **nunca** escalões (ver nota abaixo) | Redundante com `calendario-escolar-apoios.html`, mantida por cautela |
-| `bolsa-de-merito.html` | Setembro — valor do ano lectivo (2,5×IAS em vigor), **nunca** um despacho próprio (ver nota abaixo) | Calendário anual — texto da própria página desactualizado, ver nota |
+| `bolsa-de-merito.html` | Setembro — valor do ano lectivo (2,5×IAS em vigor), **nunca** um despacho próprio (ver nota abaixo) | Calendário anual — corrigida a 25/08/2026, ver nota |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
 | `complemento-solidario-idosos.html` | Janeiro (novo valor CSI) | Issue automática do scraper |
-| `prestacao-social-unica.html` | Ago 2026 (decreto-lei) + Jan 2027 (entrada vigor) | Verificação manual/news dre.pt |
-| `psu-quando-entra-em-vigor.html` | Ago 2026 (decreto-lei) + Jan 2027 (entrada vigor) | Verificação manual/news dre.pt |
-| `psu-quem-tem-direito.html` | Ago 2026 (valores confirmados pelo decreto-lei) | Decreto-lei publicado |
+| `prestacao-social-unica.html` | Ago 2026 (decreto-lei publicado, já em vigor) + **31 de dezembro de 2026** (produção de efeitos, art. 63.º DL 166/2026) | Ver "IMPACTO DA PSU" |
+| `psu-quando-entra-em-vigor.html` | Idem | Ver "IMPACTO DA PSU" |
+| `psu-quem-tem-direito.html` | Idem | Ver "IMPACTO DA PSU" |
+| `psu-vs-abono-familia.html` | Idem — `verificar_datas.py` passa a expor sozinho a partir de 2027 (Issue #186) | Ver "IMPACTO DA PSU" |
+| `simulador-psu.html` | Idem — banner de vigência já ligado a `data_producao_efeitos` | Ver "IMPACTO DA PSU" |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
-| `majoracao-subsidio-desemprego.html` | **31 de dezembro de 2026** — o Decreto-Lei n.º 166/2026 (art. 49.º) altera a redação do n.º 5 do art. 28.º-A do DL 220/2006 nesta data (a majoração passa a manter-se quando o cônjuge transita para a PSU, em vez de "subsídio social de desemprego subsequente") — rever a secção "Se a situação mudar" e a FAQ correspondente, confirmando que o texto passa de "vai mudar a partir de" para o estado já em vigor | Sem sentinela automático dedicado — verificação manual, mesma data já vigiada pelo `pipeline-diario.yml` para o resto do cluster PSU |
+| `majoracao-subsidio-desemprego.html` | **31 de dezembro de 2026** — o Decreto-Lei n.º 166/2026 (art. 49.º) altera a redação do n.º 5 do art. 28.º-A do DL 220/2006 nesta data (a majoração passa a manter-se quando o cônjuge transita para a PSU, em vez de "subsídio social de desemprego subsequente") — rever a secção "Se a situação mudar" e a FAQ correspondente, confirmando que o texto passa de "vai mudar a partir de" para o estado já em vigor | A partir de 2027, `verificar_datas.py` expõe isto sozinho (portão de confirmação de `MARCADORES_HISTORICOS`, #187); até lá, verificação manual, mesma data já vigiada pelo `pipeline-diario.yml` para o resto do cluster PSU |
+| `garantia-publica-credito-habitacao.html` | **31 de dezembro de 2026** — prazo-limite dos contratos abrangidos pela Garantia Pública (Portaria n.º 236-A/2024/1), sem prorrogação confirmada | `dre_habitacao_garantia` (watchlist DRE) — ver "CLUSTER HABITAÇÃO" |
+| `fontes.html` | Idem — cartão da Portaria n.º 236-A/2024/1 cita a mesma cláusula de vigência | Idem — ver "CLUSTER HABITAÇÃO" |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
@@ -2233,30 +2237,30 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega prazos de 6 páginas do cluster, revisão obrigatória sempre que qualquer um desses prazos mudar |
 | `renovar-cartao-cidadao.html` | Nota de verificação para **3 de agosto de 2031** — prazo-limite real remanescente (cartões com MRZ mas sem chip de contacto, emitidos até 10/06/2024; Regulamento (UE) 2025/1208). Corrigido a 2026-07-18: o prazo de 3/08/2026 **não** se aplica ao Cartão de Cidadão normal (tem MRZ desde 2007) — só afecta duas excepções raras (CC do Tratado de Porto Seguro, BI vitalício), conforme esclarecimento oficial do IRN de 30/12/2025. `verificar_datas.py` continua a disparar em 2027 nos meses 1/7/8/9 (o texto ainda cita "2026") — sem acção obrigatória nessa altura, só confirmar que a secção "Preciso de renovar antes do prazo?" continua correcta | Sem gatilho de acção — nota de contexto, a rever se saírem novos esclarecimentos oficiais do IRN antes de 2031 |
 
-**`manuais-escolares-mega.html` — nota de manutenção sazonal (2026-07-06,
-actualizada 2026-07-06)**: a lacuna de vigilância identificada na sessão
-anterior (o scraper só vigiava `dge.mec.pt`, entidade que não gere de
-facto a plataforma MEGA) **está fechada** — nova fonte `igefe_mega`
-(`scripts/scraper_playwright.py`, `metodo="http"`) vigia directamente
-`https://www.igefe.mec.pt/Page/Index/199`, a página real onde a IGeFE,
-I.P. (a entidade que emite os vouchers aos encarregados de educação)
-publica a secção "Emissão de Vouchers". Confirmado num runner real
-(2026-07-06) que o conteúdo útil desta página não vive em `<p>` — está
-num `<div class="ig-publicsite-paragraph">` — por isso os selectores são
-específicos a esta fonte (`paragrafos: ".ig-publicsite-paragraph"`, não
-o `"p"` genérico usado nas outras fontes); `min_chars_uteis=300` e
-`ancora_conteudo=("voucher",)` calibrados com o conteúdo real (~1000
-chars úteis, "voucher" nunca aparece na navegação/rodapé, só no
-parágrafo de conteúdo). `mega_datas` (`dge.mec.pt`) e `igefe_mega`
-partilham a mesma lógica rica de detecção e a mesma chave de aviso
-(`mega_2026_2027_publicadas`, via `MEGA_SLUGS_DATAS_RICAS` e
-`_detectar_datas_mega()`) — a Issue automática
-"📅 MEGA 2026/2027 — datas de emissão detectadas" dispara sempre que
-**qualquer uma** das duas detectar o padrão, independentemente de qual
-publicar primeiro. Testado com fixtures reais (conteúdo actual de
-2025/2026 classifica OK; conteúdo simulado com "2026/2027" + data de
-julho/agosto dispara o aviso; conteúdo vazio nunca classifica OK — as
-3 pontas do invariante "nenhum estado de erro pode parecer sucesso").
+**Nota — `simulador-rsi.html` fica de fora desta tabela, deliberadamente**:
+a página existe, está publicada e integrada (nav, sitemap, `data/clusters.json`,
+`pesquisa.js`), e provavelmente cita a mesma data de 31/12/2026 (produção
+de efeitos do DL 166/2026) que as 5 páginas PSU/Garantia Pública acima —
+mas nunca foi confirmado directamente, porque `simulador-rsi.html` nunca
+chegou a entrar em `CLAUDE.md` (nem na tabela "PÁGINAS PUBLICADAS"). Em
+vez de inventar uma linha com um dado não verificado, ver
+[Issue #209](https://github.com/nunovinhas-creator/tens-direito/issues/209).
+
+**`manuais-escolares-mega.html` — mecanismo de vigilância sazonal**: duas
+fontes independentes, mesma chave de aviso. `mega_datas` vigia
+`dge.mec.pt`; `igefe_mega` (`scripts/scraper_playwright.py`,
+`metodo="http"`) vigia directamente
+`https://www.igefe.mec.pt/Page/Index/199` — a entidade que emite de
+facto os vouchers aos encarregados de educação é a IGeFE, I.P., não a
+DGE. Selectores específicos a esta fonte (`paragrafos:
+".ig-publicsite-paragraph"`, não o `"p"` genérico das outras fontes),
+`min_chars_uteis=300`, `ancora_conteudo=("voucher",)`. Ambas partilham
+`_detectar_datas_mega()` e a chave `mega_2026_2027_publicadas` (via
+`MEGA_SLUGS_DATAS_RICAS`) — a Issue automática "📅 MEGA 2026/2027 —
+datas de emissão detectadas" dispara com qualquer uma das duas,
+independentemente de qual publicar primeiro. Histórico da investigação
+e dos falsos positivos corrigidos: ver `HISTORICO.md`, entrada de
+2026-07-06.
 
 **O que continua manual**: o scraper só *alerta* — nunca escreve HTML
 de artigos (ver "REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS", só
@@ -2279,37 +2283,20 @@ manuais pelas escolas**, distinto do processo de **emissão de vouchers
 aos encarregados de educação** que esta página documenta; scraper essa
 fonte não ajudaria a detectar o sinal que importa aqui.
 
-**`acao-social-escolar.html`/`bolsa-de-merito.html` — nota de manutenção
-sazonal, correcção de premissa (2026-08-25)**: sessão "Sentinela para o
-despacho da ASE" investigou onde é publicado o "despacho anual da
-DGEstE com os escalões ASE" que a migração do ASE para YAML dava como
-bloqueio (ver `ROADMAP.md` → "TRABALHO FUTURO REGISTADO") — **não
-existe nenhum acto desse tipo**. `WebFetch` continua bloqueado nesta
-sessão para qualquer domínio `.gov.pt`/`.mec.pt`/`diariodarepublica.pt`
-(confirmado de novo: `EGRESS_BLOCKED` mesmo para domínios fora do
-Estado, ex. `google.com` — mesma limitação documentada em várias
-sessões anteriores), por isso a investigação foi feita inteiramente por
-triangulação `WebSearch` (várias pesquisas independentes, nunca uma
-fonte só), sem acesso directo ao texto de nenhum diploma.
-
-O regime substantivo da ASE — escalões A/B como % do IAS, tectos de
-material escolar (16€/8€) e visitas de estudo (20€/10€) em euros,
-desconto nas refeições (gratuita no A, 50% no B) — está fixado desde
-2015 pelos Despachos n.º 8452-A/2015, 5296/2017 e 7255/2018, **sem
-nenhuma república anual**: os valores de 2025/2026 encontrados via
-`WebSearch` (16€/8€ material, 20€/10€ visitas) são idênticos aos já
-citados no site desde a publicação original — nenhuma fonte encontrada
-menciona um despacho novo a alterá-los. A única variável real é o
-IAS, publicado por Portaria própria (tipicamente dezembro/janeiro) —
-**já vigiado pelo sentinela `dre_ias`** (Issue automática de janeiro,
-ver "PÁGINAS COM DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de
-Mérito: o valor é sempre 2,5×IAS, calculado a partir do mesmo Despacho
-n.º 8452-A/2015 — **nunca** um despacho anual próprio. O texto de
-`bolsa-de-merito.html` ("o valor de 2026/2027 aguarda publicação do
-despacho anual") herda a mesma premissa errada — o valor 2026/2027
-(1.342,83 € = 2,5 × IAS 2026, já confirmado desde janeiro) é calculável
-hoje, sem esperar por nada; **página não corrigida nesta sessão**
-(fora do âmbito — só documentação), registado para uma sessão dedicada.
+**`acao-social-escolar.html`/`bolsa-de-merito.html` — regime substantivo
+sem república anual**: escalões A/B como % do IAS, tectos de material
+escolar (16€/8€) e visitas de estudo (20€/10€) em euros, desconto nas
+refeições (gratuita no A, 50% no B) estão fixados desde 2015 pelos
+Despachos n.º 8452-A/2015, 5296/2017 e 7255/2018 — **sem nenhuma
+república anual**. A única variável real é o IAS, publicado por
+Portaria própria (tipicamente dezembro/janeiro) — **já vigiado pelo
+sentinela `dre_ias`** (Issue automática de janeiro, ver "PÁGINAS COM
+DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de Mérito: o valor é
+sempre 2,5×IAS, calculado a partir do mesmo Despacho n.º 8452-A/2015 —
+**nunca** um despacho anual próprio. `bolsa-de-merito.html` reflecte
+isto correctamente (1.342,83 € = 2,5 × IAS 2026, "Verificado a
+25/08/2026") — investigação da premissa errada original e correcção
+documentadas em `HISTORICO.md`, entrada de 2026-08-25.
 
 O prazo de "30 de setembro" em `acao-social-escolar.html` é uma regra
 fixa do regime-base (não republicada ano a ano); a única coisa que o
@@ -2318,14 +2305,10 @@ matrículas novo — já agregado por `calendario-escolar-apoios.html`
 (ver a entrada dessa página nesta tabela). A revisão de setembro deste
 artigo fica por isso redundante com essa página, mantida por cautela.
 
-Único acto do Ministério da Educação com cadência quase-anual
-encontrado nesta investigação e relacionado com a ASE — mas **não
-adoptado como sentinela**: o preço-tecto da refeição escolar (indexado
-ao IPC desde o ano lectivo 2024/2025, 1,46 € desde então, sem alteração
-confirmada para 2026/2027). Decisão consciente de não vigiar: o site
-expressa sempre o custo da refeição como desconto percentual (gratuita/
-50%), nunca o valor em euros, por isso este acto nunca afecta um valor
-publicado — ver `ROADMAP.md` → "À ESPERA DE UM SINAL" → "Manuais".
+**Preço-tecto da refeição escolar**: decisão consciente de **não
+vigiar** — o site expressa sempre o custo da refeição como desconto
+percentual (gratuita/50%), nunca o valor em euros. Razão completa e
+decisão: ver `ROADMAP.md` → "À ESPERA DE UM SINAL" → "Manuais".
 
 **`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
 ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb
