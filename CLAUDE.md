@@ -1228,6 +1228,7 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    |---|---|---|
    | Idosos, Incapacidade e Cuidadores | `p/idosos-incapacidade-cuidadores.html` | inclui `amim.html` |
    | Habitação | `p/habitacao.html` | criado 3 jul 2026 — Porta 65 Jovem/+ e Apoio Extraordinário à Renda |
+   | Prestação Social Única | `/prestacao-social-unica.html` | único pillar fora de `p/` — vive na raiz do site, não em `p/prestacao-social-unica.html`. É por isso que `data/clusters.json` tem mais clusters do que ficheiros existem em `p/` — nenhuma página falta, é só este pillar que mora noutro sítio |
 
    Todos os pillars têm a lista de artigos entre `<!-- PILLAR-LISTA:INICIO/FIM -->`,
    gerada pelo `sincronizar_clusters.py` — nunca editar essa lista à mão.
