@@ -235,10 +235,10 @@ Cada facto tem data de verificação e ligação à fonte oficial.
 | HTML | Estático puro — sem Jekyll, sem SSG |
 | Analytics | GA4: `G-XP46PM8H1Q` — **Consent Mode v2 AVANÇADO** (desde 2026-07-13): o gtag.js carrega sempre, para todos os visitantes; em `denied` (omissão) só envia pings sem cookies, cookies reais só depois de "Aceitar" (nunca gtag.js estático no `<head>`) |
 | Consentimento | Banner próprio self-hosted: `assets/js/consentimento.js` (substituiu o CookieYes a 2026-07-11 — o plano gratuito tinha limite de 5.000 pageviews/mês; zero serviços externos, zero limites; **Consent Mode v2 AVANÇADO desde 2026-07-13** — o gtag.js carrega sempre, para todos, e o GA4 envia pings sem cookies em `denied` [omissão], que a Google usa para modelar estatisticamente os não consentidos; só ao "Aceitar" o consentimento sobe a `granted` e passam a existir cookies `_ga`/`_ga_*`; escolha em localStorage `td_consentimento`; `window.tdGerirConsentimento()` reabre o banner — botão "Gerir cookies" em `privacidade.html`; testado em `tests/test_consentimento.py`) |
-| Pesquisa interna | `scripts/pesquisa.js` (JS puro, 27 páginas indexadas — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
+| Pesquisa interna | `scripts/pesquisa.js` (JS puro, indexa as páginas listadas no próprio ficheiro — todas excepto `index.html` e `404.html`; ranking em camadas + excerto + badge de cluster — ver nota de manutenção abaixo) |
 | Scraper | Playwright + BeautifulSoup (`scripts/scraper_playwright.py`), com `playwright-stealth`, retries com jitter e fallback Wayback (`OK_VIA_ARQUIVO`) — ver secção "SCRAPER — ROBUSTEZ CONTRA BLOQUEIOS" |
 | Extracção valores | `scripts/extrair_valores.py` → `data/divergencias.json` |
-| Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` (13 feeds RSS por tema + corte de recência de 7 dias) → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
+| Notícias | `data/noticias.json` (fonte de verdade) + `scripts/gerar_noticias.py` (um feed RSS por tema do site — ver constante `FEEDS` — + corte de recência de 7 dias) → `noticias.html` (arquivo por mês) + 2-3 cards em `index.html` (`NOTICIA-HOME`) — ver secção "FRESCURA DA HOMEPAGE" |
 | Partilha social | `assets/js/share.js` + `assets/css/share.css`, inserido em cada página via `scripts/inserir_botao_partilhar.py` (idempotente, sem bibliotecas externas) |
 | Clusters/navegação | `data/clusters.json` (fonte única) + `scripts/sincronizar_clusters.py` (idempotente, injecta entre marcadores — ver secção "SISTEMA DE CLUSTERS") |
 | Checklist final | `assets/js/checklist.js` + `assets/css/checklist.css` — bloco `.checklist-final` (FASE 1 de `MELHORIAS-SPEC.md`, ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL"), sem localStorage |
@@ -304,7 +304,7 @@ Chromium real (não é possível apanhar isto só por inspecção de texto)
 em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 `index.html` real em vez de manter uma cópia à parte.
 
-### Workflows (8 — 3 fazem push de conteúdo, 1 apaga branches remotas)
+### Workflows (ver `.github/workflows/` — a tabela abaixo lista todos, com o que cada um escreve)
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
@@ -676,7 +676,7 @@ tens-direito/
 │   ├── css/nav.css           ← estilo da nav principal única (todas as páginas)
 │   └── css/checklist.css     ← estilo do bloco .checklist-final (FASE 1 de MELHORIAS-SPEC.md)
 ├── scripts/
-│   ├── scraper_playwright.py ← Playwright + BS4, scrapes 6 fontes
+│   ├── scraper_playwright.py ← Playwright + BS4, fontes em FONTES_PLAYWRIGHT/SLUGS_MONITORIZADOS (no próprio ficheiro)
 │   ├── extrair_valores.py    ← compara valores scraped vs HTML publicado
 │   ├── gerar_noticias.py     ← RSS por tema + data/noticias.json → noticias.html + cards em index.html (NOTICIA-HOME)
 │   ├── gerir_estado_feeds.py ← máquina de estados de feeds de notícias mortos (Step 3a do pipeline)
@@ -1250,10 +1250,11 @@ SEO/integridade (JSON-LD, links, sitemap, pesquisa) — ver secção
 
 ## NAVEGAÇÃO PRINCIPAL (Fase 4)
 
-Nav única em todas as 29 páginas, gerada a partir de `data/clusters.json`
+Nav única em todas as páginas do site, gerada a partir de `data/clusters.json`
 e injectada entre `<!-- NAV:INICIO -->` / `<!-- NAV:FIM -->` por
-`scripts/sincronizar_nav.py`. Estrutura: **Logo | Apoios ▾ (5 clusters,
-pelos pillars) | Começa aqui | Notícias | Pesquisa**. "Guias" saiu
+`scripts/sincronizar_nav.py`. Estrutura: **Logo | Apoios ▾ (um item por
+cluster de `data/clusters.json`, pelos pillars) | Começa aqui | Notícias
+| Pesquisa**. "Guias" saiu
 (redundante com "Apoios ▾"), os simuladores saíram da nav (vivem nos
 clusters e na homepage), "Sobre" ficou só no footer (já estava em
 todas as páginas).
@@ -1291,8 +1292,9 @@ todas as páginas).
    passaram para uma `<section class="hero">` própria, como em
    `simulador-abono.html`. O estilo teal saiu de `header{}` e entrou
    em `.hero{}`.
-7. **Testes**: `tests/test_nav_coerencia.py` corre sobre as 29
-   páginas reais e confirma: exactamente 1 bloco `NAV` por página,
+7. **Testes**: `tests/test_nav_coerencia.py` corre sobre as páginas
+   reais do site (parametrizado — cobre página nova automaticamente) e
+   confirma: exactamente 1 bloco `NAV` por página,
    zero resíduos da nav antiga (classes/ids/handlers antigos),
    referências a `nav.css`/`nav.js`/`pesquisa.js` presentes, e o
    dropdown "Apoios" + pesquisa (desktop e mobile) + "Começa aqui"
@@ -2006,8 +2008,9 @@ limpo.
 
 ### Disclaimer obrigatório
 
-Presente em texto idêntico nas 12 páginas E no texto gerado de cada
-minuta (verificado por `tests/test_gerador_documentos.py::test_disclaimer_presente_na_pagina_e_no_texto_gerado`):
+Presente em texto idêntico em todas as páginas do gerador (`documentos/*.html`,
+listadas no hub `/documentos.html`) E no texto gerado de cada minuta
+(verificado por `tests/test_gerador_documentos.py::test_disclaimer_presente_na_pagina_e_no_texto_gerado`):
 > "Este documento é um modelo informativo e não substitui aconselhamento
 > jurídico. Confirme sempre os requisitos junto da Segurança Social ou de
 > um advogado/solicitador."
@@ -2157,7 +2160,7 @@ simulador, nunca um valor introduzido).
 
 | Evento | Onde | Parâmetros | Notas |
 |---|---|---|---|
-| `simulacao_concluida` | inline nos 9 simuladores publicados (abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego, imt_jovem, psu, condicoes_reforma), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia), imt_jovem e condicoes_reforma; **omitido** em subsidio_doenca, rsi e psu — sem veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). |
+| `simulacao_concluida` | inline nos simuladores publicados que disparam este evento (grep `simulacao_concluida` em `simulador-*.html`; hoje: abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego, imt_jovem, psu, condicoes_reforma), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia), imt_jovem e condicoes_reforma; **omitido** em subsidio_doenca, rsi e psu — sem veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). |
 | `menu_tool_click` | `assets/js/nav.js`, clique nos cartões da grelha de ferramentas do menu móvel e no link "Começa aqui" (`.nav-mobile-card`/`.nav-mobile-destaque`) | `tool_destino` (basename do próprio `href`, nunca um ID fixo por cartão) | Só no menu móvel, não no desktop. |
 | `partilha_clique` | `assets/js/share.js`, nos dois pontos de sucesso (Web Share API e cópia para a área de transferência) | `pagina` (pathname) | Nunca no fallback da caixa manual (falha de cópia) nem em cancelamento (AbortError). Nunca envia o título. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
@@ -2284,6 +2287,22 @@ Triggers obrigatórios de actualização (de CLAUDE.md e/ou HISTORICO.md):
 - Adição ou remoção de página HTML publicada
 - Mudança nas regras de conteúdo ou de links
 - Mudança na stack (novos serviços, remoção de dependências)
+
+**Regra permanente — nunca afirmar uma contagem que o repositório já sabe
+contar**: nenhuma secção deste ficheiro fixa o número de páginas, feeds,
+workflows, clusters, sentinelas, fontes scraped ou qualquer outra coisa
+que já vive, contável, num ficheiro/constante/directório do repositório.
+Aponta sempre para essa fonte — "as páginas listadas em
+`scripts/pesquisa.js`", "os feeds em `FEEDS` (`scripts/gerar_noticias.py`)",
+"os workflows em `.github/workflows/`" — nunca "27 páginas"/"13
+feeds"/"8 workflows". Um número certo hoje não prova nada: é só um
+número que ainda não divergiu, e diverge sempre que o ficheiro/constante
+muda sem alguém lembrar de actualizar a prosa (já aconteceu mais do que
+uma vez nesta secção do ficheiro — contagem de pillars, de feeds, de
+fontes do scraper). Onde um número for mesmo necessário para a frase
+fazer sentido — um limiar, uma janela de dias, uma constante de negócio
+como `MAX_VENCEDORES_POR_DIA` — mantém-se, mas sempre com a fonte ao
+lado, nunca como facto solto, e justificado caso a caso.
 
 ---
 
