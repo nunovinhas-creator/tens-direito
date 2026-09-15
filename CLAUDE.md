@@ -758,7 +758,7 @@ tens-direito/
 │   └── integridade.yml       ← verificações de integridade (só lê)
 ├── .claude/
 │   ├── commands/             ← /publicar-pagina, /verificar-fontes, /nova-noticia
-│   └── skills/               ← estrutura-pagina, verificar-url
+│   └── skills/               ← estrutura-pagina, verificar-url (planas); steward/, babysit/ (pasta+SKILL.md)
 ├── CNAME                     ← tensdireito.com — NÃO APAGAR
 ├── .nojekyll                 ← força HTML estático — NÃO APAGAR
 ├── sitemap.xml
@@ -1220,9 +1220,36 @@ Conteúdo obrigatório no `<body>`:
 - `/nova-noticia` — lê RSS, selecciona notícia relevante, actualiza noticias.html
 - `/atualizar-cluster-psu` — executa o plano de acção da Issue do decreto-lei PSU, com confirmação obrigatória dos valores antes de tocar em ficheiros
 
-**Skills** (`.claude/skills/`) — usadas internamente:
-- `estrutura-pagina` — template HTML com as secções obrigatórias e JSON-LD pronto a preencher
-- `verificar-url` — testa se um URL existe e devolve acção correcta (200/403/404/timeout)
+**Skills** (`.claude/skills/`) — dois mecanismos de carregamento distintos,
+confirmados nesta sessão (2026-09-15), nunca confundir:
+
+- **`.claude/skills/<nome>/SKILL.md`** (pasta + `SKILL.md`) — **descoberta
+  automática** por scan de directório: a sessão vê a skill listada como
+  disponível para a Skill tool sem precisar de nenhuma referência no resto
+  do repositório. É o formato de `steward`/`babysit` — lidas também
+  directamente pelo harness (fora deste repositório) antes de agir sobre
+  eventos de CI/revisão num PR, por caminho fixo, independentemente desta
+  lista existir ou não.
+- **`.claude/skills/<nome>.md`** (ficheiro plano, sem subpasta) — **nunca é
+  descoberto automaticamente**; só é lido quando referenciado explicitamente
+  noutro sítio — este ficheiro, um comando de `.claude/commands/`, ou o
+  `README.md`. É o formato de `estrutura-pagina`/`verificar-url`:
+  confirmado que nenhuma das duas apareceu alguma vez na lista de skills
+  disponíveis do harness em toda esta sessão; só são lidas porque
+  `/publicar-pagina`, `/verificar-fontes`, `/nova-noticia` e
+  `/atualizar-cluster-psu` dizem em prosa "usar a skill `estrutura-pagina`"/
+  "usar a skill `verificar-url`" — sem essa prosa (ou sem a entrada aqui),
+  o ficheiro fica órfão indefinidamente.
+
+**Regra para qualquer skill nova**: usar sempre pasta + `SKILL.md` — nunca
+um ficheiro plano. O ficheiro plano depende de alguém se lembrar de o
+referenciar à mão em vários sítios; a pasta + `SKILL.md` não depende de
+ninguém se lembrar de nada.
+
+- `estrutura-pagina` — template HTML com as secções obrigatórias e JSON-LD pronto a preencher (ficheiro plano, só lido por referência — ver acima)
+- `verificar-url` — testa se um URL existe e devolve acção correcta (200/403/404/timeout) (ficheiro plano, idem)
+- `steward` — política de manutenção de PRs: quando um sinal conta como real e o que fica reservado para o Nuno decidir (pasta + `SKILL.md`, descoberta automática)
+- `babysit` — mecânica de tomar conta de um PR aberto: o que verificar, corrigir sozinho, ou reportar (pasta + `SKILL.md`, idem)
 
 ---
 
