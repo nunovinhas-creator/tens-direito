@@ -174,6 +174,7 @@ jobs:
               'dre_habitacao_garantia': 'https://diariodarepublica.pt/dr/home',
               'dre_ias': 'https://diariodarepublica.pt/dr/home',
               'dre_psu_regulamentacao': 'https://diariodarepublica.pt/dr/home',
+              'dre_habitacao_garantia_portaria': 'https://diariodarepublica.pt/dr/home',
             };
 
             const mudancas = [];
@@ -1670,6 +1671,68 @@ jobs:
                     labels: ['verificar', 'fonte-alterada'],
                   });
                   console.log('Issue Portaria de regulamentação da PSU criada.');
+                }
+              }
+
+              // Issue específica: Portaria que altera/prorroga a Garantia
+              // Pública (DL 44/2024) detectada em DRE (sentinela irmão do
+              // dre_habitacao_garantia, 2026-09-15 — levantamento da
+              // caducidade da Garantia Pública, ponto 5: o mecanismo mais
+              // plausível para uma prorrogação é uma Portaria que altera
+              // o protocolo, não necessariamente um Decreto-Lei, que
+              // dre_habitacao_garantia já cobre em separado).
+              //
+              // Título/dedup desenhados para NUNCA colidir com o bloco
+              // "Decreto-lei que cita o DL 44/2024" acima — esse dedup
+              // procura títulos com 'Garantia Pública' E 'DRE'; este
+              // título evita deliberadamente a frase "Garantia Pública",
+              // para as duas Issues nunca se confundirem uma com a outra
+              // ao verificar duplicados.
+              const linha_garantia_portaria = avisos_hoje.find(l => l.includes('dre_habitacao_garantia_portaria_detectada'));
+              if (linha_garantia_portaria) {
+                const existing_garantia_portaria = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'verificar',
+                });
+                const duplicate_garantia_portaria = existing_garantia_portaria.data.find(
+                  i => i.title.includes('crédito habitação jovem') && i.title.includes('DL 44/2024')
+                );
+                if (!duplicate_garantia_portaria) {
+                  const match_garantia_portaria = linha_garantia_portaria.match(/dre_habitacao_garantia_portaria_detectada:(.*)$/);
+                  const excertos_garantia_portaria = match_garantia_portaria ? match_garantia_portaria[1].trim() : '(ver data/scraped/dre_habitacao_garantia_portaria_latest.json)';
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `📜 Portaria que altera o crédito habitação jovem (DL 44/2024) detectada em DRE`,
+                    body: [
+                      `## 📜 Portaria que altera o protocolo da Garantia Pessoal do Estado (DL 44/2024) detectada automaticamente em dre.pt`,
+                      ``,
+                      `**Data/hora:** ${hoje} ${hora} UTC`,
+                      `**Fonte monitorizada:** https://diariodarepublica.pt (pesquisa de frase exacta: \"garantia pessoal do Estado\", só resultados do tipo Portaria)`,
+                      ``,
+                      `### Excertos detectados`,
+                      `\`\`\``,
+                      excertos_garantia_portaria,
+                      `\`\`\``,
+                      ``,
+                      `### Acções necessárias (por ordem)`,
+                      `1. Confirmar em https://dre.pt se esta Portaria prorroga, altera ou não mexe no prazo-limite de 31 de dezembro de 2026 (contratos de crédito celebrados até essa data)`,
+                      `2. Se prorrogar/alterar o prazo: actualizar \`garantia_prazo_contrato_limite\` em dados/parametros/habitacao.yaml (com fonte/verificado_em) e correr scripts/gerar_parametros_json.py`,
+                      `3. Actualizar as 3 páginas que citam esta data por extenso: \`garantia-publica-credito-habitacao.html\` (9 ocorrências — meta/og description, FAQ, HowTo, resposta rápida, checklist, aviso), \`fontes.html\` (cartões do DL 44/2024 e da Portaria n.º 236-A/2024/1) e \`p/habitacao.html\` (4 ocorrências) — nenhuma lê o valor em runtime, todas têm de ser editadas à mão`,
+                      `4. Se NÃO prorrogar (medida termina mesmo): reescrever as mesmas 3 páginas para deixarem de falar em voz imperativa de um prazo por cumprir (\"fecha o contrato até...\", checkbox de prazo) — ver CLAUDE.md → \"CLUSTER HABITAÇÃO\" → nota do levantamento de 2026-09-15 para o esqueleto de redacção`,
+                      `5. Actualizar data de verificação em todas as páginas tocadas`,
+                      `6. Se confirmada uma alteração real a um apoio coberto pelo site: acrescenta uma entrada a \`data/canal_pendente.json\` no mesmo commit da correcção (título + resumo pronto a copiar + páginas tocadas) — o pipeline prepara sozinho o rascunho no dia seguinte (Issue \`canal-rascunho\`); a decisão de publicar continua sempre manual — ver CLAUDE.md → \"CANAL DE WHATSAPP — GATILHO EDITORIAL DE PUBLICAÇÃO\"`,
+                      `7. Fechar esta issue após actualização completa`,
+                      ``,
+                      `### Contexto`,
+                      `- Sentinela irmão de \`dre_habitacao_garantia\` (que só reconhece Decreto-Lei) — mesmo termo de pesquisa, filtro oposto (só Portaria)`,
+                      `- Ver CLAUDE.md secção "CLUSTER HABITAÇÃO" → "Watchlist automática DRE"`,
+                    ].join('\n'),
+                    labels: ['verificar', 'fonte-alterada'],
+                  });
+                  console.log('Issue Portaria da Garantia Pública criada.');
                 }
               }
             } catch(_) {}

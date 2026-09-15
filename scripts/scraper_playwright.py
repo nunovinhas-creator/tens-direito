@@ -243,6 +243,31 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         min_chars_uteis=1500,
         ancora_conteudo=('"prestação social única"',),
     ),
+    # Sentinela irmão do dre_habitacao_garantia (2026-09-15, levantamento
+    # da caducidade da Garantia Pública, ponto 5) — mesmo padrão do par
+    # dre_psu/dre_psu_regulamentacao: MESMO termo de pesquisa, filtros
+    # opostos. Motivo de existir: fontes.html já documenta que o
+    # protocolo do Estado (Portaria n.º 236-A/2024/1) se mantém vigente
+    # "até 31 de dezembro de 2026, ou outra data que posteriormente
+    # corresponder ao termo de uma eventual prorrogação" — ou seja, o
+    # mecanismo legal mais plausível para prorrogar este prazo é uma
+    # PORTARIA que altera o protocolo, não necessariamente um novo
+    # Decreto-Lei que altere o DL 44/2024. `dre_habitacao_garantia` só
+    # tem `detectar_decreto_lei` — nunca dispararia para essa via.
+    #
+    # Termo herdado sem alteração do `dre_habitacao_garantia` já
+    # calibrado (Issue #151): `'"garantia pessoal do Estado"'` —
+    # confirmado contra dados reais (`data/scraped/
+    # dre_habitacao_garantia_2026-09-03.json`) a devolver 24 itens,
+    # incluindo as duas Portarias já conhecidas do regime (n.º
+    # 236-A/2024/1, sem data completa; n.º 187/2025/1, de 2025-04-15) —
+    # ambas de anos anteriores ao corte de recência abaixo, por isso
+    # nunca disparam por si só (ver `FONTES_PLAYWRIGHT`, "desde").
+    "dre_habitacao_garantia_portaria": FonteConfig(
+        nome="DRE — Pesquisa Portaria de alteração/prorrogação da Garantia Pública (DL 44/2024)",
+        min_chars_uteis=1500,
+        ancora_conteudo=('"garantia pessoal do Estado"',),
+    ),
 }
 
 # Slugs que vigiam a mesma transição real (datas de emissão dos vales MEGA
@@ -304,6 +329,10 @@ _PERFIL_POR_SLUG: dict[str, PerfilBrowser] = {
     # própria de que extra_http_headers/stealth funcionam contra este
     # backend, herda a calibração já provada para dre_psu/dre_ias.
     "dre_psu_regulamentacao": PerfilBrowser(stealth=False, headers_custom=False),
+    # dre_habitacao_garantia_portaria: mesmo site, mesmo termo de
+    # pesquisa do dre_habitacao_garantia já calibrado — herda o mesmo
+    # perfil, sem prova própria em separado (seria a mesma prova).
+    "dre_habitacao_garantia_portaria": PerfilBrowser(stealth=False, headers_custom=False),
 }
 
 
@@ -675,6 +704,57 @@ FONTES_PLAYWRIGHT = [
             # la-ia passar de novo — ver CLAUDE.md "IMPACTO DA PSU" para
             # o mesmo aviso.
             "desde": "2026-08-28",
+        },
+    },
+    {
+        "slug": "dre_habitacao_garantia_portaria",
+        # Sentinela irmão do dre_habitacao_garantia (2026-09-15) — ver o
+        # comentário completo junto à entrada em _FONTE_CONFIGS. Vigia
+        # uma Portaria que altere o protocolo da Garantia Pública (DL
+        # 44/2024) — nomeadamente uma prorrogação do prazo de 31 de
+        # dezembro de 2026 —, via legal explicitamente prevista pela
+        # própria Portaria n.º 236-A/2024/1 ("ou outra data que
+        # posteriormente corresponder ao termo de uma eventual
+        # prorrogação"), que `dre_habitacao_garantia` (só
+        # `detectar_decreto_lei`) nunca cobriria.
+        #
+        # MESMO termo de pesquisa do dre_habitacao_garantia,
+        # deliberadamente — os dois sentinelas vêem os mesmos resultados
+        # brutos do DRE, mas reagem a metades opostas
+        # (`detectar_decreto_lei` só conta Decreto-Lei; `detectar_portaria`
+        # abaixo só conta Portaria) — mesmo padrão do par
+        # dre_psu/dre_psu_regulamentacao. Nunca apagar um dos dois por
+        # parecer duplicado.
+        "url": "https://diariodarepublica.pt/dr/home",
+        "nota": ("DRE — vigiar Portaria de alteração/prorrogação da Garantia "
+                 "Pública (DL 44/2024, prazo actual: 31 dez 2026)"),
+        "pesquisa_interactiva": {
+            "campo": "input[type='search']",
+            "termo": '"garantia pessoal do Estado"',
+        },
+        "seletores": {
+            "titulo": "h1",
+            "paragrafos": "span[data-expression]",
+            "listas": "a[href*='/dr/detalhe/']",
+        },
+        "detectar_portaria": {
+            "chave_aviso": "dre_habitacao_garantia_portaria_detectada",
+            "mensagem_log": "%s: Portaria que altera a Garantia Pública (DL 44/2024) detectada em "
+                             "DRE — confirmar se prorroga o prazo de 31/12/2026!\n%s",
+            # Corte de recência a partir da activação deste sentinela
+            # (2026-09-15) — confirmado contra dados reais
+            # (`data/scraped/dre_habitacao_garantia_2026-09-03.json`):
+            # as duas Portarias já conhecidas do regime (n.º
+            # 236-A/2024/1, sem data completa; n.º 187/2025/1, de
+            # 2025-04-15) ficam ambas excluídas pelo corte — a 1.ª pelo
+            # nível 2 (ano "2024" < "2026"), a 2.ª pelo nível 1 (data
+            # completa "2025-04-15" < "2026-09-15") — sem precisar de
+            # `numero_conhecido` (que `_detectar_portaria_generico` nem
+            # sequer aceita hoje), ao contrário do caso do DL 166/2026
+            # (Issue #132), onde o acto já conhecido era do MESMO ano do
+            # corte. Uma Portaria genuinamente nova continua a disparar
+            # normalmente.
+            "desde": "2026-09-15",
         },
     },
 ]

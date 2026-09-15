@@ -23,9 +23,10 @@ o reabrir.
     decidiu e escreveu. Produz um rascunho `confirmado: true`.
 
 1b. ALTERAÇÃO LEGAL POR CONFIRMAR — caminho automático, sem fila
-    manual: quando um dos 5 sentinelas dirigidos (`dre_psu`,
+    manual: quando um dos 6 sentinelas dirigidos (`dre_psu`,
     `dre_psu_regulamentacao`, `dre_habitacao_paer`,
-    `dre_habitacao_garantia`, `dre_ias` — ver `SENTINELAS_DIRIGIDOS`)
+    `dre_habitacao_garantia`, `dre_habitacao_garantia_portaria`,
+    `dre_ias` — ver `SENTINELAS_DIRIGIDOS`)
     escreve a sua chave de aviso em `data/scraped/avisos.log` no dia de
     hoje, este script prepara logo um rascunho — sem esperar que uma
     sessão editorial confirme e preencha 1a primeiro. Nunca confunde-se
@@ -101,7 +102,7 @@ DOMINIO = "https://tensdireito.com"
 sys.path.insert(0, str(RAIZ_MODULO / "scripts"))
 from atualizar_calendario import MESES_PT, PRESTACOES  # noqa: E402
 
-# Os 5 sentinelas dirigidos que já geram Issue própria em
+# Os 6 sentinelas dirigidos que já geram Issue própria em
 # pipeline-diario.yml (labels "verificar"/"fonte-alterada") — mesma
 # chave de aviso escrita em data/scraped/avisos.log por
 # scripts/scraper_playwright.py (`_registar_aviso`, chamada com
@@ -122,6 +123,9 @@ SENTINELAS_DIRIGIDOS = {
     "dre_ias_portaria_detectada": "Portaria do Indexante dos Apoios Sociais (IAS)",
     "dre_psu_regulamentacao_portaria_detectada": (
         "Portaria que regulamenta o Decreto-Lei da PSU"
+    ),
+    "dre_habitacao_garantia_portaria_detectada": (
+        "Portaria que altera o protocolo da Garantia Pública no crédito habitação"
     ),
 }
 

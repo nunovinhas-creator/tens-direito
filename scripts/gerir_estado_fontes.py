@@ -55,6 +55,11 @@ SLUGS_MONITORIZADOS = (
     # 32.º/59.º) que o próprio dre_psu já não cobre. Mesma máquina de
     # estados.
     "dre_psu_regulamentacao",
+    # Sentinela irmão do dre_habitacao_garantia (2026-09-15) — vigia uma
+    # Portaria de prorrogação/alteração da Garantia Pública (DL 44/2024)
+    # que o próprio dre_habitacao_garantia (só Decreto-Lei) não cobre.
+    # Mesma máquina de estados.
+    "dre_habitacao_garantia_portaria",
 )
 
 

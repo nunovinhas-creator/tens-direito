@@ -149,15 +149,19 @@ def test_avisos_de_hoje_ficheiro_inexistente_devolve_lista_vazia(tmp_path):
     assert avisos_de_hoje(tmp_path / "nao_existe.log", "2026-08-31") == []
 
 
-def test_obter_deteccao_sentinela_reconhece_as_5_chaves_dirigidas():
-    # As 5 chaves têm de bater exactamente com as que
+def test_obter_deteccao_sentinela_reconhece_as_6_chaves_dirigidas():
+    # As 6 chaves têm de bater exactamente com as que
     # scripts/scraper_playwright.py escreve (_registar_aviso) — nunca um
-    # nome inventado que nunca dispararia na prática.
+    # nome inventado que nunca dispararia na prática. A 6.ª
+    # (dre_habitacao_garantia_portaria_detectada) foi acrescentada
+    # 2026-09-15 — sentinela irmão de dre_habitacao_garantia, ver
+    # CLAUDE.md "CLUSTER HABITAÇÃO" → "Watchlist automática DRE".
     assert set(SENTINELAS_DIRIGIDOS) == {
         "dre_psu_decreto_detectado",
         "dre_psu_regulamentacao_portaria_detectada",
         "dre_habitacao_paer_decreto_detectado",
         "dre_habitacao_garantia_decreto_detectado",
+        "dre_habitacao_garantia_portaria_detectada",
         "dre_ias_portaria_detectada",
     }
 
