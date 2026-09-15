@@ -13,12 +13,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Activado na Fase 2 (2026-08-13) — Decreto-Lei n.º 166/2026 publicado,
        valores reais em vigor desde 14/08/2026. Ver aviso de vigência no
-       corpo: o resultado é sempre uma simulação informativa, porque o
-       decreto-lei só produz efeitos (paga de facto) a 31/12/2026. -->
+       corpo: o artigo 63.º fixa 31/12/2026 como data de produção de
+       efeitos (facto legal, permanente); se o pagamento já está a
+       acontecer é sempre confirmado na Segurança Social Direta, nunca
+       assumido aqui (Issue #186). -->
   <meta name="robots" content="index, follow">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <title>Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026)</title>
-  <meta name="description" content="Simulador da Prestação Social Única com os valores reais do Decreto-Lei n.º 166/2026: Valor de Referência, adultos equivalentes, Componente de Incentivo ao Trabalho, teto e mínimo. Pagamento efectivo a partir de 31/12/2026.">
+  <meta name="description" content="Simulador da Prestação Social Única com os valores reais do Decreto-Lei n.º 166/2026: Valor de Referência, adultos equivalentes, Componente de Incentivo ao Trabalho, teto e mínimo. Produção de efeitos a 31/12/2026 (artigo 63.º).">
   <meta property="og:title" content="Simulador da PSU 2026: calcula o teu valor">
   <meta property="og:description" content="Calcula o valor estimado da tua PSU com a fórmula real do Decreto-Lei n.º 166/2026 — Valor de Referência, adultos equivalentes, CIT, teto e mínimo.">
   <meta property="og:url" content="https://tensdireito.com/simulador-psu.html">
@@ -57,7 +59,7 @@
         "name": "O valor que o simulador mostra já é pago?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Não. O resultado é uma simulação informativa do que terás direito a receber a partir de 31 de dezembro de 2026, data em que o Decreto-Lei n.º 166/2026 produz efeitos (artigo 63.º). Antes dessa data, o valor mostrado não confere direito a receber já."
+          "text": "Não. O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos. Confirma sempre na Segurança Social Direta se, no teu caso, o pagamento já está a ser feito; o valor mostrado nunca confere direito a receber por si só."
         }
       },
       {
@@ -303,8 +305,8 @@
     </div>
 
     <div id="bannerVigencia" class="aviso-vigencia" role="note">
-      <strong>⚠️ Simulação informativa — a PSU ainda não é paga</strong>
-      <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados — mas só produz efeitos (paga de facto) a <strong>31 de dezembro de 2026</strong> (artigo 63.º). O resultado abaixo é uma simulação do que terás direito a receber a partir dessa data, não confere direito a receber já. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>
+      <strong>⚠️ Simulação informativa — confirma se o pagamento já começou</strong>
+      <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados. O artigo 63.º fixa <strong>31 de dezembro de 2026</strong> como a data de produção de efeitos — confirma na Segurança Social Direta se, no teu caso, a PSU já está a ser paga. O resultado abaixo é sempre uma simulação, nunca uma garantia de pagamento. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>
     </div>
 
     <div class="calc-card">
@@ -385,7 +387,7 @@
       <details>
         <summary>O valor que o simulador mostra já é pago?</summary>
         <div class="faq-resposta">
-          Não. O resultado é uma simulação informativa do que terás direito a receber a partir de 31 de dezembro de 2026, data em que o Decreto-Lei n.º 166/2026 produz efeitos (artigo 63.º). Antes dessa data, o valor mostrado não confere direito a receber já.
+          Não. O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos. Confirma sempre na Segurança Social Direta se, no teu caso, o pagamento já está a ser feito; o valor mostrado nunca confere direito a receber por si só.
         </div>
       </details>
 
@@ -419,7 +421,7 @@
     </section>
 
     <div class="disclaimer">
-      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa e independente, sem ligação ao Estado ou à Segurança Social. Aplica a fórmula pública do Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I). O resultado é sempre uma simulação — o decreto-lei só produz efeitos a 31 de dezembro de 2026 (artigo 63.º), e o valor final é sempre determinado pela Segurança Social.
+      <strong>⚠️ Aviso de independência:</strong> Este simulador é uma ferramenta educativa e independente, sem ligação ao Estado ou à Segurança Social. Aplica a fórmula pública do Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I). O resultado é sempre uma simulação — o artigo 63.º fixa 31 de dezembro de 2026 como a data de produção de efeitos do decreto-lei; confirma na Segurança Social Direta se, no teu caso, o pagamento já está em curso. O valor final é sempre determinado pela Segurança Social.
     </div>
   </main>
 
@@ -559,20 +561,18 @@
     // ── Banner de vigência — ligado a data_producao_efeitos do YAML, nunca
     // a uma string solta (fecha a lacuna assinalada na Fase 1: antes só
     // vigencia_inicio existia, sem nenhum campo a marcar quando o cálculo
-    // passa a corresponder a um pagamento real). ─────────────────────────
+    // passa a corresponder a um pagamento real). Texto permanente (Issue
+    // #186) — nunca alterna consoante a data de hoje: a data de produção
+    // de efeitos é um facto fixo da lei, mas se o pagamento já está a
+    // acontecer é um facto operacional que só a Segurança Social confirma,
+    // antes ou depois de 31/12/2026. ──────────────────────────────────────
     function aplicarBannerVigencia() {
       const banner = document.getElementById('bannerVigencia');
       if (!banner || !PARAMETROS_PSU || !PARAMETROS_PSU.dataProducaoEfeitos) return;
-      const hoje = new Date();
       const dataEfeitos = new Date(PARAMETROS_PSU.dataProducaoEfeitos + 'T00:00:00');
       const dataFormatada = dataEfeitos.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
-      if (hoje < dataEfeitos) {
-        banner.innerHTML = `<strong>⚠️ Simulação informativa — a PSU ainda não é paga</strong>
-          <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados — mas só produz efeitos (paga de facto) a <strong>${dataFormatada}</strong> (artigo 63.º). O resultado abaixo é uma simulação do que terás direito a receber a partir dessa data, não confere direito a receber já. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>`;
-      } else {
-        banner.innerHTML = `<strong>✅ A PSU já está a ser paga</strong>
-          <p>Desde ${dataFormatada}, a PSU é paga de facto aos beneficiários. O resultado abaixo é uma estimativa do valor a que tens direito — o valor final é sempre determinado pela Segurança Social.</p>`;
-      }
+      banner.innerHTML = `<strong>⚠️ Simulação informativa — confirma se o pagamento já começou</strong>
+        <p>O Decreto-Lei n.º 166/2026 já está em vigor, com todos os valores confirmados. O artigo 63.º fixa <strong>${dataFormatada}</strong> como a data de produção de efeitos — confirma na Segurança Social Direta se, no teu caso, a PSU já está a ser paga. O resultado abaixo é sempre uma simulação, nunca uma garantia de pagamento. Consulta o <a href="/psu-quando-entra-em-vigor.html">estado geral da PSU</a>.</p>`;
     }
 
     // ── Mostrar/esconder o beneficiário da majoração de parentalidade ────
