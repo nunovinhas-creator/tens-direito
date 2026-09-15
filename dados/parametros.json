@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-14",
+  "gerado_em": "2026-09-15",
   "prestacoes": {
     "abono": {
       "escalao1_limite_cenario_pedidos_novos_2026": {
@@ -1007,6 +1007,76 @@
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/44-2024-871466267",
         "fonte_url_complementar": "https://diariodarepublica.pt/dr/detalhe/portaria/236-a-2024-880840914",
         "verificado_em": "2026-07-20"
+      },
+      "porta65_jovem_idade_minima_anos": {
+        "descricao": "Porta 65 Jovem — idade mínima (inclusive) à data da candidatura. Critério estável desde o diploma-base, nunca alterado pelas revisões posteriores (DL 38/2023, DL 42/2024), que só mexeram no limite máximo e nas regras de candidatura contínua.",
+        "unidade": "anos",
+        "valor": 18,
+        "vigencia_inicio": "2007-09-03",
+        "referencia_legal": "Decreto-Lei n.º 308/2007, de 3 de setembro — diploma-base do Programa Porta 65 — Arrendamento por Jovens",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
+      },
+      "porta65_jovem_idade_maxima_anos": {
+        "descricao": "Porta 65 Jovem — idade máxima (inclusive) à data da candidatura, para o candidato principal (a idade-limite do 2.º elemento de um casal não está parametrizada — fontes secundárias divergem entre 36 e 37 anos, ver nota no topo deste bloco)",
+        "unidade": "anos",
+        "valor": 35,
+        "vigencia_inicio": "2024-09-01",
+        "referencia_legal": "Decreto-Lei n.º 42/2024, de 2 de julho, em vigor desde 1 de setembro de 2024 — fixa o limite de 35 anos e o fim da Renda Máxima de Referência como factor de exclusão",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
+      },
+      "porta65_mais_quebra_rendimentos_min_pct": {
+        "descricao": "Porta 65+ — quebra de rendimentos mínima (face a meses anteriores ou ao mesmo período do ano anterior) que dá acesso ao regime sem limite de idade, em alternativa à monoparentalidade (desde o Orçamento do Estado de 2026, também vítimas de violência doméstica com estatuto reconhecido)",
+        "unidade": "%",
+        "valor": 20,
+        "vigencia_inicio": "2023-05-29",
+        "referencia_legal": "Decreto-Lei n.º 38/2023, de 29 de maio — cria o Porta 65+ (quebra de rendimentos superior a 20% ou família monoparental como critérios de acesso, sem limite de idade)",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
+      },
+      "porta65_comparticipacao_max_primeiro_ano_pct": {
+        "descricao": "Porta 65 Jovem — comparticipação máxima da renda no primeiro ano de apoio, no escalão mais favorável (desce nas renovações seguintes); Porta 65+ usa um cálculo diferente, sem escalões fixos",
+        "unidade": "%",
+        "valor": 50,
+        "vigencia_inicio": "2010-05-21",
+        "referencia_legal": "Portaria n.º 277-A/2010, de 21 de maio — regulamentação do Programa Porta 65, fixa os escalões de comparticipação por rendimento",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
+      },
+      "porta65_rendimento_max_multiplo_rmmg": {
+        "descricao": "Porta 65 Jovem — o rendimento mensal corrigido do jovem (ou agregado jovem) não pode exceder este múltiplo da Retribuição Mínima Mensal Garantida (RMMG) em vigor",
+        "unidade": "múltiplo da RMMG",
+        "valor": 4,
+        "vigencia_inicio": "2010-05-21",
+        "referencia_legal": "Portaria n.º 277-A/2010, de 21 de maio — regulamentação do Programa Porta 65, critérios de rendimento",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
+      },
+      "paer_contrato_data_limite": {
+        "descricao": "PAER — data-limite de celebração do contrato de arrendamento para habitação permanente; contratos posteriores nunca estiveram abrangidos. RESSALVA (DL n.º 43/2024, de 2 de julho): o apoio MANTÉM-SE quando um contrato anterior a esta data é renovado, alterado ou substituído por outro com as MESMAS PARTES e o MESMO IMÓVEL — a exclusão aplica-se só a contratos novos, nunca à renovação/alteração de um contrato já elegível (ver VERIFICACAO-PENDENTE.md: apoio-extraordinario-renda.html ainda não reflecte esta ressalva no corpo, na FAQ nem no JSON-LD)",
+        "unidade": "data",
+        "valor": "2023-03-15",
+        "vigencia_inicio": "2023-03-22",
+        "referencia_legal": "Decreto-Lei n.º 20-B/2023, de 22 de março — cria o PAER, exclusivamente para contratos de arrendamento para habitação permanente celebrados até 15 de março de 2023; ressalva de manutenção do apoio em caso de renovação/alteração/substituição do contrato com as mesmas partes e o mesmo imóvel aditada pelo Decreto-Lei n.º 43/2024, de 2 de julho",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": "https://diariodarepublica.pt",
+        "verificado_em": "2026-09-15"
+      },
+      "paer_vigencia_limite": {
+        "descricao": "PAER — data-limite dos pagamentos previstos aos beneficiários já aprovados (o programa está fechado a candidaturas novas, mas continua a pagar quem já tem apoio atribuído). Revogação anunciada pelo Governo em fevereiro de 2026, ainda NÃO publicada em Diário da República à data de verificação — ver CLAUDE.md, secção 'CLUSTER HABITAÇÃO'",
+        "unidade": "data",
+        "valor": "2028-12-31",
+        "vigencia_inicio": "2023-03-22",
+        "referencia_legal": "Decreto-Lei n.º 20-B/2023, de 22 de março, com as alterações do Decreto-Lei n.º 103-B/2023, de 9 de novembro (3.ª alteração) — fixa o prazo de pagamento aos beneficiários já aprovados",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-15"
       },
       "deducao_rendas_irs_limite_eur": {
         "descricao": "Dedução à colecta de IRS das rendas pagas pelo inquilino — limite anual geral",

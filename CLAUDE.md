@@ -3003,15 +3003,46 @@ a entrada correspondente no YAML, com `referencia_legal`/`fonte_url`/
 `verificado_em` — é o que `tests/test_valores_ancora.py` verifica
 (secção "Cluster Habitação").
 
-**Excepção conhecida, rastreada (Issue #197)**: os 2 primeiros bullets
-de "Estado real verificado" abaixo — Porta 65 Jovem/Porta 65+ e o Apoio
-Extraordinário à Renda (PAER) — não seguem esta regra. Os factos que
-citam (datas de candidatura contínua, condições de acesso, data de
-fecho a novos beneficiários) vivem só em prosa, sem entrada em
-`dados/parametros/habitacao.yaml` nem canário em
-`tests/test_valores_ancora.py`, ao contrário dos outros 4 bullets (IMT
-Jovem, Garantia Pública, Dedução de rendas no IRS, 1.º Direito). Nada
-os impede hoje de ficar desactualizados em silêncio.
+**Fechado (Issue #197, 2026-09-15)**: os 2 primeiros bullets de "Estado
+real verificado" abaixo — Porta 65 Jovem/Porta 65+ e o Apoio
+Extraordinário à Renda (PAER) — passaram a seguir a mesma regra dos
+outros 4. `porta65_jovem_idade_minima_anos`/`_maxima_anos`,
+`porta65_mais_quebra_rendimentos_min_pct`,
+`porta65_comparticipacao_max_primeiro_ano_pct`,
+`porta65_rendimento_max_multiplo_rmmg`, `paer_contrato_data_limite` e
+`paer_vigencia_limite` têm agora entrada em
+`dados/parametros/habitacao.yaml` (GRAU 2, triangulados por ≥2 fontes
+independentes — Portal da Habitação/IHRU, DR citado por sociedades de
+advogados, Ordem dos Advogados, idealista, Doutor Finanças, MoneyLab,
+Montepio) e canário próprio em `tests/test_valores_ancora.py` (secção
+"Cluster Habitação — Porta 65 e PAER"). **Deliberadamente não
+parametrizada**: a idade-limite do 2.º elemento de um casal — fontes
+secundárias continuam a divergir entre 36 e 37 anos, e a própria página
+não a fixa (ver comentário junto ao parâmetro em `habitacao.yaml`).
+
+**Achado desta auditoria, não previsto no plano original**:
+`porta-65.html` e `apoio-extraordinario-renda.html` já passavam em
+`tests/test_fontes_coerencia.py` antes desta sessão, sem nenhuma
+correcção — não porque o conteúdo estivesse correcto, mas porque
+**nenhuma das duas cita um único diploma legal no formato "Tipo n.º
+NNN/AAAA" em texto visível** (confirmado por grep antes de escrever
+qualquer teste novo). Esse teste só vigia páginas que citam diplomas —
+uma página que nunca cita nenhum passa por omissão, não por
+verificação. Lição geral: um teste de coerência de citações é uma rede
+de segurança sobre o que já está citado, nunca uma garantia de que os
+factos por trás de uma página sem citações estão correctos.
+
+**Pendente, registado em `VERIFICACAO-PENDENTE.md`**: a ressalva do
+Decreto-Lei n.º 43/2024 (o apoio mantém-se quando um contrato anterior a
+15/03/2023 é renovado, alterado ou substituído por outro com as mesmas
+partes e o mesmo imóvel) já está no comentário de
+`paer_contrato_data_limite` em `habitacao.yaml`, mas ainda não no corpo,
+na FAQ visível nem no JSON-LD de `apoio-extraordinario-renda.html` —
+que continua a afirmar, 4 vezes e sem ressalva, que um contrato
+posterior a essa data exclui sempre a candidatura. Enganador para quem
+teve o contrato renovado pelo senhorio — exactamente o caso que o
+diploma veio resolver. A reescrita da página é decisão editorial do
+Nuno, deliberadamente não feita nesta sessão.
 
 ### Estado real verificado (jul 2026)
 
