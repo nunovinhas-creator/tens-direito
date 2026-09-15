@@ -523,6 +523,29 @@ jobs:
               catch(_) { return []; }
             };
 
+            // Skills usam dois formatos: ficheiro plano (<nome>.md) ou pasta +
+            // SKILL.md (descoberta automática, ver CLAUDE.md "AGENTES
+            // DISPONÍVEIS"). listar() sozinho só apanha o 1.º formato — sem
+            // isto, qualquer skill em pasta (ex.: babysit/, steward/) fica
+            // omitida em silêncio desta lista e da árvore abaixo.
+            const listarSkills = (dir) => {
+              try {
+                return fs.readdirSync(dir, { withFileTypes: true })
+                  .flatMap(entry => {
+                    if (entry.isDirectory()) {
+                      return fs.existsSync(`${dir}/${entry.name}/SKILL.md`)
+                        ? [{ nome: entry.name, caminho: `${entry.name}/SKILL.md` }]
+                        : [];
+                    }
+                    if (entry.isFile() && entry.name.endsWith('.md')) {
+                      return [{ nome: entry.name.replace('.md', ''), caminho: entry.name }];
+                    }
+                    return [];
+                  })
+                  .sort((a, b) => a.nome.localeCompare(b.nome));
+              } catch(_) { return []; }
+            };
+
             const htmls = fs.readdirSync('.').filter(f => f.endsWith('.html') && f !== '404.html').sort();
             const paginas_linhas = htmls.map(f => {
               let titulo = f.replace('.html', '');
@@ -536,7 +559,7 @@ jobs:
             const workflows = listar('.github/workflows', '.yml');
             const agents   = listar('.claude/agents', '.md');
             const commands = listar('.claude/commands', '.md');
-            const skills   = listar('.claude/skills', '.md');
+            const skills   = listarSkills('.claude/skills');
             const scripts  = listar('scripts', '.py');
 
             const wf_info = {
@@ -584,7 +607,7 @@ jobs:
               '│   ├── commands/',
               ...commands.map(f => `│   │   ├── ${f}`),
               '│   └── skills/',
-              ...skills.map(f => `│       ├── ${f}`),
+              ...skills.map(s => `│       ├── ${s.caminho}`),
               '├── scripts/',
               ...scripts.map(f => `│   ├── ${f}`),
               '└── *.html                  ← páginas estáticas publicadas',
@@ -616,7 +639,7 @@ jobs:
               '',
               '**Skills** (`.claude/skills/`) — usadas internamente pelos commands:',
               '',
-              ...(skills.length ? skills.map(f => `- [\`${f.replace('.md','')}\`](.claude/skills/${f})`) : ['- (nenhuma)']),
+              ...(skills.length ? skills.map(s => `- [\`${s.nome}\`](.claude/skills/${s.caminho})`) : ['- (nenhuma)']),
               '',
               '**Agents** (`.claude/agents/`) — agentes especializados:',
               '',

@@ -271,8 +271,10 @@ tens-direito/
 │   │   ├── publicar-pagina.md
 │   │   ├── verificar-fontes.md
 │   └── skills/
-│       ├── estrutura-pagina.md
-│       ├── verificar-url.md
+│       ├── babysit/SKILL.md
+│       ├── estrutura-pagina/SKILL.md
+│       ├── steward/SKILL.md
+│       ├── verificar-url/SKILL.md
 ├── scripts/
 │   ├── adicionar_article_jsonld.py
 │   ├── adicionar_autoria_artigos.py
@@ -395,8 +397,10 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 **Skills** (`.claude/skills/`) — usadas internamente pelos commands:
 
-- [`estrutura-pagina`](.claude/skills/estrutura-pagina.md)
-- [`verificar-url`](.claude/skills/verificar-url.md)
+- [`babysit`](.claude/skills/babysit/SKILL.md)
+- [`estrutura-pagina`](.claude/skills/estrutura-pagina/SKILL.md)
+- [`steward`](.claude/skills/steward/SKILL.md)
+- [`verificar-url`](.claude/skills/verificar-url/SKILL.md)
 
 **Agents** (`.claude/agents/`) — agentes especializados:
 
