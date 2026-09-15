@@ -2373,8 +2373,9 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `simulador-rsi.html` | Cita directamente o artigo 57.º do Decreto-Lei n.º 166/2026 (conversão oficiosa do RSI em PSU) e a mesma data de 31 de dezembro de 2026, no corpo e no JSON-LD da FAQ; `verificar_datas.py` passa a expor sozinho a partir de 2027 (Issue #186) — **ao rever, mudar sempre os dois sítios**: o bloco de vigência no corpo E o `<script type="application/ld+json">` da FAQ; corrigir só o corpo deixa o JSON-LD a prometer ao Google o texto antigo | Ver "IMPACTO DA PSU" |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `majoracao-subsidio-desemprego.html` | **31 de dezembro de 2026** — o Decreto-Lei n.º 166/2026 (art. 49.º) altera a redação do n.º 5 do art. 28.º-A do DL 220/2006 nesta data (a majoração passa a manter-se quando o cônjuge transita para a PSU, em vez de "subsídio social de desemprego subsequente") — rever a secção "Se a situação mudar" e a FAQ correspondente, confirmando que o texto passa de "vai mudar a partir de" para o estado já em vigor | A partir de 2027, `verificar_datas.py` expõe isto sozinho (portão de confirmação de `MARCADORES_HISTORICOS`, #187); até lá, verificação manual, mesma data já vigiada pelo `pipeline-diario.yml` para o resto do cluster PSU |
-| `garantia-publica-credito-habitacao.html` | **31 de dezembro de 2026** — prazo-limite dos contratos abrangidos pela Garantia Pública (Portaria n.º 236-A/2024/1), sem prorrogação confirmada | `dre_habitacao_garantia` (watchlist DRE) — ver "CLUSTER HABITAÇÃO" |
-| `fontes.html` | Idem — cartão da Portaria n.º 236-A/2024/1 cita a mesma cláusula de vigência | Idem — ver "CLUSTER HABITAÇÃO" |
+| `garantia-publica-credito-habitacao.html` | **31 de dezembro de 2026** — prazo-limite dos contratos abrangidos pela Garantia Pública (Portaria n.º 236-A/2024/1), sem prorrogação confirmada. 9 ocorrências na página (meta/og description, FAQ, HowTo, resposta rápida, checklist, aviso) — nenhuma lê o valor em runtime | `dre_habitacao_garantia` (Decreto-Lei) + `dre_habitacao_garantia_portaria` (Portaria, 2026-09-15 — cobre a via mais plausível de prorrogação, uma Portaria que altera o protocolo) — ver "CLUSTER HABITAÇÃO" |
+| `fontes.html` | Idem — cartões do DL 44/2024 e da Portaria n.º 236-A/2024/1 citam a mesma cláusula de vigência (2 ocorrências) | Idem — ver "CLUSTER HABITAÇÃO" |
+| `p/habitacao.html` | Idem — 4 ocorrências (FAQ e corpo, secções "Comprar"/"Perguntas") | Idem — ver "CLUSTER HABITAÇÃO" |
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
@@ -3222,10 +3223,65 @@ tipo de acto legal — dominado por ruído (ex.: Resoluções do Conselho de
 Ministros sem relação com o diploma vigiado). `dre_habitacao_garantia`
 tem uma allow-list scoped (`DRE_SLUGS_PESQUISA` + `ACTO_LEGAL_REGEX`, só
 Decreto-Lei/Lei/Portaria/Despacho) que filtra esse ruído antes do diff
-— **deliberadamente não generalizada** às outras 4 fontes DRE sem
+— **deliberadamente não generalizada** às outras fontes DRE sem
 confirmar primeiro o perfil de ruído de cada uma (`dre_habitacao_paer`
 tem um caso real, um "Regulamento" da Série II, fora desta allow-list,
 que o mesmo filtro apagaria por engano — ver `tests/test_diff_mudancas_issue.py`).
+
+**Sentinela irmão — `dre_habitacao_garantia_portaria` (levantamento da
+caducidade da Garantia Pública, 2026-09-15)**: `dre_habitacao_garantia`
+só reconhece Decreto-Lei (`detectar_decreto_lei`) — mas o próprio texto
+da Portaria n.º 236-A/2024/1, citado no cartão de `fontes.html`, prevê a
+prorrogação por "outra data que posteriormente corresponder ao termo de
+uma eventual prorrogação" do PRÓPRIO PROTOCOLO — ou seja, o mecanismo
+legal mais plausível para prorrogar o prazo de 31/12/2026 é uma
+**Portaria** que altera esse protocolo, não necessariamente um novo
+Decreto-Lei que altere o DL 44/2024. Mesmo padrão exacto do par
+`dre_psu`/`dre_psu_regulamentacao`: sentinela irmão, MESMO termo de
+pesquisa (`"garantia pessoal do Estado"`), filtros opostos
+(`detectar_decreto_lei` vs `detectar_portaria`) — os dois vêem os
+mesmos resultados brutos do DRE, cada um reage só ao tipo de acto que
+lhe compete. Corte de recência `"desde": "2026-09-15"`, confirmado
+contra dados reais (`data/scraped/dre_habitacao_garantia_2026-09-03.json`,
+Issue #158): as duas Portarias já conhecidas do regime (n.º
+236-A/2024/1, sem data completa; n.º 187/2025/1, de 2025-04-15) ficam
+ambas excluídas pelo corte (níveis 2 e 1 respectivamente), sem precisar
+de `numero_conhecido`. Deliberadamente **não** adicionado a
+`DRE_SLUGS_PESQUISA` — mesmo precedente de `dre_psu_regulamentacao`,
+que também partilha termo com uma fonte já filtrada e ainda assim ficou
+de fora dessa allow-list. Testes: `tests/test_dre_habitacao_garantia_portaria.py`.
+
+**Achado do levantamento de 2026-09-15, ponto 2 — o problema em 1 de
+janeiro de 2027 não são datas falsas**: `verificar_datas.py` já detecta
+sozinho a data de 31/12/2026 a partir de Jan/2027 nas 3 páginas que a
+citam (confirmado empiricamente contra o código real, ocorrência a
+ocorrência — nunca escondida atrás de outro alerta da mesma página).
+Mas isso só garante que alguém é avisado, nunca o que a página deve
+passar a dizer. Sem prorrogação confirmada, a data em si continua
+tecnicamente correcta — o que fica errado é o TOM: as 3 páginas estão
+escritas em voz imperativa para um prazo por cumprir, e essa voz deixa
+de fazer sentido no dia em que o prazo passa, com ou sem prorrogação.
+Três pontos deixam de ser accionáveis, nomeadamente em
+`garantia-publica-credito-habitacao.html`: o **passo 5 do HowTo**
+("Fecha o contrato até 31 de dezembro de 2026"), a **checkbox do
+checklist final** ("Sabes que o contrato tem de estar fechado até 31 de
+dezembro de 2026?") e a **resposta rápida do hero** ("Só para contratos
+fechados até 31 de dezembro de 2026").
+
+**Esqueleto de redacção para o cenário "sem prorrogação" — NUNCA
+APLICADO, só para referência quando o facto estiver confirmado**: não
+tocar nas 3 páginas com base nesta tabela sozinha — confirmar primeiro
+na fonte primária se a medida terminou mesmo ou foi prorrogada (mesma
+regra de "FONTES VERIFICADAS E APROVADAS", nunca escrever de memória).
+
+| Zona | Redacção actual | Proposta, sem prorrogação confirmada |
+|---|---|---|
+| Meta/og description | "...Só até 31 de dezembro de 2026." | "...Medida em vigor até 31 de dezembro de 2026 — confirma no artigo se continua disponível." |
+| Resposta rápida (hero) | "...Só para contratos fechados até 31 de dezembro de 2026." | "A garantia pública esteve em vigor até 31 de dezembro de 2026. Sem confirmação de continuidade — ver estado actual." |
+| HowTo passo 5 | "Fecha o contrato até 31 de dezembro de 2026" (instrução) | Removido como passo accionável; substituído por nota de estado fora da lista de passos |
+| Checklist final | Checkbox "Sabes que o contrato tem de estar fechado até 31 de dezembro de 2026?" | Checkbox removida; secção "Vale a pena?" reescrita para "esta via está encerrada, ver alternativas" |
+| FAQ "pode ser prorrogada para 2027?" | "...sem confirmação de que a medida vai continuar" | Reescrita com o facto real confirmado |
+| `aviso-atencao` | "A medida termina a 31 de dezembro de 2026." | "A medida terminou a 31 de dezembro de 2026, sem prorrogação confirmada até à data de revisão." |
 
 **Gap reduzido (Issue #198, 2026-09-15)**: o texto integral da Portaria
 n.º 236-A/2024/1 foi lido de fonte primária e confirma, um a um, os 6
@@ -3309,7 +3365,7 @@ um texto inventado pela automação, nunca publicado sozinho.
    alteração real** a um apoio coberto pelo site. "Dirigido" = reconhece
    um **acto legal concreto** (Decreto-Lei ou Portaria publicados em
    dre.pt, por pesquisa de frase exacta) — nunca uma mudança de hash
-   genérica. Os 5 sentinelas dirigidos hoje activos:
+   genérica. Os 6 sentinelas dirigidos hoje activos:
 
    | Sentinela | O que reconhece |
    |---|---|
@@ -3317,6 +3373,7 @@ um texto inventado pela automação, nunca publicado sozinho.
    | `dre_psu_regulamentacao` | Portaria que regulamenta o DL n.º 166/2026 (PSU) |
    | `dre_habitacao_paer` | Decreto-Lei sobre o Apoio Extraordinário à Renda |
    | `dre_habitacao_garantia` | Decreto-Lei que cita o DL n.º 44/2024 (Garantia Pública) |
+   | `dre_habitacao_garantia_portaria` | Portaria que altera o protocolo da Garantia Pública (DL n.º 44/2024) |
    | `dre_ias` | Portaria do IAS |
 
    O disparo do sentinela **nunca chega sozinho** — é só o início da
@@ -3423,7 +3480,8 @@ alteração real" é tomada**) em vez de só "considerar".
 Issue própria no Step 8 — `dre_psu_decreto_detectado`,
 `dre_psu_regulamentacao_portaria_detectada`,
 `dre_habitacao_paer_decreto_detectado`,
-`dre_habitacao_garantia_decreto_detectado`, `dre_ias_portaria_detectada`),
+`dre_habitacao_garantia_decreto_detectado`,
+`dre_habitacao_garantia_portaria_detectada`, `dre_ias_portaria_detectada`),
 `scripts/preparar_canal.py::obter_deteccao_sentinela()` prepara logo um
 rascunho — sem esperar que uma sessão editorial preencha 1a primeiro.
 Nunca confunde-se com 1a: nasce `confirmado: false`, com `sentinela`

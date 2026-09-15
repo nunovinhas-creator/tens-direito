@@ -443,6 +443,30 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   nunca foi testado directamente contra produção real (sandbox sem acesso
   à internet completo, mesma limitação de sempre) — ver CLAUDE.md
   **"DADOS ABERTOS"** → Fase 3.
+- **Reescrita de tom da Garantia Pública para 1 de janeiro de 2027, sem
+  redacção aplicada ainda** (levantamento da caducidade da Garantia
+  Pública, 2026-09-15, ponto 2): confirmado que `verificar_datas.py`
+  detecta sozinho a data de 31/12/2026 a partir de Jan/2027 nas 3
+  páginas que a citam (`garantia-publica-credito-habitacao.html`,
+  `fontes.html`, `p/habitacao.html` — ver CLAUDE.md **"CLUSTER
+  HABITAÇÃO"**), mas isso só confirma que ALGUÉM vai ser avisado, nunca
+  o que a página deve passar a dizer. Sem prorrogação, o problema não
+  são datas falsas — é a página estar escrita em voz imperativa ("fecha
+  o contrato até...", checkbox de prazo) para uma janela fechada. Três
+  pontos deixam de ser accionáveis nesse dia, mesmo que a data em si
+  continue tecnicamente correcta: o passo 5 do HowTo ("Fecha o contrato
+  até 31 de dezembro de 2026"), a checkbox do checklist final ("Sabes
+  que o contrato tem de estar fechado até 31 de dezembro de 2026?") e a
+  resposta rápida do hero ("Só para contratos fechados até 31 de
+  dezembro de 2026"). Esqueleto de redacção para o cenário "sem
+  prorrogação" registado em CLAUDE.md **"CLUSTER HABITAÇÃO"**
+  (tabela "Esqueleto de redacção... NUNCA APLICADO"), deliberadamente
+  não aplicado às páginas — carece sempre de fact-check real contra a
+  fonte primária no momento em que a data passar, nunca copiado por
+  analogia (mesma regra de "FONTES VERIFICADAS E APROVADAS"). Sentinela
+  `dre_habitacao_garantia_portaria` (2026-09-15, mesma secção) cobre o
+  cenário "com prorrogação", avisando se uma Portaria alterar o
+  protocolo antes disso.
 ---
 
 ## 📅 DATAS FIXAS
