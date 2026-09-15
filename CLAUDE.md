@@ -2478,25 +2478,48 @@ apreciação parlamentar do próprio decreto-lei.
 O texto integral da Lei n.º 36/2026 (artigos 1.º a 3.º) confirma, ao
 pormenor, o que o site já documentava e acrescenta factos novos — ver a
 entrada de 2026-07-28 em `HISTORICO.md` para o detalhe completo.
-**Por reconciliar com o Decreto-Lei n.º 166/2026 (Issue #195)**: os 6
-factos abaixo foram confirmados pela Lei n.º 36/2026, uma autorização
-legislativa intermédia — ninguém confirmou ainda, afirmação a afirmação,
-quais o decreto-lei manteve tal e qual, quais refinou, e quais deixaram
-de ser relevantes (ex.: o ponto das ponderações de "adultos
-equivalentes", abaixo marcado "ainda por fixar", pode já estar fixado em
-`dados/parametros/psu.yaml`). Resumo: a lista dos 13 apoios (artigo 1.º/2) bate certo com a
-soma das 8 alíneas legais (a alínea dos subsídios de parentalidade
-desdobra-se em 6 apoios distintos); o mecanismo de dispensa das actividades
-de solidariedade social para incapacidade ≥80% (com avaliação individual
-entre 60%-79%) está agora confirmado por lei, não só por proposta do
-Governo; despedimento por facto imputável ao trabalhador não impede acesso
-à PSU (sem prejuízo de condições específicas por componente); as
-ponderações de "adultos equivalentes" têm de ser diferenciadas entre
-adultos 18+ e crianças/jovens (valores exactos ainda por fixar pelo
-decreto-lei — nunca assumir que são iguais); "apoios à habitação com
-caráter de regularidade" entram nos rendimentos considerados; e a lei
-prevê revisão do CSI em 90 dias para não deixar ninguém excluído com a
-extinção da pensão social de velhice.
+**Reconciliado com o Decreto-Lei n.º 166/2026 (Issue #195, fechada
+2026-09-15)**: dos 6 factos confirmados pela Lei n.º 36/2026 — uma
+autorização legislativa intermédia, nunca o regime final —, os achados
+#1 e #3 já tinham sido corrigidos nas páginas publicadas (sessão à
+parte, mesmo dia); #2 e #5 não precisaram de correcção. Resumo dos 4: a
+lista dos 13 apoios (artigo 1.º/2) bate certo com a soma das 8 alíneas
+legais (a alínea dos subsídios de parentalidade desdobra-se em 6 apoios
+distintos); o mecanismo de dispensa das actividades de solidariedade
+social para incapacidade ≥80% (com avaliação individual entre 60%-79%)
+está agora confirmado por lei, não só por proposta do Governo;
+despedimento por facto imputável ao trabalhador não impede acesso à PSU
+(sem prejuízo de condições específicas por componente); "apoios à
+habitação com caráter de regularidade" entram nos rendimentos
+considerados (artigo 17.º — ver "Artigo 17.º — estrutura pronta,
+cálculo desactivado" mais abaixo).
+
+Ficavam os achados #4 e #6 — os dois casos em que o decreto-lei cumpriu
+o mesmo objectivo da Lei n.º 36/2026 por um mecanismo diferente do que
+o texto da autorização legislativa fazia prever, nunca por omissão:
+
+- **#4 — ponderações de "adultos equivalentes"**: a Lei n.º 36/2026
+  deixava os valores "ainda por fixar pelo decreto-lei". O Decreto-Lei
+  n.º 166/2026 fixou-os directamente, no artigo 24.º/2 — ver
+  `dados/parametros/psu.yaml`, que já os tem (valores não repetidos
+  aqui: a 1.ª morada é o YAML, a 2.ª são as páginas publicadas do
+  cluster PSU — nunca uma terceira).
+- **#6 — CSI e a extinção da pensão social de velhice**: a Lei n.º
+  36/2026 previa uma revisão do CSI em 90 dias. O Decreto-Lei n.º
+  166/2026 nunca fez essa revisão por prazo — resolveu o mesmo
+  problema por outra via: o **artigo 48.º** altera directamente o
+  Decreto-Lei n.º 232/2005 (regime do CSI) e estende o direito ao
+  complemento aos titulares da PSU com idade igual ou superior à idade
+  normal de reforma ou em incapacidade permanente — já reflectido em
+  `prestacao-social-unica.html` e `psu-lista-13-apoios.html`.
+
+Padrão a reter: uma autorização legislativa intermédia descreve uma
+intenção, nunca o mecanismo final — o decreto-lei que a executa pode
+cumprir o mesmo objectivo por um caminho totalmente diferente do que o
+texto da Lei fazia antecipar. Foi isto que a Issue #195 apanhou nestes
+dois pontos; nenhuma página publicada chegou a herdar as frases antigas
+("ainda por fixar pelo decreto-lei", "revisão do CSI em 90 dias") — a
+dívida era só deste ficheiro.
 
 **FECHADO — decreto-lei publicado (2026-08-13).** O Decreto-Lei n.º
 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I),
