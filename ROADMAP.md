@@ -171,6 +171,27 @@ filtro que capture notícias genuinamente novas sem sobrepor o gatilho
 Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 "quando" tomada:
 
+- **Assimetria de entrada entre `categoria` e `cluster_id` em
+  `data/noticias.json`** (issue #192, 2026-09-15): `cluster_id` é
+  recalculável em massa com segurança via `--recalcular-clusters`
+  (`detectar_cluster()` já usava os campos GRAVADOS — `titulo`/`resumo` —
+  desde sempre), mas `categoria` não é — foi calculada na ingestão a
+  partir do título BRUTO e do resumo INTEGRAL do feed (via
+  `detect_category(entry)`), que nunca ficam gravados. Medido: correr
+  `--recalcular-categorias --dry-run` sobre os 120 itens reais dá 6
+  diferenças, das quais só 1 é da issue #192 (falso positivo de
+  fronteira — "Renda universitária", já corrigido à mão); as outras 5 são
+  esta assimetria pré-existente, e pelo menos 1 delas seria uma
+  **regressão** se aplicada: "Candidaturas à ASE 2026/2027" mudaria de
+  `educacao` para `apoios`, porque o resumo gravado contém "abono"
+  ("Famílias com escalão do abono atribuído...") e "apoios" vem antes de
+  "educacao" na ordem de inserção de `CAT_KEYWORDS` — que é o que decide
+  a precedência quando mais do que uma categoria bate. Antes de
+  generalizar `--recalcular-categorias` a uma correcção em massa, falta
+  decidir essa precedência (ordem de inserção do dict não é uma decisão
+  editorial deliberada, é só a ordem em que as categorias foram
+  escritas) — ver `recalcular_categorias()` em `scripts/gerar_noticias.py`
+  para o aviso completo no docstring.
 - **Issue #178 — âmbito por fechar** (ver "CONCLUÍDO RECENTEMENTE" para o
   que já foi feito, 2026-09-08): confirmar se a Recomendação
   Macroprudencial n.º 1/2026 (LTV/DSTI/prazos máximos) tem alguma
