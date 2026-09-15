@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-14",
+      "titulo": "Abono de família poderá ser pago a dobrar em setembro",
+      "fonte_nome": "Echo Boomer",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBsRFc5dFk2bktRcm1fcHFfTlV1eC1qMm1UeVk0Uy0zcWFpcFBIQUdJZnRzc0xURkE3cTZHcHRyeUkyU2lfLTNFamM3LS0tVEhhbFAzemJQeU43Vkx5bXoxSHljT0FVWWZ2Wkdkbmo1dG0yWkpTblE?oc=5",
+      "resumo": "Abono de família poderá ser pago a dobrar em setembro Echo Boomer",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-09-13",
       "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família",
       "fonte_nome": "expresso.pt",
@@ -24,6 +33,15 @@
       "fonte_nome": "Expresso",
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPUUc1REJMcS1kLTR4UThfbWppU0tyXzhhS2E3VzlOSDdJN3hIdFJBdlMyZWY2dFNjQnFWRVVuYzQ2SXJzdGxOSHVmdTd6Ti1kcGRxeEUyejljekFidWNOcy1ydkFPMjA5NnlmdldkTkxKWlBUZUpQQ1BwYkZ4bFJydkEzUDBSdTk4cE1yWEFCZDNaNllyQmN2OTUxeVhLQW5hZU4wRzB1aW9zckhGZ055V19fZFV2bkREaUtnUTE4ZFVEcWpUeE9JaEFvZUpOTUY1LUdQOHViR25FSzZMeVJwZ1VPY2FVdG5IRnRkOFh0OA?oc=5",
       "resumo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional Expresso",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-11",
+      "titulo": "CGTP quer aumento do salário mínimo para 1.100 euros em 2027",
+      "fonte_nome": "observador.pt",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOZ2w4RDQ2dGRRQlFyUGlScUxiLThTZm9pSXBXR2pZR3o0ZUx3ckQtZUtWbUFxSGgwWndULUt0WE9EeU9fN0ZfYkhOamdBVFRqaUJMWlRFR3EyblYwWFNZOGk4UGh2RlVrM3g4ei0wTnU2a2ZLQU1GVjBGWlpqVzRvbmQwbFlhU2oyR01YeUtYTVFDQ2VXeWd1YW5Nc251VmJpVWRMRXdhaFo3QQ?oc=5",
+      "resumo": "CGTP quer aumento do salário mínimo para 1.100 euros em 2027 observador.pt",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },

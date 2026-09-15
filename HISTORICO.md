@@ -6450,4 +6450,4 @@ desta sessão) — PR novo, sem merge, sem "Closes" (sem issue associada).
 
 ---
 
-*Última revisão automática: 2026-09-14*
+*Última revisão automática: 2026-09-15*
