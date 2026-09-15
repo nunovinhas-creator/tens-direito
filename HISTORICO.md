@@ -6450,4 +6450,73 @@ desta sessão) — PR novo, sem merge, sem "Closes" (sem issue associada).
 
 ---
 
+*Última revisão: 2026-09-15 — corrige a Issue #223
+(`psu-quem-tem-direito.html`, `prestacao-social-unica.html`,
+`psu-lista-13-apoios.html`): o artigo 61.º/2 do Decreto-Lei
+n.º 166/2026 não nomeia nenhuma prestação — usa só a expressão
+categorial "subsídios sociais de parentalidade e de desemprego". A
+issue (e as 3 páginas) tratavam #12 (deslocação a unidade hospitalar
+fora da ilha) e #13 (riscos específicos) como caso à parte por "não
+estarem nomeados", enquanto atribuíam ao mesmo artigo uma lista de
+cinco prestações "nomeadas" que também não estavam — era interpretação
+nossa, não o texto da lei, e a exclusão de #12/#13 dessa interpretação
+nunca teve critério declarado.
+
+Fechado com leitura do Decreto-Lei n.º 91/2009 (consolidação do DRE,
+versão de 20/11/2023, com a Lei n.º 65/2023 já incorporada — GRAU 2,
+`diariodarepublica.pt` continua bloqueado nesta sessão): o artigo 46.º
+(Capítulo III, subsídios sociais de parentalidade) lista seis
+subsídios, incluindo riscos específicos (#13) e deslocação a unidade
+hospitalar fora da ilha (#12, alínea aditada pela Lei n.º 65/2023, em
+vigor desde 21/11/2023). O artigo 62.º/k do DL 166/2026 revoga esse
+Capítulo III por inteiro — é o mesmo conjunto que o artigo 61.º/2
+protege pela categoria. #12 e #13 entram na continuidade transitória
+como os outros quatro, sem distinção entre si.
+
+Corrigido: as 3 páginas (removida a nota "não é possível confirmar
+aqui qual dos dois mecanismos se aplica"; #12/#13 juntam-se ao grupo
+do artigo 61.º nos parágrafos "Continuidade sem conversão" e no
+`FAQPage` JSON-LD correspondente, corpo e JSON-LD mantidos em
+paridade), `fontes.html` (cartão do Decreto-Lei n.º 91/2009 alargado
+ao Capítulo III + novo cartão para a Lei n.º 65/2023) e `CLAUDE.md`
+("IMPACTO DA PSU" — nova subsecção "PENDÊNCIA #12/#13 vs PSU —
+FECHADA", com a lição geral: perante uma categoria jurídica em vez de
+uma enumeração, a pergunta é "pertence à categoria?", nunca "está
+nomeado?", e a resposta vive no diploma que define a categoria, nunca
+no que só a invoca). Issue #223 fechada com a transcrição literal do
+artigo 46.º e o mesmo raciocínio.
+
+Correcção adicional ao cartão da Lei n.º 65/2023: "alínea f) ao n.º 1
+do artigo 46.º" corrigido para "alínea f) ao artigo 46.º" — o artigo
+46.º do DL 91/2009 não tem números, é corpo único com alíneas a) a f).
+
+`pytest`/`PyYAML`/`feedparser`/`jsonschema`/`beautifulsoup4`/`lxml`
+instalados no sandbox desta sessão (não estavam disponíveis nas
+sessões anteriores documentadas neste ficheiro). Suite completa
+corrida: **4331 passed, 538 skipped** — os skips são todos de testes
+que dependem de Playwright/browser real, não instalado neste sandbox
+(mesma limitação estrutural já documentada, nunca ligada a esta
+sessão). `tests/test_fontes_coerencia.py` e
+`tests/test_higiene_indexacao.py` (pedidos explicitamente) incluídos
+nessa corrida, sem falhas.
+
+`tests/test_auditar_marcadores_historicos.py` falhou numa 1.ª
+corrida — 10 supressões novas, todas em `fontes.html`, à volta de duas
+datas históricas permanentes introduzidas pelos cartões novos ("em
+vigor desde 21 de novembro de 2023", a data de entrada em vigor da
+Lei n.º 65/2023; "versão de 20 de novembro de 2023", a data do
+espelho de consolidação do DRE lido). Revistas uma a uma antes de
+aprovar — nenhuma esconde uma data a expirar, ambas são citações
+permanentes de diploma/proveniência. Baseline regenerado
+(`python3 scripts/auditar_marcadores_historicos.py --write`); suite
+reconfirmada a passar por inteiro depois da regeneração.
+
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` não tocados.
+Trabalho feito na branch `claude/223-correccao-metodologica`, pedida
+explicitamente pelo utilizador nesta sessão, a substituir a branch
+designada pelo ambiente remoto (`claude/issue-223-verification-
+ilt0fi`).
+
+---
+
 *Última revisão automática: 2026-09-15*

@@ -2756,6 +2756,52 @@ ganhar entrada nesse dicionário, com o raciocínio completo, para nenhuma
 sessão futura reabrir a dúvida por engano). `dateModified`/"Verificado a"
 avançados para 18/07/2026 nas 3 páginas HTML tocadas.
 
+### PENDÊNCIA #12/#13 vs PSU — FECHADA (2026-09-15)
+
+Issue #223 (`psu-quem-tem-direito.html`, `prestacao-social-unica.html`
+e `psu-lista-13-apoios.html`) tratava o subsídio social por
+necessidade de deslocação a unidade hospitalar fora da ilha (#12) e o
+subsídio social por riscos específicos (#13) como caso à parte: como
+nem o artigo 57.º nem o artigo 61.º pareciam "nomeá-los", as 3 páginas
+diziam "não é possível confirmar aqui qual dos dois mecanismos se
+aplica a estas duas prestações".
+
+**A premissa estava errada.** O artigo 61.º/2 do DL 166/2026 não
+nomeia NENHUMA prestação — usa só a expressão categorial "subsídios
+sociais de parentalidade e de desemprego". A lista de cinco prestações
+que a issue (e as páginas) atribuíam a esse artigo — subsídio social
+de desemprego, risco clínico na gravidez, interrupção da gravidez,
+parental inicial, adoção — já era interpretação nossa: aplicar a
+categoria a essas cinco e excluir #12/#13 sem nenhum critério
+declarado no texto.
+
+**Fechado com leitura do Decreto-Lei n.º 91/2009** (consolidação do
+DRE, versão de 20/11/2023, com a Lei n.º 65/2023 já incorporada —
+GRAU 2, acesso directo a diariodarepublica.pt bloqueado nesta sessão):
+o artigo 46.º (Capítulo III, subsídios sociais de parentalidade) lista
+seis subsídios — risco clínico na gravidez, interrupção da gravidez,
+subsídio social parental, adoção, riscos específicos (#13) e
+deslocação a unidade hospitalar fora da ilha (#12, alínea aditada pelo
+Lei n.º 65/2023, de 23 de outubro, em vigor desde 21/11/2023). O
+artigo 62.º/k do DL 166/2026 revoga **o Capítulo III por inteiro** —
+é o mesmo conjunto que o artigo 61.º/2 protege pela categoria. #12 e
+#13 entram na continuidade transitória tal como os outros quatro,
+sem qualquer distinção entre si.
+
+**Lição geral, mais importante do que este caso**: quando uma norma
+transitória usa uma categoria jurídica em vez de enumerar prestações
+por nome, a pergunta certa nunca é "está nomeado?" — é "pertence à
+categoria?". E a resposta a essa pergunta vive sempre no diploma que
+define a categoria (aqui, o artigo 46.º do DL 91/2009), nunca no
+diploma que só a invoca (o DL 166/2026, que cria a PSU). Confundir as
+duas perguntas foi o único erro desta sessão — o legislador nunca
+deixou #12/#13 numa lacuna.
+
+Corrigido nas 3 páginas (removida a nota "não é possível confirmar",
+#12 e #13 juntam-se ao grupo do artigo 61.º, sem distinção entre si) e
+em `fontes.html` (cartão do Decreto-Lei n.º 91/2009 actualizado com o
+Capítulo III + novo cartão para a Lei n.º 65/2023).
+
 ### Páginas com aviso PSU activo
 
 Avisos de transição activos até **31 de dezembro de 2026** (produção de

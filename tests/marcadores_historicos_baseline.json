@@ -44,7 +44,7 @@
     "marcador": "\\banterior(?:es)?\\s+a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "contexto": "ontrato renovado por iniciativa do senhorio</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
+    "contexto": "depois de o senhorio ter cessado o anterior</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
     "ordinal": 3
   },
   {
@@ -76,7 +76,7 @@
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "contexto": "ontrato renovado por iniciativa do senhorio</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
+    "contexto": "depois de o senhorio ter cessado o anterior</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
     "ordinal": 3
   },
   {
@@ -124,7 +124,7 @@
     "marcador": "decreto-lei",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "contexto": "ontrato renovado por iniciativa do senhorio</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
+    "contexto": "depois de o senhorio ter cessado o anterior</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
     "ordinal": 3
   },
   {
@@ -156,7 +156,7 @@
     "marcador": "lei\\s+n\\.?º",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "contexto": "ontrato renovado por iniciativa do senhorio</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
+    "contexto": "depois de o senhorio ter cessado o anterior</strong> O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem <strong>cumulativamente</strong> estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por <strong>iniciativa do senhorio</strong> (nunca por tua iniciativa); o",
     "ordinal": 3
   },
   {
@@ -1441,6 +1441,22 @@
   },
   {
     "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "contexto": "-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "21 de novembro de 2023",
+    "contexto": "ecreto-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
     "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 1993",
@@ -1555,6 +1571,14 @@
     "pagina": "fontes.html",
     "marcador": "decreto-lei",
     "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "contexto": "). O Capítulo III é revogado por inteiro pelo Decreto-Lei n.º 166/2026 (artigo 62.º/k), que cria a Prestação Social Única. Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\">",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
     "correspondencia": "setembro de 1993",
     "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
     "ordinal": 1
@@ -1565,6 +1589,14 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 1993",
     "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "20 de novembro de 2023",
+    "contexto": "o 46.º). O Capítulo III é revogado por inteiro pelo Decreto-Lei n.º 166/2026 (artigo 62.º/k), que cria a Prestação Social Única. Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\">",
     "ordinal": 1
   },
   {
@@ -1589,6 +1621,22 @@
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
     "contexto": "p>Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.</p> <p><a href=\"https://files.dre.pt/1s/2021/12/24200/0003100034.pdf\" target=\"_blank\" rel=\"noopener\">files.dre.pt — Decreto-Lei n.º 119/2021 (PDF)</a></p> </div> <div class=\"card\"> <span class=\"tag\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "contexto": "-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "em vigor desde",
+    "tipo": "prazo_outono",
+    "correspondencia": "21 de novembro de 2023",
+    "contexto": "ecreto-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
     "ordinal": 1
   },
   {
@@ -1659,6 +1707,22 @@
     "pagina": "fontes.html",
     "marcador": "lei\\s+n\\.?º",
     "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "contexto": "). O Capítulo III é revogado por inteiro pelo Decreto-Lei n.º 166/2026 (artigo 62.º/k), que cria a Prestação Social Única. Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\">",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "contexto": "-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
     "correspondencia": "setembro de 1993",
     "contexto": "h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
     "ordinal": 1
@@ -1669,6 +1733,22 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 1993",
     "contexto": "<h2>Decreto-Lei n.º 286/93, de 20 de agosto</h2> <p>Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"ca",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "20 de novembro de 2023",
+    "contexto": "o 46.º). O Capítulo III é revogado por inteiro pelo Decreto-Lei n.º 166/2026 (artigo 62.º/k), que cria a Prestação Social Única. Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\">",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "21 de novembro de 2023",
+    "contexto": "ecreto-Lei n.º 91/2009 — cria o subsídio social por necessidade de deslocação a unidade hospitalar fora da ilha de residência, para grávidas das Regiões Autónomas que precisem de se deslocar para o parto. Em vigor desde 21 de novembro de 2023. Verificado numa consolidação do DRE (GRAU 2) — acesso directo a diariodarepublica.pt bloqueado nesta sessão.</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></",
     "ordinal": 1
   },
   {
