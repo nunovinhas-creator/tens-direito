@@ -462,6 +462,38 @@ imt_geral_hpp_ra_esc6_limite_eur:
 
 # --- Garantia Pública no crédito habitação jovem (até 100% de financiamento) ---
 
+# Issue #198 (2026-09-15) — Portaria n.º 187/2025/1, de 15 de abril (1.ª
+# alteração à Portaria n.º 236-A/2024/1), achada pela triagem da Issue #158
+# e deixada em ROADMAP.md como fact-check por fazer. Nesta sessão:
+#
+# CONFIRMADO — o texto integral da Portaria n.º 236-A/2024/1 foi lido de
+# fonte primária e bate, um a um, com os 6 valores já publicados abaixo
+# (idade 18-35, tecto 450.000€, 15%, 10 anos, prazo até 31/12/2026, 8.º
+# escalão de IRS) — nenhum precisa de correcção.
+#
+# CONFIRMADO SÓ INDIRECTAMENTE — a cadeia legal por trás da 187/2025/1: o
+# Despacho n.º 4957/2025, de 28 de abril (publicado em DR, lido de fonte
+# primária), encadeia nos seus considerandos "o Decreto-Lei n.º 24/2025, de
+# 19 de março, alargou o Decreto-Lei n.º 44/2024 às sociedades financeiras"
+# com "a Portaria n.º 187/2025/1 altera a Portaria n.º 236-A/2024/1,
+# ajustando a regulamentação" — e aplica o regime a uma sucursal de
+# instituição financeira de crédito (UCI), invocando "a cláusula 3.ª do
+# Protocolo ... com a redação introduzida pela Portaria n.º 187/2025/1".
+# Isto identifica o OBJECTO da alteração (alargar quem pode ser entidade
+# financiadora, em consequência do DL 24/2025) — nunca prova que nenhuma
+# das 6 condições abaixo mudou.
+#
+# NÃO CONFIRMADO — o texto integral da própria Portaria n.º 187/2025/1
+# nunca foi lido: `diariodarepublica.pt`, `files.diariodarepublica.pt` e
+# `files.dre.pt` (o PDF estático da série) devolveram EGRESS_BLOCKED nesta
+# sessão, mesma limitação de rede já documentada para `dre.tretas.org`/
+# `bportugal.pt`/`apcmc.pt` numa sessão anterior. Por isso NENHUM parâmetro
+# abaixo ganha `fonte_url_complementar` com a 187/2025/1 — a regra deste
+# repositório é nunca afirmar "é só alteração de forma" sem ler o texto
+# legal directo (ver "FONTES VERIFICADAS E APROVADAS" → "Verificação
+# directa de diplomas"). Ver ROADMAP.md → "TRABALHO FUTURO REGISTADO" para
+# o âmbito reduzido desta pendência.
+
 garantia_idade_minima_anos:
   descricao: "Garantia Pública — idade mínima (inclusive) de cada titular do crédito"
   unidade: anos

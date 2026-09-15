@@ -3184,14 +3184,22 @@ confirmar primeiro o perfil de ruído de cada uma (`dre_habitacao_paer`
 tem um caso real, um "Regulamento" da Série II, fora desta allow-list,
 que o mesmo filtro apagaria por engano — ver `tests/test_diff_mudancas_issue.py`).
 
-**Gap aberto (Issue #198)**: a Portaria n.º 187/2025/1 (1.ª alteração à
-236-A/2024/1, achada pela allow-list acima) continua por fact-checar e
-por acrescentar a `dados/parametros/habitacao.yaml` — confirmada só por
-`WebSearch`, nunca o texto legal directo. Antes de acrescentar
-`fonte_url_complementar` (mesmo padrão do CSI): confirmar se altera
-algum dos 6 valores já publicados da Garantia Pública (idade 18-35,
-tecto 450.000€, 15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) —
-nunca assumir que é só alteração de forma.
+**Gap reduzido (Issue #198, 2026-09-15)**: o texto integral da Portaria
+n.º 236-A/2024/1 foi lido de fonte primária e confirma, um a um, os 6
+valores já publicados da Garantia Pública (idade 18-35, tecto 450.000€,
+15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) — nenhum precisa de
+correcção. Falta só ler o texto da própria Portaria n.º 187/2025/1 (1.ª
+alteração à 236-A/2024/1, achada pela allow-list acima) —
+`diariodarepublica.pt`, `files.diariodarepublica.pt` e `files.dre.pt`
+continuam EGRESS_BLOCKED nesta sessão. A cadeia legal por trás já está
+confirmada indirectamente pelo Despacho n.º 4957/2025, de 28 de abril
+(lido de fonte primária): o Decreto-Lei n.º 24/2025 alargou a Garantia
+Pública às sociedades financeiras, e a 187/2025/1 ajustou o Protocolo/
+regulamentação em consequência — identifica só o OBJECTO da alteração,
+nunca prova que nenhuma das 6 condições mudou. Detalhe completo e a
+distinção confirmado/não confirmado: `dados/parametros/habitacao.yaml`,
+bloco "Garantia Pública"; pendência com âmbito reduzido registada em
+ROADMAP.md → "TRABALHO FUTURO REGISTADO".
 
 **Registado para o futuro, sem prazo**: nova tabela de rendas máximas de
 referência do Porta 65 (publicação anual, fora do alcance da watchlist
