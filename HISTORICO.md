@@ -6387,4 +6387,67 @@ remoto desta sessão) — PR novo, sem merge, "Closes #192".
 
 ---
 
+*Última revisão: 2026-09-15 — corrige `apoio-extraordinario-renda.html`
+para reflectir a ressalva do n.º 2 do artigo 3.º do Decreto-Lei
+n.º 20-B/2023, na redação do Decreto-Lei n.º 43/2024, de 2 de julho
+(pendência registada em `VERIFICACAO-PENDENTE.md` ao fechar a Issue #197):
+o apoio mantém-se, excecional e temporariamente, num contrato posterior a
+15 de março de 2023 quando, cumulativamente, o contrato anterior cessou
+comprovadamente por iniciativa do senhorio (nunca do locatário), o
+contrato em vigor é para o mesmo locatário e o mesmo imóvel, corresponde a
+habitação permanente e domicílio fiscal, e isso é comprovado pela
+Autoridade Tributária a partir da comunicação obrigatória dos contratos.
+Texto legal confirmado GRAU 1 por dois espelhos independentes com texto
+idêntico (PGDL — pgdlisboa.pt — e o PDF da AT-Madeira,
+at.madeira.gov.pt) — dre.pt continua bloqueado nesta sessão.
+
+**Duas precisões que o registo anterior (Issue #197) tinha ao lado**:
+1) o preâmbulo do diploma fala em "mesmas partes", mas o articulado exige
+só o **mesmo locatário** — nunca o mesmo senhorio; 2) não é "contrato
+renovado" em geral — é cessação por **iniciativa do senhorio**; quem mudou
+de contrato por iniciativa própria não está abrangido. Corrigido em
+`dados/parametros/habitacao.yaml` (`paer_contrato_data_limite`,
+`descricao`/`referencia_legal`) e `dados/parametros.json` regenerado.
+
+As 4 ocorrências absolutas da página tratadas em dois níveis: corpo
+(novo bloco `.aviso-info`) e FAQ visível ganharam a ressalva completa,
+com as 4 condições cumulativas; resposta directa do hero e `FAQPage`
+JSON-LD ganharam a versão curta ("salvo se o contrato anterior cessou
+por iniciativa do senhorio e continuas no mesmo imóvel") — nunca o
+JSON-LD a prometer ao Google a versão antiga enquanto o corpo já diz
+outra coisa. Página passou a citar `Decreto-Lei n.º 43/2024` em texto
+visível — ganhou cartão próprio em `fontes.html` (mesmo GRAU 1, dois
+espelhos), o que passou `apoio-extraordinario-renda.html` a ser coberto
+por `tests/test_fontes_coerencia.py` pela primeira vez (antes passava só
+por nunca citar nenhum diploma). "Verificado a"/`dateModified` avançados
+para 15/09/2026 nas duas páginas tocadas.
+
+**Canário novo**, `tests/test_valores_ancora.py::
+test_paer_ressalva_dl_43_2024_acompanha_toda_afirmacao_da_data_limite`
+— exige a ressalva ("senhorio") num raio de 700 caracteres de CADA
+afirmação de "15 de março de 2023" na página (não só presença algures),
+para que uma reescrita futura de uma das 4 ocorrências sem trazer a
+ressalva para perto continue a fazer o teste falhar. Confirmado a falhar
+de propósito (JSON-LD sem a ressalva) e revertido antes do commit.
+
+`tests/marcadores_historicos_baseline.json` regenerado
+(`scripts/auditar_marcadores_historicos.py --write`) — 18 supressões
+novas + 1 órfã, todas revistas: mesma data-limite permanente do PAER
+("15 de março de 2023"), agora perto de mais texto legal
+("decreto-lei"/"lei n.º") em `apoio-extraordinario-renda.html` e no
+cartão novo de `fontes.html`; a órfã é a mesma ocorrência, cujo texto à
+volta mudou de "Contratos mais recentes nunca estiveram abrangidos"
+para a frase que remete para a ressalva — nenhuma esconde uma data
+genuinamente desactualizada. Entrada de `VERIFICACAO-PENDENTE.md`
+removida.
+
+Suite completa (4313 passed, 538 skipped) + `ruff check scripts/
+--select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/paer-ressalva-dl-43-2024-tkg05z` (designada pelo ambiente remoto
+desta sessão) — PR novo, sem merge, sem "Closes" (sem issue associada).
+
+---
+
 *Última revisão automática: 2026-09-14*

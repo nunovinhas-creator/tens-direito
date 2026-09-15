@@ -3032,17 +3032,37 @@ verificação. Lição geral: um teste de coerência de citações é uma rede
 de segurança sobre o que já está citado, nunca uma garantia de que os
 factos por trás de uma página sem citações estão correctos.
 
-**Pendente, registado em `VERIFICACAO-PENDENTE.md`**: a ressalva do
-Decreto-Lei n.º 43/2024 (o apoio mantém-se quando um contrato anterior a
-15/03/2023 é renovado, alterado ou substituído por outro com as mesmas
-partes e o mesmo imóvel) já está no comentário de
-`paer_contrato_data_limite` em `habitacao.yaml`, mas ainda não no corpo,
-na FAQ visível nem no JSON-LD de `apoio-extraordinario-renda.html` —
-que continua a afirmar, 4 vezes e sem ressalva, que um contrato
-posterior a essa data exclui sempre a candidatura. Enganador para quem
-teve o contrato renovado pelo senhorio — exactamente o caso que o
-diploma veio resolver. A reescrita da página é decisão editorial do
-Nuno, deliberadamente não feita nesta sessão.
+**Fechado (2026-09-15, sessão seguinte à Issue #197)**: a ressalva do
+n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, na redação do
+Decreto-Lei n.º 43/2024, de 2 de julho, foi escrita em
+`apoio-extraordinario-renda.html`, em dois níveis — corpo (bloco
+`.aviso-info` dedicado) e FAQ visível com as 4 condições cumulativas
+completas (cessação comprovada do contrato anterior por iniciativa do
+senhorio, mesmo locatário e mesmo imóvel, habitação permanente e
+domicílio fiscal, comprovação pela Autoridade Tributária); resposta
+directa do hero e `FAQPage` JSON-LD com a versão curta ("salvo se o
+contrato anterior cessou por iniciativa do senhorio e continuas no
+mesmo imóvel"), para o JSON-LD nunca ficar a prometer ao Google a
+versão antiga e absoluta enquanto o corpo já diz outra coisa (mesmo
+erro já documentado noutras páginas — ver "PÁGINAS COM DATAS SAZONAIS"
+→ `simulador-rsi.html`). **Correcção de precisão face ao registo
+anterior**: o preâmbulo do diploma fala em "mesmas partes", mas o
+articulado exige só o **mesmo locatário** (nunca o mesmo senhorio) —
+`descricao`/`referencia_legal` de `paer_contrato_data_limite` em
+`habitacao.yaml` corrigidas para reflectir o articulado, nunca o
+preâmbulo. A página passou a citar `Decreto-Lei n.º 43/2024` em texto
+visível — ganhou cartão próprio em `fontes.html` (**GRAU 1**: texto do
+articulado lido por inteiro em dois espelhos independentes com texto
+idêntico — Procuradoria-Geral Distrital de Lisboa, pgdlisboa.pt;
+Autoridade Tributária e Aduaneira da Madeira, PDF em at.madeira.gov.pt
+— acesso directo a diariodarepublica.pt continua bloqueado nesta
+sessão, mesma limitação de sempre). Canário novo em
+`tests/test_valores_ancora.py`
+(`test_paer_ressalva_dl_43_2024_acompanha_toda_afirmacao_da_data_limite`)
+exige a ressalva num raio de proximidade de cada afirmação da
+data-limite, não só presença algures na página — nunca mais uma
+afirmação absoluta sozinha. Entrada correspondente removida de
+`VERIFICACAO-PENDENTE.md`.
 
 ### Estado real verificado (jul 2026)
 
