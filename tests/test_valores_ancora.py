@@ -1781,3 +1781,97 @@ def test_pensao_sobrevivencia_conjuge_meta_description_percentagens_batem_com_o_
     desc = _meta_description("pensao-sobrevivencia-conjuge.html")
     assert _percentagens(desc) == [60.0, 70.0], desc
     assert "60% da pensão de base para 1 titular; 70% se forem 2 ou mais" in html
+
+
+# ── Cluster Habitação — Porta 65 e PAER (Issue #197, 2026-09-15) ───────────
+#
+# Fecha a excepção registada em CLAUDE.md ("CLUSTER HABITAÇÃO" → "Regra de
+# dados"): porta-65.html e apoio-extraordinario-renda.html eram os 2 únicos
+# bullets de "Estado real verificado" sem YAML nem canário, ao contrário do
+# IMT Jovem/Garantia Pública/Dedução de rendas/1.º Direito.
+#
+# Os valores testados aqui vivem no CORPO das páginas (condições de acesso),
+# nunca no title/meta description — ao contrário dos outros bullets deste
+# cluster, que citam valores-âncora nos metadados. `_param_habitacao()` já
+# está definido mais acima (secção "IMT Jovem e Garantia Pública").
+#
+# Achado desta sessão, registado em CLAUDE.md: nenhuma das duas páginas cita
+# UM ÚNICO diploma no formato "Tipo n.º NNN/AAAA" em texto visível — é por
+# isso que passavam em tests/test_fontes_coerencia.py sem correcção nenhuma
+# (um teste de coerência de citações só vigia páginas que citam), nunca
+# prova de que o conteúdo estava correcto.
+
+def _data_por_extenso(iso: str) -> str:
+    """Converte uma data ISO (AAAA-MM-DD) para o formato por extenso usado
+    nas páginas do site ("15 de março de 2023") — construído a partir do
+    YAML, nunca um literal duplicado à parte da fonte única."""
+    meses = [
+        "", "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+    ]
+    ano, mes, dia = iso.split("-")
+    return f"{int(dia)} de {meses[int(mes)]} de {ano}"
+
+
+def test_porta65_idades_entre_18_e_35_anos_no_corpo():
+    """'entre 18 e 35 anos' aparece na resposta rápida e na FAQ visível de
+    porta-65.html — construído a partir de porta65_jovem_idade_minima_anos/
+    porta65_jovem_idade_maxima_anos, nunca hardcoded à parte do YAML."""
+    html = _ler("porta-65.html")
+    idade_min = _param_habitacao("porta65_jovem_idade_minima_anos")
+    idade_max = _param_habitacao("porta65_jovem_idade_maxima_anos")
+    frase = f"entre {idade_min} e {idade_max} anos"
+    assert frase in html, f"{frase!r} ausente de porta-65.html"
+
+
+def test_porta65_quebra_rendimentos_superior_a_20_por_cento_no_corpo():
+    html = _ler("porta-65.html")
+    quebra = _param_habitacao("porta65_mais_quebra_rendimentos_min_pct")
+    frase = f"quebra de rendimentos superior a {quebra}%"
+    assert frase in html, f"{frase!r} ausente de porta-65.html"
+
+
+def test_porta65_comparticipacao_50_por_cento_no_primeiro_ano_no_corpo():
+    html = _ler("porta-65.html")
+    comparticipacao = _param_habitacao("porta65_comparticipacao_max_primeiro_ano_pct")
+    frase = f"chegar a {comparticipacao}% da renda no primeiro ano"
+    assert frase in html, f"{frase!r} ausente de porta-65.html"
+
+
+def test_porta65_rendimento_max_4x_salario_minimo_no_corpo():
+    html = _ler("porta-65.html")
+    multiplo = _param_habitacao("porta65_rendimento_max_multiplo_rmmg")
+    frase = f"não pode exceder {multiplo} vezes o salário mínimo nacional"
+    assert frase in html, f"{frase!r} ausente de porta-65.html"
+
+
+def test_paer_data_limite_contrato_15_marco_2023_no_corpo():
+    """'15 de março de 2023' aparece várias vezes em
+    apoio-extraordinario-renda.html (resposta directa, corpo, FAQ visível,
+    dúvidas frequentes) — testa só a presença, nunca a contagem exacta de
+    ocorrências (fica frágil a reescrita editorial sem mudar o facto)."""
+    html = _ler("apoio-extraordinario-renda.html")
+    data = _data_por_extenso(_param_habitacao("paer_contrato_data_limite"))
+    assert data in html, f"{data!r} ausente de apoio-extraordinario-renda.html"
+
+
+def test_paer_pagamentos_ate_31_dezembro_2028_no_corpo():
+    html = _ler("apoio-extraordinario-renda.html")
+    data = _data_por_extenso(_param_habitacao("paer_vigencia_limite"))
+    assert data in html, f"{data!r} ausente de apoio-extraordinario-renda.html"
+
+
+def test_paer_repete_idades_do_porta65_no_bloco_de_alternativas():
+    """A secção de alternativas de apoio-extraordinario-renda.html repete
+    as idades do Porta 65 Jovem em duas formulações diferentes ('entre 18
+    e 35 anos' no corpo, '(18-35 anos)' no FAQPage JSON-LD) — é exactamente
+    aqui que a deriva começa se alguém actualizar porta-65.html sem
+    lembrar desta página irmã. As duas formulações têm de bater com o
+    mesmo par de valores do YAML."""
+    html = _ler("apoio-extraordinario-renda.html")
+    idade_min = _param_habitacao("porta65_jovem_idade_minima_anos")
+    idade_max = _param_habitacao("porta65_jovem_idade_maxima_anos")
+    frase_corpo = f"entre {idade_min} e {idade_max} anos"
+    frase_faq = f"{idade_min}-{idade_max} anos"
+    assert frase_corpo in html, f"{frase_corpo!r} ausente de apoio-extraordinario-renda.html"
+    assert frase_faq in html, f"{frase_faq!r} ausente de apoio-extraordinario-renda.html"
