@@ -273,14 +273,6 @@ CLAUDE_MD = RAIZ / "CLAUDE.md"
 # Páginas públicas deliberadamente fora da tabela "PÁGINAS PUBLICADAS" —
 # justificação por página, nunca "esquecimento":
 EXCLUSOES_TABELA_PAGINAS = {
-    "simulador-rsi.html": (
-        "publicada e integrada (nav/sitemap/data/clusters.json/pesquisa.js), mas os "
-        "factos que cita nunca foram confirmados directamente — provavelmente a mesma "
-        "data de 31/12/2026 do DL 166/2026 já confirmada nas outras páginas do cluster "
-        "PSU, mas nunca verificada nesta página em concreto (ver CLAUDE.md, secção "
-        "'IMPACTO DA PSU', nota 'simulador-rsi.html fica de fora desta tabela, "
-        "deliberadamente', e Issue #209)"
-    ),
     "verificador-apoios.html": (
         "removida a 2026-08-19 (zero impressões em 3 meses no Search Console) — mesma "
         "página-fantasma de redirecionamento já excluída de EXCLUSOES_SITEMAP/"
