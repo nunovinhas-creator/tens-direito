@@ -1875,3 +1875,37 @@ def test_paer_repete_idades_do_porta65_no_bloco_de_alternativas():
     frase_faq = f"{idade_min}-{idade_max} anos"
     assert frase_corpo in html, f"{frase_corpo!r} ausente de apoio-extraordinario-renda.html"
     assert frase_faq in html, f"{frase_faq!r} ausente de apoio-extraordinario-renda.html"
+
+
+def test_paer_ressalva_dl_43_2024_acompanha_toda_afirmacao_da_data_limite():
+    """A afirmação da data-limite do PAER nunca pode voltar a ficar sozinha,
+    sem a ressalva do n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, na
+    redação do Decreto-Lei n.º 43/2024 (cessação do contrato anterior por
+    iniciativa do senhorio, mesmo locatário, mesmo imóvel) — era exactamente
+    isso que VERIFICACAO-PENDENTE.md assinalava (Issue #197, 2026-09-15):
+    4 afirmações absolutas ('não podes candidatar-te se o teu contrato for
+    posterior a esta data'), nenhuma com a excepção que a lei já prevê desde
+    2 de julho de 2024. Testa proximidade, não só presença em algum ponto da
+    página — para que reescrever uma das ocorrências sem trazer a ressalva
+    para perto continue a fazer este teste falhar."""
+    html = _ler("apoio-extraordinario-renda.html")
+    data = _data_por_extenso(_param_habitacao("paer_contrato_data_limite"))
+    raio = 700
+    posicoes = [m.start() for m in re.finditer(re.escape(data), html)]
+    assert len(posicoes) >= 4, (
+        f"esperava pelo menos 4 afirmações de {data!r} em "
+        "apoio-extraordinario-renda.html (corpo, resposta directa do hero, "
+        f"FAQ visível, FAQPage JSON-LD) — encontrei {len(posicoes)}"
+    )
+    for pos in posicoes:
+        janela = html[max(0, pos - raio) : pos + raio]
+        assert "senhorio" in janela, (
+            f"{data!r} em apoio-extraordinario-renda.html (posição {pos}) sem "
+            "a ressalva do Decreto-Lei n.º 43/2024 (cessação do contrato "
+            f"anterior por iniciativa do senhorio) num raio de {raio} "
+            "caracteres — a afirmação absoluta ficou sozinha outra vez"
+        )
+    assert "Decreto-Lei n.º 43/2024" in html, (
+        "apoio-extraordinario-renda.html deixou de citar o Decreto-Lei "
+        "n.º 43/2024 — a ressalva à data-limite do PAER ficou sem base legal"
+    )
