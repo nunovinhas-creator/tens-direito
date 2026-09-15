@@ -171,27 +171,6 @@ filtro que capture notícias genuinamente novas sem sobrepor o gatilho
 Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 "quando" tomada:
 
-- **Issue #195 — achados #4 e #6 por reconciliar** (levantamento da Lei
-  n.º 36/2026 vs. Decreto-Lei n.º 166/2026; achados #1 e #3 já corrigidos
-  num PR à parte, este ficheiro por rever): o parágrafo "Resumo" da
-  secção "IMPACTO DA PSU" em `CLAUDE.md` ainda tem duas afirmações por
-  actualizar. **Achado #4**: "as ponderações de 'adultos equivalentes'
-  têm de ser diferenciadas... valores exactos ainda por fixar pelo
-  decreto-lei" está desactualizada — o artigo 24.º/2 do Decreto-Lei
-  n.º 166/2026 já fixa os valores (0,7 por cada indivíduo maior, 0,5 por
-  cada indivíduo menor), já reflectidos em `dados/parametros/psu.yaml` e
-  em todas as páginas publicadas do cluster (nenhuma repete a frase
-  "ainda por fixar" — só o `CLAUDE.md` ficou para trás). **Achado #6**:
-  "a lei prevê revisão do CSI em 90 dias" não existe no Decreto-Lei
-  n.º 166/2026 — confirmado por leitura integral do diploma (`dados/
-  fontes/Decreto-Lei n.PDF`), zero ocorrências de "90 dias" ligadas ao
-  CSI. O mecanismo real que cumpre o mesmo objectivo (ninguém excluído do
-  CSI com a extinção da pensão social de velhice) é o **artigo 48.º**,
-  que altera directamente o Decreto-Lei n.º 232/2005 (CSI) para estender
-  o direito aos titulares da PSU por conversão. Nenhuma página publicada
-  chegou a herdar a frase "90 dias" — é dívida só do `CLAUDE.md`. Falta:
-  reescrever os dois pontos do parágrafo "Resumo" da secção "IMPACTO DA
-  PSU".
 - **Assimetria de entrada entre `categoria` e `cluster_id` em
   `data/noticias.json`** (issue #192, 2026-09-15): `cluster_id` é
   recalculável em massa com segurança via `--recalcular-clusters`
