@@ -1079,10 +1079,42 @@ lado da própria entrada — nunca "esquecimento de actualizar":
   se repete nem muda (ex.: "PAER fechado a novos candidatos desde
   15/03/2023").
 
-Cada excepção é validada por `test_excecoes_continuam_a_existir_na_pagina`
-— se o ano deixar de aparecer na página (ex.: reescrita da description),
-a excepção fica órfã e o teste falha, forçando a remover a excepção em
-vez de a deixar esquecida a "proteger" um ano que já não existe.
+**Três braços de auto-auditoria (issue #208, 2026-09-15)** — antes desta
+correcção havia só um braço, e mesmo esse por substring solta
+(`str(ano) in texto`, que aceitaria "2007" dentro de "12007" ou de
+qualquer outro número sem relação com a citação real); era a mais fraca
+das 3 listas de supressão do repositório, comparada com o baseline por
+ocorrência de `MARCADORES_HISTORICOS`
+(`tests/marcadores_historicos_baseline.json`/
+`test_auditar_marcadores_historicos.py`) e com os dois braços de
+`EXCECOES_DIPLOMAS_FONTES` (`test_fontes_coerencia.py`). O valor do dict
+passou de `motivo: str` para `(motivo, contextos)`, com `contextos` um
+tuplo de recortes (`_recorte`, ±35 caracteres, fronteiras de palavra,
+espaços normalizados) — um por CADA ocorrência do ano no title+description
+da página, gerado por script, nunca à mão. Três testes, cada um cobrindo
+uma frente:
+- `test_excecoes_sao_orfas_ou_ja_resolvidas` — **órfã** (o ano já não
+  corresponde a nenhuma ocorrência real de `REGEX_ANO`, mesmo critério da
+  supressão, nunca substring) e **já resolvida** (o ano já não é "antigo"
+  pelo mesmo cálculo da asserção principal, `_anos_antigos` — REGEX_ANO +
+  corte < ANO_ATUAL; sem isto uma excepção pode sobreviver a "proteger"
+  um alerta que a asserção principal já nem levantaria);
+- `test_excecoes_contexto_bate_com_o_registado` — **baseline por
+  ocorrência**, comparação exacta contra `contextos`: a chave (página,
+  ano) autoriza o ANO, não o facto — sem isto, acrescentar uma 2.ª
+  ocorrência do mesmo ano por um motivo diferente e nunca revisto (ex.:
+  "valores de 2007 desactualizados" ao lado de "DL 187/2007") ficaria
+  suprimida em silêncio pela mesma entrada; a falha imprime sempre o
+  contexto registado E o actual, para aprovar exigir olhar para a
+  ocorrência concreta;
+- `test_excecoes_contexto_registado_contem_o_proprio_ano` — guarda extra:
+  um contexto registado que não contém o próprio ano é sinal de um
+  baseline aprovado por reflexo, sem olhar para a ocorrência real.
+
+Confirmados a falhar de propósito, os dois braços novos (testes manuais
+descartáveis, não commitados): (a) uma entrada com ano = ANO_ATUAL faz o
+braço "já resolvida" falhar; (b) um contexto adulterado faz o braço
+"baseline" falhar, imprimindo registado vs. actual.
 
 **Confirmado a falhar de propósito**: acrescentado "(dados 2025)" ao
 `<title>` de `abono-de-familia.html` → `test_sem_ano_civil_
