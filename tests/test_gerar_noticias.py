@@ -10,21 +10,26 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from gerar_noticias import (
+    CAT_KEYWORDS,
     CLUSTER_KEYWORDS,
     FEEDS,
     MAX_VENCEDORES_POR_DIA,
     ItemNoticia,
     SaudeFeed,
     _bloco_pertence_guia,
+    _contem_keyword,
     agrupar_por_mes,
     analisar_candidatos_na_janela,
     carregar_itens,
     carregar_mapa_clusters,
     construir_item_de_entry,
     detect_category,
+    detectar_categoria,
     detectar_cluster,
     encontrar_duplicado,
     _e_noticia_de_pais_estrangeiro,
@@ -33,6 +38,7 @@ from gerar_noticias import (
     normalizar_titulo,
     normalizar_url,
     ordenar_itens,
+    recalcular_categorias,
     recalcular_cluster_ids,
     registar_candidatos_log,
     registar_saude_feeds_hoje,
@@ -289,18 +295,20 @@ def test_detectar_cluster_idosos_para_csi_com_titulo_real_do_diagnostico():
     assert detectar_cluster(titulo, "") == "idosos-incapacidade-cuidadores"
 
 
-# ── Fronteira de palavra em CLUSTER_KEYWORDS (2026-09-09) ─────────────────
+# ── Fronteira de palavra em CLUSTER_KEYWORDS (2026-09-09, generalizada a
+# TODAS as keywords na issue #192) ─────────────────────────────────────────
 #
-# Bug real encontrado em data/noticias.json: `detectar_cluster()` usava
-# `kw in text` directamente, nunca `_contem_keyword()` — por isso a keyword
-# "ase" (Ação Social Escolar) apanhava qualquer palavra que a contivesse
-# como substring ("fase", "base", "quase", "baseadas", ...), classificando
-# 2 itens genuinamente sobre desemprego/IRS como "apoios-escolares". A
-# mesma fronteira aplicada a "reforma" zerava o cluster "reformas" por
-# completo (medido antes de aplicar) — os 2 itens reais sobre pensionistas
-# só batem em "reforma" via a palavra "Reformados", sem fronteira ao fim
-# ("reforma" nunca é substring de "reformados" com \b nos dois lados) — daí
-# a keyword nova "reformado" em CLUSTER_KEYWORDS["reformas"].
+# Bug real encontrado em data/noticias.json (2026-09-09): `detectar_cluster()`
+# usava `kw in text` directamente, nunca `_contem_keyword()` — por isso a
+# keyword "ase" (Ação Social Escolar) apanhava qualquer palavra que a
+# contivesse como substring ("fase", "base", "quase", "baseadas", ...),
+# classificando 2 itens genuinamente sobre desemprego/IRS como
+# "apoios-escolares". Corrigido nessa altura só para "ase"/"reforma" (cadeia
+# de `if kw == ...` em `_contem_keyword`) — a issue #192 generalizou a
+# fronteira a TODAS as keywords (só à esquerda, `\b` antes da keyword, nunca
+# depois) e apagou essa cadeia. Estes testes continuam a valer tal e qual:
+# o comportamento observável não mudou para "ase"/"reforma", só deixou de
+# depender de um caso especial.
 
 def test_detectar_cluster_apoios_escolares_ase_como_sigla_isolada():
     """"ase" como sigla isolada (ASE, Ação Social Escolar) continua a
@@ -386,6 +394,127 @@ def test_cluster_keywords_cobre_todos_os_clusters_do_site():
     clusters = json.loads((RAIZ / "data" / "clusters.json").read_text(encoding="utf-8"))
     ids_site = {c["id"] for c in clusters["clusters"]}
     assert ids_site <= set(CLUSTER_KEYWORDS.keys())
+
+
+# ── Regra única de fronteira de palavra em _contem_keyword() (issue #192) ─
+#
+# Substitui a cadeia de `if kw == "ias"/"ase"/"reforma"` (cada uma só
+# corrigida reactivamente, depois de um falso positivo já publicado, e as
+# ~40 keywords restantes expostas ao mesmo defeito) por uma única regra,
+# aplicada a TODAS as keywords de CAT_KEYWORDS/CLUSTER_KEYWORDS sem
+# excepção: fronteira de palavra só à ESQUERDA (`\b` antes da keyword,
+# nunca depois). Os dois testes parametrizados a seguir aplicam-se
+# sozinhos a qualquer keyword nova, sem precisar de nenhum caso especial.
+
+_TODAS_AS_KEYWORDS = sorted({
+    kw
+    for kws in list(CAT_KEYWORDS.values()) + list(CLUSTER_KEYWORDS.values())
+    for kw in kws
+})
+
+
+@pytest.mark.parametrize("kw", _TODAS_AS_KEYWORDS)
+def test_contem_keyword_nunca_apanha_substring_colada_sem_fronteira(kw):
+    """Uma keyword colada directamente a seguir a um prefixo, sem nenhum
+    separador, nunca conta como ocorrência — é exactamente a classe de
+    defeito que apanhava "ias" em "d[ias]"/"famíl[ias]", "ase" em
+    "qu[ase]"/"bas[eadas]" e "rsi" em "unive[rsi]tária"."""
+    assert not _contem_keyword(kw, "xpto" + kw)
+
+
+@pytest.mark.parametrize("kw", _TODAS_AS_KEYWORDS)
+def test_contem_keyword_aceita_sufixo_de_flexao_portuguesa(kw):
+    """O outro lado, deliberado, da mesma regra: um sufixo a seguir à
+    keyword (plural, particípio — flexão portuguesa normal, ex.:
+    "abono"→"abonos", "reforma"→"reformados") continua a contar — nunca
+    produziu um falso positivo nos dados reais, por isso a fronteira nunca
+    se aplica à direita."""
+    assert _contem_keyword(kw, "texto qualquer " + kw + "s adicionais")
+
+
+# Armadilhas REAIS — cada par (keyword, palavra portuguesa comum que a
+# contém como substring sem fronteira à esquerda) é um falso positivo já
+# medido/confirmado nos dados reais de data/noticias.json, nunca
+# especulativo.
+_ARMADILHAS_REAIS = [
+    ("ias", "dias"),
+    ("ias", "famílias"),
+    ("ase", "quase"),
+    ("ase", "baseadas"),
+    ("rsi", "universitária"),
+]
+
+
+@pytest.mark.parametrize("kw,palavra", _ARMADILHAS_REAIS)
+def test_contem_keyword_nao_apanha_armadilhas_reais(kw, palavra):
+    assert not _contem_keyword(kw, palavra)
+
+
+def test_caso_real_renda_universitaria_e_habitacao_nao_trabalho_rendimento():
+    """Achado do corpus real (issue #192, medição sobre os 120 itens de
+    data/noticias.json): "rsi" é substring de "unive[rsi]tária" — o item
+    ficava gravado categoria=apoios, cluster_id=trabalho-rendimento só por
+    essa colisão, nunca detectada antes por não passar por nenhum dos
+    3 casos especiais antigos ("ias"/"ase"/"reforma"). É habitação."""
+    titulo = "Renda universitária: apoios que podes pedir em Portugal"
+    resumo = "Renda universitária: apoios que podes pedir em Portugal Idealista"
+    assert detectar_categoria(titulo, resumo) == "habitacao"
+    assert detectar_cluster(titulo, resumo) != "trabalho-rendimento"
+
+
+# ── Simetria detect_category()/detectar_categoria() (issue #192) ──────────
+#
+# Antes, detect_category(entry) recebia a entrada bruta do feed e
+# detectar_cluster(titulo, resumo) recebia título/resumo já gravados — por
+# isso existia --recalcular-clusters e nunca um equivalente para a
+# categoria. detect_category() passa a ser só um adaptador que extrai os
+# dois campos do entry e delega em detectar_categoria(), a função real,
+# com a mesma assinatura de detectar_cluster().
+
+@pytest.mark.parametrize("titulo,resumo", [
+    ("Bolsas de mérito e manuais escolares 2026", ""),
+    ("Renda universitária: apoios que podes pedir em Portugal", "Idealista"),
+    ("Prazo para entregar IRC e IRS termina hoje. Empresas e famílias arriscam multas com atrasos", ""),
+    ("Reformados recebem pensão e subsídio de férias este mês", ""),
+    ("Notícia qualquer sem palavras-chave conhecidas", "Resumo também sem nada de relevante"),
+])
+def test_detect_category_e_detectar_categoria_dao_sempre_o_mesmo_resultado(titulo, resumo):
+    assert detect_category(_entry(titulo, resumo)) == detectar_categoria(titulo, resumo)
+
+
+# ── recalcular_categorias() — gémeo exacto de recalcular_cluster_ids() ────
+
+def test_recalcular_categorias_devolve_so_os_itens_que_mudam():
+    itens = [
+        _item(
+            "2026-08-31", "Renda universitária: apoios que podes pedir em Portugal",
+            categoria="apoios",
+            resumo="Renda universitária: apoios que podes pedir em Portugal Idealista",
+        ),
+        _item(
+            "2026-06-23", "Candidaturas à ASE 2026/2027 abrem em setembro",
+            categoria="educacao", resumo="Resumo sem palavras de outra categoria.",
+        ),
+    ]
+    mudancas = recalcular_categorias(itens)
+    titulos_mudados = {item.titulo for item, _antiga, _nova in mudancas}
+    assert titulos_mudados == {"Renda universitária: apoios que podes pedir em Portugal"}
+    for item, antiga, nova in mudancas:
+        assert (antiga, nova) == ("apoios", "habitacao")
+    # item já correcto (categoria gravada bate com detectar_categoria()
+    # actual para os campos gravados) não aparece na lista de mudanças —
+    # nunca reescrito à toa.
+    assert not any(item.titulo.startswith("Candidaturas à ASE") for item, _, _ in mudancas)
+
+
+def test_recalcular_categorias_nunca_altera_nada_em_memoria():
+    item = _item(
+        "2026-08-31", "Renda universitária: apoios que podes pedir em Portugal",
+        categoria="apoios",
+        resumo="Renda universitária: apoios que podes pedir em Portugal Idealista",
+    )
+    recalcular_categorias([item])
+    assert item.categoria == "apoios"
 
 
 # ── Selecção com dedup e observabilidade ──────────────────────────────────

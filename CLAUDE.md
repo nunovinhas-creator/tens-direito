@@ -1715,21 +1715,50 @@ em `gerar_noticias.py` para a lista actual, nunca fixar aqui a contagem (já
 divergiu uma vez sem ninguém dar por isso). `LIMITE_ENTRADAS_POR_FEED` (15)
 é quantas entradas de cada feed são examinadas por corrida.
 
-**`cluster_id`**: `detectar_cluster()` percorre `CLUSTER_KEYWORDS` e passa
-cada keyword por `_contem_keyword()` — a maioria é substring simples, mas
-qualquer keyword que colida com palavras comuns (hoje: "ias", "ase",
-"reforma") exige fronteira de palavra (`\bkw\b`) para não apanhar
-"baseadas"/"quase"/"reformados" por engano. **Regra para qualquer keyword
-nova**: se puder ser substring de uma palavra comum não relacionada,
-precisa da mesma fronteira — foi a falta dela que classificou 2 notícias de
-desemprego/IRS como apoios-escolares só por "ase" ser substring de "quase"/
-"baseadas" (corrigido 2026-09-09, #190). Desde #189 (mesma data),
-`cluster_id` é renderizado nos cards de `noticias.html` — bloco "Relacionado
-com o guia X" (`.pertence-guia`, sourced de `data/clusters.json` via
-`carregar_clusters()`, nunca uma URL construída à mão); sem `cluster_id` ou
-com um id removido de `clusters.json`, o card não mostra nada. `python
-scripts/gerar_noticias.py --recalcular-clusters [--dry-run]` recalcula o
-`cluster_id` de itens já gravados sem esperar por notícia nova.
+**`_contem_keyword()` — fronteira de palavra sistemática (issue #192,
+2026-09-15)**: usada por `score_entry()`, `detectar_categoria()` (via
+`CAT_KEYWORDS`) e `detectar_cluster()` (via `CLUSTER_KEYWORDS`) para TODAS
+as keywords, sem excepção — `\b` (fronteira de palavra) só à ESQUERDA da
+keyword, nunca à direita. Substituiu uma cadeia reactiva de `if kw ==
+"ias"/"ase"/"reforma"` (cada uma só corrigida depois de um falso positivo
+já publicado — "dias"/"famílias" para "ias", "quase"/"baseadas" para "ase",
+2026-09-09/#190), que deixava as ~40 keywords restantes sem protecção
+nenhuma. Medido no corpus real (`data/noticias.json`, 120 itens): mais um
+caso nunca detectado, "rsi" substring de "unive[rsi]tária" — regra sistemática
+apanha-o de graça, sem precisar de um caso especial novo. Sem fronteira à
+direita, de propósito: o sufixo é flexão portuguesa normal
+("abono"→"abonos", "reforma"→"reformados") e nunca produziu falso positivo;
+foi exactamente a fronteira à direita em `\breforma\b` que obrigou a
+inventar a keyword "reformado" à mão em 2026-09-09 — remendo reactivo,
+desnecessário desde esta correcção. **Limite conhecido, documentado e não
+resolvido por suspeita**: uma keyword que seja PREFIXO de outra palavra
+ainda passa ("casa" em "casamento") — medido nos 120 itens, zero falsos
+positivos reais (só "reforma"→"reformados", flexão legítima); só se
+corrige com um caso real.
+
+**`cluster_id`**: `detectar_cluster(titulo, resumo)` percorre
+`CLUSTER_KEYWORDS`. `cluster_id` é renderizado nos cards de `noticias.html`
+(desde #189) — bloco "Relacionado com o guia X" (`.pertence-guia`, sourced
+de `data/clusters.json` via `carregar_clusters()`, nunca uma URL construída
+à mão); sem `cluster_id` ou com um id removido de `clusters.json`, o card
+não mostra nada. `python scripts/gerar_noticias.py --recalcular-clusters
+[--dry-run]` recalcula o `cluster_id` de itens já gravados sem esperar por
+notícia nova — seguro em massa, porque `detectar_cluster()` sempre usou os
+campos GRAVADOS (`titulo`/`resumo`).
+
+**`categoria`**: `detectar_categoria(titulo, resumo)` percorre
+`CAT_KEYWORDS` (mesma assinatura de `detectar_cluster()`, desde a issue
+#192) — `detect_category(entry)` é só o adaptador que extrai
+`title`/`summary` da entrada bruta do feed e delega em
+`detectar_categoria()`, nunca duplica a lógica. `python
+scripts/gerar_noticias.py --recalcular-categorias [--dry-run]` existe
+(gémeo de `--recalcular-clusters`), mas **nunca aplicar em massa sem
+revisão** — ao contrário de `cluster_id`, a `categoria` gravada de itens
+antigos foi calculada na ingestão a partir do título BRUTO e do resumo
+INTEGRAL do feed (que não ficam gravados), por isso recalcular a partir
+dos campos já gravados pode divergir da original mesmo sem nenhum falso
+positivo de `_contem_keyword` — ver ROADMAP.md, secção "TRABALHO FUTURO
+REGISTADO", para a assimetria medida e por resolver.
 
 **Guardrail**: `escrever_ficheiro_seguro()` é uma allow-list estrita — ver
 "REGRA DE OURO — FICHEIROS AUTO-GERADOS vs MANUAIS" no topo deste ficheiro

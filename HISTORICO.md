@@ -6318,4 +6318,73 @@ remoto desta sessão) — PR novo, sem merge.
 
 ---
 
+*Última revisão: 2026-09-15 — Issue #192: fronteira de palavra sistemática
+em `_contem_keyword()` (`scripts/gerar_noticias.py`), a substituir a cadeia
+reactiva de `if kw == "ias"/"ase"/"reforma"` (cada uma só corrigida depois
+de um falso positivo já publicado — "dias"/"famílias" para "ias",
+"quase"/"baseadas" para "ase", 2026-09-09/#190) por uma única regra
+aplicada a TODAS as keywords de `CAT_KEYWORDS`/`CLUSTER_KEYWORDS`: `\b` só
+à ESQUERDA da keyword, nunca à direita (o sufixo é flexão portuguesa
+normal — "abono"→"abonos", "reforma"→"reformados" — e nunca produziu falso
+positivo; foi a fronteira à direita em `\breforma\b` que tinha obrigado a
+inventar a keyword "reformado" à mão, remendo agora desnecessário).
+Regexes compiladas cacheadas com `functools.lru_cache`.
+
+**Medição obrigatória antes de aplicar** (script descartável, comparando a
+função antiga com a nova sobre os 120 itens reais de `data/noticias.json`):
+exactamente 1 diferença, como previsto — "rsi" substring de
+"unive[rsi]tária" no item "Renda universitária: apoios que podes pedir em
+Portugal", gravado `categoria=apoios`/`cluster_id=trabalho-rendimento`,
+nunca antes detectado por não passar por nenhum dos 3 casos especiais
+antigos. Corrigido: `--recalcular-clusters` (`trabalho-rendimento` → `null`,
+seguro em massa) + correcção manual da `categoria` (`apoios` → `habitacao`,
+único item tocado) + `--sync`.
+
+**Simetria corrigida**: `detectar_categoria(titulo, resumo)` extraída como
+função real (mesma assinatura de `detectar_cluster()`); `detect_category(entry)`
+passa a ser só o adaptador que extrai `title`/`summary` da entrada bruta do
+feed e delega. `recalcular_categorias(itens)` acrescentada como gémeo
+exacto de `recalcular_cluster_ids()` (devolve mudanças, nunca altera em
+memória), com a flag `--recalcular-categorias [--dry-run]`.
+
+**Achado lateral, não corrigido — assimetria de entrada, documentada em
+`ROADMAP.md` → "TRABALHO FUTURO REGISTADO"**: ao contrário de
+`cluster_id`, correr `--recalcular-categorias` em massa não é seguro hoje
+— a `categoria` gravada de itens antigos foi calculada na ingestão a
+partir do título BRUTO e do resumo INTEGRAL do feed (nunca gravados);
+recalcular a partir dos campos já gravados dá 6 diferenças (`--dry-run`),
+das quais só 1 é desta issue — as outras 5 incluem pelo menos uma
+regressão real ("Candidaturas à ASE 2026/2027" iria de `educacao` para
+`apoios`, porque "abono" está no resumo gravado e "apoios" vem antes de
+"educacao" na ordem de inserção de `CAT_KEYWORDS`). Falta decidir a
+precedência entre categorias antes de generalizar a correcção em massa —
+por isso só o item desta issue foi corrigido à mão, os outros 5 ficaram
+como estavam.
+
+**Testes** (`tests/test_gerar_noticias.py`, `import pytest` acrescentado ao
+topo, antes em falta): invariante parametrizado sobre TODAS as keywords de
+`CAT_KEYWORDS`+`CLUSTER_KEYWORDS` (`not _contem_keyword(kw, "xpto"+kw)` e o
+lado do sufixo, `_contem_keyword(kw, "... "+kw+"s ...")` — aplicam-se
+sozinhos a qualquer keyword futura); tabela de armadilhas reais
+(`ias`/`dias`, `ias`/`famílias`, `ase`/`quase`, `ase`/`baseadas`,
+`rsi`/`universitária`); caso real da "Renda universitária"; simetria
+`detect_category(entry) == detectar_categoria(titulo, resumo)`; e os dois
+testes de `recalcular_categorias()` (só o que muda, nunca altera em
+memória). Comentários antigos junto a `CLUSTER_KEYWORDS`/nos testes de
+2026-09-09 actualizados para reflectir a regra sistemática, sem reescrever
+o que já estava certo (o comportamento observável de "ase"/"reforma" não
+mudou, só deixou de depender de um caso especial). Secção de notícias do
+`CLAUDE.md` reescrita («`_contem_keyword()` — fronteira de palavra
+sistemática») — a frase antiga ("hoje: ias, ase, reforma") já não
+descrevia o código.
+
+Suite completa (249 testes em `test_gerar_noticias.py`, todos a passar) +
+`ruff check scripts/ --select E,F,W --ignore E501 .` limpo.
+`AUTO_UPDATE_HABILITADO`/`REVALIDACAO_CARIMBO_HABILITADA` reconfirmados
+`False` (inalterados — sessão sem scraper). Trabalho feito na branch
+`claude/192-fronteira-keyword-sistematica-8azmrn` (designada pelo ambiente
+remoto desta sessão) — PR novo, sem merge, "Closes #192".
+
+---
+
 *Última revisão automática: 2026-09-14*

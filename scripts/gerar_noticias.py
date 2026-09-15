@@ -29,10 +29,12 @@ de cada feed (`data/feeds_saude_hoje.json`, consumido por
 (`data/noticias_candidatos.json`) — para que "nenhuma notícia hoje" seja
 sempre distinguível de uma avaria, nunca um resultado silencioso.
 
-    python scripts/gerar_noticias.py                              # corrida normal (fetch + selecção + sync)
-    python scripts/gerar_noticias.py --sync                       # só resincroniza as saídas com o JSON actual, sem fetch
-    python scripts/gerar_noticias.py --recalcular-clusters --dry-run  # mostra o que mudaria em cluster_id, sem escrever
-    python scripts/gerar_noticias.py --recalcular-clusters        # recalcula cluster_id de todos os itens e ressincroniza
+    python scripts/gerar_noticias.py                                 # corrida normal (fetch + selecção + sync)
+    python scripts/gerar_noticias.py --sync                          # só resincroniza as saídas com o JSON actual, sem fetch
+    python scripts/gerar_noticias.py --recalcular-clusters --dry-run    # mostra o que mudaria em cluster_id, sem escrever
+    python scripts/gerar_noticias.py --recalcular-clusters           # recalcula cluster_id de todos os itens e ressincroniza
+    python scripts/gerar_noticias.py --recalcular-categorias --dry-run  # mostra o que mudaria em categoria, sem escrever
+    python scripts/gerar_noticias.py --recalcular-categorias         # NUNCA em massa sem revisão — ver docstring de recalcular_categorias()
 
 Escreve em index.html só dentro do bloco NOTICIA-HOME, entre marcadores —
 nunca fora deles (ver SECCOES_PERMITIDAS e _verificar_escrita_confinada)."""
@@ -49,6 +51,7 @@ import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
+from functools import lru_cache
 from html import unescape
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -241,56 +244,43 @@ def _e_noticia_de_pais_estrangeiro(texto: str) -> bool:
     return bool(_REGEX_PAIS_ESTRANGEIRO.search(texto))
 
 
-# "ias" (IAS, o Indexante dos Apoios Sociais) é curta de mais para
-# `kw in texto` simples — é substring de palavras portuguesas correntes
-# sem relação nenhuma com o tema (a mais comum: "dias"; também
-# "família"/"famílias") — descoberto ao adicionar o feed `ias_valor_referencia`
-# (2026-07-04): um título real sobre IRS ("...arriscam multas... famílias...")
-# ficava "apoios" em vez de "fiscal" só por conter "famílias". Exige
-# fronteira de palavra só para esta keyword; as restantes mantêm o
-# comportamento de substring simples (nenhuma outra é ambígua ao ponto de
-# aparecer dentro de palavras comuns não relacionadas).
-_REGEX_PALAVRA_IAS = re.compile(r"\bias\b")
-
-# "ase" (ASE, Ação Social Escolar) tem o mesmo problema — descoberto em
-# `data/noticias.json` (2026-09-09, auditoria a `CLUSTER_KEYWORDS`): 2 itens
-# genuinamente sobre desemprego/IRS ("...aumentou em quase 58.000 pessoas...",
-# "...estatísticas... baseadas na declaração de IRS") ficavam classificados
-# `apoios-escolares` só por "ase" ser substring de "quase"/"baseadas" — o
-# mesmo defeito já corrigido para "ias", nunca antes aplicado a
-# `CLUSTER_KEYWORDS` (que usava `kw in texto` directamente, sem passar por
-# esta função). A mesma keyword "ase" também vive em `CAT_KEYWORDS["educacao"]`
-# — corrigida de graça pela mesma alteração, mesma categoria "educacao"
-# nunca devia ter sido atribuída a esses 2 itens.
-_REGEX_PALAVRA_ASE = re.compile(r"\base\b")
-
-# "reforma" é uma palavra portuguesa genuína (não um acrónimo arbitrário como
-# "ias"/"ase"), mas o mesmo risco de substring existe na direcção inversa:
-# sem fronteira, "reforma" apanha corretamente "reformados"/"reformas"
-# (mesma família de palavra, tópico genuíno de pensões) mas também qualquer
-# uso de "reforma" no sentido de "mudança legislativa" (ex.: "reforma da
-# Prestação Social Única", "reforma do arrendamento") — sentido totalmente
-# diferente do cluster "reformas" (pensões/reforma por velhice). Como o
-# cluster `prestacao-social-unica` vem sempre primeiro em `CLUSTER_KEYWORDS`
-# (e "habitacao" antes de "reformas"), esses casos já ficam corretamente
-# absorvidos por esses clusters antes de chegar a "reformas" — a fronteira
-# aqui só existe para nunca deixar "reforma" solto a decidir sozinho.
-# Precisou de `CLUSTER_KEYWORDS["reformas"]` ganhar "reformado" (2026-09-09)
-# para os 2 itens reais de pensionistas ("Reformados recebem pensão...")
-# continuarem classificados — sem essa keyword nova, a fronteira aqui
-# zerava o cluster por completo (confirmado por medição directa antes de
-# aplicar, nunca assumido).
-_REGEX_PALAVRA_REFORMA = re.compile(r"\breforma\b")
+# Fronteira de palavra sistemática, só ao INÍCIO da keyword — issue #192.
+#
+# Antes desta correcção, `_contem_keyword` era uma cadeia de `if kw ==
+# "ias"/"ase"/"reforma"` com uma regex própria para cada — cada uma
+# acrescentada reactivamente, depois de um falso positivo real já publicado
+# ("ias" em "d[ias]"/"famíl[ias]", 2026-07-04; "ase" em "qu[ase]"/"b[ase]adas",
+# 2026-09-09). As ~40 keywords restantes ficavam em substring simples, sem
+# nenhum critério que impedisse o mesmo defeito — e uma keyword nova entrava
+# sem protecção nenhuma. Medido no corpus real (`data/noticias.json`, 120
+# itens) mais um caso nunca detectado: "rsi" substring de "unive[rsi]tária"
+# ("Renda universitária: apoios que podes pedir em Portugal", classificado
+# `trabalho-rendimento`/`apoios` — é `habitacao`).
+#
+# Regra única, sem keywords privilegiadas: fronteira de palavra só à
+# ESQUERDA (`\b` antes da keyword) — nunca à direita. Deliberado: o sufixo é
+# flexão portuguesa normal (plural, particípio — "abono"→"abonos",
+# "reforma"→"reformados") e nunca produziu um falso positivo nos dados
+# reais. Foi exactamente a fronteira à direita em `\breforma\b` que zerava
+# "Reformados recebem pensão..." e obrigou a inventar a keyword "reformado"
+# à mão (2026-09-09) só para compensar — um remendo reactivo, de sinal
+# contrário ao problema que a fronteira resolve. Sem fronteira à direita,
+# essa keyword extra deixa de ser necessária (mantida em
+# `CLUSTER_KEYWORDS["reformas"]` por clareza editorial, não por precisar).
+#
+# Limite conhecido, documentado e não resolvido por suspeita: uma keyword
+# que seja PREFIXO de outra palavra ainda passa ("casa" em "casamento") —
+# classe de defeito diferente da substring interna que esta regra corrige.
+# Medido nos 120 itens: a única extensão de prefixo que ocorre é
+# "reforma"→"reformados" (4×), flexão legítima do mesmo tema — zero falsos
+# positivos. Fica como limite conhecido; só se corrige com um caso real.
+@lru_cache(maxsize=None)
+def _regex_keyword(kw: str) -> re.Pattern:
+    return re.compile(r"\b" + re.escape(kw))
 
 
 def _contem_keyword(kw: str, texto: str) -> bool:
-    if kw == "ias":
-        return bool(_REGEX_PALAVRA_IAS.search(texto))
-    if kw == "ase":
-        return bool(_REGEX_PALAVRA_ASE.search(texto))
-    if kw == "reforma":
-        return bool(_REGEX_PALAVRA_REFORMA.search(texto))
-    return kw in texto
+    return bool(_regex_keyword(kw).search(texto))
 
 CAT_KEYWORDS = {
     "apoios": ["abono", "rsi", "prestação", "apoio social", "segurança social", "psu", "ias", "rmg", "pensão"],
@@ -318,14 +308,12 @@ CAT_LABELS = {
 # `habitacao_arrendamento`) — o cluster existe em data/clusters.json desde
 # 3 jul 2026 (p/habitacao.html) mas nunca tinha sido adicionado aqui.
 #
-# `detectar_cluster()` passa cada keyword por `_contem_keyword()` (2026-09-09,
-# ver comentário junto a `_REGEX_PALAVRA_ASE`/`_REGEX_PALAVRA_REFORMA` acima)
-# — a maioria continua substring simples (nenhuma outra colide com palavras
-# comuns não relacionadas), só "ase" e "reforma" exigem fronteira de palavra.
-# "reformado" é keyword nova, exigida pela fronteira de "reforma": sem ela,
-# os 2 itens reais de pensionistas ("Reformados recebem pensão/pensões...")
-# deixariam de bater em nada — "reforma" com fronteira nunca é substring de
-# "reformados" (falta o "s" final para fechar a fronteira).
+# `detectar_cluster()` passa cada keyword por `_contem_keyword()` — regra
+# única de fronteira de palavra (ver comentário acima, issue #192), sem
+# keywords privilegiadas. "reformado" fica na lista por clareza editorial
+# (lê-se junto de "reforma" como o par plural/particípio óbvio do tema),
+# mas já é redundante desde a correcção: "reforma" com fronteira só à
+# esquerda já apanha "reformados"/"reforma"/"reformas" sozinha.
 CLUSTER_KEYWORDS = {
     "prestacao-social-unica": ["psu", "prestação social única"],
     "apoios-escolares": ["ase", "ação social escolar", "bolsa de mérito", "manuais escolares", "manuais gratuitos", "passe sub-23", "passe sub23"],
@@ -514,12 +502,21 @@ def score_entry(entry) -> int:
     return sum(1 for kw in KEYWORDS if _contem_keyword(kw, text))
 
 
-def detect_category(entry) -> str:
-    text = (entry.get("title", "") + " " + entry.get("summary", "")).lower()
+def detectar_categoria(titulo: str, resumo: str) -> str:
+    text = (titulo + " " + resumo).lower()
     for cat, kws in CAT_KEYWORDS.items():
         if any(_contem_keyword(kw, text) for kw in kws):
             return cat
     return "apoios"
+
+
+def detect_category(entry) -> str:
+    """Adaptador — `entry` é a entrada bruta do feed (`feedparser`), com
+    título/resumo ainda por gravar. `detectar_categoria()` é a função real
+    (mesma assinatura de `detectar_cluster()`, título+resumo já gravados);
+    esta só extrai os dois campos do `entry` e delega, nunca duplica a
+    lógica de classificação."""
+    return detectar_categoria(entry.get("title", ""), entry.get("summary", ""))
 
 
 def detectar_cluster(titulo: str, resumo: str) -> Optional[str]:
@@ -1041,6 +1038,34 @@ def recalcular_cluster_ids(itens: List[ItemNoticia]) -> List[Tuple[ItemNoticia, 
     return mudancas
 
 
+def recalcular_categorias(itens: List[ItemNoticia]) -> List[Tuple[ItemNoticia, str, str]]:
+    """Gémeo exacto de `recalcular_cluster_ids()`, para `categoria` em vez
+    de `cluster_id` — nunca altera nada em memória sozinho, só devolve os
+    itens cuja classificação mudaria (item, categoria antiga, categoria
+    nova). Utilizável como passo manual isolado:
+    `python scripts/gerar_noticias.py --recalcular-categorias [--dry-run]`.
+
+    Aviso (issue #192): ao contrário de `recalcular_cluster_ids()`, correr
+    isto em massa e aplicar as mudanças NÃO é seguro hoje — a `categoria`
+    gravada de itens antigos foi calculada na ingestão a partir do título
+    BRUTO e do resumo INTEGRAL do feed (via `detect_category(entry)`), que
+    não ficam gravados; recalcular a partir dos campos já gravados
+    (`titulo`/`resumo`, por vezes truncados) pode divergir da classificação
+    original mesmo sem nenhum falso positivo de `_contem_keyword` — ex.:
+    "Candidaturas à ASE 2026/2027" mudaria de `educacao` para `apoios`
+    (porque "abono" aparece no resumo gravado e "apoios" vem antes de
+    "educacao" na ordem de inserção de `CAT_KEYWORDS`, que decide a
+    precedência) — uma regressão, não uma correcção. Ver ROADMAP.md,
+    secção "TRABALHO FUTURO REGISTADO", para a assimetria por resolver
+    antes de generalizar esta função a uma correcção em massa."""
+    mudancas = []
+    for item in itens:
+        novo = detectar_categoria(item.titulo, item.resumo)
+        if novo != item.categoria:
+            mudancas.append((item, item.categoria, novo))
+    return mudancas
+
+
 # ── Observabilidade permanente (Fase 3, 2026-07-04) ───────────────────────
 
 def registar_saude_feeds_hoje(
@@ -1153,6 +1178,27 @@ def main() -> None:
         guardar_itens(itens)
         sincronizar_saidas(itens)
         print("cluster_id actualizado e saídas (noticias.html/index.html) ressincronizadas.")
+        return
+
+    if "--recalcular-categorias" in sys.argv:
+        dry_run = "--dry-run" in sys.argv
+        itens = carregar_itens()
+        mudancas = recalcular_categorias(itens)
+        if not mudancas:
+            print("categoria: nenhuma alteração — todos os itens já batem com detectar_categoria() actual.")
+            return
+        for item, antiga, nova in mudancas:
+            print(f"{antiga!r:15} -> {nova!r:15} | {item.titulo}")
+        print(f"\n{len(mudancas)} item(ns) mudariam de categoria.")
+        print("Aviso: nunca aplicar em massa sem revisão — ver o docstring de recalcular_categorias().")
+        if dry_run:
+            print("--dry-run: nada escrito.")
+            return
+        for item, _antiga, nova in mudancas:
+            item.categoria = nova
+        guardar_itens(itens)
+        sincronizar_saidas(itens)
+        print("categoria actualizada e saídas (noticias.html/index.html) ressincronizadas.")
         return
 
     itens_existentes = carregar_itens()
