@@ -342,17 +342,28 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Portaria n.º 187/2025/1, de 15 de abril — 1.ª alteração à Portaria
   n.º 236-A/2024/1 (regulamentação da Garantia Pública, DL 44/2024)**,
   encontrada pela triagem da Issue #158 (2026-09-03, ver
-  `tests/test_diff_mudancas_allow_list_dre.py`) mas nunca fact-checked —
-  confirmada só por `WebSearch` (síntese de fontes secundárias, nunca o
-  texto legal directo — `WebFetch` continua bloqueado para
-  `diariodarepublica.pt` e para qualquer subdomínio/mirror testado nesta
-  sessão: `files.diariodarepublica.pt`, `dre.tretas.org`, `bportugal.pt`,
-  `apcmc.pt`). Antes de acrescentar `fonte_url_complementar` a
-  `dados/parametros/habitacao.yaml` (mesmo padrão já usado no CSI):
-  confirmar em sessão dedicada, com acesso real ao texto da Portaria, se
-  altera algum dos 6 valores já publicados (idade 18-35, tecto 450.000€,
-  15%, 10 anos, prazo 31/12/2026, 8.º escalão de IRS) — nunca assumir que
-  é só uma alteração de forma.
+  `tests/test_diff_mudancas_allow_list_dre.py`). Issue #198 (2026-09-15)
+  reduziu o âmbito desta pendência — deixa de ser um fact-check em aberto
+  sobre 6 valores para passar a ser **ler o texto de um único diploma, do
+  qual nenhum valor publicado depende**: o texto integral da Portaria
+  n.º 236-A/2024/1 foi lido de fonte primária nesta sessão e confirma, um a
+  um, os 6 valores já publicados em `dados/parametros/habitacao.yaml`
+  (idade 18-35, tecto 450.000€, 15%, 10 anos, prazo até 31/12/2026, 8.º
+  escalão de IRS) — nenhum precisa de correcção. O que falta é só o texto
+  da própria 187/2025/1 — `diariodarepublica.pt`, `files.diariodarepublica.pt`
+  e `files.dre.pt` devolveram EGRESS_BLOCKED nesta sessão (mesma limitação
+  já documentada para `dre.tretas.org`/`bportugal.pt`/`apcmc.pt`). A cadeia
+  legal por trás da 187/2025/1 já está confirmada indirectamente pelo
+  Despacho n.º 4957/2025, de 28 de abril (lido de fonte primária em DR): o
+  Decreto-Lei n.º 24/2025, de 19 de março, alargou o Decreto-Lei n.º 44/2024
+  às sociedades financeiras, e a 187/2025/1 ajustou o Protocolo/
+  regulamentação em consequência — identifica só o OBJECTO da alteração
+  (quem pode ser entidade financiadora), nunca prova que nenhuma das 6
+  condições publicadas mudou. Ver o comentário completo em
+  `dados/parametros/habitacao.yaml`, bloco "Garantia Pública". Antes de
+  acrescentar `fonte_url_complementar` com a 187/2025/1 a qualquer
+  parâmetro (mesmo padrão já usado no CSI): ler o texto legal directo em
+  sessão dedicada — nunca assumir que é só uma alteração de forma.
 - **Allow-list de tipos de acto legal no diff genérico "Detectar
   mudanças"** (`pipeline-diario.yml`, Issue #158, 2026-09-03) — aplicada
   só a `dre_habitacao_garantia` nesta sessão (a Resolução do Conselho de

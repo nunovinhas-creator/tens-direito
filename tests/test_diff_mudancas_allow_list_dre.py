@@ -41,6 +41,7 @@ rondas a este sentinela (Issues #147/#148/#151)."""
 import re
 from pathlib import Path
 
+import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -166,17 +167,37 @@ def test_filtro_de_atos_legais_isola_so_as_2_portarias_relevantes():
     assert not any(i.startswith("Resolução do Conselho de Ministros") for i in adicionados)
 
 
-def test_portaria_187_2025_1_ainda_nao_esta_citada_no_yaml_de_parametros():
-    """Achado real desta triagem: a Portaria n.º 187/2025/1 (1.ª alteração
-    à Portaria n.º 236-A/2024/1, confirmada por pesquisa externa) ainda não
-    está referenciada em `dados/parametros/habitacao.yaml` — registado em
-    ROADMAP.md para uma sessão de fact-checking dedicada, nunca aplicado
-    sem confirmar primeiro se altera algum valor já publicado."""
+def test_par_yaml_roadmap_para_portaria_187_2025_1():
+    """Tripwire original (Issue #158) só confirmava a ausência da Portaria
+    n.º 187/2025/1 em `dados/parametros/habitacao.yaml` — ficaria cego ao
+    cenário pior: alguém citar a Portaria no YAML (mesmo só em comentário,
+    nunca em `fonte_url_complementar`) sem actualizar ROADMAP.md a par, ou
+    vice-versa. Issue #198 (2026-09-15) substitui a asserção de ausência
+    por um par: se o YAML já cita a 187/2025/1, o ROADMAP.md tem de já não
+    a descrever com a frase antiga de pendência em aberto e tem de
+    reflectir o âmbito reduzido — ler o texto de um único diploma, do qual
+    nenhum valor publicado depende (ver `dados/parametros/habitacao.yaml`,
+    bloco "Garantia Pública", para a cadeia DL 24/2025 → Portaria
+    187/2025/1 e a distinção confirmado/não confirmado)."""
     yaml_path = REPO_ROOT / "dados/parametros/habitacao.yaml"
-    conteudo = yaml_path.read_text(encoding="utf-8")
-    assert "187/2025" not in conteudo, (
-        "se este teste falhar, a Portaria 187/2025/1 já foi incorporada — "
-        "óptimo, mas confirmar que a nota em ROADMAP.md foi removida a par"
+    roadmap_path = REPO_ROOT / "ROADMAP.md"
+    yaml_conteudo = yaml_path.read_text(encoding="utf-8")
+    # Espaços/quebras de linha normalizados: o ROADMAP.md tem prosa
+    # hard-wrapped a ~80 colunas — uma frase-alvo pode atravessar uma
+    # quebra de linha sem que isso mude o texto para quem o lê.
+    roadmap_normalizado = " ".join(roadmap_path.read_text(encoding="utf-8").split())
+
+    if "187/2025" not in yaml_conteudo:
+        pytest.skip("Portaria 187/2025/1 ainda não citada no YAML — nada para emparelhar")
+
+    assert "mas nunca fact-checked" not in roadmap_normalizado, (
+        "o YAML já cita a Portaria 187/2025/1 mas o ROADMAP continua a "
+        "descrevê-la com a frase antiga de pendência em aberto — "
+        "actualizar a nota a par"
+    )
+    assert "ler o texto de um único diploma, do qual nenhum valor publicado depende" in roadmap_normalizado, (
+        "ROADMAP.md tem de reflectir o âmbito reduzido desta pendência "
+        "(Issue #198) depois do YAML passar a citar a Portaria 187/2025/1"
     )
 
 
