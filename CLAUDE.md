@@ -563,6 +563,7 @@ para esses três casos.
 | `simulador-psu.html` | Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026) | 3 jul. 2026 |
 | `simulador-subsidio-doenca.html` | Simulador de Subsídio de Doença 2026 | 5 jul. 2026 |
 | `simulador-subsidio-desemprego.html` | Simulador do Subsídio de Desemprego 2026 | 13 jul. 2026 |
+| `simulador-rsi.html` | Simulador do RSI 2026 | 13 jul. 2026 |
 | `numero-utente-sns.html` | Número de utente do SNS: como pedir em 2026 | 18 jul. 2026 |
 | `certidao-situacao-tributaria.html` | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças | 19 jul. 2026 |
 | `marcar-atendimento-seguranca-social.html` | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial | 19 jul. 2026 |
@@ -584,12 +585,18 @@ para esses três casos.
 subsidio-parental, cuidador-informal, comecar-aqui, simulador-abono, simulador-ase).*
 
 *Tabela corrigida a 2026-09-14 — faltavam 12 páginas já publicadas, encontradas por
-comparação directa com os ficheiros reais do repositório. Duas ficam deliberadamente fora
-da tabela, nunca por esquecimento — razão de cada uma em
-`tests/test_higiene_indexacao.py::EXCLUSOES_TABELA_PAGINAS`: `simulador-rsi.html` (factos
-por confirmar, Issue #209) e `verificador-apoios.html` (página-fantasma de
-redirecionamento). Guardrail novo no mesmo ficheiro falha sozinho se a tabela voltar a
-divergir, nas duas direcções — mesmo padrão de `EXCLUSOES_SITEMAP`.*
+comparação directa com os ficheiros reais do repositório. Uma fica deliberadamente fora
+da tabela, nunca por esquecimento — razão em
+`tests/test_higiene_indexacao.py::EXCLUSOES_TABELA_PAGINAS`: `verificador-apoios.html`
+(página-fantasma de redirecionamento). Guardrail novo no mesmo ficheiro falha sozinho se
+a tabela voltar a divergir, nas duas direcções — mesmo padrão de `EXCLUSOES_SITEMAP`.*
+
+*Issue #209 fechada a 2026-09-15 — `simulador-rsi.html` deixou de estar excluído: os
+factos que a página cita (Decreto-Lei n.º 166/2026, artigo 57.º — conversão oficiosa do
+RSI em PSU, a partir de 31 de dezembro de 2026) já estavam confirmados directamente no
+próprio corpo da página (linha ~467) e no JSON-LD da FAQ (linha ~90) desde a publicação
+(13 jul. 2026, ver `HISTORICO.md`) — nunca foi um facto por confirmar, só uma linha que
+nunca tinha sido acrescentada a esta tabela nem à tabela "PÁGINAS COM DATAS SAZONAIS".*
 
 ---
 
@@ -2302,6 +2309,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `psu-quem-tem-direito.html` | Idem | Ver "IMPACTO DA PSU" |
 | `psu-vs-abono-familia.html` | Idem — `verificar_datas.py` passa a expor sozinho a partir de 2027 (Issue #186) | Ver "IMPACTO DA PSU" |
 | `simulador-psu.html` | Idem — banner de vigência já ligado a `data_producao_efeitos` | Ver "IMPACTO DA PSU" |
+| `simulador-rsi.html` | Cita directamente o artigo 57.º do Decreto-Lei n.º 166/2026 (conversão oficiosa do RSI em PSU) e a mesma data de 31 de dezembro de 2026, no corpo e no JSON-LD da FAQ; `verificar_datas.py` passa a expor sozinho a partir de 2027 (Issue #186) — **ao rever, mudar sempre os dois sítios**: o bloco de vigência no corpo E o `<script type="application/ld+json">` da FAQ; corrigir só o corpo deixa o JSON-LD a prometer ao Google o texto antigo | Ver "IMPACTO DA PSU" |
 | `subsidio-desemprego.html` | Janeiro (novos limites) | Issue automática do scraper |
 | `majoracao-subsidio-desemprego.html` | **31 de dezembro de 2026** — o Decreto-Lei n.º 166/2026 (art. 49.º) altera a redação do n.º 5 do art. 28.º-A do DL 220/2006 nesta data (a majoração passa a manter-se quando o cônjuge transita para a PSU, em vez de "subsídio social de desemprego subsequente") — rever a secção "Se a situação mudar" e a FAQ correspondente, confirmando que o texto passa de "vai mudar a partir de" para o estado já em vigor | A partir de 2027, `verificar_datas.py` expõe isto sozinho (portão de confirmação de `MARCADORES_HISTORICOS`, #187); até lá, verificação manual, mesma data já vigiada pelo `pipeline-diario.yml` para o resto do cluster PSU |
 | `garantia-publica-credito-habitacao.html` | **31 de dezembro de 2026** — prazo-limite dos contratos abrangidos pela Garantia Pública (Portaria n.º 236-A/2024/1), sem prorrogação confirmada | `dre_habitacao_garantia` (watchlist DRE) — ver "CLUSTER HABITAÇÃO" |
@@ -2313,15 +2321,6 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |
 | `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega os prazos das páginas do cluster escolar ligadas a partir do próprio artigo (nunca fixadas aqui), revisão obrigatória sempre que qualquer um desses prazos mudar |
 | `renovar-cartao-cidadao.html` | Nota de verificação para **3 de agosto de 2031** — prazo-limite real remanescente (cartões com MRZ mas sem chip de contacto, emitidos até 10/06/2024; Regulamento (UE) 2025/1208). Corrigido a 2026-07-18: o prazo de 3/08/2026 **não** se aplica ao Cartão de Cidadão normal (tem MRZ desde 2007) — só afecta duas excepções raras (CC do Tratado de Porto Seguro, BI vitalício), conforme esclarecimento oficial do IRN de 30/12/2025. `verificar_datas.py` continua a disparar em 2027 nos meses 1/7/8/9 (o texto ainda cita "2026") — sem acção obrigatória nessa altura, só confirmar que a secção "Preciso de renovar antes do prazo?" continua correcta | Sem gatilho de acção — nota de contexto, a rever se saírem novos esclarecimentos oficiais do IRN antes de 2031 |
-
-**Nota — `simulador-rsi.html` fica de fora desta tabela, deliberadamente**:
-a página existe, está publicada e integrada (nav, sitemap, `data/clusters.json`,
-`pesquisa.js`), e provavelmente cita a mesma data de 31/12/2026 (produção
-de efeitos do DL 166/2026) que as 5 páginas PSU/Garantia Pública acima —
-mas nunca foi confirmado directamente, porque `simulador-rsi.html` nunca
-chegou a entrar em `CLAUDE.md` (nem na tabela "PÁGINAS PUBLICADAS"). Em
-vez de inventar uma linha com um dado não verificado, ver
-[Issue #209](https://github.com/nunovinhas-creator/tens-direito/issues/209).
 
 **`manuais-escolares-mega.html` — mecanismo de vigilância sazonal**: duas
 fontes independentes, mesma chave de aviso. `mega_datas` vigia
