@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **15 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **16 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -272,8 +272,11 @@ tens-direito/
 │   │   ├── verificar-fontes.md
 │   └── skills/
 │       ├── babysit/SKILL.md
+│       ├── datas-e-vigencia/SKILL.md
 │       ├── estrutura-pagina/SKILL.md
+│       ├── fact-check/SKILL.md
 │       ├── steward/SKILL.md
+│       ├── texto-utilizador/SKILL.md
 │       ├── verificar-url/SKILL.md
 ├── scripts/
 │   ├── adicionar_article_jsonld.py
@@ -398,8 +401,11 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 **Skills** (`.claude/skills/`) — usadas internamente pelos commands:
 
 - [`babysit`](.claude/skills/babysit/SKILL.md)
+- [`datas-e-vigencia`](.claude/skills/datas-e-vigencia/SKILL.md)
 - [`estrutura-pagina`](.claude/skills/estrutura-pagina/SKILL.md)
+- [`fact-check`](.claude/skills/fact-check/SKILL.md)
 - [`steward`](.claude/skills/steward/SKILL.md)
+- [`texto-utilizador`](.claude/skills/texto-utilizador/SKILL.md)
 - [`verificar-url`](.claude/skills/verificar-url/SKILL.md)
 
 **Agents** (`.claude/agents/`) — agentes especializados:
@@ -432,6 +438,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 15 de setembro de 2026 às 12:28 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 16 de setembro de 2026 às 12:16 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
