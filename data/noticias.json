@@ -1,6 +1,33 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-17",
+      "titulo": "Guimarães sobe limite do apoio ao arrendamento",
+      "fonte_nome": "CASA SAPO",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNOW9iX2tkZzhOSVpYY1lyMXhtNElIUjBKalhoX1lQNG9lN1VlbU5sV1Q5c1IwdHJLZlNHVFJxU3J3aWdyX2l5ZjNTUENmVXNySXVFSXlORGYta25GTGJjQW5mVFNRQV84a0V1elpGZzJmbkxOWFJqUklUaG44WjRMelUwV3h6ZExFQWdFUG9tSQ?oc=5",
+      "resumo": "Guimarães sobe limite do apoio ao arrendamento CASA SAPO",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
+    },
+    {
+      "data_iso": "2026-09-16",
+      "titulo": "Salário mínimo de mil euros já em 2027? UGT defende, patrões afastam",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNaXNkUmNKNkJNZ24tTmxoa2NGck9hTV9sdmpid0dQVzNiTEZXdV8tN29QVUlnUDJXT3c0SXlZNWtGZloyVmhMb3FUZ1c1ampsenp0ZTZSRkxfb0QyZUE4N2R5c1ZLTWtUTXlTTnNBdnNreUYweW4tc29HUU9mSUJIaVBlMXhBTDRJYjVNVHhEMFNFT0lnVVVyVU5OZ2dhWmM?oc=5",
+      "resumo": "Salário mínimo de mil euros já em 2027? UGT defende, patrões afastam ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-15",
+      "titulo": "Segurança Social prevê reforço do abono escolar de milhares de famílias portuguesas",
+      "fonte_nome": "Magazine.HD",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNVnNoYWwyN2RJRnBIUXR4UXdrT0JnVmpWWi1ucFRBYVhqUklNTzdkVjJLSzZEWWlmVlYxTFpKWmdRM2gxQjNEV2hWRk9WMkNad2xWdW5NQkVwajBUcURzWC1rYTAwaklSbWtKdmJIMl80dzR4dW93RWhOOVJYYkVjclZzYmJCRGRKa1BGdkg3WHZESDJPTjFYalBWNGR6Tmx6TGt3NUk4eDNQSFkzWDlpRg?oc=5",
+      "resumo": "Segurança Social prevê reforço do abono escolar de milhares de famílias portuguesas Magazine.HD",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-09-15",
       "titulo": "Segurança Social já tem calendário para outubro: saiba em que dia recebe pensões, subsídios e outros apoios",
       "fonte_nome": "executivedigest.sapo.pt",
