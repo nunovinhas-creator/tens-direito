@@ -47,12 +47,30 @@
     },
     {
       "data_iso": "2026-09-15",
+      "titulo": "FESAP quer salário mínimo de 1.050 euros já em 2027",
+      "fonte_nome": "RTP",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPWGxqMl81UUhDLVlZMGpBWTA5UTZOdzFGUExwSHBZS3hQNmxZbWczV2lDc1hZYUp6RjQwTWROMkNvcER2UmxuT1RPRmxGQU11cUtHaGVfZHN2SUtOWVJLeFRtbFhzRmxMaWlEaW81RkhqWE1Vc3dVNm9OUl9pTFBzckJsUms2bE1iazVZZ0xSeUdkUHhjN05yZl9wc3k?oc=5",
+      "resumo": "FESAP quer salário mínimo de 1.050 euros já em 2027 RTP",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-15",
       "titulo": "Aumento do Salário Mínimo Nacional",
       "fonte_nome": "Partido Comunista Português",
       "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5JVEV6ZTQ3R29oS2dFTDd2dkV6VHN3V1JjejdaYUF2Ul93aENDYzNqbXNndEVUZDdpN1I4VXQ2R3UxWkllakt5OHB0U1ZCTDVEMjBIOTlybmp0Y25iSlpVLTdtbjdUVWM?oc=5",
       "resumo": "Aumento do Salário Mínimo Nacional Partido Comunista Português",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-15",
+      "titulo": "Abono de família a dobrar em setembro: quem recebe e quem fica de fora",
+      "fonte_nome": "Ekonomista",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1ENWhyRW83VWZyXzQ1a2QtSEhJblRZenRVOWJvWGdjYjR6M0djZkNadF9IanJ6Z3NHZ01RdHlHWnNaVUtCUUN6STY4VGJRTmhBR1ozamJHQzA2SmJ5eGRia2Fmb0d2T3VZT1c5RkxPQlh0eUk?oc=5",
+      "resumo": "Abono de família a dobrar em setembro: quem recebe e quem fica de fora Ekonomista",
+      "categoria": "apoios",
+      "cluster_id": "familia"
     },
     {
       "data_iso": "2026-09-14",
