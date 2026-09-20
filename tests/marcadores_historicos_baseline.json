@@ -1289,6 +1289,54 @@
   },
   {
     "pagina": "creche-gratuita.html",
+    "marcador": "decreto-lei",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2022",
+    "contexto": "uando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "decreto-lei",
+    "tipo": "prazo_outono",
+    "correspondencia": "22 de dezembro de 2022",
+    "contexto": "dade quando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "despacho",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2022",
+    "contexto": "uando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "despacho",
+    "tipo": "prazo_outono",
+    "correspondencia": "22 de dezembro de 2022",
+    "contexto": "dade quando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2022",
+    "contexto": "uando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "lei\\s+n\\.?º",
+    "tipo": "prazo_outono",
+    "correspondencia": "22 de dezembro de 2022",
+    "contexto": "dade quando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
@@ -1396,7 +1444,7 @@
     "marcador": "portaria",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2022",
-    "contexto": "IONADOS:FIM --> <!-- FONTES --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> <strong>Lido por inteiro em fonte primária nesta sessão:</strong> Portaria n.º 305/2022, de 22 de dezembro de 2022 (ato original — artigos 2.º, 4.º, 5.º e 6.º) e Portaria n.º 158/2024/1, que altera os artigos 2.º e 6.º, e — dentro do artigo 5.º — a alínea a) do n.º 1 e o n.º 2 (o corpo do n.º 1 mantém-se, mostrado como \"1 - [...]\" n",
+    "contexto": "uando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
     "ordinal": 2
   },
   {
@@ -1428,7 +1476,7 @@
     "marcador": "portaria",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
-    "contexto": "<strong>nunca foi alterado</strong> — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 altera um artigo, núme",
+    "contexto": "UNCA foi alterado — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 alte",
     "ordinal": 4
   },
   {
@@ -1460,7 +1508,7 @@
     "marcador": "portaria",
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
-    "contexto": "ção) <strong>nunca foi alterado</strong> — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 altera um artigo, núme",
+    "contexto": "ão) NUNCA foi alterado — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 alte",
     "ordinal": 4
   },
   {
@@ -1476,7 +1524,7 @@
     "marcador": "portaria",
     "tipo": "prazo_outono",
     "correspondencia": "22 de dezembro de 2022",
-    "contexto": "RELACIONADOS:FIM --> <!-- FONTES --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> <strong>Lido por inteiro em fonte primária nesta sessão:</strong> Portaria n.º 305/2022, de 22 de dezembro de 2022 (ato original — artigos 2.º, 4.º, 5.º e 6.º) e Portaria n.º 158/2024/1, que altera os artigos 2.º e 6.º, e — dentro do artigo 5.º — a alínea a) do n.º 1 e o n.º 2 (o corpo do n.º 1 mantém-se, mostrado como \"1 - [...]\" n",
+    "contexto": "dade quando há mais candidaturas do que vagas — dependem da situação concreta de cada família. --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1<br> Portaria n.º 262/2011 (artigos 5.º e 6.º)<br> Despacho n.º 6573/2024, n.º 5<br> Decreto-Lei n.º 166/2026 (preâmbulo — lista das 13 prestações substituídas pel",
     "ordinal": 2
   },
   {
