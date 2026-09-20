@@ -653,3 +653,42 @@ def test_main_cobre_p_e_documentos(tmp_path, monkeypatch):
     alertas = _json.loads((tmp_path / "data" / "alertas_datas.json").read_text(encoding="utf-8"))
     paginas = sorted(a["pagina"] for a in alertas)
     assert paginas == ["documentos/minuta.html", "na-raiz.html", "p/pilar.html"]
+
+
+# ── Marcador "nasc... a partir de" (2026-09-20) ─────────────────────────
+# creche-gratuita.html: "poderá ter direito se tiver nascido a partir de
+# 1 de setembro de 2021" — elegibilidade fixa por data de nascimento
+# (artigo 5.º/2.º da Portaria n.º 305/2022), nunca expira. Diagnóstico
+# inicial errado, descartado antes de mexer no código: a citação "Portaria
+# n.º 305/2022, de 22 de dezembro de 2022" JÁ estava suprimida pelo
+# marcador `portaria` (palavra solta, não ancorada a "n.º" — ao contrário
+# de `lei\s+n\.?º`, que é anchorado só porque "lei" sozinha é demasiado
+# genérica). O alerta real vinha de "1 de setembro de 2021"/"setembro de
+# 2021" (a data de nascimento em si, repetida 8x no corpo, metade sem
+# nenhum marcador histórico por perto) e disparava sempre como
+# `data_mes_ano` (primeiro tipo da lista PADROES), nunca `prazo_outono`.
+
+
+def test_creche_gratuita_real_nao_gera_alerta():
+    html = _ler_pagina_real("creche-gratuita.html")
+    for mes in (1, 7, 8, 9):
+        assert detectar_alertas(html, "creche-gratuita.html", 2026, mes) is None
+
+
+def test_marcador_nasc_a_partir_de_nao_sobre_suprime_a_partir_de_generico():
+    # Guarda contra sobre-supressão: "a partir de <data>" sozinho, sem o
+    # radical "nasc" a preceder, continua a alertar normalmente — o
+    # marcador é ancorado ao facto de nascimento, nunca à preposição
+    # genérica (que o site usa noutras páginas para factos que precisam
+    # de ficar expostos quando a data passa, ex.: "a PSU só é paga a
+    # partir de 31 de dezembro de 2026").
+    conteudo = "<p>O valor sobe a partir de março de 2023.</p>"
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is not None
+
+
+def test_marcador_nasc_a_partir_de_cobre_a_clausula_real():
+    conteudo = (
+        "<p>Poderá ter direito se tiver nascido a partir de 1 de "
+        "setembro de 2021, inclusive.</p>"
+    )
+    assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
