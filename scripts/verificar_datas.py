@@ -200,6 +200,30 @@ MARCADORES_HISTORICOS = [
     # página já ficava suprimida de qualquer forma pelos marcadores
     # "lei\s+n\.?º"/"se inscreveu" mais próximos — confirmado sem regressão).
     r"\bsalvaguarda\s+(?:transit[óo]ria\s+)?de\s+\d",
+    # Elegibilidade fixa por data de nascimento — "nascida/nascido/nasceu
+    # a partir de <data>" (creche-gratuita.html: "poderá ter direito se
+    # tiver nascido a partir de 1 de setembro de 2021" — condição de
+    # acesso do artigo 5.º/2.º da Portaria n.º 305/2022, nunca "expira":
+    # qualquer criança nascida nessa data ou depois continua elegível
+    # para sempre). Mesma família de "posterior a"/"anterior(es) a" já
+    # cobertas acima (data-limite fixa de elegibilidade do PAER), mas
+    # aqui a direcção é inversa ("a partir de", não "até"/"anterior a") e
+    # o sujeito é uma data de nascimento, não um contrato.
+    #
+    # Ancorado ao radical "nasc" (não a "\ba partir de\b" sozinho, de
+    # propósito): "a partir de <data>" é uma preposição genérica, usada
+    # em várias páginas do site para factos genuinamente sujeitos a
+    # revisão quando a data passa — ex. "a PSU só é paga de facto a
+    # partir de 31 de dezembro de 2026" (prestacao-social-unica.html,
+    # como-pedir-psu.html), "esta redação vai mudar a partir de 31 de
+    # dezembro de 2026" (majoracao-subsidio-desemprego.html). Suprimir
+    # "a partir de" a solo mascararia essas datas depois de passarem,
+    # quando é exactamente aí que precisam de ficar expostas para
+    # revisão humana (mesmo risco já documentado para `\bsalvaguarda\b`
+    # sozinha, issue #172). Confirmado por grep ao site inteiro antes de
+    # aplicar: `nasc[a-zç]*\s+a\s+partir\s+de` só ocorre em
+    # creche-gratuita.html.
+    r"nasc\w*\s+a\s+partir\s+de\b",
 ]
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.
