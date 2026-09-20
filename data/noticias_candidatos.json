@@ -1,112 +1,5 @@
 [
   {
-    "data": "2026-09-05",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 14,
-      "irs_fiscalidade": 14,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 13,
-      "habitacao_arrendamento": 13,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Renda universitária: apoios que podes pedir em Portugal - Idealista",
-        "feed_nome": "porta65_arrendamento",
-        "data_iso": "2026-08-31",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-31"
-      },
-      {
-        "titulo": "Renda universitária: apoios que podes pedir em Portugal - Idealista",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-08-31",
-        "score": 4,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-31"
-      },
-      {
-        "titulo": "Subsídio de desemprego: Segurança Social anunciou uma novidade no pagamento (que vai interessar aos beneficiários) - hrportugal.sapo.pt",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-08-31",
-        "score": 3,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-31"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais na 1ª Quinzena de Setembro de 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-01",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-01"
-      },
-      {
-        "titulo": "Novas regras para o mercado de arrendamento já em vigor - Idealista",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-09-01",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-01"
-      },
-      {
-        "titulo": "IRS: Hoje é o último dia para contribuintes pagarem - TV RECORD Europa",
-        "feed_nome": "irs_fiscalidade",
-        "data_iso": "2026-08-31",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-31"
-      },
-      {
-        "titulo": "Segurança Social: pagamentos no mês de setembro de 2026 - Pplware",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-08-31",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-08-31"
-      }
-    ],
-    "vencedores": []
-  },
-  {
     "data": "2026-09-06",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2044,6 +1937,204 @@
       },
       {
         "titulo": "FESAP quer salário mínimo de 1.050 euros já em 2027 - RTP",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-09-20",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 8,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 9,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Segurança Social já tem calendário para outubro: saiba em que dia recebe pensões, subsídios e outros apoios - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-15",
+        "score": 6,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-15"
+      },
+      {
+        "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - Jornal Económico",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-15",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-08-04"
+      },
+      {
+        "titulo": "Governo anuncia que abono pode ser pago a dobrar este mês: A quem? - Notícias ao Minuto",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-14"
+      },
+      {
+        "titulo": "Abono de família a dobrar em setembro: quem recebe e quem fica de fora - Ekonomista",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-15",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-15"
+      },
+      {
+        "titulo": "Em setembro, o Abono de Família pode ser pago a dobrar. Este pagamento abrang… - sapo.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Abono de família poderá ser pago a dobrar em setembro - Echo Boomer",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Livre quer passe de mobilidade nacional, reforçar abono de família e rede pública de lares - dnoticias.pt",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-13",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família - Expresso",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-13",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de família a dobrar este mês: há crianças e jovens que podem receber pagamento adicional. Veja os requisitos - Executive Digest",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Já são conhecidas as datas dos pagamentos da Segurança Social em outubro - diariOnline Região Sul",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-14",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo de mil euros já em 2027? UGT defende, patrões afastam - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-16",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-16"
+      },
+      {
+        "titulo": "Aumento do Salário Mínimo Nacional - Partido Comunista Português",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-15",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-15"
+      },
+      {
+        "titulo": "Salário mínimo no Estado acima dos 1.030 euros em 2027? Valor ainda seria \"curto\" - Jornal SOL",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-15",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-15"
+      },
+      {
+        "titulo": "FESAP quer salário mínimo de 1.050 euros já em 2027 - RTP",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-15",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-15"
+      },
+      {
+        "titulo": "Empresários admitem não aumentar salário mínimo em 2027 e acusam Governo de falhar acordo - SIC Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-13",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Aumentos salariais em 2027 travam nos 3% - Dinheiro Vivo",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-15",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Governo aprova suplemento extraordinário para pensionistas - dnoticias.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-17",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Em setembro, o Abono de Família pode ser pago a dobrar. Este pagamento abrang… - sapo.pt",
+        "feed_nome": "abono_familia",
+        "score": 1
+      },
+      {
+        "titulo": "Empresários admitem não aumentar salário mínimo em 2027 e acusam Governo de falhar acordo - SIC Notícias",
         "feed_nome": "salario_minimo",
         "score": 1
       }

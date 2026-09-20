@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **19 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **20 de setembro de 2026**.
 
 ### Páginas publicadas
 
@@ -45,6 +45,7 @@ Actualizado automaticamente a partir do repositório em **19 de setembro de 2026
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
 | [`como-pedir-psu.html`](como-pedir-psu.html) | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
+| [`creche-gratuita.html`](creche-gratuita.html) | Creche gratuita 2026: quem tem direito e o que está incluído |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
 | [`dados.html`](dados.html) | Dados Abertos — Tens Direito |
 | [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
@@ -438,6 +439,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 19 de setembro de 2026 às 11:43 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 20 de setembro de 2026 às 12:12 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
