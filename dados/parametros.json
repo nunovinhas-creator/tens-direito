@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-15",
+  "gerado_em": "2026-09-20",
   "prestacoes": {
     "abono": {
       "escalao1_limite_cenario_pedidos_novos_2026": {
@@ -301,6 +301,28 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-19"
+      }
+    },
+    "creche": {
+      "creche_caucao_max_eur": {
+        "descricao": "Gratuitidade da creche — valor máximo da caução de reserva de vaga que a creche pode exigir; é sempre devolvida na celebração do contrato de prestação de serviços, nunca uma mensalidade",
+        "unidade": "EUR",
+        "valor": 25,
+        "vigencia_inicio": "2022-12-22",
+        "referencia_legal": "Portaria n.º 305/2022, de 22 de dezembro de 2022, art. 4.º, n.os 3 e 4 (texto original — não alterado pela Portaria n.º 158/2024/1)",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-16"
+      },
+      "creche_elegivel_nascidos_apos": {
+        "descricao": "Gratuitidade da creche — data de nascimento a partir da qual (inclusive) a criança está abrangida",
+        "unidade": "data",
+        "valor": "2021-09-01",
+        "vigencia_inicio": "2024-01-01",
+        "referencia_legal": "Portaria n.º 305/2022, de 22 de dezembro de 2022, art. 5.º, n.º 1, al. a), na redação da Portaria n.º 158/2024/1 (esta alínea foi reescrita — concelho passou a freguesia — mantendo apenas a data já fixada na versão original de 2022) — mesma data reafirmada no art. 2.º, também na redação da Portaria n.º 158/2024/1 (âmbito pessoal)",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-16"
       }
     },
     "csi": {

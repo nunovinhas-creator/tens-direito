@@ -1909,3 +1909,76 @@ def test_paer_ressalva_dl_43_2024_acompanha_toda_afirmacao_da_data_limite():
         "apoio-extraordinario-renda.html deixou de citar o Decreto-Lei "
         "n.º 43/2024 — a ressalva à data-limite do PAER ficou sem base legal"
     )
+
+
+# ── Cluster Família — Creche gratuita (Portaria n.º 305/2022) ──
+# dados/parametros/creche.yaml é a fonte única: a caução máxima (25€,
+# art. 4.º, texto original nunca alterado pela Portaria n.º 158/2024/1) e
+# a data de nascimento elegível (1 de setembro de 2021, art. 2.º, na
+# redação da Portaria n.º 158/2024/1). `_param_creche()` segue o mesmo
+# padrão de `_param_habitacao()`.
+
+_CRECHE = None
+
+
+def _param_creche(nome: str):
+    global _CRECHE
+    if _CRECHE is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _CRECHE = todos["prestacoes"]["creche"]
+    return _CRECHE[nome]["valor"]
+
+
+def test_creche_caucao_maxima_bate_com_o_corpo_do_artigo():
+    """25€ aparece no corpo (secção 'O que está incluído'), na resposta
+    rápida, na FAQ visível e na FAQPage JSON-LD de creche-gratuita.html —
+    construído a partir do YAML, nunca hardcoded à parte."""
+    html = _ler("creche-gratuita.html")
+    caucao = _param_creche("creche_caucao_max_eur")
+    frase = f"máximo {caucao}€"
+    assert frase in html, f"{frase!r} ausente de creche-gratuita.html"
+    assert html.count("25€") >= 3, (
+        "esperava pelo menos 3 ocorrências de '25€' em creche-gratuita.html "
+        f"(corpo, FAQ visível, FAQPage JSON-LD) — encontrei {html.count('25€')}"
+    )
+
+
+def test_creche_data_elegibilidade_no_corpo_e_no_jsonld():
+    """'1 de setembro de 2021' tem de aparecer na resposta rápida, no
+    corpo e na FAQPage JSON-LD — nunca só num dos três, para o Google
+    nunca ficar a prometer uma data diferente da que o corpo afirma."""
+    html = _ler("creche-gratuita.html")
+    data = _data_por_extenso(_param_creche("creche_elegivel_nascidos_apos"))
+    posicoes = html.count(data)
+    assert posicoes >= 3, (
+        f"esperava pelo menos 3 ocorrências de {data!r} em "
+        f"creche-gratuita.html — encontrei {posicoes}"
+    )
+
+
+def test_creche_valor_460_euros_nunca_publicado():
+    """460€ é o valor de mensalidade de referência de 2022-2023 do art.
+    6.º, n.º 3, da Portaria n.º 305/2022 — actualizado todos os anos pelo
+    compromisso de cooperação em vigor. Publicá-lo em 2026 seria um facto
+    de 2022 apresentado como actual. Nunca deve aparecer nesta página."""
+    html = _ler("creche-gratuita.html")
+    assert "460€" not in html and "460 €" not in html, (
+        "creche-gratuita.html publica o valor de mensalidade de "
+        "2022-2023 (460€) como se fosse actual — o valor é revisto "
+        "anualmente pelo compromisso de cooperação, nunca deve ser citado "
+        "sem a data a que se refere"
+    )
+
+
+def test_creche_artigo_4_nunca_apresentado_como_alterado():
+    """O artigo 4.º (o que a gratuitidade abrange e o que pode ser
+    cobrado, incluindo a caução) nunca foi alterado pela Portaria n.º
+    158/2024/1 — continua a ser sempre o texto original de 2022. A
+    página tem de o dizer explicitamente, para nunca se confundir com os
+    artigos 2.º, 5.º e 6.º, esses sim alterados."""
+    html = _ler("creche-gratuita.html")
+    assert "nunca foi alterado" in html or "não alterado" in html, (
+        "creche-gratuita.html deixou de esclarecer que o artigo 4.º da "
+        "Portaria n.º 305/2022 nunca foi alterado pela Portaria n.º "
+        "158/2024/1 — risco de se confundir com os artigos que foram"
+    )

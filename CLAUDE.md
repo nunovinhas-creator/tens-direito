@@ -573,6 +573,7 @@ para esses três casos.
 | `amim-beneficios-fiscais.html` | Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC | 19 ago. 2026 |
 | `cartao-europeu-estacionamento.html` | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | 19 ago. 2026 |
 | `majoracao-subsidio-desemprego.html` | Majoração de 10% do subsídio de desemprego 2026 | 4 set. 2026 |
+| `creche-gratuita.html` | Creche gratuita 2026: quem tem direito e o que está incluído | 16 set. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
