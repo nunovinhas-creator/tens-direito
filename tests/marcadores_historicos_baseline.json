@@ -1288,6 +1288,102 @@
     "ordinal": 3
   },
   {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2022",
+    "contexto": ">Poderá ter direito à gratuitidade da creche se tiver nascido <strong>a partir de 1 de setembro de 2021, inclusive</strong> — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2022",
+    "contexto": "IONADOS:FIM --> <!-- FONTES --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> <strong>Lido por inteiro em fonte primária nesta sessão:</strong> Portaria n.º 305/2022, de 22 de dezembro de 2022 (ato original — artigos 2.º, 4.º, 5.º e 6.º) e Portaria n.º 158/2024/1, que altera os artigos 2.º e 6.º, e — dentro do artigo 5.º — a alínea a) do n.º 1 e o n.º 2 (o corpo do n.º 1 mantém-se, mostrado como \"1 - [...]\" n",
+    "ordinal": 2
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "ype\": \"Question\", \"name\": \"A minha filha ou filho tem direito à creche gratuita?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidár",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "LEGIBILIDADE --> <div class=\"card\"> <span class=\"badge\">Elegibilidade</span> <h2>A criança tem direito?</h2> <p>Poderá ter direito à gratuitidade da creche se tiver nascido <strong>a partir de 1 de setembro de 2021, inclusive</strong> — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, emb",
+    "ordinal": 2
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "frequentes</h2> <details> <summary><h3>A minha filha ou filho tem direito à creche gratuita?</h3></summary> <div class=\"resposta\"> <p>Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.</p> <p class=\"fonte-inline\">Fonte: Portaria n.º",
+    "ordinal": 3
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "<strong>nunca foi alterado</strong> — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 altera um artigo, núme",
+    "ordinal": 4
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "\"@type\": \"Question\", \"name\": \"A minha filha ou filho tem direito à creche gratuita?\", \"acceptedAnswer\": { \"@type\": \"Answer\", \"text\": \"Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidár",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "1. ELEGIBILIDADE --> <div class=\"card\"> <span class=\"badge\">Elegibilidade</span> <h2>A criança tem direito?</h2> <p>Poderá ter direito à gratuitidade da creche se tiver nascido <strong>a partir de 1 de setembro de 2021, inclusive</strong> — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, emb",
+    "ordinal": 2
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "vidas frequentes</h2> <details> <summary><h3>A minha filha ou filho tem direito à creche gratuita?</h3></summary> <div class=\"resposta\"> <p>Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.</p> <p class=\"fonte-inline\">Fonte: Portaria n.º",
+    "ordinal": 3
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "ção) <strong>nunca foi alterado</strong> — vale sempre o texto original de 2022. A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho. Onde a Portaria n.º 158/2024/1 altera um artigo, núme",
+    "ordinal": 4
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "22 de dezembro de 2022",
+    "contexto": "<p>Poderá ter direito à gratuitidade da creche se tiver nascido <strong>a partir de 1 de setembro de 2021, inclusive</strong> — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "22 de dezembro de 2022",
+    "contexto": "RELACIONADOS:FIM --> <!-- FONTES --> <div class=\"fonte-bloco\"> <strong>Fontes e verificação:</strong><br> <strong>Lido por inteiro em fonte primária nesta sessão:</strong> Portaria n.º 305/2022, de 22 de dezembro de 2022 (ato original — artigos 2.º, 4.º, 5.º e 6.º) e Portaria n.º 158/2024/1, que altera os artigos 2.º e 6.º, e — dentro do artigo 5.º — a alínea a) do n.º 1 e o n.º 2 (o corpo do n.º 1 mantém-se, mostrado como \"1 - [...]\" n",
+    "ordinal": 2
+  },
+  {
     "pagina": "declaracao-situacao-contributiva.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
@@ -1789,6 +1885,22 @@
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2020",
     "contexto": "da União Europeia</h2> <p>Regula a transição do Reino Unido para fora da UE — o art. 30.º cobre quem estava sujeito à legislação de um Estado-membro ou do Reino Unido exactamente no termo do período de transição (31 de dezembro de 2020), mantendo essa cobertura enquanto a situação continuar sem interrupção (n.º 2); o art. 31.º determina que continuam a aplicar-se os próprios Regulamentos (CE) n.os 883/2004 e 987/2009. Corpo do Acordo lido directamente",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "celho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima. Os n.os 3 e 4 do artig",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "\"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima. Os n.os 3 e 4 do artig",
     "ordinal": 1
   },
   {

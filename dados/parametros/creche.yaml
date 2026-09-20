@@ -1,0 +1,33 @@
+# Gratuitidade da creche na rede solidária com acordo — Portaria n.º
+# 305/2022, de 22 de dezembro de 2022. GRAU 1: texto integral lido em
+# fonte primária (ato original) nesta sessão. A Portaria n.º 158/2024/1
+# alterou os artigos 2.º, 5.º e 6.º — vale sempre a redação nova nesses
+# três; o artigo 4.º (o que a gratuitidade abrange/exclui, incluindo a
+# caução) NUNCA foi alterado, é sempre o texto original de 2022.
+#
+# Despacho n.º 6573/2024 (n.º 5) confirma que a falta de vaga na rede
+# de referência é verificada oficiosamente pelo ISS, antes da emissão
+# do código de validação — nunca provada pela família. Ver
+# creche-gratuita.html e fontes.html para o detalhe completo.
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+creche_caucao_max_eur:
+  descricao: "Gratuitidade da creche — valor máximo da caução de reserva de vaga que a creche pode exigir; é sempre devolvida na celebração do contrato de prestação de serviços, nunca uma mensalidade"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2022-12-22"
+      valor: 25
+      referencia_legal: "Portaria n.º 305/2022, de 22 de dezembro de 2022, art. 4.º, n.os 3 e 4 (texto original — não alterado pela Portaria n.º 158/2024/1)"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-16"
+
+creche_elegivel_nascidos_apos:
+  descricao: "Gratuitidade da creche — data de nascimento a partir da qual (inclusive) a criança está abrangida"
+  unidade: data
+  valores:
+    - vigencia_inicio: "2024-01-01"
+      valor: "2021-09-01"
+      referencia_legal: "Portaria n.º 305/2022, de 22 de dezembro de 2022, art. 5.º, n.º 1, al. a), na redação da Portaria n.º 158/2024/1 (esta alínea foi reescrita — concelho passou a freguesia — mantendo apenas a data já fixada na versão original de 2022) — mesma data reafirmada no art. 2.º, também na redação da Portaria n.º 158/2024/1 (âmbito pessoal)"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-16"
