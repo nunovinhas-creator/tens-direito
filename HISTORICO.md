@@ -6519,4 +6519,4 @@ ilt0fi`).
 
 ---
 
-*Última revisão automática: 2026-09-22*
+*Última revisão automática: 2026-09-23*

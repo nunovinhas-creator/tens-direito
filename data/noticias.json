@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-22",
+      "titulo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS",
+      "fonte_nome": "A voz do Algarve",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQT2R1VGo1Tk51VzRLN3hXOGxTSmNBZFlYcUpOUUVYQjkwWE81N1M3ZjI2VzU4Z0gyb2NYc29ybTZDZ083V01VWEFTUmtpdTlOdkJaODRuSGRsRG9PUXBNWk1panZ1MWFYVm05US1CdUxwdm5iOWdQNXc0cDVfVkF2UXUtMXdkMEljXzBCbDZPQ2dTc19MQmtrTm1FUG01b00wUFhOLVQ2Tjk4V2QwM2ZpNEhiZlNWQWxGTVRBVFVHcEZSek80dGFpZDdTdVJmamJidFU1aUxKZDY4TlhMS215cw?oc=5",
+      "resumo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS A voz do Algarve",
+      "categoria": "educacao",
+      "cluster_id": "apoios-escolares"
+    },
+    {
+      "data_iso": "2026-09-21",
+      "titulo": "“Estamos a criar o país do salário mínimo nacional”",
+      "fonte_nome": "Renascença",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPRlFiVTJQVVR0dXlsQmpUaExfZlhvM2RIYlBtRzRXT2dUdWVIZFBSTkZqVnBHWS1SSHR0U1c5ZE9YeF81TFRMU2dTaEp0bDJHTU84Ym1tTDZuRWN6OURXRml6eERFcFdQTEtKWE5TeGg3eFd0d1Q5bXlZUWU1Qm0yZ00tU09fbDVaaG54MTV2dC13ZzB0eC1laTA2emNpUWlQ0gGmAUFVX3lxTE0zcjNCQjVCNmVETVdUWnJqRG5LbmhDUHlUU3pVWGVtenEtMGdOLXFHVGNYMVlJQUg0LXZNRzVJQi1aa0d6X0dOY0kyc0NPYlItRWxvTlpKT0dwVzZ5MklwcDFWT3h5WHJ4ZjU0Rm1KRXZfekNNQ25QOVVwMXhodnYwR3RPUmk4M083b19Pc1BydV9oSUxpd3dMMEVwbmdqdEdEYUp2QWc?oc=5",
+      "resumo": "“Estamos a criar o país do salário mínimo nacional” Renascença",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-09-21",
       "titulo": "Número de casais desempregados com recuo homólogo de 11% em agosto, de acordo com IEFP",
       "fonte_nome": "Now Canal",
