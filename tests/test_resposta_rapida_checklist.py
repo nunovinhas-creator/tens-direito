@@ -69,7 +69,7 @@ MARCADOR_FAQ_POR_PAGINA = {
     "rsi.html": "Dúvidas frequentes",
     "cuidador-informal.html": "Dúvidas frequentes",
     "prestacao-social-unica.html": "Dúvidas frequentes sobre a PSU",
-    "prestacao-social-para-a-inclusao.html": "10. Perguntas frequentes",
+    "prestacao-social-para-a-inclusao.html": "12. Perguntas frequentes",
     "amim.html": "14. Perguntas frequentes",
     "amim-beneficios-fiscais.html": "Perguntas frequentes",
     "cartao-europeu-estacionamento.html": "Perguntas frequentes",
