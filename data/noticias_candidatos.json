@@ -1,86 +1,5 @@
 [
   {
-    "data": "2026-09-09",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 13,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 14
-    },
-    "candidatos": [
-      {
-        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - leak.pt",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-09",
-        "score": 5,
-        "decisao": "vencedor",
-        "motivo": "score=5, categoria=apoios"
-      },
-      {
-        "titulo": "Podes receber este apoio da Segurança Social para rendimentos mais baixos desde que cumpras estes critérios - Magazine.HD",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-08",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - leak.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-09-05",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - leak.pt",
-        "feed_nome": "psu_pensoes",
-        "score": 5
-      }
-    ]
-  },
-  {
     "data": "2026-09-10",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2319,6 +2238,148 @@
       },
       {
         "titulo": "“Estamos a criar o país do salário mínimo nacional” - Renascença",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-09-24",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 12,
+      "cuidador_informal": 13,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 12,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS - A voz do Algarve",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-22",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-22"
+      },
+      {
+        "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto - Seia Digital",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-23",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=educacao"
+      },
+      {
+        "titulo": "Cuidar de alguém com demência: os apoios que existem e onde pedir ajuda - foreveryoung.sapo.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-09-18",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-18"
+      },
+      {
+        "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 - cnnportugal.iol.pt",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-24",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "“Estamos a criar o país do salário mínimo nacional” - rr.pt",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - Leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-22",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-05"
+      },
+      {
+        "titulo": "Odemira investe 4,7 milhões de euros na ação social escolar e nas famílias - Alentejo Ilustrado",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-21",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Prisão preventiva para homem que fingia ser cuidador informal para burlar idosos - TV RECORD Europa",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-09-23",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Governo aprova suplemento extraordinário para pensionistas - dnoticias.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-17",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "As propostas dos presidenciáveis para a Previdência impactam quem está em Portugal? Confirme aqui! - DN Brasil",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-23",
+        "score": -1,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto - Seia Digital",
+        "feed_nome": "acao_social_escolar",
+        "score": 2
+      },
+      {
+        "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 - cnnportugal.iol.pt",
         "feed_nome": "salario_minimo",
         "score": 1
       }

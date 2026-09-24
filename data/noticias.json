@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-24",
+      "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970",
+      "fonte_nome": "cnnportugal.iol.pt",
+      "url": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxQbzNGNUtYV25GRmp0ZF81S2JCeERDM2RqOFdpWG00V0VCRUNjS0F3c3BSZERMQWNEZFl0dDVGVjBBOXFITDJ2MVg2SG5jbWdVR0lSQmJCUE5iM0ZZTEEyYk16M0hjU0pzaGNWcUxQS1Q4SGpKSXlMRTQyTjJaMTJUalc1Ym5vQUJ4azR5dEJPNjFiRWxIVlVIdy1TcnlwUlBONDJGRnFVNXN6aUNEZlAxYWZmS3M5M3dwZm5lSUxMLWgtaGNId2MxTVE1dDBhVEozdldTZDNLWENGUGhTVGktQ0lIRjVxVTRZX25PMDFxVDg5b1ZMLUhWcXhUYzFvakI2djJlendmRkhlVE0?oc=5",
+      "resumo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 cnnportugal.iol.pt",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-23",
+      "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto",
+      "fonte_nome": "Seia Digital",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQTEd4T0doa1JBWkJCMFZaOXY1dzRhNzFGVk03LWE5dXRtUHo1dFdjZHM3Wkx0VlNWMkdBSkpfR3M2eHFqMXg1cHJoOEI5TVVmaG5RdnVEZDA0LXhqQTMyLU1sYmRacHZEalNOalItZlg5enI3eDR2UnpXNEpDcktlZVJkX0ExWDAtNUpwc3dGNllMZm5YLVNwLXVwWjJkOHdX?oc=5",
+      "resumo": "Câmara de Seia aprova apoios para ação social, escolas e desporto Seia Digital",
+      "categoria": "educacao",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-09-22",
       "titulo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS",
       "fonte_nome": "A voz do Algarve",
