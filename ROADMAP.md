@@ -114,12 +114,11 @@ pagamento** — 5 a 7 avisos por mês, medido em julho-setembro de 2026
 Toda a Issue `canal-rascunho` passa a ser atribuída ao Nuno e a
 mencioná-lo, para chegar por email.
 
-**Pendente — aprovação do Nuno**: a frase do convite "Avisamos só
-quando uma regra muda a sério" (em `index.html` e nos artigos com o
-bloco `<!-- CANAL WHATSAPP -->` — `grep -l "Avisamos só quando uma
-regra muda a sério" *.html`) deixa de descrever o canal com os avisos
-de véspera. Texto novo proposto na sessão de 2026-09-25, por aprovar —
-nunca alterar as páginas sem essa aprovação.
+**Convite do canal actualizado (2026-09-25, aprovado pelo Nuno)**: "Avisamos
+na véspera de cada pagamento da Segurança Social e quando uma regra
+muda a sério" em todas as páginas com o bloco `<!-- CANAL WHATSAPP -->`;
+na homepage, a abertura passou a "Sabe primeiro quando cai cada
+pagamento e quando os apoios mudarem".
 
 **Preparação automática do rascunho — implementada (2026-08-31), com
 um caminho automático novo para o gatilho 1 (1b — sem esperar pela

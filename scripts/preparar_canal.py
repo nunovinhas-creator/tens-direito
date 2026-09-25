@@ -63,7 +63,8 @@ o reabrir.
    já existe no site (resposta rápida, ou a resposta directa do topo
    da página) — nunca escrita aqui. Prestação sem página no site
    (`VISTA_PRESTACOES` de atualizar_calendario.py sem URL) fica só com
-   o nome, e a mensagem termina sempre com o link do calendário.
+   o nome, e a mensagem termina sempre com o link do calendário. O mesmo
+   para as prestações em `EXCLUSOES_DESCRICAO` (lista explícita).
    Estado em data/canal_estado.json (`avisos_pagamento_entregues`, datas
    de pagamento já avisadas) — nunca repete o mesmo dia. Nunca é
    adiado por colisão: um aviso de pagamento no dia seguinte já não
@@ -330,6 +331,18 @@ DIAS_SEMANA_PT = [
 # — nunca voltam a ser elegíveis de qualquer forma (já passaram).
 RETENCAO_AVISOS_DIAS = 60
 
+# Prestações que, no aviso de véspera, ficam só com o nome (sem descrição
+# nem link), tal como as que não têm página — decisão editorial explícita,
+# nunca por detecção de texto. Cada entrada tem de ser uma prestação que
+# TEM página em VISTA_PRESTACOES; senão está órfã e
+# tests/test_canal_aviso_pagamento.py falha.
+EXCLUSOES_DESCRICAO = {
+    # O resumo do topo de apoio-extraordinario-renda.html é sobre quem já
+    # NÃO se pode candidatar ("ver condições completas abaixo") — lê-se
+    # mal num aviso de pagamento a quem já recebe (Nuno, 2026-09-25).
+    "apoio_renda": "resumo da página é sobre candidaturas fechadas, não sobre o pagamento",
+}
+
 
 def _domingo_de_pascoa(ano: int) -> dt.date:
     # Algoritmo anónimo gregoriano (Meeus/Jones/Butcher).
@@ -441,7 +454,9 @@ def descricao_da_pagina(raiz: Path, url: str) -> str | None:
 
 
 def paginas_da_prestacao(slug: str) -> list[tuple[str, str]]:
-    """[(nome, url)] das páginas do site que cobrem a prestação."""
+    """[(nome, url)] das páginas do site que cobrem a prestação (vazio se excluída)."""
+    if slug in EXCLUSOES_DESCRICAO:
+        return []
     return [(nome, url) for _a, nome, slugs, url in VISTA_PRESTACOES if slug in slugs and url]
 
 

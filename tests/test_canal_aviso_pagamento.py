@@ -20,7 +20,9 @@ RAIZ = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
 from atualizar_calendario import VISTA_PRESTACOES  # noqa: E402
+from atualizar_calendario import PRESTACOES  # noqa: E402
 from preparar_canal import (  # noqa: E402
+    EXCLUSOES_DESCRICAO,
     URL_CALENDARIO,
     aviso_pagamento_devido,
     calendario_devido,
@@ -221,6 +223,25 @@ def test_prestacao_com_pagina_leva_descricao_e_link(tmp_path):
     (tmp_path / "rsi.html").write_text(_PAGINA_DIRECTA, encoding="utf-8")
     texto = formatar_aviso_pagamento(tmp_path, D(2026, 9, 22), D(2026, 9, 23), ["rsi"])
     assert "  Pago pela Segurança Social durante a licença.\n  https://tensdireito.com/rsi.html" in texto
+
+
+def test_apoio_a_renda_fica_so_com_o_nome_por_exclusao_explicita(tmp_path):
+    (tmp_path / "apoio-extraordinario-renda.html").write_text(_PAGINA_DIRECTA, encoding="utf-8")
+    texto = formatar_aviso_pagamento(tmp_path, D(2026, 9, 4), D(2026, 9, 7), ["apoio_renda"])
+    linhas = texto.splitlines()
+    i = linhas.index("• Apoio extraordinário à renda")
+    assert linhas[i + 1] == ""
+    assert "Pago pela" not in texto and "apoio-extraordinario-renda.html" not in texto
+    assert texto.count("https://") == 1
+
+
+@pytest.mark.parametrize("slug", sorted(EXCLUSOES_DESCRICAO))
+def test_exclusao_de_descricao_nunca_orfa(slug):
+    # Órfã = prestação que já não existe, ou que já não tem página (a
+    # exclusão deixaria de fazer alguma coisa).
+    assert slug in PRESTACOES
+    assert any(slug in slugs and url for _a, _n, slugs, url in VISTA_PRESTACOES)
+    assert EXCLUSOES_DESCRICAO[slug].strip()
 
 
 @pytest.mark.parametrize("url", sorted({u for *_x, u in VISTA_PRESTACOES if u}))

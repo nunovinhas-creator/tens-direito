@@ -3409,10 +3409,13 @@ Quando (e se) links de afiliados forem introduzidos:
 
 O convite ao canal (bloco `<!-- CANAL WHATSAPP -->` em `index.html` +
 nos artigos de maior tráfego — contagem real é sempre `grep -l
-"Avisamos só quando uma regra muda a sério" *.html` menos `index.html`,
+"Avisamos na véspera de cada pagamento" *.html` menos `index.html`,
 nunca fixada aqui; PR #140, 2026-08-30, acrescentou os primeiros)
-promete ao leitor: **"Avisamos só quando uma regra muda a sério — sem
-grupo, sem responderes a nada."** A partir do 1.º seguidor essa frase é
+promete ao leitor: **"Avisamos na véspera de cada pagamento da
+Segurança Social e quando uma regra muda a sério — sem grupo, sem
+responderes a nada."** (texto actualizado a 2026-09-25, com os avisos
+de véspera — antes: "Avisamos só quando uma regra muda a sério").
+A partir do 1.º seguidor essa frase é
 uma obrigação editorial, não só copy — sem um critério explícito do que
 justifica um post, o canal morre por omissão, o mesmo padrão de páginas
 que ficaram indefinidamente "à espera de um despacho" sem ninguém a
@@ -3503,10 +3506,8 @@ um texto inventado pela automação, nunca publicado sozinho.
   é sobre o conteúdo, não sobre ter periodicidade — as datas de
   pagamento são informação nova e verificada todos os meses (datas
   reais, nunca um "continuamos aqui"), a única excepção deliberada a
-  "sem cadência prometida" nesta secção. **Consequência para o convite
-  do canal**: com os avisos de véspera, a frase "avisamos só quando uma
-  regra muda a sério" deixa de descrever o canal — texto novo por
-  aprovar pelo Nuno (ver `ROADMAP.md` → "Canal de WhatsApp").
+  "sem cadência prometida" nesta secção. O convite do canal promete
+  explicitamente os avisos de véspera desde 2026-09-25.
 
 ### Quando não há nada para publicar: nada
 
@@ -3608,7 +3609,11 @@ prestação é a 1.ª frase da resposta rápida (`.resposta-rapida-texto`)
 ou, sem ela, da resposta directa do topo (`.resposta-direta`) da página
 ligada em `VISTA_PRESTACOES` (`scripts/atualizar_calendario.py`) —
 nunca texto escrito no script; prestação sem página fica só com o nome,
-e a mensagem termina sempre com o link do calendário.
+e a mensagem termina sempre com o link do calendário. Excepção
+editorial explícita, nunca por detecção de texto: `EXCLUSOES_DESCRICAO`
+(hoje só `apoio_renda` — o resumo da página é sobre candidaturas
+fechadas) fica também só com o nome; uma entrada órfã (prestação
+inexistente ou sem página) faz o teste falhar.
 `tests/test_canal_aviso_pagamento.py::test_todas_as_paginas_reais_do_calendario_tem_descricao`
 falha se uma página reestruturada deixar de ter esse bloco.
 
