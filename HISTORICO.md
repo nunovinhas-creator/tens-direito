@@ -6567,4 +6567,69 @@ explicitamente pelo utilizador nesta sessão.
 
 ---
 
+*Última revisão: 2026-09-25 — SEO das páginas da PSI (#241) e do Abono
+de Família (#243), alinhadas com consultas reais do Search Console.*
+
+Hipótese comum às duas: as páginas já aparecem para as consultas certas,
+mas com CTR baixo (abono: 0,7%) — problema de correspondência e
+apresentação, não de conteúdo. Nenhum facto novo: todos os valores
+novos no texto já constavam das páginas (e, no abono, de
+`dados/parametros.json`).
+
+**PSI — `prestacao-social-para-a-inclusao.html` (#241).** Sem mexer em
+URL nem `<title>`: nova subsecção "Quanto recebe uma pessoa com 80% de
+incapacidade em 2026?"; secção 3 → "Valores da PSI em 2026: quanto
+recebe e retroativos"; "Retroativos a janeiro" → "A PSI de 2026 tem
+retroativos?"; novas secções "O que mudou na PSI em 2026?" e "PSI e
+AMIM: qual é a relação?"; FAQ nova sobre 80% (visível + `FAQPage`).
+Secções renumeradas (âncoras por `id` inalteradas);
+`tests/test_resposta_rapida_checklist.py` passou a localizar o FAQ por
+`id="faq"` nas páginas com secções numeradas (PSI e AMIM), para nunca
+depender da numeração.
+
+**Abono — `abono-de-familia.html` (#243).** URL e H1 intactos; tabela
+dos três IAS, majorações, Garantia para a Infância e convite do canal
+não tocados.
+- `<title>` "Abono de Família 2026: até 190,98 €, escalões e como
+  pedir"; description "Até 190,98 €/mês em 2026. Valores por escalão,
+  quem tem direito, pagamento a dobrar em setembro e como pedir na
+  Segurança Social Direta."; `og:*`/`headline` não mudaram (não
+  repetiam o title antigo — sem regenerar a imagem og).
+- Headings em forma de pergunta/consulta ("Quanto é…", "Escalões…",
+  "Quem tem direito…", "Como pedir…") com frase de abertura; tabela
+  simples de limites para pedidos novos em 2026 antes da tabela dos
+  três cenários; CTA para `/simulador-abono.html`; 3 FAQ novas (1.º
+  escalão, 2.º escalão, setembro), visíveis + `FAQPage`.
+- Nova secção `#setembro` ("Abono de Família em setembro de 2026") como
+  sítio único do pagamento a dobrar; a nota da tabela e "Quando é pago"
+  passaram a ligar para ela.
+- Fica de fora, por não se confirmar: "Como saber o meu escalão" (a
+  consulta do escalão/comprovativo na Segurança Social Direta só é
+  afirmada em `acao-social-escolar.html` — o próprio site nunca é
+  fonte, regra 13).
+- Vigência: a secção de setembro é exposta por `verificar_datas.py` em
+  jan./jul./ago./set. de 2027 (simulado); em outubro de 2026 não —
+  `verificar_datas.py` só expõe anos anteriores ao corrente. Revisão
+  de outubro é manual.
+- Canário novo `test_abono_title_bate_com_tabela_do_artigo_e_com_o_yaml`
+  (`tests/test_valores_ancora.py`): o € do `<title>` tem de ser
+  `escalao1_valor_ate_36_meses` de `dados/parametros.json` e estar na
+  tabela do corpo — fecha a lacuna da regra 11 (o title já citava
+  190,98 € antes sem teste). Provado a falhar com o title adulterado
+  (`[199.98] == [190.98]`) e com o JSON divergente (`[190.98] ==
+  [195.5]`). O canário da description ficou na versão original.
+
+Consultas a medir no Search Console (abono): A (valores) — valor abono
+familia 2026 · abonos de família 2026 valores · valor abono 2 escalão
+2026; B (escalões) — escalões abono · escalões abono de família · 1
+escalão abono · 2 escalão abono; C (setembro) — abono setembro 2026 ·
+abono familia setembro 2026 · abono dobrado em setembro; D
+(transaccional) — pedir abono de familia · simulador para calcular
+abono de família 2026.
+
+Trabalho do abono feito na branch `claude/abono-seo-2026`, pedida
+explicitamente pelo utilizador nesta sessão.
+
+---
+
 *Última revisão automática: 2026-09-24*

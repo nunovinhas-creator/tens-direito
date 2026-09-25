@@ -299,6 +299,18 @@ def test_abono_meta_description_bate_com_tabela_do_artigo():
     assert "<td><strong>190,98 €</strong></td>" in html, "valor da tabela do 1.º escalão não encontrado no corpo"
 
 
+def test_abono_title_bate_com_tabela_do_artigo_e_com_o_yaml():
+    """O <title> cita 190,98 € desde 2026-09-25 (PR #243). Tem de ser o valor
+    do 1.º escalão até 36 meses, igual à tabela do corpo e a
+    dados/parametros.json — quando a Portaria mudar, o title não fica para trás."""
+    html = _ler("abono-de-familia.html")
+    title = _title("abono-de-familia.html")
+    valor = _param_abono("escalao1_valor_ate_36_meses")
+    assert _valores_eur(title) == [valor], title
+    celula = f"<td><strong>{valor:.2f} €</strong></td>".replace(".", ",")
+    assert celula in html, f"valor {valor} do YAML não encontrado na tabela do corpo"
+
+
 # ── Garantia para a Infância — canário entre garantia-para-a-infancia.html
 # e dados/parametros.json (sessão "Garantia para a Infância", 2026-09-02).
 # O valor mensal (127,33 €) e o diferencial (52,20 € = 127,33 € - 75,13 €)
