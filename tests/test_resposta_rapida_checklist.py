@@ -58,6 +58,8 @@ PAGINAS_ALVO = [
 # tem essa secção visível (FAQ só existe como JSON-LD), por isso o
 # checklist foi colocado antes de RELACIONADOS (fim do corpo do artigo),
 # nunca inventando uma secção que a página não tem.
+# Páginas com secções numeradas ("12. Perguntas frequentes") são localizadas
+# pelo id da secção, para o teste não partir quando a numeração muda.
 MARCADOR_FAQ_POR_PAGINA = {
     "baixa-medica-subsidio-doenca.html": "Dúvidas frequentes",
     "acao-social-escolar.html": "Dúvidas frequentes",
@@ -69,8 +71,8 @@ MARCADOR_FAQ_POR_PAGINA = {
     "rsi.html": "Dúvidas frequentes",
     "cuidador-informal.html": "Dúvidas frequentes",
     "prestacao-social-unica.html": "Dúvidas frequentes sobre a PSU",
-    "prestacao-social-para-a-inclusao.html": "10. Perguntas frequentes",
-    "amim.html": "14. Perguntas frequentes",
+    "prestacao-social-para-a-inclusao.html": 'id="faq"',
+    "amim.html": 'id="faq"',
     "amim-beneficios-fiscais.html": "Perguntas frequentes",
     "cartao-europeu-estacionamento.html": "Perguntas frequentes",
 }
