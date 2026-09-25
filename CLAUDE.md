@@ -28,7 +28,7 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
 - `dados/parametros.json` — consolidado dos parâmetros legais (Fase 2 de "DADOS ABERTOS"), gerado por `scripts/gerar_parametros_json.py` a partir de `dados/parametros/*.yaml` (esses YAML continuam curados manualmente, nunca escritos pelo pipeline)
 - `dados/tensdireito.db` — base SQLite pública (Fase 3 de "DADOS ABERTOS"), gerada por `scripts/gerar_base_dados.py`
 - `data/canal_pendente.json` — fila de rascunhos por entregar ao canal de WhatsApp (gatilho de alteração legal); o pipeline só CONSOME (remove a entrada mais antiga entregue) — quem a preenche é sempre uma sessão editorial manual, nunca o pipeline (ver secção "CANAL DE WHATSAPP")
-- `data/canal_estado.json` — estado do mecanismo do canal (último rascunho entregue, último mês do calendário publicado), escrito por `scripts/preparar_canal.py` (ver secção "CANAL DE WHATSAPP")
+- `data/canal_estado.json` — estado do mecanismo do canal (último rascunho entregue, último mês do calendário publicado, dias de pagamento já avisados na véspera), escrito por `scripts/preparar_canal.py` (ver secção "CANAL DE WHATSAPP")
 
 **TODOS os outros HTML são manuais e protegidos.**
 Esta regra aplica-se a páginas actuais E futuras.
@@ -3409,10 +3409,13 @@ Quando (e se) links de afiliados forem introduzidos:
 
 O convite ao canal (bloco `<!-- CANAL WHATSAPP -->` em `index.html` +
 nos artigos de maior tráfego — contagem real é sempre `grep -l
-"Avisamos só quando uma regra muda a sério" *.html` menos `index.html`,
+"Avisamos na véspera de cada pagamento" *.html` menos `index.html`,
 nunca fixada aqui; PR #140, 2026-08-30, acrescentou os primeiros)
-promete ao leitor: **"Avisamos só quando uma regra muda a sério — sem
-grupo, sem responderes a nada."** A partir do 1.º seguidor essa frase é
+promete ao leitor: **"Avisamos na véspera de cada pagamento da
+Segurança Social e quando uma regra muda a sério — sem grupo, sem
+responderes a nada."** (texto actualizado a 2026-09-25, com os avisos
+de véspera — antes: "Avisamos só quando uma regra muda a sério").
+A partir do 1.º seguidor essa frase é
 uma obrigação editorial, não só copy — sem um critério explícito do que
 justifica um post, o canal morre por omissão, o mesmo padrão de páginas
 que ficaram indefinidamente "à espera de um despacho" sem ninguém a
@@ -3466,10 +3469,9 @@ um texto inventado pela automação, nunca publicado sozinho.
    n.º 36/2026 — todas já documentadas nas respectivas entradas de
    revisão em `HISTORICO.md`.
 3. **Calendário de pagamentos da Segurança Social, uma vez por mês** —
-   no primeiro dia útil do mês (simplificado a segunda-sexta, sem
-   calendário de feriados portugueses — limitação conhecida, ver
-   "Mecanismo"), com as datas confirmadas do **mês inteiro**, nunca um
-   aviso por cada dia de pagamento. Categoria diferente dos pontos 1-2:
+   no primeiro dia útil do mês (segunda a sexta, excepto feriados
+   obrigatórios do art. 234.º do Código do Trabalho), com as datas
+   confirmadas do **mês inteiro**. Categoria diferente dos pontos 1-2:
    não depende de um veredicto humano sobre "isto é uma alteração
    real?" — é a mesma informação já verificada de
    `calendario-pagamentos-seguranca-social.html`/
@@ -3477,6 +3479,14 @@ um texto inventado pela automação, nunca publicado sozinho.
    meses e não tem forma prática de saber sem visitar o site. Só
    dispara quando o mês corrente já está confirmado nos dados (nunca
    inventa um mês por publicar) e nunca duas vezes no mesmo mês.
+4. **Aviso na véspera de cada dia de pagamento** (decisão do Nuno,
+   2026-09-25 — antes era só a mensagem mensal do ponto 3, que se
+   mantém): no dia útil anterior a cada dia de pagamento de
+   `data/calendario_pagamentos.json`, uma mensagem "Amanhã (dia X), a
+   Segurança Social paga: …" com todas as prestações desse dia. Volume
+   medido em julho-setembro de 2026: **5 a 7 mensagens por mês** (7, 5
+   e 7 dias de pagamento distintos), mais a mensal. Mesma categoria do
+   ponto 3 — informação já verificada, sem veredicto humano.
 
 ### Não se publica
 
@@ -3491,12 +3501,13 @@ um texto inventado pela automação, nunca publicado sozinho.
 - Por **cadência** — nunca publicar um lembrete só porque passou tempo
   desde a última mensagem (ex.: um "ainda aqui!" mensal). O canal não
   promete cadência nenhuma; inventar uma quebraria a promessa "avisamos
-  só quando", não a cumpriria. **Não confundir com o ponto 3 de "Publica-
-  se quando" (calendário de pagamentos)**: a distinção é sobre o
-  conteúdo, não sobre ter periodicidade — o calendário de pagamentos é
-  informação nova e verificada todos os meses (datas reais, nunca um
-  "continuamos aqui"), a única excepção deliberada a "sem cadência
-  prometida" nesta secção.
+  só quando", não a cumpriria. **Não confundir com os pontos 3 e 4 de
+  "Publica-se quando" (calendário e avisos de pagamento)**: a distinção
+  é sobre o conteúdo, não sobre ter periodicidade — as datas de
+  pagamento são informação nova e verificada todos os meses (datas
+  reais, nunca um "continuamos aqui"), a única excepção deliberada a
+  "sem cadência prometida" nesta secção. O convite do canal promete
+  explicitamente os avisos de véspera desde 2026-09-25.
 
 ### Quando não há nada para publicar: nada
 
@@ -3513,8 +3524,8 @@ canal.
 Substitui o mecanismo anterior (só texto na checklist das Issues dos
 sentinelas, nunca um rascunho de facto) por uma preparação real, mas
 sempre parada um passo antes de publicar. Cobre o gatilho 1 (alteração
-legal — em duas variantes, 1a/1b, ver abaixo) e o gatilho 3
-(calendário) da secção anterior — o gatilho de "notícia relevante"
+legal — em duas variantes, 1a/1b, ver abaixo), o gatilho 3
+(calendário mensal) e o gatilho 4 (aviso na véspera) da secção anterior — o gatilho de "notícia relevante"
 ficou deliberadamente por construir (ver `ROADMAP.md` → "À espera de um
 sinal" → "Canal de WhatsApp" para a medição real de agosto de 2026 e a
 razão).
@@ -3578,14 +3589,41 @@ slot diário, fica por rascunhar e continua elegível no dia seguinte
 **Gatilho 3 — `data/calendario_pagamentos.json`, `confirmado: true`**:
 sem fila manual, gerado directamente (já é fonte verificada).
 `calendario_devido()` só dispara quando (a) o mês corrente já está no
-JSON, (b) hoje é dia útil (seg-sex — sem calendário de feriados,
-limitação conhecida, nunca escondida) e (c) o mês ainda não foi
-entregue este mês (`data/canal_estado.json["ultimo_calendario_publicado"]`).
+JSON, (b) hoje é dia útil (`e_dia_util()` — seg-sex, excepto os
+feriados obrigatórios do art. 234.º do Código do Trabalho, calculados
+por `feriados_nacionais()`, Páscoa incluída; Carnaval e feriados
+municipais não contam) e (c) o mês ainda não foi entregue este mês
+(`data/canal_estado.json["ultimo_calendario_publicado"]`).
+
+**Gatilho 4 — aviso na véspera, `confirmado: true`** (2026-09-25):
+`aviso_pagamento_devido()` devolve o dia de pagamento mais próximo com
+`vespera_util(dia) <= hoje < dia` ainda não avisado
+(`data/canal_estado.json["avisos_pagamento_entregues"]`, datas ISO,
+limpas ao fim de 60 dias). `<=` e não `==`: se a corrida da véspera
+falhar, a do dia seguinte ainda antes do pagamento recupera o aviso; no
+próprio dia do pagamento, nunca (chegaria tarde — o pipeline arranca
+perto do meio-dia UTC). Pagamento à segunda → aviso na sexta, e o texto
+diz "Segunda-feira (dia X)", nunca "Amanhã". Entradas do mesmo dia
+(métodos diferentes) fundidas numa só mensagem. A descrição de cada
+prestação é a 1.ª frase da resposta rápida (`.resposta-rapida-texto`)
+ou, sem ela, da resposta directa do topo (`.resposta-direta`) da página
+ligada em `VISTA_PRESTACOES` (`scripts/atualizar_calendario.py`) —
+nunca texto escrito no script; prestação sem página fica só com o nome,
+e a mensagem termina sempre com o link do calendário. Excepção
+editorial explícita, nunca por detecção de texto: `EXCLUSOES_DESCRICAO`
+(hoje só `apoio_renda` — o resumo da página é sobre candidaturas
+fechadas) fica também só com o nome; uma entrada órfã (prestação
+inexistente ou sem página) faz o teste falhar.
+`tests/test_canal_aviso_pagamento.py::test_todas_as_paginas_reais_do_calendario_tem_descricao`
+falha se uma página reestruturada deixar de ter esse bloco.
 
 **Prioridade e volume**: `scripts/preparar_canal.py::main()` tenta
 sempre 1a primeiro; só se a fila estiver vazia tenta 1b (sentinela);
 só se nenhum sentinela tiver sinal novo tenta 3 (calendário). Nunca
-mais de 1 rascunho/dia, qualquer que seja a origem. Numa colisão
+mais de 1 rascunho/dia destes três. O aviso de véspera (4) fica fora
+desta prioridade: **nunca é adiado** (no dia seguinte já não serve) —
+quando coincide com outro rascunho, os dois vão na mesma Issue, em
+blocos separados. Numa colisão
 (mais do que uma origem pendente no mesmo dia), a(s) de prioridade mais
 baixa não são descartadas — `calendario_devido()` continua a devolver o
 mês enquanto não for marcado como entregue, e um sentinela por
@@ -3601,10 +3639,16 @@ quando este step corre): corre `scripts/preparar_canal.py`, que escreve
 commitado) quando há algo a publicar, e actualiza
 `data/canal_pendente.json`/`data/canal_estado.json` (commitados como
 qualquer outro ficheiro em `data/`). Um step mais abaixo ("Criar Issue
-do rascunho do canal") lê esse ficheiro e, se existir, cria uma Issue
-com o texto num bloco de código, label `canal-rascunho`, e a nota
-explícita "o texto final e a decisão de publicar são sempre tuas".
-Título e corpo variam com `rascunho.confirmado`: `true` → `📱 Canal —
+do rascunho do canal") lê esse ficheiro e, se existir, cria UMA Issue
+com um bloco de código por rascunho do dia (`blocos`), label
+`canal-rascunho`, e a nota explícita "o texto final e a decisão de
+publicar são sempre tuas". **Toda a Issue `canal-rascunho` é atribuída
+a `nunovinhas-creator` e menciona-o na 1.ª linha do corpo** (2026-09-25)
+— é isso que garante o email ("participating"), sem depender de ele
+estar a seguir o repositório; testado correndo o JavaScript real do
+step em Node (`tests/test_canal_aviso_pagamento.py`). Título e corpo
+variam com `confirmado` (basta um bloco `false` para a Issue inteira
+ficar "por confirmar"): `true` → `📱 Canal —
 <título> (<data>)`, corpo directo ao texto; `false` → `⚠️ Canal (por
 confirmar) — <título> (<data>)`, label extra `verificar`, e o bloco de
 aviso "NÃO PUBLICAR AINDA" logo a seguir ao título da Issue, antes de

@@ -6519,4 +6519,52 @@ ilt0fi`).
 
 ---
 
+*Última revisão: 2026-09-25 — canal de WhatsApp: aviso na véspera de
+cada dia de pagamento + email das Issues `canal-rascunho`.*
+
+Diagnóstico prévio (mesma data, sem commits): o mecanismo de #144/#145
+funcionava — 1 Issue `canal-rascunho` até hoje (#146, calendário de
+setembro, 01/09) —, mas nenhuma Issue tinha assignee nem menção, por
+isso o email dependia das definições de "watch" do Nuno.
+
+Alterações:
+- `pipeline-diario.yml`, Step 7h: `assignees: ['nunovinhas-creator']` e
+  `@nunovinhas-creator` na 1.ª linha do corpo, em TODAS as Issues
+  `canal-rascunho`; o step passa a ler `blocos` e cria uma só Issue com
+  um bloco de código por rascunho do dia.
+- `scripts/preparar_canal.py`: gatilho 4, aviso na véspera útil de cada
+  dia de pagamento (várias prestações = uma mensagem; descrição = 1.ª
+  frase da resposta rápida/resposta directa da página ligada em
+  `VISTA_PRESTACOES`, nunca escrita no script; estado em
+  `canal_estado.json["avisos_pagamento_entregues"]`). Nunca adiado por
+  colisão. "Dia útil" passa a excluir os feriados obrigatórios do art.
+  234.º do Código do Trabalho (lista confirmada por pesquisa nesta
+  sessão; Páscoa calculada) — também no calendário mensal, que antes só
+  excluía fins-de-semana (em dezembro de 2026 teria saído num feriado,
+  1/12).
+- Mensagem mensal do 1.º dia útil mantida.
+- `tests/test_canal_aviso_pagamento.py` (novo): feriados, véspera
+  (segunda→sexta, 5 de outubro, Sexta-Feira Santa, Natal), agrupamento,
+  não repetição, colisões, prestação sem página, descrição presente em
+  todas as páginas reais, e o JavaScript real do Step 7h corrido em
+  Node com o GitHub simulado (assignee, menção, blocos separados, aviso
+  "NÃO PUBLICAR AINDA" antes de qualquer texto). 14 mutações ao código
+  real, uma de cada vez — todas apanhadas por pelo menos um teste.
+
+Por decidir (Nuno): texto novo do convite do canal — "Avisamos só
+quando uma regra muda a sério" deixa de ser verdade. Proposta feita na
+sessão, nenhuma página alterada.
+
+Notas para revisão editorial dos rascunhos: a 1.ª frase da resposta
+directa de `apoio-extraordinario-renda.html` é sobre quem NÃO se pode
+candidatar e termina em "ver condições completas abaixo" — lida mal
+numa mensagem de pagamento; e o outubro de 2026 ainda não estava em
+`data/calendario_pagamentos.json` à data desta sessão (execução do dia
+25 do `calendario-mensal.yml` ainda por correr).
+
+Trabalho feito na branch `claude/canal-pagamentos-diarios`, pedida
+explicitamente pelo utilizador nesta sessão.
+
+---
+
 *Última revisão automática: 2026-09-24*

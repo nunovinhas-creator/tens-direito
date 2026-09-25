@@ -825,9 +825,10 @@ jobs:
         run: python3 scripts/atualizar_claude_md.py
 
       # ── Step 6b2: Preparar rascunho do canal de WhatsApp ─────────────────────
-      # Dois gatilhos apenas — alteração legal confirmada (fila manual
-      # data/canal_pendente.json, preenchida por sessões editoriais, nunca
-      # por esta automação) e calendário mensal de pagamentos (gerado de
+      # Gatilhos: alteração legal (fila manual data/canal_pendente.json,
+      # preenchida por sessões editoriais, ou sentinela dirigido "por
+      # confirmar"), calendário mensal de pagamentos e aviso na véspera de
+      # cada dia de pagamento (ambos gerados de
       # data/calendario_pagamentos.json, já verificado). O gatilho de
       # "notícia relevante" ficou deliberadamente por construir — ver
       # ROADMAP.md → "À espera de um sinal" → "Canal de WhatsApp" para a
@@ -983,20 +984,29 @@ jobs:
       # workflow — protege contra uma corrida repetida no mesmo dia
       # (workflow_dispatch manual) duplicar a Issue.
       #
-      # `rascunho.confirmado` distingue as duas origens possíveis do
-      # gatilho 1 (ver scripts/preparar_canal.py → "1a"/"1b"): `true` vem
-      # da fila manual `data/canal_pendente.json` (já confirmado por uma
-      # sessão editorial) ou do calendário (já verificado, sem julgamento
-      # por fazer); `false` vem directamente de um dos 5 sentinelas
-      # dirigidos, SEM verificação humana nenhuma ainda — o aviso "NÃO
-      # PUBLICAR AINDA" abaixo é obrigatório e tem de aparecer ANTES do
-      # texto, nunca só como nota de rodapé.
+      # O ficheiro traz `blocos` — um por rascunho do dia (gatilho 1/3 e,
+      # quando há, o aviso de pagamento da véspera, que nunca é adiado) —
+      # e o step cria UMA só Issue com todos, em blocos separados.
+      #
+      # `bloco.confirmado` distingue as duas origens possíveis do gatilho
+      # 1 (ver scripts/preparar_canal.py → "1a"/"1b"): `true` vem da fila
+      # manual `data/canal_pendente.json` (já confirmado por uma sessão
+      # editorial) ou do calendário (já verificado, sem julgamento por
+      # fazer); `false` vem directamente de um dos sentinelas dirigidos,
+      # SEM verificação humana nenhuma ainda — o aviso "NÃO PUBLICAR
+      # AINDA" é obrigatório e aparece logo a seguir à menção, ANTES de
+      # qualquer texto, nunca só como nota de rodapé.
+      #
+      # Toda a Issue canal-rascunho é atribuída ao Nuno e menciona-o na
+      # 1.ª linha — é o que garante a notificação por email ("participating"),
+      # independentemente de ele estar a seguir o repositório ou não.
       - name: Criar Issue do rascunho do canal (se houver algo a publicar)
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
             const caminho = '/tmp/canal_rascunho_hoje.json';
+            const RESPONSAVEL = 'nunovinhas-creator';
             if (!fs.existsSync(caminho)) {
               console.log('Sem rascunho para o canal hoje — nada a fazer.');
               return;
@@ -1009,21 +1019,24 @@ jobs:
               console.log(`AVISO: /tmp/canal_rascunho_hoje.json malformado (${e}) — a ignorar.`);
               return;
             }
-            if (!rascunho || !rascunho.texto) {
+            // Ficheiro sem `blocos` (forma antiga) = um único bloco no topo.
+            const blocos = (Array.isArray(rascunho && rascunho.blocos) ? rascunho.blocos : [rascunho])
+              .filter(b => b && b.texto);
+            if (blocos.length === 0) {
               console.log('Rascunho sem texto — nada a fazer.');
               return;
             }
 
             // Só `false` explícito conta como "por confirmar" — qualquer
-            // forma inesperada (chave em falta, ficheiro de uma versão
-            // anterior deste script) é tratada como confirmado, nunca o
-            // inverso (nunca esconder um aviso que devia lá estar seria
-            // pior do que mostrar um aviso a mais).
-            const confirmado = rascunho.confirmado !== false;
+            // forma inesperada é tratada como confirmado, nunca o inverso
+            // (nunca esconder um aviso que devia lá estar seria pior do
+            // que mostrar um aviso a mais).
+            const porConfirmar = b => b.confirmado === false;
+            const algumPorConfirmar = blocos.some(porConfirmar);
 
             const hoje = rascunho.data || new Date().toISOString().slice(0, 10);
-            const prefixoTitulo = confirmado ? '📱 Canal' : '⚠️ Canal (por confirmar)';
-            const tituloIssue = `${prefixoTitulo} — ${rascunho.titulo} (${hoje})`;
+            const prefixoTitulo = algumPorConfirmar ? '⚠️ Canal (por confirmar)' : '📱 Canal';
+            const tituloIssue = `${prefixoTitulo} — ${blocos.map(b => b.titulo).join(' + ')} (${hoje})`;
 
             const existentes = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -1038,19 +1051,29 @@ jobs:
               return;
             }
 
-            let descricaoGatilho = 'alteração legal confirmada (fila manual)';
-            if (rascunho.gatilho === 'calendario') {
-              descricaoGatilho = 'calendário mensal de pagamentos';
-            } else if (!confirmado) {
-              descricaoGatilho = `alteração legal — POR CONFIRMAR (sentinela \`${rascunho.sentinela || 'desconhecido'}\`, automático)`;
-            }
+            const descreverGatilho = b => {
+              if (b.gatilho === 'calendario') return 'calendário mensal de pagamentos';
+              if (b.gatilho === 'pagamento') return `aviso de pagamento na véspera (${b.data_pagamento || '?'})`;
+              if (porConfirmar(b)) return `alteração legal — POR CONFIRMAR (sentinela \`${b.sentinela || 'desconhecido'}\`, automático)`;
+              return 'alteração legal confirmada (fila manual)';
+            };
 
-            // Aviso obrigatório, sempre a primeira coisa a seguir ao
-            // título — nunca depois do texto nem escondido no fim.
-            const avisoPorConfirmar = confirmado ? [] : [
+            const avisoPorConfirmar = b => [
               `> ⚠️ **NÃO PUBLICAR AINDA — esta alteração ainda não foi verificada na fonte.**`,
               `>`,
-              `> Este rascunho foi gerado automaticamente por um sentinela (\`${rascunho.sentinela || 'desconhecido'}\`) que detectou um sinal em dre.pt — o sentinela NUNCA confirma sozinho que se trata de uma alteração real (já produziu ruído no passado: Regulamento da Série II, DL já conhecido a reaparecer). Confirma primeiro o facto na fonte oficial (a Issue \`verificar\`/\`fonte-alterada\` deste sentinela tem os passos) antes de sequer pensar em copiar este texto para o canal.`,
+              `> Este rascunho foi gerado automaticamente por um sentinela (\`${b.sentinela || 'desconhecido'}\`) que detectou um sinal em dre.pt — o sentinela NUNCA confirma sozinho que se trata de uma alteração real (já produziu ruído no passado: Regulamento da Série II, DL já conhecido a reaparecer). Confirma primeiro o facto na fonte oficial (a Issue \`verificar\`/\`fonte-alterada\` deste sentinela tem os passos) antes de sequer pensar em copiar este texto para o canal.`,
+              ``,
+            ];
+
+            const corpoBloco = (b, n) => [
+              ...(blocos.length > 1 ? [`## ${porConfirmar(b) ? '⚠️' : '📱'} Rascunho ${n} de ${blocos.length} — ${b.titulo}`, ``] : []),
+              `**Gatilho:** ${descreverGatilho(b)}`,
+              ``,
+              `### Texto ${porConfirmar(b) ? '(rascunho bruto — nunca copiar sem confirmar primeiro)' : 'pronto a copiar'}`,
+              ``,
+              '```',
+              b.texto,
+              '```',
               ``,
             ];
 
@@ -1059,29 +1082,23 @@ jobs:
               repo: context.repo.repo,
               title: tituloIssue,
               body: [
-                `## ${confirmado ? '📱' : '⚠️'} Rascunho para o canal de WhatsApp`,
+                `@${RESPONSAVEL} — ${blocos.length > 1 ? `${blocos.length} rascunhos` : 'rascunho'} para o canal de WhatsApp (${hoje}).`,
                 ``,
-                ...avisoPorConfirmar,
-                `**Gatilho:** ${descricaoGatilho}`,
-                `**Data:** ${hoje}`,
-                ``,
-                `### Texto ${confirmado ? 'pronto a copiar' : '(rascunho bruto — nunca copiar sem confirmar primeiro)'}`,
-                ``,
-                '```',
-                rascunho.texto,
-                '```',
-                ``,
+                ...blocos.filter(porConfirmar).flatMap(avisoPorConfirmar),
+                ...(blocos.length > 1 ? [] : [`## ${algumPorConfirmar ? '⚠️' : '📱'} Rascunho para o canal de WhatsApp`, ``]),
+                ...blocos.flatMap((b, i) => corpoBloco(b, i + 1)),
                 `### Isto é só uma sugestão`,
                 `O texto final e a decisão de publicar são sempre tuas — revê antes de colar no canal. Nunca é publicado automaticamente por nenhum sistema.`,
                 ``,
                 `### Depois de decidires`,
-                ...(confirmado ? [] : [`- [ ] Confirmado na fonte oficial (só depois disto faz sentido pensar nos passos abaixo)`]),
+                ...(algumPorConfirmar ? [`- [ ] Confirmado na fonte oficial (só depois disto faz sentido pensar nos passos abaixo)`] : []),
                 `- [ ] Publicado no canal (ajusta o texto à vontade antes de colar)`,
                 `- [ ] Decidido não publicar (explica porquê num comentário, se for útil para o futuro)`,
                 ``,
                 `Fecha esta issue depois de decidires.`,
               ].join('\n'),
-              labels: confirmado ? ['canal-rascunho'] : ['canal-rascunho', 'verificar'],
+              labels: algumPorConfirmar ? ['canal-rascunho', 'verificar'] : ['canal-rascunho'],
+              assignees: [RESPONSAVEL],
             });
             console.log(`Issue de rascunho criada: ${tituloIssue}`);
 
