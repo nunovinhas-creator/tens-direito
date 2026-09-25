@@ -6567,4 +6567,4 @@ explicitamente pelo utilizador nesta sessão.
 
 ---
 
-*Última revisão automática: 2026-09-24*
+*Última revisão automática: 2026-09-25*
