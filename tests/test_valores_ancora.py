@@ -295,9 +295,7 @@ def test_simulador_subsidio_doenca_meta_description_percentagens_batem_com_o_js(
 def test_abono_meta_description_bate_com_tabela_do_artigo():
     html = _ler("abono-de-familia.html")
     desc = _meta_description("abono-de-familia.html")
-    # Desde 2026-09-25 (briefing SEO) a description não cita valores em €.
-    # Se voltar a citar algum, tem de ser o 190,98 € da tabela — nunca outro.
-    assert _valores_eur(desc) in ([], [190.98]), desc
+    assert _valores_eur(desc) == [190.98], desc
     assert "<td><strong>190,98 €</strong></td>" in html, "valor da tabela do 1.º escalão não encontrado no corpo"
 
 
