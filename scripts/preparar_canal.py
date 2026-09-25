@@ -48,28 +48,53 @@ o reabrir.
     volta a disparar quando o excerto for genuinamente diferente (um
     acto novo, não o mesmo a persistir na pesquisa).
 
-2. CALENDÁRIO DE PAGAMENTOS — UMA mensagem por mês, a partir do
+3. CALENDÁRIO DE PAGAMENTOS — UMA mensagem por mês, a partir do
    primeiro dia útil, com as datas do mês inteiro, geradas de
    data/calendario_pagamentos.json (fonte já verificada por
    scripts/atualizar_calendario.py / scripts/scraper_calendario.py).
-   Nunca um aviso por cada dia de pagamento. "Dia útil" é simplificado
-   a segunda-sexta (sem calendário de feriados portugueses — o
-   repositório não tem um noutro lado nenhum; documentado aqui como
-   limitação conhecida, nunca escondida). Produz sempre `confirmado: true`
-   — é informação já verificada, sem julgamento humano por fazer.
+   Produz sempre `confirmado: true` — é informação já verificada, sem
+   julgamento humano por fazer.
 
-Regra de volume: no máximo 1 rascunho/dia, qualquer que seja a origem.
-Prioridade fixa: 1a (fila manual, já confirmada) > 1b (sentinela, por
-confirmar) > 2 (calendário). Se mais do que um tiver algo pendente no
-mesmo dia, os de prioridade mais baixa ficam em espera — nunca são
-descartados (`calendario_devido()` continua a devolver o mês enquanto
-não for entregue; um sentinela por confirmar continua a re-detectar o
-mesmo excerto todos os dias até ser rascunhado), por isso a corrida
-seguinte sem nada de prioridade mais alta entrega-os.
+4. AVISO DE PAGAMENTO NA VÉSPERA (2026-09-25) — para cada dia de
+   pagamento de data/calendario_pagamentos.json, um rascunho no dia
+   útil ANTERIOR (o pipeline arranca perto do meio-dia UTC; no próprio
+   dia chegaria tarde). Várias prestações no mesmo dia = uma só
+   mensagem. A descrição de cada prestação é a 1.ª frase de texto que
+   já existe no site (resposta rápida, ou a resposta directa do topo
+   da página) — nunca escrita aqui. Prestação sem página no site
+   (`VISTA_PRESTACOES` de atualizar_calendario.py sem URL) fica só com
+   o nome, e a mensagem termina sempre com o link do calendário.
+   Estado em data/canal_estado.json (`avisos_pagamento_entregues`, datas
+   de pagamento já avisadas) — nunca repete o mesmo dia. Nunca é
+   adiado por colisão: um aviso de pagamento no dia seguinte já não
+   serve para nada, por isso vai SEMPRE, na mesma Issue que o rascunho
+   do gatilho 1/3 desse dia, em bloco separado.
+
+(Numeração alinhada com CLAUDE.md → "Publica-se quando"; o gatilho 2
+desse texto — página corrigida por facto legal — entra aqui pela
+mesma fila manual de 1a.)
+
+"Dia útil" = segunda a sexta, excepto os feriados obrigatórios do
+artigo 234.º do Código do Trabalho (`feriados_nacionais()`). Os
+feriados municipais e a Terça-feira de Carnaval (facultativos) não
+contam — a Segurança Social paga a nível nacional.
+
+Regra de volume: no máximo 1 rascunho/dia dos gatilhos 1 e 3, mais o
+aviso de pagamento (4) quando houver. Prioridade fixa entre 1 e 3:
+1a (fila manual, já confirmada) > 1b (sentinela, por confirmar) > 3
+(calendário). Se mais do que um tiver algo pendente no mesmo dia, os de
+prioridade mais baixa ficam em espera — nunca são descartados
+(`calendario_devido()` continua a devolver o mês enquanto não for
+entregue; um sentinela por confirmar continua a re-detectar o mesmo
+excerto todos os dias até ser rascunhado), por isso a corrida seguinte
+sem nada de prioridade mais alta entrega-os.
 
 Saída: escreve /tmp/canal_rascunho_hoje.json (efémero, fora do
 repositório, nunca commitado) para o step de Issues do workflow
-consumir. Sem nada a publicar hoje, não escreve nada — silêncio é o
+consumir — `{"data", "titulo", "confirmado", "blocos": [...]}`, um
+bloco por rascunho (o step cria UMA Issue com todos os blocos). Os
+campos do 1.º bloco são repetidos no topo por compatibilidade. Sem nada
+a publicar hoje, não escreve nada — silêncio é o
 comportamento correcto (mesma regra de honestidade já aplicada ao
 resto do site, ver CLAUDE.md → "FRESCURA DA HOMEPAGE").
 
@@ -88,6 +113,7 @@ Uso (corrido pelo pipeline-diario.yml, sempre antes do push diário):
 from __future__ import annotations
 
 import datetime as dt
+import html
 import json
 import re
 import sys
@@ -100,7 +126,7 @@ SAIDA_OMISSAO = Path("/tmp/canal_rascunho_hoje.json")
 DOMINIO = "https://tensdireito.com"
 
 sys.path.insert(0, str(RAIZ_MODULO / "scripts"))
-from atualizar_calendario import MESES_PT, PRESTACOES  # noqa: E402
+from atualizar_calendario import MESES_PT, PRESTACOES, VISTA_PRESTACOES  # noqa: E402
 
 # Os 6 sentinelas dirigidos que já geram Issue própria em
 # pipeline-diario.yml (labels "verificar"/"fonte-alterada") — mesma
@@ -250,7 +276,7 @@ def formatar_rascunho_sentinela(chave_aviso: str, excerto: str) -> str:
 def calendario_devido(hoje: dt.date, estado: dict, dados_calendario: dict) -> dict | None:
     """
     Devolve os dados do mês corrente se o calendário mensal ainda não
-    foi entregue este mês, hoje for dia útil (seg-sex) e o mês corrente
+    foi entregue este mês, hoje for dia útil (`e_dia_util`) e o mês corrente
     já estiver presente em data/calendario_pagamentos.json — nunca
     antes disso, para nunca inventar um mês que a fonte oficial ainda
     não confirmou (mesmo invariante de `atualizar_calendario.py`: um
@@ -260,7 +286,7 @@ def calendario_devido(hoje: dt.date, estado: dict, dados_calendario: dict) -> di
     mes_corrente = f"{hoje.year:04d}-{hoje.month:02d}"
     if estado.get("ultimo_calendario_publicado") == mes_corrente:
         return None
-    if hoje.weekday() >= 5:  # sábado(5)/domingo(6) — nunca no fim-de-semana
+    if not e_dia_util(hoje):  # fim-de-semana ou feriado nacional
         return None
     for m in dados_calendario.get("meses", []):
         if m.get("ano") == hoje.year and m.get("mes") == hoje.month:
@@ -293,6 +319,238 @@ def formatar_rascunho_calendario(mes_dados: dict) -> str:
     return "\n".join(linhas)
 
 
+# ── Aviso de pagamento na véspera (gatilho 4) ───────────────────────────
+
+URL_CALENDARIO = f"{DOMINIO}/calendario-pagamentos-seguranca-social.html"
+DIAS_SEMANA_PT = [
+    "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira",
+    "Sexta-feira", "Sábado", "Domingo",
+]
+# Datas de pagamento já avisadas mais antigas do que isto saem do estado
+# — nunca voltam a ser elegíveis de qualquer forma (já passaram).
+RETENCAO_AVISOS_DIAS = 60
+
+
+def _domingo_de_pascoa(ano: int) -> dt.date:
+    # Algoritmo anónimo gregoriano (Meeus/Jones/Butcher).
+    a = ano % 19
+    b, c = divmod(ano, 100)
+    d, e = divmod(b, 4)
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = divmod(c, 4)
+    ll = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * ll) // 451
+    mes, dia = divmod(h + ll - 7 * m + 114, 31)
+    return dt.date(ano, mes, dia + 1)
+
+
+def feriados_nacionais(ano: int) -> set[dt.date]:
+    """Feriados obrigatórios — artigo 234.º, n.º 1, do Código do Trabalho."""
+    pascoa = _domingo_de_pascoa(ano)
+    fixos = [(1, 1), (4, 25), (5, 1), (6, 10), (8, 15), (10, 5), (11, 1),
+             (12, 1), (12, 8), (12, 25)]
+    return {dt.date(ano, m, d) for m, d in fixos} | {
+        pascoa - dt.timedelta(days=2),   # Sexta-Feira Santa
+        pascoa,                          # Domingo de Páscoa
+        pascoa + dt.timedelta(days=60),  # Corpo de Deus
+    }
+
+
+def e_dia_util(dia: dt.date) -> bool:
+    return dia.weekday() < 5 and dia not in feriados_nacionais(dia.year)
+
+
+def vespera_util(dia: dt.date) -> dt.date:
+    """Último dia útil estritamente anterior a `dia`."""
+    anterior = dia - dt.timedelta(days=1)
+    while not e_dia_util(anterior):
+        anterior -= dt.timedelta(days=1)
+    return anterior
+
+
+def pagamentos_por_data(dados_calendario: dict) -> dict[dt.date, list[str]]:
+    """
+    {data: [slugs]} — entradas do mesmo dia (métodos diferentes) fundidas
+    numa só lista, pela ordem do JSON, sem repetidos.
+    """
+    por_data: dict[dt.date, list[str]] = {}
+    for m in dados_calendario.get("meses", []):
+        for p in m.get("pagamentos", []):
+            try:
+                data = dt.date(int(m["ano"]), int(m["mes"]), int(p["dia"]))
+            except (KeyError, TypeError, ValueError):
+                print(f"AVISO: pagamento malformado no calendário ignorado: {p!r}")
+                continue
+            lista = por_data.setdefault(data, [])
+            for slug in p.get("prestacoes", []):
+                if slug not in lista:
+                    lista.append(slug)
+    return por_data
+
+
+def aviso_pagamento_devido(
+    hoje: dt.date, estado: dict, dados_calendario: dict
+) -> tuple[dt.date, list[str]] | None:
+    """
+    (data_pagamento, slugs) do pagamento mais próximo cuja véspera útil
+    já chegou (`vespera_util(data) <= hoje < data`) e que ainda não foi
+    avisado. `<=` e não `==`: se a corrida da véspera falhar, a de um
+    dia seguinte ainda antes do pagamento (ex.: sábado, para segunda)
+    recupera o aviso. No próprio dia do pagamento, nunca.
+    """
+    entregues = set(estado.get("avisos_pagamento_entregues", []))
+    for data in sorted(pagamentos_por_data(dados_calendario)):
+        slugs = pagamentos_por_data(dados_calendario)[data]
+        if not (vespera_util(data) <= hoje < data):
+            continue
+        if data.isoformat() in entregues or not slugs:
+            continue
+        return data, slugs
+    return None
+
+
+_PRIMEIRA_FRASE = re.compile(r"^(.+?[.!?])(?=\s+[A-ZÁÉÍÓÚÂÊÔÃÕÀÇ]|\s*$)", re.S)
+
+
+def _texto_limpo(fragmento_html: str) -> str:
+    return " ".join(html.unescape(re.sub(r"<[^>]+>", "", fragmento_html)).split())
+
+
+def descricao_da_pagina(raiz: Path, url: str) -> str | None:
+    """
+    1.ª frase do texto de resumo que a página já publica — a resposta
+    rápida (`.resposta-rapida-texto`) ou, sem ela, a resposta directa do
+    topo (`.resposta-direta`). Nunca texto escrito aqui; sem página ou
+    sem nenhum dos dois blocos, None.
+    """
+    caminho = raiz / url.lstrip("/")
+    if not caminho.exists():
+        print(f"AVISO: página {url} não encontrada — aviso de pagamento sem descrição")
+        return None
+    fonte = caminho.read_text(encoding="utf-8")
+    bloco = re.search(r'<p class="resposta-rapida-texto">(.*?)</p>', fonte, re.S) or re.search(
+        r'<div class="resposta-direta[^"]*">(.*?)</div>', fonte, re.S
+    )
+    if not bloco:
+        return None
+    texto = _texto_limpo(bloco.group(1))
+    frase = _PRIMEIRA_FRASE.match(texto)
+    return (frase.group(1) if frase else texto) or None
+
+
+def paginas_da_prestacao(slug: str) -> list[tuple[str, str]]:
+    """[(nome, url)] das páginas do site que cobrem a prestação."""
+    return [(nome, url) for _a, nome, slugs, url in VISTA_PRESTACOES if slug in slugs and url]
+
+
+def _quando(hoje: dt.date, data: dt.date) -> str:
+    if (data - hoje).days == 1:
+        return f"Amanhã (dia {data.day})"
+    return f"{DIAS_SEMANA_PT[data.weekday()]} (dia {data.day})"
+
+
+def formatar_aviso_pagamento(raiz: Path, hoje: dt.date, data: dt.date, slugs: list[str]) -> str:
+    linhas = [f"{_quando(hoje, data)}, a Segurança Social paga:", ""]
+    for slug in slugs:
+        linhas.append(f"• {PRESTACOES.get(slug, slug)}")
+        paginas = paginas_da_prestacao(slug)
+        for nome, url in paginas:
+            descricao = descricao_da_pagina(raiz, url)
+            prefixo = f"{nome}: " if len(paginas) > 1 else ""
+            if descricao:
+                linhas.append(f"  {prefixo}{descricao}")
+            elif prefixo:
+                linhas.append(f"  {nome}:")
+            linhas.append(f"  {DOMINIO}{url}")
+    linhas += ["", f"Todas as datas de pagamento: {URL_CALENDARIO}"]
+    return "\n".join(linhas)
+
+
+def _escolher_principal(
+    raiz: Path, hoje_data: dt.date, estado: dict
+) -> dict | None:
+    """
+    Gatilhos 1a > 1b > 3 — no máximo um por dia. Actualiza `estado` em
+    memória (o chamador persiste). Consome a fila manual em disco.
+    """
+    caminho_pendente = raiz / "data" / "canal_pendente.json"
+    documento_pendente = _carregar_fila_pendente(caminho_pendente)
+    fila = documento_pendente["entradas"]
+
+    entrada, resto = obter_pendente_legal(fila)
+    if resto != fila:
+        # Só o campo "entradas" muda — "_nota" (e qualquer outra chave)
+        # sobrevive intacta, nunca reescrita a partir do zero.
+        documento_pendente["entradas"] = resto
+        _guardar_json(caminho_pendente, documento_pendente)
+
+    if entrada is not None:
+        print("Rascunho preparado (alteração legal, confirmada)")
+        return {
+            "gatilho": "alteracao_legal",
+            "origem": "fila_manual",
+            "confirmado": True,
+            "titulo": str(entrada.get("titulo") or "Alteração legal confirmada"),
+            "texto": formatar_rascunho_legal(entrada),
+        }
+
+    avisos_hoje = avisos_de_hoje(raiz / "data" / "scraped" / "avisos.log", hoje_data.isoformat())
+    ja_rascunhados = estado.get("sentinelas_rascunhadas", {})
+    deteccao = obter_deteccao_sentinela(avisos_hoje, ja_rascunhados)
+    if deteccao is not None:
+        chave_aviso, excerto = deteccao
+        estado["sentinelas_rascunhadas"] = {**ja_rascunhados, chave_aviso: excerto}
+        print("Rascunho preparado (sentinela, por confirmar)")
+        return {
+            "gatilho": "alteracao_legal",
+            "origem": "sentinela",
+            "confirmado": False,
+            "sentinela": chave_aviso,
+            # Sem prefixo "Por confirmar —" aqui: o step de Issues do
+            # workflow já antepõe "⚠️ Canal (por confirmar)" ao título
+            # (confirmado === false) — duplicar aqui deixaria o título
+            # da Issue com "por confirmar" repetido duas vezes.
+            "titulo": SENTINELAS_DIRIGIDOS[chave_aviso],
+            "texto": formatar_rascunho_sentinela(chave_aviso, excerto),
+        }
+
+    dados_calendario = _carregar_json(raiz / "data" / "calendario_pagamentos.json", {})
+    mes_dados = calendario_devido(hoje_data, estado, dados_calendario)
+    if mes_dados is not None:
+        estado["ultimo_calendario_publicado"] = f"{hoje_data.year:04d}-{hoje_data.month:02d}"
+        print(f"Rascunho preparado (calendário): {mes_dados['mes']}/{mes_dados['ano']}")
+        return {
+            "gatilho": "calendario",
+            "origem": "calendario",
+            "confirmado": True,
+            "titulo": f"Calendário de pagamentos — {MESES_PT[mes_dados['mes']]} de {mes_dados['ano']}",
+            "texto": formatar_rascunho_calendario(mes_dados),
+        }
+    return None
+
+
+def _preparar_aviso_pagamento(raiz: Path, hoje_data: dt.date, estado: dict) -> dict | None:
+    dados_calendario = _carregar_json(raiz / "data" / "calendario_pagamentos.json", {})
+    devido = aviso_pagamento_devido(hoje_data, estado, dados_calendario)
+    if devido is None:
+        return None
+    data, slugs = devido
+    limite = (hoje_data - dt.timedelta(days=RETENCAO_AVISOS_DIAS)).isoformat()
+    entregues = [d for d in estado.get("avisos_pagamento_entregues", []) if d >= limite]
+    estado["avisos_pagamento_entregues"] = sorted(set(entregues) | {data.isoformat()})
+    print(f"Aviso de pagamento preparado: {data.isoformat()} ({len(slugs)} prestações)")
+    return {
+        "gatilho": "pagamento",
+        "origem": "calendario",
+        "confirmado": True,
+        "data_pagamento": data.isoformat(),
+        "titulo": f"Pagamentos de {data.day} de {MESES_PT[data.month]}",
+        "texto": formatar_aviso_pagamento(raiz, hoje_data, data, slugs),
+    }
+
+
 def main(
     *,
     raiz: Optional[Path] = None,
@@ -310,84 +568,32 @@ def main(
         dt.date.fromisoformat(hoje) if hoje else dt.datetime.now(dt.timezone.utc).date()
     )
     saida = saida or SAIDA_OMISSAO
-
-    caminho_pendente = raiz / "data" / "canal_pendente.json"
     caminho_estado = raiz / "data" / "canal_estado.json"
-    caminho_calendario = raiz / "data" / "calendario_pagamentos.json"
-    caminho_avisos_log = raiz / "data" / "scraped" / "avisos.log"
-
     estado = _carregar_json(caminho_estado, {})
-    documento_pendente = _carregar_fila_pendente(caminho_pendente)
-    fila = documento_pendente["entradas"]
 
-    entrada, resto = obter_pendente_legal(fila)
-    if resto != fila:
-        # Só o campo "entradas" muda — "_nota" (e qualquer outra chave)
-        # sobrevive intacta, nunca reescrita a partir do zero.
-        documento_pendente["entradas"] = resto
-        _guardar_json(caminho_pendente, documento_pendente)
+    blocos = [
+        b for b in (
+            _escolher_principal(raiz, hoje_data, estado),
+            # Nunca adiado por colisão — um aviso de véspera no dia
+            # seguinte já não serve para nada.
+            _preparar_aviso_pagamento(raiz, hoje_data, estado),
+        ) if b is not None
+    ]
+    if not blocos:
+        print("Nada a publicar no canal hoje.")
+        return None
 
-    if entrada is not None:
-        rascunho = {
-            "gatilho": "alteracao_legal",
-            "origem": "fila_manual",
-            "confirmado": True,
-            "titulo": str(entrada.get("titulo") or "Alteração legal confirmada"),
-            "texto": formatar_rascunho_legal(entrada),
-            "data": hoje_data.isoformat(),
-        }
-        estado["ultima_entrega_canal"] = hoje_data.isoformat()
-        _guardar_json(caminho_estado, estado)
-        _guardar_json(saida, rascunho)
-        print(f"Rascunho preparado (alteração legal, confirmada): {rascunho['titulo']}")
-        return rascunho
-
-    avisos_hoje = avisos_de_hoje(caminho_avisos_log, hoje_data.isoformat())
-    ja_rascunhados = estado.get("sentinelas_rascunhadas", {})
-    deteccao = obter_deteccao_sentinela(avisos_hoje, ja_rascunhados)
-    if deteccao is not None:
-        chave_aviso, excerto = deteccao
-        nome = SENTINELAS_DIRIGIDOS[chave_aviso]
-        rascunho = {
-            "gatilho": "alteracao_legal",
-            "origem": "sentinela",
-            "confirmado": False,
-            "sentinela": chave_aviso,
-            # Sem prefixo "Por confirmar —" aqui: o step de Issues do
-            # workflow já antepõe "⚠️ Canal (por confirmar)" ao título
-            # (rascunho.confirmado === false) — duplicar aqui deixaria o
-            # título da Issue com "por confirmar" repetido duas vezes.
-            "titulo": nome,
-            "texto": formatar_rascunho_sentinela(chave_aviso, excerto),
-            "data": hoje_data.isoformat(),
-        }
-        estado["sentinelas_rascunhadas"] = {**ja_rascunhados, chave_aviso: excerto}
-        estado["ultima_entrega_canal"] = hoje_data.isoformat()
-        _guardar_json(caminho_estado, estado)
-        _guardar_json(saida, rascunho)
-        print(f"Rascunho preparado (sentinela, por confirmar): {rascunho['titulo']}")
-        return rascunho
-
-    dados_calendario = _carregar_json(caminho_calendario, {})
-    mes_dados = calendario_devido(hoje_data, estado, dados_calendario)
-    if mes_dados is not None:
-        rascunho = {
-            "gatilho": "calendario",
-            "origem": "calendario",
-            "confirmado": True,
-            "titulo": f"Calendário de pagamentos — {MESES_PT[mes_dados['mes']]} de {mes_dados['ano']}",
-            "texto": formatar_rascunho_calendario(mes_dados),
-            "data": hoje_data.isoformat(),
-        }
-        estado["ultimo_calendario_publicado"] = f"{hoje_data.year:04d}-{hoje_data.month:02d}"
-        estado["ultima_entrega_canal"] = hoje_data.isoformat()
-        _guardar_json(caminho_estado, estado)
-        _guardar_json(saida, rascunho)
-        print(f"Rascunho preparado (calendário): {mes_dados['mes']}/{mes_dados['ano']}")
-        return rascunho
-
-    print("Nada a publicar no canal hoje.")
-    return None
+    estado["ultima_entrega_canal"] = hoje_data.isoformat()
+    _guardar_json(caminho_estado, estado)
+    rascunho = {
+        **blocos[0],
+        "titulo": " + ".join(b["titulo"] for b in blocos),
+        "confirmado": all(b["confirmado"] for b in blocos),
+        "data": hoje_data.isoformat(),
+        "blocos": blocos,
+    }
+    _guardar_json(saida, rascunho)
+    return rascunho
 
 
 if __name__ == "__main__":

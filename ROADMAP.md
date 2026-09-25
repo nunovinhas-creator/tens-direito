@@ -102,22 +102,38 @@ dirigido (`dre_psu`, `dre_psu_regulamentacao`, `dre_habitacao_paer`,
 `dre_habitacao_garantia`, `dre_ias`) dispara **e** a verificação manual
 confirma alteração real a um apoio, (2) uma página é corrigida por
 mudança de facto legal com avanço da data "Verificado a" — nunca por
-reorganização/trabalho interno —, ou (3) uma vez por mês, no primeiro
-dia útil, o calendário de pagamentos do mês inteiro. Sem nada a
+reorganização/trabalho interno —, (3) uma vez por mês, no primeiro
+dia útil, o calendário de pagamentos do mês inteiro, ou (4) na véspera
+útil de cada dia de pagamento, com as prestações desse dia. Sem nada a
 publicar: silêncio, nunca um lembrete periódico.
+
+**Decisão registada (2026-09-25, Nuno)**: o canal passou de 1 mensagem
+mensal de pagamentos para **mensal + aviso na véspera de cada dia de
+pagamento** — 5 a 7 avisos por mês, medido em julho-setembro de 2026
+(7, 5 e 7 dias de pagamento distintos em `data/calendario_pagamentos.json`).
+Toda a Issue `canal-rascunho` passa a ser atribuída ao Nuno e a
+mencioná-lo, para chegar por email.
+
+**Pendente — aprovação do Nuno**: a frase do convite "Avisamos só
+quando uma regra muda a sério" (em `index.html` e nos artigos com o
+bloco `<!-- CANAL WHATSAPP -->` — `grep -l "Avisamos só quando uma
+regra muda a sério" *.html`) deixa de descrever o canal com os avisos
+de véspera. Texto novo proposto na sessão de 2026-09-25, por aprovar —
+nunca alterar as páginas sem essa aprovação.
 
 **Preparação automática do rascunho — implementada (2026-08-31), com
 um caminho automático novo para o gatilho 1 (1b — sem esperar pela
 fila manual)**:
 `scripts/preparar_canal.py` (corrido em `pipeline-diario.yml`) cobre o
-gatilho 1 em duas variantes e o gatilho 3 — 1a via fila manual
+gatilho 1 em duas variantes e os gatilhos 3 e 4 — 1a via fila manual
 `data/canal_pendente.json` (uma sessão editorial escreve o resumo no
 mesmo commit da correcção, `confirmado: true`; o script só formata e
 entrega, nunca decide), 1b automático a partir de qualquer um dos 5
 sentinelas dirigidos escrevendo em `data/scraped/avisos.log`
 (`confirmado: false`, deduplicado por ocorrência — o mesmo excerto em
-dias seguidos nunca gera dois rascunhos), 3 gerado automaticamente de
-`data/calendario_pagamentos.json`. Um rascunho `confirmado: false`
+dias seguidos nunca gera dois rascunhos), 3 e 4 gerados automaticamente de
+`data/calendario_pagamentos.json` (4 nunca adiado — vai na mesma Issue
+que o rascunho do dia, em bloco separado). Um rascunho `confirmado: false`
 nasce sempre com o aviso "NÃO PUBLICAR AINDA" antes do texto na Issue —
 nunca é tratado como pronto a copiar. Sem nada a publicar, nenhuma
 Issue `canal-rascunho` é criada. Decisão e publicação continuam sempre
