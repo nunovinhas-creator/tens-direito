@@ -14,13 +14,13 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **25 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **26 de setembro de 2026**.
 
 ### Páginas publicadas
 
 | Ficheiro | Título |
 |---|---|
-| [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: escalões e valores (até 190,98€) |
+| [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: até 190,98 €, escalões e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
@@ -439,6 +439,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 25 de setembro de 2026 às 12:28 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 26 de setembro de 2026 às 12:19 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
