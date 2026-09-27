@@ -1,0 +1,29 @@
+# Condições de acesso à Acção Social Escolar (ASE) — PR 5 da série
+# "simulador universal". Fonte: secção "Quem tem direito" de
+# acao-social-escolar.html, mesma leitura do CONFIG inline de
+# simulador-ase.html (Despacho n.º 8452-A/2015).
+#
+# Só duas condições, ambas cumulativas (all):
+#   - tipo de escola (pública ou privada com protocolo — nunca privada
+#     sem protocolo, que não tem ASE de todo);
+#   - RPC mensal do agregado dentro do limite do escalão B (o limite
+#     exterior — o escalão A é um detalhe do simulador dedicado, não
+#     uma segunda condição de acesso: quem está dentro de A também está
+#     dentro de B).
+
+apoio: ase
+pagina: acao-social-escolar.html
+operador: all
+
+condicoes:
+  - id: escola_elegivel
+    tipo: categorica
+    campo: tipo_escola_aluno
+    operador_comparacao: eq
+    valor_literal: publica_ou_protocolo
+
+  - id: rendimento_dentro_do_limite
+    tipo: limiar
+    campo: rendimento_per_capita_mensal_agregado
+    operador_comparacao: lte
+    parametro: ase.escalao_b_limite_rpc_mensal
