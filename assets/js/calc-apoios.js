@@ -97,6 +97,29 @@ function juntarPerguntasEmFalta(resultados) {
   return [...new Set(todas)];
 }
 
+// Fórmulas de condição — PR 6. Uma fórmula precisa de mais do que um
+// campo de resposta (ao contrário de uma folha normal), por isso tem a
+// sua própria avaliação em vez de reusar compararValores(). Extensível:
+// acrescentar uma fórmula nova é um novo `case`, nunca alterar as
+// existentes.
+function avaliarFormula(condicao, respostas) {
+  if (condicao.formula === 'escala_equivalencia_rsi') {
+    const campos = [condicao.campo_rendimento, condicao.campo_adultos_adicionais, condicao.campo_menores];
+    const emFalta = campos.filter(c => respostas[c] === undefined || respostas[c] === null || respostas[c] === '');
+    if (emFalta.length > 0) {
+      return { estado: 'indeterminado', perguntasEmFalta: emFalta };
+    }
+    const rendimento = respostas[condicao.campo_rendimento];
+    const adultosAdicionais = respostas[condicao.campo_adultos_adicionais];
+    const menores = respostas[condicao.campo_menores];
+    const limiar = condicao.valor_titular
+      + adultosAdicionais * condicao.valor_adulto_adicional
+      + menores * condicao.valor_menor;
+    return { estado: rendimento <= limiar ? 'elegivel' : 'inelegivel' };
+  }
+  throw new Error(`fórmula desconhecida: ${condicao.formula}`);
+}
+
 // Avalia uma condição ou grupo (mesma forma recursiva de
 // dados/condicoes.json — um nó com `condicoes` é sempre um grupo, nunca
 // tem `campo` próprio; um nó sem `condicoes` é sempre uma folha).
@@ -118,6 +141,10 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
       return { estado: 'indeterminado', perguntasEmFalta: juntarPerguntasEmFalta(resultados) };
     }
     return { estado: 'elegivel' };
+  }
+
+  if (condicao.tipo === 'formula') {
+    return avaliarFormula(condicao, respostas);
   }
 
   let valorResposta = respostas[condicao.campo];

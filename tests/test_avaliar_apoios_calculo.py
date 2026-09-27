@@ -370,3 +370,169 @@ def test_ase_real_indeterminado_quando_falta_rendimento(pagina):
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "indeterminado"
     assert r["ase"]["perguntasEmFalta"] == ["rendimento_per_capita_mensal_agregado"]
+
+
+# ── RSI real (dados/condicoes.json de produção) — fórmula da escala de
+# equivalência, excepção de menores, e residência em 4 ramos ────────────────
+
+
+RESPOSTAS_RSI_BASE = {
+    "data_nascimento_requerente": "1990-01-01",  # 36 anos, sem excepção de menor
+    "estatuto_residencia": "nacional_pt",
+    "rendimento_mensal_agregado": 200,
+    "numero_adultos_adicionais_agregado": 0,
+    "numero_menores_agregado": 0,
+    "patrimonio_mobiliario_pessoal": 1000,
+    "situacao_profissional": "empregado",
+    "esta_em_estabelecimento_prisional_ou_institucionalizado": "nao",
+}
+
+
+def test_rsi_real_elegivel_caso_simples(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_RSI_BASE)
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_rsi_real_formula_soma_agregado_2_adultos_1_crianca(pagina):
+    # Exemplo publicado em rsi.html: 2 adultos + 1 criança → limite = 247,56
+    # + 173,29 + 123,78 = 544,63€. Um cêntimo acima já é inelegível.
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "numero_adultos_adicionais_agregado": 1,
+        "numero_menores_agregado": 1,
+        "rendimento_mensal_agregado": 544.63,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "elegivel"
+
+    respostas["rendimento_mensal_agregado"] = 544.64
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_indeterminado_quando_falta_um_dos_tres_campos_da_formula(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_RSI_BASE)
+    del respostas["numero_menores_agregado"]
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "indeterminado"
+    assert "numero_menores_agregado" in r["rsi"]["perguntasEmFalta"]
+
+
+def test_rsi_real_inelegivel_por_patrimonio_mesmo_com_rendimento_baixo(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_RSI_BASE, "patrimonio_mobiliario_pessoal": 40000}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_inelegivel_desempregado_nao_inscrito(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "situacao_profissional": "desempregado",
+        "inscrito_centro_emprego_e_disponivel": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_elegivel_desempregado_inscrito_e_disponivel(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "situacao_profissional": "desempregado",
+        "inscrito_centro_emprego_e_disponivel": "sim",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_rsi_real_indeterminado_desempregado_sem_responder_inscricao(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_RSI_BASE, "situacao_profissional": "desempregado"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "indeterminado"
+    assert r["rsi"]["perguntasEmFalta"] == ["inscrito_centro_emprego_e_disponivel"]
+
+
+def test_rsi_real_inelegivel_institucionalizado(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_RSI_BASE, "esta_em_estabelecimento_prisional_ou_institucionalizado": "sim"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_pais_terceiro_com_menos_de_1_ano_inelegivel(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "estatuto_residencia": "titulo_residencia_valido",
+        "anos_residencia_pt": 0,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_pais_terceiro_com_1_ano_elegivel(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "estatuto_residencia": "titulo_residencia_valido",
+        "anos_residencia_pt": 1,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_rsi_real_refugiado_elegivel_sem_prazo_de_residencia(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_RSI_BASE, "estatuto_residencia": "refugiado"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_rsi_real_menor_inelegivel_sem_excepcao(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "data_nascimento_requerente": "2015-01-01",  # 11 anos
+        "rendimento_mensal_proprio_menor": 0,
+        "esta_gravida": "nao",
+        "casado_ou_uniao_facto_mais_de_2_anos": "nao",
+        "tem_menores_ou_pessoas_deficiencia_a_cargo": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_menor_elegivel_por_excepcao_rendimentos_e_gravidez(pagina):
+    # Regressão directa da excepção de menores: rendimentos próprios acima
+    # do limite (173,29€) E grávida — os dois ramos exigidos pelo `all`.
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "data_nascimento_requerente": "2015-01-01",
+        "rendimento_mensal_proprio_menor": 200,
+        "esta_gravida": "sim",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_rsi_real_menor_inelegivel_rendimentos_altos_mas_sem_situacao_pessoal(pagina):
+    # Rendimentos próprios acima do limite não chega sozinho — falta uma
+    # das três situações pessoais (grávida/casada/dependentes a cargo).
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_RSI_BASE,
+        "data_nascimento_requerente": "2015-01-01",
+        "rendimento_mensal_proprio_menor": 200,
+        "esta_gravida": "nao",
+        "casado_ou_uniao_facto_mais_de_2_anos": "nao",
+        "tem_menores_ou_pessoas_deficiencia_a_cargo": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["rsi"]["estado"] == "inelegivel"

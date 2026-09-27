@@ -35,7 +35,8 @@ PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
 SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
-TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar"}
+TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
+FORMULAS_VALIDAS = {"escala_equivalencia_rsi"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
 
@@ -78,6 +79,49 @@ def _resolver_parametro(referencia: str, parametros: dict, contexto: str) -> flo
     return prestacoes[prestacao][nome]["valor"]
 
 
+def _validar_e_resolver_formula(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
+    contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
+
+    formula = condicao.get("formula")
+    if formula not in FORMULAS_VALIDAS:
+        raise CondicaoInvalida(f"{contexto}: 'formula' tem de ser uma de {sorted(FORMULAS_VALIDAS)}, veio {formula!r}")
+
+    if formula == "escala_equivalencia_rsi":
+        campos_obrigatorios = ["campo_rendimento", "campo_adultos_adicionais", "campo_menores"]
+        parametros_obrigatorios = ["parametro_titular", "parametro_adulto_adicional", "parametro_menor"]
+
+        for chave in campos_obrigatorios:
+            if condicao.get(chave) not in perguntas:
+                raise CondicaoInvalida(
+                    f"{contexto}: '{chave}' aponta para campo inexistente em perguntas.yaml ({condicao.get(chave)!r})"
+                )
+        for chave in parametros_obrigatorios:
+            if chave not in condicao:
+                raise CondicaoInvalida(f"{contexto}: falta '{chave}' para a fórmula {formula}")
+
+        return {
+            "id": condicao["id"],
+            "tipo": "formula",
+            "formula": formula,
+            "campo_rendimento": condicao["campo_rendimento"],
+            "campo_adultos_adicionais": condicao["campo_adultos_adicionais"],
+            "campo_menores": condicao["campo_menores"],
+            "valor_titular": _resolver_parametro(condicao["parametro_titular"], parametros, contexto),
+            "valor_adulto_adicional": _resolver_parametro(condicao["parametro_adulto_adicional"], parametros, contexto),
+            "valor_menor": _resolver_parametro(condicao["parametro_menor"], parametros, contexto),
+            "fonte": {
+                "tipo": "parametro_multiplo",
+                "referencias": [
+                    condicao["parametro_titular"],
+                    condicao["parametro_adulto_adicional"],
+                    condicao["parametro_menor"],
+                ],
+            },
+        }
+
+    raise CondicaoInvalida(f"{contexto}: fórmula {formula!r} reconhecida mas sem implementação")
+
+
 def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
     contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
 
@@ -103,6 +147,11 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
 
     if condicao.get("tipo") not in TIPOS_CONDICAO_VALIDOS:
         raise CondicaoInvalida(f"{contexto}: 'tipo' tem de ser um de {sorted(TIPOS_CONDICAO_VALIDOS)}")
+
+    # Fórmula — não tem um único campo/operador_comparacao/valor, tem a sua
+    # própria validação e formato de saída.
+    if condicao["tipo"] == "formula":
+        return _validar_e_resolver_formula(condicao, apoio, perguntas, parametros)
 
     campo = condicao.get("campo")
     if campo not in perguntas:

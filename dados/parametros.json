@@ -1667,6 +1667,16 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-08-24"
+      },
+      "limite_patrimonio_eur": {
+        "descricao": "Limite de património mobiliário/bens móveis sujeitos a registo do RSI, em euros (60 × IAS 2026) — usado directamente na condição de acesso",
+        "unidade": "EUR",
+        "valor": 32227.8,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Decreto-Lei n.º 70/2010, de 16 de junho, artigo 9.º — 60 × IAS 2026 (537,13€) = 32.227,80€. Mesmo diploma de limite_patrimonio_multiplicador_ias e ias_2026 acima; valor derivado, sem fonte adicional própria",
+        "fonte_url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
       }
     },
     "subsidio-doenca": {
