@@ -83,6 +83,24 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
 
     if "id" not in condicao:
         raise CondicaoInvalida(f"{apoio}: condição sem 'id'")
+
+    # Grupo aninhado (ex.: idade normal OU excepção de invalidez) — nunca
+    # tem 'tipo'/'campo' próprios, só reagrupa sub-condições com o seu
+    # próprio operador. Recursivo: um grupo pode conter outro grupo.
+    if "condicoes" in condicao:
+        if condicao.get("operador") not in OPERADORES_APOIO_VALIDOS:
+            raise CondicaoInvalida(f"{contexto}: grupo sem 'operador' válido ({sorted(OPERADORES_APOIO_VALIDOS)})")
+        subcondicoes = [
+            _validar_e_resolver_condicao(c, apoio, perguntas, parametros) for c in condicao["condicoes"]
+        ]
+        if not subcondicoes:
+            raise CondicaoInvalida(f"{contexto}: grupo com 'condicoes' vazio")
+        return {
+            "id": condicao["id"],
+            "operador": condicao["operador"],
+            "condicoes": subcondicoes,
+        }
+
     if condicao.get("tipo") not in TIPOS_CONDICAO_VALIDOS:
         raise CondicaoInvalida(f"{contexto}: 'tipo' tem de ser um de {sorted(TIPOS_CONDICAO_VALIDOS)}")
 
@@ -131,6 +149,16 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
     }
 
 
+def _coletar_ids(condicoes: list) -> list:
+    """Achata ids de condições e grupos, recursivamente, para o teste de duplicados."""
+    ids = []
+    for c in condicoes:
+        ids.append(c["id"])
+        if "condicoes" in c:
+            ids.extend(_coletar_ids(c["condicoes"]))
+    return ids
+
+
 def consolidar() -> dict:
     perguntas = _carregar_perguntas()
     parametros = _carregar_parametros()
@@ -154,9 +182,10 @@ def consolidar() -> dict:
         if not condicoes_resolvidas:
             raise CondicaoInvalida(f"{apoio}: 'condicoes' está vazio")
 
-        ids = [c["id"] for c in condicoes_resolvidas]
+        ids = _coletar_ids(condicoes_resolvidas)
         if len(ids) != len(set(ids)):
-            raise CondicaoInvalida(f"{apoio}: ids de condição duplicados ({ids})")
+            duplicados = sorted({i for i in ids if ids.count(i) > 1})
+            raise CondicaoInvalida(f"{apoio}: ids de condição duplicados ({duplicados})")
 
         apoios[apoio] = {
             "pagina": bruto.get("pagina"),
@@ -179,7 +208,7 @@ def main() -> int:
         return 1
 
     n_apoios = len(consolidado["apoios"])
-    n_condicoes = sum(len(a["condicoes"]) for a in consolidado["apoios"].values())
+    n_condicoes = sum(len(_coletar_ids(a["condicoes"])) for a in consolidado["apoios"].values())
 
     if args.check:
         atual_sem_data = json.dumps(

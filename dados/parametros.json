@@ -355,6 +355,16 @@
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090",
         "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c",
         "verificado_em": "2026-07-19"
+      },
+      "anos_residencia_minima": {
+        "descricao": "Anos mínimos de residência em território nacional antes da data do pedido de CSI",
+        "unidade": "anos",
+        "valor": 6,
+        "vigencia_inicio": "2005-12-29",
+        "referencia_legal": "Documentação oficial do ISS, I.P. — formulário CSI 1 (Requerimento) e ficha informativa CSI_1_4; artigo do Decreto-Lei n.º 232/2005 ou Decreto Regulamentar n.º 3/2006 que fixe este número ainda não localizado",
+        "fonte_url": "https://seg-social.pt/documents/10152/21727/CSI_1_4/b4b397d0-8efb-42ed-9515-7159f6a47eb7",
+        "fonte_url_complementar": "https://www.seg-social.pt/storage1/files/CSI-1---Requerimento-complemento-solid--rio-para-idosos-b-0Ibx3m8j0N--6M7D9NVA.pdf",
+        "verificado_em": "2026-09-27"
       }
     },
     "desemprego": {

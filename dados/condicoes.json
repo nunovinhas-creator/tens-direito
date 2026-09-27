@@ -52,15 +52,32 @@
       "condicoes": [
         {
           "id": "idade_minima",
-          "tipo": "limiar",
-          "campo": "data_nascimento",
-          "operador_comparacao": "gte",
-          "valor": 801,
-          "unidade_comparacao": "meses_totais",
-          "fonte": {
-            "tipo": "parametro",
-            "referencia": "csi.idade_minima_meses_totais"
-          }
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "idade_normal",
+              "tipo": "limiar",
+              "campo": "data_nascimento",
+              "operador_comparacao": "gte",
+              "valor": 801,
+              "unidade_comparacao": "meses_totais",
+              "fonte": {
+                "tipo": "parametro",
+                "referencia": "csi.idade_minima_meses_totais"
+              }
+            },
+            {
+              "id": "excepcao_invalidez_sem_reavaliacao",
+              "tipo": "categorica",
+              "campo": "tem_pensao_invalidez_sem_reavaliacao",
+              "operador_comparacao": "eq",
+              "valor": "sim",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
         },
         {
           "id": "reside_legalmente",
@@ -81,8 +98,8 @@
           "valor": 6,
           "unidade_comparacao": null,
           "fonte": {
-            "tipo": "literal_pagina",
-            "pagina": "complemento-solidario-idosos.html"
+            "tipo": "parametro",
+            "referencia": "csi.anos_residencia_minima"
           }
         }
       ]

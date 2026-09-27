@@ -216,6 +216,87 @@ def test_ids_duplicados_falha(tmp_path, monkeypatch):
         gerar_condicoes_json.consolidar()
 
 
+def test_grupo_aninhado_any_resolve_ambas_as_folhas(tmp_path, monkeypatch):
+    apoio_yaml = {
+        "apoio": "csi",
+        "operador": "all",
+        "condicoes": [
+            {
+                "id": "idade_minima",
+                "operador": "any",
+                "condicoes": [
+                    {
+                        "id": "idade_normal",
+                        "tipo": "limiar",
+                        "campo": "idade_meses_totais",
+                        "operador_comparacao": "gte",
+                        "parametro": "csi.idade_minima_meses_totais",
+                    },
+                    {
+                        "id": "excepcao",
+                        "tipo": "categorica",
+                        "campo": "reside_legalmente_pt",
+                        "operador_comparacao": "eq",
+                        "valor_literal": "sim",
+                    },
+                ],
+            }
+        ],
+    }
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": apoio_yaml})
+
+    consolidado = gerar_condicoes_json.consolidar()
+
+    grupo = consolidado["apoios"]["csi"]["condicoes"][0]
+    assert grupo["id"] == "idade_minima"
+    assert grupo["operador"] == "any"
+    ids_filhos = {c["id"] for c in grupo["condicoes"]}
+    assert ids_filhos == {"idade_normal", "excepcao"}
+
+
+def test_grupo_aninhado_sem_operador_valido_falha(tmp_path, monkeypatch):
+    apoio_yaml = {
+        "apoio": "csi",
+        "operador": "all",
+        "condicoes": [
+            {
+                "id": "grupo",
+                "operador": "xor",
+                "condicoes": [
+                    {
+                        "id": "x",
+                        "tipo": "categorica",
+                        "campo": "reside_legalmente_pt",
+                        "operador_comparacao": "eq",
+                        "valor_literal": "sim",
+                    }
+                ],
+            }
+        ],
+    }
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": apoio_yaml})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="grupo sem 'operador'"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_id_duplicado_dentro_de_grupo_falha(tmp_path, monkeypatch):
+    folha = {
+        "id": "repetido",
+        "tipo": "categorica",
+        "campo": "reside_legalmente_pt",
+        "operador_comparacao": "eq",
+        "valor_literal": "sim",
+    }
+    apoio_yaml = {
+        "apoio": "csi",
+        "operador": "all",
+        "condicoes": [{"id": "grupo", "operador": "any", "condicoes": [folha, dict(folha)]}],
+    }
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": apoio_yaml})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="duplicados"):
+        gerar_condicoes_json.consolidar()
+
+
 def test_operador_apoio_invalido_falha(tmp_path, monkeypatch):
     apoio_yaml = {
         "apoio": "csi",
@@ -247,5 +328,11 @@ def test_integracao_csi_real_gera_sem_erro():
     consolidado = gerar_condicoes_json.consolidar()
 
     assert "csi" in consolidado["apoios"]
-    ids = {c["id"] for c in consolidado["apoios"]["csi"]["condicoes"]}
-    assert {"idade_minima", "reside_legalmente", "anos_residencia_minima"} <= ids
+    ids = set(gerar_condicoes_json._coletar_ids(consolidado["apoios"]["csi"]["condicoes"]))
+    assert {
+        "idade_minima",
+        "idade_normal",
+        "excepcao_invalidez_sem_reavaliacao",
+        "reside_legalmente",
+        "anos_residencia_minima",
+    } <= ids
