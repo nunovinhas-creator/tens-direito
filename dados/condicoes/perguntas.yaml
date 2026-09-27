@@ -1,0 +1,49 @@
+# Banco de perguntas do simulador universal (PR 1 da série "condições de
+# acesso"). Cada campo aqui é perguntado UMA VEZ e reutilizado por todos os
+# apoios em dados/condicoes/<apoio>.yaml que o referenciarem — é isto que
+# evita pedir "idade" outra vez a cada apoio, e evita pedir rendimento em
+# euros quando uma condição categórica já chega para excluir ou incluir.
+#
+# Convenção: campos de data/número são canónicos (ex.: data_nascimento, não
+# idade_anos) — é o motor (scripts/gerar_condicoes_json.py + JS de avaliação)
+# que deriva idade_anos/idade_meses_totais a partir de data_nascimento,
+# nunca o utilizador a fazer essa conta. Isto evita duas perguntas
+# diferentes (CSI pede meses totais, IMT Jovem pede anos) para o mesmo facto.
+#
+# Cada pergunta tem:
+#   tipo: categorica | numero | data
+#   unidade: obrigatório em "numero", omitido nos outros
+#   opcoes: obrigatório em "categorica"
+#
+# Início mínimo: só os campos que o piloto (CSI, PR 2) precisa. Novos apoios
+# acrescentam campos novos aqui só quando o campo ainda não existe — nunca
+# duplicam um campo com nome diferente para o mesmo facto.
+
+data_nascimento:
+  descricao: "Data de nascimento da pessoa requerente"
+  tipo: data
+
+reside_legalmente_pt:
+  descricao: "Reside legalmente em Portugal"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+anos_residencia_pt:
+  descricao: "Há quantos anos reside legalmente em Portugal, de forma ininterrupta"
+  tipo: numero
+  unidade: anos
+  aplicavel_se:
+    campo: reside_legalmente_pt
+    valor: sim
+
+estatuto_residencia:
+  descricao: "Estatuto de residência para efeitos de condições de nacionalidade/residência"
+  tipo: categorica
+  opcoes:
+    - nacional_pt
+    - cidadao_ue_com_registo
+    - titulo_residencia_valido
+    - refugiado
+  aplicavel_se:
+    campo: reside_legalmente_pt
+    valor: sim
