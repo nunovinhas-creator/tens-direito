@@ -153,3 +153,20 @@ ias_2026:
       referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro"
       fonte_url: "https://dre.pt"
       verificado_em: "2026-08-24"
+
+# ── Sessão 27/09/2026 (série "simulador universal", PR 6) ───────────────────
+# Valor derivado (60 × IAS 2026), precomputado e versionado à parte — mesmo
+# tratamento que dados/parametros/csi.yaml dá ao valor de casal (derivado
+# de coeficiente × individual). Nunca recalcular 60 × ias_2026 no motor de
+# condições; usar sempre este parâmetro, para não duplicar a mesma conta em
+# dois sítios.
+
+limite_patrimonio_eur:
+  descricao: "Limite de património mobiliário/bens móveis sujeitos a registo do RSI, em euros (60 × IAS 2026) — usado directamente na condição de acesso"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 32227.80
+      referencia_legal: "Decreto-Lei n.º 70/2010, de 16 de junho, artigo 9.º — 60 × IAS 2026 (537,13€) = 32.227,80€. Mesmo diploma de limite_patrimonio_multiplicador_ias e ias_2026 acima; valor derivado, sem fonte adicional própria"
+      fonte_url: "https://diariodarepublica.pt/dr/detalhe/decreto-lei/70-2010-335683"
+      verificado_em: "2026-09-27"

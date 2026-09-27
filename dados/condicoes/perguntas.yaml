@@ -103,3 +103,58 @@ rendimento_per_capita_mensal_agregado:
   descricao: "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses"
   tipo: numero
   unidade: "EUR/mês"
+
+rendimento_mensal_agregado:
+  descricao: "Rendimento mensal total do agregado familiar, já considerado nos termos da condição de recursos (trabalho, pensões, subsídios)"
+  tipo: numero
+  unidade: "EUR/mês"
+
+numero_adultos_adicionais_agregado:
+  descricao: "Número de adultos do agregado além do requerente/titular"
+  tipo: numero
+  unidade: pessoas
+
+numero_menores_agregado:
+  descricao: "Número de menores de 18 anos do agregado"
+  tipo: numero
+  unidade: pessoas
+
+situacao_profissional:
+  descricao: "Situação profissional actual da pessoa requerente"
+  tipo: categorica
+  opcoes: [empregado, desempregado, estudante, reformado, inativo]
+
+inscrito_centro_emprego_e_disponivel:
+  descricao: "Está inscrito/a no Centro de Emprego e disponível para trabalhar, formar ou inserir-se"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+esta_em_estabelecimento_prisional_ou_institucionalizado:
+  descricao: "Está em estabelecimento prisional ou institucionalizado em equipamento financiado pelo Estado"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+patrimonio_mobiliario_pessoal:
+  descricao: "Valor de património mobiliário e bens móveis sujeitos a registo (o mais elevado dos dois, cada um comparado ao limite)"
+  tipo: numero
+  unidade: EUR
+
+rendimento_mensal_proprio_menor:
+  descricao: "Rendimentos próprios mensais do menor requerente (quando o requerente tem menos de 18 anos)"
+  tipo: numero
+  unidade: "EUR/mês"
+
+esta_gravida:
+  descricao: "A pessoa menor requerente está grávida"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+casado_ou_uniao_facto_mais_de_2_anos:
+  descricao: "A pessoa menor requerente é casada ou vive em união de facto há mais de 2 anos"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+tem_menores_ou_pessoas_deficiencia_a_cargo:
+  descricao: "A pessoa menor requerente tem menores ou pessoas com deficiência a cargo"
+  tipo: categorica
+  opcoes: [sim, nao]

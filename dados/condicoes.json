@@ -94,6 +94,82 @@
       "descricao": "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses",
       "tipo": "numero",
       "unidade": "EUR/mês"
+    },
+    "rendimento_mensal_agregado": {
+      "descricao": "Rendimento mensal total do agregado familiar, já considerado nos termos da condição de recursos (trabalho, pensões, subsídios)",
+      "tipo": "numero",
+      "unidade": "EUR/mês"
+    },
+    "numero_adultos_adicionais_agregado": {
+      "descricao": "Número de adultos do agregado além do requerente/titular",
+      "tipo": "numero",
+      "unidade": "pessoas"
+    },
+    "numero_menores_agregado": {
+      "descricao": "Número de menores de 18 anos do agregado",
+      "tipo": "numero",
+      "unidade": "pessoas"
+    },
+    "situacao_profissional": {
+      "descricao": "Situação profissional actual da pessoa requerente",
+      "tipo": "categorica",
+      "opcoes": [
+        "empregado",
+        "desempregado",
+        "estudante",
+        "reformado",
+        "inativo"
+      ]
+    },
+    "inscrito_centro_emprego_e_disponivel": {
+      "descricao": "Está inscrito/a no Centro de Emprego e disponível para trabalhar, formar ou inserir-se",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "esta_em_estabelecimento_prisional_ou_institucionalizado": {
+      "descricao": "Está em estabelecimento prisional ou institucionalizado em equipamento financiado pelo Estado",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "patrimonio_mobiliario_pessoal": {
+      "descricao": "Valor de património mobiliário e bens móveis sujeitos a registo (o mais elevado dos dois, cada um comparado ao limite)",
+      "tipo": "numero",
+      "unidade": "EUR"
+    },
+    "rendimento_mensal_proprio_menor": {
+      "descricao": "Rendimentos próprios mensais do menor requerente (quando o requerente tem menos de 18 anos)",
+      "tipo": "numero",
+      "unidade": "EUR/mês"
+    },
+    "esta_gravida": {
+      "descricao": "A pessoa menor requerente está grávida",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "casado_ou_uniao_facto_mais_de_2_anos": {
+      "descricao": "A pessoa menor requerente é casada ou vive em união de facto há mais de 2 anos",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "tem_menores_ou_pessoas_deficiencia_a_cargo": {
+      "descricao": "A pessoa menor requerente tem menores ou pessoas com deficiência a cargo",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
     }
   },
   "apoios": {
@@ -290,6 +366,225 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "csi.anos_residencia_minima"
+          }
+        }
+      ]
+    },
+    "rsi": {
+      "pagina": "rsi.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "idade_ou_excepcao_menor",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "idade_normal",
+              "tipo": "limiar",
+              "campo": "data_nascimento_requerente",
+              "operador_comparacao": "gte",
+              "valor": 18,
+              "unidade_comparacao": "anos",
+              "fonte": {
+                "tipo": "parametro",
+                "referencia": "rsi.idade_minima_anos"
+              }
+            },
+            {
+              "id": "excepcao_menor",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "rendimentos_proprios_acima_do_limite",
+                  "tipo": "limiar",
+                  "campo": "rendimento_mensal_proprio_menor",
+                  "operador_comparacao": "gte",
+                  "valor": 173.29,
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "parametro",
+                    "referencia": "rsi.valor_adulto_adicional_mensal"
+                  }
+                },
+                {
+                  "id": "situacao_pessoal",
+                  "operador": "any",
+                  "condicoes": [
+                    {
+                      "id": "gravida",
+                      "tipo": "categorica",
+                      "campo": "esta_gravida",
+                      "operador_comparacao": "eq",
+                      "valor": "sim",
+                      "unidade_comparacao": null,
+                      "fonte": {
+                        "tipo": "literal_enum"
+                      }
+                    },
+                    {
+                      "id": "casada_ou_uniao_2_anos",
+                      "tipo": "categorica",
+                      "campo": "casado_ou_uniao_facto_mais_de_2_anos",
+                      "operador_comparacao": "eq",
+                      "valor": "sim",
+                      "unidade_comparacao": null,
+                      "fonte": {
+                        "tipo": "literal_enum"
+                      }
+                    },
+                    {
+                      "id": "tem_dependentes",
+                      "tipo": "categorica",
+                      "campo": "tem_menores_ou_pessoas_deficiencia_a_cargo",
+                      "operador_comparacao": "eq",
+                      "valor": "sim",
+                      "unidade_comparacao": null,
+                      "fonte": {
+                        "tipo": "literal_enum"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "residencia_legal",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "nacional_pt",
+              "tipo": "categorica",
+              "campo": "estatuto_residencia",
+              "operador_comparacao": "eq",
+              "valor": "nacional_pt",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "cidadao_ue",
+              "tipo": "categorica",
+              "campo": "estatuto_residencia",
+              "operador_comparacao": "eq",
+              "valor": "cidadao_ue_com_registo",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "refugiado",
+              "tipo": "categorica",
+              "campo": "estatuto_residencia",
+              "operador_comparacao": "eq",
+              "valor": "refugiado",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "pais_terceiro_com_1_ano",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "titulo_valido",
+                  "tipo": "categorica",
+                  "campo": "estatuto_residencia",
+                  "operador_comparacao": "eq",
+                  "valor": "titulo_residencia_valido",
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_enum"
+                  }
+                },
+                {
+                  "id": "pelo_menos_1_ano",
+                  "tipo": "limiar",
+                  "campo": "anos_residencia_pt",
+                  "operador_comparacao": "gte",
+                  "valor": 1,
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_pagina",
+                    "pagina": "rsi.html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rendimento_dentro_do_limiar",
+          "tipo": "formula",
+          "formula": "escala_equivalencia_rsi",
+          "campo_rendimento": "rendimento_mensal_agregado",
+          "campo_adultos_adicionais": "numero_adultos_adicionais_agregado",
+          "campo_menores": "numero_menores_agregado",
+          "valor_titular": 247.56,
+          "valor_adulto_adicional": 173.29,
+          "valor_menor": 123.78,
+          "fonte": {
+            "tipo": "parametro_multiplo",
+            "referencias": [
+              "rsi.valor_titular_mensal",
+              "rsi.valor_adulto_adicional_mensal",
+              "rsi.valor_menor_mensal"
+            ]
+          }
+        },
+        {
+          "id": "patrimonio_dentro_do_limite",
+          "tipo": "limiar",
+          "campo": "patrimonio_mobiliario_pessoal",
+          "operador_comparacao": "lte",
+          "valor": 32227.8,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "rsi.limite_patrimonio_eur"
+          }
+        },
+        {
+          "id": "disponibilidade_se_desempregado",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "nao_desempregado",
+              "tipo": "categorica",
+              "campo": "situacao_profissional",
+              "operador_comparacao": "neq",
+              "valor": "desempregado",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "inscrito_e_disponivel",
+              "tipo": "categorica",
+              "campo": "inscrito_centro_emprego_e_disponivel",
+              "operador_comparacao": "eq",
+              "valor": "sim",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nao_institucionalizado",
+          "tipo": "categorica",
+          "campo": "esta_em_estabelecimento_prisional_ou_institucionalizado",
+          "operador_comparacao": "eq",
+          "valor": "nao",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
           }
         }
       ]
