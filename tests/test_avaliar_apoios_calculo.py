@@ -329,3 +329,44 @@ def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagi
     r = _avaliar(pagina, condicoes, respostas)
     assert r["abono"]["estado"] == "indeterminado"
     assert r["abono"]["perguntasEmFalta"] == ["situacao_contributiva_regularizada"]
+
+
+# ── ASE real (dados/condicoes.json de produção) ─────────────────────────────
+
+
+def test_ase_real_elegivel_escola_publica_rendimento_baixo(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 200}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["ase"]["estado"] == "elegivel"
+
+
+def test_ase_real_elegivel_no_limite_exacto_do_escalao_b(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 537.13}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["ase"]["estado"] == "elegivel"
+
+
+def test_ase_real_inelegivel_rendimento_acima_do_escalao_b(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 600}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["ase"]["estado"] == "inelegivel"
+
+
+def test_ase_real_inelegivel_escola_privada_sem_protocolo_mesmo_com_rendimento_baixo(pagina):
+    # Short-circuit do `all`: escola privada sem protocolo decide sozinha,
+    # sem precisar de saber o rendimento.
+    condicoes = _condicoes_reais()
+    respostas = {"tipo_escola_aluno": "privada_sem_protocolo"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["ase"]["estado"] == "inelegivel"
+
+
+def test_ase_real_indeterminado_quando_falta_rendimento(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {"tipo_escola_aluno": "publica_ou_protocolo"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["ase"]["estado"] == "indeterminado"
+    assert r["ase"]["perguntasEmFalta"] == ["rendimento_per_capita_mensal_agregado"]

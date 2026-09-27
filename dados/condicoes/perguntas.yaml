@@ -93,3 +93,13 @@ patrimonio_mobiliario_agregado:
   descricao: "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)"
   tipo: numero
   unidade: EUR
+
+tipo_escola_aluno:
+  descricao: "Tipo de escola do aluno — pública/protocolo dá acesso à ASE, privada sem protocolo não"
+  tipo: categorica
+  opcoes: [publica_ou_protocolo, privada_sem_protocolo]
+
+rendimento_per_capita_mensal_agregado:
+  descricao: "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses"
+  tipo: numero
+  unidade: "EUR/mês"
