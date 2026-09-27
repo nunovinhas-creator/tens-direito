@@ -1,8 +1,12 @@
 {
   "gerado_em": "2026-09-27",
   "perguntas": {
-    "data_nascimento": {
-      "descricao": "Data de nascimento da pessoa requerente",
+    "data_nascimento_requerente": {
+      "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
+      "tipo": "data"
+    },
+    "data_nascimento_crianca": {
+      "descricao": "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)",
       "tipo": "data"
     },
     "reside_legalmente_pt": {
@@ -43,9 +47,153 @@
         "sim",
         "nao"
       ]
+    },
+    "em_estudos_ou_formacao_profissional": {
+      "descricao": "A criança/jovem está a estudar ou em formação profissional",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "tem_deficiencia_ou_incapacidade_reconhecida": {
+      "descricao": "A criança/jovem tem deficiência ou incapacidade reconhecida",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "rendimento_referencia_anual_agregado": {
+      "descricao": "Rendimento de Referência (RR) anual do agregado familiar — rendimento anual dividido pelo número de crianças/jovens do agregado mais 1, tal como calculado pela Segurança Social",
+      "tipo": "numero",
+      "unidade": "EUR/ano"
+    },
+    "situacao_contributiva_regularizada": {
+      "descricao": "A situação contributiva do requerente (ou dos pais/representantes legais) está regularizada perante a Segurança Social e a Autoridade Tributária",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "patrimonio_mobiliario_agregado": {
+      "descricao": "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)",
+      "tipo": "numero",
+      "unidade": "EUR"
     }
   },
   "apoios": {
+    "abono": {
+      "pagina": "abono-de-familia.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "idade_ou_excepcao",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "idade_normal",
+              "tipo": "limiar",
+              "campo": "data_nascimento_crianca",
+              "operador_comparacao": "lte",
+              "valor": 16,
+              "unidade_comparacao": "anos",
+              "fonte": {
+                "tipo": "literal_pagina",
+                "pagina": "abono-de-familia.html"
+              }
+            },
+            {
+              "id": "idade_estudante",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "idade_ate_24",
+                  "tipo": "limiar",
+                  "campo": "data_nascimento_crianca",
+                  "operador_comparacao": "lte",
+                  "valor": 24,
+                  "unidade_comparacao": "anos",
+                  "fonte": {
+                    "tipo": "literal_pagina",
+                    "pagina": "abono-de-familia.html"
+                  }
+                },
+                {
+                  "id": "em_estudos",
+                  "tipo": "categorica",
+                  "campo": "em_estudos_ou_formacao_profissional",
+                  "operador_comparacao": "eq",
+                  "valor": "sim",
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_enum"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "sem_limite_por_deficiencia",
+              "tipo": "categorica",
+              "campo": "tem_deficiencia_ou_incapacidade_reconhecida",
+              "operador_comparacao": "eq",
+              "valor": "sim",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
+        },
+        {
+          "id": "reside_legalmente",
+          "tipo": "categorica",
+          "campo": "reside_legalmente_pt",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "rendimento_dentro_do_limite",
+          "tipo": "limiar",
+          "campo": "rendimento_referencia_anual_agregado",
+          "operador_comparacao": "lte",
+          "valor": 18287.5,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "abono.escalao4_limite_cenario_pedidos_novos_2026"
+          }
+        },
+        {
+          "id": "situacao_contributiva_ok",
+          "tipo": "categorica",
+          "campo": "situacao_contributiva_regularizada",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "patrimonio_dentro_do_limite",
+          "tipo": "limiar",
+          "campo": "patrimonio_mobiliario_agregado",
+          "operador_comparacao": "lte",
+          "valor": 128911.2,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "abono.patrimonio_mobiliario_limite"
+          }
+        }
+      ]
+    },
     "csi": {
       "pagina": "complemento-solidario-idosos.html",
       "operador": "all",
@@ -57,7 +205,7 @@
             {
               "id": "idade_normal",
               "tipo": "limiar",
-              "campo": "data_nascimento",
+              "campo": "data_nascimento_requerente",
               "operador_comparacao": "gte",
               "valor": 801,
               "unidade_comparacao": "meses_totais",

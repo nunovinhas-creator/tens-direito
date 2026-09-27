@@ -75,6 +75,10 @@ function idadeMesesTotais(dataNascimentoISO, hojeISO) {
   return meses;
 }
 
+function idadeAnosCompletos(dataNascimentoISO, hojeISO) {
+  return Math.floor(idadeMesesTotais(dataNascimentoISO, hojeISO) / 12);
+}
+
 function compararValores(valorResposta, operador, valorAlvo) {
   switch (operador) {
     case 'eq': return valorResposta === valorAlvo;
@@ -123,6 +127,8 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
 
   if (condicao.unidade_comparacao === 'meses_totais') {
     valorResposta = idadeMesesTotais(valorResposta, hojeISO);
+  } else if (condicao.unidade_comparacao === 'anos') {
+    valorResposta = idadeAnosCompletos(valorResposta, hojeISO);
   }
 
   const cumpre = compararValores(valorResposta, condicao.operador_comparacao, condicao.valor);

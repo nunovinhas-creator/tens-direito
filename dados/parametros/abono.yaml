@@ -384,3 +384,17 @@ ias_2026:
       referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro"
       fonte_url: "https://dre.pt"
       verificado_em: "2026-07-19"
+
+# ── Condição de recursos — património mobiliário (sessão 27/09/2026, série
+# "simulador universal", PR 4) ──────────────────────────────────────────────
+
+patrimonio_mobiliario_limite:
+  descricao: "Limite de património mobiliário do agregado familiar para acesso ao abono de família (240 × IAS)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 128911.20
+      referencia_legal: "Artigo 14.º, n.º 1, do Decreto-Lei n.º 70/2010, de 16 de junho (condição de recursos das prestações do subsistema de protecção familiar, onde se integra o abono de família nos termos do art. 3.º do Decreto-Lei n.º 176/2003) — confirmado no Guia Prático 8000 (Condição de Recursos) do ISS, I.P., e já publicado em abono-de-familia.html (240 × IAS 2026 = 128.911,20€)"
+      fonte_url: "https://dre.pt"
+      fonte_url_complementar: "https://seg-social.pt/documents/10152/14913/8000_condicao_recursos/d0211ab2-4f86-4440-8dc2-6e6530510e7c"
+      verificado_em: "2026-09-27"

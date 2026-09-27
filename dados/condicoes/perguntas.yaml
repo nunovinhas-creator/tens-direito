@@ -10,6 +10,18 @@
 # nunca o utilizador a fazer essa conta. Isto evita duas perguntas
 # diferentes (CSI pede meses totais, IMT Jovem pede anos) para o mesmo facto.
 #
+# Correcção de 27/09/2026 (revisão do PR 4): "data_nascimento" tinha uma
+# única descrição ("pessoa requerente"), mas o requerente nem sempre é a
+# pessoa cuja idade decide o direito — no abono de família é a criança/
+# jovem, não quem faz o pedido. Um único campo genérico colidiria quando
+# o simulador avaliar os dois apoios na mesma sessão (o CSI precisa da
+# idade do idoso, o abono da idade da criança, ao mesmo tempo). Por isso
+# passa a haver um campo por papel: data_nascimento_requerente (quem faz
+# o pedido, é também o próprio beneficiário — CSI, subsídios individuais)
+# e data_nascimento_crianca (o beneficiário quando é um dependente do
+# requerente — abono, ASE, creche). Cada apoio novo usa o que for
+# correcto para si; nunca reintroduzir um "data_nascimento" genérico.
+#
 # Cada pergunta tem:
 #   tipo: categorica | numero | data
 #   unidade: obrigatório em "numero", omitido nos outros
@@ -19,8 +31,12 @@
 # acrescentam campos novos aqui só quando o campo ainda não existe — nunca
 # duplicam um campo com nome diferente para o mesmo facto.
 
-data_nascimento:
-  descricao: "Data de nascimento da pessoa requerente"
+data_nascimento_requerente:
+  descricao: "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)"
+  tipo: data
+
+data_nascimento_crianca:
+  descricao: "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)"
   tipo: data
 
 reside_legalmente_pt:
@@ -52,3 +68,28 @@ tem_pensao_invalidez_sem_reavaliacao:
   descricao: "É titular de Pensão de Invalidez do Regime Geral não sujeita a reavaliação médica"
   tipo: categorica
   opcoes: [sim, nao]
+
+em_estudos_ou_formacao_profissional:
+  descricao: "A criança/jovem está a estudar ou em formação profissional"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+tem_deficiencia_ou_incapacidade_reconhecida:
+  descricao: "A criança/jovem tem deficiência ou incapacidade reconhecida"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+rendimento_referencia_anual_agregado:
+  descricao: "Rendimento de Referência (RR) anual do agregado familiar — rendimento anual dividido pelo número de crianças/jovens do agregado mais 1, tal como calculado pela Segurança Social"
+  tipo: numero
+  unidade: "EUR/ano"
+
+situacao_contributiva_regularizada:
+  descricao: "A situação contributiva do requerente (ou dos pais/representantes legais) está regularizada perante a Segurança Social e a Autoridade Tributária"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+patrimonio_mobiliario_agregado:
+  descricao: "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)"
+  tipo: numero
+  unidade: EUR
