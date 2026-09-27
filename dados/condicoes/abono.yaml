@@ -1,0 +1,81 @@
+# Condições de acesso ao Abono de Família — PR 4 da série "simulador
+# universal" (depende do PR 1: perguntas.yaml, e do motor do PR 3 com
+# suporte a grupos recursivos e a unidade_comparacao: anos).
+#
+# Fonte das condições: secção "Quem tem direito" de abono-de-familia.html.
+# Os limites de idade (16 / 24 anos) são valor_literal com fonte_pagina —
+# o artigo exacto do Decreto-Lei n.º 176/2003 que os fixa não foi
+# confirmado nesta sessão (mesma dívida técnica assumida para os 6 anos
+# do CSI no PR 2). O património mobiliário JÁ está parametrizado
+# (dados/parametros/abono.yaml → patrimonio_mobiliario_limite), com fonte
+# primária confirmada (Decreto-Lei n.º 70/2010, art. 14.º n.º 1).
+#
+# Grupo de idade com três ramos independentes (any) — nenhum dos três
+# exige os outros dois:
+#   - idade normal (≤16 anos), sem mais nada;
+#   - idade de estudante (≤24 anos) SÓ SE em formação/estudos — grupo
+#     `all` aninhado dentro do grupo `any` (3 níveis de profundidade,
+#     valida a recursão do motor do PR 3);
+#   - sem limite de idade se houver deficiência/incapacidade reconhecida.
+
+apoio: abono
+pagina: abono-de-familia.html
+operador: all
+
+condicoes:
+  - id: idade_ou_excepcao
+    operador: any
+    condicoes:
+      - id: idade_normal
+        tipo: limiar
+        campo: data_nascimento
+        operador_comparacao: lte
+        valor_literal: 16
+        unidade_comparacao: anos
+        fonte_pagina: abono-de-familia.html
+
+      - id: idade_estudante
+        operador: all
+        condicoes:
+          - id: idade_ate_24
+            tipo: limiar
+            campo: data_nascimento
+            operador_comparacao: lte
+            valor_literal: 24
+            unidade_comparacao: anos
+            fonte_pagina: abono-de-familia.html
+          - id: em_estudos
+            tipo: categorica
+            campo: em_estudos_ou_formacao_profissional
+            operador_comparacao: eq
+            valor_literal: sim
+
+      - id: sem_limite_por_deficiencia
+        tipo: categorica
+        campo: tem_deficiencia_ou_incapacidade_reconhecida
+        operador_comparacao: eq
+        valor_literal: sim
+
+  - id: reside_legalmente
+    tipo: categorica
+    campo: reside_legalmente_pt
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: rendimento_dentro_do_limite
+    tipo: limiar
+    campo: rendimento_referencia_anual_agregado
+    operador_comparacao: lte
+    parametro: abono.escalao4_limite_cenario_pedidos_novos_2026
+
+  - id: situacao_contributiva_ok
+    tipo: categorica
+    campo: situacao_contributiva_regularizada
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: patrimonio_dentro_do_limite
+    tipo: limiar
+    campo: patrimonio_mobiliario_agregado
+    operador_comparacao: lte
+    parametro: abono.patrimonio_mobiliario_limite

@@ -52,3 +52,28 @@ tem_pensao_invalidez_sem_reavaliacao:
   descricao: "É titular de Pensão de Invalidez do Regime Geral não sujeita a reavaliação médica"
   tipo: categorica
   opcoes: [sim, nao]
+
+em_estudos_ou_formacao_profissional:
+  descricao: "A criança/jovem está a estudar ou em formação profissional"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+tem_deficiencia_ou_incapacidade_reconhecida:
+  descricao: "A criança/jovem tem deficiência ou incapacidade reconhecida"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+rendimento_referencia_anual_agregado:
+  descricao: "Rendimento de Referência (RR) anual do agregado familiar — rendimento anual dividido pelo número de crianças/jovens do agregado mais 1, tal como calculado pela Segurança Social"
+  tipo: numero
+  unidade: "EUR/ano"
+
+situacao_contributiva_regularizada:
+  descricao: "A situação contributiva do requerente (ou dos pais/representantes legais) está regularizada perante a Segurança Social e a Autoridade Tributária"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+patrimonio_mobiliario_agregado:
+  descricao: "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)"
+  tipo: numero
+  unidade: EUR
