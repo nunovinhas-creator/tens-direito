@@ -28,7 +28,7 @@ condicoes:
     condicoes:
       - id: idade_normal
         tipo: limiar
-        campo: data_nascimento
+        campo: data_nascimento_crianca
         operador_comparacao: lte
         valor_literal: 16
         unidade_comparacao: anos
@@ -39,7 +39,7 @@ condicoes:
         condicoes:
           - id: idade_ate_24
             tipo: limiar
-            campo: data_nascimento
+            campo: data_nascimento_crianca
             operador_comparacao: lte
             valor_literal: 24
             unidade_comparacao: anos

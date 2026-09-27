@@ -1,8 +1,12 @@
 {
   "gerado_em": "2026-09-27",
   "perguntas": {
-    "data_nascimento": {
-      "descricao": "Data de nascimento da pessoa requerente",
+    "data_nascimento_requerente": {
+      "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
+      "tipo": "data"
+    },
+    "data_nascimento_crianca": {
+      "descricao": "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)",
       "tipo": "data"
     },
     "reside_legalmente_pt": {
@@ -91,7 +95,7 @@
             {
               "id": "idade_normal",
               "tipo": "limiar",
-              "campo": "data_nascimento",
+              "campo": "data_nascimento_crianca",
               "operador_comparacao": "lte",
               "valor": 16,
               "unidade_comparacao": "anos",
@@ -107,7 +111,7 @@
                 {
                   "id": "idade_ate_24",
                   "tipo": "limiar",
-                  "campo": "data_nascimento",
+                  "campo": "data_nascimento_crianca",
                   "operador_comparacao": "lte",
                   "valor": 24,
                   "unidade_comparacao": "anos",
@@ -201,7 +205,7 @@
             {
               "id": "idade_normal",
               "tipo": "limiar",
-              "campo": "data_nascimento",
+              "campo": "data_nascimento_requerente",
               "operador_comparacao": "gte",
               "valor": 801,
               "unidade_comparacao": "meses_totais",

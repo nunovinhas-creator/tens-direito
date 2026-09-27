@@ -83,7 +83,7 @@ def _condicoes_reais() -> dict:
 def test_csi_real_elegivel_por_idade_normal(pagina):
     condicoes = _condicoes_reais()
     respostas = {
-        "data_nascimento": "1955-01-01",  # bem acima do mínimo em 2026
+        "data_nascimento_requerente": "1955-01-01",  # bem acima do mínimo em 2026
         "reside_legalmente_pt": "sim",
         "anos_residencia_pt": 10,
     }
@@ -94,7 +94,7 @@ def test_csi_real_elegivel_por_idade_normal(pagina):
 def test_csi_real_inelegivel_por_idade_sem_excepcao(pagina):
     condicoes = _condicoes_reais()
     respostas = {
-        "data_nascimento": "2000-01-01",  # jovem, sem excepção de invalidez
+        "data_nascimento_requerente": "2000-01-01",  # jovem, sem excepção de invalidez
         "reside_legalmente_pt": "sim",
         "anos_residencia_pt": 10,
         "tem_pensao_invalidez_sem_reavaliacao": "nao",
@@ -108,7 +108,7 @@ def test_csi_real_elegivel_por_excepcao_de_invalidez_apesar_da_idade(pagina):
     # excepção (grupo `any`) torna o apoio elegível na mesma.
     condicoes = _condicoes_reais()
     respostas = {
-        "data_nascimento": "2000-01-01",
+        "data_nascimento_requerente": "2000-01-01",
         "tem_pensao_invalidez_sem_reavaliacao": "sim",
         "reside_legalmente_pt": "sim",
         "anos_residencia_pt": 10,
@@ -120,7 +120,7 @@ def test_csi_real_elegivel_por_excepcao_de_invalidez_apesar_da_idade(pagina):
 def test_csi_real_indeterminado_quando_falta_residencia(pagina):
     condicoes = _condicoes_reais()
     respostas = {
-        "data_nascimento": "1955-01-01",
+        "data_nascimento_requerente": "1955-01-01",
         "reside_legalmente_pt": "sim",
         # anos_residencia_pt em falta — o grupo idade_minima já resolveu
         # (elegivel por idade normal), mas o apoio como um todo ainda não.
@@ -236,7 +236,7 @@ RESPOSTAS_ABONO_BASE = {
 
 def test_abono_real_elegivel_crianca_pequena(pagina):
     condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento": "2020-01-01"}  # 6 anos em 2026
+    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento_crianca": "2020-01-01"}  # 6 anos em 2026
     r = _avaliar(pagina, condicoes, respostas)
     assert r["abono"]["estado"] == "elegivel"
 
@@ -245,7 +245,7 @@ def test_abono_real_inelegivel_jovem_18_anos_sem_estudar_sem_deficiencia(pagina)
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
-        "data_nascimento": "2008-01-01",  # 18 anos em 2026
+        "data_nascimento_crianca": "2008-01-01",  # 18 anos em 2026
         "em_estudos_ou_formacao_profissional": "nao",
         "tem_deficiencia_ou_incapacidade_reconhecida": "nao",
     }
@@ -259,7 +259,7 @@ def test_abono_real_elegivel_jovem_18_anos_a_estudar(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
-        "data_nascimento": "2008-01-01",
+        "data_nascimento_crianca": "2008-01-01",
         "em_estudos_ou_formacao_profissional": "sim",
     }
     r = _avaliar(pagina, condicoes, respostas)
@@ -273,7 +273,7 @@ def test_abono_real_inelegivel_jovem_18_anos_a_estudar_mas_com_25_anos(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
-        "data_nascimento": "2001-01-01",  # 25 anos em 2026
+        "data_nascimento_crianca": "2001-01-01",  # 25 anos em 2026
         "em_estudos_ou_formacao_profissional": "sim",
         "tem_deficiencia_ou_incapacidade_reconhecida": "nao",
     }
@@ -289,7 +289,7 @@ def test_abono_real_indeterminado_aos_25_anos_sem_responder_a_deficiencia(pagina
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
-        "data_nascimento": "2001-01-01",
+        "data_nascimento_crianca": "2001-01-01",
         "em_estudos_ou_formacao_profissional": "sim",
     }
     r = _avaliar(pagina, condicoes, respostas)
@@ -301,7 +301,7 @@ def test_abono_real_elegivel_por_deficiencia_apesar_de_25_anos(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
-        "data_nascimento": "2001-01-01",
+        "data_nascimento_crianca": "2001-01-01",
         "tem_deficiencia_ou_incapacidade_reconhecida": "sim",
     }
     r = _avaliar(pagina, condicoes, respostas)
@@ -312,7 +312,7 @@ def test_abono_real_inelegivel_por_patrimonio_mesmo_com_idade_ok(pagina):
     # Short-circuit do `all` de topo: uma condição de recursos inelegível
     # decide o apoio, independentemente do resultado do grupo de idade.
     condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento": "2020-01-01", "patrimonio_mobiliario_agregado": 200000}
+    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento_crianca": "2020-01-01", "patrimonio_mobiliario_agregado": 200000}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["abono"]["estado"] == "inelegivel"
 
@@ -320,7 +320,7 @@ def test_abono_real_inelegivel_por_patrimonio_mesmo_com_idade_ok(pagina):
 def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagina):
     condicoes = _condicoes_reais()
     respostas = {
-        "data_nascimento": "2020-01-01",
+        "data_nascimento_crianca": "2020-01-01",
         "reside_legalmente_pt": "sim",
         "rendimento_referencia_anual_agregado": 10000,
         "patrimonio_mobiliario_agregado": 5000,

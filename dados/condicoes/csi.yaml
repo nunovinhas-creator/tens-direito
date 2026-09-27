@@ -35,7 +35,7 @@ condicoes:
     condicoes:
       - id: idade_normal
         tipo: limiar
-        campo: data_nascimento          # o motor deriva idade_meses_totais
+        campo: data_nascimento_requerente          # o motor deriva idade_meses_totais
         operador_comparacao: gte
         parametro: csi.idade_minima_meses_totais
         unidade_comparacao: meses_totais
