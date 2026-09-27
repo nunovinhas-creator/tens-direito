@@ -35,6 +35,14 @@
         "campo": "reside_legalmente_pt",
         "valor": "sim"
       }
+    },
+    "tem_pensao_invalidez_sem_reavaliacao": {
+      "descricao": "É titular de Pensão de Invalidez do Regime Geral não sujeita a reavaliação médica",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
     }
   },
   "apoios": {
