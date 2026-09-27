@@ -1,0 +1,63 @@
+# Condições de acesso ao CSI (Complemento Solidário para Idosos) — piloto
+# da série "simulador universal" (PR 2, depende do PR 1: perguntas.yaml).
+#
+# Revisão de 27/09/2026: resolvidas as duas lacunas assumidas na 1.ª
+# versão deste ficheiro (ver PR #246) — a excepção etária da invalidez
+# passou a grupo `any` aninhado, e "anos_residencia_minima" passou a
+# parâmetro versionado em dados/parametros/csi.yaml (ver PASSO 0 aí:
+# fonte é documentação oficial do ISS, nunca o texto do Decreto-Lei
+# n.º 232/2005 — o artigo exacto não foi localizado).
+#
+# Convenção (mesmo espírito PASSO 0 dos parâmetros): uma condição nunca
+# guarda o valor do limiar aqui — referencia sempre `parametro:` em
+# dados/parametros/<prestacao>.yaml, resolvido por
+# scripts/gerar_condicoes_json.py contra dados/parametros.json já gerado.
+# Só quando o limiar ainda não está parametrizado é que se aceita
+# `valor_literal:`, e só citando a página onde esse valor já está
+# publicado — nunca um número inventado nesta sessão.
+#
+# Uma condição pode ser:
+#   - uma folha: tipo/campo/operador_comparacao + (parametro ou valor_literal)
+#   - um grupo: id/operador (all|any) + condicoes (lista, recursivo) —
+#     usado aqui para "idade normal OU excepção de invalidez".
+#
+# operador (do apoio, nível de topo): all → todas as condições/grupos têm
+# de ser verdadeiros. any → basta um (ex.: cartão de estacionamento,
+# ainda por fazer).
+
+apoio: csi
+pagina: complemento-solidario-idosos.html
+operador: all
+
+condicoes:
+  - id: idade_minima
+    operador: any
+    condicoes:
+      - id: idade_normal
+        tipo: limiar
+        campo: data_nascimento          # o motor deriva idade_meses_totais
+        operador_comparacao: gte
+        parametro: csi.idade_minima_meses_totais
+        unidade_comparacao: meses_totais
+      - id: excepcao_invalidez_sem_reavaliacao
+        tipo: categorica
+        campo: tem_pensao_invalidez_sem_reavaliacao
+        operador_comparacao: eq
+        valor_literal: sim
+
+  - id: reside_legalmente
+    tipo: categorica
+    campo: reside_legalmente_pt
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: anos_residencia_minima
+    tipo: limiar
+    campo: anos_residencia_pt
+    operador_comparacao: gte
+    parametro: csi.anos_residencia_minima
+
+# Por implementar, fora do âmbito deste PR:
+# - Estatuto de residência para estrangeiros (Título de Residência válido
+#   ou Certificado de Registo de Cidadão da UE) — já existe o campo
+#   estatuto_residencia em perguntas.yaml, falta ligar aqui.

@@ -1,0 +1,108 @@
+{
+  "gerado_em": "2026-09-27",
+  "perguntas": {
+    "data_nascimento": {
+      "descricao": "Data de nascimento da pessoa requerente",
+      "tipo": "data"
+    },
+    "reside_legalmente_pt": {
+      "descricao": "Reside legalmente em Portugal",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "anos_residencia_pt": {
+      "descricao": "Há quantos anos reside legalmente em Portugal, de forma ininterrupta",
+      "tipo": "numero",
+      "unidade": "anos",
+      "aplicavel_se": {
+        "campo": "reside_legalmente_pt",
+        "valor": "sim"
+      }
+    },
+    "estatuto_residencia": {
+      "descricao": "Estatuto de residência para efeitos de condições de nacionalidade/residência",
+      "tipo": "categorica",
+      "opcoes": [
+        "nacional_pt",
+        "cidadao_ue_com_registo",
+        "titulo_residencia_valido",
+        "refugiado"
+      ],
+      "aplicavel_se": {
+        "campo": "reside_legalmente_pt",
+        "valor": "sim"
+      }
+    },
+    "tem_pensao_invalidez_sem_reavaliacao": {
+      "descricao": "É titular de Pensão de Invalidez do Regime Geral não sujeita a reavaliação médica",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    }
+  },
+  "apoios": {
+    "csi": {
+      "pagina": "complemento-solidario-idosos.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "idade_minima",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "idade_normal",
+              "tipo": "limiar",
+              "campo": "data_nascimento",
+              "operador_comparacao": "gte",
+              "valor": 801,
+              "unidade_comparacao": "meses_totais",
+              "fonte": {
+                "tipo": "parametro",
+                "referencia": "csi.idade_minima_meses_totais"
+              }
+            },
+            {
+              "id": "excepcao_invalidez_sem_reavaliacao",
+              "tipo": "categorica",
+              "campo": "tem_pensao_invalidez_sem_reavaliacao",
+              "operador_comparacao": "eq",
+              "valor": "sim",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
+        },
+        {
+          "id": "reside_legalmente",
+          "tipo": "categorica",
+          "campo": "reside_legalmente_pt",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "anos_residencia_minima",
+          "tipo": "limiar",
+          "campo": "anos_residencia_pt",
+          "operador_comparacao": "gte",
+          "valor": 6,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "csi.anos_residencia_minima"
+          }
+        }
+      ]
+    }
+  }
+}
