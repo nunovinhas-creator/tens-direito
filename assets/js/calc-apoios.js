@@ -319,6 +319,21 @@ function proximaPergunta(condicoesJson, respostas, hojeISO) {
   return candidatos[0];
 }
 
+// PR 12: textos próprios (motivo_inelegivel, vindos dos dados) das folhas
+// que fizeram o apoio falhar, pela ordem do apoio. Vazio quando nenhuma das
+// folhas que falharam tem texto próprio — a página usa então a frase genérica.
+function motivosQueExcluem(apoio, respostas, hojeISO) {
+  hojeISO = hojeISO || new Date().toISOString().slice(0, 10);
+  const motivos = [];
+  const recolher = (c) => {
+    if (avaliarCondicao(c, respostas, hojeISO).estado !== 'inelegivel') return;
+    if (c.condicoes) { c.condicoes.forEach(recolher); return; }
+    if (c.motivo_inelegivel && motivos.indexOf(c.motivo_inelegivel) === -1) motivos.push(c.motivo_inelegivel);
+  };
+  apoio.condicoes.forEach(recolher);
+  return motivos;
+}
+
 // Campos respondidos que fizeram um apoio falhar — para a página explicar
 // o "porquê" de um "Não tens direito" sem inventar texto: devolve os
 // campos das condições de topo que ficaram "inelegivel", pela ordem em

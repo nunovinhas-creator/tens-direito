@@ -625,6 +625,9 @@
           }
           return 'Faltam dados que este simulador ainda não pergunta — confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
         }
+        // Texto próprio da condição que excluiu (dados), quando existe.
+        const proprios = motivosQueExcluem(apoio, respostas, hojeISO());
+        if (proprios.length) return proprios.join(' ');
         const campos = camposQueExcluem(apoio, respostas, hojeISO());
         if (!campos.length) return 'Não cumpres uma das condições de acesso.';
         const partes = campos.slice(0, 2).map((c) => '«' + CONDICOES.perguntas[c].pergunta + '» — respondeste ' + textoResposta(c));

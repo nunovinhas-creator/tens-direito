@@ -723,6 +723,7 @@
               "creche.creche_idade_fim_incerteza_anos"
             ]
           },
+          "motivo_inelegivel": "A creche gratuita aplica-se a crianças até aos 3 anos. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. Confirma no guia completo.",
           "verificado_em": "2026-09-28"
         }
       ],

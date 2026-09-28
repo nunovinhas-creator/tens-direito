@@ -6681,8 +6681,10 @@ fixa o momento do corte, por isso há um tipo de condição novo,
 de 4 fica indeterminado com o motivo escrito nos dados (o motor devolve
 `motivos`; a página mostra-o em vez de "faltam dados"), 4 ou mais não
 cumpre. O limite de 4 é derivado, não legal (`creche_idade_fim_incerteza_anos`).
-A Lei n.º 2/2022 só faseia por ano de creche — não fixa idade. O cartão
-europeu de estacionamento passa para o PR 12b (#262).
+A Lei n.º 2/2022 só faseia por ano de creche — não fixa idade. Com 4 anos
+ou mais, a página mostra o texto próprio da condição (`motivo_inelegivel`,
+nos dados) em vez da frase genérica "Não cumpres…"; `motivosQueExcluem()`
+no motor. O cartão europeu de estacionamento passa para o PR 12b (#262).
 
 ---
 

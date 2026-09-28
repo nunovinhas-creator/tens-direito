@@ -819,3 +819,32 @@ def test_fontes_da_creche_guardadas_em_dados_fontes():
                  "Portaria-305-2022-consolidada-2024-06-06.pdf"):
         caminho = fontes / nome
         assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-", nome
+
+
+
+# ── PR 12 (revisão 2): motivo_inelegivel ────────────────────────────────────
+
+
+def test_motivo_inelegivel_passa_para_o_json(tmp_path, monkeypatch):
+    cond = {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq",
+            "valor_literal": "sim", "motivo_inelegivel": "  Texto próprio.  "}
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(condicoes=[cond])}, completar=False)
+    assert gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]["motivo_inelegivel"] == "Texto próprio."
+
+
+@pytest.mark.parametrize("motivo,em_grupo,erro", [
+    ("", False, "texto não vazio"),
+    (7, False, "texto não vazio"),
+    ("Texto.", True, "não em grupos"),
+])
+def test_motivo_inelegivel_invalido_falha(tmp_path, monkeypatch, motivo, em_grupo, erro):
+    folha = {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
+    if em_grupo:
+        cond = {"id": "g", "operador": "all", "condicoes": [folha], "motivo_inelegivel": motivo}
+    else:
+        cond = {**folha, "motivo_inelegivel": motivo}
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(condicoes=[cond])}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()

@@ -290,6 +290,21 @@ def test_creche_com_3_anos_mostra_o_motivo_dos_dados(browser, servidor):
     contexto.close()
 
 
+def test_creche_com_4_anos_mostra_o_texto_proprio_e_nao_o_generico(browser, servidor):
+    from datetime import date
+    hoje = date.today()
+    nascimento = hoje.replace(year=hoje.year - 5).isoformat()
+    contexto, page = _abrir(browser, servidor, _so_creche())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": nascimento})
+    cartoes = _cartoes(page, "grupoInelegivel")
+    assert [c["apoio"] for c in cartoes] == ["creche"]
+    motivo = CONDICOES["apoios"]["creche"]["condicoes"][-1]["motivo_inelegivel"]
+    assert cartoes[0]["motivo"] == motivo
+    assert "Não cumpres" not in cartoes[0]["motivo"]
+    contexto.close()
+
+
 # ── Ordem das perguntas ──────────────────────────────────────────────────
 
 

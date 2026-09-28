@@ -254,6 +254,23 @@ def _validar_e_resolver_formula(condicao: dict, apoio: str, perguntas: dict, par
 
 
 def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
+    """Resolve a condição e, se existir, o `motivo_inelegivel` (PR 12): o
+    texto que a página mostra quando é esta folha que exclui, em vez da
+    frase genérica "Não cumpres uma condição de acesso…". Só em folhas —
+    num grupo não se saberia qual das sub-condições falhou."""
+    resolvida = _resolver_condicao(condicao, apoio, perguntas, parametros)
+    if "motivo_inelegivel" in condicao:
+        contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
+        if "condicoes" in condicao:
+            raise CondicaoInvalida(f"{contexto}: 'motivo_inelegivel' só em condições simples, não em grupos")
+        motivo = condicao["motivo_inelegivel"]
+        if not isinstance(motivo, str) or not motivo.strip():
+            raise CondicaoInvalida(f"{contexto}: 'motivo_inelegivel' tem de ser texto não vazio")
+        resolvida["motivo_inelegivel"] = motivo.strip()
+    return resolvida
+
+
+def _resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
     contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
 
     if "id" not in condicao:

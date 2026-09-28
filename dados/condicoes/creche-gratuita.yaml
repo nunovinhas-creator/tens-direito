@@ -59,3 +59,4 @@ condicoes:
     parametro: creche.creche_idade_limite_anos
     parametro_exclusao: creche.creche_idade_fim_incerteza_anos
     motivo_indeterminado: "a regra diz «até aos 3 anos» mas não fixa se é no aniversário ou no fim do ano letivo"
+    motivo_inelegivel: "A creche gratuita aplica-se a crianças até aos 3 anos. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. Confirma no guia completo."

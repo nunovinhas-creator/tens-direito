@@ -1247,3 +1247,27 @@ def test_faixa_incerta_sintetica_propaga_motivo_por_grupo_all_e_any(pagina):
     assert r["any"]["estado"] == "elegivel"              # uma alternativa cumpre o "any"
     assert _avaliar(pagina, base, {"n": 2.9, "c": "sim"})["all"]["estado"] == "elegivel"
     assert _avaliar(pagina, base, {"n": 4, "c": "sim"})["all"]["estado"] == "inelegivel"
+
+
+
+# ── PR 12 (revisão 2): texto próprio quando a idade exclui (4+ anos) ─────────
+
+MOTIVO_CRECHE_4_ANOS = ("A creche gratuita aplica-se a crianças até aos 3 anos. Pela data indicada, o teu filho "
+                        "mais novo terá ultrapassado essa idade. Confirma no guia completo.")
+
+
+def _motivos_exclusao(pagina, respostas, hoje="2026-09-27"):
+    return pagina.evaluate(
+        "([c, r, h]) => motivosQueExcluem(c.apoios.creche, r, h)", [_condicoes_reais(), respostas, hoje])
+
+
+def test_creche_4_anos_tem_motivo_proprio(pagina):
+    r = {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2022-09-27"}  # faz 4 hoje
+    assert _motivos_exclusao(pagina, r) == [MOTIVO_CRECHE_4_ANOS]
+
+
+def test_creche_motivo_de_4_anos_nunca_aparece_fora_dessa_zona(pagina):
+    for nascimento in ("2023-09-27", "2022-09-28", "2024-09-27"):  # 3, 3, 2 anos
+        assert _motivos_exclusao(pagina, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": nascimento}) == []
+    # Sem filhos: é o portão que exclui, e esse não tem texto próprio.
+    assert _motivos_exclusao(pagina, {"tem_filhos_a_cargo": "nao"}) == []
