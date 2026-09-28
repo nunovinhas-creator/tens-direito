@@ -253,6 +253,16 @@
         "sim",
         "nao"
       ]
+    },
+    "rendimento_trabalho_mensal_agregado": {
+      "descricao": "Rendimentos de trabalho mensais do agregado (titular e restantes elementos), já deduzidos das contribuições obrigatórias para a segurança social",
+      "tipo": "numero",
+      "unidade": "EUR/mês"
+    },
+    "outros_rendimentos_mensais_agregado": {
+      "descricao": "Restantes rendimentos mensais do agregado (pensões, subsídios, capitais, prediais, etc.), que não são de trabalho",
+      "tipo": "numero",
+      "unidade": "EUR/mês"
     }
   },
   "apoios": {
@@ -624,6 +634,122 @@
         }
       ]
     },
+    "psu": {
+      "pagina": "prestacao-social-unica.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "idade_minima",
+          "tipo": "limiar",
+          "campo": "data_nascimento_requerente",
+          "operador_comparacao": "gte",
+          "valor": 18,
+          "unidade_comparacao": "anos",
+          "fonte": {
+            "tipo": "literal_pagina",
+            "pagina": "prestacao-social-unica.html"
+          }
+        },
+        {
+          "id": "reside_legalmente",
+          "tipo": "categorica",
+          "campo": "reside_legalmente_pt",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "nacional_ou_estrangeiro_com_1_ano",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "nacional_pt",
+              "tipo": "categorica",
+              "campo": "estatuto_residencia",
+              "operador_comparacao": "eq",
+              "valor": "nacional_pt",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "estrangeiro_com_1_ano",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "nao_nacional",
+                  "tipo": "categorica",
+                  "campo": "estatuto_residencia",
+                  "operador_comparacao": "neq",
+                  "valor": "nacional_pt",
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_enum"
+                  }
+                },
+                {
+                  "id": "pelo_menos_1_ano",
+                  "tipo": "limiar",
+                  "campo": "anos_residencia_pt",
+                  "operador_comparacao": "gte",
+                  "valor": 1,
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_pagina",
+                    "pagina": "prestacao-social-unica.html"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rendimento_dentro_do_limite_de_recursos",
+          "tipo": "formula",
+          "formula": "psu_valor_positivo",
+          "campo_rendimento_trabalho": "rendimento_trabalho_mensal_agregado",
+          "campo_outros_rendimentos": "outros_rendimentos_mensais_agregado",
+          "campo_adultos_adicionais": "numero_adultos_adicionais_agregado",
+          "campo_menores": "numero_menores_agregado",
+          "valor_referencia": 268.565,
+          "ponderacao_titular": 1,
+          "ponderacao_maior": 0.7,
+          "ponderacao_menor": 0.5,
+          "cit_limiar": 107.426,
+          "cit_taxa": 0.5,
+          "valor_minimo": 10.0,
+          "fonte": {
+            "tipo": "parametro_multiplo",
+            "referencias": [
+              "psu.ias_2026",
+              "psu.valor_referencia_multiplicador_ias",
+              "psu.ponderacao_titular",
+              "psu.ponderacao_maior",
+              "psu.ponderacao_menor",
+              "psu.cit_limiar_multiplicador_ias",
+              "psu.cit_taxa_acima_limiar",
+              "psu.valor_minimo_euros"
+            ]
+          }
+        },
+        {
+          "id": "patrimonio_dentro_do_limite",
+          "tipo": "limiar",
+          "campo": "patrimonio_mobiliario_pessoal",
+          "operador_comparacao": "lte",
+          "valor": 32227.8,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "psu.limite_patrimonio_eur"
+          }
+        }
+      ]
+    },
     "rsi": {
       "pagina": "rsi.html",
       "operador": "all",
@@ -841,7 +967,9 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "substituido_por": "psu",
+      "substituido_a_partir_de": "2026-12-31"
     },
     "subsidio-doenca": {
       "pagina": "baixa-medica-subsidio-doenca.html",

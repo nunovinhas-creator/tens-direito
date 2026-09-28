@@ -23,6 +23,13 @@ apoio: rsi
 pagina: rsi.html
 operador: all
 
+# O RSI é absorvido pela PSU (DL 166/2026, art. 63.º: produção de efeitos a
+# 31/12/2026; ver psu-lista-13-apoios.html). Até essa data os beneficiários
+# mantêm o RSI. Não altera a elegibilidade — o motor só marca o apoio para a
+# página poder dizer "a partir de 31/12/2026 este apoio passa a PSU".
+substituido_por: psu
+substituido_a_partir_de_parametro: psu.data_producao_efeitos
+
 condicoes:
   - id: idade_ou_excepcao_menor
     operador: any

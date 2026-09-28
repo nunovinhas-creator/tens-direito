@@ -830,3 +830,129 @@ def test_imt_jovem_real_inelegivel_sem_saber_o_resto_se_ja_passou_a_idade(pagina
     condicoes = _condicoes_reais()
     r = _avaliar(pagina, condicoes, {"data_nascimento_requerente": "1980-01-01"})
     assert r["imt-jovem"]["estado"] == "inelegivel"
+
+
+# ── PSU real (dados/condicoes.json de produção) — fórmula psu_valor_positivo
+# (PSUbase + CIT − rendimentos, com mínimo) e marca de substituição do RSI ──
+
+
+RESPOSTAS_PSU_BASE = {
+    "data_nascimento_requerente": "1990-01-01",  # 36 anos
+    "reside_legalmente_pt": "sim",
+    "estatuto_residencia": "nacional_pt",
+    "rendimento_trabalho_mensal_agregado": 0,
+    "outros_rendimentos_mensais_agregado": 100,
+    "numero_adultos_adicionais_agregado": 0,
+    "numero_menores_agregado": 0,
+    "patrimonio_mobiliario_pessoal": 1000,
+}
+
+
+def test_psu_real_elegivel_caso_simples(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_PSU_BASE)
+    assert r["psu"]["estado"] == "elegivel"
+
+
+def test_psu_real_inelegivel_menor_de_18_anos(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_PSU_BASE, "data_nascimento_requerente": "2010-01-01"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "inelegivel"
+
+
+def test_psu_real_cit_permite_rendimento_de_trabalho_acima_do_psubase(pagina):
+    # 300€ de trabalho > PSUbase (268,57€), mas a CIT (203,71€) mantém o
+    # valor da prestação positivo (172,28€). Um limiar simples "rendimento ≤
+    # PSUbase" diria "sem direito" — e estaria errado.
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_PSU_BASE,
+        "rendimento_trabalho_mensal_agregado": 300,
+        "outros_rendimentos_mensais_agregado": 0,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "elegivel"
+
+
+def test_psu_real_inelegivel_com_rendimento_de_trabalho_muito_alto(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_PSU_BASE,
+        "rendimento_trabalho_mensal_agregado": 1500,
+        "outros_rendimentos_mensais_agregado": 0,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "inelegivel"
+
+
+def test_psu_real_outros_rendimentos_nao_beneficiam_da_cit(pagina):
+    # O mesmo valor, mas de rendimentos que não são de trabalho: sem CIT,
+    # 300€ ultrapassam o PSUbase e o agregado deixa de ter direito.
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_PSU_BASE,
+        "rendimento_trabalho_mensal_agregado": 0,
+        "outros_rendimentos_mensais_agregado": 300,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "inelegivel"
+
+
+def test_psu_real_agregado_maior_aumenta_o_limite(pagina):
+    # 2 adultos + 1 menor: 268,565 × (1 + 0,7 + 0,5) = 590,84€.
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_PSU_BASE,
+        "numero_adultos_adicionais_agregado": 1,
+        "numero_menores_agregado": 1,
+        "outros_rendimentos_mensais_agregado": 500,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "elegivel"
+
+
+def test_psu_real_indeterminado_quando_falta_rendimento(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_PSU_BASE)
+    del respostas["outros_rendimentos_mensais_agregado"]
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "indeterminado"
+    assert r["psu"]["perguntasEmFalta"] == ["outros_rendimentos_mensais_agregado"]
+
+
+def test_psu_real_estrangeiro_sem_1_ano_inelegivel(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_PSU_BASE, "estatuto_residencia": "titulo_residencia_valido", "anos_residencia_pt": 0}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "inelegivel"
+
+
+def test_psu_real_estrangeiro_com_1_ano_elegivel(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_PSU_BASE, "estatuto_residencia": "titulo_residencia_valido", "anos_residencia_pt": 1}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "elegivel"
+
+
+def test_psu_real_inelegivel_por_patrimonio(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_PSU_BASE, "patrimonio_mobiliario_pessoal": 40000}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["psu"]["estado"] == "inelegivel"
+
+
+def test_rsi_real_marcado_como_substituido_pela_psu(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_RSI_BASE)
+    assert r["rsi"]["substituidoPor"] == "psu"
+    assert r["rsi"]["substituidoAPartirDe"] == "2026-12-31"
+    # A marca não altera a elegibilidade do RSI até à data de substituição.
+    assert r["rsi"]["estado"] == "elegivel"
+
+
+def test_apoios_sem_substituicao_nao_tem_a_marca(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_PSU_BASE)
+    assert "substituidoPor" not in r["psu"]
+    assert "substituidoPor" not in r["csi"]

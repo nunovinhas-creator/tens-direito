@@ -484,3 +484,34 @@ veiculo_coeficiente_ano10mais:
       referencia_legal: "Portaria n.º 394/2026/1, de 27 de agosto, artigo 4.º/7 e Anexo I — coeficiente de desvalorização acumulada para veículo com 10 anos ou mais: 0,90 (valor máximo do coeficiente)."
       fonte_url: "https://dre.pt"
       verificado_em: "2026-08-30"
+
+# ── Sessão 27/09/2026 (série "simulador universal", PR 10) ──────────────────
+# O simulador-psu.html tem o IAS 2026 hardcoded (const IAS_2026) em vez de o
+# ler de parametros.json; o schema de condições precisa dele em dados, por
+# isso fica aqui, com a mesma fonte já usada em abono/rsi/desemprego. O
+# simulador NÃO foi alterado (dívida técnica dele, fora desta série).
+
+ias_2026:
+  descricao: "Indexante dos Apoios Sociais (IAS) 2026 — base dos limites da PSU derivados de multiplicadores"
+  unidade: EUR/mês
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 537.13
+      referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-07-13"
+
+# Valor derivado (60 × IAS 2026), precomputado e versionado à parte — mesmo
+# tratamento do RSI. Os dois limites do art. 8.º/1, alíneas c) e d)
+# (património mobiliário; bens móveis sujeitos a registo) valem ambos
+# 60 × IAS; o schema trata-os como um único campo, o mais alto dos dois.
+
+limite_patrimonio_eur:
+  descricao: "Limite de património mobiliário / bens móveis sujeitos a registo da PSU, em euros (60 × IAS 2026)"
+  unidade: EUR
+  valores:
+    - vigencia_inicio: "2026-08-13"
+      valor: 32227.80
+      referencia_legal: "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 8.º/1, alíneas c) e d) — 60 × IAS 2026 (537,13€) = 32.227,80€; valor derivado de limite_patrimonio_mobiliario_multiplicador_ias e limite_bens_moveis_registo_multiplicador_ias, sem fonte adicional própria"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"

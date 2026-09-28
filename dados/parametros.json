@@ -1605,6 +1605,26 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-08-30"
+      },
+      "ias_2026": {
+        "descricao": "Indexante dos Apoios Sociais (IAS) 2026 — base dos limites da PSU derivados de multiplicadores",
+        "unidade": "EUR/mês",
+        "valor": 537.13,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Portaria n.º 480-A/2025/1, de 30 de dezembro",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-07-13"
+      },
+      "limite_patrimonio_eur": {
+        "descricao": "Limite de património mobiliário / bens móveis sujeitos a registo da PSU, em euros (60 × IAS 2026)",
+        "unidade": "EUR",
+        "valor": 32227.8,
+        "vigencia_inicio": "2026-08-13",
+        "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 8.º/1, alíneas c) e d) — 60 × IAS 2026 (537,13€) = 32.227,80€; valor derivado de limite_patrimonio_mobiliario_multiplicador_ias e limite_bens_moveis_registo_multiplicador_ias, sem fonte adicional própria",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
       }
     },
     "rsi": {
