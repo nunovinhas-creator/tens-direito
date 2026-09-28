@@ -27,7 +27,14 @@
 # momento do corte (aniversário ou fim do ano letivo) — por isso, pela
 # idade em anos completos à data da avaliação: abaixo de 3 cumpre; de 3 até
 # antes de 4 fica indeterminado, com o motivo; 4 ou mais não cumpre. O
-# limite de 4 é derivado, não legal (ver creche.yaml).
+# limite de 4 é derivado, não legal (ver creche.yaml — Portaria n.º
+# 262/2011, art. 3.º e anexo, ponto 4; Portaria n.º 198/2022, art. 2.º,
+# n.º 1).
+#
+# Também não modelado: art. 2.º, n.º 2, da Portaria n.º 198/2022 — mantém a
+# gratuitidade das Portarias n.os 271/2020 e 199/2021 para crianças nascidas
+# antes de 1/9/2021 com famílias no 1.º ou 2.º escalão das comparticipações
+# familiares.
 
 apoio: creche
 pagina: creche-gratuita.html
@@ -59,4 +66,4 @@ condicoes:
     parametro: creche.creche_idade_limite_anos
     parametro_exclusao: creche.creche_idade_fim_incerteza_anos
     motivo_indeterminado: "a regra diz «até aos 3 anos» mas não fixa se é no aniversário ou no fim do ano letivo"
-    motivo_inelegivel: "A creche gratuita aplica-se a crianças até aos 3 anos. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. Confirma no guia completo."
+    motivo_inelegivel: "A creche gratuita aplica-se a crianças que frequentam creche, que acolhe até aos 3 anos de idade. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. Confirma no guia completo."

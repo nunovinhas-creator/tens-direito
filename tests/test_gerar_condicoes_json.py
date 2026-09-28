@@ -810,13 +810,17 @@ def test_creche_real_idade_vem_dos_dois_parametros_da_portaria_198():
     limite = parametros["creche_idade_limite_anos"]
     assert "art. 9.º, n.º 4" in limite["referencia_legal"] and "Portaria n.º 198/2022" in limite["referencia_legal"]
     assert limite["vigencia_inicio"] == "2022-09-01"
-    assert "Derivado" in parametros["creche_idade_fim_incerteza_anos"]["referencia_legal"]
+    derivado = parametros["creche_idade_fim_incerteza_anos"]["referencia_legal"]
+    assert derivado.startswith("Derivado de:")
+    for citacao in ("Portaria n.º 262/2011, art. 3.º", "anexo, ponto 4", "Portaria n.º 198/2022, art. 2.º, n.º 1",
+                    "art. 9.º, n.º 4", "Nenhum diploma fixa os 4 anos como limite"):
+        assert citacao in derivado, citacao
 
 
 def test_fontes_da_creche_guardadas_em_dados_fontes():
     fontes = RAIZ / "dados" / "fontes"
     for nome in ("Lei-2-2022.pdf", "Portaria-198-2022-consolidada-2023-03-10.pdf",
-                 "Portaria-305-2022-consolidada-2024-06-06.pdf"):
+                 "Portaria-305-2022-consolidada-2024-06-06.pdf", "Portaria-262-2011-consolidada-2023-12-11.pdf"):
         caminho = fontes / nome
         assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-", nome
 

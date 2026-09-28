@@ -1252,8 +1252,9 @@ def test_faixa_incerta_sintetica_propaga_motivo_por_grupo_all_e_any(pagina):
 
 # ── PR 12 (revisão 2): texto próprio quando a idade exclui (4+ anos) ─────────
 
-MOTIVO_CRECHE_4_ANOS = ("A creche gratuita aplica-se a crianças até aos 3 anos. Pela data indicada, o teu filho "
-                        "mais novo terá ultrapassado essa idade. Confirma no guia completo.")
+MOTIVO_CRECHE_4_ANOS = ("A creche gratuita aplica-se a crianças que frequentam creche, que acolhe até aos 3 anos "
+                        "de idade. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. "
+                        "Confirma no guia completo.")
 
 
 def _motivos_exclusao(pagina, respostas, hoje="2026-09-27"):

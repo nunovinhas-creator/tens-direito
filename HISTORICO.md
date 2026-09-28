@@ -6684,7 +6684,10 @@ cumpre. O limite de 4 é derivado, não legal (`creche_idade_fim_incerteza_anos`
 A Lei n.º 2/2022 só faseia por ano de creche — não fixa idade. Com 4 anos
 ou mais, a página mostra o texto próprio da condição (`motivo_inelegivel`,
 nos dados) em vez da frase genérica "Não cumpres…"; `motivosQueExcluem()`
-no motor. O cartão europeu de estacionamento passa para o PR 12b (#262).
+no motor. O limite derivado dos 4 anos passou a citar a Portaria n.º
+262/2011 (art. 3.º, "destinado a acolher crianças até aos 3 anos de idade";
+anexo, ponto 4, "até aos 36 meses" — consolidação guardada em
+`dados/fontes/`) e a Portaria n.º 198/2022, art. 2.º, n.º 1. O cartão europeu de estacionamento passa para o PR 12b (#262).
 
 ---
 
