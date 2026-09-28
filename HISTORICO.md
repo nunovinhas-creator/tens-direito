@@ -6643,7 +6643,7 @@ eles, quem responde "não" ficava eternamente em "falta saber" (guardrail em
 `/dados/condicoes.json`, script num IIFE (colisão com `mostrarResultados`
 de `pesquisa.js`), aviso RSI → PSU com a data dos dados. Ligações:
 cartão em destaque em `simuladores.html`, sitemap, `pesquisa.js`,
-`EXCLUIDAS` de clusters, OG com chip genérico, smoke test, CTA principal do
+`EXCLUIDAS` de clusters, OG com o chip "Simuladores e calculadoras", smoke test, CTA principal do
 hero da homepage. Achado nos testes: o banner de cookies cobria os botões
 em telemóvel e cada clique do Playwright esperava ~2 s — os testes gravam a
 escolha antes de carregar (90 s → ~11 s); a página passou também a
