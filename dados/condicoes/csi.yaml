@@ -27,6 +27,8 @@
 
 apoio: csi
 pagina: complemento-solidario-idosos.html
+titulo: "Complemento Solidário para Idosos (CSI)"
+simulador: /simulador-csi.html
 operador: all
 
 condicoes:

@@ -227,6 +227,7 @@ def test_avalia_varios_apoios_independentemente(pagina):
 
 
 RESPOSTAS_ABONO_BASE = {
+    "tem_filhos_a_cargo": "sim",  # portão do PR 11
     "reside_legalmente_pt": "sim",
     "rendimento_referencia_anual_agregado": 10000,
     "situacao_contributiva_regularizada": "sim",
@@ -312,6 +313,7 @@ def test_abono_real_inelegivel_por_patrimonio_mesmo_com_idade_ok(pagina):
 def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagina):
     condicoes = _condicoes_reais()
     respostas = {
+        "tem_filhos_a_cargo": "sim",
         "data_nascimento_crianca": "2020-01-01",
         "reside_legalmente_pt": "sim",
         "rendimento_referencia_anual_agregado": 10000,
@@ -327,21 +329,21 @@ def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagi
 
 def test_ase_real_elegivel_escola_publica_rendimento_baixo(pagina):
     condicoes = _condicoes_reais()
-    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 200}
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 200}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "elegivel"
 
 
 def test_ase_real_elegivel_no_limite_exacto_do_escalao_b(pagina):
     condicoes = _condicoes_reais()
-    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 537.13}
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 537.13}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "elegivel"
 
 
 def test_ase_real_inelegivel_rendimento_acima_do_escalao_b(pagina):
     condicoes = _condicoes_reais()
-    respostas = {"tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 600}
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 600}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "inelegivel"
 
@@ -350,14 +352,14 @@ def test_ase_real_inelegivel_escola_privada_sem_protocolo_mesmo_com_rendimento_b
     # Short-circuit do `all`: escola privada sem protocolo decide sozinha,
     # sem precisar de saber o rendimento.
     condicoes = _condicoes_reais()
-    respostas = {"tipo_escola_aluno": "privada_sem_protocolo"}
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "privada_sem_protocolo"}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "inelegivel"
 
 
 def test_ase_real_indeterminado_quando_falta_rendimento(pagina):
     condicoes = _condicoes_reais()
-    respostas = {"tipo_escola_aluno": "publica_ou_protocolo"}
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo"}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["ase"]["estado"] == "indeterminado"
     assert r["ase"]["perguntasEmFalta"] == ["rendimento_per_capita_mensal_agregado"]
@@ -368,6 +370,7 @@ def test_ase_real_indeterminado_quando_falta_rendimento(pagina):
 
 
 RESPOSTAS_RSI_BASE = {
+    "reside_legalmente_pt": "sim",  # portão do PR 11
     "data_nascimento_requerente": "1990-01-01",  # 36 anos, sem excepção de menor
     "estatuto_residencia": "nacional_pt",
     "rendimento_mensal_agregado": 200,
@@ -956,3 +959,141 @@ def test_apoios_sem_substituicao_nao_tem_a_marca(pagina):
     r = _avaliar(pagina, condicoes, RESPOSTAS_PSU_BASE)
     assert "substituidoPor" not in r["psu"]
     assert "substituidoPor" not in r["csi"]
+
+
+# ── PR 11: proximaPergunta (escolha dinâmica da próxima pergunta) ───────────
+
+
+def _proxima(pagina, condicoes_json, respostas, hoje="2026-09-27"):
+    return pagina.evaluate(
+        "([c, r, h]) => proximaPergunta(c, r, h)",
+        [condicoes_json, respostas, hoje],
+    )
+
+
+def _folha(id_, campo):
+    return {"id": id_, "tipo": "categorica", "campo": campo, "operador_comparacao": "eq", "valor": "sim"}
+
+
+def _sintetico(perguntas_ordem, apoios, monetarios=(), filhos=()):
+    """perguntas_ordem: lista de campos (a ordem é o desempate). apoios: {id: [campos]} (all de folhas eq sim)."""
+    perguntas = {}
+    for campo in perguntas_ordem:
+        if campo in monetarios:
+            perguntas[campo] = {"tipo": "numero", "unidade": "EUR/mês"}
+        else:
+            perguntas[campo] = {"tipo": "categorica", "opcoes": ["sim", "nao"]}
+        if campo in filhos:
+            perguntas[campo]["aplicavel_se"] = {"campo": "tem_filhos_a_cargo", "valor": "sim"}
+    return {
+        "perguntas": perguntas,
+        "apoios": {
+            a: {"operador": "all", "condicoes": [
+                ({"id": f"{a}_{c}", "tipo": "limiar", "campo": c, "operador_comparacao": "lte", "valor": 100}
+                 if c in monetarios else _folha(f"{a}_{c}", c))
+                for c in campos]}
+            for a, campos in apoios.items()
+        },
+    }
+
+
+def test_proxima_pergunta_primeira_e_a_que_aparece_em_mais_apoios(pagina):
+    c = _sintetico(["f3", "f2", "f1"], {"a": ["f1", "f2"], "b": ["f1"], "c": ["f1", "f3"]})
+    assert _proxima(pagina, c, {}) == "f1"  # 3 apoios, apesar de ser o último em perguntas.yaml
+
+
+def test_proxima_pergunta_rendimentos_ficam_sempre_no_fim(pagina):
+    c = _sintetico(["renda", "f1"], {"a": ["renda", "f1"], "b": ["renda"], "c": ["renda"]}, monetarios={"renda"})
+    assert _proxima(pagina, c, {}) == "f1"  # apesar de "renda" estar em 3 apoios e aparecer primeiro
+    assert _proxima(pagina, c, {"f1": "sim"}) == "renda"
+
+
+def test_proxima_pergunta_da_crianca_so_com_filhos_e_depois_do_requerente(pagina):
+    condicoes = _condicoes_reais()
+    perguntas = condicoes["perguntas"]
+    filhos = {c for c, d in perguntas.items() if (d.get("aplicavel_se") or {}).get("campo") == "tem_filhos_a_cargo"}
+    assert filhos, "esperava perguntas da criança com aplicavel_se em tem_filhos_a_cargo"
+
+    def percorrer(tem_filhos):
+        respostas, ordem = {}, []
+        for _ in range(80):
+            campo = _proxima(pagina, condicoes, respostas)
+            if campo is None:
+                return ordem, respostas
+            ordem.append(campo)
+            d = perguntas[campo]
+            if campo == "tem_filhos_a_cargo":
+                respostas[campo] = tem_filhos
+            elif d["tipo"] == "categorica":
+                respostas[campo] = d["opcoes"][0]
+            elif d["tipo"] == "data":
+                respostas[campo] = "2018-06-01"
+            else:
+                respostas[campo] = 1
+        raise AssertionError("proximaPergunta não terminou")
+
+    ordem_sem, _ = percorrer("nao")
+    assert not filhos & set(ordem_sem), "perguntou pela criança a quem disse que não tem filhos"
+
+    ordem_com, _ = percorrer("sim")
+    perguntas_crianca = [c for c in ordem_com if c in filhos]
+    assert perguntas_crianca, "com filhos, as perguntas da criança têm de aparecer"
+    primeira_crianca = ordem_com.index(perguntas_crianca[0])
+    assert ordem_com.index("tem_filhos_a_cargo") < primeira_crianca
+    nao_monetarias_requerente = [
+        c for c in ordem_com
+        if c not in filhos and "EUR" not in str(perguntas[c].get("unidade", ""))
+    ]
+    assert all(ordem_com.index(c) < primeira_crianca for c in nao_monetarias_requerente), (
+        "perguntas do requerente têm de vir antes das da criança"
+    )
+
+
+def test_proxima_pergunta_devolve_null_no_fim_e_nada_fica_por_decidir(pagina):
+    c = _sintetico(["f1", "f2"], {"a": ["f1", "f2"]})
+    assert _proxima(pagina, c, {"f1": "sim", "f2": "nao"}) is None
+
+    condicoes = _condicoes_reais()
+    respostas = {}
+    for _ in range(80):
+        campo = _proxima(pagina, condicoes, respostas)
+        if campo is None:
+            break
+        d = condicoes["perguntas"][campo]
+        respostas[campo] = d["opcoes"][-1] if d["tipo"] == "categorica" else ("1980-01-01" if d["tipo"] == "data" else 0)
+    else:
+        raise AssertionError("proximaPergunta não terminou")
+    estados = {a: r["estado"] for a, r in _avaliar(pagina, condicoes, respostas).items()}
+    assert "indeterminado" not in estados.values(), estados
+
+
+def test_proxima_pergunta_ignora_apoios_ja_decididos(pagina):
+    c = _sintetico(["f1", "f2", "f3"], {"a": ["f1", "f2"], "b": ["f2", "f3"], "c": ["f3"]})
+    assert _proxima(pagina, c, {}) == "f2"  # empate f2/f3 (2 apoios) → ordem de perguntas.yaml
+    # "a" fica inelegível com f1 = nao: f2 passa a contar só para "b", f3 continua em "b" e "c".
+    assert _proxima(pagina, c, {"f1": "nao"}) == "f3"
+
+
+def test_proxima_pergunta_desempate_estavel_pela_ordem_de_perguntas(pagina):
+    c1 = _sintetico(["x", "y"], {"a": ["y"], "b": ["x"]})
+    c2 = _sintetico(["y", "x"], {"a": ["y"], "b": ["x"]})
+    assert _proxima(pagina, c1, {}) == "x"
+    assert _proxima(pagina, c2, {}) == "y"
+    # determinístico: nem a ordem das respostas nem chamadas repetidas mudam nada
+    c3 = _sintetico(["x", "y", "z"], {"a": ["z", "y"], "b": ["z", "x"]})
+    assert _proxima(pagina, c3, {"z": "sim"}) == _proxima(pagina, c3, {"z": "sim"}) == "x"
+
+
+# ── PR 11: portões (quem responde "não" sai logo de "falta saber") ──────────
+
+
+def test_abono_e_ase_reais_inelegiveis_sem_filhos_a_cargo(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "nao"})
+    assert r["abono"]["estado"] == "inelegivel"
+    assert r["ase"]["estado"] == "inelegivel"
+
+
+def test_rsi_csi_psu_reais_inelegiveis_sem_residencia_legal(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {"reside_legalmente_pt": "nao"})
+    for apoio in ("rsi", "csi", "psu"):
+        assert r[apoio]["estado"] == "inelegivel", apoio

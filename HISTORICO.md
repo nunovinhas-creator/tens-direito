@@ -6630,6 +6630,25 @@ abono de família 2026.
 Trabalho do abono feito na branch `claude/abono-seo-2026`, pedida
 explicitamente pelo utilizador nesta sessão.
 
+
+*Última revisão: 2026-09-28 — PR 11 do simulador universal: página
+`simulador-universal.html` + `proximaPergunta()` em
+`assets/js/calc-apoios.js`.* `perguntas.yaml` ganhou `pergunta`/`rotulos`/
+`ajuda`/`aplicavel_se` por campo e o campo novo `tem_filhos_a_cargo`; cada
+`dados/condicoes/<apoio>.yaml` ganhou `titulo`/`simulador`, validados pelo
+compilador (`scripts/gerar_condicoes_json.py`). Portões novos: abono e ASE
+com `tem_filhos_a_cargo == sim`, RSI com `reside_legalmente_pt == sim` — sem
+eles, quem responde "não" ficava eternamente em "falta saber" (guardrail em
+`tests/test_perguntas_coerencia.py`). Página dirigida só por
+`/dados/condicoes.json`, script num IIFE (colisão com `mostrarResultados`
+de `pesquisa.js`), aviso RSI → PSU com a data dos dados. Ligações:
+cartão em destaque em `simuladores.html`, sitemap, `pesquisa.js`,
+`EXCLUIDAS` de clusters, OG com chip genérico, smoke test, CTA principal do
+hero da homepage. Achado nos testes: o banner de cookies cobria os botões
+em telemóvel e cada clique do Playwright esperava ~2 s — os testes gravam a
+escolha antes de carregar (90 s → ~11 s); a página passou também a
+respeitar `prefers-reduced-motion` na rolagem.
+
 ---
 
 *Última revisão automática: 2026-09-27*

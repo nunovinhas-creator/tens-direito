@@ -21,6 +21,8 @@
 
 apoio: rsi
 pagina: rsi.html
+titulo: "Rendimento Social de Inserção (RSI)"
+simulador: /simulador-rsi.html
 operador: all
 
 # O RSI é absorvido pela PSU (DL 166/2026, art. 63.º: produção de efeitos a
@@ -73,6 +75,17 @@ condicoes:
                 campo: tem_menores_ou_pessoas_deficiencia_a_cargo
                 operador_comparacao: eq
                 valor_literal: sim
+
+  # PR 11: portão de residência legal — estatuto_residencia e
+  # anos_residencia_pt só se perguntam com reside_legalmente_pt == sim
+  # (aplicavel_se); sem esta condição, quem responde "não" deixaria o RSI
+  # eternamente "indeterminado". O grupo residencia_legal abaixo continua a
+  # decidir o estatuto concreto.
+  - id: reside_legalmente
+    tipo: categorica
+    campo: reside_legalmente_pt
+    operador_comparacao: eq
+    valor_literal: sim
 
   - id: residencia_legal
     operador: any

@@ -23,6 +23,8 @@
 
 apoio: subsidio-doenca
 pagina: baixa-medica-subsidio-doenca.html
+titulo: "Subsídio de Doença"
+simulador: /simulador-subsidio-doenca.html
 operador: all
 
 condicoes:

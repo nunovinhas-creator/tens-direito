@@ -514,6 +514,11 @@
     "pagina": "simulador-subsidio-doenca.html",
     "titulo": "Simulador de Subsídio de Doença 2026"
   },
+  "simulador-universal": {
+    "chip": "Verificado em fontes oficiais",
+    "pagina": "simulador-universal.html",
+    "titulo": "Descobre a que apoios tens direito 2026"
+  },
   "simuladores": {
     "chip": "Simuladores e calculadoras",
     "pagina": "simuladores.html",

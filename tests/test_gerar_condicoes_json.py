@@ -21,7 +21,26 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 import gerar_condicoes_json  # noqa: E402
 
 
-def _preparar(tmp_path, monkeypatch, perguntas: dict, parametros: dict, apoios_yaml: dict):
+def _completar_campos_do_assistente(perguntas: dict, apoios_yaml: dict) -> tuple[dict, dict]:
+    """PR 11: o compilador passou a exigir `pergunta`/`rotulos` em cada
+    pergunta e `titulo`/`simulador` em cada apoio. As fixtures dos testes
+    anteriores ao PR 11 não são sobre isso — preenche o mínimo válido, sem
+    nunca sobrepor o que um teste tenha definido de propósito."""
+    perguntas = {c: dict(d) for c, d in perguntas.items()}
+    for campo, dados in perguntas.items():
+        dados.setdefault("pergunta", f"Pergunta sobre {campo}?")
+        if dados.get("tipo") == "categorica":
+            dados.setdefault("rotulos", {o: str(o) for o in dados.get("opcoes", [])})
+    apoios_yaml = {n: dict(c) for n, c in apoios_yaml.items()}
+    for conteudo in apoios_yaml.values():
+        conteudo.setdefault("titulo", f"Apoio {conteudo.get('apoio')}")
+        conteudo.setdefault("simulador", "/simuladores.html")
+    return perguntas, apoios_yaml
+
+
+def _preparar(tmp_path, monkeypatch, perguntas: dict, parametros: dict, apoios_yaml: dict, completar: bool = True):
+    if completar:
+        perguntas, apoios_yaml = _completar_campos_do_assistente(perguntas, apoios_yaml)
     condicoes_dir = tmp_path / "condicoes"
     condicoes_dir.mkdir()
     perguntas_path = condicoes_dir / "perguntas.yaml"
@@ -456,4 +475,101 @@ def test_substituido_por_sem_data_falha(tmp_path, monkeypatch):
     apoios = {"antigo": _apoio_simples("antigo", substituido_por="novo"), "novo": _apoio_simples("novo")}
     _preparar(tmp_path, monkeypatch, PERGUNTAS_SUBSTITUICAO, PARAMETROS_PSU_FIXTURE, apoios)
     with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="substituido_a_partir_de_parametro"):
+        gerar_condicoes_json.consolidar()
+
+
+# ── PR 11: campos do assistente (pergunta, rotulos, aplicavel_se, titulo, simulador) ──
+
+
+def _apoio_min(**extra):
+    base = {
+        "apoio": "x",
+        "operador": "all",
+        "titulo": "Apoio X",
+        "simulador": "/simuladores.html",
+        "condicoes": [
+            {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
+        ],
+    }
+    base.update(extra)
+    return base
+
+
+def _pergunta_reside(**extra):
+    base = {"descricao": "r", "tipo": "categorica", "opcoes": ["sim", "nao"], "pergunta": "Resides?",
+            "rotulos": {"sim": "Sim", "nao": "Não"}}
+    base.update(extra)
+    return base
+
+
+def test_titulo_e_simulador_passam_para_o_json(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}}, {"x": _apoio_min()},
+              completar=False)
+    apoio = gerar_condicoes_json.consolidar()["apoios"]["x"]
+    assert apoio["titulo"] == "Apoio X"
+    assert apoio["simulador"] == "/simuladores.html"
+
+
+@pytest.mark.parametrize("alteracao,erro", [
+    ({"titulo": ""}, "titulo"),
+    ({"simulador": "simuladores.html"}, "simulador"),
+    ({"simulador": "/nao-existe-de-todo.html"}, "página inexistente"),
+])
+def test_titulo_ou_simulador_invalido_falha(tmp_path, monkeypatch, alteracao, erro):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(**alteracao)}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_apoio_sem_titulo_falha(tmp_path, monkeypatch):
+    apoio = _apoio_min()
+    del apoio["titulo"]
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}}, {"x": apoio}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="titulo"):
+        gerar_condicoes_json.consolidar()
+
+
+@pytest.mark.parametrize("pergunta,erro", [
+    ({"pergunta": ""}, "pergunta"),
+    ({"rotulos": {"sim": "Sim"}}, "em falta"),
+    ({"rotulos": {"sim": "Sim", "nao": "Não", "talvez": "Talvez"}}, "a mais"),
+    ({"rotulos": {"sim": "Sim", "nao": " "}}, "vazio"),
+    ({"aplicavel_se": {"campo": "reside", "valor": "sim"}}, "próprio campo"),
+    ({"aplicavel_se": {"campo": "fantasma", "valor": "sim"}}, "inexistente"),
+])
+def test_pergunta_invalida_falha(tmp_path, monkeypatch, pergunta, erro):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside(**pergunta)}, {"prestacoes": {}},
+              {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_rotulos_em_pergunta_numerica_falha(tmp_path, monkeypatch):
+    perguntas = {
+        "reside": _pergunta_reside(),
+        "anos": {"descricao": "a", "tipo": "numero", "unidade": "anos", "pergunta": "Quantos?",
+                 "rotulos": {"1": "um"}},
+    }
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="só faz sentido"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_aplicavel_se_com_valor_fora_das_opcoes_falha(tmp_path, monkeypatch):
+    perguntas = {
+        "reside": _pergunta_reside(),
+        "anos": {"descricao": "a", "tipo": "numero", "unidade": "anos", "pergunta": "Quantos?",
+                 "aplicavel_se": {"campo": "reside", "valor": "talvez"}},
+    }
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="não é opção"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_campo_generico_data_nascimento_proibido(tmp_path, monkeypatch):
+    perguntas = {"reside": _pergunta_reside(),
+                 "data_nascimento": {"descricao": "d", "tipo": "data", "pergunta": "Quando nasceste?"}}
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="genérico"):
         gerar_condicoes_json.consolidar()

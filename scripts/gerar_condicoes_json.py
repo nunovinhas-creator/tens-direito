@@ -33,6 +33,7 @@ CONDICOES_DIR = RAIZ / "dados" / "condicoes"
 PERGUNTAS_PATH = CONDICOES_DIR / "perguntas.yaml"
 PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
 SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
+RAIZ_SITE = RAIZ  # onde procurar a página de cada `simulador:` (patchável nos testes)
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
 TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
@@ -53,7 +54,72 @@ def _carregar_perguntas() -> dict:
     for campo, dados in perguntas.items():
         if dados.get("tipo") not in TIPOS_VALIDOS:
             raise CondicaoInvalida(f"perguntas.yaml: '{campo}' com tipo inválido")
+        _validar_campos_do_assistente(campo, dados, perguntas)
     return perguntas
+
+
+def _validar_campos_do_assistente(campo: str, dados: dict, perguntas: dict) -> None:
+    """PR 11: o que simulador-universal.html precisa para mostrar a pergunta
+    sem convenção não escrita — texto, rótulos de cada opção e quando a
+    pergunta faz sentido. Falha com mensagem clara em vez de deixar a
+    página mostrar um nome de campo cru ou uma opção sem rótulo."""
+    contexto = f"perguntas.yaml: '{campo}'"
+    if campo == "data_nascimento":
+        raise CondicaoInvalida(
+            f"{contexto}: campo genérico proibido — usar data_nascimento_requerente ou data_nascimento_crianca"
+        )
+
+    pergunta = dados.get("pergunta")
+    if not isinstance(pergunta, str) or not pergunta.strip():
+        raise CondicaoInvalida(f"{contexto}: falta 'pergunta' (texto mostrado ao utilizador)")
+    if "ajuda" in dados and (not isinstance(dados["ajuda"], str) or not dados["ajuda"].strip()):
+        raise CondicaoInvalida(f"{contexto}: 'ajuda' tem de ser texto não vazio")
+
+    rotulos = dados.get("rotulos")
+    if dados["tipo"] == "categorica":
+        opcoes = dados.get("opcoes") or []
+        if not isinstance(rotulos, dict):
+            raise CondicaoInvalida(f"{contexto}: pergunta categórica sem 'rotulos' (um por opção)")
+        em_falta = [o for o in opcoes if o not in rotulos]
+        a_mais = [r for r in rotulos if r not in opcoes]
+        if em_falta or a_mais:
+            raise CondicaoInvalida(
+                f"{contexto}: 'rotulos' não bate com 'opcoes' — em falta {em_falta}, a mais {a_mais}"
+            )
+        vazios = [r for r, texto in rotulos.items() if not isinstance(texto, str) or not texto.strip()]
+        if vazios:
+            raise CondicaoInvalida(f"{contexto}: rótulo(s) vazio(s) para {vazios}")
+    elif rotulos is not None:
+        raise CondicaoInvalida(f"{contexto}: 'rotulos' só faz sentido em perguntas categóricas")
+
+    cond = dados.get("aplicavel_se")
+    if cond is None:
+        return
+    if not isinstance(cond, dict) or set(cond) != {"campo", "valor"}:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' tem de ser exactamente {{campo, valor}}")
+    alvo = cond["campo"]
+    if alvo == campo:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' não pode referenciar o próprio campo")
+    if alvo not in perguntas:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' referencia campo inexistente '{alvo}'")
+    if perguntas[alvo].get("tipo") == "categorica" and cond["valor"] not in perguntas[alvo].get("opcoes", []):
+        raise CondicaoInvalida(
+            f"{contexto}: 'aplicavel_se.valor' {cond['valor']!r} não é opção de '{alvo}'"
+        )
+
+
+def _validar_titulo_e_simulador(bruto: dict, apoio: str) -> None:
+    """PR 11: cada apoio diz como se chama na página e para onde leva o
+    link "simulador dedicado" — nunca um nome de ficheiro cru nem um link
+    partido na página de resultados."""
+    titulo = bruto.get("titulo")
+    if not isinstance(titulo, str) or not titulo.strip():
+        raise CondicaoInvalida(f"{apoio}: falta 'titulo' (nome do apoio mostrado ao utilizador)")
+    simulador = bruto.get("simulador")
+    if not isinstance(simulador, str) or not simulador.startswith("/") or not simulador.endswith(".html"):
+        raise CondicaoInvalida(f"{apoio}: 'simulador' tem de ser um caminho do site '/<pagina>.html' ({simulador!r})")
+    if not (RAIZ_SITE / simulador.lstrip("/")).is_file():
+        raise CondicaoInvalida(f"{apoio}: 'simulador' aponta para página inexistente ({simulador})")
 
 
 def _carregar_parametros() -> dict:
@@ -275,6 +341,7 @@ def consolidar() -> dict:
             raise CondicaoInvalida(f"{ficheiro.name}: falta a chave 'apoio'")
         if bruto.get("operador") not in OPERADORES_APOIO_VALIDOS:
             raise CondicaoInvalida(f"{apoio}: 'operador' tem de ser um de {sorted(OPERADORES_APOIO_VALIDOS)}")
+        _validar_titulo_e_simulador(bruto, apoio)
 
         condicoes_resolvidas = [
             _validar_e_resolver_condicao(c, apoio, perguntas, parametros) for c in bruto.get("condicoes", [])
@@ -289,6 +356,8 @@ def consolidar() -> dict:
 
         entrada = {
             "pagina": bruto.get("pagina"),
+            "titulo": bruto["titulo"],
+            "simulador": bruto["simulador"],
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }

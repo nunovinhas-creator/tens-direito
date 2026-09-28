@@ -107,6 +107,10 @@ EXCLUIDAS = {
     # pertencer a um cluster, por isso mantém-se em EXCLUIDAS. Ver o
     # commit de remoção para o detalhe completo.
     "verificador-apoios.html",
+    # Simulador universal (PR 11, 2026-09-28) — avalia todos os apoios de
+    # dados/condicoes/ ao mesmo tempo, por isso é cross-cluster por
+    # construção, mesma categoria de simuladores.html/comecar-aqui.html.
+    "simulador-universal.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
