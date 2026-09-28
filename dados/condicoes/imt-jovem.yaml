@@ -1,0 +1,48 @@
+# Condições de acesso ao IMT Jovem — PR 9 da série "simulador universal".
+# Fonte: secção "Quem tem direito" de imt-jovem.html (4 condições
+# cumulativas) e Decreto-Lei n.º 48-A/2024 (art. 9.º-A do CIMT). A idade
+# máxima já está parametrizada em dados/parametros/habitacao.yaml
+# (imt_idade_maxima_anos, vigente desde 2024-08-01).
+#
+# Simplificação consciente: a lei mede a idade "à data da escritura"; o
+# motor calcula a idade à data de hoje. Para quem está a planear a compra
+# a diferença é pequena, mas quem faz anos entre hoje e a escritura pode
+# ter a resposta trocada no dia dos 36 anos — o simulador dedicado
+# (simulador-imt-jovem.html) é quem trata a data exacta da escritura.
+#
+# Fora do âmbito (regras que não são condições de acesso à partida):
+# - perda retroactiva da isenção se voltar a ser dependente nos 6 anos
+#   seguintes à compra;
+# - limites de valor do imóvel (isenção total/parcial) e prazos de
+#   afectação/manutenção — determinam quanto se poupa, não se se tem
+#   direito, e ficam no simulador dedicado.
+
+apoio: imt-jovem
+pagina: imt-jovem.html
+operador: all
+
+condicoes:
+  - id: idade_maxima
+    tipo: limiar
+    campo: data_nascimento_requerente
+    operador_comparacao: lte
+    unidade_comparacao: anos
+    parametro: habitacao.imt_idade_maxima_anos
+
+  - id: nao_dependente_irs
+    tipo: categorica
+    campo: e_dependente_irs
+    operador_comparacao: eq
+    valor_literal: nao
+
+  - id: sem_imovel_habitacional_recente
+    tipo: categorica
+    campo: titular_imovel_habitacional_ultimos_3_anos
+    operador_comparacao: eq
+    valor_literal: nao
+
+  - id: habitacao_propria_permanente
+    tipo: categorica
+    campo: destino_habitacao_propria_permanente
+    operador_comparacao: eq
+    valor_literal: sim

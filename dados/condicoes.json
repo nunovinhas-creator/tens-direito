@@ -229,6 +229,30 @@
         "sim",
         "nao"
       ]
+    },
+    "e_dependente_irs": {
+      "descricao": "É considerado dependente para efeitos do artigo 13.º do Código do IRS no ano da compra",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "titular_imovel_habitacional_ultimos_3_anos": {
+      "descricao": "É (ou foi, em qualquer momento dos últimos 3 anos, ou à data da escritura) titular de propriedade ou de figura parcelar (usufruto, uso e habitação) de prédio urbano habitacional — mesmo uma quota pequena conta",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "destino_habitacao_propria_permanente": {
+      "descricao": "O imóvel vai ser a habitação própria e permanente (não serve para investimento nem segunda habitação)",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
     }
   },
   "apoios": {
@@ -540,6 +564,57 @@
           "id": "situacao_contributiva_ok",
           "tipo": "categorica",
           "campo": "situacao_contributiva_regularizada",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        }
+      ]
+    },
+    "imt-jovem": {
+      "pagina": "imt-jovem.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "idade_maxima",
+          "tipo": "limiar",
+          "campo": "data_nascimento_requerente",
+          "operador_comparacao": "lte",
+          "valor": 35,
+          "unidade_comparacao": "anos",
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "habitacao.imt_idade_maxima_anos"
+          }
+        },
+        {
+          "id": "nao_dependente_irs",
+          "tipo": "categorica",
+          "campo": "e_dependente_irs",
+          "operador_comparacao": "eq",
+          "valor": "nao",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "sem_imovel_habitacional_recente",
+          "tipo": "categorica",
+          "campo": "titular_imovel_habitacional_ultimos_3_anos",
+          "operador_comparacao": "eq",
+          "valor": "nao",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "habitacao_propria_permanente",
+          "tipo": "categorica",
+          "campo": "destino_habitacao_propria_permanente",
           "operador_comparacao": "eq",
           "valor": "sim",
           "unidade_comparacao": null,
