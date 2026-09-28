@@ -168,6 +168,8 @@ def _mapa_chips() -> dict[str, str]:
         mapa[f"documentos/{doc.name}"] = "Gerador de documentos"
     mapa["simuladores.html"] = "Simuladores e calculadoras"
     mapa["verificador-apoios.html"] = "Simuladores e calculadoras"
+    # Simulador universal: cross-cluster por construção — mesmo chip do hub.
+    mapa["simulador-universal.html"] = "Simuladores e calculadoras"
     return mapa
 
 

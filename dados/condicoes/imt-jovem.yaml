@@ -19,6 +19,8 @@
 
 apoio: imt-jovem
 pagina: imt-jovem.html
+titulo: "IMT Jovem (isenção na compra da 1.ª casa)"
+simulador: /simulador-imt-jovem.html
 operador: all
 
 condicoes:

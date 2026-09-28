@@ -19,6 +19,8 @@
 
 apoio: desemprego
 pagina: subsidio-desemprego.html
+titulo: "Subsídio de Desemprego"
+simulador: /simulador-subsidio-desemprego.html
 operador: all
 
 condicoes:

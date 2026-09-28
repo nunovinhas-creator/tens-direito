@@ -209,3 +209,109 @@ function avaliarApoios(condicoesJson, respostas, hojeISO) {
   }
   return resultado;
 }
+
+// ── Próxima pergunta do assistente (proximaPergunta) ────────────────────────
+// PR 11 da série "simulador universal" (simulador-universal.html). Função
+// pura, testada em tests/test_avaliar_apoios_calculo.py. Recebe o mesmo
+// dados/condicoes.json e as respostas dadas até agora; devolve o nome do
+// campo a perguntar a seguir, ou null quando já não há nenhuma pergunta
+// aplicável que ainda possa mudar um resultado.
+//
+// Regras (por esta ordem):
+//   1. Só contam campos que aparecem em perguntasEmFalta de um apoio ainda
+//      "indeterminado" — apoios já decididos (elegivel/inelegivel) não
+//      contam, e um campo que já não pode mudar nada nunca é perguntado.
+//   2. Só perguntas aplicáveis (aplicavel_se) ainda sem resposta. Um campo
+//      cuja pergunta-mãe ainda não foi respondida "sobe" para a pergunta-mãe
+//      (ex.: as perguntas da criança puxam tem_filhos_a_cargo); se a mãe já
+//      foi respondida com outro valor, o campo simplesmente não se pergunta.
+//   3. Escalões: perguntas sobre o requerente primeiro, depois as da criança
+//      (aplicavel_se em tem_filhos_a_cargo — referem-se sempre ao filho mais
+//      novo), e os campos monetários (unidade em EUR) sempre no fim.
+//   4. Dentro do escalão, o campo presente em mais apoios indeterminados (o
+//      que mais ajuda a decidir); desempate estável pela ordem de
+//      perguntas.yaml, nunca pela ordem das respostas.
+
+const CAMPO_FILHOS_A_CARGO = 'tem_filhos_a_cargo';
+
+function respostaDada(respostas, campo) {
+  const v = respostas[campo];
+  return v !== undefined && v !== null && v !== '';
+}
+
+// Devolve o campo que de facto se deve perguntar para chegar a `campo`
+// (o próprio, ou a pergunta-mãe ainda por responder), ou null se `campo`
+// não é aplicável com as respostas actuais.
+function campoAPerguntar(perguntas, respostas, campo) {
+  const vistos = new Set();
+  let atual = campo;
+  for (;;) {
+    if (vistos.has(atual)) return null; // ciclo — nunca deve acontecer (guardrail no compilador)
+    vistos.add(atual);
+    const def = perguntas[atual];
+    if (!def) return null;
+    const cond = def.aplicavel_se;
+    if (!cond) return atual;
+    if (!respostaDada(respostas, cond.campo)) {
+      atual = cond.campo;
+      continue;
+    }
+    return respostas[cond.campo] === cond.valor ? atual : null;
+  }
+}
+
+function escalaoPergunta(def) {
+  if (def.unidade && String(def.unidade).indexOf('EUR') !== -1) return 2;
+  if (def.aplicavel_se && def.aplicavel_se.campo === CAMPO_FILHOS_A_CARGO) return 1;
+  return 0;
+}
+
+function proximaPergunta(condicoesJson, respostas, hojeISO) {
+  const perguntas = condicoesJson.perguntas || {};
+  const ordem = Object.keys(perguntas);
+  const avaliacao = avaliarApoios(condicoesJson, respostas, hojeISO);
+
+  const contagem = {};
+  for (const r of Object.values(avaliacao)) {
+    if (r.estado !== 'indeterminado') continue;
+    const candidatosDoApoio = new Set();
+    (r.perguntasEmFalta || []).forEach(campo => {
+      const alvo = campoAPerguntar(perguntas, respostas, campo);
+      if (alvo && !respostaDada(respostas, alvo)) candidatosDoApoio.add(alvo);
+    });
+    candidatosDoApoio.forEach(c => { contagem[c] = (contagem[c] || 0) + 1; });
+  }
+
+  const candidatos = Object.keys(contagem);
+  if (candidatos.length === 0) return null;
+  candidatos.sort((a, b) => {
+    const ea = escalaoPergunta(perguntas[a]);
+    const eb = escalaoPergunta(perguntas[b]);
+    if (ea !== eb) return ea - eb;
+    if (contagem[a] !== contagem[b]) return contagem[b] - contagem[a];
+    return ordem.indexOf(a) - ordem.indexOf(b);
+  });
+  return candidatos[0];
+}
+
+// Campos respondidos que fizeram um apoio falhar — para a página explicar
+// o "porquê" de um "Não tens direito" sem inventar texto: devolve os
+// campos das condições de topo que ficaram "inelegivel", pela ordem em
+// que aparecem no apoio.
+function camposQueExcluem(apoio, respostas, hojeISO) {
+  hojeISO = hojeISO || new Date().toISOString().slice(0, 10);
+  const campos = [];
+  const recolher = (c) => {
+    if (c.condicoes) { c.condicoes.forEach(recolher); return; }
+    const lista = c.tipo === 'formula'
+      ? Object.keys(c).filter(k => k.indexOf('campo_') === 0).map(k => c[k])
+      : [c.campo];
+    lista.forEach(campo => {
+      if (respostaDada(respostas, campo) && campos.indexOf(campo) === -1) campos.push(campo);
+    });
+  };
+  apoio.condicoes.forEach(c => {
+    if (avaliarCondicao(c, respostas, hojeISO).estado === 'inelegivel') recolher(c);
+  });
+  return campos;
+}

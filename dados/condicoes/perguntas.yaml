@@ -26,6 +26,21 @@
 #   tipo: categorica | numero | data
 #   unidade: obrigatório em "numero", omitido nos outros
 #   opcoes: obrigatório em "categorica"
+#   pergunta: obrigatório — o texto que simulador-universal.html mostra
+#     ao utilizador (PR 11); `descricao` continua a ser a definição técnica
+#   rotulos: obrigatório em "categorica" (um rótulo por opção, nem mais nem
+#     menos), proibido nos outros tipos
+#   ajuda: opcional — linha de ajuda por baixo da pergunta
+#   aplicavel_se: opcional — {campo, valor}; a pergunta só é feita quando
+#     `campo` já foi respondido com `valor` (ex.: perguntas da criança só
+#     com tem_filhos_a_cargo == sim). Um apoio que use um campo com
+#     aplicavel_se tem de ter o "portão" correspondente (condição de topo
+#     campo == valor, ou alternativa campo != valor no mesmo grupo any) —
+#     senão, quem responde o contrário fica eternamente em "falta saber"
+#     (guardrail em tests/test_perguntas_coerencia.py).
+#
+# As perguntas sobre a criança referem-se sempre ao filho MAIS NOVO — a
+# página avisa que os restantes se avaliam repetindo o simulador.
 #
 # Início mínimo: só os campos que o piloto (CSI, PR 2) precisa. Novos apoios
 # acrescentam campos novos aqui só quando o campo ainda não existe — nunca
@@ -34,15 +49,36 @@
 data_nascimento_requerente:
   descricao: "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)"
   tipo: data
+  pergunta: "Qual é a tua data de nascimento?"
+
+
+tem_filhos_a_cargo:
+  descricao: "O requerente tem filhos (ou outras crianças/jovens) a cargo no agregado — porta de entrada das perguntas sobre a criança; sem ela, um apoio para crianças nunca pode ficar decidido para quem não tem filhos"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "Tens filhos (ou outras crianças ou jovens) a teu cargo?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
 
 data_nascimento_crianca:
   descricao: "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)"
   tipo: data
+  pergunta: "Qual é a data de nascimento do teu filho mais novo?"
+  aplicavel_se:
+    campo: tem_filhos_a_cargo
+    valor: sim
+
 
 reside_legalmente_pt:
   descricao: "Reside legalmente em Portugal"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Resides legalmente em Portugal?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 anos_residencia_pt:
   descricao: "Há quantos anos reside legalmente em Portugal, de forma ininterrupta"
@@ -51,6 +87,8 @@ anos_residencia_pt:
   aplicavel_se:
     campo: reside_legalmente_pt
     valor: sim
+  pergunta: "Há quantos anos resides legalmente em Portugal, sem interrupções?"
+
 
 estatuto_residencia:
   descricao: "Estatuto de residência para efeitos de condições de nacionalidade/residência"
@@ -63,163 +101,321 @@ estatuto_residencia:
   aplicavel_se:
     campo: reside_legalmente_pt
     valor: sim
+  pergunta: "Qual é a tua situação de residência em Portugal?"
+  rotulos:
+    nacional_pt: "Tenho nacionalidade portuguesa"
+    cidadao_ue_com_registo: "Sou cidadão/ã da União Europeia com certificado de registo"
+    titulo_residencia_valido: "Tenho título de residência válido"
+    refugiado: "Tenho estatuto de refugiado"
+
 
 tem_pensao_invalidez_sem_reavaliacao:
   descricao: "É titular de Pensão de Invalidez do Regime Geral não sujeita a reavaliação médica"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Recebes pensão de invalidez do regime geral que já não está sujeita a reavaliação médica?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 nivel_ensino_frequentado:
   descricao: "Nível de ensino (ou equivalente, incluindo formação profissional) que a criança/jovem frequenta"
   tipo: categorica
   opcoes: [nao_estuda, basico_ou_equivalente, secundario_ou_equivalente, superior_ou_equivalente]
+  pergunta: "Que nível de ensino frequenta o teu filho mais novo?"
+  ajuda: "Se ainda não anda na escola, escolhe «Não estuda»."
+  rotulos:
+    nao_estuda: "Não estuda"
+    basico_ou_equivalente: "Ensino básico (ou equivalente)"
+    secundario_ou_equivalente: "Ensino secundário (ou equivalente)"
+    superior_ou_equivalente: "Ensino superior (ou equivalente)"
+  aplicavel_se:
+    campo: tem_filhos_a_cargo
+    valor: sim
+
 
 tem_deficiencia_ou_incapacidade_reconhecida:
   descricao: "A criança/jovem tem deficiência ou incapacidade reconhecida"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "O teu filho mais novo tem deficiência ou incapacidade reconhecida?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: tem_filhos_a_cargo
+    valor: sim
+
 
 rendimento_referencia_anual_agregado:
   descricao: "Rendimento de Referência (RR) anual do agregado familiar — rendimento anual dividido pelo número de crianças/jovens do agregado mais 1, tal como calculado pela Segurança Social"
   tipo: numero
   unidade: "EUR/ano"
+  pergunta: "Qual é o rendimento de referência anual do teu agregado?"
+  ajuda: "Rendimento anual do agregado a dividir pelo número de crianças e jovens do agregado mais 1. Exemplo: 20 000 € com 1 filho → 20 000 ÷ 2 = 10 000 €."
+
 
 situacao_contributiva_regularizada:
   descricao: "A situação contributiva do requerente (ou dos pais/representantes legais) está regularizada perante a Segurança Social e a Autoridade Tributária"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "A tua situação na Segurança Social e nas Finanças está regularizada?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 patrimonio_mobiliario_agregado:
   descricao: "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)"
   tipo: numero
   unidade: EUR
+  pergunta: "Quanto tem o teu agregado, no total, em depósitos, ações, obrigações e outros títulos?"
+
 
 tipo_escola_aluno:
   descricao: "Tipo de escola do aluno — pública/protocolo dá acesso à ASE, privada sem protocolo não"
   tipo: categorica
   opcoes: [publica_ou_protocolo, privada_sem_protocolo]
+  pergunta: "Em que tipo de escola anda o teu filho mais novo?"
+  rotulos:
+    publica_ou_protocolo: "Pública, ou privada com protocolo com o Estado"
+    privada_sem_protocolo: "Privada sem protocolo"
+  aplicavel_se:
+    campo: tem_filhos_a_cargo
+    valor: sim
+
 
 rendimento_per_capita_mensal_agregado:
   descricao: "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses"
   tipo: numero
   unidade: "EUR/mês"
+  pergunta: "Qual é o rendimento mensal por pessoa do teu agregado?"
+  ajuda: "Rendimento anual bruto do agregado ÷ número de pessoas ÷ 12."
+
 
 rendimento_mensal_agregado:
   descricao: "Rendimento mensal total do agregado familiar, já considerado nos termos da condição de recursos (trabalho, pensões, subsídios)"
   tipo: numero
   unidade: "EUR/mês"
+  pergunta: "Quanto recebe por mês, no total, o teu agregado (trabalho, pensões, subsídios)?"
+
 
 numero_adultos_adicionais_agregado:
   descricao: "Número de adultos do agregado além do requerente/titular"
   tipo: numero
   unidade: pessoas
+  pergunta: "Quantos adultos vivem contigo no agregado, além de ti?"
+
 
 numero_menores_agregado:
   descricao: "Número de menores de 18 anos do agregado"
   tipo: numero
   unidade: pessoas
+  pergunta: "Quantos menores de 18 anos fazem parte do teu agregado?"
+
 
 situacao_profissional:
   descricao: "Situação profissional actual da pessoa requerente"
   tipo: categorica
   opcoes: [empregado, desempregado, estudante, reformado, inativo]
+  pergunta: "Qual é a tua situação profissional atual?"
+  rotulos:
+    empregado: "A trabalhar"
+    desempregado: "Desempregado/a"
+    estudante: "Estudante"
+    reformado: "Reformado/a"
+    inativo: "Outra situação (sem atividade)"
+
 
 inscrito_centro_emprego_e_disponivel:
   descricao: "Está inscrito/a no Centro de Emprego e disponível para trabalhar, formar ou inserir-se"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Estás inscrito/a no centro de emprego (IEFP) e disponível para trabalhar?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: situacao_profissional
+    valor: desempregado
+
 
 esta_em_estabelecimento_prisional_ou_institucionalizado:
   descricao: "Está em estabelecimento prisional ou institucionalizado em equipamento financiado pelo Estado"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Estás num estabelecimento prisional, ou a viver numa instituição financiada pelo Estado?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 patrimonio_mobiliario_pessoal:
   descricao: "Valor de património mobiliário e bens móveis sujeitos a registo (o mais elevado dos dois, cada um comparado ao limite)"
   tipo: numero
   unidade: EUR
+  pergunta: "Qual é o valor do teu património (depósitos, ações, títulos ou bens sujeitos a registo, como um carro)?"
+  ajuda: "Indica o mais alto dos dois: o total de depósitos e títulos, ou o valor dos bens sujeitos a registo."
+
 
 rendimento_mensal_proprio_menor:
   descricao: "Rendimentos próprios mensais do menor requerente (quando o requerente tem menos de 18 anos)"
   tipo: numero
   unidade: "EUR/mês"
+  pergunta: "Quanto recebes por mês em rendimentos teus?"
+
 
 esta_gravida:
   descricao: "A pessoa menor requerente está grávida"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Estás grávida?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 casado_ou_uniao_facto_mais_de_2_anos:
   descricao: "A pessoa menor requerente é casada ou vive em união de facto há mais de 2 anos"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "És casado/a, ou vives em união de facto há mais de 2 anos?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 tem_menores_ou_pessoas_deficiencia_a_cargo:
   descricao: "A pessoa menor requerente tem menores ou pessoas com deficiência a cargo"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Tens menores ou pessoas com deficiência a teu cargo?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 desemprego_involuntario:
   descricao: "A perda de emprego foi involuntária (despedimento colectivo, extinção do posto, caducidade de contrato a prazo, resolução com justa causa pelo trabalhador)"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Ficaste desempregado/a sem ser por tua vontade (despedimento, fim de contrato a prazo, justa causa)?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: situacao_profissional
+    valor: desempregado
+
 
 dias_registo_remuneracoes_24_meses:
   descricao: "Dias de registo de remunerações nos 24 meses anteriores à data do desemprego"
   tipo: numero
   unidade: dias
+  pergunta: "Nos 24 meses antes de ficares desempregado/a, quantos dias tens com descontos para a Segurança Social?"
+  aplicavel_se:
+    campo: situacao_profissional
+    valor: desempregado
+
 
 tem_cit_valido:
   descricao: "Tem um Certificado de Incapacidade Temporária (CIT) válido, emitido por um médico (não basta autodeclaração de doença)"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Tens uma baixa médica passada por um médico (Certificado de Incapacidade Temporária)?"
+  ajuda: "A autodeclaração de doença não conta aqui."
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 tipo_trabalhador:
   descricao: "Regime de protecção social do requerente (seguro_social_voluntario_maritimo = trabalhador marítimo abrangido pelo Seguro Social Voluntário)"
   tipo: categorica
   opcoes: [conta_outrem, independente, seguro_social_voluntario, seguro_social_voluntario_maritimo]
+  pergunta: "Como descontas para a Segurança Social?"
+  rotulos:
+    conta_outrem: "Trabalhador/a por conta de outrem"
+    independente: "Trabalhador/a independente"
+    seguro_social_voluntario: "Seguro Social Voluntário"
+    seguro_social_voluntario_maritimo: "Seguro Social Voluntário (trabalhador/a marítimo/a)"
+
 
 meses_civis_com_registo_remuneracoes:
   descricao: "Meses civis com registo de remunerações na Segurança Social, seguidos ou interpolados"
   tipo: numero
   unidade: meses
+  pergunta: "Quantos meses tens com descontos para a Segurança Social, seguidos ou não?"
+
 
 dias_registo_remuneracoes_indice_profissionalidade:
   descricao: "Dias com registo de remunerações nos primeiros 4 dos últimos 6 meses anteriores ao mês da baixa"
   tipo: numero
   unidade: dias
+  pergunta: "Nos primeiros 4 dos últimos 6 meses antes do mês da baixa, quantos dias tens com descontos?"
+
 
 acumula_pensao_invalidez_relativa_com_trabalho:
   descricao: "É pensionista de invalidez relativa e acumula a pensão com trabalho"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Recebes pensão de invalidez relativa e continuas a trabalhar?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 recebe_indemnizacao_acidente_trabalho_maior_subsidio:
   descricao: "Recebe indemnização por acidente de trabalho ou doença profissional de valor igual ou superior ao subsídio de doença a que teria direito"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Recebes indemnização por acidente de trabalho ou doença profissional igual ou superior ao subsídio de doença?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 e_dependente_irs:
   descricao: "É considerado dependente para efeitos do artigo 13.º do Código do IRS no ano da compra"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "No IRS, és considerado/a dependente de outra pessoa (por exemplo, dos teus pais)?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 titular_imovel_habitacional_ultimos_3_anos:
   descricao: "É (ou foi, em qualquer momento dos últimos 3 anos, ou à data da escritura) titular de propriedade ou de figura parcelar (usufruto, uso e habitação) de prédio urbano habitacional — mesmo uma quota pequena conta"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Nos últimos 3 anos foste dono/a de alguma casa (ou de parte dela, ou tiveste usufruto)?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
 
 destino_habitacao_propria_permanente:
   descricao: "O imóvel vai ser a habitação própria e permanente (não serve para investimento nem segunda habitação)"
   tipo: categorica
   opcoes: [sim, nao]
+  pergunta: "Se vais comprar casa, vai ser a tua habitação própria e permanente?"
+  rotulos:
+    sim: "Sim, vai ser a minha casa"
+    nao: "Não, ou não vou comprar casa"
+
 
 rendimento_trabalho_mensal_agregado:
   descricao: "Rendimentos de trabalho mensais do agregado (titular e restantes elementos), já deduzidos das contribuições obrigatórias para a segurança social"
   tipo: numero
   unidade: "EUR/mês"
+  pergunta: "Quanto recebe por mês o teu agregado em rendimentos de trabalho, já sem os descontos para a Segurança Social?"
+
 
 outros_rendimentos_mensais_agregado:
   descricao: "Restantes rendimentos mensais do agregado (pensões, subsídios, capitais, prediais, etc.), que não são de trabalho"
   tipo: numero
   unidade: "EUR/mês"
+  pergunta: "Quanto recebe por mês o teu agregado noutros rendimentos (pensões, subsídios, rendas, juros)?"
+

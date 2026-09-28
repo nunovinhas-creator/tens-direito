@@ -3,7 +3,8 @@
 # acao-social-escolar.html, mesma leitura do CONFIG inline de
 # simulador-ase.html (Despacho n.º 8452-A/2015).
 #
-# Só duas condições, ambas cumulativas (all):
+# Três condições, todas cumulativas (all) — o portão tem_filhos_a_cargo
+# (PR 11, simulador universal) mais as duas de acesso propriamente ditas:
 #   - tipo de escola (pública ou privada com protocolo — nunca privada
 #     sem protocolo, que não tem ASE de todo);
 #   - RPC mensal do agregado dentro do limite do escalão B (o limite
@@ -13,9 +14,21 @@
 
 apoio: ase
 pagina: acao-social-escolar.html
+titulo: "Ação Social Escolar (ASE)"
+simulador: /simulador-ase.html
 operador: all
 
 condicoes:
+  # PR 11: portão do simulador universal — sem ele, quem responde "não
+  # tenho filhos" nunca responde às perguntas da criança (aplicavel_se) e o
+  # apoio ficaria eternamente "indeterminado". Condição de topo, antes das
+  # outras, para excluir cedo.
+  - id: tem_filhos_a_cargo
+    tipo: categorica
+    campo: tem_filhos_a_cargo
+    operador_comparacao: eq
+    valor_literal: sim
+
   - id: escola_elegivel
     tipo: categorica
     campo: tipo_escola_aluno

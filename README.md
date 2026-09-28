@@ -103,6 +103,7 @@ Actualizado automaticamente a partir do repositório em **28 de setembro de 2026
 | [`simulador-rsi.html`](simulador-rsi.html) | Simulador do RSI 2026 |
 | [`simulador-subsidio-desemprego.html`](simulador-subsidio-desemprego.html) | Simulador do Subsídio de Desemprego 2026 |
 | [`simulador-subsidio-doenca.html`](simulador-subsidio-doenca.html) | Simulador de Subsídio de Doença 2026 |
+| [`simulador-universal.html`](simulador-universal.html) | Simulador de Apoios Sociais 2026: descobre a que tens direito |
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor, duração e como pedir |

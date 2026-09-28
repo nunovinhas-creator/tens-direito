@@ -561,6 +561,7 @@ para esses três casos.
 | `caixa-geral-aposentacoes.html` | Caixa Geral de Aposentações: quem está abrangido e como funciona | 7 set. 2026 |
 | `simulador-condicoes-reforma.html` | Simulador de Condições de Acesso à Reforma | 7 set. 2026 |
 | `simulador-psu.html` | Simulador da PSU 2026: calcula o teu valor (Decreto-Lei n.º 166/2026) | 3 jul. 2026 |
+| `simulador-universal.html` | Simulador de Apoios Sociais 2026: descobre a que tens direito | 28 set. 2026 |
 | `simulador-subsidio-doenca.html` | Simulador de Subsídio de Doença 2026 | 5 jul. 2026 |
 | `simulador-subsidio-desemprego.html` | Simulador do Subsídio de Desemprego 2026 | 13 jul. 2026 |
 | `simulador-rsi.html` | Simulador do RSI 2026 | 13 jul. 2026 |
@@ -2180,7 +2181,7 @@ simulador, nunca um valor introduzido).
 
 | Evento | Onde | Parâmetros | Notas |
 |---|---|---|---|
-| `simulacao_concluida` | inline nos simuladores publicados que disparam este evento (grep `simulacao_concluida` em `simulador-*.html`; hoje: abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego, imt_jovem, psu, condicoes_reforma), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia), imt_jovem e condicoes_reforma; **omitido** em subsidio_doenca, rsi e psu — sem veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto). |
+| `simulacao_concluida` | inline nos simuladores publicados que disparam este evento (grep `simulacao_concluida` em `simulador-*.html`; hoje: abono, ase, csi, subsidio_doenca, rsi, subsidio_desemprego, imt_jovem, psu, condicoes_reforma, universal), a par do `calc_resultado` já existente | `simulador` (slug), `elegivel` (só onde há veredicto binário) | `elegivel` presente em abono (`escalão ≠ 5`), ase (com/sem direito), csi (`temDireito`), subsidio_desemprego (prazo de garantia), imt_jovem e condicoes_reforma; **omitido** em subsidio_doenca, rsi, psu e universal — sem veredicto binário limpo (rsi é multi-factor e auto-declara-se incompleto; universal avalia vários apoios de uma vez). |
 | `menu_tool_click` | `assets/js/nav.js`, clique nos cartões da grelha de ferramentas do menu móvel e no link "Começa aqui" (`.nav-mobile-card`/`.nav-mobile-destaque`) | `tool_destino` (basename do próprio `href`, nunca um ID fixo por cartão) | Só no menu móvel, não no desktop. |
 | `partilha_clique` | `assets/js/share.js`, nos dois pontos de sucesso (Web Share API e cópia para a área de transferência) | `pagina` (pathname) | Nunca no fallback da caixa manual (falha de cópia) nem em cancelamento (AbortError). Nunca envia o título. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |

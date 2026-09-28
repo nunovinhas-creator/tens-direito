@@ -33,6 +33,7 @@ CONDICOES_DIR = RAIZ / "dados" / "condicoes"
 PERGUNTAS_PATH = CONDICOES_DIR / "perguntas.yaml"
 PARAMETROS_JSON = RAIZ / "dados" / "parametros.json"
 SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
+RAIZ_SITE = RAIZ  # onde procurar a página de cada `simulador:` (patchável nos testes)
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
 TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
@@ -53,7 +54,72 @@ def _carregar_perguntas() -> dict:
     for campo, dados in perguntas.items():
         if dados.get("tipo") not in TIPOS_VALIDOS:
             raise CondicaoInvalida(f"perguntas.yaml: '{campo}' com tipo inválido")
+        _validar_campos_do_assistente(campo, dados, perguntas)
     return perguntas
+
+
+def _validar_campos_do_assistente(campo: str, dados: dict, perguntas: dict) -> None:
+    """PR 11: o que simulador-universal.html precisa para mostrar a pergunta
+    sem convenção não escrita — texto, rótulos de cada opção e quando a
+    pergunta faz sentido. Falha com mensagem clara em vez de deixar a
+    página mostrar um nome de campo cru ou uma opção sem rótulo."""
+    contexto = f"perguntas.yaml: '{campo}'"
+    if campo == "data_nascimento":
+        raise CondicaoInvalida(
+            f"{contexto}: campo genérico proibido — usar data_nascimento_requerente ou data_nascimento_crianca"
+        )
+
+    pergunta = dados.get("pergunta")
+    if not isinstance(pergunta, str) or not pergunta.strip():
+        raise CondicaoInvalida(f"{contexto}: falta 'pergunta' (texto mostrado ao utilizador)")
+    if "ajuda" in dados and (not isinstance(dados["ajuda"], str) or not dados["ajuda"].strip()):
+        raise CondicaoInvalida(f"{contexto}: 'ajuda' tem de ser texto não vazio")
+
+    rotulos = dados.get("rotulos")
+    if dados["tipo"] == "categorica":
+        opcoes = dados.get("opcoes") or []
+        if not isinstance(rotulos, dict):
+            raise CondicaoInvalida(f"{contexto}: pergunta categórica sem 'rotulos' (um por opção)")
+        em_falta = [o for o in opcoes if o not in rotulos]
+        a_mais = [r for r in rotulos if r not in opcoes]
+        if em_falta or a_mais:
+            raise CondicaoInvalida(
+                f"{contexto}: 'rotulos' não bate com 'opcoes' — em falta {em_falta}, a mais {a_mais}"
+            )
+        vazios = [r for r, texto in rotulos.items() if not isinstance(texto, str) or not texto.strip()]
+        if vazios:
+            raise CondicaoInvalida(f"{contexto}: rótulo(s) vazio(s) para {vazios}")
+    elif rotulos is not None:
+        raise CondicaoInvalida(f"{contexto}: 'rotulos' só faz sentido em perguntas categóricas")
+
+    cond = dados.get("aplicavel_se")
+    if cond is None:
+        return
+    if not isinstance(cond, dict) or set(cond) != {"campo", "valor"}:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' tem de ser exactamente {{campo, valor}}")
+    alvo = cond["campo"]
+    if alvo == campo:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' não pode referenciar o próprio campo")
+    if alvo not in perguntas:
+        raise CondicaoInvalida(f"{contexto}: 'aplicavel_se' referencia campo inexistente '{alvo}'")
+    if perguntas[alvo].get("tipo") == "categorica" and cond["valor"] not in perguntas[alvo].get("opcoes", []):
+        raise CondicaoInvalida(
+            f"{contexto}: 'aplicavel_se.valor' {cond['valor']!r} não é opção de '{alvo}'"
+        )
+
+
+def _validar_titulo_e_simulador(bruto: dict, apoio: str) -> None:
+    """PR 11: cada apoio diz como se chama na página e para onde leva o
+    link "simulador dedicado" — nunca um nome de ficheiro cru nem um link
+    partido na página de resultados."""
+    titulo = bruto.get("titulo")
+    if not isinstance(titulo, str) or not titulo.strip():
+        raise CondicaoInvalida(f"{apoio}: falta 'titulo' (nome do apoio mostrado ao utilizador)")
+    simulador = bruto.get("simulador")
+    if not isinstance(simulador, str) or not simulador.startswith("/") or not simulador.endswith(".html"):
+        raise CondicaoInvalida(f"{apoio}: 'simulador' tem de ser um caminho do site '/<pagina>.html' ({simulador!r})")
+    if not (RAIZ_SITE / simulador.lstrip("/")).is_file():
+        raise CondicaoInvalida(f"{apoio}: 'simulador' aponta para página inexistente ({simulador})")
 
 
 def _carregar_parametros() -> dict:
@@ -249,6 +315,38 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
     }
 
 
+def _anotar_verificado_em(condicoes: list, parametros: dict) -> list[str]:
+    """Anota cada condição resolvida com o `verificado_em` do(s) parâmetro(s)
+    de onde vem o seu valor (o mais recente, se forem vários) e devolve as
+    datas encontradas. As condições não guardam data própria — a data de
+    verificação é sempre a do parâmetro em dados/parametros.json. Condições
+    `literal_enum`/`literal_pagina` não têm parâmetro, logo não têm data
+    (nunca se inventa uma); o carimbo da página citada em `fonte_pagina`
+    não é lido daqui, para o JSON não depender do HTML."""
+    datas: list[str] = []
+    for cond in condicoes:
+        if "condicoes" in cond:
+            datas.extend(_anotar_verificado_em(cond["condicoes"], parametros))
+            continue
+        fonte = cond.get("fonte", {})
+        if fonte.get("tipo") == "parametro":
+            referencias = [fonte["referencia"]]
+        elif fonte.get("tipo") == "parametro_multiplo":
+            referencias = fonte["referencias"]
+        else:
+            continue
+        proprias = []
+        for ref in referencias:
+            prestacao, nome = ref.split(".", 1)
+            data = parametros["prestacoes"][prestacao][nome].get("verificado_em")
+            if data:
+                proprias.append(data)
+        if proprias:
+            cond["verificado_em"] = max(proprias)
+            datas.append(cond["verificado_em"])
+    return datas
+
+
 def _coletar_ids(condicoes: list) -> list:
     """Achata ids de condições e grupos, recursivamente, para o teste de duplicados."""
     ids = []
@@ -275,6 +373,7 @@ def consolidar() -> dict:
             raise CondicaoInvalida(f"{ficheiro.name}: falta a chave 'apoio'")
         if bruto.get("operador") not in OPERADORES_APOIO_VALIDOS:
             raise CondicaoInvalida(f"{apoio}: 'operador' tem de ser um de {sorted(OPERADORES_APOIO_VALIDOS)}")
+        _validar_titulo_e_simulador(bruto, apoio)
 
         condicoes_resolvidas = [
             _validar_e_resolver_condicao(c, apoio, perguntas, parametros) for c in bruto.get("condicoes", [])
@@ -287,11 +386,20 @@ def consolidar() -> dict:
             duplicados = sorted({i for i in ids if ids.count(i) > 1})
             raise CondicaoInvalida(f"{apoio}: ids de condição duplicados ({duplicados})")
 
+        datas_apoio = _anotar_verificado_em(condicoes_resolvidas, parametros)
+
         entrada = {
             "pagina": bruto.get("pagina"),
+            "titulo": bruto["titulo"],
+            "simulador": bruto["simulador"],
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }
+        # Data de verificação mais recente entre as condições do apoio (via
+        # parâmetros) — é daqui, e nunca da data do dia, que a página tira o
+        # carimbo "Verificado a".
+        if datas_apoio:
+            entrada["verificado_em"] = max(datas_apoio)
         # Marca opcional: este apoio é substituído por outro (ex.: RSI → PSU).
         # Não altera a elegibilidade — só informa a página de que, a partir da
         # data indicada, o apoio de substituição é que passa a valer.
@@ -308,7 +416,13 @@ def consolidar() -> dict:
         if alvo is not None and alvo not in apoios:
             raise CondicaoInvalida(f"{apoio}: 'substituido_por' aponta para apoio inexistente ({alvo!r})")
 
-    return {"gerado_em": date.today().isoformat(), "perguntas": perguntas, "apoios": apoios}
+    datas = [a["verificado_em"] for a in apoios.values() if a.get("verificado_em")]
+    return {
+        "gerado_em": date.today().isoformat(),
+        "verificado_em": max(datas) if datas else None,
+        "perguntas": perguntas,
+        "apoios": apoios,
+    }
 
 
 def main() -> int:
@@ -327,13 +441,11 @@ def main() -> int:
 
     if args.check:
         atual_sem_data = json.dumps(
-            {"perguntas": consolidado["perguntas"], "apoios": consolidado["apoios"]}, sort_keys=True
+            {k: v for k, v in consolidado.items() if k != "gerado_em"}, sort_keys=True
         )
         if SAIDA_JSON.exists():
             disco = json.loads(SAIDA_JSON.read_text(encoding="utf-8"))
-            disco_sem_data = json.dumps(
-                {"perguntas": disco.get("perguntas", {}), "apoios": disco.get("apoios", {})}, sort_keys=True
-            )
+            disco_sem_data = json.dumps({k: v for k, v in disco.items() if k != "gerado_em"}, sort_keys=True)
         else:
             disco_sem_data = None
         if disco_sem_data == atual_sem_data:

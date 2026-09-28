@@ -53,6 +53,7 @@ SIMULADORES = {
     "simulador-rsi.html": "rsi",
     "simulador-subsidio-desemprego.html": "subsidio_desemprego",
     "simulador-imt-jovem.html": "imt_jovem",
+    "simulador-universal.html": "universal",
 }
 
 # Todos os eventos de conversão introduzidos nesta sessão, por ficheiro onde

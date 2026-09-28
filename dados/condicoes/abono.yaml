@@ -21,9 +21,21 @@
 
 apoio: abono
 pagina: abono-de-familia.html
+titulo: "Abono de Família"
+simulador: /simulador-abono.html
 operador: all
 
 condicoes:
+  # PR 11: portão do simulador universal — sem ele, quem responde "não
+  # tenho filhos" nunca responde às perguntas da criança (aplicavel_se) e o
+  # apoio ficaria eternamente "indeterminado". Condição de topo, antes das
+  # outras, para excluir cedo.
+  - id: tem_filhos_a_cargo
+    tipo: categorica
+    campo: tem_filhos_a_cargo
+    operador_comparacao: eq
+    valor_literal: sim
+
   - id: idade_ou_excepcao
     operador: any
     condicoes:

@@ -1,13 +1,33 @@
 {
   "gerado_em": "2026-09-28",
+  "verificado_em": "2026-09-27",
   "perguntas": {
     "data_nascimento_requerente": {
       "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
-      "tipo": "data"
+      "tipo": "data",
+      "pergunta": "Qual é a tua data de nascimento?"
+    },
+    "tem_filhos_a_cargo": {
+      "descricao": "O requerente tem filhos (ou outras crianças/jovens) a cargo no agregado — porta de entrada das perguntas sobre a criança; sem ela, um apoio para crianças nunca pode ficar decidido para quem não tem filhos",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ],
+      "pergunta": "Tens filhos (ou outras crianças ou jovens) a teu cargo?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "data_nascimento_crianca": {
       "descricao": "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)",
-      "tipo": "data"
+      "tipo": "data",
+      "pergunta": "Qual é a data de nascimento do teu filho mais novo?",
+      "aplicavel_se": {
+        "campo": "tem_filhos_a_cargo",
+        "valor": "sim"
+      }
     },
     "reside_legalmente_pt": {
       "descricao": "Reside legalmente em Portugal",
@@ -15,7 +35,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Resides legalmente em Portugal?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "anos_residencia_pt": {
       "descricao": "Há quantos anos reside legalmente em Portugal, de forma ininterrupta",
@@ -24,7 +49,8 @@
       "aplicavel_se": {
         "campo": "reside_legalmente_pt",
         "valor": "sim"
-      }
+      },
+      "pergunta": "Há quantos anos resides legalmente em Portugal, sem interrupções?"
     },
     "estatuto_residencia": {
       "descricao": "Estatuto de residência para efeitos de condições de nacionalidade/residência",
@@ -38,6 +64,13 @@
       "aplicavel_se": {
         "campo": "reside_legalmente_pt",
         "valor": "sim"
+      },
+      "pergunta": "Qual é a tua situação de residência em Portugal?",
+      "rotulos": {
+        "nacional_pt": "Tenho nacionalidade portuguesa",
+        "cidadao_ue_com_registo": "Sou cidadão/ã da União Europeia com certificado de registo",
+        "titulo_residencia_valido": "Tenho título de residência válido",
+        "refugiado": "Tenho estatuto de refugiado"
       }
     },
     "tem_pensao_invalidez_sem_reavaliacao": {
@@ -46,7 +79,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Recebes pensão de invalidez do regime geral que já não está sujeita a reavaliação médica?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "nivel_ensino_frequentado": {
       "descricao": "Nível de ensino (ou equivalente, incluindo formação profissional) que a criança/jovem frequenta",
@@ -56,7 +94,19 @@
         "basico_ou_equivalente",
         "secundario_ou_equivalente",
         "superior_ou_equivalente"
-      ]
+      ],
+      "pergunta": "Que nível de ensino frequenta o teu filho mais novo?",
+      "ajuda": "Se ainda não anda na escola, escolhe «Não estuda».",
+      "rotulos": {
+        "nao_estuda": "Não estuda",
+        "basico_ou_equivalente": "Ensino básico (ou equivalente)",
+        "secundario_ou_equivalente": "Ensino secundário (ou equivalente)",
+        "superior_ou_equivalente": "Ensino superior (ou equivalente)"
+      },
+      "aplicavel_se": {
+        "campo": "tem_filhos_a_cargo",
+        "valor": "sim"
+      }
     },
     "tem_deficiencia_ou_incapacidade_reconhecida": {
       "descricao": "A criança/jovem tem deficiência ou incapacidade reconhecida",
@@ -64,12 +114,23 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "O teu filho mais novo tem deficiência ou incapacidade reconhecida?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      },
+      "aplicavel_se": {
+        "campo": "tem_filhos_a_cargo",
+        "valor": "sim"
+      }
     },
     "rendimento_referencia_anual_agregado": {
       "descricao": "Rendimento de Referência (RR) anual do agregado familiar — rendimento anual dividido pelo número de crianças/jovens do agregado mais 1, tal como calculado pela Segurança Social",
       "tipo": "numero",
-      "unidade": "EUR/ano"
+      "unidade": "EUR/ano",
+      "pergunta": "Qual é o rendimento de referência anual do teu agregado?",
+      "ajuda": "Rendimento anual do agregado a dividir pelo número de crianças e jovens do agregado mais 1. Exemplo: 20 000 € com 1 filho → 20 000 ÷ 2 = 10 000 €."
     },
     "situacao_contributiva_regularizada": {
       "descricao": "A situação contributiva do requerente (ou dos pais/representantes legais) está regularizada perante a Segurança Social e a Autoridade Tributária",
@@ -77,12 +138,18 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "A tua situação na Segurança Social e nas Finanças está regularizada?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "patrimonio_mobiliario_agregado": {
       "descricao": "Valor total do património mobiliário do agregado familiar (depósitos bancários, ações, obrigações, títulos)",
       "tipo": "numero",
-      "unidade": "EUR"
+      "unidade": "EUR",
+      "pergunta": "Quanto tem o teu agregado, no total, em depósitos, ações, obrigações e outros títulos?"
     },
     "tipo_escola_aluno": {
       "descricao": "Tipo de escola do aluno — pública/protocolo dá acesso à ASE, privada sem protocolo não",
@@ -90,27 +157,41 @@
       "opcoes": [
         "publica_ou_protocolo",
         "privada_sem_protocolo"
-      ]
+      ],
+      "pergunta": "Em que tipo de escola anda o teu filho mais novo?",
+      "rotulos": {
+        "publica_ou_protocolo": "Pública, ou privada com protocolo com o Estado",
+        "privada_sem_protocolo": "Privada sem protocolo"
+      },
+      "aplicavel_se": {
+        "campo": "tem_filhos_a_cargo",
+        "valor": "sim"
+      }
     },
     "rendimento_per_capita_mensal_agregado": {
       "descricao": "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses",
       "tipo": "numero",
-      "unidade": "EUR/mês"
+      "unidade": "EUR/mês",
+      "pergunta": "Qual é o rendimento mensal por pessoa do teu agregado?",
+      "ajuda": "Rendimento anual bruto do agregado ÷ número de pessoas ÷ 12."
     },
     "rendimento_mensal_agregado": {
       "descricao": "Rendimento mensal total do agregado familiar, já considerado nos termos da condição de recursos (trabalho, pensões, subsídios)",
       "tipo": "numero",
-      "unidade": "EUR/mês"
+      "unidade": "EUR/mês",
+      "pergunta": "Quanto recebe por mês, no total, o teu agregado (trabalho, pensões, subsídios)?"
     },
     "numero_adultos_adicionais_agregado": {
       "descricao": "Número de adultos do agregado além do requerente/titular",
       "tipo": "numero",
-      "unidade": "pessoas"
+      "unidade": "pessoas",
+      "pergunta": "Quantos adultos vivem contigo no agregado, além de ti?"
     },
     "numero_menores_agregado": {
       "descricao": "Número de menores de 18 anos do agregado",
       "tipo": "numero",
-      "unidade": "pessoas"
+      "unidade": "pessoas",
+      "pergunta": "Quantos menores de 18 anos fazem parte do teu agregado?"
     },
     "situacao_profissional": {
       "descricao": "Situação profissional actual da pessoa requerente",
@@ -121,7 +202,15 @@
         "estudante",
         "reformado",
         "inativo"
-      ]
+      ],
+      "pergunta": "Qual é a tua situação profissional atual?",
+      "rotulos": {
+        "empregado": "A trabalhar",
+        "desempregado": "Desempregado/a",
+        "estudante": "Estudante",
+        "reformado": "Reformado/a",
+        "inativo": "Outra situação (sem atividade)"
+      }
     },
     "inscrito_centro_emprego_e_disponivel": {
       "descricao": "Está inscrito/a no Centro de Emprego e disponível para trabalhar, formar ou inserir-se",
@@ -129,7 +218,16 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Estás inscrito/a no centro de emprego (IEFP) e disponível para trabalhar?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      },
+      "aplicavel_se": {
+        "campo": "situacao_profissional",
+        "valor": "desempregado"
+      }
     },
     "esta_em_estabelecimento_prisional_ou_institucionalizado": {
       "descricao": "Está em estabelecimento prisional ou institucionalizado em equipamento financiado pelo Estado",
@@ -137,17 +235,25 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Estás num estabelecimento prisional, ou a viver numa instituição financiada pelo Estado?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "patrimonio_mobiliario_pessoal": {
       "descricao": "Valor de património mobiliário e bens móveis sujeitos a registo (o mais elevado dos dois, cada um comparado ao limite)",
       "tipo": "numero",
-      "unidade": "EUR"
+      "unidade": "EUR",
+      "pergunta": "Qual é o valor do teu património (depósitos, ações, títulos ou bens sujeitos a registo, como um carro)?",
+      "ajuda": "Indica o mais alto dos dois: o total de depósitos e títulos, ou o valor dos bens sujeitos a registo."
     },
     "rendimento_mensal_proprio_menor": {
       "descricao": "Rendimentos próprios mensais do menor requerente (quando o requerente tem menos de 18 anos)",
       "tipo": "numero",
-      "unidade": "EUR/mês"
+      "unidade": "EUR/mês",
+      "pergunta": "Quanto recebes por mês em rendimentos teus?"
     },
     "esta_gravida": {
       "descricao": "A pessoa menor requerente está grávida",
@@ -155,7 +261,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Estás grávida?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "casado_ou_uniao_facto_mais_de_2_anos": {
       "descricao": "A pessoa menor requerente é casada ou vive em união de facto há mais de 2 anos",
@@ -163,7 +274,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "És casado/a, ou vives em união de facto há mais de 2 anos?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "tem_menores_ou_pessoas_deficiencia_a_cargo": {
       "descricao": "A pessoa menor requerente tem menores ou pessoas com deficiência a cargo",
@@ -171,7 +287,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Tens menores ou pessoas com deficiência a teu cargo?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "desemprego_involuntario": {
       "descricao": "A perda de emprego foi involuntária (despedimento colectivo, extinção do posto, caducidade de contrato a prazo, resolução com justa causa pelo trabalhador)",
@@ -179,12 +300,26 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Ficaste desempregado/a sem ser por tua vontade (despedimento, fim de contrato a prazo, justa causa)?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      },
+      "aplicavel_se": {
+        "campo": "situacao_profissional",
+        "valor": "desempregado"
+      }
     },
     "dias_registo_remuneracoes_24_meses": {
       "descricao": "Dias de registo de remunerações nos 24 meses anteriores à data do desemprego",
       "tipo": "numero",
-      "unidade": "dias"
+      "unidade": "dias",
+      "pergunta": "Nos 24 meses antes de ficares desempregado/a, quantos dias tens com descontos para a Segurança Social?",
+      "aplicavel_se": {
+        "campo": "situacao_profissional",
+        "valor": "desempregado"
+      }
     },
     "tem_cit_valido": {
       "descricao": "Tem um Certificado de Incapacidade Temporária (CIT) válido, emitido por um médico (não basta autodeclaração de doença)",
@@ -192,7 +327,13 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Tens uma baixa médica passada por um médico (Certificado de Incapacidade Temporária)?",
+      "ajuda": "A autodeclaração de doença não conta aqui.",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "tipo_trabalhador": {
       "descricao": "Regime de protecção social do requerente (seguro_social_voluntario_maritimo = trabalhador marítimo abrangido pelo Seguro Social Voluntário)",
@@ -202,17 +343,26 @@
         "independente",
         "seguro_social_voluntario",
         "seguro_social_voluntario_maritimo"
-      ]
+      ],
+      "pergunta": "Como descontas para a Segurança Social?",
+      "rotulos": {
+        "conta_outrem": "Trabalhador/a por conta de outrem",
+        "independente": "Trabalhador/a independente",
+        "seguro_social_voluntario": "Seguro Social Voluntário",
+        "seguro_social_voluntario_maritimo": "Seguro Social Voluntário (trabalhador/a marítimo/a)"
+      }
     },
     "meses_civis_com_registo_remuneracoes": {
       "descricao": "Meses civis com registo de remunerações na Segurança Social, seguidos ou interpolados",
       "tipo": "numero",
-      "unidade": "meses"
+      "unidade": "meses",
+      "pergunta": "Quantos meses tens com descontos para a Segurança Social, seguidos ou não?"
     },
     "dias_registo_remuneracoes_indice_profissionalidade": {
       "descricao": "Dias com registo de remunerações nos primeiros 4 dos últimos 6 meses anteriores ao mês da baixa",
       "tipo": "numero",
-      "unidade": "dias"
+      "unidade": "dias",
+      "pergunta": "Nos primeiros 4 dos últimos 6 meses antes do mês da baixa, quantos dias tens com descontos?"
     },
     "acumula_pensao_invalidez_relativa_com_trabalho": {
       "descricao": "É pensionista de invalidez relativa e acumula a pensão com trabalho",
@@ -220,7 +370,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Recebes pensão de invalidez relativa e continuas a trabalhar?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "recebe_indemnizacao_acidente_trabalho_maior_subsidio": {
       "descricao": "Recebe indemnização por acidente de trabalho ou doença profissional de valor igual ou superior ao subsídio de doença a que teria direito",
@@ -228,7 +383,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Recebes indemnização por acidente de trabalho ou doença profissional igual ou superior ao subsídio de doença?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "e_dependente_irs": {
       "descricao": "É considerado dependente para efeitos do artigo 13.º do Código do IRS no ano da compra",
@@ -236,7 +396,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "No IRS, és considerado/a dependente de outra pessoa (por exemplo, dos teus pais)?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "titular_imovel_habitacional_ultimos_3_anos": {
       "descricao": "É (ou foi, em qualquer momento dos últimos 3 anos, ou à data da escritura) titular de propriedade ou de figura parcelar (usufruto, uso e habitação) de prédio urbano habitacional — mesmo uma quota pequena conta",
@@ -244,7 +409,12 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Nos últimos 3 anos foste dono/a de alguma casa (ou de parte dela, ou tiveste usufruto)?",
+      "rotulos": {
+        "sim": "Sim",
+        "nao": "Não"
+      }
     },
     "destino_habitacao_propria_permanente": {
       "descricao": "O imóvel vai ser a habitação própria e permanente (não serve para investimento nem segunda habitação)",
@@ -252,24 +422,44 @@
       "opcoes": [
         "sim",
         "nao"
-      ]
+      ],
+      "pergunta": "Se vais comprar casa, vai ser a tua habitação própria e permanente?",
+      "rotulos": {
+        "sim": "Sim, vai ser a minha casa",
+        "nao": "Não, ou não vou comprar casa"
+      }
     },
     "rendimento_trabalho_mensal_agregado": {
       "descricao": "Rendimentos de trabalho mensais do agregado (titular e restantes elementos), já deduzidos das contribuições obrigatórias para a segurança social",
       "tipo": "numero",
-      "unidade": "EUR/mês"
+      "unidade": "EUR/mês",
+      "pergunta": "Quanto recebe por mês o teu agregado em rendimentos de trabalho, já sem os descontos para a Segurança Social?"
     },
     "outros_rendimentos_mensais_agregado": {
       "descricao": "Restantes rendimentos mensais do agregado (pensões, subsídios, capitais, prediais, etc.), que não são de trabalho",
       "tipo": "numero",
-      "unidade": "EUR/mês"
+      "unidade": "EUR/mês",
+      "pergunta": "Quanto recebe por mês o teu agregado noutros rendimentos (pensões, subsídios, rendas, juros)?"
     }
   },
   "apoios": {
     "abono": {
       "pagina": "abono-de-familia.html",
+      "titulo": "Abono de Família",
+      "simulador": "/simulador-abono.html",
       "operador": "all",
       "condicoes": [
+        {
+          "id": "tem_filhos_a_cargo",
+          "tipo": "categorica",
+          "campo": "tem_filhos_a_cargo",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
         {
           "id": "idade_ou_excepcao",
           "operador": "any",
@@ -284,7 +474,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "abono.idade_limite_sem_requisito_escolar"
-              }
+              },
+              "verificado_em": "2026-09-27"
             },
             {
               "id": "ensino_basico",
@@ -300,7 +491,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_basico"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_basico",
@@ -329,7 +521,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_secundario"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_secundario",
@@ -358,7 +551,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_superior"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_superior",
@@ -407,7 +601,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "abono.escalao4_limite_cenario_pedidos_novos_2026"
-          }
+          },
+          "verificado_em": "2026-07-19"
         },
         {
           "id": "situacao_contributiva_ok",
@@ -430,14 +625,29 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "abono.patrimonio_mobiliario_limite"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "ase": {
       "pagina": "acao-social-escolar.html",
+      "titulo": "Ação Social Escolar (ASE)",
+      "simulador": "/simulador-ase.html",
       "operador": "all",
       "condicoes": [
+        {
+          "id": "tem_filhos_a_cargo",
+          "tipo": "categorica",
+          "campo": "tem_filhos_a_cargo",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
         {
           "id": "escola_elegivel",
           "tipo": "categorica",
@@ -459,12 +669,16 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "ase.escalao_b_limite_rpc_mensal"
-          }
+          },
+          "verificado_em": "2026-06-24"
         }
-      ]
+      ],
+      "verificado_em": "2026-06-24"
     },
     "csi": {
       "pagina": "complemento-solidario-idosos.html",
+      "titulo": "Complemento Solidário para Idosos (CSI)",
+      "simulador": "/simulador-csi.html",
       "operador": "all",
       "condicoes": [
         {
@@ -481,7 +695,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "csi.idade_minima_meses_totais"
-              }
+              },
+              "verificado_em": "2026-07-19"
             },
             {
               "id": "excepcao_invalidez_sem_reavaliacao",
@@ -517,12 +732,16 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "csi.anos_residencia_minima"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "desemprego": {
       "pagina": "subsidio-desemprego.html",
+      "titulo": "Subsídio de Desemprego",
+      "simulador": "/simulador-subsidio-desemprego.html",
       "operador": "all",
       "condicoes": [
         {
@@ -557,7 +776,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "desemprego.garantia_dias_geral"
-          }
+          },
+          "verificado_em": "2026-08-24"
         },
         {
           "id": "inscrito_iefp",
@@ -581,10 +801,13 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-08-24"
     },
     "imt-jovem": {
       "pagina": "imt-jovem.html",
+      "titulo": "IMT Jovem (isenção na compra da 1.ª casa)",
+      "simulador": "/simulador-imt-jovem.html",
       "operador": "all",
       "condicoes": [
         {
@@ -597,7 +820,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "habitacao.imt_idade_maxima_anos"
-          }
+          },
+          "verificado_em": "2026-07-20"
         },
         {
           "id": "nao_dependente_irs",
@@ -632,10 +856,13 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-07-20"
     },
     "psu": {
       "pagina": "prestacao-social-unica.html",
+      "titulo": "Prestação Social Única (PSU)",
+      "simulador": "/simulador-psu.html",
       "operador": "all",
       "condicoes": [
         {
@@ -734,7 +961,8 @@
               "psu.cit_taxa_acima_limiar",
               "psu.valor_minimo_euros"
             ]
-          }
+          },
+          "verificado_em": "2026-08-13"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -746,12 +974,16 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "psu.limite_patrimonio_eur"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "rsi": {
       "pagina": "rsi.html",
+      "titulo": "Rendimento Social de Inserção (RSI)",
+      "simulador": "/simulador-rsi.html",
       "operador": "all",
       "condicoes": [
         {
@@ -768,7 +1000,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "rsi.idade_minima_anos"
-              }
+              },
+              "verificado_em": "2026-08-24"
             },
             {
               "id": "excepcao_menor",
@@ -784,7 +1017,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "rsi.valor_adulto_adicional_mensal"
-                  }
+                  },
+                  "verificado_em": "2026-08-24"
                 },
                 {
                   "id": "situacao_pessoal",
@@ -828,6 +1062,17 @@
               ]
             }
           ]
+        },
+        {
+          "id": "reside_legalmente",
+          "tipo": "categorica",
+          "campo": "reside_legalmente_pt",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
         },
         {
           "id": "residencia_legal",
@@ -914,7 +1159,8 @@
               "rsi.valor_adulto_adicional_mensal",
               "rsi.valor_menor_mensal"
             ]
-          }
+          },
+          "verificado_em": "2026-08-24"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -926,7 +1172,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "rsi.limite_patrimonio_eur"
-          }
+          },
+          "verificado_em": "2026-09-27"
         },
         {
           "id": "disponibilidade_se_desempregado",
@@ -968,11 +1215,14 @@
           }
         }
       ],
+      "verificado_em": "2026-09-27",
       "substituido_por": "psu",
       "substituido_a_partir_de": "2026-12-31"
     },
     "subsidio-doenca": {
       "pagina": "baixa-medica-subsidio-doenca.html",
+      "titulo": "Subsídio de Doença",
+      "simulador": "/simulador-subsidio-doenca.html",
       "operador": "all",
       "condicoes": [
         {
@@ -996,7 +1246,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "subsidio-doenca.prazo_garantia_meses"
-          }
+          },
+          "verificado_em": "2026-09-27"
         },
         {
           "id": "indice_profissionalidade",
@@ -1034,7 +1285,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "subsidio-doenca.indice_profissionalidade_dias"
-              }
+              },
+              "verificado_em": "2026-09-27"
             }
           ]
         },
@@ -1088,7 +1340,8 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     }
   }
 }
