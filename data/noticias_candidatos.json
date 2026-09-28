@@ -1,131 +1,5 @@
 [
   {
-    "data": "2026-09-13",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 14,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 14,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 10,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Prestação Social Única: o novo apoio que junta 13 subsídios num só - Leak.pt",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-09",
-        "score": 5,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-09"
-      },
-      {
-        "titulo": "Município de Alcoutim reforça apoios à educação e ação social escolar - Rádio Horizonte Algarve",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-10",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-10"
-      },
-      {
-        "titulo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece - Leak.pt",
-        "feed_nome": "ias_valor_referencia",
-        "data_iso": "2026-09-12",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional - Expresso",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-11"
-      },
-      {
-        "titulo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 - CNN Portugal",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes - economiafinancas.com",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-09",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027 - Jornal SOL",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'emprego' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Os países com os salários mínimos mais elevados: Suíça lidera ranking - Idealista",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-10",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "O número que faz subir dezenas de apoios em 2026 e que quase ninguém conhece - Leak.pt",
-        "feed_nome": "ias_valor_referencia",
-        "score": 2
-      },
-      {
-        "titulo": "CGTP defende aumento do salário mínimo nacional para 1.100 euros em 2027 - CNN Portugal",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-09-14",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2522,5 +2396,158 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-09-28",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 12,
+      "cuidador_informal": 14,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 11,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-23",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-23"
+      },
+      {
+        "titulo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS - avozdoalgarve.pt",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-22",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-22"
+      },
+      {
+        "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto - Seia Digital",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-23",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-23"
+      },
+      {
+        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-24",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-24"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-23",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-23"
+      },
+      {
+        "titulo": "Salário mínimo em Portugal abaixo da média da União Europeia - Now Canal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-28",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 - CNN Portugal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-24",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "“Estamos a criar o país do salário mínimo nacional” - Renascença",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Há um apoio de até 670€ por mês para idosos e um em cada cinco recebe mais de 300€ - Leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-22",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-05"
+      },
+      {
+        "titulo": "Odemira investe 4,7 milhões de euros na ação social escolar e nas famílias - Alentejo Ilustrado",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-21",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Prisão preventiva para homem que fingia ser cuidador informal para burlar idosos - TV RECORD Europa",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-09-23",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "As propostas dos presidenciáveis para a Previdência impactam quem está em Portugal? Confirme aqui! - DN Brasil",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-09-23",
+        "score": -1,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Salário mínimo em Portugal abaixo da média da União Europeia - Now Canal",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
   }
 ]

@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-28",
+      "titulo": "Salário mínimo em Portugal abaixo da média da União Europeia",
+      "fonte_nome": "Now Canal",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVi1CTFFnZlR6bUpxekt1UzhMTXdXc3p6bDlwXy1JT0UtcmVrRnZYbmN4TXdYR3FJeVFGUlQ4LVNqenlzVU9ObFdZWmlkUFQ4SHVQSHRuWGxoU1o2SWpGTURyZWd6WWpHOFIzUVRuOVgtdG5aRHlleElIYVg4c1hnczlfVEozTWt0amlnTGJaQzVSVnhUVzZtdk9taG1PZUx2LWc?oc=5",
+      "resumo": "Salário mínimo em Portugal abaixo da média da União Europeia Now Canal",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-09-24",
       "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro",
       "fonte_nome": "Contas Poupança",
