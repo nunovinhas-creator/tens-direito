@@ -1,0 +1,53 @@
+# Condições de acesso ao Subsídio de Desemprego — PR 7 da série "simulador
+# universal". Fonte: secção "Quem tem direito" de subsidio-desemprego.html.
+#
+# Sem grupos aninhados — as quatro condições são todas cumulativas e
+# planas. Três dos quatro campos já existiam (situacao_profissional,
+# inscrito_centro_emprego_e_disponivel, situacao_contributiva_regularizada,
+# todos criados nos PR 5/6) — só dois campos novos foram precisos
+# (desemprego_involuntario, dias_registo_remuneracoes_24_meses). É o
+# primeiro apoio da série em que a reutilização do banco de perguntas supera
+# os campos novos — sinal de que o banco está a convergir.
+#
+# Simplificação consciente, fora do âmbito deste PR: a página distingue o
+# prazo de garantia do regime geral (360 dias) do regime de trabalhador
+# independente economicamente dependente com cessação de actividade
+# (dados/parametros/desemprego.yaml → garantia_dias_ti_cessacao) — este
+# schema usa sempre o prazo do regime geral; a distinção por regime
+# contributivo fica para quando (se) o simulador dedicado for o alvo desta
+# série.
+
+apoio: desemprego
+pagina: subsidio-desemprego.html
+operador: all
+
+condicoes:
+  - id: esta_desempregado
+    tipo: categorica
+    campo: situacao_profissional
+    operador_comparacao: eq
+    valor_literal: desempregado
+
+  - id: cessacao_involuntaria
+    tipo: categorica
+    campo: desemprego_involuntario
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: prazo_garantia_cumprido
+    tipo: limiar
+    campo: dias_registo_remuneracoes_24_meses
+    operador_comparacao: gte
+    parametro: desemprego.garantia_dias_geral
+
+  - id: inscrito_iefp
+    tipo: categorica
+    campo: inscrito_centro_emprego_e_disponivel
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: situacao_contributiva_ok
+    tipo: categorica
+    campo: situacao_contributiva_regularizada
+    operador_comparacao: eq
+    valor_literal: sim

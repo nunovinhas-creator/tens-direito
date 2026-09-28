@@ -158,3 +158,13 @@ tem_menores_ou_pessoas_deficiencia_a_cargo:
   descricao: "A pessoa menor requerente tem menores ou pessoas com deficiência a cargo"
   tipo: categorica
   opcoes: [sim, nao]
+
+desemprego_involuntario:
+  descricao: "A perda de emprego foi involuntária (despedimento colectivo, extinção do posto, caducidade de contrato a prazo, resolução com justa causa pelo trabalhador)"
+  tipo: categorica
+  opcoes: [sim, nao]
+
+dias_registo_remuneracoes_24_meses:
+  descricao: "Dias de registo de remunerações nos 24 meses anteriores à data do desemprego"
+  tipo: numero
+  unidade: dias
