@@ -213,3 +213,13 @@ destino_habitacao_propria_permanente:
   descricao: "O imóvel vai ser a habitação própria e permanente (não serve para investimento nem segunda habitação)"
   tipo: categorica
   opcoes: [sim, nao]
+
+rendimento_trabalho_mensal_agregado:
+  descricao: "Rendimentos de trabalho mensais do agregado (titular e restantes elementos), já deduzidos das contribuições obrigatórias para a segurança social"
+  tipo: numero
+  unidade: "EUR/mês"
+
+outros_rendimentos_mensais_agregado:
+  descricao: "Restantes rendimentos mensais do agregado (pensões, subsídios, capitais, prediais, etc.), que não são de trabalho"
+  tipo: numero
+  unidade: "EUR/mês"

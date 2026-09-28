@@ -336,3 +336,124 @@ def test_integracao_csi_real_gera_sem_erro():
         "reside_legalmente",
         "anos_residencia_minima",
     } <= ids
+
+
+# ── PR 10: fórmula psu_valor_positivo e marca de substituição entre apoios ──
+
+
+PARAMETROS_PSU_FIXTURE = {
+    "prestacoes": {
+        "psu": {
+            "ias_2026": {"valor": 500},
+            "valor_referencia_multiplicador_ias": {"valor": 0.5},
+            "ponderacao_titular": {"valor": 1},
+            "ponderacao_maior": {"valor": 0.7},
+            "ponderacao_menor": {"valor": 0.5},
+            "cit_limiar_multiplicador_ias": {"valor": 0.2},
+            "cit_taxa_acima_limiar": {"valor": 0.5},
+            "valor_minimo_euros": {"valor": 10},
+            "data_producao_efeitos": {"valor": "2026-12-31"},
+        }
+    }
+}
+
+PERGUNTAS_PSU_FIXTURE = {
+    "trabalho": {"descricao": "t", "tipo": "numero", "unidade": "EUR"},
+    "outros": {"descricao": "o", "tipo": "numero", "unidade": "EUR"},
+    "adultos": {"descricao": "a", "tipo": "numero", "unidade": "pessoas"},
+    "menores": {"descricao": "m", "tipo": "numero", "unidade": "pessoas"},
+}
+
+
+def _formula_psu(**alteracoes):
+    base = {
+        "id": "f",
+        "tipo": "formula",
+        "formula": "psu_valor_positivo",
+        "campo_rendimento_trabalho": "trabalho",
+        "campo_outros_rendimentos": "outros",
+        "campo_adultos_adicionais": "adultos",
+        "campo_menores": "menores",
+        "parametro_ias": "psu.ias_2026",
+        "parametro_valor_referencia_multiplicador": "psu.valor_referencia_multiplicador_ias",
+        "parametro_ponderacao_titular": "psu.ponderacao_titular",
+        "parametro_ponderacao_maior": "psu.ponderacao_maior",
+        "parametro_ponderacao_menor": "psu.ponderacao_menor",
+        "parametro_cit_limiar_multiplicador": "psu.cit_limiar_multiplicador_ias",
+        "parametro_cit_taxa": "psu.cit_taxa_acima_limiar",
+        "parametro_valor_minimo": "psu.valor_minimo_euros",
+    }
+    base.update(alteracoes)
+    return base
+
+
+def test_formula_psu_resolve_multiplicadores_contra_o_ias(tmp_path, monkeypatch):
+    apoio = {"apoio": "psu", "operador": "all", "condicoes": [_formula_psu()]}
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_PSU_FIXTURE, PARAMETROS_PSU_FIXTURE, {"psu": apoio})
+    f = gerar_condicoes_json.consolidar()["apoios"]["psu"]["condicoes"][0]
+    assert f["valor_referencia"] == 250  # 0,5 × IAS 500
+    assert f["cit_limiar"] == 100  # 0,2 × IAS 500
+    assert f["ponderacao_maior"] == 0.7
+    assert f["valor_minimo"] == 10
+
+
+def test_formula_psu_sem_parametro_obrigatorio_falha(tmp_path, monkeypatch):
+    formula = _formula_psu()
+    del formula["parametro_cit_taxa"]
+    apoio = {"apoio": "psu", "operador": "all", "condicoes": [formula]}
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_PSU_FIXTURE, PARAMETROS_PSU_FIXTURE, {"psu": apoio})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="parametro_cit_taxa"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_formula_psu_com_campo_inexistente_falha(tmp_path, monkeypatch):
+    apoio = {"apoio": "psu", "operador": "all", "condicoes": [_formula_psu(campo_menores="fantasma")]}
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_PSU_FIXTURE, PARAMETROS_PSU_FIXTURE, {"psu": apoio})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="campo inexistente"):
+        gerar_condicoes_json.consolidar()
+
+
+def _apoio_simples(nome, **extra):
+    return {
+        "apoio": nome,
+        "operador": "all",
+        "condicoes": [
+            {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
+        ],
+        **extra,
+    }
+
+
+PERGUNTAS_SUBSTITUICAO = {"reside": {"descricao": "r", "tipo": "categorica", "opcoes": ["sim", "nao"]}}
+
+
+def test_substituido_por_resolve_data_a_partir_de_parametro(tmp_path, monkeypatch):
+    apoios = {
+        "antigo": _apoio_simples(
+            "antigo", substituido_por="novo", substituido_a_partir_de_parametro="psu.data_producao_efeitos"
+        ),
+        "novo": _apoio_simples("novo"),
+    }
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_SUBSTITUICAO, PARAMETROS_PSU_FIXTURE, apoios)
+    consolidado = gerar_condicoes_json.consolidar()["apoios"]
+    assert consolidado["antigo"]["substituido_por"] == "novo"
+    assert consolidado["antigo"]["substituido_a_partir_de"] == "2026-12-31"
+    assert "substituido_por" not in consolidado["novo"]
+
+
+def test_substituido_por_apoio_inexistente_falha(tmp_path, monkeypatch):
+    apoios = {
+        "antigo": _apoio_simples(
+            "antigo", substituido_por="fantasma", substituido_a_partir_de_parametro="psu.data_producao_efeitos"
+        ),
+    }
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_SUBSTITUICAO, PARAMETROS_PSU_FIXTURE, apoios)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="apoio inexistente"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_substituido_por_sem_data_falha(tmp_path, monkeypatch):
+    apoios = {"antigo": _apoio_simples("antigo", substituido_por="novo"), "novo": _apoio_simples("novo")}
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_SUBSTITUICAO, PARAMETROS_PSU_FIXTURE, apoios)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="substituido_a_partir_de_parametro"):
+        gerar_condicoes_json.consolidar()

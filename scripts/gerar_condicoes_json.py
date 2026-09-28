@@ -36,7 +36,7 @@ SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
 TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
-FORMULAS_VALIDAS = {"escala_equivalencia_rsi"}
+FORMULAS_VALIDAS = {"escala_equivalencia_rsi", "psu_valor_positivo"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
 
@@ -116,6 +116,57 @@ def _validar_e_resolver_formula(condicao: dict, apoio: str, perguntas: dict, par
                     condicao["parametro_adulto_adicional"],
                     condicao["parametro_menor"],
                 ],
+            },
+        }
+
+    if formula == "psu_valor_positivo":
+        campos_obrigatorios = [
+            "campo_rendimento_trabalho",
+            "campo_outros_rendimentos",
+            "campo_adultos_adicionais",
+            "campo_menores",
+        ]
+        parametros_obrigatorios = [
+            "parametro_ias",
+            "parametro_valor_referencia_multiplicador",
+            "parametro_ponderacao_titular",
+            "parametro_ponderacao_maior",
+            "parametro_ponderacao_menor",
+            "parametro_cit_limiar_multiplicador",
+            "parametro_cit_taxa",
+            "parametro_valor_minimo",
+        ]
+        for chave in campos_obrigatorios:
+            if condicao.get(chave) not in perguntas:
+                raise CondicaoInvalida(
+                    f"{contexto}: '{chave}' aponta para campo inexistente em perguntas.yaml ({condicao.get(chave)!r})"
+                )
+        for chave in parametros_obrigatorios:
+            if chave not in condicao:
+                raise CondicaoInvalida(f"{contexto}: falta '{chave}' para a fórmula {formula}")
+
+        def resolver(chave):
+            return _resolver_parametro(condicao[chave], parametros, contexto)
+
+        ias = resolver("parametro_ias")
+        return {
+            "id": condicao["id"],
+            "tipo": "formula",
+            "formula": formula,
+            "campo_rendimento_trabalho": condicao["campo_rendimento_trabalho"],
+            "campo_outros_rendimentos": condicao["campo_outros_rendimentos"],
+            "campo_adultos_adicionais": condicao["campo_adultos_adicionais"],
+            "campo_menores": condicao["campo_menores"],
+            "valor_referencia": resolver("parametro_valor_referencia_multiplicador") * ias,
+            "ponderacao_titular": resolver("parametro_ponderacao_titular"),
+            "ponderacao_maior": resolver("parametro_ponderacao_maior"),
+            "ponderacao_menor": resolver("parametro_ponderacao_menor"),
+            "cit_limiar": resolver("parametro_cit_limiar_multiplicador") * ias,
+            "cit_taxa": resolver("parametro_cit_taxa"),
+            "valor_minimo": resolver("parametro_valor_minimo"),
+            "fonte": {
+                "tipo": "parametro_multiplo",
+                "referencias": [condicao[k] for k in parametros_obrigatorios],
             },
         }
 
@@ -236,11 +287,26 @@ def consolidar() -> dict:
             duplicados = sorted({i for i in ids if ids.count(i) > 1})
             raise CondicaoInvalida(f"{apoio}: ids de condição duplicados ({duplicados})")
 
-        apoios[apoio] = {
+        entrada = {
             "pagina": bruto.get("pagina"),
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }
+        # Marca opcional: este apoio é substituído por outro (ex.: RSI → PSU).
+        # Não altera a elegibilidade — só informa a página de que, a partir da
+        # data indicada, o apoio de substituição é que passa a valer.
+        if "substituido_por" in bruto:
+            entrada["substituido_por"] = bruto["substituido_por"]
+            parametro_data = bruto.get("substituido_a_partir_de_parametro")
+            if not parametro_data:
+                raise CondicaoInvalida(f"{apoio}: 'substituido_por' exige 'substituido_a_partir_de_parametro'")
+            entrada["substituido_a_partir_de"] = _resolver_parametro(parametro_data, parametros, apoio)
+        apoios[apoio] = entrada
+
+    for apoio, dados in apoios.items():
+        alvo = dados.get("substituido_por")
+        if alvo is not None and alvo not in apoios:
+            raise CondicaoInvalida(f"{apoio}: 'substituido_por' aponta para apoio inexistente ({alvo!r})")
 
     return {"gerado_em": date.today().isoformat(), "perguntas": perguntas, "apoios": apoios}
 

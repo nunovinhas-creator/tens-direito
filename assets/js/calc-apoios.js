@@ -117,6 +117,35 @@ function avaliarFormula(condicao, respostas) {
       + menores * condicao.valor_menor;
     return { estado: rendimento <= limiar ? 'elegivel' : 'inelegivel' };
   }
+  if (condicao.formula === 'psu_valor_positivo') {
+    // Réplica da mecânica de calcularPSU() de simulador-psu.html (PSUglobal =
+    // PSUbase + CIT − rendimentos, com mínimo). Paridade garantida por
+    // tests/test_avaliar_apoios_psu_paridade.py — se as duas divergirem, o
+    // teste falha. Não modela majorações (artigos 26.º/27.º) nem o art. 17.º.
+    const campos = [
+      condicao.campo_rendimento_trabalho,
+      condicao.campo_outros_rendimentos,
+      condicao.campo_adultos_adicionais,
+      condicao.campo_menores,
+    ];
+    const emFalta = campos.filter(c => respostas[c] === undefined || respostas[c] === null || respostas[c] === '');
+    if (emFalta.length > 0) {
+      return { estado: 'indeterminado', perguntasEmFalta: emFalta };
+    }
+    const trabalho = respostas[condicao.campo_rendimento_trabalho];
+    const outros = respostas[condicao.campo_outros_rendimentos];
+    const adultosAdicionais = respostas[condicao.campo_adultos_adicionais];
+    const menores = respostas[condicao.campo_menores];
+
+    const adultosEquivalentes = condicao.ponderacao_titular
+      + adultosAdicionais * condicao.ponderacao_maior
+      + menores * condicao.ponderacao_menor;
+    const psuBase = condicao.valor_referencia * adultosEquivalentes;
+    const cit = Math.min(trabalho, condicao.cit_limiar)
+      + condicao.cit_taxa * Math.max(0, trabalho - condicao.cit_limiar);
+    const psuGlobal = Math.max(0, psuBase + cit - (trabalho + outros));
+    return { estado: psuGlobal >= condicao.valor_minimo ? 'elegivel' : 'inelegivel' };
+  }
   throw new Error(`fórmula desconhecida: ${condicao.formula}`);
 }
 
@@ -171,6 +200,12 @@ function avaliarApoios(condicoesJson, respostas, hojeISO) {
       respostas,
       hojeISO
     );
+    // Marca de substituição (ex.: RSI → PSU): não altera o estado, só informa
+    // a página de que, a partir da data indicada, vale o apoio substituto.
+    if (apoio.substituido_por) {
+      resultado[apoioId].substituidoPor = apoio.substituido_por;
+      resultado[apoioId].substituidoAPartirDe = apoio.substituido_a_partir_de;
+    }
   }
   return resultado;
 }

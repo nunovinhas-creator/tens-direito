@@ -1,0 +1,97 @@
+# Condições de acesso à Prestação Social Única (PSU) — PR 10 da série
+# "simulador universal". Base: Decreto-Lei n.º 166/2026, de 13 de agosto
+# (em vigor desde 14/08/2026; produção de efeitos e pagamento a 31/12/2026,
+# art. 63.º). Fonte das condições: secção "Quem tem direito" de
+# prestacao-social-unica.html e parâmetros de dados/parametros/psu.yaml.
+#
+# Rendimento: NÃO se usa o "PSUbase" da página como limiar simples. A página
+# apresenta o limite como PSUbase (268,57€ × adultos equivalentes), mas o
+# cálculo real do simulador é PSUglobal = (PSUbase + CIT) − rendimentos, com
+# mínimo de 10€ — a Componente de Incentivo ao Trabalho (CIT) faz com que um
+# agregado com rendimentos de trabalho acima do PSUbase ainda possa receber.
+# Um limiar simples excluiria essas pessoas por engano. A fórmula
+# `psu_valor_positivo` replica a mecânica do simulador; a paridade entre as
+# duas é garantida por tests/test_avaliar_apoios_psu_paridade.py.
+#
+# Simplificações conscientes, fora do âmbito deste PR:
+# - Majorações por parentalidade e desemprego (arts. 26.º e 27.º) e apoios à
+#   habitação (art. 17.º, ainda pendente de portaria) não são modelados: o
+#   estado "inelegivel" refere-se à prestação base + CIT. O simulador
+#   dedicado trata as majorações.
+# - Património: os dois limites do art. 8.º/1, alíneas c) e d), valem ambos
+#   60 × IAS; tratados como um único campo (o mais alto dos dois).
+# - Carência de 1 ano para quem cessou o contrato por iniciativa própria
+#   (art. 8.º/1, alínea e) — regra temporal, não modelada (mesma opção do RSI).
+#
+# Dívidas de fonte a confirmar:
+# - Idade mínima de 18 anos: valor_literal com fonte_pagina (a idade não
+#   está parametrizada em dados/parametros/psu.yaml; artigo não citado).
+# - Estrangeiros com mínimo de 1 ano de residência legal: a página descreve-o
+#   como "alteração aprovada no processo legislativo" — não é claro que já
+#   esteja em vigor. Modelado como a página o publica (todo o não nacional
+#   precisa de 1 ano, incluindo cidadãos UE e refugiados, ao contrário do RSI);
+#   confirmar estado e âmbito antes de tornar a página pública.
+
+apoio: psu
+pagina: prestacao-social-unica.html
+operador: all
+
+condicoes:
+  - id: idade_minima
+    tipo: limiar
+    campo: data_nascimento_requerente
+    operador_comparacao: gte
+    unidade_comparacao: anos
+    valor_literal: 18
+    fonte_pagina: prestacao-social-unica.html
+
+  - id: reside_legalmente
+    tipo: categorica
+    campo: reside_legalmente_pt
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: nacional_ou_estrangeiro_com_1_ano
+    operador: any
+    condicoes:
+      - id: nacional_pt
+        tipo: categorica
+        campo: estatuto_residencia
+        operador_comparacao: eq
+        valor_literal: nacional_pt
+      - id: estrangeiro_com_1_ano
+        operador: all
+        condicoes:
+          - id: nao_nacional
+            tipo: categorica
+            campo: estatuto_residencia
+            operador_comparacao: neq
+            valor_literal: nacional_pt
+          - id: pelo_menos_1_ano
+            tipo: limiar
+            campo: anos_residencia_pt
+            operador_comparacao: gte
+            valor_literal: 1
+            fonte_pagina: prestacao-social-unica.html
+
+  - id: rendimento_dentro_do_limite_de_recursos
+    tipo: formula
+    formula: psu_valor_positivo
+    campo_rendimento_trabalho: rendimento_trabalho_mensal_agregado
+    campo_outros_rendimentos: outros_rendimentos_mensais_agregado
+    campo_adultos_adicionais: numero_adultos_adicionais_agregado
+    campo_menores: numero_menores_agregado
+    parametro_ias: psu.ias_2026
+    parametro_valor_referencia_multiplicador: psu.valor_referencia_multiplicador_ias
+    parametro_ponderacao_titular: psu.ponderacao_titular
+    parametro_ponderacao_maior: psu.ponderacao_maior
+    parametro_ponderacao_menor: psu.ponderacao_menor
+    parametro_cit_limiar_multiplicador: psu.cit_limiar_multiplicador_ias
+    parametro_cit_taxa: psu.cit_taxa_acima_limiar
+    parametro_valor_minimo: psu.valor_minimo_euros
+
+  - id: patrimonio_dentro_do_limite
+    tipo: limiar
+    campo: patrimonio_mobiliario_pessoal
+    operador_comparacao: lte
+    parametro: psu.limite_patrimonio_eur
