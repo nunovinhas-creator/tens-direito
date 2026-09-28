@@ -36,7 +36,7 @@ SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
 RAIZ_SITE = RAIZ  # onde procurar a página de cada `simulador:` (patchável nos testes)
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
-TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
+TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula", "limiar_faixa_incerta"}
 FORMULAS_VALIDAS = {"escala_equivalencia_rsi", "psu_valor_positivo"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
@@ -284,6 +284,9 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
     if condicao["tipo"] == "formula":
         return _validar_e_resolver_formula(condicao, apoio, perguntas, parametros)
 
+    if condicao["tipo"] == "limiar_faixa_incerta":
+        return _validar_e_resolver_faixa_incerta(condicao, apoio, perguntas, parametros)
+
     campo = condicao.get("campo")
     if campo not in perguntas:
         raise CondicaoInvalida(f"{contexto}: campo '{campo}' não existe em perguntas.yaml")
@@ -329,6 +332,56 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
         "valor": valor,
         "unidade_comparacao": condicao.get("unidade_comparacao"),
         "fonte": fonte,
+    }
+
+
+def _validar_e_resolver_faixa_incerta(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
+    """PR 12: limiar com uma zona onde a norma não decide (ex.: creche "até
+    aos 3 anos", sem dizer se o corte é no aniversário ou no fim do ano
+    letivo). Abaixo de `parametro` cumpre; a partir de `parametro_exclusao`
+    não cumpre; entre os dois, o resultado é indeterminado com o
+    `motivo_indeterminado` — nunca "cumpre" nem "não cumpre" por palpite."""
+    contexto = f"{apoio}.{condicao['id']}"
+    campo = condicao.get("campo")
+    if campo not in perguntas:
+        raise CondicaoInvalida(f"{contexto}: campo '{campo}' não existe em perguntas.yaml")
+    for chave in ("parametro", "parametro_exclusao"):
+        if chave not in condicao:
+            raise CondicaoInvalida(f"{contexto}: falta '{chave}' (limiar_faixa_incerta só aceita parâmetros)")
+    if "valor_literal" in condicao or "operador_comparacao" in condicao:
+        raise CondicaoInvalida(
+            f"{contexto}: limiar_faixa_incerta não usa 'valor_literal' nem 'operador_comparacao' "
+            "(cumpre abaixo de 'parametro', não cumpre a partir de 'parametro_exclusao')"
+        )
+    motivo = condicao.get("motivo_indeterminado")
+    if not isinstance(motivo, str) or not motivo.strip():
+        raise CondicaoInvalida(f"{contexto}: falta 'motivo_indeterminado' (texto mostrado ao utilizador)")
+    unidade = condicao.get("unidade_comparacao")
+    if perguntas[campo].get("tipo") == "data" and unidade not in UNIDADES_IDADE:
+        raise CondicaoInvalida(
+            f"{contexto}: campo de data exige 'unidade_comparacao' em {sorted(UNIDADES_IDADE)} ({unidade!r})"
+        )
+    valor = _resolver_parametro(condicao["parametro"], parametros, contexto)
+    valor_exclusao = _resolver_parametro(condicao["parametro_exclusao"], parametros, contexto)
+    for v in (valor, valor_exclusao):
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            raise CondicaoInvalida(f"{contexto}: limiares de limiar_faixa_incerta têm de ser números ({v!r})")
+    if not valor < valor_exclusao:
+        raise CondicaoInvalida(
+            f"{contexto}: 'parametro' ({valor}) tem de ser menor do que 'parametro_exclusao' ({valor_exclusao})"
+        )
+    return {
+        "id": condicao["id"],
+        "tipo": "limiar_faixa_incerta",
+        "campo": campo,
+        "valor": valor,
+        "valor_exclusao": valor_exclusao,
+        "unidade_comparacao": unidade,
+        "motivo_indeterminado": motivo.strip(),
+        "fonte": {
+            "tipo": "parametro_multiplo",
+            "referencias": [condicao["parametro"], condicao["parametro_exclusao"]],
+        },
     }
 
 

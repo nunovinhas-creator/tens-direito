@@ -97,6 +97,22 @@ function juntarPerguntasEmFalta(resultados) {
   return [...new Set(todas)];
 }
 
+// PR 12: motivos de um "indeterminado" que não vem de uma pergunta em falta
+// (a norma não decide — ver limiar_faixa_incerta). Só os dos resultados
+// indeterminados contam.
+function juntarMotivos(resultados) {
+  const todos = [];
+  resultados.forEach(r => { if (r.estado === 'indeterminado' && r.motivos) todos.push(...r.motivos); });
+  return [...new Set(todos)];
+}
+
+function indeterminado(resultados) {
+  const r = { estado: 'indeterminado', perguntasEmFalta: juntarPerguntasEmFalta(resultados) };
+  const motivos = juntarMotivos(resultados);
+  if (motivos.length) r.motivos = motivos;
+  return r;
+}
+
 // Fórmulas de condição — PR 6. Uma fórmula precisa de mais do que um
 // campo de resposta (ao contrário de uma folha normal), por isso tem a
 // sua própria avaliação em vez de reusar compararValores(). Extensível:
@@ -159,7 +175,7 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
     if (condicao.operador === 'any') {
       if (resultados.some(r => r.estado === 'elegivel')) return { estado: 'elegivel' };
       if (resultados.some(r => r.estado === 'indeterminado')) {
-        return { estado: 'indeterminado', perguntasEmFalta: juntarPerguntasEmFalta(resultados) };
+        return indeterminado(resultados.filter(r => r.estado === 'indeterminado'));
       }
       return { estado: 'inelegivel' };
     }
@@ -167,7 +183,7 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
     // all
     if (resultados.some(r => r.estado === 'inelegivel')) return { estado: 'inelegivel' };
     if (resultados.some(r => r.estado === 'indeterminado')) {
-      return { estado: 'indeterminado', perguntasEmFalta: juntarPerguntasEmFalta(resultados) };
+      return indeterminado(resultados.filter(r => r.estado === 'indeterminado'));
     }
     return { estado: 'elegivel' };
   }
@@ -185,6 +201,15 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
     valorResposta = idadeMesesTotais(valorResposta, hojeISO);
   } else if (condicao.unidade_comparacao === 'anos') {
     valorResposta = idadeAnosCompletos(valorResposta, hojeISO);
+  }
+
+  // PR 12: abaixo de `valor` cumpre; a partir de `valor_exclusao` não cumpre;
+  // entre os dois a norma não decide — indeterminado, com o motivo dos dados
+  // e sem perguntas em falta (responder mais nada muda isto).
+  if (condicao.tipo === 'limiar_faixa_incerta') {
+    if (valorResposta < condicao.valor) return { estado: 'elegivel' };
+    if (valorResposta >= condicao.valor_exclusao) return { estado: 'inelegivel' };
+    return { estado: 'indeterminado', perguntasEmFalta: [], motivos: [condicao.motivo_indeterminado] };
   }
 
   const cumpre = compararValores(valorResposta, condicao.operador_comparacao, condicao.valor);

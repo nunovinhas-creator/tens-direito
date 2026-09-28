@@ -6671,10 +6671,18 @@ modeladas. Revisão do PR (#260): campo `tipo_link` (`simulador`|`guia`) em
 cada `dados/condicoes/<apoio>.yaml`, validado contra o nome da página
 (`/simulador-*.html` ⇔ `simulador`); `simulador-universal.html` escreve
 "Abrir o simulador dedicado →" só para simuladores e "Ler o guia completo →"
-para guias (a creche). O limite de idade da creche ficou por fazer: as
-fontes primárias (Lei n.º 2/2022, Portarias n.os 198/2022 e 190-A/2023) não
-estão no repositório e o DRE está bloqueado a partir da sessão. O cartão
-europeu de estacionamento passa para um PR 12b, pelo mesmo motivo.
+para guias (a creche). Idade máxima da creche, com as consolidações
+oficiais entregues pelo Nuno e guardadas em `dados/fontes/` (Lei n.º 2/2022;
+Portarias n.os 198/2022 e 305/2022): Portaria n.º 198/2022, art. 9.º, n.º 4
+("até aos 3 anos", redação da Portaria n.º 304/2022, efeitos 2022-09-01),
+aplicável às aderentes pelo art. 9.º da Portaria n.º 305/2022. A norma não
+fixa o momento do corte, por isso há um tipo de condição novo,
+`limiar_faixa_incerta`: abaixo de 3 anos completos cumpre, de 3 até antes
+de 4 fica indeterminado com o motivo escrito nos dados (o motor devolve
+`motivos`; a página mostra-o em vez de "faltam dados"), 4 ou mais não
+cumpre. O limite de 4 é derivado, não legal (`creche_idade_fim_incerteza_anos`).
+A Lei n.º 2/2022 só faseia por ano de creche — não fixa idade. O cartão
+europeu de estacionamento passa para o PR 12b (#262).
 
 ---
 

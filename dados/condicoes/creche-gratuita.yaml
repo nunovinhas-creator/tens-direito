@@ -20,7 +20,14 @@
 #     de um dos pais e nas limítrofes (art. 5.º, n.º 1, al. a), na redação
 #     de 2024; Despacho n.º 6573/2024, n.º 5) — a família não a prova e o
 #     simulador não a consegue avaliar;
-#   - a idade de frequência de creche: a página não a fixa.
+#
+# Idade máxima (revisão do PR 12): Portaria n.º 198/2022, art. 9.º, n.º 4
+# ("até aos 3 anos"), na redação da Portaria n.º 304/2022, aplicável às
+# aderentes pelo art. 9.º da Portaria n.º 305/2022. A norma não fixa o
+# momento do corte (aniversário ou fim do ano letivo) — por isso, pela
+# idade em anos completos à data da avaliação: abaixo de 3 cumpre; de 3 até
+# antes de 4 fica indeterminado, com o motivo; 4 ou mais não cumpre. O
+# limite de 4 é derivado, não legal (ver creche.yaml).
 
 apoio: creche
 pagina: creche-gratuita.html
@@ -44,3 +51,11 @@ condicoes:
     campo: data_nascimento_crianca
     operador_comparacao: gte
     parametro: creche.creche_elegivel_nascidos_apos
+
+  - id: idade_ate_aos_3_anos
+    tipo: limiar_faixa_incerta
+    campo: data_nascimento_crianca
+    unidade_comparacao: anos
+    parametro: creche.creche_idade_limite_anos
+    parametro_exclusao: creche.creche_idade_fim_incerteza_anos
+    motivo_indeterminado: "a regra diz «até aos 3 anos» mas não fixa se é no aniversário ou no fim do ano letivo"

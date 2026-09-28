@@ -1130,10 +1130,17 @@ def test_creche_real_elegivel_crianca_pequena(pagina):
     assert r["creche"]["estado"] == "elegivel"
 
 
+# Os testes da data-limite avaliam "hoje" a 2022-09-01 (efeitos da Portaria
+# n.º 304/2022): a criança tem 1 ano, a condição de idade cumpre-se e só a
+# de data decide. A 2026 uma criança de 2021 já não passa na idade.
+HOJE_DATA_LIMITE = "2022-09-01"
+
+
 def test_creche_real_elegivel_no_dia_exacto_da_data_limite(pagina):
     condicoes = _condicoes_reais()
     limite = _data_creche(condicoes)
-    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": limite})
+    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": limite},
+                 hoje=HOJE_DATA_LIMITE)
     assert r["creche"]["estado"] == "elegivel"
 
 
@@ -1141,14 +1148,16 @@ def test_creche_real_inelegivel_na_vespera_da_data_limite(pagina):
     from datetime import date, timedelta
     condicoes = _condicoes_reais()
     vespera = (date.fromisoformat(_data_creche(condicoes)) - timedelta(days=1)).isoformat()
-    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": vespera})
+    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": vespera},
+                 hoje=HOJE_DATA_LIMITE)
     assert r["creche"]["estado"] == "inelegivel"
 
 
 def test_creche_real_comparacao_por_data_nao_por_string_de_mes(pagina):
     # 2021-10-01 > 2021-09-01: garante que a comparação é cronológica
     # (mês de dois dígitos), não uma coincidência de prefixo.
-    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2021-10-01"})
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2021-10-01"},
+                 hoje=HOJE_DATA_LIMITE)
     assert r["creche"]["estado"] == "elegivel"
 
 
@@ -1169,3 +1178,72 @@ def test_creche_real_sem_respostas_pergunta_primeiro_pelos_filhos(pagina):
     assert _proxima(pagina, condicoes, {}) == "tem_filhos_a_cargo"
     assert _proxima(pagina, condicoes, {"tem_filhos_a_cargo": "nao"}) is None
     assert _proxima(pagina, condicoes, {"tem_filhos_a_cargo": "sim"}) == "data_nascimento_crianca"
+
+
+
+# ── PR 12 (revisão): idade máxima da creche — "até aos 3 anos" ──────────────
+# Portaria n.º 198/2022, art. 9.º, n.º 4 (redação da Portaria n.º 304/2022),
+# aplicável às aderentes pelo art. 9.º da Portaria n.º 305/2022. Idade em
+# anos completos à data da avaliação ("hoje" dos testes: 2026-09-27):
+# < 3 provável; 3 (até antes dos 4) indeterminado, com motivo; ≥ 4 inelegível.
+
+MOTIVO_CRECHE = "a regra diz «até aos 3 anos» mas não fixa se é no aniversário ou no fim do ano letivo"
+
+
+def _creche(pagina, nascimento, hoje="2026-09-27"):
+    return _avaliar(pagina, _condicoes_reais(),
+                    {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": nascimento}, hoje)["creche"]
+
+
+def test_creche_idade_vespera_do_3_aniversario_ainda_provavel(pagina):
+    assert _creche(pagina, "2023-09-28")["estado"] == "elegivel"  # 2 anos, faz 3 amanhã
+
+
+def test_creche_idade_dia_exacto_do_3_aniversario_indeterminado_com_motivo(pagina):
+    r = _creche(pagina, "2023-09-27")  # faz 3 anos hoje
+    assert r["estado"] == "indeterminado"
+    assert r["perguntasEmFalta"] == []
+    assert r["motivos"] == [MOTIVO_CRECHE]
+
+
+def test_creche_idade_vespera_do_4_aniversario_ainda_indeterminado(pagina):
+    r = _creche(pagina, "2022-09-28")  # 3 anos, faz 4 amanhã
+    assert r["estado"] == "indeterminado"
+    assert r["motivos"] == [MOTIVO_CRECHE]
+
+
+def test_creche_idade_dia_exacto_do_4_aniversario_inelegivel(pagina):
+    assert _creche(pagina, "2022-09-27")["estado"] == "inelegivel"  # faz 4 anos hoje
+
+
+@pytest.mark.parametrize("nascimento", ["2021-09-01", "2021-12-31", "2022-06-15", "2023-01-01", "2023-09-27"])
+def test_creche_criancas_nascidas_2021_2023_ja_nao_sao_provaveis(pagina, nascimento):
+    # Todas cumprem a data de 1/9/2021 — é a idade que as tira de "provável".
+    assert _creche(pagina, nascimento)["estado"] != "elegivel"
+
+
+def test_creche_motivo_so_aparece_quando_a_idade_e_que_decide(pagina):
+    # Sem filhos a cargo, o portão decide — nenhum motivo de idade herdado.
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "nao"})["creche"]
+    assert r["estado"] == "inelegivel" and "motivos" not in r
+    # Criança em idade de dúvida mas ainda sem data respondida: só falta a data.
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim"})["creche"]
+    assert r["perguntasEmFalta"] == ["data_nascimento_crianca"] and "motivos" not in r
+
+
+def test_faixa_incerta_sintetica_propaga_motivo_por_grupo_all_e_any(pagina):
+    folha = {"id": "f", "tipo": "limiar_faixa_incerta", "campo": "n", "valor": 3, "valor_exclusao": 4,
+             "unidade_comparacao": None, "motivo_indeterminado": "m"}
+    outra = {"id": "o", "tipo": "categorica", "campo": "c", "operador_comparacao": "eq", "valor": "sim"}
+    base = {"perguntas": {}, "apoios": {
+        "all": {"operador": "all", "condicoes": [folha, outra]},
+        "any": {"operador": "any", "condicoes": [folha, outra]},
+    }}
+    r = _avaliar(pagina, base, {"n": 3, "c": "nao"})
+    assert r["all"]["estado"] == "inelegivel"            # uma falha decide o "all"
+    assert r["any"] == {"estado": "indeterminado", "perguntasEmFalta": [], "motivos": ["m"]}
+    r = _avaliar(pagina, base, {"n": 3, "c": "sim"})
+    assert r["all"] == {"estado": "indeterminado", "perguntasEmFalta": [], "motivos": ["m"]}
+    assert r["any"]["estado"] == "elegivel"              # uma alternativa cumpre o "any"
+    assert _avaliar(pagina, base, {"n": 2.9, "c": "sim"})["all"]["estado"] == "elegivel"
+    assert _avaliar(pagina, base, {"n": 4, "c": "sim"})["all"]["estado"] == "inelegivel"

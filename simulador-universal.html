@@ -106,7 +106,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-09-28",
-    "dateModified": "2026-09-27"
+    "dateModified": "2026-09-28"
   }
   </script>
 
@@ -294,7 +294,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 27/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
+      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 28/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
     </div>
 
     <div id="avisoErro" class="aviso-erro" role="alert" hidden>
@@ -617,9 +617,13 @@
         }
         if (resultado.estado === 'indeterminado') {
           const faltam = perguntasAindaPorFazer(resultado);
-          return faltam.length
-            ? 'Falta responder a: ' + citarPerguntas(faltam, 2) + '.'
-            : 'Faltam dados que este simulador ainda não pergunta — confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
+          if (faltam.length) return 'Falta responder a: ' + citarPerguntas(faltam, 2) + '.';
+          // A norma não decide (ex.: creche "até aos 3 anos") — o motivo vem
+          // dos dados, nunca inventado aqui.
+          if (resultado.motivos && resultado.motivos.length) {
+            return 'Não é possível decidir: ' + resultado.motivos.join('; ') + '. Confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
+          }
+          return 'Faltam dados que este simulador ainda não pergunta — confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
         }
         const campos = camposQueExcluem(apoio, respostas, hojeISO());
         if (!campos.length) return 'Não cumpres uma das condições de acesso.';

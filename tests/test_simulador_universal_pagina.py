@@ -260,6 +260,36 @@ def test_faq_explica_os_dois_destinos_do_link():
     assert html.count(frase) == 2, "FAQ visível e JSON-LD têm de dizer o mesmo"
 
 
+# ── PR 12 (revisão): indeterminado sem pergunta em falta mostra o motivo ─
+
+
+def _so_creche():
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"] = {"creche": dados["apoios"]["creche"]}
+    return {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(dados))}
+
+
+def _nascimento_com_3_anos():
+    # 3 anos e ~3 meses à data real em que o teste corre: sempre na zona
+    # indeterminada (a página usa a data do dia, não uma data fixa).
+    from datetime import date, timedelta
+    hoje = date.today()
+    return (hoje.replace(year=hoje.year - 3) - timedelta(days=90)).isoformat()
+
+
+def test_creche_com_3_anos_mostra_o_motivo_dos_dados(browser, servidor):
+    contexto, page = _abrir(browser, servidor, _so_creche())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": _nascimento_com_3_anos()})
+    cartoes = _cartoes(page, "grupoIndeterminado")
+    assert [c["apoio"] for c in cartoes] == ["creche"]
+    motivo = CONDICOES["apoios"]["creche"]["condicoes"][-1]["motivo_indeterminado"]
+    assert cartoes[0]["motivo"] == f"Não é possível decidir: {motivo}. Confirma no guia completo."
+    assert not page.is_visible("#btnContinuarResponder"), "nenhuma resposta muda isto — não há mais perguntas"
+    contexto.close()
+
+
 # ── Ordem das perguntas ──────────────────────────────────────────────────
 
 

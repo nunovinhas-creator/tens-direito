@@ -757,3 +757,65 @@ def test_creche_real_e_guia_e_os_restantes_sao_simuladores():
     apoios = gerar_condicoes_json.consolidar()["apoios"]
     assert apoios["creche"]["tipo_link"] == "guia"
     assert {a["tipo_link"] for n, a in apoios.items() if n != "creche"} == {"simulador"}
+
+
+
+# ── PR 12 (revisão): limiar_faixa_incerta ───────────────────────────────────
+
+
+def _faixa(**extra):
+    base = {"id": "f", "tipo": "limiar_faixa_incerta", "campo": "nasc", "unidade_comparacao": "anos",
+            "parametro": "p.lim", "parametro_exclusao": "p.exc", "motivo_indeterminado": "a norma não decide"}
+    base.update(extra)
+    return {k: v for k, v in base.items() if v is not None}
+
+
+PARAMETROS_FAIXA = {"prestacoes": {"p": {"lim": {"valor": 3, "verificado_em": "2026-01-01"},
+                                         "exc": {"valor": 4, "verificado_em": "2026-02-01"}}}}
+
+
+def test_faixa_incerta_resolve_os_dois_parametros_e_o_motivo(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), PARAMETROS_FAIXA,
+              {"x": _apoio_min(condicoes=[_faixa()])}, completar=False)
+    cond = gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]
+    assert (cond["valor"], cond["valor_exclusao"]) == (3, 4)
+    assert cond["motivo_indeterminado"] == "a norma não decide"
+    assert cond["fonte"] == {"tipo": "parametro_multiplo", "referencias": ["p.lim", "p.exc"]}
+    assert cond["verificado_em"] == "2026-02-01"
+
+
+@pytest.mark.parametrize("alteracao,parametros,erro", [
+    ({"motivo_indeterminado": None}, None, "motivo_indeterminado"),
+    ({"motivo_indeterminado": "  "}, None, "motivo_indeterminado"),
+    ({"parametro_exclusao": None}, None, "parametro_exclusao"),
+    ({"valor_literal": 3}, None, "não usa"),
+    ({"operador_comparacao": "lt"}, None, "não usa"),
+    ({"unidade_comparacao": None}, None, "unidade_comparacao"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": 4}, "exc": {"valor": 4}}}}, "menor"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": 5}, "exc": {"valor": 4}}}}, "menor"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": "3"}, "exc": {"valor": 4}}}}, "números"),
+])
+def test_faixa_incerta_invalida_falha(tmp_path, monkeypatch, alteracao, parametros, erro):
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), parametros or PARAMETROS_FAIXA,
+              {"x": _apoio_min(condicoes=[_faixa(**alteracao)])}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_creche_real_idade_vem_dos_dois_parametros_da_portaria_198():
+    parametros = json.loads((RAIZ / "dados" / "parametros.json").read_text(encoding="utf-8"))["prestacoes"]["creche"]
+    cond = {c["id"]: c for c in gerar_condicoes_json.consolidar()["apoios"]["creche"]["condicoes"]}["idade_ate_aos_3_anos"]
+    assert cond["fonte"]["referencias"] == ["creche.creche_idade_limite_anos", "creche.creche_idade_fim_incerteza_anos"]
+    assert (cond["valor"], cond["valor_exclusao"]) == (3, 4)
+    limite = parametros["creche_idade_limite_anos"]
+    assert "art. 9.º, n.º 4" in limite["referencia_legal"] and "Portaria n.º 198/2022" in limite["referencia_legal"]
+    assert limite["vigencia_inicio"] == "2022-09-01"
+    assert "Derivado" in parametros["creche_idade_fim_incerteza_anos"]["referencia_legal"]
+
+
+def test_fontes_da_creche_guardadas_em_dados_fontes():
+    fontes = RAIZ / "dados" / "fontes"
+    for nome in ("Lei-2-2022.pdf", "Portaria-198-2022-consolidada-2023-03-10.pdf",
+                 "Portaria-305-2022-consolidada-2024-06-06.pdf"):
+        caminho = fontes / nome
+        assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-", nome
