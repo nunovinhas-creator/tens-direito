@@ -199,6 +199,7 @@ def test_apoio_novo_nos_dados_aparece_sem_tocar_na_pagina(browser, servidor):
     dados["apoios"]["apoio-de-teste"] = {
         "titulo": "Apoio de Teste Inventado",
         "simulador": "/simuladores.html",
+        "tipo_link": "guia",
         "operador": "all",
         "condicoes": [{"id": "x", "tipo": "categorica", "campo": "reside_legalmente_pt",
                        "operador_comparacao": "eq", "valor": "sim"}],
@@ -210,6 +211,53 @@ def test_apoio_novo_nos_dados_aparece_sem_tocar_na_pagina(browser, servidor):
     page.click("#btnVerResultados")
     assert "Apoio de Teste Inventado" in page.inner_text("#grupoIndeterminado")
     contexto.close()
+
+
+# ── Texto do link (PR 12): "simulador dedicado" só para simuladores ────────
+
+TEXTO_LINK = {"simulador": "Abrir o simulador dedicado →", "guia": "Ler o guia completo →"}
+
+
+def _links(page):
+    return page.eval_on_selector_all(
+        "li.apoio-card",
+        "els => Object.fromEntries(els.map(e => [e.dataset.apoio,"
+        " e.querySelector('a') ? {href: e.querySelector('a').getAttribute('href'),"
+        " texto: e.querySelector('a').textContent} : null]))",
+    )
+
+
+def test_texto_do_link_segue_o_tipo_link_dos_dados(pagina):
+    pagina.click("#btnVerResultados")
+    pagina.wait_for_selector("#resultados:not([hidden])")
+    links = _links(pagina)
+    assert set(links) == set(CONDICOES["apoios"])
+    tipos = {a["tipo_link"] for a in CONDICOES["apoios"].values()}
+    assert tipos == {"simulador", "guia"}, "os dados reais têm de cobrir os dois tipos"
+    for apoio_id, apoio in CONDICOES["apoios"].items():
+        assert links[apoio_id] == {"href": apoio["simulador"], "texto": TEXTO_LINK[apoio["tipo_link"]]}, apoio_id
+    assert links["creche"]["texto"] == "Ler o guia completo →"
+
+
+def test_tipo_link_desconhecido_nao_mostra_link_nenhum(browser, servidor):
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"]["creche"]["tipo_link"] = "inventado"
+    del dados["apoios"]["abono"]["tipo_link"]
+    rotas = {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                            body=json.dumps(dados))}
+    contexto, page = _abrir(browser, servidor, rotas)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    page.click("#btnVerResultados")
+    links = _links(page)
+    assert links["creche"] is None and links["abono"] is None
+    assert links["csi"]["texto"] == TEXTO_LINK["simulador"]
+    contexto.close()
+
+
+def test_faq_explica_os_dois_destinos_do_link():
+    html = (RAIZ / PAGINA).read_text(encoding="utf-8")
+    frase = "ou para o guia completo quando o apoio não tem simulador"
+    assert html.count(frase) == 2, "FAQ visível e JSON-LD têm de dizer o mesmo"
 
 
 # ── Ordem das perguntas ──────────────────────────────────────────────────

@@ -447,6 +447,7 @@
       "pagina": "abono-de-familia.html",
       "titulo": "Abono de Família",
       "simulador": "/simulador-abono.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -635,6 +636,7 @@
       "pagina": "acao-social-escolar.html",
       "titulo": "Ação Social Escolar (ASE)",
       "simulador": "/simulador-ase.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -679,6 +681,7 @@
       "pagina": "creche-gratuita.html",
       "titulo": "Creche gratuita",
       "simulador": "/creche-gratuita.html",
+      "tipo_link": "guia",
       "operador": "all",
       "condicoes": [
         {
@@ -712,6 +715,7 @@
       "pagina": "complemento-solidario-idosos.html",
       "titulo": "Complemento Solidário para Idosos (CSI)",
       "simulador": "/simulador-csi.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -775,6 +779,7 @@
       "pagina": "subsidio-desemprego.html",
       "titulo": "Subsídio de Desemprego",
       "simulador": "/simulador-subsidio-desemprego.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -841,6 +846,7 @@
       "pagina": "imt-jovem.html",
       "titulo": "IMT Jovem (isenção na compra da 1.ª casa)",
       "simulador": "/simulador-imt-jovem.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -896,6 +902,7 @@
       "pagina": "prestacao-social-unica.html",
       "titulo": "Prestação Social Única (PSU)",
       "simulador": "/simulador-psu.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -1017,6 +1024,7 @@
       "pagina": "rsi.html",
       "titulo": "Rendimento Social de Inserção (RSI)",
       "simulador": "/simulador-rsi.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -1256,6 +1264,7 @@
       "pagina": "baixa-medica-subsidio-doenca.html",
       "titulo": "Subsídio de Doença",
       "simulador": "/simulador-subsidio-doenca.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {

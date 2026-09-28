@@ -41,6 +41,10 @@ FORMULAS_VALIDAS = {"escala_equivalencia_rsi", "psu_valor_positivo"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
 UNIDADES_IDADE = {"anos", "meses_totais"}
+# PR 12: para onde leva o link de cada resultado. A página escolhe o texto
+# do link por aqui ("Abrir o simulador dedicado" só para simuladores).
+TIPOS_LINK_VALIDOS = {"simulador", "guia"}
+PREFIXO_PAGINA_SIMULADOR = "simulador-"
 
 
 class CondicaoInvalida(Exception):
@@ -121,6 +125,15 @@ def _validar_titulo_e_simulador(bruto: dict, apoio: str) -> None:
         raise CondicaoInvalida(f"{apoio}: 'simulador' tem de ser um caminho do site '/<pagina>.html' ({simulador!r})")
     if not (RAIZ_SITE / simulador.lstrip("/")).is_file():
         raise CondicaoInvalida(f"{apoio}: 'simulador' aponta para página inexistente ({simulador})")
+    tipo_link = bruto.get("tipo_link")
+    if tipo_link not in TIPOS_LINK_VALIDOS:
+        raise CondicaoInvalida(f"{apoio}: 'tipo_link' tem de ser um de {sorted(TIPOS_LINK_VALIDOS)} ({tipo_link!r})")
+    e_pagina_de_simulador = simulador.lstrip("/").startswith(PREFIXO_PAGINA_SIMULADOR)
+    if (tipo_link == "simulador") != e_pagina_de_simulador:
+        raise CondicaoInvalida(
+            f"{apoio}: 'tipo_link: {tipo_link}' não bate com o link {simulador} "
+            f"(as páginas de simulador chamam-se /{PREFIXO_PAGINA_SIMULADOR}*.html)"
+        )
 
 
 def _carregar_parametros() -> dict:
@@ -422,6 +435,7 @@ def consolidar() -> dict:
             "pagina": bruto.get("pagina"),
             "titulo": bruto["titulo"],
             "simulador": bruto["simulador"],
+            "tipo_link": bruto["tipo_link"],
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }

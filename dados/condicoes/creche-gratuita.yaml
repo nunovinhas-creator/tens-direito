@@ -26,6 +26,7 @@ apoio: creche
 pagina: creche-gratuita.html
 titulo: "Creche gratuita"
 simulador: /creche-gratuita.html
+tipo_link: guia
 operador: all
 
 condicoes:

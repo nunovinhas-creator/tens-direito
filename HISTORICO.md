@@ -6667,9 +6667,14 @@ data ISO AAAA-MM-DD (sem `unidade_comparacao`) ou um número (com
 `anos`/`meses_totais`), porque o motor compara datas como strings e um
 formato diferente erraria em silêncio. Nenhuma pergunta nova. A escada de
 canais e a falta de vaga (verificadas oficiosamente pelo ISS) não são
-modeladas. O cartão europeu de estacionamento ficou de fora: a página cita o
-Decreto-Lei n.º 307/2003 sem artigo/alínea e o diploma não está no
-repositório — parado nesse ponto, à espera da fonte.
+modeladas. Revisão do PR (#260): campo `tipo_link` (`simulador`|`guia`) em
+cada `dados/condicoes/<apoio>.yaml`, validado contra o nome da página
+(`/simulador-*.html` ⇔ `simulador`); `simulador-universal.html` escreve
+"Abrir o simulador dedicado →" só para simuladores e "Ler o guia completo →"
+para guias (a creche). O limite de idade da creche ficou por fazer: as
+fontes primárias (Lei n.º 2/2022, Portarias n.os 198/2022 e 190-A/2023) não
+estão no repositório e o DRE está bloqueado a partir da sessão. O cartão
+europeu de estacionamento passa para um PR 12b, pelo mesmo motivo.
 
 ---
 

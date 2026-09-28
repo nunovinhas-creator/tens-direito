@@ -35,6 +35,7 @@ def _completar_campos_do_assistente(perguntas: dict, apoios_yaml: dict) -> tuple
     for conteudo in apoios_yaml.values():
         conteudo.setdefault("titulo", f"Apoio {conteudo.get('apoio')}")
         conteudo.setdefault("simulador", "/simuladores.html")
+        conteudo.setdefault("tipo_link", "guia")
     return perguntas, apoios_yaml
 
 
@@ -487,6 +488,7 @@ def _apoio_min(**extra):
         "operador": "all",
         "titulo": "Apoio X",
         "simulador": "/simuladores.html",
+        "tipo_link": "guia",
         "condicoes": [
             {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
         ],
@@ -723,3 +725,35 @@ def test_guardrail_artigo_falha_quando_estragado():
     parametros["prestacoes"]["creche"]["creche_elegivel_nascidos_apos"]["referencia_legal"] = "Portaria n.º 305/2022"
     erros = _erros_de_proveniencia(_json_real("condicoes.json"), parametros)
     assert erros == ["creche: creche.creche_elegivel_nascidos_apos sem artigo na referencia_legal"]
+
+
+# ── PR 12: tipo_link (simulador ou guia) ────────────────────────────────────
+
+
+def test_tipo_link_passa_para_o_json(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(simulador="/simulador-abono.html", tipo_link="simulador")}, completar=False)
+    assert gerar_condicoes_json.consolidar()["apoios"]["x"]["tipo_link"] == "simulador"
+
+
+@pytest.mark.parametrize("alteracao,erro", [
+    ({"tipo_link": None}, "tipo_link"),
+    ({"tipo_link": "pagina"}, "tipo_link"),
+    # guia a apontar para um simulador, e simulador a apontar para um guia
+    ({"simulador": "/simulador-abono.html", "tipo_link": "guia"}, "não bate"),
+    ({"simulador": "/creche-gratuita.html", "tipo_link": "simulador"}, "não bate"),
+])
+def test_tipo_link_invalido_falha(tmp_path, monkeypatch, alteracao, erro):
+    apoio = _apoio_min(**alteracao)
+    if apoio["tipo_link"] is None:
+        del apoio["tipo_link"]
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}}, {"x": apoio},
+              completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_creche_real_e_guia_e_os_restantes_sao_simuladores():
+    apoios = gerar_condicoes_json.consolidar()["apoios"]
+    assert apoios["creche"]["tipo_link"] == "guia"
+    assert {a["tipo_link"] for n, a in apoios.items() if n != "creche"} == {"simulador"}
