@@ -173,3 +173,32 @@ piso_diario_minimo:
       referencia_legal: "30% × Remuneração Mínima Mensal Garantida 2026 (920 €) ÷ 30 — confirmado no Guia Prático 5001 do ISS, I.P., v4.55, de 14/07/2026 (CORRIGE um piso anterior calculado sobre o IAS, 5,37 €, que não corresponde ao Guia Prático)"
       fonte_url: "https://dre.pt"
       verificado_em: "2026-07-19"
+
+# ── Condições de acesso (sessão 27/09/2026, série "simulador universal",
+# correcção após PR 8) ──────────────────────────────────────────────────────
+# Substituem os literais 6 meses / 12 dias que o schema de condições usava
+# com fonte_pagina. Base: Decreto-Lei n.º 28/2004, de 4 de fevereiro, na
+# redacção vigente. Fonte desta versão: nota de pesquisa sobre o texto
+# consolidado do DRE fornecida pelo Nuno em 27/09/2026 — NÃO relido
+# directamente nesta sessão (diariodarepublica.pt bloqueado). Rever contra
+# o texto consolidado assim que possível.
+
+prazo_garantia_meses:
+  descricao: "Prazo de garantia — meses civis com registo de remunerações, seguidos ou interpolados"
+  unidade: meses
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 6
+      referencia_legal: "Art. 9.º do Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redacção vigente — 6 meses civis com registo de remunerações, seguidos ou interpolados"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"
+
+indice_profissionalidade_dias:
+  descricao: "Índice de profissionalidade — dias de trabalho com registo de remunerações (regra geral; exclui trabalhadores independentes e marítimos do Seguro Social Voluntário)"
+  unidade: dias
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 12
+      referencia_legal: "Art. 12.º, n.º 1, do Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redacção do Decreto-Lei n.º 146/2005 — 12 dias; n.º 2 exclui trabalhadores independentes e marítimos abrangidos pelo Seguro Social Voluntário"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"

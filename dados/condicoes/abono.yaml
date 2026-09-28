@@ -1,22 +1,23 @@
-# Condições de acesso ao Abono de Família — PR 4 da série "simulador
-# universal" (depende do PR 1: perguntas.yaml, e do motor do PR 3 com
-# suporte a grupos recursivos e a unidade_comparacao: anos).
+# Condições de acesso ao Abono de Família — PR 4, revisto (correcção de
+# 27/09/2026). Fonte das condições: art. 11.º, n.º 2, do Decreto-Lei n.º
+# 176/2003 (escada etária) + secção "Quem tem direito" de
+# abono-de-familia.html (restantes condições).
 #
-# Fonte das condições: secção "Quem tem direito" de abono-de-familia.html.
-# Os limites de idade (16 / 24 anos) são valor_literal com fonte_pagina —
-# o artigo exacto do Decreto-Lei n.º 176/2003 que os fixa não foi
-# confirmado nesta sessão (mesma dívida técnica assumida para os 6 anos
-# do CSI no PR 2). O património mobiliário JÁ está parametrizado
-# (dados/parametros/abono.yaml → patrimonio_mobiliario_limite), com fonte
-# primária confirmada (Decreto-Lei n.º 70/2010, art. 14.º n.º 1).
+# Escada etária, agora com quatro degraus + excepção de deficiência,
+# todos parametrizados em dados/parametros/abono.yaml (já não há literais
+# 16/24 com fonte_pagina):
+#   - até 16 anos, sem requisito escolar;
+#   - até 18 anos se frequenta ensino básico ou equivalente;
+#   - até 21 anos se frequenta ensino secundário ou equivalente;
+#   - até 24 anos se frequenta ensino superior ou equivalente;
+#   - sem limite de idade com deficiência/incapacidade reconhecida.
 #
-# Grupo de idade com três ramos independentes (any) — nenhum dos três
-# exige os outros dois:
-#   - idade normal (≤16 anos), sem mais nada;
-#   - idade de estudante (≤24 anos) SÓ SE em formação/estudos — grupo
-#     `all` aninhado dentro do grupo `any` (3 níveis de profundidade,
-#     valida a recursão do motor do PR 3);
-#   - sem limite de idade se houver deficiência/incapacidade reconhecida.
+# Leitura a confirmar: cada degrau é "idade máxima para esse nível" (um
+# jovem de 17 anos no secundário cumpre o degrau dos 21), não uma banda
+# exclusiva 16–18 / 18–21 / 21–24. É como o art. 11.º n.º 2 é normalmente
+# lido, mas a fonte desta versão não foi relida no DRE nesta sessão.
+#
+# O património mobiliário e o rendimento mantêm-se como no PR 4.
 
 apoio: abono
 pagina: abono-de-familia.html
@@ -26,29 +27,57 @@ condicoes:
   - id: idade_ou_excepcao
     operador: any
     condicoes:
-      - id: idade_normal
+      - id: ate_16_anos
         tipo: limiar
         campo: data_nascimento_crianca
         operador_comparacao: lte
-        valor_literal: 16
         unidade_comparacao: anos
-        fonte_pagina: abono-de-familia.html
+        parametro: abono.idade_limite_sem_requisito_escolar
 
-      - id: idade_estudante
+      - id: ensino_basico
+        operador: all
+        condicoes:
+          - id: idade_ate_18
+            tipo: limiar
+            campo: data_nascimento_crianca
+            operador_comparacao: lte
+            unidade_comparacao: anos
+            parametro: abono.idade_limite_ensino_basico
+          - id: frequenta_basico
+            tipo: categorica
+            campo: nivel_ensino_frequentado
+            operador_comparacao: eq
+            valor_literal: basico_ou_equivalente
+
+      - id: ensino_secundario
+        operador: all
+        condicoes:
+          - id: idade_ate_21
+            tipo: limiar
+            campo: data_nascimento_crianca
+            operador_comparacao: lte
+            unidade_comparacao: anos
+            parametro: abono.idade_limite_ensino_secundario
+          - id: frequenta_secundario
+            tipo: categorica
+            campo: nivel_ensino_frequentado
+            operador_comparacao: eq
+            valor_literal: secundario_ou_equivalente
+
+      - id: ensino_superior
         operador: all
         condicoes:
           - id: idade_ate_24
             tipo: limiar
             campo: data_nascimento_crianca
             operador_comparacao: lte
-            valor_literal: 24
             unidade_comparacao: anos
-            fonte_pagina: abono-de-familia.html
-          - id: em_estudos
+            parametro: abono.idade_limite_ensino_superior
+          - id: frequenta_superior
             tipo: categorica
-            campo: em_estudos_ou_formacao_profissional
+            campo: nivel_ensino_frequentado
             operador_comparacao: eq
-            valor_literal: sim
+            valor_literal: superior_ou_equivalente
 
       - id: sem_limite_por_deficiencia
         tipo: categorica

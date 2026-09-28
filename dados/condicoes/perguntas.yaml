@@ -69,10 +69,10 @@ tem_pensao_invalidez_sem_reavaliacao:
   tipo: categorica
   opcoes: [sim, nao]
 
-em_estudos_ou_formacao_profissional:
-  descricao: "A criança/jovem está a estudar ou em formação profissional"
+nivel_ensino_frequentado:
+  descricao: "Nível de ensino (ou equivalente, incluindo formação profissional) que a criança/jovem frequenta"
   tipo: categorica
-  opcoes: [sim, nao]
+  opcoes: [nao_estuda, basico_ou_equivalente, secundario_ou_equivalente, superior_ou_equivalente]
 
 tem_deficiencia_ou_incapacidade_reconhecida:
   descricao: "A criança/jovem tem deficiência ou incapacidade reconhecida"
@@ -175,9 +175,9 @@ tem_cit_valido:
   opcoes: [sim, nao]
 
 tipo_trabalhador:
-  descricao: "Regime de protecção social do requerente"
+  descricao: "Regime de protecção social do requerente (seguro_social_voluntario_maritimo = trabalhador marítimo abrangido pelo Seguro Social Voluntário)"
   tipo: categorica
-  opcoes: [conta_outrem, independente, seguro_social_voluntario]
+  opcoes: [conta_outrem, independente, seguro_social_voluntario, seguro_social_voluntario_maritimo]
 
 meses_civis_com_registo_remuneracoes:
   descricao: "Meses civis com registo de remunerações na Segurança Social, seguidos ou interpolados"

@@ -398,3 +398,57 @@ patrimonio_mobiliario_limite:
       fonte_url: "https://dre.pt"
       fonte_url_complementar: "https://seg-social.pt/documents/10152/14913/8000_condicao_recursos/d0211ab2-4f86-4440-8dc2-6e6530510e7c"
       verificado_em: "2026-09-27"
+
+# ── Escada etária do abono (sessão 27/09/2026, série "simulador universal",
+# correcção após PR 4/8) ────────────────────────────────────────────────────
+# Substitui os literais 16/24 que o schema de condições usava com
+# fonte_pagina. Base: art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de
+# agosto, na redacção vigente (alterado, entre outros, pela Lei n.º
+# 114/2017) — até 16 anos sem requisito escolar; até 18 se ensino básico ou
+# equivalente; até 21 se secundário ou equivalente; até 24 se superior ou
+# equivalente. Fonte desta versão: nota de pesquisa sobre o texto
+# consolidado do DRE fornecida pelo Nuno em 27/09/2026 — NÃO relido
+# directamente nesta sessão (diariodarepublica.pt bloqueado). Rever contra
+# o texto consolidado assim que possível. Nota: a página abono-de-familia.html
+# ainda diz "até 16 anos (ou até 24 se estudar)" — simplificação a corrigir
+# em PR de conteúdo à parte.
+
+idade_limite_sem_requisito_escolar:
+  descricao: "Idade limite (anos completos) do abono sem requisito escolar"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 16
+      referencia_legal: "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 16 anos, sem requisito escolar"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"
+
+idade_limite_ensino_basico:
+  descricao: "Idade limite (anos completos) do abono para quem frequenta o ensino básico ou equivalente"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 18
+      referencia_legal: "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 18 anos, ensino básico ou equivalente"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"
+
+idade_limite_ensino_secundario:
+  descricao: "Idade limite (anos completos) do abono para quem frequenta o ensino secundário ou equivalente"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 21
+      referencia_legal: "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 21 anos, ensino secundário ou equivalente"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"
+
+idade_limite_ensino_superior:
+  descricao: "Idade limite (anos completos) do abono para quem frequenta o ensino superior ou equivalente"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 24
+      referencia_legal: "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 24 anos, ensino superior ou equivalente"
+      fonte_url: "https://dre.pt"
+      verificado_em: "2026-09-27"

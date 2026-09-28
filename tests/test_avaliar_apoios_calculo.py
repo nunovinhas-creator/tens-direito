@@ -221,9 +221,9 @@ def test_avalia_varios_apoios_independentemente(pagina):
     assert r["y"]["estado"] == "inelegivel"
 
 
-# ── Abono real (dados/condicoes.json de produção) — 3 níveis de aninhamento,
-# unidade_comparacao "anos", e os três ramos independentes da excepção
-# etária (normal / estudante / deficiência) ─────────────────────────────────
+# ── Abono real (dados/condicoes.json de produção) — escada etária por nível
+# de ensino (art. 11.º n.º 2 do DL 176/2003), 3 níveis de aninhamento e
+# unidade_comparacao "anos" ────────────────────────────────────────────────
 
 
 RESPOSTAS_ABONO_BASE = {
@@ -234,87 +234,79 @@ RESPOSTAS_ABONO_BASE = {
 }
 
 
+def _abono(pagina, nascimento, nivel, deficiencia="nao"):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_ABONO_BASE,
+        "data_nascimento_crianca": nascimento,
+        "nivel_ensino_frequentado": nivel,
+        "tem_deficiencia_ou_incapacidade_reconhecida": deficiencia,
+    }
+    return _avaliar(pagina, condicoes, respostas)["abono"]
+
+
 def test_abono_real_elegivel_crianca_pequena(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento_crianca": "2020-01-01"}  # 6 anos em 2026
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "elegivel"
+    assert _abono(pagina, "2020-01-01", "nao_estuda")["estado"] == "elegivel"  # 6 anos
 
 
-def test_abono_real_inelegivel_jovem_18_anos_sem_estudar_sem_deficiencia(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {
-        **RESPOSTAS_ABONO_BASE,
-        "data_nascimento_crianca": "2008-01-01",  # 18 anos em 2026
-        "em_estudos_ou_formacao_profissional": "nao",
-        "tem_deficiencia_ou_incapacidade_reconhecida": "nao",
-    }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "inelegivel"
+def test_abono_real_elegivel_17_anos_no_ensino_basico(pagina):
+    assert _abono(pagina, "2009-01-01", "basico_ou_equivalente")["estado"] == "elegivel"  # 17 anos
 
 
-def test_abono_real_elegivel_jovem_18_anos_a_estudar(pagina):
-    # Regressão directa do grupo `all` aninhado dentro do `any`: 18 anos
-    # falha a idade_normal, mas passa em idade_estudante (≤24 + a estudar).
-    condicoes = _condicoes_reais()
-    respostas = {
-        **RESPOSTAS_ABONO_BASE,
-        "data_nascimento_crianca": "2008-01-01",
-        "em_estudos_ou_formacao_profissional": "sim",
-    }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "elegivel"
+def test_abono_real_inelegivel_17_anos_sem_estudar(pagina):
+    assert _abono(pagina, "2009-01-01", "nao_estuda")["estado"] == "inelegivel"
 
 
-def test_abono_real_inelegivel_jovem_18_anos_a_estudar_mas_com_25_anos(pagina):
-    # 25 anos: falha idade_normal (>16) e idade_estudante (>24), mesmo a
-    # estudar — só a excepção de deficiência salvaria, e foi respondida
-    # que não. Os três ramos do grupo `any` ficam resolvidos e inelegíveis.
-    condicoes = _condicoes_reais()
-    respostas = {
-        **RESPOSTAS_ABONO_BASE,
-        "data_nascimento_crianca": "2001-01-01",  # 25 anos em 2026
-        "em_estudos_ou_formacao_profissional": "sim",
-        "tem_deficiencia_ou_incapacidade_reconhecida": "nao",
-    }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "inelegivel"
+def test_abono_real_inelegivel_19_anos_no_ensino_basico(pagina):
+    # Passou o degrau dos 18 e não frequenta secundário nem superior.
+    assert _abono(pagina, "2007-01-01", "basico_ou_equivalente")["estado"] == "inelegivel"  # 19 anos
 
 
-def test_abono_real_indeterminado_aos_25_anos_sem_responder_a_deficiencia(pagina):
-    # Os dois primeiros ramos (idade_normal, idade_estudante) já estão
-    # decididos e inelegíveis, mas o terceiro (deficiência) ainda não foi
-    # respondido — o grupo `any` fica indeterminado, nunca inelegível por
-    # omissão.
-    condicoes = _condicoes_reais()
-    respostas = {
-        **RESPOSTAS_ABONO_BASE,
-        "data_nascimento_crianca": "2001-01-01",
-        "em_estudos_ou_formacao_profissional": "sim",
-    }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "indeterminado"
-    assert r["abono"]["perguntasEmFalta"] == ["tem_deficiencia_ou_incapacidade_reconhecida"]
+def test_abono_real_elegivel_17_anos_no_secundario(pagina):
+    # Degrau "idade máxima por nível": 17 ≤ 21 e frequenta secundário.
+    assert _abono(pagina, "2009-01-01", "secundario_ou_equivalente")["estado"] == "elegivel"
+
+
+def test_abono_real_elegivel_20_anos_no_secundario(pagina):
+    assert _abono(pagina, "2006-01-01", "secundario_ou_equivalente")["estado"] == "elegivel"  # 20 anos
+
+
+def test_abono_real_inelegivel_22_anos_no_secundario(pagina):
+    assert _abono(pagina, "2004-01-01", "secundario_ou_equivalente")["estado"] == "inelegivel"  # 22 anos
+
+
+def test_abono_real_elegivel_23_anos_no_superior(pagina):
+    assert _abono(pagina, "2003-01-01", "superior_ou_equivalente")["estado"] == "elegivel"  # 23 anos
+
+
+def test_abono_real_inelegivel_25_anos_no_superior(pagina):
+    assert _abono(pagina, "2001-01-01", "superior_ou_equivalente")["estado"] == "inelegivel"  # 25 anos
 
 
 def test_abono_real_elegivel_por_deficiencia_apesar_de_25_anos(pagina):
+    assert _abono(pagina, "2001-01-01", "nao_estuda", deficiencia="sim")["estado"] == "elegivel"
+
+
+def test_abono_real_indeterminado_aos_25_anos_sem_responder_a_deficiencia(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_ABONO_BASE,
         "data_nascimento_crianca": "2001-01-01",
-        "tem_deficiencia_ou_incapacidade_reconhecida": "sim",
+        "nivel_ensino_frequentado": "superior_ou_equivalente",
     }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "elegivel"
+    r = _avaliar(pagina, condicoes, respostas)["abono"]
+    assert r["estado"] == "indeterminado"
+    assert r["perguntasEmFalta"] == ["tem_deficiencia_ou_incapacidade_reconhecida"]
 
 
 def test_abono_real_inelegivel_por_patrimonio_mesmo_com_idade_ok(pagina):
-    # Short-circuit do `all` de topo: uma condição de recursos inelegível
-    # decide o apoio, independentemente do resultado do grupo de idade.
     condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_ABONO_BASE, "data_nascimento_crianca": "2020-01-01", "patrimonio_mobiliario_agregado": 200000}
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "inelegivel"
+    respostas = {
+        **RESPOSTAS_ABONO_BASE,
+        "data_nascimento_crianca": "2020-01-01",
+        "patrimonio_mobiliario_agregado": 200000,
+    }
+    assert _avaliar(pagina, condicoes, respostas)["abono"]["estado"] == "inelegivel"
 
 
 def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagina):
@@ -324,11 +316,10 @@ def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagi
         "reside_legalmente_pt": "sim",
         "rendimento_referencia_anual_agregado": 10000,
         "patrimonio_mobiliario_agregado": 5000,
-        # situacao_contributiva_regularizada em falta
     }
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["abono"]["estado"] == "indeterminado"
-    assert r["abono"]["perguntasEmFalta"] == ["situacao_contributiva_regularizada"]
+    r = _avaliar(pagina, condicoes, respostas)["abono"]
+    assert r["estado"] == "indeterminado"
+    assert r["perguntasEmFalta"] == ["situacao_contributiva_regularizada"]
 
 
 # ── ASE real (dados/condicoes.json de produção) ─────────────────────────────
@@ -668,8 +659,8 @@ def test_doenca_real_conta_de_outrem_inelegivel_sem_profissionalidade(pagina):
 
 
 def test_doenca_real_independente_nao_precisa_de_profissionalidade(pagina):
-    # O índice de profissionalidade não lhe diz respeito: o grupo `any`
-    # resolve pelo ramo "não é conta de outrem", sem perguntar os dias.
+    # Art. 12.º n.º 2: independentes estão isentos — o grupo `any` resolve
+    # pelo ramo "isento_independente", sem perguntar os dias.
     condicoes = _condicoes_reais()
     respostas = {
         "tem_cit_valido": "sim",
@@ -725,3 +716,49 @@ def test_doenca_real_indeterminado_conta_de_outrem_sem_dias_de_profissionalidade
     r = _avaliar(pagina, condicoes, respostas)
     assert r["subsidio-doenca"]["estado"] == "indeterminado"
     assert r["subsidio-doenca"]["perguntasEmFalta"] == ["dias_registo_remuneracoes_indice_profissionalidade"]
+
+
+def test_doenca_real_ssv_nao_maritimo_tem_de_cumprir_profissionalidade(pagina):
+    # Só independentes e marítimos SSV estão isentos: o SSV comum cumpre o
+    # índice como a regra geral.
+    condicoes = _condicoes_reais()
+    respostas = {
+        "tem_cit_valido": "sim",
+        "tipo_trabalhador": "seguro_social_voluntario",
+        "meses_civis_com_registo_remuneracoes": 12,
+        "dias_registo_remuneracoes_indice_profissionalidade": 5,
+        "situacao_contributiva_regularizada": "sim",
+        "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+        "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_ssv_maritimo_isento_de_profissionalidade(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        "tem_cit_valido": "sim",
+        "tipo_trabalhador": "seguro_social_voluntario_maritimo",
+        "meses_civis_com_registo_remuneracoes": 12,
+        "situacao_contributiva_regularizada": "sim",
+        "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+        "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "elegivel"
+
+
+def test_doenca_real_ssv_inelegivel_com_situacao_contributiva_irregular(pagina):
+    # A situação contributiva aplica-se a independentes E a todo o SSV.
+    condicoes = _condicoes_reais()
+    respostas = {
+        "tem_cit_valido": "sim",
+        "tipo_trabalhador": "seguro_social_voluntario_maritimo",
+        "meses_civis_com_registo_remuneracoes": 12,
+        "situacao_contributiva_regularizada": "nao",
+        "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+        "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
