@@ -106,7 +106,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-09-28",
-    "dateModified": "2026-09-28"
+    "dateModified": "2026-09-27"
   }
   </script>
 
@@ -294,7 +294,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong>Verificado a <span id="dataVerificacao"></span></strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
+      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 27/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
     </div>
 
     <div id="avisoErro" class="aviso-erro" role="alert" hidden>
@@ -731,7 +731,7 @@
         // parâmetros, calculada por gerar_condicoes_json.py) — nunca a data
         // do dia. Sem data nos dados, o carimbo fica escondido.
         if (CONDICOES.verificado_em) {
-          el('dataVerificacao').textContent = formatarData(CONDICOES.verificado_em);
+          el('dataVerificacao').textContent = 'Verificado a ' + formatarData(CONDICOES.verificado_em);
           el('carimboVerificacao').hidden = false;
         }
         mostrarAssistente();

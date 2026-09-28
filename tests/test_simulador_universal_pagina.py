@@ -390,7 +390,7 @@ def test_carimbo_verificado_vem_dos_dados_e_nao_da_data_de_hoje(browser, servido
     contexto, page = _abrir(browser, servidor)
     page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
     assert page.is_visible("#carimboVerificacao")
-    assert page.inner_text("#dataVerificacao") == _data_pt(CONDICOES["verificado_em"])
+    assert page.inner_text("#dataVerificacao") == "Verificado a " + _data_pt(CONDICOES["verificado_em"])
     contexto.close()
 
     # Outra data nos dados → outro carimbo; nada escrito à mão na página.
@@ -400,7 +400,7 @@ def test_carimbo_verificado_vem_dos_dados_e_nao_da_data_de_hoje(browser, servido
                                                             body=json.dumps(dados))}
     contexto, page = _abrir(browser, servidor, rotas)
     page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
-    assert page.inner_text("#dataVerificacao") == "15/01/2025"
+    assert page.inner_text("#dataVerificacao") == "Verificado a 15/01/2025"
     contexto.close()
 
     # Sem data nos dados, ou sem dados, o carimbo não aparece — nunca uma data inventada.
@@ -413,3 +413,17 @@ def test_carimbo_verificado_vem_dos_dados_e_nao_da_data_de_hoje(browser, servido
     page.wait_for_selector("#avisoErro:not([hidden])")
     assert not page.is_visible("#carimboVerificacao")
     contexto.close()
+
+
+def test_carimbo_estatico_bate_com_os_dados_e_com_o_date_modified():
+    # O HTML traz a data já escrita (para quem lê a página sem JS e para os
+    # testes de carimbo/coerência, que lêem o fonte), mas nunca à mão: tem de
+    # ser sempre o verificado_em de dados/condicoes.json. Ao regenerar os
+    # dados com outra data, este teste obriga a actualizar os dois sítios.
+    import re
+
+    html = (RAIZ / "simulador-universal.html").read_text(encoding="utf-8")
+    m = re.search(r'<strong id="dataVerificacao">Verificado a ([^<]*)</strong>', html)
+    assert m, "#dataVerificacao com 'Verificado a <data>' não encontrado"
+    assert m.group(1) == _data_pt(CONDICOES["verificado_em"])
+    assert f'"dateModified": "{CONDICOES["verificado_em"]}"' in html
