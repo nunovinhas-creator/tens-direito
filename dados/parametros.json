@@ -311,6 +311,46 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": "https://seg-social.pt/documents/10152/14913/8000_condicao_recursos/d0211ab2-4f86-4440-8dc2-6e6530510e7c",
         "verificado_em": "2026-09-27"
+      },
+      "idade_limite_sem_requisito_escolar": {
+        "descricao": "Idade limite (anos completos) do abono sem requisito escolar",
+        "unidade": "anos",
+        "valor": 16,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 16 anos, sem requisito escolar",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
+      },
+      "idade_limite_ensino_basico": {
+        "descricao": "Idade limite (anos completos) do abono para quem frequenta o ensino básico ou equivalente",
+        "unidade": "anos",
+        "valor": 18,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 18 anos, ensino básico ou equivalente",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
+      },
+      "idade_limite_ensino_secundario": {
+        "descricao": "Idade limite (anos completos) do abono para quem frequenta o ensino secundário ou equivalente",
+        "unidade": "anos",
+        "valor": 21,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 21 anos, ensino secundário ou equivalente",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
+      },
+      "idade_limite_ensino_superior": {
+        "descricao": "Idade limite (anos completos) do abono para quem frequenta o ensino superior ou equivalente",
+        "unidade": "anos",
+        "valor": 24,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 11.º, n.º 2, do Decreto-Lei n.º 176/2003, de 2 de agosto, na redacção vigente — até aos 24 anos, ensino superior ou equivalente",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
       }
     },
     "ase": {
@@ -1829,6 +1869,26 @@
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-19"
+      },
+      "prazo_garantia_meses": {
+        "descricao": "Prazo de garantia — meses civis com registo de remunerações, seguidos ou interpolados",
+        "unidade": "meses",
+        "valor": 6,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 9.º do Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redacção vigente — 6 meses civis com registo de remunerações, seguidos ou interpolados",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
+      },
+      "indice_profissionalidade_dias": {
+        "descricao": "Índice de profissionalidade — dias de trabalho com registo de remunerações (regra geral; exclui trabalhadores independentes e marítimos do Seguro Social Voluntário)",
+        "unidade": "dias",
+        "valor": 12,
+        "vigencia_inicio": "2026-01-01",
+        "referencia_legal": "Art. 12.º, n.º 1, do Decreto-Lei n.º 28/2004, de 4 de fevereiro, na redacção do Decreto-Lei n.º 146/2005 — 12 dias; n.º 2 exclui trabalhadores independentes e marítimos abrangidos pelo Seguro Social Voluntário",
+        "fonte_url": "https://dre.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-27"
       }
     }
   }

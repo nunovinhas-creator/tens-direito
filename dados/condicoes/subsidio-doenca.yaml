@@ -1,29 +1,25 @@
-# Condições de acesso ao Subsídio de Doença — PR 8 da série "simulador
-# universal". Fonte: secção "Quem tem direito" de
-# baixa-medica-subsidio-doenca.html (Decreto-Lei n.º 28/2004, na redação
-# actual; Guia Prático 5001 do ISS).
+# Condições de acesso ao Subsídio de Doença — PR 8, revisto (correcção de
+# 27/09/2026). Base: Decreto-Lei n.º 28/2004, na redacção vigente (art. 9.º
+# prazo de garantia; art. 12.º índice de profissionalidade) + Guia Prático
+# 5001 do ISS. Fonte desta versão: nota de pesquisa fornecida pelo Nuno em
+# 27/09/2026, não relida no DRE nesta sessão. Prazo de garantia e índice
+# de profissionalidade estão agora parametrizados em
+# dados/parametros/subsidio-doenca.yaml (já não há literais).
 #
-# O prazo de garantia (6 meses) e o índice de profissionalidade (12 dias)
-# NÃO estão parametrizados em dados/parametros/subsidio-doenca.yaml — o
-# simulador dedicado nem sequer os modela (assume-os cumpridos, ver
-# simulador-subsidio-doenca.html). Por isso entram como valor_literal com
-# fonte_pagina (valores já publicados e auditados na página), mesma dívida
-# técnica assumida no CSI (6 anos) e no abono (16/24 anos). Não promover a
-# `parametro:` sem passar por PASSO 0 em dados/parametros/subsidio-doenca.yaml.
+# Arquitectura da regra por regime:
+#   - prazo de garantia (6 meses): todos os abrangidos;
+#   - índice de profissionalidade (12 dias): regra geral; NÃO se aplica a
+#     trabalhadores independentes nem a marítimos do Seguro Social
+#     Voluntário (art. 12.º, n.º 2) — não é "só conta de outrem": o
+#     seguro social voluntário não marítimo também o cumpre;
+#   - situação contributiva regularizada: condição específica de
+#     independentes e beneficiários do Seguro Social Voluntário (todas as
+#     variantes) — não se aplica a trabalhadores por conta de outrem.
 #
-# Interpretação a confirmar (a página lista os requisitos em conjunto, com
-# parênteses por regime): o índice de profissionalidade aplica-se só a
-# trabalhadores por conta de outrem, e a situação contributiva regularizada
-# só aos independentes. Modelado como "não é esse regime OU cumpre" — grupo
-# `any`, para quem é de outro regime não ser excluído por uma condição que
-# não lhe diz respeito. Seguro social voluntário: sem requisito adicional
-# modelado além do prazo de garantia.
-#
-# Exclusões listadas na página ("normalmente NÃO tem direito"), tratadas
-# como condições categóricas simples: acumulação de pensão de invalidez
-# relativa com trabalho, e indemnização por acidente de trabalho/doença
-# profissional igual ou superior ao subsídio. Autodeclaração sem CIT já
-# fica coberta pela condição do CIT.
+# Exclusões listadas na página, tratadas como condições categóricas
+# simples: acumulação de pensão de invalidez relativa com trabalho, e
+# indemnização por acidente de trabalho/doença profissional igual ou
+# superior ao subsídio.
 
 apoio: subsidio-doenca
 pagina: baixa-medica-subsidio-doenca.html
@@ -36,36 +32,39 @@ condicoes:
     operador_comparacao: eq
     valor_literal: sim
 
-  - id: prazo_garantia_6_meses
+  - id: prazo_garantia
     tipo: limiar
     campo: meses_civis_com_registo_remuneracoes
     operador_comparacao: gte
-    valor_literal: 6
-    fonte_pagina: baixa-medica-subsidio-doenca.html
+    parametro: subsidio-doenca.prazo_garantia_meses
 
   - id: indice_profissionalidade
     operador: any
     condicoes:
-      - id: nao_e_conta_outrem
+      - id: isento_independente
         tipo: categorica
         campo: tipo_trabalhador
-        operador_comparacao: neq
-        valor_literal: conta_outrem
-      - id: cumpre_12_dias
+        operador_comparacao: eq
+        valor_literal: independente
+      - id: isento_maritimo_ssv
+        tipo: categorica
+        campo: tipo_trabalhador
+        operador_comparacao: eq
+        valor_literal: seguro_social_voluntario_maritimo
+      - id: cumpre_indice
         tipo: limiar
         campo: dias_registo_remuneracoes_indice_profissionalidade
         operador_comparacao: gte
-        valor_literal: 12
-        fonte_pagina: baixa-medica-subsidio-doenca.html
+        parametro: subsidio-doenca.indice_profissionalidade_dias
 
-  - id: situacao_contributiva_independentes
+  - id: situacao_contributiva_independentes_e_ssv
     operador: any
     condicoes:
-      - id: nao_e_independente
+      - id: e_conta_outrem
         tipo: categorica
         campo: tipo_trabalhador
-        operador_comparacao: neq
-        valor_literal: independente
+        operador_comparacao: eq
+        valor_literal: conta_outrem
       - id: contributiva_regularizada
         tipo: categorica
         campo: situacao_contributiva_regularizada

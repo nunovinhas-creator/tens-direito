@@ -48,12 +48,14 @@
         "nao"
       ]
     },
-    "em_estudos_ou_formacao_profissional": {
-      "descricao": "A criança/jovem está a estudar ou em formação profissional",
+    "nivel_ensino_frequentado": {
+      "descricao": "Nível de ensino (ou equivalente, incluindo formação profissional) que a criança/jovem frequenta",
       "tipo": "categorica",
       "opcoes": [
-        "sim",
-        "nao"
+        "nao_estuda",
+        "basico_ou_equivalente",
+        "secundario_ou_equivalente",
+        "superior_ou_equivalente"
       ]
     },
     "tem_deficiencia_ou_incapacidade_reconhecida": {
@@ -193,12 +195,13 @@
       ]
     },
     "tipo_trabalhador": {
-      "descricao": "Regime de protecção social do requerente",
+      "descricao": "Regime de protecção social do requerente (seguro_social_voluntario_maritimo = trabalhador marítimo abrangido pelo Seguro Social Voluntário)",
       "tipo": "categorica",
       "opcoes": [
         "conta_outrem",
         "independente",
-        "seguro_social_voluntario"
+        "seguro_social_voluntario",
+        "seguro_social_voluntario_maritimo"
       ]
     },
     "meses_civis_com_registo_remuneracoes": {
@@ -238,19 +241,77 @@
           "operador": "any",
           "condicoes": [
             {
-              "id": "idade_normal",
+              "id": "ate_16_anos",
               "tipo": "limiar",
               "campo": "data_nascimento_crianca",
               "operador_comparacao": "lte",
               "valor": 16,
               "unidade_comparacao": "anos",
               "fonte": {
-                "tipo": "literal_pagina",
-                "pagina": "abono-de-familia.html"
+                "tipo": "parametro",
+                "referencia": "abono.idade_limite_sem_requisito_escolar"
               }
             },
             {
-              "id": "idade_estudante",
+              "id": "ensino_basico",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "idade_ate_18",
+                  "tipo": "limiar",
+                  "campo": "data_nascimento_crianca",
+                  "operador_comparacao": "lte",
+                  "valor": 18,
+                  "unidade_comparacao": "anos",
+                  "fonte": {
+                    "tipo": "parametro",
+                    "referencia": "abono.idade_limite_ensino_basico"
+                  }
+                },
+                {
+                  "id": "frequenta_basico",
+                  "tipo": "categorica",
+                  "campo": "nivel_ensino_frequentado",
+                  "operador_comparacao": "eq",
+                  "valor": "basico_ou_equivalente",
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_enum"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "ensino_secundario",
+              "operador": "all",
+              "condicoes": [
+                {
+                  "id": "idade_ate_21",
+                  "tipo": "limiar",
+                  "campo": "data_nascimento_crianca",
+                  "operador_comparacao": "lte",
+                  "valor": 21,
+                  "unidade_comparacao": "anos",
+                  "fonte": {
+                    "tipo": "parametro",
+                    "referencia": "abono.idade_limite_ensino_secundario"
+                  }
+                },
+                {
+                  "id": "frequenta_secundario",
+                  "tipo": "categorica",
+                  "campo": "nivel_ensino_frequentado",
+                  "operador_comparacao": "eq",
+                  "valor": "secundario_ou_equivalente",
+                  "unidade_comparacao": null,
+                  "fonte": {
+                    "tipo": "literal_enum"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "ensino_superior",
               "operador": "all",
               "condicoes": [
                 {
@@ -261,16 +322,16 @@
                   "valor": 24,
                   "unidade_comparacao": "anos",
                   "fonte": {
-                    "tipo": "literal_pagina",
-                    "pagina": "abono-de-familia.html"
+                    "tipo": "parametro",
+                    "referencia": "abono.idade_limite_ensino_superior"
                   }
                 },
                 {
-                  "id": "em_estudos",
+                  "id": "frequenta_superior",
                   "tipo": "categorica",
-                  "campo": "em_estudos_ou_formacao_profissional",
+                  "campo": "nivel_ensino_frequentado",
                   "operador_comparacao": "eq",
-                  "valor": "sim",
+                  "valor": "superior_ou_equivalente",
                   "unidade_comparacao": null,
                   "fonte": {
                     "tipo": "literal_enum"
@@ -723,15 +784,15 @@
           }
         },
         {
-          "id": "prazo_garantia_6_meses",
+          "id": "prazo_garantia",
           "tipo": "limiar",
           "campo": "meses_civis_com_registo_remuneracoes",
           "operador_comparacao": "gte",
           "valor": 6,
           "unidade_comparacao": null,
           "fonte": {
-            "tipo": "literal_pagina",
-            "pagina": "baixa-medica-subsidio-doenca.html"
+            "tipo": "parametro",
+            "referencia": "subsidio-doenca.prazo_garantia_meses"
           }
         },
         {
@@ -739,40 +800,51 @@
           "operador": "any",
           "condicoes": [
             {
-              "id": "nao_e_conta_outrem",
+              "id": "isento_independente",
               "tipo": "categorica",
               "campo": "tipo_trabalhador",
-              "operador_comparacao": "neq",
-              "valor": "conta_outrem",
+              "operador_comparacao": "eq",
+              "valor": "independente",
               "unidade_comparacao": null,
               "fonte": {
                 "tipo": "literal_enum"
               }
             },
             {
-              "id": "cumpre_12_dias",
+              "id": "isento_maritimo_ssv",
+              "tipo": "categorica",
+              "campo": "tipo_trabalhador",
+              "operador_comparacao": "eq",
+              "valor": "seguro_social_voluntario_maritimo",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "cumpre_indice",
               "tipo": "limiar",
               "campo": "dias_registo_remuneracoes_indice_profissionalidade",
               "operador_comparacao": "gte",
               "valor": 12,
               "unidade_comparacao": null,
               "fonte": {
-                "tipo": "literal_pagina",
-                "pagina": "baixa-medica-subsidio-doenca.html"
+                "tipo": "parametro",
+                "referencia": "subsidio-doenca.indice_profissionalidade_dias"
               }
             }
           ]
         },
         {
-          "id": "situacao_contributiva_independentes",
+          "id": "situacao_contributiva_independentes_e_ssv",
           "operador": "any",
           "condicoes": [
             {
-              "id": "nao_e_independente",
+              "id": "e_conta_outrem",
               "tipo": "categorica",
               "campo": "tipo_trabalhador",
-              "operador_comparacao": "neq",
-              "valor": "independente",
+              "operador_comparacao": "eq",
+              "valor": "conta_outrem",
               "unidade_comparacao": null,
               "fonte": {
                 "tipo": "literal_enum"
