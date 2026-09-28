@@ -381,3 +381,35 @@ def test_script_da_pagina_nao_polui_o_ambito_global(pagina):
     assert pagina.evaluate("typeof mostrarResultadosSimulador") == "undefined"
     assert pagina.evaluate("typeof CONDICOES") == "undefined"
     assert pagina.evaluate("typeof window.mostrarResultados") == "function"  # o de pesquisa.js, intacto
+
+
+# ── Carimbo "Verificado a" ───────────────────────────────────────────────
+
+
+def test_carimbo_verificado_vem_dos_dados_e_nao_da_data_de_hoje(browser, servidor):
+    contexto, page = _abrir(browser, servidor)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    assert page.is_visible("#carimboVerificacao")
+    assert page.inner_text("#dataVerificacao") == _data_pt(CONDICOES["verificado_em"])
+    contexto.close()
+
+    # Outra data nos dados → outro carimbo; nada escrito à mão na página.
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["verificado_em"] = "2025-01-15"
+    rotas = {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                            body=json.dumps(dados))}
+    contexto, page = _abrir(browser, servidor, rotas)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    assert page.inner_text("#dataVerificacao") == "15/01/2025"
+    contexto.close()
+
+    # Sem data nos dados, ou sem dados, o carimbo não aparece — nunca uma data inventada.
+    dados["verificado_em"] = None
+    contexto, page = _abrir(browser, servidor, rotas)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    assert not page.is_visible("#carimboVerificacao")
+    contexto.close()
+    contexto, page = _abrir(browser, servidor, {"**/dados/condicoes.json": lambda r: r.abort()})
+    page.wait_for_selector("#avisoErro:not([hidden])")
+    assert not page.is_visible("#carimboVerificacao")
+    contexto.close()

@@ -6648,6 +6648,12 @@ hero da homepage. Achado nos testes: o banner de cookies cobria os botões
 em telemóvel e cada clique do Playwright esperava ~2 s — os testes gravam a
 escolha antes de carregar (90 s → ~11 s); a página passou também a
 respeitar `prefers-reduced-motion` na rolagem.
+Revisão do PR (#258): o carimbo "Verificado a" da página passou a vir dos
+dados — `gerar_condicoes_json.py` anota cada condição com o `verificado_em`
+do(s) parâmetro(s) de onde vem o valor e publica o mais recente por apoio e
+no topo de `dados/condicoes.json` (antes estava escrito à mão com a data de
+criação da página, que não era uma data de verificação). Botão de partilha
+desta página: "Partilhar este simulador".
 
 ---
 

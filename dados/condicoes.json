@@ -1,5 +1,6 @@
 {
   "gerado_em": "2026-09-28",
+  "verificado_em": "2026-09-27",
   "perguntas": {
     "data_nascimento_requerente": {
       "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
@@ -473,7 +474,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "abono.idade_limite_sem_requisito_escolar"
-              }
+              },
+              "verificado_em": "2026-09-27"
             },
             {
               "id": "ensino_basico",
@@ -489,7 +491,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_basico"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_basico",
@@ -518,7 +521,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_secundario"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_secundario",
@@ -547,7 +551,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "abono.idade_limite_ensino_superior"
-                  }
+                  },
+                  "verificado_em": "2026-09-27"
                 },
                 {
                   "id": "frequenta_superior",
@@ -596,7 +601,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "abono.escalao4_limite_cenario_pedidos_novos_2026"
-          }
+          },
+          "verificado_em": "2026-07-19"
         },
         {
           "id": "situacao_contributiva_ok",
@@ -619,9 +625,11 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "abono.patrimonio_mobiliario_limite"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "ase": {
       "pagina": "acao-social-escolar.html",
@@ -661,9 +669,11 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "ase.escalao_b_limite_rpc_mensal"
-          }
+          },
+          "verificado_em": "2026-06-24"
         }
-      ]
+      ],
+      "verificado_em": "2026-06-24"
     },
     "csi": {
       "pagina": "complemento-solidario-idosos.html",
@@ -685,7 +695,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "csi.idade_minima_meses_totais"
-              }
+              },
+              "verificado_em": "2026-07-19"
             },
             {
               "id": "excepcao_invalidez_sem_reavaliacao",
@@ -721,9 +732,11 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "csi.anos_residencia_minima"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "desemprego": {
       "pagina": "subsidio-desemprego.html",
@@ -763,7 +776,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "desemprego.garantia_dias_geral"
-          }
+          },
+          "verificado_em": "2026-08-24"
         },
         {
           "id": "inscrito_iefp",
@@ -787,7 +801,8 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-08-24"
     },
     "imt-jovem": {
       "pagina": "imt-jovem.html",
@@ -805,7 +820,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "habitacao.imt_idade_maxima_anos"
-          }
+          },
+          "verificado_em": "2026-07-20"
         },
         {
           "id": "nao_dependente_irs",
@@ -840,7 +856,8 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-07-20"
     },
     "psu": {
       "pagina": "prestacao-social-unica.html",
@@ -944,7 +961,8 @@
               "psu.cit_taxa_acima_limiar",
               "psu.valor_minimo_euros"
             ]
-          }
+          },
+          "verificado_em": "2026-08-13"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -956,9 +974,11 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "psu.limite_patrimonio_eur"
-          }
+          },
+          "verificado_em": "2026-09-27"
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     },
     "rsi": {
       "pagina": "rsi.html",
@@ -980,7 +1000,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "rsi.idade_minima_anos"
-              }
+              },
+              "verificado_em": "2026-08-24"
             },
             {
               "id": "excepcao_menor",
@@ -996,7 +1017,8 @@
                   "fonte": {
                     "tipo": "parametro",
                     "referencia": "rsi.valor_adulto_adicional_mensal"
-                  }
+                  },
+                  "verificado_em": "2026-08-24"
                 },
                 {
                   "id": "situacao_pessoal",
@@ -1137,7 +1159,8 @@
               "rsi.valor_adulto_adicional_mensal",
               "rsi.valor_menor_mensal"
             ]
-          }
+          },
+          "verificado_em": "2026-08-24"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -1149,7 +1172,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "rsi.limite_patrimonio_eur"
-          }
+          },
+          "verificado_em": "2026-09-27"
         },
         {
           "id": "disponibilidade_se_desempregado",
@@ -1191,6 +1215,7 @@
           }
         }
       ],
+      "verificado_em": "2026-09-27",
       "substituido_por": "psu",
       "substituido_a_partir_de": "2026-12-31"
     },
@@ -1221,7 +1246,8 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "subsidio-doenca.prazo_garantia_meses"
-          }
+          },
+          "verificado_em": "2026-09-27"
         },
         {
           "id": "indice_profissionalidade",
@@ -1259,7 +1285,8 @@
               "fonte": {
                 "tipo": "parametro",
                 "referencia": "subsidio-doenca.indice_profissionalidade_dias"
-              }
+              },
+              "verificado_em": "2026-09-27"
             }
           ]
         },
@@ -1313,7 +1340,8 @@
             "tipo": "literal_enum"
           }
         }
-      ]
+      ],
+      "verificado_em": "2026-09-27"
     }
   }
 }

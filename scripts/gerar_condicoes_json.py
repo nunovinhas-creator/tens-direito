@@ -315,6 +315,38 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
     }
 
 
+def _anotar_verificado_em(condicoes: list, parametros: dict) -> list[str]:
+    """Anota cada condição resolvida com o `verificado_em` do(s) parâmetro(s)
+    de onde vem o seu valor (o mais recente, se forem vários) e devolve as
+    datas encontradas. As condições não guardam data própria — a data de
+    verificação é sempre a do parâmetro em dados/parametros.json. Condições
+    `literal_enum`/`literal_pagina` não têm parâmetro, logo não têm data
+    (nunca se inventa uma); o carimbo da página citada em `fonte_pagina`
+    não é lido daqui, para o JSON não depender do HTML."""
+    datas: list[str] = []
+    for cond in condicoes:
+        if "condicoes" in cond:
+            datas.extend(_anotar_verificado_em(cond["condicoes"], parametros))
+            continue
+        fonte = cond.get("fonte", {})
+        if fonte.get("tipo") == "parametro":
+            referencias = [fonte["referencia"]]
+        elif fonte.get("tipo") == "parametro_multiplo":
+            referencias = fonte["referencias"]
+        else:
+            continue
+        proprias = []
+        for ref in referencias:
+            prestacao, nome = ref.split(".", 1)
+            data = parametros["prestacoes"][prestacao][nome].get("verificado_em")
+            if data:
+                proprias.append(data)
+        if proprias:
+            cond["verificado_em"] = max(proprias)
+            datas.append(cond["verificado_em"])
+    return datas
+
+
 def _coletar_ids(condicoes: list) -> list:
     """Achata ids de condições e grupos, recursivamente, para o teste de duplicados."""
     ids = []
@@ -354,6 +386,8 @@ def consolidar() -> dict:
             duplicados = sorted({i for i in ids if ids.count(i) > 1})
             raise CondicaoInvalida(f"{apoio}: ids de condição duplicados ({duplicados})")
 
+        datas_apoio = _anotar_verificado_em(condicoes_resolvidas, parametros)
+
         entrada = {
             "pagina": bruto.get("pagina"),
             "titulo": bruto["titulo"],
@@ -361,6 +395,11 @@ def consolidar() -> dict:
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }
+        # Data de verificação mais recente entre as condições do apoio (via
+        # parâmetros) — é daqui, e nunca da data do dia, que a página tira o
+        # carimbo "Verificado a".
+        if datas_apoio:
+            entrada["verificado_em"] = max(datas_apoio)
         # Marca opcional: este apoio é substituído por outro (ex.: RSI → PSU).
         # Não altera a elegibilidade — só informa a página de que, a partir da
         # data indicada, o apoio de substituição é que passa a valer.
@@ -377,7 +416,13 @@ def consolidar() -> dict:
         if alvo is not None and alvo not in apoios:
             raise CondicaoInvalida(f"{apoio}: 'substituido_por' aponta para apoio inexistente ({alvo!r})")
 
-    return {"gerado_em": date.today().isoformat(), "perguntas": perguntas, "apoios": apoios}
+    datas = [a["verificado_em"] for a in apoios.values() if a.get("verificado_em")]
+    return {
+        "gerado_em": date.today().isoformat(),
+        "verificado_em": max(datas) if datas else None,
+        "perguntas": perguntas,
+        "apoios": apoios,
+    }
 
 
 def main() -> int:
@@ -396,13 +441,11 @@ def main() -> int:
 
     if args.check:
         atual_sem_data = json.dumps(
-            {"perguntas": consolidado["perguntas"], "apoios": consolidado["apoios"]}, sort_keys=True
+            {k: v for k, v in consolidado.items() if k != "gerado_em"}, sort_keys=True
         )
         if SAIDA_JSON.exists():
             disco = json.loads(SAIDA_JSON.read_text(encoding="utf-8"))
-            disco_sem_data = json.dumps(
-                {"perguntas": disco.get("perguntas", {}), "apoios": disco.get("apoios", {})}, sort_keys=True
-            )
+            disco_sem_data = json.dumps({k: v for k, v in disco.items() if k != "gerado_em"}, sort_keys=True)
         else:
             disco_sem_data = None
         if disco_sem_data == atual_sem_data:

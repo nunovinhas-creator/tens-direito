@@ -285,7 +285,7 @@
     <h1>Descobre a que apoios tens direito 2026</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
-  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
+  <button type="button" class="botao-partilhar" aria-label="Partilhar este simulador">📤 Partilhar este simulador</button>
 </div>
 <!-- partilhar:fim -->
 
@@ -294,7 +294,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <strong>Verificado a 28/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · <a href="/simuladores.html">ver todos os simuladores</a>
+      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong>Verificado a <span id="dataVerificacao"></span></strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
     </div>
 
     <div id="avisoErro" class="aviso-erro" role="alert" hidden>
@@ -727,6 +727,13 @@
           return;
         }
         el('carregando').hidden = true;
+        // Carimbo: a data de verificação mais recente das condições (via
+        // parâmetros, calculada por gerar_condicoes_json.py) — nunca a data
+        // do dia. Sem data nos dados, o carimbo fica escondido.
+        if (CONDICOES.verificado_em) {
+          el('dataVerificacao').textContent = formatarData(CONDICOES.verificado_em);
+          el('carimboVerificacao').hidden = false;
+        }
         mostrarAssistente();
       }
 

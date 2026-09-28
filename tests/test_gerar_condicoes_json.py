@@ -573,3 +573,30 @@ def test_campo_generico_data_nascimento_proibido(tmp_path, monkeypatch):
     _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
     with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="genérico"):
         gerar_condicoes_json.consolidar()
+
+
+def test_verificado_em_e_o_mais_recente_dos_parametros_das_condicoes(tmp_path, monkeypatch):
+    # O carimbo da página vem daqui: a data mais recente dos parâmetros que as
+    # condições usam — nunca a data do dia. Literais não têm data (nunca se inventa).
+    parametros = {"prestacoes": {"p": {
+        "a": {"valor": 1, "verificado_em": "2026-03-01"},
+        "b": {"valor": 2, "verificado_em": "2026-05-20"},
+    }}}
+    perguntas = {"reside": _pergunta_reside(),
+                 "n": {"descricao": "n", "tipo": "numero", "unidade": "anos", "pergunta": "Quantos?"}}
+
+    def limiar(id_, ref):
+        return {"id": id_, "tipo": "limiar", "campo": "n", "operador_comparacao": "gte", "parametro": ref}
+
+    apoios = {
+        "x": _apoio_min(condicoes=[limiar("ca", "p.a"), limiar("cb", "p.b")]),
+        "y": _apoio_min(apoio="y", condicoes=[limiar("ca", "p.a")]),
+        "z": _apoio_min(apoio="z"),  # só literal: sem data
+    }
+    _preparar(tmp_path, monkeypatch, perguntas, parametros, apoios, completar=False)
+    c = gerar_condicoes_json.consolidar()
+    assert c["apoios"]["x"]["verificado_em"] == "2026-05-20"
+    assert c["apoios"]["y"]["verificado_em"] == "2026-03-01"
+    assert "verificado_em" not in c["apoios"]["z"]
+    assert c["verificado_em"] == "2026-05-20"
+    assert c["apoios"]["x"]["condicoes"][0]["verificado_em"] == "2026-03-01"

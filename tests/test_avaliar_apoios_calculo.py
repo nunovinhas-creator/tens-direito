@@ -1097,3 +1097,18 @@ def test_rsi_csi_psu_reais_inelegiveis_sem_residencia_legal(pagina):
     r = _avaliar(pagina, _condicoes_reais(), {"reside_legalmente_pt": "nao"})
     for apoio in ("rsi", "csi", "psu"):
         assert r[apoio]["estado"] == "inelegivel", apoio
+
+
+def test_ase_e_psu_nunca_elegiveis_sem_a_pergunta_de_rendimento(pagina):
+    # Tudo o resto respondido a favor; só falta o rendimento → nunca "elegivel".
+    condicoes = _condicoes_reais()
+    ase = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo"}
+    assert _avaliar(pagina, condicoes, ase)["ase"]["estado"] == "indeterminado"
+    assert _avaliar(pagina, condicoes, {**ase, "rendimento_per_capita_mensal_agregado": 0})["ase"]["estado"] == "elegivel"
+
+    psu = {k: v for k, v in RESPOSTAS_PSU_BASE.items()
+           if k not in ("rendimento_trabalho_mensal_agregado", "outros_rendimentos_mensais_agregado")}
+    for so_um in ({"rendimento_trabalho_mensal_agregado": 0}, {"outros_rendimentos_mensais_agregado": 0}, {}):
+        assert _avaliar(pagina, condicoes, {**psu, **so_um})["psu"]["estado"] == "indeterminado", so_um
+    assert _avaliar(pagina, condicoes, {**psu, "rendimento_trabalho_mensal_agregado": 0,
+                                        "outros_rendimentos_mensais_agregado": 0})["psu"]["estado"] == "elegivel"
