@@ -612,3 +612,116 @@ def test_desemprego_real_inelegivel_sem_saber_prazo_de_garantia_se_ja_empregado(
     condicoes = _condicoes_reais()
     r = _avaliar(pagina, condicoes, {"situacao_profissional": "empregado"})
     assert r["desemprego"]["estado"] == "inelegivel"
+
+
+# ── Subsídio de Doença real (dados/condicoes.json de produção) — grupos
+# `any` por regime (profissionalidade só conta de outrem, situação
+# contributiva só independentes) ────────────────────────────────────────────
+
+
+RESPOSTAS_DOENCA_BASE = {
+    "tem_cit_valido": "sim",
+    "tipo_trabalhador": "conta_outrem",
+    "meses_civis_com_registo_remuneracoes": 12,
+    "dias_registo_remuneracoes_indice_profissionalidade": 15,
+    "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+    "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+}
+
+
+def test_doenca_real_elegivel_conta_de_outrem(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_DOENCA_BASE)
+    assert r["subsidio-doenca"]["estado"] == "elegivel"
+
+
+def test_doenca_real_inelegivel_sem_cit(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DOENCA_BASE, "tem_cit_valido": "nao"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_inelegivel_sem_prazo_de_garantia(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DOENCA_BASE, "meses_civis_com_registo_remuneracoes": 5}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_elegivel_no_limite_exacto_de_6_meses_e_12_dias(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        **RESPOSTAS_DOENCA_BASE,
+        "meses_civis_com_registo_remuneracoes": 6,
+        "dias_registo_remuneracoes_indice_profissionalidade": 12,
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "elegivel"
+
+
+def test_doenca_real_conta_de_outrem_inelegivel_sem_profissionalidade(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DOENCA_BASE, "dias_registo_remuneracoes_indice_profissionalidade": 11}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_independente_nao_precisa_de_profissionalidade(pagina):
+    # O índice de profissionalidade não lhe diz respeito: o grupo `any`
+    # resolve pelo ramo "não é conta de outrem", sem perguntar os dias.
+    condicoes = _condicoes_reais()
+    respostas = {
+        "tem_cit_valido": "sim",
+        "tipo_trabalhador": "independente",
+        "meses_civis_com_registo_remuneracoes": 12,
+        "situacao_contributiva_regularizada": "sim",
+        "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+        "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "elegivel"
+
+
+def test_doenca_real_independente_inelegivel_com_contributiva_irregular(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {
+        "tem_cit_valido": "sim",
+        "tipo_trabalhador": "independente",
+        "meses_civis_com_registo_remuneracoes": 12,
+        "situacao_contributiva_regularizada": "nao",
+        "acumula_pensao_invalidez_relativa_com_trabalho": "nao",
+        "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "nao",
+    }
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_conta_de_outrem_nao_precisa_de_situacao_contributiva(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_DOENCA_BASE)  # sem situacao_contributiva_regularizada
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "elegivel"
+
+
+def test_doenca_real_inelegivel_acumulacao_pensao_invalidez_relativa(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DOENCA_BASE, "acumula_pensao_invalidez_relativa_com_trabalho": "sim"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_inelegivel_indemnizacao_igual_ou_superior(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DOENCA_BASE, "recebe_indemnizacao_acidente_trabalho_maior_subsidio": "sim"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+def test_doenca_real_indeterminado_conta_de_outrem_sem_dias_de_profissionalidade(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_DOENCA_BASE)
+    del respostas["dias_registo_remuneracoes_indice_profissionalidade"]
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["subsidio-doenca"]["estado"] == "indeterminado"
+    assert r["subsidio-doenca"]["perguntasEmFalta"] == ["dias_registo_remuneracoes_indice_profissionalidade"]

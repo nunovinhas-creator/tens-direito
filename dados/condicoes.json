@@ -183,6 +183,49 @@
       "descricao": "Dias de registo de remunerações nos 24 meses anteriores à data do desemprego",
       "tipo": "numero",
       "unidade": "dias"
+    },
+    "tem_cit_valido": {
+      "descricao": "Tem um Certificado de Incapacidade Temporária (CIT) válido, emitido por um médico (não basta autodeclaração de doença)",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "tipo_trabalhador": {
+      "descricao": "Regime de protecção social do requerente",
+      "tipo": "categorica",
+      "opcoes": [
+        "conta_outrem",
+        "independente",
+        "seguro_social_voluntario"
+      ]
+    },
+    "meses_civis_com_registo_remuneracoes": {
+      "descricao": "Meses civis com registo de remunerações na Segurança Social, seguidos ou interpolados",
+      "tipo": "numero",
+      "unidade": "meses"
+    },
+    "dias_registo_remuneracoes_indice_profissionalidade": {
+      "descricao": "Dias com registo de remunerações nos primeiros 4 dos últimos 6 meses anteriores ao mês da baixa",
+      "tipo": "numero",
+      "unidade": "dias"
+    },
+    "acumula_pensao_invalidez_relativa_com_trabalho": {
+      "descricao": "É pensionista de invalidez relativa e acumula a pensão com trabalho",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "recebe_indemnizacao_acidente_trabalho_maior_subsidio": {
+      "descricao": "Recebe indemnização por acidente de trabalho ou doença profissional de valor igual ou superior ao subsídio de doença a que teria direito",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
     }
   },
   "apoios": {
@@ -655,6 +698,114 @@
           "id": "nao_institucionalizado",
           "tipo": "categorica",
           "campo": "esta_em_estabelecimento_prisional_ou_institucionalizado",
+          "operador_comparacao": "eq",
+          "valor": "nao",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        }
+      ]
+    },
+    "subsidio-doenca": {
+      "pagina": "baixa-medica-subsidio-doenca.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "cit_valido",
+          "tipo": "categorica",
+          "campo": "tem_cit_valido",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "prazo_garantia_6_meses",
+          "tipo": "limiar",
+          "campo": "meses_civis_com_registo_remuneracoes",
+          "operador_comparacao": "gte",
+          "valor": 6,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_pagina",
+            "pagina": "baixa-medica-subsidio-doenca.html"
+          }
+        },
+        {
+          "id": "indice_profissionalidade",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "nao_e_conta_outrem",
+              "tipo": "categorica",
+              "campo": "tipo_trabalhador",
+              "operador_comparacao": "neq",
+              "valor": "conta_outrem",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "cumpre_12_dias",
+              "tipo": "limiar",
+              "campo": "dias_registo_remuneracoes_indice_profissionalidade",
+              "operador_comparacao": "gte",
+              "valor": 12,
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_pagina",
+                "pagina": "baixa-medica-subsidio-doenca.html"
+              }
+            }
+          ]
+        },
+        {
+          "id": "situacao_contributiva_independentes",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "nao_e_independente",
+              "tipo": "categorica",
+              "campo": "tipo_trabalhador",
+              "operador_comparacao": "neq",
+              "valor": "independente",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "contributiva_regularizada",
+              "tipo": "categorica",
+              "campo": "situacao_contributiva_regularizada",
+              "operador_comparacao": "eq",
+              "valor": "sim",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sem_acumulacao_pensao_invalidez_relativa",
+          "tipo": "categorica",
+          "campo": "acumula_pensao_invalidez_relativa_com_trabalho",
+          "operador_comparacao": "eq",
+          "valor": "nao",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "sem_indemnizacao_igual_ou_superior",
+          "tipo": "categorica",
+          "campo": "recebe_indemnizacao_acidente_trabalho_maior_subsidio",
           "operador_comparacao": "eq",
           "valor": "nao",
           "unidade_comparacao": null,

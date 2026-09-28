@@ -1,0 +1,85 @@
+# Condições de acesso ao Subsídio de Doença — PR 8 da série "simulador
+# universal". Fonte: secção "Quem tem direito" de
+# baixa-medica-subsidio-doenca.html (Decreto-Lei n.º 28/2004, na redação
+# actual; Guia Prático 5001 do ISS).
+#
+# O prazo de garantia (6 meses) e o índice de profissionalidade (12 dias)
+# NÃO estão parametrizados em dados/parametros/subsidio-doenca.yaml — o
+# simulador dedicado nem sequer os modela (assume-os cumpridos, ver
+# simulador-subsidio-doenca.html). Por isso entram como valor_literal com
+# fonte_pagina (valores já publicados e auditados na página), mesma dívida
+# técnica assumida no CSI (6 anos) e no abono (16/24 anos). Não promover a
+# `parametro:` sem passar por PASSO 0 em dados/parametros/subsidio-doenca.yaml.
+#
+# Interpretação a confirmar (a página lista os requisitos em conjunto, com
+# parênteses por regime): o índice de profissionalidade aplica-se só a
+# trabalhadores por conta de outrem, e a situação contributiva regularizada
+# só aos independentes. Modelado como "não é esse regime OU cumpre" — grupo
+# `any`, para quem é de outro regime não ser excluído por uma condição que
+# não lhe diz respeito. Seguro social voluntário: sem requisito adicional
+# modelado além do prazo de garantia.
+#
+# Exclusões listadas na página ("normalmente NÃO tem direito"), tratadas
+# como condições categóricas simples: acumulação de pensão de invalidez
+# relativa com trabalho, e indemnização por acidente de trabalho/doença
+# profissional igual ou superior ao subsídio. Autodeclaração sem CIT já
+# fica coberta pela condição do CIT.
+
+apoio: subsidio-doenca
+pagina: baixa-medica-subsidio-doenca.html
+operador: all
+
+condicoes:
+  - id: cit_valido
+    tipo: categorica
+    campo: tem_cit_valido
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: prazo_garantia_6_meses
+    tipo: limiar
+    campo: meses_civis_com_registo_remuneracoes
+    operador_comparacao: gte
+    valor_literal: 6
+    fonte_pagina: baixa-medica-subsidio-doenca.html
+
+  - id: indice_profissionalidade
+    operador: any
+    condicoes:
+      - id: nao_e_conta_outrem
+        tipo: categorica
+        campo: tipo_trabalhador
+        operador_comparacao: neq
+        valor_literal: conta_outrem
+      - id: cumpre_12_dias
+        tipo: limiar
+        campo: dias_registo_remuneracoes_indice_profissionalidade
+        operador_comparacao: gte
+        valor_literal: 12
+        fonte_pagina: baixa-medica-subsidio-doenca.html
+
+  - id: situacao_contributiva_independentes
+    operador: any
+    condicoes:
+      - id: nao_e_independente
+        tipo: categorica
+        campo: tipo_trabalhador
+        operador_comparacao: neq
+        valor_literal: independente
+      - id: contributiva_regularizada
+        tipo: categorica
+        campo: situacao_contributiva_regularizada
+        operador_comparacao: eq
+        valor_literal: sim
+
+  - id: sem_acumulacao_pensao_invalidez_relativa
+    tipo: categorica
+    campo: acumula_pensao_invalidez_relativa_com_trabalho
+    operador_comparacao: eq
+    valor_literal: nao
+
+  - id: sem_indemnizacao_igual_ou_superior
+    tipo: categorica
+    campo: recebe_indemnizacao_acidente_trabalho_maior_subsidio
+    operador_comparacao: eq
+    valor_literal: nao
