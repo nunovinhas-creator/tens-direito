@@ -536,3 +536,79 @@ def test_rsi_real_menor_inelegivel_rendimentos_altos_mas_sem_situacao_pessoal(pa
     }
     r = _avaliar(pagina, condicoes, respostas)
     assert r["rsi"]["estado"] == "inelegivel"
+
+
+# ── Subsídio de Desemprego real (dados/condicoes.json de produção) ──────────
+
+
+RESPOSTAS_DESEMPREGO_BASE = {
+    "situacao_profissional": "desempregado",
+    "desemprego_involuntario": "sim",
+    "dias_registo_remuneracoes_24_meses": 400,
+    "inscrito_centro_emprego_e_disponivel": "sim",
+    "situacao_contributiva_regularizada": "sim",
+}
+
+
+def test_desemprego_real_elegivel_caso_simples(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_DESEMPREGO_BASE)
+    assert r["desemprego"]["estado"] == "elegivel"
+
+
+def test_desemprego_real_inelegivel_se_nao_desempregado(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "situacao_profissional": "empregado"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "inelegivel"
+
+
+def test_desemprego_real_inelegivel_se_voluntario(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "desemprego_involuntario": "nao"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "inelegivel"
+
+
+def test_desemprego_real_inelegivel_sem_prazo_de_garantia(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "dias_registo_remuneracoes_24_meses": 300}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "inelegivel"
+
+
+def test_desemprego_real_elegivel_no_limite_exacto_do_prazo_de_garantia(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "dias_registo_remuneracoes_24_meses": 360}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "elegivel"
+
+
+def test_desemprego_real_inelegivel_sem_inscricao_iefp(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "inscrito_centro_emprego_e_disponivel": "nao"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "inelegivel"
+
+
+def test_desemprego_real_inelegivel_situacao_contributiva_irregular(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "situacao_contributiva_regularizada": "nao"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "inelegivel"
+
+
+def test_desemprego_real_indeterminado_quando_falta_prazo_de_garantia(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_DESEMPREGO_BASE)
+    del respostas["dias_registo_remuneracoes_24_meses"]
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["desemprego"]["estado"] == "indeterminado"
+    assert r["desemprego"]["perguntasEmFalta"] == ["dias_registo_remuneracoes_24_meses"]
+
+
+def test_desemprego_real_inelegivel_sem_saber_prazo_de_garantia_se_ja_empregado(pagina):
+    # Short-circuit: já sabemos que não está desempregado, decide sozinho.
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, {"situacao_profissional": "empregado"})
+    assert r["desemprego"]["estado"] == "inelegivel"

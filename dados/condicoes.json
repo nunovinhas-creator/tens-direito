@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-27",
+  "gerado_em": "2026-09-28",
   "perguntas": {
     "data_nascimento_requerente": {
       "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
@@ -170,6 +170,19 @@
         "sim",
         "nao"
       ]
+    },
+    "desemprego_involuntario": {
+      "descricao": "A perda de emprego foi involuntária (despedimento colectivo, extinção do posto, caducidade de contrato a prazo, resolução com justa causa pelo trabalhador)",
+      "tipo": "categorica",
+      "opcoes": [
+        "sim",
+        "nao"
+      ]
+    },
+    "dias_registo_remuneracoes_24_meses": {
+      "descricao": "Dias de registo de remunerações nos 24 meses anteriores à data do desemprego",
+      "tipo": "numero",
+      "unidade": "dias"
     }
   },
   "apoios": {
@@ -366,6 +379,68 @@
           "fonte": {
             "tipo": "parametro",
             "referencia": "csi.anos_residencia_minima"
+          }
+        }
+      ]
+    },
+    "desemprego": {
+      "pagina": "subsidio-desemprego.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "esta_desempregado",
+          "tipo": "categorica",
+          "campo": "situacao_profissional",
+          "operador_comparacao": "eq",
+          "valor": "desempregado",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "cessacao_involuntaria",
+          "tipo": "categorica",
+          "campo": "desemprego_involuntario",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "prazo_garantia_cumprido",
+          "tipo": "limiar",
+          "campo": "dias_registo_remuneracoes_24_meses",
+          "operador_comparacao": "gte",
+          "valor": 360,
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "desemprego.garantia_dias_geral"
+          }
+        },
+        {
+          "id": "inscrito_iefp",
+          "tipo": "categorica",
+          "campo": "inscrito_centro_emprego_e_disponivel",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "situacao_contributiva_ok",
+          "tipo": "categorica",
+          "campo": "situacao_contributiva_regularizada",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
           }
         }
       ]
