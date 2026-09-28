@@ -675,6 +675,39 @@
       ],
       "verificado_em": "2026-06-24"
     },
+    "creche": {
+      "pagina": "creche-gratuita.html",
+      "titulo": "Creche gratuita",
+      "simulador": "/creche-gratuita.html",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "tem_filhos_a_cargo",
+          "tipo": "categorica",
+          "campo": "tem_filhos_a_cargo",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "nascida_a_partir_da_data_elegivel",
+          "tipo": "limiar",
+          "campo": "data_nascimento_crianca",
+          "operador_comparacao": "gte",
+          "valor": "2021-09-01",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "creche.creche_elegivel_nascidos_apos"
+          },
+          "verificado_em": "2026-09-16"
+        }
+      ],
+      "verificado_em": "2026-09-16"
+    },
     "csi": {
       "pagina": "complemento-solidario-idosos.html",
       "titulo": "Complemento Solidário para Idosos (CSI)",

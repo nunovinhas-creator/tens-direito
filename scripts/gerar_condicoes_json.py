@@ -40,6 +40,7 @@ TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
 FORMULAS_VALIDAS = {"escala_equivalencia_rsi", "psu_valor_positivo"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
+UNIDADES_IDADE = {"anos", "meses_totais"}
 
 
 class CondicaoInvalida(Exception):
@@ -304,6 +305,9 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
                 )
             fonte = {"tipo": "literal_enum"}
 
+    if condicao["tipo"] == "limiar" and perguntas[campo].get("tipo") == "data":
+        _validar_limiar_de_data(condicao, valor, contexto)
+
     return {
         "id": condicao["id"],
         "tipo": condicao["tipo"],
@@ -313,6 +317,32 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
         "unidade_comparacao": condicao.get("unidade_comparacao"),
         "fonte": fonte,
     }
+
+
+def _validar_limiar_de_data(condicao: dict, valor, contexto: str) -> None:
+    """PR 12: um limiar sobre um campo de data compara ou uma idade (com
+    unidade_comparacao anos/meses_totais, contra um número) ou a própria
+    data (sem unidade, contra uma data ISO). O motor compara datas ISO como
+    strings — correcto só se as duas forem AAAA-MM-DD; uma data noutro
+    formato, ou um número sem unidade, daria um resultado errado em
+    silêncio."""
+    unidade = condicao.get("unidade_comparacao")
+    if unidade in UNIDADES_IDADE:
+        if isinstance(valor, bool) or not isinstance(valor, (int, float)):
+            raise CondicaoInvalida(f"{contexto}: comparação em '{unidade}' exige um valor numérico ({valor!r})")
+        return
+    if unidade is not None:
+        raise CondicaoInvalida(
+            f"{contexto}: 'unidade_comparacao' tem de ser uma de {sorted(UNIDADES_IDADE)} ou omitida ({unidade!r})"
+        )
+    try:
+        valida = isinstance(valor, str) and date.fromisoformat(valor).isoformat() == valor
+    except ValueError:
+        valida = False
+    if not valida:
+        raise CondicaoInvalida(
+            f"{contexto}: limiar de data sem 'unidade_comparacao' exige uma data ISO AAAA-MM-DD ({valor!r})"
+        )
 
 
 def _anotar_verificado_em(condicoes: list, parametros: dict) -> list[str]:

@@ -6655,6 +6655,22 @@ no topo de `dados/condicoes.json` (antes estava escrito à mão com a data de
 criação da página, que não era uma data de verificação). Botão de partilha
 desta página: "Partilhar este simulador".
 
+
+*Última revisão: 2026-09-28 — PR 12 do simulador universal: condições de
+acesso da creche gratuita.* `dados/condicoes/creche-gratuita.yaml` (apoio
+`creche`): portão `tem_filhos_a_cargo == sim` + criança nascida a partir de
+`creche.creche_elegivel_nascidos_apos` (parâmetro já existente, Portaria n.º
+305/2022, art. 5.º/1/a) e art. 2.º, redação da Portaria n.º 158/2024/1).
+Comparação de datas ISO sem conversão para idade — `gerar_condicoes_json.py`
+passou a recusar um limiar sobre um campo de data cujo valor não seja uma
+data ISO AAAA-MM-DD (sem `unidade_comparacao`) ou um número (com
+`anos`/`meses_totais`), porque o motor compara datas como strings e um
+formato diferente erraria em silêncio. Nenhuma pergunta nova. A escada de
+canais e a falta de vaga (verificadas oficiosamente pelo ISS) não são
+modeladas. O cartão europeu de estacionamento ficou de fora: a página cita o
+Decreto-Lei n.º 307/2003 sem artigo/alínea e o diploma não está no
+repositório — parado nesse ponto, à espera da fonte.
+
 ---
 
 *Última revisão automática: 2026-09-28*

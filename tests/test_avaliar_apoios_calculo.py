@@ -1112,3 +1112,60 @@ def test_ase_e_psu_nunca_elegiveis_sem_a_pergunta_de_rendimento(pagina):
         assert _avaliar(pagina, condicoes, {**psu, **so_um})["psu"]["estado"] == "indeterminado", so_um
     assert _avaliar(pagina, condicoes, {**psu, "rendimento_trabalho_mensal_agregado": 0,
                                         "outros_rendimentos_mensais_agregado": 0})["psu"]["estado"] == "elegivel"
+
+
+# ── PR 12: creche gratuita real (dados/condicoes.json de produção) ──────────
+# Única condição de acesso própria: nascida a partir de 1/9/2021, inclusive
+# (Portaria n.º 305/2022, art. 5.º/1/a) e art. 2.º, redação da Portaria n.º
+# 158/2024/1). Comparação de datas ISO, sem conversão para idade.
+
+
+def _data_creche(condicoes):
+    cond = {c["id"]: c for c in condicoes["apoios"]["creche"]["condicoes"]}
+    return cond["nascida_a_partir_da_data_elegivel"]["valor"]
+
+
+def test_creche_real_elegivel_crianca_pequena(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2025-03-10"})
+    assert r["creche"]["estado"] == "elegivel"
+
+
+def test_creche_real_elegivel_no_dia_exacto_da_data_limite(pagina):
+    condicoes = _condicoes_reais()
+    limite = _data_creche(condicoes)
+    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": limite})
+    assert r["creche"]["estado"] == "elegivel"
+
+
+def test_creche_real_inelegivel_na_vespera_da_data_limite(pagina):
+    from datetime import date, timedelta
+    condicoes = _condicoes_reais()
+    vespera = (date.fromisoformat(_data_creche(condicoes)) - timedelta(days=1)).isoformat()
+    r = _avaliar(pagina, condicoes, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": vespera})
+    assert r["creche"]["estado"] == "inelegivel"
+
+
+def test_creche_real_comparacao_por_data_nao_por_string_de_mes(pagina):
+    # 2021-10-01 > 2021-09-01: garante que a comparação é cronológica
+    # (mês de dois dígitos), não uma coincidência de prefixo.
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2021-10-01"})
+    assert r["creche"]["estado"] == "elegivel"
+
+
+def test_creche_real_portao_sem_filhos_decide_sozinho(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "nao"})
+    assert r["creche"]["estado"] == "inelegivel"
+
+
+def test_creche_real_indeterminado_quando_falta_a_data_de_nascimento(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {"tem_filhos_a_cargo": "sim"})
+    assert r["creche"]["estado"] == "indeterminado"
+    assert r["creche"]["perguntasEmFalta"] == ["data_nascimento_crianca"]
+
+
+def test_creche_real_sem_respostas_pergunta_primeiro_pelos_filhos(pagina):
+    condicoes = {**_condicoes_reais()}
+    condicoes["apoios"] = {"creche": condicoes["apoios"]["creche"]}
+    assert _proxima(pagina, condicoes, {}) == "tem_filhos_a_cargo"
+    assert _proxima(pagina, condicoes, {"tem_filhos_a_cargo": "nao"}) is None
+    assert _proxima(pagina, condicoes, {"tem_filhos_a_cargo": "sim"}) == "data_nascimento_crianca"

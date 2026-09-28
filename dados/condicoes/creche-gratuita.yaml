@@ -1,0 +1,45 @@
+# Condições de acesso à gratuitidade da creche — PR 12 da série "simulador
+# universal". Fonte: secção "A criança tem direito?" de creche-gratuita.html,
+# que cita a Portaria n.º 305/2022 na redação da Portaria n.º 158/2024/1
+# (GRAU 1, lidas por inteiro — ver cartões em fontes.html).
+#
+# Só uma condição de acesso própria, a que a página verifica: a criança
+# nasceu a partir de 1 de setembro de 2021, inclusive (art. 5.º, n.º 1,
+# al. a), e art. 2.º, na redação da Portaria n.º 158/2024/1). A data vem do
+# parâmetro creche.creche_elegivel_nascidos_apos — nunca literal aqui.
+#
+# A comparação é entre datas ISO (AAAA-MM-DD), sem unidade_comparacao: o
+# motor compara as duas strings, e a ordem lexicográfica de datas ISO é a
+# ordem cronológica. O compilador recusa um limiar sobre um campo de data
+# sem unidade_comparacao cujo valor não seja uma data ISO.
+#
+# Deliberadamente NÃO modelado (ver descrição do PR 12):
+#   - a escada de canais (rede solidária com acordo → rede pública → bolsa
+#     de creches aderentes) e a falta de vaga: é o ISS que a verifica
+#     oficiosamente, sala a sala, na freguesia de residência ou de trabalho
+#     de um dos pais e nas limítrofes (art. 5.º, n.º 1, al. a), na redação
+#     de 2024; Despacho n.º 6573/2024, n.º 5) — a família não a prova e o
+#     simulador não a consegue avaliar;
+#   - a idade de frequência de creche: a página não a fixa.
+
+apoio: creche
+pagina: creche-gratuita.html
+titulo: "Creche gratuita"
+simulador: /creche-gratuita.html
+operador: all
+
+condicoes:
+  # Portão do simulador universal: as perguntas da criança só se fazem com
+  # tem_filhos_a_cargo == sim. Sem este portão, quem não tem filhos ficava
+  # eternamente em "Falta saber".
+  - id: tem_filhos_a_cargo
+    tipo: categorica
+    campo: tem_filhos_a_cargo
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: nascida_a_partir_da_data_elegivel
+    tipo: limiar
+    campo: data_nascimento_crianca
+    operador_comparacao: gte
+    parametro: creche.creche_elegivel_nascidos_apos
