@@ -762,3 +762,71 @@ def test_doenca_real_ssv_inelegivel_com_situacao_contributiva_irregular(pagina):
     }
     r = _avaliar(pagina, condicoes, respostas)
     assert r["subsidio-doenca"]["estado"] == "inelegivel"
+
+
+# ── IMT Jovem real (dados/condicoes.json de produção) ───────────────────────
+
+
+RESPOSTAS_IMT_BASE = {
+    "data_nascimento_requerente": "1996-01-01",  # 30 anos em 2026
+    "e_dependente_irs": "nao",
+    "titular_imovel_habitacional_ultimos_3_anos": "nao",
+    "destino_habitacao_propria_permanente": "sim",
+}
+
+
+def test_imt_jovem_real_elegivel_caso_simples(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, RESPOSTAS_IMT_BASE)
+    assert r["imt-jovem"]["estado"] == "elegivel"
+
+
+def test_imt_jovem_real_elegivel_aos_35_anos_inclusive(pagina):
+    condicoes = _condicoes_reais()
+    # Nasceu a 1991-01-01: a 2026-09-27 tem 35 anos completos.
+    respostas = {**RESPOSTAS_IMT_BASE, "data_nascimento_requerente": "1991-01-01"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "elegivel"
+
+
+def test_imt_jovem_real_inelegivel_aos_36_anos(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_IMT_BASE, "data_nascimento_requerente": "1990-01-01"}  # 36 anos
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "inelegivel"
+
+
+def test_imt_jovem_real_inelegivel_se_dependente_irs(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_IMT_BASE, "e_dependente_irs": "sim"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "inelegivel"
+
+
+def test_imt_jovem_real_inelegivel_com_imovel_habitacional_recente(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_IMT_BASE, "titular_imovel_habitacional_ultimos_3_anos": "sim"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "inelegivel"
+
+
+def test_imt_jovem_real_inelegivel_se_nao_for_habitacao_propria_permanente(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {**RESPOSTAS_IMT_BASE, "destino_habitacao_propria_permanente": "nao"}
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "inelegivel"
+
+
+def test_imt_jovem_real_indeterminado_quando_falta_uma_resposta(pagina):
+    condicoes = _condicoes_reais()
+    respostas = dict(RESPOSTAS_IMT_BASE)
+    del respostas["e_dependente_irs"]
+    r = _avaliar(pagina, condicoes, respostas)
+    assert r["imt-jovem"]["estado"] == "indeterminado"
+    assert r["imt-jovem"]["perguntasEmFalta"] == ["e_dependente_irs"]
+
+
+def test_imt_jovem_real_inelegivel_sem_saber_o_resto_se_ja_passou_a_idade(pagina):
+    condicoes = _condicoes_reais()
+    r = _avaliar(pagina, condicoes, {"data_nascimento_requerente": "1980-01-01"})
+    assert r["imt-jovem"]["estado"] == "inelegivel"
