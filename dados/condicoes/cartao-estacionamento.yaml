@@ -1,0 +1,109 @@
+# Condições de acesso ao cartão europeu de estacionamento para pessoas com
+# deficiência — PR 12b da série "simulador universal".
+#
+# Fonte: Decreto-Lei n.º 307/2003, art. 4.º ("Legitimidade"), na redação do
+# Decreto-Lei n.º 128/2017 (em vigor a partir de 2017-10-10) — consolidação
+# oficial em dados/fontes/Decreto-Lei-307-2003-consolidado-2017-10-09.pdf.
+# Modela só o que cartao-europeu-estacionamento.html já verificou E consta
+# do art. 4.º; as diferenças entre a página e o artigo estão na descrição
+# do PR, não corrigidas aqui.
+#
+# Portão de topo: tem_deficiencia_requerente == sim. Depois um grupo `any`,
+# uma alternativa por categoria (pode haver mais do que uma deficiência —
+# cada categoria tem a sua pergunta sim/não e o seu grau):
+#   - n.º 1, al. a): motora, física ou orgânica, grau ≥ 60% E dificuldade na
+#     locomoção na via pública OU nos transportes públicos;
+#   - n.º 1, al. b): intelectual ou PEA, grau ≥ 60%;
+#   - n.º 1, al. c): visual, alteração no domínio da visão ≥ 95%;
+#   - n.º 2: Forças Armadas (DL 43/76) ou equiparado E incapacidade motora
+#     ≥ 60% (o mesmo grau da al. a)).
+# Cada alternativa começa pela sua pergunta de categoria (`eq sim`): é o
+# portão das perguntas que só se fazem a quem tem essa deficiência.
+#
+# Não modelado (ver descrição do PR): doença oncológica (a página refere-a,
+# o art. 4.º não — sem fonte primária); prova por atestado médico de
+# incapacidade multiúso (art. 6.º, n.º 2) — é um meio de prova, não uma
+# condição que se responda aqui.
+
+apoio: cartao-estacionamento
+pagina: cartao-europeu-estacionamento.html
+titulo: "Cartão Europeu de Estacionamento"
+simulador: /cartao-europeu-estacionamento.html
+tipo_link: guia
+operador: all
+
+condicoes:
+  - id: tem_deficiencia
+    tipo: categorica
+    campo: tem_deficiencia_requerente
+    operador_comparacao: eq
+    valor_literal: sim
+
+  - id: categoria_do_art_4
+    operador: any
+    condicoes:
+      - id: al_a_motora_fisica_organica
+        operador: all
+        condicoes:
+          - id: a_tem_deficiencia_motora
+            tipo: categorica
+            campo: deficiencia_motora_fisica_organica
+            operador_comparacao: eq
+            valor_literal: sim
+          - id: a_grau_minimo
+            tipo: limiar
+            campo: grau_incapacidade_motora_pct
+            operador_comparacao: gte
+            parametro: cartao-estacionamento.grau_minimo_motora_pct
+          - id: a_dificuldade_locomocao_ou_transportes
+            tipo: categorica
+            campo: dificuldade_locomocao_ou_transportes
+            operador_comparacao: eq
+            valor_literal: sim
+
+      - id: al_b_intelectual_ou_pea
+        operador: all
+        condicoes:
+          - id: b_tem_deficiencia_intelectual_ou_pea
+            tipo: categorica
+            campo: deficiencia_intelectual_ou_pea
+            operador_comparacao: eq
+            valor_literal: sim
+          - id: b_grau_minimo
+            tipo: limiar
+            campo: grau_incapacidade_intelectual_pea_pct
+            operador_comparacao: gte
+            parametro: cartao-estacionamento.grau_minimo_intelectual_pea_pct
+
+      - id: al_c_visual
+        operador: all
+        condicoes:
+          - id: c_tem_deficiencia_visual
+            tipo: categorica
+            campo: deficiencia_visual
+            operador_comparacao: eq
+            valor_literal: sim
+          - id: c_alteracao_dominio_visao_minima
+            tipo: limiar
+            campo: alteracao_dominio_visao_pct
+            operador_comparacao: gte
+            parametro: cartao-estacionamento.grau_minimo_visual_pct
+
+      - id: n2_forcas_armadas
+        operador: all
+        condicoes:
+          - id: n2_deficiente_forcas_armadas
+            tipo: categorica
+            campo: deficiente_forcas_armadas
+            operador_comparacao: eq
+            valor_literal: sim
+          - id: n2_tem_deficiencia_motora
+            tipo: categorica
+            campo: deficiencia_motora_fisica_organica
+            operador_comparacao: eq
+            valor_literal: sim
+          - id: n2_incapacidade_motora_minima
+            tipo: limiar
+            campo: grau_incapacidade_motora_pct
+            operador_comparacao: gte
+            parametro: cartao-estacionamento.grau_minimo_forcas_armadas_motora_pct

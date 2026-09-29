@@ -1249,6 +1249,116 @@ def test_faixa_incerta_sintetica_propaga_motivo_por_grupo_all_e_any(pagina):
     assert _avaliar(pagina, base, {"n": 4, "c": "sim"})["all"]["estado"] == "inelegivel"
 
 
+# ── PR 12b: cartão europeu de estacionamento real (DL 307/2003, art. 4.º) ──
+# Portão tem_deficiencia_requerente; uma pergunta sim/não por categoria, com
+# o seu grau; mais do que uma categoria ao mesmo tempo é possível.
+
+
+def _cartao(pagina, respostas):
+    return _avaliar(pagina, _condicoes_reais(), respostas)["cartao-estacionamento"]
+
+
+SEM_NADA = {"tem_deficiencia_requerente": "sim", "deficiencia_motora_fisica_organica": "nao",
+            "deficiencia_intelectual_ou_pea": "nao", "deficiencia_visual": "nao", "deficiente_forcas_armadas": "nao"}
+MOTORA_OK = {**SEM_NADA, "deficiencia_motora_fisica_organica": "sim", "grau_incapacidade_motora_pct": 60,
+             "dificuldade_locomocao_ou_transportes": "sim"}
+
+
+def test_cartao_portao_sem_deficiencia_decide_sozinho(pagina):
+    assert _cartao(pagina, {"tem_deficiencia_requerente": "nao"})["estado"] == "inelegivel"
+
+
+def test_cartao_com_deficiencia_mas_nenhuma_categoria_inelegivel(pagina):
+    assert _cartao(pagina, SEM_NADA)["estado"] == "inelegivel"
+
+
+def test_cartao_al_a_motora_elegivel_no_limite_exacto_de_60(pagina):
+    assert _cartao(pagina, MOTORA_OK)["estado"] == "elegivel"
+
+
+def test_cartao_al_a_motora_abaixo_de_60_inelegivel(pagina):
+    assert _cartao(pagina, {**MOTORA_OK, "grau_incapacidade_motora_pct": 59.9})["estado"] == "inelegivel"
+
+
+def test_cartao_al_a_sem_dificuldade_de_locomocao_nem_forcas_armadas_inelegivel(pagina):
+    assert _cartao(pagina, {**MOTORA_OK, "dificuldade_locomocao_ou_transportes": "nao"})["estado"] == "inelegivel"
+
+
+def test_cartao_n2_forcas_armadas_motora_60_elegivel_sem_dificuldade(pagina):
+    r = _cartao(pagina, {**MOTORA_OK, "dificuldade_locomocao_ou_transportes": "nao", "deficiente_forcas_armadas": "sim"})
+    assert r["estado"] == "elegivel"
+
+
+def test_cartao_n2_forcas_armadas_abaixo_de_60_inelegivel(pagina):
+    r = _cartao(pagina, {**MOTORA_OK, "grau_incapacidade_motora_pct": 59, "dificuldade_locomocao_ou_transportes": "nao",
+                         "deficiente_forcas_armadas": "sim"})
+    assert r["estado"] == "inelegivel"
+
+
+def test_cartao_n2_forcas_armadas_sem_deficiencia_motora_inelegivel(pagina):
+    # Art. 4.º, n.º 2: FA E incapacidade MOTORA ≥ 60% — FA sozinho não chega.
+    r = _cartao(pagina, {**SEM_NADA, "deficiente_forcas_armadas": "sim"})
+    assert r["estado"] == "inelegivel"
+
+
+def test_cartao_al_b_limite_exacto_e_abaixo(pagina):
+    base = {**SEM_NADA, "deficiencia_intelectual_ou_pea": "sim"}
+    assert _cartao(pagina, {**base, "grau_incapacidade_intelectual_pea_pct": 60})["estado"] == "elegivel"
+    assert _cartao(pagina, {**base, "grau_incapacidade_intelectual_pea_pct": 59.9})["estado"] == "inelegivel"
+
+
+def test_cartao_al_c_visual_usa_a_alteracao_no_dominio_da_visao(pagina):
+    base = {**SEM_NADA, "deficiencia_visual": "sim"}
+    assert _cartao(pagina, {**base, "alteracao_dominio_visao_pct": 95})["estado"] == "elegivel"
+    assert _cartao(pagina, {**base, "alteracao_dominio_visao_pct": 94.9})["estado"] == "inelegivel"
+    # Um grau motor alto não serve para a visual.
+    assert _cartao(pagina, {**base, "alteracao_dominio_visao_pct": 80, "grau_incapacidade_motora_pct": 99})["estado"] == "inelegivel"
+
+
+def test_cartao_mais_do_que_uma_categoria_basta_uma_cumprir(pagina):
+    # Motora sem dificuldade (a) falha) e visual com 95% (c) cumpre).
+    r = _cartao(pagina, {**MOTORA_OK, "dificuldade_locomocao_ou_transportes": "nao",
+                         "deficiencia_visual": "sim", "alteracao_dominio_visao_pct": 95})
+    assert r["estado"] == "elegivel"
+
+
+def test_cartao_indeterminado_quando_falta_o_grau_da_categoria(pagina):
+    r = _cartao(pagina, {**SEM_NADA, "deficiencia_visual": "sim"})
+    assert r["estado"] == "indeterminado"
+    assert r["perguntasEmFalta"] == ["alteracao_dominio_visao_pct"]
+
+
+def _proxima_cartao(pagina, respostas):
+    condicoes = {**_condicoes_reais()}
+    condicoes["apoios"] = {"cartao-estacionamento": condicoes["apoios"]["cartao-estacionamento"]}
+    return _proxima(pagina, condicoes, respostas)
+
+
+def test_cartao_pergunta_primeiro_o_portao(pagina):
+    assert _proxima_cartao(pagina, {}) == "tem_deficiencia_requerente"
+    assert _proxima_cartao(pagina, {"tem_deficiencia_requerente": "nao"}) is None
+
+
+def test_cartao_locomocao_so_e_perguntada_a_quem_tem_deficiencia_motora(pagina):
+    vistos = []
+    respostas = {"tem_deficiencia_requerente": "sim", "deficiencia_motora_fisica_organica": "nao",
+                 "deficiencia_intelectual_ou_pea": "nao", "deficiencia_visual": "sim",
+                 "alteracao_dominio_visao_pct": 50, "deficiente_forcas_armadas": "nao"}
+    parcial = {"tem_deficiencia_requerente": "sim"}
+    for _ in range(10):
+        campo = _proxima_cartao(pagina, parcial)
+        if campo is None:
+            break
+        vistos.append(campo)
+        parcial[campo] = respostas[campo]
+    assert "dificuldade_locomocao_ou_transportes" not in vistos, vistos
+    assert "grau_incapacidade_motora_pct" not in vistos, vistos
+    # Com deficiência motora, a pergunta aparece.
+    base = {"tem_deficiencia_requerente": "sim", "deficiencia_motora_fisica_organica": "sim",
+            "grau_incapacidade_motora_pct": 70}
+    assert _proxima_cartao(pagina, base) == "dificuldade_locomocao_ou_transportes"
+
+
 
 # ── PR 12 (revisão 2): texto próprio quando a idade exclui (4+ anos) ─────────
 

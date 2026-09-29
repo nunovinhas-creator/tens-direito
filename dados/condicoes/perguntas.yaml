@@ -419,3 +419,116 @@ outros_rendimentos_mensais_agregado:
   unidade: "EUR/mês"
   pergunta: "Quanto recebe por mês o teu agregado noutros rendimentos (pensões, subsídios, rendas, juros)?"
 
+
+
+# PR 12b — cartão de estacionamento (DL 307/2003, art. 4.º). Perguntas sobre
+# a pessoa que teria o cartão (o titular). Uma pergunta-portão; depois uma
+# pergunta sim/não por categoria do art. 4.º (pode haver mais do que uma),
+# cada uma com o seu grau. A dificuldade de locomoção/transportes só se
+# pergunta a quem tem deficiência motora, física ou orgânica.
+tem_deficiencia_requerente:
+  descricao: "A pessoa (titular do cartão) tem alguma deficiência ou incapacidade reconhecida — porta de entrada das perguntas do cartão de estacionamento"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "Tens alguma deficiência ou incapacidade reconhecida?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+
+
+deficiencia_motora_fisica_organica:
+  descricao: "Tem deficiência motora, física ou orgânica (DL 307/2003, art. 4.º, n.º 1, al. a), e n.º 2)"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "Tens deficiência motora, física ou orgânica?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: tem_deficiencia_requerente
+    valor: sim
+
+
+grau_incapacidade_motora_pct:
+  descricao: "Grau da limitação funcional permanente por deficiência motora, física ou orgânica, avaliado pela Tabela Nacional de Incapacidades (art. 4.º, n.º 1, al. a)); é também a incapacidade motora do n.º 2 (Forças Armadas)"
+  tipo: numero
+  unidade: "%"
+  pergunta: "Qual é o teu grau de incapacidade por deficiência motora, física ou orgânica, em percentagem?"
+  ajuda: "Indica o grau de incapacidade desta deficiência, avaliado pela Tabela Nacional de Incapacidades."
+  aplicavel_se:
+    campo: deficiencia_motora_fisica_organica
+    valor: sim
+
+
+dificuldade_locomocao_ou_transportes:
+  descricao: "A deficiência dificulta a locomoção na via pública sem auxílio de outrem ou sem meios de compensação (próteses, ortóteses, cadeira de rodas, muletas, bengalas), ou o acesso ou utilização dos transportes públicos coletivos convencionais (DL 307/2003, art. 4.º, n.º 1, al. a))"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "A tua deficiência dificulta-te andar na rua sem ajuda de outra pessoa ou de meios como cadeira de rodas, muletas ou bengala, ou usar os transportes públicos?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: deficiencia_motora_fisica_organica
+    valor: sim
+
+
+deficiencia_intelectual_ou_pea:
+  descricao: "Tem deficiência intelectual ou Perturbação do Espetro do Autismo (DL 307/2003, art. 4.º, n.º 1, al. b))"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "Tens deficiência intelectual ou perturbação do espetro do autismo?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: tem_deficiencia_requerente
+    valor: sim
+
+
+grau_incapacidade_intelectual_pea_pct:
+  descricao: "Grau de incapacidade por deficiência intelectual ou Perturbação do Espetro do Autismo (art. 4.º, n.º 1, al. b))"
+  tipo: numero
+  unidade: "%"
+  pergunta: "Qual é o teu grau de incapacidade por deficiência intelectual ou perturbação do espetro do autismo, em percentagem?"
+  ajuda: "Indica o grau de incapacidade desta deficiência, avaliado pela Tabela Nacional de Incapacidades."
+  aplicavel_se:
+    campo: deficiencia_intelectual_ou_pea
+    valor: sim
+
+
+deficiencia_visual:
+  descricao: "Tem deficiência visual (DL 307/2003, art. 4.º, n.º 1, al. c))"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "Tens deficiência visual?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: tem_deficiencia_requerente
+    valor: sim
+
+
+alteracao_dominio_visao_pct:
+  descricao: "Alteração permanente no domínio da visão, em percentagem, avaliada pela Tabela Nacional de Incapacidades (art. 4.º, n.º 1, al. c)) — não é o grau global de incapacidade"
+  tipo: numero
+  unidade: "%"
+  pergunta: "Qual é a alteração permanente no domínio da visão, em percentagem?"
+  ajuda: "É a percentagem de alteração da visão avaliada pela Tabela Nacional de Incapacidades, não o grau global de incapacidade do atestado."
+  aplicavel_se:
+    campo: deficiencia_visual
+    valor: sim
+
+
+deficiente_forcas_armadas:
+  descricao: "É pessoa com deficiência das Forças Armadas abrangida pelo Decreto-Lei n.º 43/76, de 20 de janeiro, ou a ela equiparada (DL 307/2003, art. 4.º, n.º 2)"
+  tipo: categorica
+  opcoes: [sim, nao]
+  pergunta: "És deficiente das Forças Armadas (ou equiparado/a)?"
+  rotulos:
+    sim: "Sim"
+    nao: "Não"
+  aplicavel_se:
+    campo: tem_deficiencia_requerente
+    valor: sim

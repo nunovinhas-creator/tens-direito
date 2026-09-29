@@ -671,7 +671,7 @@ def test_creche_real_compila_com_data_do_parametro():
 CAMPOS_FONTE = ("vigencia_inicio", "referencia_legal", "fonte_url", "verificado_em")
 # Apoios cujos parâmetros têm de citar o artigo (regra a partir do PR 12;
 # os anteriores ficam como estão — ver "Por confirmar" do PR 12).
-APOIOS_COM_ARTIGO_OBRIGATORIO = ("creche",)
+APOIOS_COM_ARTIGO_OBRIGATORIO = ("creche", "cartao-estacionamento")
 
 
 def _referencias(condicoes: list) -> set[str]:
@@ -753,10 +753,13 @@ def test_tipo_link_invalido_falha(tmp_path, monkeypatch, alteracao, erro):
         gerar_condicoes_json.consolidar()
 
 
-def test_creche_real_e_guia_e_os_restantes_sao_simuladores():
+GUIAS_SEM_SIMULADOR = {"creche", "cartao-estacionamento"}
+
+
+def test_guias_reais_sao_guia_e_os_restantes_sao_simuladores():
     apoios = gerar_condicoes_json.consolidar()["apoios"]
-    assert apoios["creche"]["tipo_link"] == "guia"
-    assert {a["tipo_link"] for n, a in apoios.items() if n != "creche"} == {"simulador"}
+    assert {n for n, a in apoios.items() if a["tipo_link"] == "guia"} == GUIAS_SEM_SIMULADOR
+    assert {a["tipo_link"] for n, a in apoios.items() if n not in GUIAS_SEM_SIMULADOR} == {"simulador"}
 
 
 
@@ -823,6 +826,52 @@ def test_fontes_da_creche_guardadas_em_dados_fontes():
                  "Portaria-305-2022-consolidada-2024-06-06.pdf", "Portaria-262-2011-consolidada-2023-12-11.pdf"):
         caminho = fontes / nome
         assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-", nome
+
+
+def test_cartao_estacionamento_real_compila_com_parametros_do_art_4():
+    apoio = gerar_condicoes_json.consolidar()["apoios"]["cartao-estacionamento"]
+    assert apoio["tipo_link"] == "guia"
+    portao, grupo = apoio["condicoes"]
+    assert (portao["campo"], portao["operador_comparacao"], portao["valor"]) == ("tem_deficiencia_requerente", "eq", "sim")
+    assert grupo["operador"] == "any"
+    assert [c["id"] for c in grupo["condicoes"]] == [
+        "al_a_motora_fisica_organica", "al_b_intelectual_ou_pea", "al_c_visual", "n2_forcas_armadas"]
+    limiares = {(c["campo"], c["fonte"]["referencia"]): c["valor"] for alt in grupo["condicoes"]
+                for c in alt["condicoes"] if c["fonte"]["tipo"] == "parametro"}
+    assert limiares == {
+        ("grau_incapacidade_motora_pct", "cartao-estacionamento.grau_minimo_motora_pct"): 60,
+        ("grau_incapacidade_intelectual_pea_pct", "cartao-estacionamento.grau_minimo_intelectual_pea_pct"): 60,
+        ("alteracao_dominio_visao_pct", "cartao-estacionamento.grau_minimo_visual_pct"): 95,
+        ("grau_incapacidade_motora_pct", "cartao-estacionamento.grau_minimo_forcas_armadas_motora_pct"): 60,
+    }
+    # N.º 2: FA E deficiência motora E incapacidade motora ≥ 60%.
+    n2 = {c["id"]: c for c in grupo["condicoes"]}["n2_forcas_armadas"]
+    assert n2["operador"] == "all"
+    assert [(c["campo"], c["operador_comparacao"], c["valor"]) for c in n2["condicoes"]] == [
+        ("deficiente_forcas_armadas", "eq", "sim"),
+        ("deficiencia_motora_fisica_organica", "eq", "sim"),
+        ("grau_incapacidade_motora_pct", "gte", 60),
+    ]
+
+
+def test_parametros_do_cartao_citam_a_alinea_do_art_4_e_a_vigencia_de_2017():
+    p = json.loads((RAIZ / "dados" / "parametros.json").read_text(encoding="utf-8"))["prestacoes"]["cartao-estacionamento"]
+    esperado = {
+        "grau_minimo_motora_pct": "art. 4.º, n.º 1, al. a)",
+        "grau_minimo_intelectual_pea_pct": "art. 4.º, n.º 1, al. b)",
+        "grau_minimo_visual_pct": "art. 4.º, n.º 1, al. c)",
+        "grau_minimo_forcas_armadas_motora_pct": "art. 4.º, n.º 2",
+    }
+    assert set(p) == set(esperado)
+    for nome, citacao in esperado.items():
+        assert citacao in p[nome]["referencia_legal"], nome
+        assert "Decreto-Lei n.º 128/2017" in p[nome]["referencia_legal"], nome
+        assert p[nome]["vigencia_inicio"] == "2017-10-10", nome
+
+
+def test_fonte_do_cartao_guardada_em_dados_fontes():
+    caminho = RAIZ / "dados" / "fontes" / "Decreto-Lei-307-2003-consolidado-2017-10-09.pdf"
+    assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-"
 
 
 

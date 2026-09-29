@@ -1,0 +1,52 @@
+# Cartão de estacionamento para pessoas com deficiência (modelo
+# comunitário) — Decreto-Lei n.º 307/2003, de 10 de dezembro, art. 4.º
+# ("Legitimidade"), na redação do Decreto-Lei n.º 128/2017, de 9 de
+# outubro, em vigor a partir de 2017-10-10. GRAU 1: texto lido na
+# consolidação oficial do DRE (versão à data de 9-10-2017), guardada em
+# dados/fontes/Decreto-Lei-307-2003-consolidado-2017-10-09.pdf.
+#
+# Só os limiares de grau de incapacidade — as restantes exigências do
+# art. 4.º (tipo de deficiência, dificuldade de locomoção/transportes,
+# Forças Armadas) são categóricas, em dados/condicoes/cartao-estacionamento.yaml.
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+grau_minimo_motora_pct:
+  descricao: "Cartão de estacionamento — grau mínimo da limitação funcional permanente, na deficiência motora, física ou orgânica (Tabela Nacional de Incapacidades)"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2017-10-10"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. a), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"
+
+grau_minimo_intelectual_pea_pct:
+  descricao: "Cartão de estacionamento — grau mínimo de incapacidade na deficiência intelectual e na Perturbação do Espetro do Autismo (PEA)"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2017-10-10"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. b), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"
+
+grau_minimo_visual_pct:
+  descricao: "Cartão de estacionamento — alteração permanente mínima no domínio da visão, na deficiência visual (Tabela Nacional de Incapacidades)"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2017-10-10"
+      valor: 95
+      referencia_legal: "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. c), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"
+
+grau_minimo_forcas_armadas_motora_pct:
+  descricao: "Cartão de estacionamento — grau mínimo de incapacidade motora das pessoas com deficiência das Forças Armadas (Decreto-Lei n.º 43/76) ou equiparadas"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2017-10-10"
+      valor: 60
+      referencia_legal: "Decreto-Lei n.º 307/2003, art. 4.º, n.º 2, na redação do Decreto-Lei n.º 128/2017, de 9 de outubro"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"
