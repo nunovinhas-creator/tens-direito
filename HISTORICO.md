@@ -6694,6 +6694,25 @@ aniversário ou no fim do ano letivo — parágrafo no cartão "A criança tem
 direito?" e frase igual na pergunta frequente, no corpo e no JSON-LD
 (`tests/test_creche_idade_pagina.py`); carimbo 29/09/2026. O cartão europeu de estacionamento passa para o PR 12b (#262).
 
+
+*Última revisão: 2026-09-28 — PR 12b do simulador universal: condições de
+acesso ao cartão europeu de estacionamento.* Fonte: Decreto-Lei n.º
+307/2003, art. 4.º, na redação do Decreto-Lei n.º 128/2017 (consolidação
+oficial em `dados/fontes/`, entregue pelo Nuno). Um grupo `any` com as
+quatro categorias do artigo — n.º 1, al. a) motora/física/orgânica ≥ 60% e
+dificuldade de locomoção ou nos transportes; al. b) intelectual ou PEA ≥
+60%; al. c) visual ≥ 95%; n.º 2 Forças Armadas, motora ≥ 60% — com os
+limiares como parâmetros (`dados/parametros/cartao-estacionamento.yaml`,
+vigência 2017-10-10). Perguntas: um portão ("Tens alguma deficiência ou
+incapacidade reconhecida?"), uma pergunta sim/não por categoria (mais do que
+uma é possível), cada uma com o seu grau — na visual, a alteração no domínio
+da visão, não o grau global — e a locomoção/transportes só para a motora
+(`aplicavel_se`). O guardrail de portões passou a aceitar também um `X eq v`
+directo de um grupo `all` que contém o campo. Fora: doença oncológica (a página refere-a, o art. 4.º não) e a
+prova por atestado multiúso (art. 6.º, n.º 2). `estado: rascunho`, criado no
+compilador para a estrutura inicial, foi retirado antes do merge (ficou sem
+uso quando as condições entraram).
+
 ---
 
 *Última revisão automática: 2026-09-28*

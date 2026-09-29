@@ -145,8 +145,11 @@ def test_guardrail_rotulos_falha_quando_estragado():
 # nunca é feita e o apoio fica eternamente em "falta saber" (foi o que
 # motivou tem_filhos_a_cargo no abono/ASE e reside_legalmente_pt no RSI).
 # O portão pode ser uma condição de topo `X eq v` (o apoio fica logo
-# inelegível) ou, dentro do grupo `any` que contém o campo, uma alternativa
-# `X neq v` (o grupo fica logo elegível).
+# inelegível), uma condição `X eq v` directa de qualquer grupo `all` que
+# contém o campo (esse grupo fica logo inelegível — PR 12b: cada categoria do
+# cartão de estacionamento abre com a sua pergunta sim/não) ou, dentro do
+# grupo `any` que contém o campo, uma alternativa `X neq v` (o grupo fica
+# logo elegível).
 def _eh_portao(cond: dict, campo: str, valor, operador: str) -> bool:
     return (
         "condicoes" not in cond
@@ -165,25 +168,27 @@ def _campos_da_folha(cond: dict) -> list[str]:
 def _erros_portoes(perguntas: dict, apoios: dict) -> list[str]:
     erros = []
 
-    def visitar(cond, apoio, topo, grupo_any):
+    def visitar(cond, apoio, irmaos_all, grupo_any):
         if "condicoes" in cond:
             novo_any = cond["condicoes"] if cond["operador"] == "any" else grupo_any
+            novos_irmaos = irmaos_all + cond["condicoes"] if cond["operador"] == "all" else irmaos_all
             for sub in cond["condicoes"]:
-                visitar(sub, apoio, topo, novo_any)
+                visitar(sub, apoio, novos_irmaos, novo_any)
             return
         for campo in _campos_da_folha(cond):
             regra = perguntas.get(campo, {}).get("aplicavel_se")
             if not regra:
                 continue
             x, v = regra["campo"], regra["valor"]
-            no_topo = apoio["operador"] == "all" and any(_eh_portao(c, x, v, "eq") for c in topo)
+            num_all = any(_eh_portao(c, x, v, "eq") for c in irmaos_all)
             no_grupo = grupo_any is not None and any(_eh_portao(c, x, v, "neq") for c in grupo_any)
-            if not (no_topo or no_grupo):
+            if not (num_all or no_grupo):
                 erros.append(f"{apoio['apoio']}: usa '{campo}' (aplicavel_se {x} == {v}) sem portão em '{x}'")
 
     for apoio in apoios.values():
+        topo = apoio["condicoes"] if apoio["operador"] == "all" else []
         for cond in apoio["condicoes"]:
-            visitar(cond, apoio, apoio["condicoes"], None)
+            visitar(cond, apoio, topo, None)
     return sorted(set(erros))
 
 
@@ -206,3 +211,57 @@ def test_guardrail_portoes_falha_quando_estragado():
     grupo = next(c for c in apoios["rsi"]["condicoes"] if c["id"] == "disponibilidade_se_desempregado")
     grupo["condicoes"] = [c for c in grupo["condicoes"] if c["id"] != "nao_desempregado"]
     assert any("inscrito_centro_emprego_e_disponivel" in e for e in _erros_portoes(perguntas, apoios))
+
+
+
+def test_guardrail_portao_dentro_de_grupo_all_falha_quando_estragado():
+    # PR 12b: no cartão de estacionamento, as perguntas de grau e de
+    # dificuldade só se fazem a quem tem a deficiência da categoria; o portão
+    # é a condição `eq sim` dessa categoria, dentro do grupo `all` da
+    # alternativa. Sem ela, o guardrail tem de acusar.
+    perguntas = _carregar()
+    apoios = copy.deepcopy(_carregar_apoios())
+    grupo = apoios["cartao-estacionamento"]["condicoes"][1]
+    al_a = next(c for c in grupo["condicoes"] if c["id"] == "al_a_motora_fisica_organica")
+    al_a["condicoes"] = [c for c in al_a["condicoes"] if c["id"] != "a_tem_deficiencia_motora"]
+    n2 = next(c for c in grupo["condicoes"] if c["id"] == "n2_forcas_armadas")
+    n2["condicoes"] = [c for c in n2["condicoes"] if c["id"] != "n2_tem_deficiencia_motora"]
+    erros = _erros_portoes(perguntas, apoios)
+    assert "cartao-estacionamento: usa 'dificuldade_locomocao_ou_transportes' (aplicavel_se deficiencia_motora_fisica_organica == sim) sem portão em 'deficiencia_motora_fisica_organica'" in erros
+    assert "cartao-estacionamento: usa 'grau_incapacidade_motora_pct' (aplicavel_se deficiencia_motora_fisica_organica == sim) sem portão em 'deficiencia_motora_fisica_organica'" in erros
+    # E o portão de topo do cartão (tem_deficiencia_requerente) também conta.
+    apoios = copy.deepcopy(_carregar_apoios())
+    apoios["cartao-estacionamento"]["condicoes"] = apoios["cartao-estacionamento"]["condicoes"][1:]
+    erros = _erros_portoes(perguntas, apoios)
+    assert any("deficiencia_visual' (aplicavel_se tem_deficiencia_requerente == sim)" in e for e in erros), erros
+
+
+def test_guardrail_portao_num_grupo_all_nao_vale_fora_dele():
+    # O portão de um grupo `all` só protege os campos desse grupo — nunca os de
+    # uma alternativa vizinha. Caso sintético: o portão está na alternativa B
+    # e o campo condicional na A.
+    perguntas = {
+        "m": {"tipo": "categorica", "opcoes": ["sim", "nao"]},
+        "g": {"tipo": "numero", "unidade": "%", "aplicavel_se": {"campo": "m", "valor": "sim"}},
+    }
+    folha_g = {"id": "g", "tipo": "limiar", "campo": "g", "operador_comparacao": "gte", "parametro": "p.x"}
+    portao = {"id": "m", "tipo": "categorica", "campo": "m", "operador_comparacao": "eq", "valor_literal": "sim"}
+    apoio = {"apoio": "s", "operador": "all", "condicoes": [{"id": "any", "operador": "any", "condicoes": [
+        {"id": "a", "operador": "all", "condicoes": [folha_g]},
+        {"id": "b", "operador": "all", "condicoes": [portao]},
+    ]}]}
+    assert _erros_portoes(perguntas, {"s": apoio}) == ["s: usa 'g' (aplicavel_se m == sim) sem portão em 'm'"]
+
+
+def test_cartao_perguntas_por_categoria_so_para_quem_tem_essa_deficiencia():
+    # PR 12b: a locomoção/transportes e o grau motor só para a deficiência
+    # motora; o grau intelectual e a alteração da visão, para a sua categoria.
+    perguntas = _carregar()
+    esperado = {
+        "dificuldade_locomocao_ou_transportes": "deficiencia_motora_fisica_organica",
+        "grau_incapacidade_motora_pct": "deficiencia_motora_fisica_organica",
+        "grau_incapacidade_intelectual_pea_pct": "deficiencia_intelectual_ou_pea",
+        "alteracao_dominio_visao_pct": "deficiencia_visual",
+    }
+    for campo, mae in esperado.items():
+        assert perguntas[campo].get("aplicavel_se") == {"campo": mae, "valor": "sim"}, campo

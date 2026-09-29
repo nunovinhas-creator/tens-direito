@@ -365,6 +365,48 @@
         "verificado_em": "2026-06-24"
       }
     },
+    "cartao-estacionamento": {
+      "grau_minimo_motora_pct": {
+        "descricao": "Cartão de estacionamento — grau mínimo da limitação funcional permanente, na deficiência motora, física ou orgânica (Tabela Nacional de Incapacidades)",
+        "unidade": "%",
+        "valor": 60,
+        "vigencia_inicio": "2017-10-10",
+        "referencia_legal": "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. a), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-28"
+      },
+      "grau_minimo_intelectual_pea_pct": {
+        "descricao": "Cartão de estacionamento — grau mínimo de incapacidade na deficiência intelectual e na Perturbação do Espetro do Autismo (PEA)",
+        "unidade": "%",
+        "valor": 60,
+        "vigencia_inicio": "2017-10-10",
+        "referencia_legal": "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. b), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-28"
+      },
+      "grau_minimo_visual_pct": {
+        "descricao": "Cartão de estacionamento — alteração permanente mínima no domínio da visão, na deficiência visual (Tabela Nacional de Incapacidades)",
+        "unidade": "%",
+        "valor": 95,
+        "vigencia_inicio": "2017-10-10",
+        "referencia_legal": "Decreto-Lei n.º 307/2003, art. 4.º, n.º 1, al. c), na redação do Decreto-Lei n.º 128/2017, de 9 de outubro",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-28"
+      },
+      "grau_minimo_forcas_armadas_motora_pct": {
+        "descricao": "Cartão de estacionamento — grau mínimo de incapacidade motora das pessoas com deficiência das Forças Armadas (Decreto-Lei n.º 43/76) ou equiparadas",
+        "unidade": "%",
+        "valor": 60,
+        "vigencia_inicio": "2017-10-10",
+        "referencia_legal": "Decreto-Lei n.º 307/2003, art. 4.º, n.º 2, na redação do Decreto-Lei n.º 128/2017, de 9 de outubro",
+        "fonte_url": "https://diariodarepublica.pt",
+        "fonte_url_complementar": null,
+        "verificado_em": "2026-09-28"
+      }
+    },
     "creche": {
       "creche_caucao_max_eur": {
         "descricao": "Gratuitidade da creche — valor máximo da caução de reserva de vaga que a creche pode exigir; é sempre devolvida na celebração do contrato de prestação de serviços, nunca uma mensalidade",
