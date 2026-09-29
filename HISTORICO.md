@@ -6687,7 +6687,12 @@ nos dados) em vez da frase genérica "Não cumpres…"; `motivosQueExcluem()`
 no motor. O limite derivado dos 4 anos passou a citar a Portaria n.º
 262/2011 (art. 3.º, "destinado a acolher crianças até aos 3 anos de idade";
 anexo, ponto 4, "até aos 36 meses" — consolidação guardada em
-`dados/fontes/`) e a Portaria n.º 198/2022, art. 2.º, n.º 1. O cartão europeu de estacionamento passa para o PR 12b (#262).
+`dados/fontes/`) e a Portaria n.º 198/2022, art. 2.º, n.º 1. `creche-gratuita.html`
+passou a explicar a regra (Portaria n.º 262/2011, art. 3.º; Portaria n.º
+198/2022, art. 9.º, n.º 4) e que nenhum diploma fixa se o corte é no
+aniversário ou no fim do ano letivo — parágrafo no cartão "A criança tem
+direito?" e frase igual na pergunta frequente, no corpo e no JSON-LD
+(`tests/test_creche_idade_pagina.py`); carimbo 29/09/2026. O cartão europeu de estacionamento passa para o PR 12b (#262).
 
 ---
 
