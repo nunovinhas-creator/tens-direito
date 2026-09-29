@@ -1827,9 +1827,49 @@
     "pagina": "fontes.html",
     "marcador": "diário da república",
     "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "contexto": "edagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "contexto": "ixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 71/202",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2023",
     "contexto": "187/2007 — regulamenta o regime de antecipação da reforma por deficiência criado pela Lei n.º 5/2022, de 7 de janeiro (art. 1.º). Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023. É a 11.ª alteração ao Decreto-Lei n.º 187/2007 e a 50.ª ao Estatuto da Aposentação (art. 40.º do Decreto-Lei n.º 498/72). O artigo 5.º afasta desta via a redução por penalizações de antecipação e o factor de sustentabi",
     "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portaria n.º 305/2022, aplicação subsidiária). Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 158/20",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "contexto": "ecto pedagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div>",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "diário da república",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "contexto": "para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 71/202",
+    "ordinal": 2
   },
   {
     "pagina": "fontes.html",
@@ -1977,6 +2017,38 @@
   },
   {
     "pagina": "fontes.html",
+    "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "gulamenta a gratuitidade das creches e creches familiares integradas no sistema de cooperação, e das amas do Instituto da Segurança Social, I.P. O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2022",
+    "contexto": "1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\". As suas normas aplicam-se também às creches aderentes, em tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portari",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "<p>Regulamenta a gratuitidade das creches e creches familiares integradas no sistema de cooperação, e das amas do Instituto da Segurança Social, I.P. O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2022",
+    "contexto": "n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\". As suas normas aplicam-se também às creches aderentes, em tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portari",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
     "marcador": "novas\\s+inscri[çc][õo]es",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2006",
@@ -2019,8 +2091,64 @@
     "pagina": "fontes.html",
     "marcador": "portaria",
     "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "contexto": "as reguladoras das condições de instalação e funcionamento das creches. O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023). O artigo 5.º (actividades e serviços) e o artigo 6.º (projecto pedagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "contexto": "edagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "contexto": "ixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 71/202",
+    "ordinal": 3
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "contexto": "tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portaria n.º 305/2022, aplicação subsidiária). Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 158/20",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "contexto": "gulamenta a gratuitidade das creches e creches familiares integradas no sistema de cooperação, e das amas do Instituto da Segurança Social, I.P. O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\"",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
     "contexto": "celho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima. Os n.os 3 e 4 do artig",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2022",
+    "contexto": "1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\". As suas normas aplicam-se também às creches aderentes, em tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portari",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "contexto": "<p>Regulamenta a gratuitidade das creches e creches familiares integradas no sistema de cooperação, e das amas do Instituto da Segurança Social, I.P. O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\"",
     "ordinal": 1
   },
   {
@@ -2029,7 +2157,39 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "contexto": "\"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima. Os n.os 3 e 4 do artig",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2022",
+    "contexto": "n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama. O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\". As suas normas aplicam-se também às creches aderentes, em tudo o que a Portaria n.º 305/2022 não contrarie e com as necessárias adaptações (artigo 9.º da Portari",
     "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "contexto": "s normas reguladoras das condições de instalação e funcionamento das creches. O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023). O artigo 5.º (actividades e serviços) e o artigo 6.º (projecto pedagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "contexto": "ecto pedagógico) são os artigos para que remete o artigo 4.º, n.º 1, da Portaria n.º 305/2022 para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div>",
+    "ordinal": 2
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "portaria",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "contexto": "para fixar o que a gratuitidade abrange. Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023. Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).</p> <p><a href=\"https://diariodarepublica.pt\" target=\"_blank\" rel=\"noopener\">diariodarepublica.pt</a></p> </div> <div class=\"card\"> <span class=\"tag\">Legislação</span> <h2>Portaria n.º 71/202",
+    "ordinal": 3
   },
   {
     "pagina": "fontes.html",
