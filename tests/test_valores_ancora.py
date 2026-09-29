@@ -527,10 +527,17 @@ def _seccao_cartao(pagina: str) -> str:
 def test_cartao_estacionamento_limiares_e_validade_consistentes():
     for pagina in PAGINAS_CARTAO_ESTACIONAMENTO:
         seccao = _seccao_cartao(pagina)
-        # 4 situações com limiar de 60% (motora, intelectual/PEA,
-        # oncológica, Forças Armadas) e 1 com 95% (visual).
-        assert seccao.count("≥ 60%") == 4, f"{pagina}: limiar 60% divergente na secção do cartão"
+        # DL 307/2003, art. 4.º (redação do DL 128/2017; issue #263): 3
+        # situações com limiar de 60% (motora com dificuldade de locomoção
+        # ou nos transportes, intelectual/PEA, Forças Armadas com
+        # incapacidade motora) e 1 com 95% (alteração da visão). A doença
+        # oncológica não consta do art. 4.º — nunca pode voltar.
+        texto = re.sub(r"<[^>]+>", "", seccao)
+        assert seccao.count("≥ 60%") == 3, f"{pagina}: limiar 60% divergente na secção do cartão"
         assert seccao.count("≥ 95%") == 1, f"{pagina}: limiar 95% divergente na secção do cartão"
+        assert "transportes públicos" in texto, f"{pagina}: al. a) sem a alternativa dos transportes públicos"
+        assert "incapacidade motora" in texto, f"{pagina}: n.º 2 (Forças Armadas) sem 'motora'"
+        assert "oncol" not in seccao.lower(), f"{pagina}: doença oncológica sem fonte primária no art. 4.º"
         assert "Validade: 10 anos" in seccao, f"{pagina}: validade de 10 anos em falta"
         assert "Decreto-Lei n.º 307/2003" in seccao, f"{pagina}: diploma base em falta"
         assert "Decreto-Lei n.º 128/2017" in seccao, f"{pagina}: diploma alterador em falta"

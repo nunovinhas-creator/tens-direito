@@ -6713,6 +6713,25 @@ prova por atestado multiúso (art. 6.º, n.º 2). `estado: rascunho`, criado no
 compilador para a estrutura inicial, foi retirado antes do merge (ficou sem
 uso quando as condições entraram).
 
+
+*Última revisão: 2026-09-29 — issue #263: página do cartão europeu de
+estacionamento alinhada com o art. 4.º do Decreto-Lei n.º 307/2003 (redação
+do DL 128/2017).* `cartao-europeu-estacionamento.html`: lista "quem tem
+direito", FAQ (corpo = JSON-LD), passo 1 do HowTo, destaque "🔑 Limiar",
+checklist, meta description e resposta rápida com os limiares por categoria —
+motora ≥ 60% com dificuldade de locomoção ou nos transportes públicos;
+intelectual/PEA ≥ 60%; alteração da visão ≥ 95%; deficientes das Forças
+Armadas (ou equiparados) com incapacidade motora ≥ 60%. Doença oncológica
+retirada (não consta do art. 4.º). Prova nas Forças Armadas pelo cartão de
+pessoa deficiente das Forças Armadas (art. 6.º, n.º 3). Selo "Limiar: 60%
+(visão: 95%)" retirado; carimbo 29/09/2026. Nas secções "Bónus" de
+`prestacao-social-para-a-inclusao.html` e `cuidador-informal.html` só a lista
+foi substituída (carimbo destas não avançado); resumo do cartão em
+`p/idosos-incapacidade-cuidadores.html` com o texto da meta description.
+Testes: `tests/test_cartao_estacionamento_pagina.py` (novo) e âncora das três
+páginas em `test_valores_ancora.py` (3 × "≥ 60%", transportes, motora, sem
+"oncol"), todos provados a falhar.
+
 ---
 
 *Última revisão automática: 2026-09-28*
