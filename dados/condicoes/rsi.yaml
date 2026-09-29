@@ -23,6 +23,7 @@ apoio: rsi
 pagina: rsi.html
 titulo: "Rendimento Social de Inserção (RSI)"
 simulador: /simulador-rsi.html
+tipo_link: simulador
 operador: all
 
 # O RSI é absorvido pela PSU (DL 166/2026, art. 63.º: produção de efeitos a

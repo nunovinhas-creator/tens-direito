@@ -35,6 +35,7 @@ def _completar_campos_do_assistente(perguntas: dict, apoios_yaml: dict) -> tuple
     for conteudo in apoios_yaml.values():
         conteudo.setdefault("titulo", f"Apoio {conteudo.get('apoio')}")
         conteudo.setdefault("simulador", "/simuladores.html")
+        conteudo.setdefault("tipo_link", "guia")
     return perguntas, apoios_yaml
 
 
@@ -487,6 +488,7 @@ def _apoio_min(**extra):
         "operador": "all",
         "titulo": "Apoio X",
         "simulador": "/simuladores.html",
+        "tipo_link": "guia",
         "condicoes": [
             {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
         ],
@@ -600,3 +602,253 @@ def test_verificado_em_e_o_mais_recente_dos_parametros_das_condicoes(tmp_path, m
     assert "verificado_em" not in c["apoios"]["z"]
     assert c["verificado_em"] == "2026-05-20"
     assert c["apoios"]["x"]["condicoes"][0]["verificado_em"] == "2026-03-01"
+
+
+# ── PR 12: limiar sobre campo de data ───────────────────────────────────────
+# O motor compara datas ISO como strings (a ordem lexicográfica de AAAA-MM-DD
+# é a cronológica). Um valor noutro formato, ou um número sem unidade, daria
+# um resultado errado em silêncio — o compilador recusa-os.
+
+
+def _perguntas_data():
+    return {"reside": _pergunta_reside(),
+            "nasc": {"descricao": "d", "tipo": "data", "pergunta": "Quando nasceu?"}}
+
+
+def _limiar_data(**extra):
+    base = {"id": "d", "tipo": "limiar", "campo": "nasc", "operador_comparacao": "gte", "parametro": "p.v"}
+    base.update(extra)
+    return base
+
+
+def test_limiar_de_data_sem_unidade_aceita_data_iso(tmp_path, monkeypatch):
+    parametros = {"prestacoes": {"p": {"v": {"valor": "2021-09-01"}}}}
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), parametros,
+              {"x": _apoio_min(condicoes=[_limiar_data()])}, completar=False)
+    cond = gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]
+    assert cond["valor"] == "2021-09-01"
+    assert cond["unidade_comparacao"] is None
+
+
+@pytest.mark.parametrize("valor,unidade,erro", [
+    ("01/09/2021", None, "data ISO"),       # formato português: a comparação por string erraria
+    ("2021-9-1", None, "data ISO"),         # sem zeros: "2021-10-01" < "2021-9-1" como string
+    ("2021-02-30", None, "data ISO"),       # data inexistente
+    (16, None, "data ISO"),                 # idade sem unidade_comparacao
+    ("2021-09-01", "anos", "valor numérico"),
+    (16, "dias", "unidade_comparacao"),
+])
+def test_limiar_de_data_invalido_falha(tmp_path, monkeypatch, valor, unidade, erro):
+    parametros = {"prestacoes": {"p": {"v": {"valor": valor}}}}
+    extra = {"unidade_comparacao": unidade} if unidade else {}
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), parametros,
+              {"x": _apoio_min(condicoes=[_limiar_data(**extra)])}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_limiar_de_idade_em_anos_continua_aceite(tmp_path, monkeypatch):
+    parametros = {"prestacoes": {"p": {"v": {"valor": 16}}}}
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), parametros,
+              {"x": _apoio_min(condicoes=[_limiar_data(operador_comparacao="lte", unidade_comparacao="anos")])},
+              completar=False)
+    assert gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]["valor"] == 16
+
+
+def test_creche_real_compila_com_data_do_parametro():
+    parametros = json.loads((RAIZ / "dados" / "parametros.json").read_text(encoding="utf-8"))
+    c = gerar_condicoes_json.consolidar()
+    creche = c["apoios"]["creche"]
+    assert creche["simulador"] == "/creche-gratuita.html"
+    cond = {x["id"]: x for x in creche["condicoes"]}["nascida_a_partir_da_data_elegivel"]
+    assert cond["fonte"] == {"tipo": "parametro", "referencia": "creche.creche_elegivel_nascidos_apos"}
+    assert cond["valor"] == parametros["prestacoes"]["creche"]["creche_elegivel_nascidos_apos"]["valor"]
+    assert cond["operador_comparacao"] == "gte"
+
+
+# ── PR 12: proveniência dos parâmetros usados pelas condições ───────────────
+
+CAMPOS_FONTE = ("vigencia_inicio", "referencia_legal", "fonte_url", "verificado_em")
+# Apoios cujos parâmetros têm de citar o artigo (regra a partir do PR 12;
+# os anteriores ficam como estão — ver "Por confirmar" do PR 12).
+APOIOS_COM_ARTIGO_OBRIGATORIO = ("creche",)
+
+
+def _referencias(condicoes: list) -> set[str]:
+    refs: set[str] = set()
+    for c in condicoes:
+        if "condicoes" in c:
+            refs |= _referencias(c["condicoes"])
+            continue
+        fonte = c.get("fonte", {})
+        if fonte.get("tipo") == "parametro":
+            refs.add(fonte["referencia"])
+        elif fonte.get("tipo") == "parametro_multiplo":
+            refs.update(fonte["referencias"])
+    return refs
+
+
+def _erros_de_proveniencia(condicoes_json: dict, parametros_json: dict) -> list[str]:
+    import re
+    erros = []
+    prestacoes = parametros_json["prestacoes"]
+    for apoio, dados in condicoes_json["apoios"].items():
+        for ref in sorted(_referencias(dados["condicoes"])):
+            prestacao, nome = ref.split(".", 1)
+            p = prestacoes[prestacao][nome]
+            falta = [k for k in CAMPOS_FONTE if not p.get(k)]
+            if falta:
+                erros.append(f"{apoio}: {ref} sem {falta}")
+            if apoio in APOIOS_COM_ARTIGO_OBRIGATORIO and not re.search(r"\bart(\.|igo)", p.get("referencia_legal") or "", re.I):
+                erros.append(f"{apoio}: {ref} sem artigo na referencia_legal")
+    return erros
+
+
+def _json_real(nome):
+    return json.loads((RAIZ / "dados" / nome).read_text(encoding="utf-8"))
+
+
+def test_parametros_das_condicoes_tem_os_quatro_campos_de_fonte():
+    assert _erros_de_proveniencia(_json_real("condicoes.json"), _json_real("parametros.json")) == []
+
+
+@pytest.mark.parametrize("campo", CAMPOS_FONTE)
+def test_guardrail_proveniencia_falha_quando_estragado(campo):
+    parametros = _json_real("parametros.json")
+    parametros["prestacoes"]["creche"]["creche_elegivel_nascidos_apos"][campo] = None
+    erros = _erros_de_proveniencia(_json_real("condicoes.json"), parametros)
+    assert any("creche.creche_elegivel_nascidos_apos" in e and campo in e for e in erros), erros
+
+
+def test_guardrail_artigo_falha_quando_estragado():
+    parametros = _json_real("parametros.json")
+    parametros["prestacoes"]["creche"]["creche_elegivel_nascidos_apos"]["referencia_legal"] = "Portaria n.º 305/2022"
+    erros = _erros_de_proveniencia(_json_real("condicoes.json"), parametros)
+    assert erros == ["creche: creche.creche_elegivel_nascidos_apos sem artigo na referencia_legal"]
+
+
+# ── PR 12: tipo_link (simulador ou guia) ────────────────────────────────────
+
+
+def test_tipo_link_passa_para_o_json(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(simulador="/simulador-abono.html", tipo_link="simulador")}, completar=False)
+    assert gerar_condicoes_json.consolidar()["apoios"]["x"]["tipo_link"] == "simulador"
+
+
+@pytest.mark.parametrize("alteracao,erro", [
+    ({"tipo_link": None}, "tipo_link"),
+    ({"tipo_link": "pagina"}, "tipo_link"),
+    # guia a apontar para um simulador, e simulador a apontar para um guia
+    ({"simulador": "/simulador-abono.html", "tipo_link": "guia"}, "não bate"),
+    ({"simulador": "/creche-gratuita.html", "tipo_link": "simulador"}, "não bate"),
+])
+def test_tipo_link_invalido_falha(tmp_path, monkeypatch, alteracao, erro):
+    apoio = _apoio_min(**alteracao)
+    if apoio["tipo_link"] is None:
+        del apoio["tipo_link"]
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}}, {"x": apoio},
+              completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_creche_real_e_guia_e_os_restantes_sao_simuladores():
+    apoios = gerar_condicoes_json.consolidar()["apoios"]
+    assert apoios["creche"]["tipo_link"] == "guia"
+    assert {a["tipo_link"] for n, a in apoios.items() if n != "creche"} == {"simulador"}
+
+
+
+# ── PR 12 (revisão): limiar_faixa_incerta ───────────────────────────────────
+
+
+def _faixa(**extra):
+    base = {"id": "f", "tipo": "limiar_faixa_incerta", "campo": "nasc", "unidade_comparacao": "anos",
+            "parametro": "p.lim", "parametro_exclusao": "p.exc", "motivo_indeterminado": "a norma não decide"}
+    base.update(extra)
+    return {k: v for k, v in base.items() if v is not None}
+
+
+PARAMETROS_FAIXA = {"prestacoes": {"p": {"lim": {"valor": 3, "verificado_em": "2026-01-01"},
+                                         "exc": {"valor": 4, "verificado_em": "2026-02-01"}}}}
+
+
+def test_faixa_incerta_resolve_os_dois_parametros_e_o_motivo(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), PARAMETROS_FAIXA,
+              {"x": _apoio_min(condicoes=[_faixa()])}, completar=False)
+    cond = gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]
+    assert (cond["valor"], cond["valor_exclusao"]) == (3, 4)
+    assert cond["motivo_indeterminado"] == "a norma não decide"
+    assert cond["fonte"] == {"tipo": "parametro_multiplo", "referencias": ["p.lim", "p.exc"]}
+    assert cond["verificado_em"] == "2026-02-01"
+
+
+@pytest.mark.parametrize("alteracao,parametros,erro", [
+    ({"motivo_indeterminado": None}, None, "motivo_indeterminado"),
+    ({"motivo_indeterminado": "  "}, None, "motivo_indeterminado"),
+    ({"parametro_exclusao": None}, None, "parametro_exclusao"),
+    ({"valor_literal": 3}, None, "não usa"),
+    ({"operador_comparacao": "lt"}, None, "não usa"),
+    ({"unidade_comparacao": None}, None, "unidade_comparacao"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": 4}, "exc": {"valor": 4}}}}, "menor"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": 5}, "exc": {"valor": 4}}}}, "menor"),
+    ({}, {"prestacoes": {"p": {"lim": {"valor": "3"}, "exc": {"valor": 4}}}}, "números"),
+])
+def test_faixa_incerta_invalida_falha(tmp_path, monkeypatch, alteracao, parametros, erro):
+    _preparar(tmp_path, monkeypatch, _perguntas_data(), parametros or PARAMETROS_FAIXA,
+              {"x": _apoio_min(condicoes=[_faixa(**alteracao)])}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_creche_real_idade_vem_dos_dois_parametros_da_portaria_198():
+    parametros = json.loads((RAIZ / "dados" / "parametros.json").read_text(encoding="utf-8"))["prestacoes"]["creche"]
+    cond = {c["id"]: c for c in gerar_condicoes_json.consolidar()["apoios"]["creche"]["condicoes"]}["idade_ate_aos_3_anos"]
+    assert cond["fonte"]["referencias"] == ["creche.creche_idade_limite_anos", "creche.creche_idade_fim_incerteza_anos"]
+    assert (cond["valor"], cond["valor_exclusao"]) == (3, 4)
+    limite = parametros["creche_idade_limite_anos"]
+    assert "art. 9.º, n.º 4" in limite["referencia_legal"] and "Portaria n.º 198/2022" in limite["referencia_legal"]
+    assert limite["vigencia_inicio"] == "2022-09-01"
+    derivado = parametros["creche_idade_fim_incerteza_anos"]["referencia_legal"]
+    assert derivado.startswith("Derivado de:")
+    for citacao in ("Portaria n.º 262/2011, art. 3.º", "anexo, ponto 4", "Portaria n.º 198/2022, art. 2.º, n.º 1",
+                    "art. 9.º, n.º 4", "Nenhum diploma fixa os 4 anos como limite"):
+        assert citacao in derivado, citacao
+
+
+def test_fontes_da_creche_guardadas_em_dados_fontes():
+    fontes = RAIZ / "dados" / "fontes"
+    for nome in ("Lei-2-2022.pdf", "Portaria-198-2022-consolidada-2023-03-10.pdf",
+                 "Portaria-305-2022-consolidada-2024-06-06.pdf", "Portaria-262-2011-consolidada-2023-12-11.pdf"):
+        caminho = fontes / nome
+        assert caminho.is_file() and caminho.read_bytes()[:5] == b"%PDF-", nome
+
+
+
+# ── PR 12 (revisão 2): motivo_inelegivel ────────────────────────────────────
+
+
+def test_motivo_inelegivel_passa_para_o_json(tmp_path, monkeypatch):
+    cond = {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq",
+            "valor_literal": "sim", "motivo_inelegivel": "  Texto próprio.  "}
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(condicoes=[cond])}, completar=False)
+    assert gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]["motivo_inelegivel"] == "Texto próprio."
+
+
+@pytest.mark.parametrize("motivo,em_grupo,erro", [
+    ("", False, "texto não vazio"),
+    (7, False, "texto não vazio"),
+    ("Texto.", True, "não em grupos"),
+])
+def test_motivo_inelegivel_invalido_falha(tmp_path, monkeypatch, motivo, em_grupo, erro):
+    folha = {"id": "c", "tipo": "categorica", "campo": "reside", "operador_comparacao": "eq", "valor_literal": "sim"}
+    if em_grupo:
+        cond = {"id": "g", "operador": "all", "condicoes": [folha], "motivo_inelegivel": motivo}
+    else:
+        cond = {**folha, "motivo_inelegivel": motivo}
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside()}, {"prestacoes": {}},
+              {"x": _apoio_min(condicoes=[cond])}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()

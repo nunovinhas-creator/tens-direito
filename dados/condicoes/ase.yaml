@@ -16,6 +16,7 @@ apoio: ase
 pagina: acao-social-escolar.html
 titulo: "Ação Social Escolar (ASE)"
 simulador: /simulador-ase.html
+tipo_link: simulador
 operador: all
 
 condicoes:

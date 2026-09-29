@@ -36,6 +36,7 @@ apoio: psu
 pagina: prestacao-social-unica.html
 titulo: "Prestação Social Única (PSU)"
 simulador: /simulador-psu.html
+tipo_link: simulador
 operador: all
 
 condicoes:

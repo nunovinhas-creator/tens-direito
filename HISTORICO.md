@@ -6655,6 +6655,45 @@ no topo de `dados/condicoes.json` (antes estava escrito à mão com a data de
 criação da página, que não era uma data de verificação). Botão de partilha
 desta página: "Partilhar este simulador".
 
+
+*Última revisão: 2026-09-28 — PR 12 do simulador universal: condições de
+acesso da creche gratuita.* `dados/condicoes/creche-gratuita.yaml` (apoio
+`creche`): portão `tem_filhos_a_cargo == sim` + criança nascida a partir de
+`creche.creche_elegivel_nascidos_apos` (parâmetro já existente, Portaria n.º
+305/2022, art. 5.º/1/a) e art. 2.º, redação da Portaria n.º 158/2024/1).
+Comparação de datas ISO sem conversão para idade — `gerar_condicoes_json.py`
+passou a recusar um limiar sobre um campo de data cujo valor não seja uma
+data ISO AAAA-MM-DD (sem `unidade_comparacao`) ou um número (com
+`anos`/`meses_totais`), porque o motor compara datas como strings e um
+formato diferente erraria em silêncio. Nenhuma pergunta nova. A escada de
+canais e a falta de vaga (verificadas oficiosamente pelo ISS) não são
+modeladas. Revisão do PR (#260): campo `tipo_link` (`simulador`|`guia`) em
+cada `dados/condicoes/<apoio>.yaml`, validado contra o nome da página
+(`/simulador-*.html` ⇔ `simulador`); `simulador-universal.html` escreve
+"Abrir o simulador dedicado →" só para simuladores e "Ler o guia completo →"
+para guias (a creche). Idade máxima da creche, com as consolidações
+oficiais entregues pelo Nuno e guardadas em `dados/fontes/` (Lei n.º 2/2022;
+Portarias n.os 198/2022 e 305/2022): Portaria n.º 198/2022, art. 9.º, n.º 4
+("até aos 3 anos", redação da Portaria n.º 304/2022, efeitos 2022-09-01),
+aplicável às aderentes pelo art. 9.º da Portaria n.º 305/2022. A norma não
+fixa o momento do corte, por isso há um tipo de condição novo,
+`limiar_faixa_incerta`: abaixo de 3 anos completos cumpre, de 3 até antes
+de 4 fica indeterminado com o motivo escrito nos dados (o motor devolve
+`motivos`; a página mostra-o em vez de "faltam dados"), 4 ou mais não
+cumpre. O limite de 4 é derivado, não legal (`creche_idade_fim_incerteza_anos`).
+A Lei n.º 2/2022 só faseia por ano de creche — não fixa idade. Com 4 anos
+ou mais, a página mostra o texto próprio da condição (`motivo_inelegivel`,
+nos dados) em vez da frase genérica "Não cumpres…"; `motivosQueExcluem()`
+no motor. O limite derivado dos 4 anos passou a citar a Portaria n.º
+262/2011 (art. 3.º, "destinado a acolher crianças até aos 3 anos de idade";
+anexo, ponto 4, "até aos 36 meses" — consolidação guardada em
+`dados/fontes/`) e a Portaria n.º 198/2022, art. 2.º, n.º 1. `creche-gratuita.html`
+passou a explicar a regra (Portaria n.º 262/2011, art. 3.º; Portaria n.º
+198/2022, art. 9.º, n.º 4) e que nenhum diploma fixa se o corte é no
+aniversário ou no fim do ano letivo — parágrafo no cartão "A criança tem
+direito?" e frase igual na pergunta frequente, no corpo e no JSON-LD
+(`tests/test_creche_idade_pagina.py`); carimbo 29/09/2026. O cartão europeu de estacionamento passa para o PR 12b (#262).
+
 ---
 
 *Última revisão automática: 2026-09-28*

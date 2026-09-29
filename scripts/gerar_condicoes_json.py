@@ -36,10 +36,15 @@ SAIDA_JSON = RAIZ / "dados" / "condicoes.json"
 RAIZ_SITE = RAIZ  # onde procurar a página de cada `simulador:` (patchável nos testes)
 
 TIPOS_VALIDOS = {"categorica", "numero", "data"}
-TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula"}
+TIPOS_CONDICAO_VALIDOS = {"categorica", "limiar", "formula", "limiar_faixa_incerta"}
 FORMULAS_VALIDAS = {"escala_equivalencia_rsi", "psu_valor_positivo"}
 OPERADORES_APOIO_VALIDOS = {"all", "any"}
 OPERADORES_COMPARACAO_VALIDOS = {"eq", "neq", "gte", "lte", "gt", "lt"}
+UNIDADES_IDADE = {"anos", "meses_totais"}
+# PR 12: para onde leva o link de cada resultado. A página escolhe o texto
+# do link por aqui ("Abrir o simulador dedicado" só para simuladores).
+TIPOS_LINK_VALIDOS = {"simulador", "guia"}
+PREFIXO_PAGINA_SIMULADOR = "simulador-"
 
 
 class CondicaoInvalida(Exception):
@@ -120,6 +125,15 @@ def _validar_titulo_e_simulador(bruto: dict, apoio: str) -> None:
         raise CondicaoInvalida(f"{apoio}: 'simulador' tem de ser um caminho do site '/<pagina>.html' ({simulador!r})")
     if not (RAIZ_SITE / simulador.lstrip("/")).is_file():
         raise CondicaoInvalida(f"{apoio}: 'simulador' aponta para página inexistente ({simulador})")
+    tipo_link = bruto.get("tipo_link")
+    if tipo_link not in TIPOS_LINK_VALIDOS:
+        raise CondicaoInvalida(f"{apoio}: 'tipo_link' tem de ser um de {sorted(TIPOS_LINK_VALIDOS)} ({tipo_link!r})")
+    e_pagina_de_simulador = simulador.lstrip("/").startswith(PREFIXO_PAGINA_SIMULADOR)
+    if (tipo_link == "simulador") != e_pagina_de_simulador:
+        raise CondicaoInvalida(
+            f"{apoio}: 'tipo_link: {tipo_link}' não bate com o link {simulador} "
+            f"(as páginas de simulador chamam-se /{PREFIXO_PAGINA_SIMULADOR}*.html)"
+        )
 
 
 def _carregar_parametros() -> dict:
@@ -240,6 +254,23 @@ def _validar_e_resolver_formula(condicao: dict, apoio: str, perguntas: dict, par
 
 
 def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
+    """Resolve a condição e, se existir, o `motivo_inelegivel` (PR 12): o
+    texto que a página mostra quando é esta folha que exclui, em vez da
+    frase genérica "Não cumpres uma condição de acesso…". Só em folhas —
+    num grupo não se saberia qual das sub-condições falhou."""
+    resolvida = _resolver_condicao(condicao, apoio, perguntas, parametros)
+    if "motivo_inelegivel" in condicao:
+        contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
+        if "condicoes" in condicao:
+            raise CondicaoInvalida(f"{contexto}: 'motivo_inelegivel' só em condições simples, não em grupos")
+        motivo = condicao["motivo_inelegivel"]
+        if not isinstance(motivo, str) or not motivo.strip():
+            raise CondicaoInvalida(f"{contexto}: 'motivo_inelegivel' tem de ser texto não vazio")
+        resolvida["motivo_inelegivel"] = motivo.strip()
+    return resolvida
+
+
+def _resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
     contexto = f"{apoio}.{condicao.get('id', '<sem id>')}"
 
     if "id" not in condicao:
@@ -269,6 +300,9 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
     # própria validação e formato de saída.
     if condicao["tipo"] == "formula":
         return _validar_e_resolver_formula(condicao, apoio, perguntas, parametros)
+
+    if condicao["tipo"] == "limiar_faixa_incerta":
+        return _validar_e_resolver_faixa_incerta(condicao, apoio, perguntas, parametros)
 
     campo = condicao.get("campo")
     if campo not in perguntas:
@@ -304,6 +338,9 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
                 )
             fonte = {"tipo": "literal_enum"}
 
+    if condicao["tipo"] == "limiar" and perguntas[campo].get("tipo") == "data":
+        _validar_limiar_de_data(condicao, valor, contexto)
+
     return {
         "id": condicao["id"],
         "tipo": condicao["tipo"],
@@ -313,6 +350,82 @@ def _validar_e_resolver_condicao(condicao: dict, apoio: str, perguntas: dict, pa
         "unidade_comparacao": condicao.get("unidade_comparacao"),
         "fonte": fonte,
     }
+
+
+def _validar_e_resolver_faixa_incerta(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:
+    """PR 12: limiar com uma zona onde a norma não decide (ex.: creche "até
+    aos 3 anos", sem dizer se o corte é no aniversário ou no fim do ano
+    letivo). Abaixo de `parametro` cumpre; a partir de `parametro_exclusao`
+    não cumpre; entre os dois, o resultado é indeterminado com o
+    `motivo_indeterminado` — nunca "cumpre" nem "não cumpre" por palpite."""
+    contexto = f"{apoio}.{condicao['id']}"
+    campo = condicao.get("campo")
+    if campo not in perguntas:
+        raise CondicaoInvalida(f"{contexto}: campo '{campo}' não existe em perguntas.yaml")
+    for chave in ("parametro", "parametro_exclusao"):
+        if chave not in condicao:
+            raise CondicaoInvalida(f"{contexto}: falta '{chave}' (limiar_faixa_incerta só aceita parâmetros)")
+    if "valor_literal" in condicao or "operador_comparacao" in condicao:
+        raise CondicaoInvalida(
+            f"{contexto}: limiar_faixa_incerta não usa 'valor_literal' nem 'operador_comparacao' "
+            "(cumpre abaixo de 'parametro', não cumpre a partir de 'parametro_exclusao')"
+        )
+    motivo = condicao.get("motivo_indeterminado")
+    if not isinstance(motivo, str) or not motivo.strip():
+        raise CondicaoInvalida(f"{contexto}: falta 'motivo_indeterminado' (texto mostrado ao utilizador)")
+    unidade = condicao.get("unidade_comparacao")
+    if perguntas[campo].get("tipo") == "data" and unidade not in UNIDADES_IDADE:
+        raise CondicaoInvalida(
+            f"{contexto}: campo de data exige 'unidade_comparacao' em {sorted(UNIDADES_IDADE)} ({unidade!r})"
+        )
+    valor = _resolver_parametro(condicao["parametro"], parametros, contexto)
+    valor_exclusao = _resolver_parametro(condicao["parametro_exclusao"], parametros, contexto)
+    for v in (valor, valor_exclusao):
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            raise CondicaoInvalida(f"{contexto}: limiares de limiar_faixa_incerta têm de ser números ({v!r})")
+    if not valor < valor_exclusao:
+        raise CondicaoInvalida(
+            f"{contexto}: 'parametro' ({valor}) tem de ser menor do que 'parametro_exclusao' ({valor_exclusao})"
+        )
+    return {
+        "id": condicao["id"],
+        "tipo": "limiar_faixa_incerta",
+        "campo": campo,
+        "valor": valor,
+        "valor_exclusao": valor_exclusao,
+        "unidade_comparacao": unidade,
+        "motivo_indeterminado": motivo.strip(),
+        "fonte": {
+            "tipo": "parametro_multiplo",
+            "referencias": [condicao["parametro"], condicao["parametro_exclusao"]],
+        },
+    }
+
+
+def _validar_limiar_de_data(condicao: dict, valor, contexto: str) -> None:
+    """PR 12: um limiar sobre um campo de data compara ou uma idade (com
+    unidade_comparacao anos/meses_totais, contra um número) ou a própria
+    data (sem unidade, contra uma data ISO). O motor compara datas ISO como
+    strings — correcto só se as duas forem AAAA-MM-DD; uma data noutro
+    formato, ou um número sem unidade, daria um resultado errado em
+    silêncio."""
+    unidade = condicao.get("unidade_comparacao")
+    if unidade in UNIDADES_IDADE:
+        if isinstance(valor, bool) or not isinstance(valor, (int, float)):
+            raise CondicaoInvalida(f"{contexto}: comparação em '{unidade}' exige um valor numérico ({valor!r})")
+        return
+    if unidade is not None:
+        raise CondicaoInvalida(
+            f"{contexto}: 'unidade_comparacao' tem de ser uma de {sorted(UNIDADES_IDADE)} ou omitida ({unidade!r})"
+        )
+    try:
+        valida = isinstance(valor, str) and date.fromisoformat(valor).isoformat() == valor
+    except ValueError:
+        valida = False
+    if not valida:
+        raise CondicaoInvalida(
+            f"{contexto}: limiar de data sem 'unidade_comparacao' exige uma data ISO AAAA-MM-DD ({valor!r})"
+        )
 
 
 def _anotar_verificado_em(condicoes: list, parametros: dict) -> list[str]:
@@ -392,6 +505,7 @@ def consolidar() -> dict:
             "pagina": bruto.get("pagina"),
             "titulo": bruto["titulo"],
             "simulador": bruto["simulador"],
+            "tipo_link": bruto["tipo_link"],
             "operador": bruto["operador"],
             "condicoes": condicoes_resolvidas,
         }

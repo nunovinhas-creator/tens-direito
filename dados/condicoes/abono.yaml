@@ -23,6 +23,7 @@ apoio: abono
 pagina: abono-de-familia.html
 titulo: "Abono de Família"
 simulador: /simulador-abono.html
+tipo_link: simulador
 operador: all
 
 condicoes:

@@ -199,6 +199,7 @@ def test_apoio_novo_nos_dados_aparece_sem_tocar_na_pagina(browser, servidor):
     dados["apoios"]["apoio-de-teste"] = {
         "titulo": "Apoio de Teste Inventado",
         "simulador": "/simuladores.html",
+        "tipo_link": "guia",
         "operador": "all",
         "condicoes": [{"id": "x", "tipo": "categorica", "campo": "reside_legalmente_pt",
                        "operador_comparacao": "eq", "valor": "sim"}],
@@ -209,6 +210,98 @@ def test_apoio_novo_nos_dados_aparece_sem_tocar_na_pagina(browser, servidor):
     page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
     page.click("#btnVerResultados")
     assert "Apoio de Teste Inventado" in page.inner_text("#grupoIndeterminado")
+    contexto.close()
+
+
+# ── Texto do link (PR 12): "simulador dedicado" só para simuladores ────────
+
+TEXTO_LINK = {"simulador": "Abrir o simulador dedicado →", "guia": "Ler o guia completo →"}
+
+
+def _links(page):
+    return page.eval_on_selector_all(
+        "li.apoio-card",
+        "els => Object.fromEntries(els.map(e => [e.dataset.apoio,"
+        " e.querySelector('a') ? {href: e.querySelector('a').getAttribute('href'),"
+        " texto: e.querySelector('a').textContent} : null]))",
+    )
+
+
+def test_texto_do_link_segue_o_tipo_link_dos_dados(pagina):
+    pagina.click("#btnVerResultados")
+    pagina.wait_for_selector("#resultados:not([hidden])")
+    links = _links(pagina)
+    assert set(links) == set(CONDICOES["apoios"])
+    tipos = {a["tipo_link"] for a in CONDICOES["apoios"].values()}
+    assert tipos == {"simulador", "guia"}, "os dados reais têm de cobrir os dois tipos"
+    for apoio_id, apoio in CONDICOES["apoios"].items():
+        assert links[apoio_id] == {"href": apoio["simulador"], "texto": TEXTO_LINK[apoio["tipo_link"]]}, apoio_id
+    assert links["creche"]["texto"] == "Ler o guia completo →"
+
+
+def test_tipo_link_desconhecido_nao_mostra_link_nenhum(browser, servidor):
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"]["creche"]["tipo_link"] = "inventado"
+    del dados["apoios"]["abono"]["tipo_link"]
+    rotas = {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                            body=json.dumps(dados))}
+    contexto, page = _abrir(browser, servidor, rotas)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    page.click("#btnVerResultados")
+    links = _links(page)
+    assert links["creche"] is None and links["abono"] is None
+    assert links["csi"]["texto"] == TEXTO_LINK["simulador"]
+    contexto.close()
+
+
+def test_faq_explica_os_dois_destinos_do_link():
+    html = (RAIZ / PAGINA).read_text(encoding="utf-8")
+    frase = "ou para o guia completo quando o apoio não tem simulador"
+    assert html.count(frase) == 2, "FAQ visível e JSON-LD têm de dizer o mesmo"
+
+
+# ── PR 12 (revisão): indeterminado sem pergunta em falta mostra o motivo ─
+
+
+def _so_creche():
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"] = {"creche": dados["apoios"]["creche"]}
+    return {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(dados))}
+
+
+def _nascimento_com_3_anos():
+    # 3 anos e ~3 meses à data real em que o teste corre: sempre na zona
+    # indeterminada (a página usa a data do dia, não uma data fixa).
+    from datetime import date, timedelta
+    hoje = date.today()
+    return (hoje.replace(year=hoje.year - 3) - timedelta(days=90)).isoformat()
+
+
+def test_creche_com_3_anos_mostra_o_motivo_dos_dados(browser, servidor):
+    contexto, page = _abrir(browser, servidor, _so_creche())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": _nascimento_com_3_anos()})
+    cartoes = _cartoes(page, "grupoIndeterminado")
+    assert [c["apoio"] for c in cartoes] == ["creche"]
+    motivo = CONDICOES["apoios"]["creche"]["condicoes"][-1]["motivo_indeterminado"]
+    assert cartoes[0]["motivo"] == f"Não é possível decidir: {motivo}. Confirma no guia completo."
+    assert not page.is_visible("#btnContinuarResponder"), "nenhuma resposta muda isto — não há mais perguntas"
+    contexto.close()
+
+
+def test_creche_com_4_anos_mostra_o_texto_proprio_e_nao_o_generico(browser, servidor):
+    from datetime import date
+    hoje = date.today()
+    nascimento = hoje.replace(year=hoje.year - 5).isoformat()
+    contexto, page = _abrir(browser, servidor, _so_creche())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": nascimento})
+    cartoes = _cartoes(page, "grupoInelegivel")
+    assert [c["apoio"] for c in cartoes] == ["creche"]
+    motivo = CONDICOES["apoios"]["creche"]["condicoes"][-1]["motivo_inelegivel"]
+    assert cartoes[0]["motivo"] == motivo
+    assert "Não cumpres" not in cartoes[0]["motivo"]
     contexto.close()
 
 

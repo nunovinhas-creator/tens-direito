@@ -1,6 +1,6 @@
 {
   "gerado_em": "2026-09-28",
-  "verificado_em": "2026-09-27",
+  "verificado_em": "2026-09-28",
   "perguntas": {
     "data_nascimento_requerente": {
       "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
@@ -447,6 +447,7 @@
       "pagina": "abono-de-familia.html",
       "titulo": "Abono de Família",
       "simulador": "/simulador-abono.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -635,6 +636,7 @@
       "pagina": "acao-social-escolar.html",
       "titulo": "Ação Social Escolar (ASE)",
       "simulador": "/simulador-ase.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -675,10 +677,63 @@
       ],
       "verificado_em": "2026-06-24"
     },
+    "creche": {
+      "pagina": "creche-gratuita.html",
+      "titulo": "Creche gratuita",
+      "simulador": "/creche-gratuita.html",
+      "tipo_link": "guia",
+      "operador": "all",
+      "condicoes": [
+        {
+          "id": "tem_filhos_a_cargo",
+          "tipo": "categorica",
+          "campo": "tem_filhos_a_cargo",
+          "operador_comparacao": "eq",
+          "valor": "sim",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "literal_enum"
+          }
+        },
+        {
+          "id": "nascida_a_partir_da_data_elegivel",
+          "tipo": "limiar",
+          "campo": "data_nascimento_crianca",
+          "operador_comparacao": "gte",
+          "valor": "2021-09-01",
+          "unidade_comparacao": null,
+          "fonte": {
+            "tipo": "parametro",
+            "referencia": "creche.creche_elegivel_nascidos_apos"
+          },
+          "verificado_em": "2026-09-16"
+        },
+        {
+          "id": "idade_ate_aos_3_anos",
+          "tipo": "limiar_faixa_incerta",
+          "campo": "data_nascimento_crianca",
+          "valor": 3,
+          "valor_exclusao": 4,
+          "unidade_comparacao": "anos",
+          "motivo_indeterminado": "a regra diz «até aos 3 anos» mas não fixa se é no aniversário ou no fim do ano letivo",
+          "fonte": {
+            "tipo": "parametro_multiplo",
+            "referencias": [
+              "creche.creche_idade_limite_anos",
+              "creche.creche_idade_fim_incerteza_anos"
+            ]
+          },
+          "motivo_inelegivel": "A creche gratuita aplica-se a crianças que frequentam creche, que acolhe até aos 3 anos de idade. Pela data indicada, o teu filho mais novo terá ultrapassado essa idade. Confirma no guia completo.",
+          "verificado_em": "2026-09-28"
+        }
+      ],
+      "verificado_em": "2026-09-28"
+    },
     "csi": {
       "pagina": "complemento-solidario-idosos.html",
       "titulo": "Complemento Solidário para Idosos (CSI)",
       "simulador": "/simulador-csi.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -742,6 +797,7 @@
       "pagina": "subsidio-desemprego.html",
       "titulo": "Subsídio de Desemprego",
       "simulador": "/simulador-subsidio-desemprego.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -808,6 +864,7 @@
       "pagina": "imt-jovem.html",
       "titulo": "IMT Jovem (isenção na compra da 1.ª casa)",
       "simulador": "/simulador-imt-jovem.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -863,6 +920,7 @@
       "pagina": "prestacao-social-unica.html",
       "titulo": "Prestação Social Única (PSU)",
       "simulador": "/simulador-psu.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -984,6 +1042,7 @@
       "pagina": "rsi.html",
       "titulo": "Rendimento Social de Inserção (RSI)",
       "simulador": "/simulador-rsi.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {
@@ -1223,6 +1282,7 @@
       "pagina": "baixa-medica-subsidio-doenca.html",
       "titulo": "Subsídio de Doença",
       "simulador": "/simulador-subsidio-doenca.html",
+      "tipo_link": "simulador",
       "operador": "all",
       "condicoes": [
         {

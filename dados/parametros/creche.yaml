@@ -31,3 +31,41 @@ creche_elegivel_nascidos_apos:
       referencia_legal: "Portaria n.º 305/2022, de 22 de dezembro de 2022, art. 5.º, n.º 1, al. a), na redação da Portaria n.º 158/2024/1 (esta alínea foi reescrita — concelho passou a freguesia — mantendo apenas a data já fixada na versão original de 2022) — mesma data reafirmada no art. 2.º, também na redação da Portaria n.º 158/2024/1 (âmbito pessoal)"
       fonte_url: "https://diariodarepublica.pt"
       verificado_em: "2026-09-16"
+
+# Idade máxima (PR 12, 2026-09-28). GRAU 1: texto lido nas consolidações
+# oficiais do DRE guardadas em dados/fontes/ (Portaria-198-2022-consolidada-
+# 2023-03-10.pdf; Portaria-305-2022-consolidada-2024-06-06.pdf). A Lei n.º
+# 2/2022 (dados/fontes/Lei-2-2022.pdf) só faseia a gratuitidade por ano de
+# creche (art. 2.º, n.º 1) — não fixa nenhuma idade.
+#
+# A norma diz "até aos 3 anos" e não fixa o momento do corte (aniversário
+# ou fim do ano letivo). Por isso há dois parâmetros:
+#   - creche_idade_limite_anos (3): o limite legal. Abaixo dele (anos
+#     completos), a condição cumpre-se;
+#   - creche_idade_fim_incerteza_anos (4): NÃO é limite legal literal: é
+#     derivado. A creche acolhe até aos 3 anos e a medida aplica-se a quem a
+#     frequenta; a partir dos 4 anos completos a criança já não frequenta
+#     creche. Entre 3 e 4 anos o momento do corte não está fixado:
+#     indeterminado. Fontes da inferência: Portaria n.º 262/2011 (dados/
+#     fontes/Portaria-262-2011-consolidada-2023-12-11.pdf), art. 3.º e anexo,
+#     ponto 4; Portaria n.º 198/2022, art. 2.º, n.º 1, e art. 9.º, n.º 4.
+
+creche_idade_limite_anos:
+  descricao: "Gratuitidade da creche — idade (anos completos) até à qual é assegurada a frequência; a norma diz «até aos 3 anos» e não fixa se o corte é no aniversário ou no fim do ano letivo"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2022-09-01"
+      valor: 3
+      referencia_legal: "Portaria n.º 198/2022, de 27 de julho, art. 9.º, n.º 4, na redação da Portaria n.º 304/2022, de 22 de dezembro (produz efeitos a partir de 2022-09-01) — «Às crianças é assegurada a continuidade da frequência da creche ou ama, até aos 3 anos.»; aplicável às creches aderentes pelo art. 9.º (aplicação subsidiária) da Portaria n.º 305/2022, de 22 de dezembro"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"
+
+creche_idade_fim_incerteza_anos:
+  descricao: "Gratuitidade da creche — idade (anos completos) a partir da qual a criança deixa de estar abrangida em qualquer leitura de «até aos 3 anos»; DERIVADO, não é um limite fixado na lei (ver nota no topo do bloco)"
+  unidade: anos
+  valores:
+    - vigencia_inicio: "2022-09-01"
+      valor: 4
+      referencia_legal: "Derivado de: Portaria n.º 262/2011, art. 3.º (creche «destinado a acolher crianças até aos 3 anos de idade»; anexo, ponto 4: «até aos 36 meses»); Portaria n.º 198/2022, art. 2.º, n.º 1 (medida aplica-se a crianças que frequentem creche) e art. 9.º, n.º 4 («até aos 3 anos»). Nenhum diploma fixa os 4 anos como limite."
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-09-28"

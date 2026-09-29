@@ -58,7 +58,7 @@
       {
         "@type": "Question",
         "name": "Que apoios são avaliados?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Todos os apoios cujas condições de acesso já estão registadas nos dados do Tens Direito — a lista completa aparece nos resultados. Cada resultado tem um link para o simulador dedicado desse apoio, que calcula o valor com mais detalhe."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Todos os apoios cujas condições de acesso já estão registadas nos dados do Tens Direito — a lista completa aparece nos resultados. Cada resultado tem um link para o simulador dedicado desse apoio, que calcula o valor com mais detalhe, ou para o guia completo quando o apoio não tem simulador."}
       },
       {
         "@type": "Question",
@@ -106,7 +106,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-09-28",
-    "dateModified": "2026-09-27"
+    "dateModified": "2026-09-28"
   }
   </script>
 
@@ -294,7 +294,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 27/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
+      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 28/09/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
     </div>
 
     <div id="avisoErro" class="aviso-erro" role="alert" hidden>
@@ -362,7 +362,7 @@
 
       <details>
         <summary>Que apoios são avaliados?</summary>
-        <div class="faq-resposta">Todos os apoios cujas condições de acesso já estão registadas nos dados do Tens Direito — a lista completa aparece nos resultados. Cada resultado tem um link para o simulador dedicado desse apoio, que calcula o valor com mais detalhe.</div>
+        <div class="faq-resposta">Todos os apoios cujas condições de acesso já estão registadas nos dados do Tens Direito — a lista completa aparece nos resultados. Cada resultado tem um link para o simulador dedicado desse apoio, que calcula o valor com mais detalhe, ou para o guia completo quando o apoio não tem simulador.</div>
       </details>
 
       <details>
@@ -599,6 +599,17 @@
         return campos;
       }
 
+      // Texto do link de cada resultado, pelo tipo_link dos dados — "simulador
+      // dedicado" só quando o link leva mesmo a um simulador.
+      const TEXTO_LINK = {
+        simulador: 'Abrir o simulador dedicado →',
+        guia: 'Ler o guia completo →',
+      };
+      const DESTINO_CONFIRMAR = {
+        simulador: 'no simulador dedicado',
+        guia: 'no guia completo',
+      };
+
       function motivo(apoioId, resultado) {
         const apoio = CONDICOES.apoios[apoioId];
         if (resultado.estado === 'elegivel') {
@@ -606,10 +617,17 @@
         }
         if (resultado.estado === 'indeterminado') {
           const faltam = perguntasAindaPorFazer(resultado);
-          return faltam.length
-            ? 'Falta responder a: ' + citarPerguntas(faltam, 2) + '.'
-            : 'Faltam dados que este simulador ainda não pergunta — confirma no simulador dedicado.';
+          if (faltam.length) return 'Falta responder a: ' + citarPerguntas(faltam, 2) + '.';
+          // A norma não decide (ex.: creche "até aos 3 anos") — o motivo vem
+          // dos dados, nunca inventado aqui.
+          if (resultado.motivos && resultado.motivos.length) {
+            return 'Não é possível decidir: ' + resultado.motivos.join('; ') + '. Confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
+          }
+          return 'Faltam dados que este simulador ainda não pergunta — confirma ' + DESTINO_CONFIRMAR[apoio.tipo_link] + '.';
         }
+        // Texto próprio da condição que excluiu (dados), quando existe.
+        const proprios = motivosQueExcluem(apoio, respostas, hojeISO());
+        if (proprios.length) return proprios.join(' ');
         const campos = camposQueExcluem(apoio, respostas, hojeISO());
         if (!campos.length) return 'Não cumpres uma das condições de acesso.';
         const partes = campos.slice(0, 2).map((c) => '«' + CONDICOES.perguntas[c].pergunta + '» — respondeste ' + textoResposta(c));
@@ -626,10 +644,16 @@
         const p = document.createElement('p');
         p.className = 'apoio-motivo';
         p.textContent = motivo(apoioId, resultado);
-        const a = document.createElement('a');
-        a.href = apoio.simulador;
-        a.textContent = 'Abrir o simulador dedicado →';
-        li.append(h, p, a);
+        li.append(h, p);
+        // Sem tipo_link conhecido, nenhum link: nunca um texto que prometa o
+        // destino errado (o compilador já o impede — isto é a última defesa).
+        if (TEXTO_LINK[apoio.tipo_link]) {
+          const a = document.createElement('a');
+          a.href = apoio.simulador;
+          a.className = 'apoio-link apoio-link-' + apoio.tipo_link;
+          a.textContent = TEXTO_LINK[apoio.tipo_link];
+          li.append(a);
+        }
         return li;
       }
 
