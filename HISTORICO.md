@@ -6715,4 +6715,4 @@ uso quando as condições entraram).
 
 ---
 
-*Última revisão automática: 2026-09-28*
+*Última revisão automática: 2026-09-29*
