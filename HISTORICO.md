@@ -6732,6 +6732,19 @@ Testes: `tests/test_cartao_estacionamento_pagina.py` (novo) e âncora das três
 páginas em `test_valores_ancora.py` (3 × "≥ 60%", transportes, motora, sem
 "oncol"), todos provados a falhar.
 
+
+*Última revisão: 2026-09-30 — issue #266: `integridade.yml` passa a correr
+quando a base de um PR muda para `main` e quando um PR sai de rascunho.*
+`pull_request` ganhou `types: [opened, synchronize, reopened,
+ready_for_review, edited]` (caso real: #262 ficou sem nenhum check depois de a
+base passar a `main`). `edited` fica sem filtro por job, de propósito: um job
+saltado cria um check `skipped`, que conta como passado num check obrigatório,
+e pelo `concurrency` uma edição de título cancelaria o run real em curso —
+aceita-se um run extra por cada edição de título/descrição. `concurrency` e
+canário de URLs inalterados. Guardrail: `tests/test_integridade_workflow.py`
+(provado a falhar com o gatilho antigo). Provado em PRs descartáveis: mudança
+de base, rascunho → pronto e edição de título a meio do run.
+
 ---
 
 *Última revisão automática: 2026-09-30*
