@@ -42,13 +42,26 @@ desta auditoria (2026) torna o resultado uma função só de
 MARCADORES_HISTORICOS + conteúdo das páginas, nunca do dia em que a
 suite corre.
 
+Identidade de cada supressão (issue #264): (pagina, marcador, tipo,
+correspondencia, frase, ordinal). `frase` é a frase envolvente da
+ocorrência (ver `frase_envolvente()`), e `ordinal` só desempata ocorrências
+com a MESMA frase na mesma página (ex.: a FAQ repetida no corpo e no
+JSON-LD). Antes, o ordinal contava todas as ocorrências com a mesma
+correspondência na página: inserir um cartão novo antes de um antigo
+deslocava as entradas antigas e fazia-as aparecer como «novas» (#260,
+Portaria n.º 158/2024/1). Agora, uma edição fora da frase não muda nada;
+uma edição dentro da frase aparece como uma entrada órfã (frase antiga)
+mais uma nova (frase actual) — obriga a olhar para a frase alterada.
+
 Nunca escreve HTML nem altera MARCADORES_HISTORICOS — só lê.
 """
 
 import argparse
+import html
 import json
 import re
 import sys
+import unicodedata
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -100,10 +113,6 @@ def _e_ocorrencia_antiga(padrao: dict, match: re.Match, conteudo: str, ano: int)
     return int(match.group(padrao["ano_grupo"])) < ano
 
 
-def _normalizar_contexto(texto: str) -> str:
-    return re.sub(r"\s+", " ", texto).strip()
-
-
 def _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano: int) -> bool:
     """Mesma decisão do portão de confirmação de `_esta_suprimido()`
     (issue #183, passo 2), aplicada aqui à data de referência fixa desta
@@ -123,9 +132,132 @@ def _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano: int) -> bool:
     return data_ocorrencia <= date(ano, 12, 31)
 
 
+# Tags que não partem uma frase: pôr uma palavra a negrito ou num link não
+# muda a identidade da supressão. Qualquer outra tag (p, li, td, h3, …) é
+# limite de bloco.
+_TAGS_INLINE = frozenset({
+    "a", "abbr", "b", "code", "em", "i", "mark", "small", "span", "strong", "sub", "sup",
+})
+_REGEX_JSONLD = re.compile(r'<script type="application/ld\+json">.*?</script>', re.S)
+_REGEX_TAG = re.compile(r"<[^>]*>")
+_REGEX_NOME_TAG = re.compile(r"</?\s*([a-zA-Z0-9]+)")
+# Fim de frase: pontuação final, espaço e maiúscula. "art. 4.º" e
+# "n.º 307" não partem a frase (a seguir ao ponto não vem espaço+maiúscula).
+_REGEX_FIM_FRASE = re.compile(
+    r'[.!?…]["»”)]?(?:\s|&nbsp;|&#160;)+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÀÇ«"“(])'
+)
+# NBSP e espaços finos/estreitos contam como espaço normal na frase.
+_ESPACOS_ESPECIAIS = dict.fromkeys(map(ord, "\u00a0\u2007\u2009\u200a\u202f"), " ")
+
+
+def _e_tag_inline(tag: str) -> bool:
+    nome = _REGEX_NOME_TAG.match(tag)
+    return bool(nome) and nome.group(1).lower() in _TAGS_INLINE
+
+
+def _normalizar_frase(texto: str, em_jsonld: bool) -> str:
+    texto = html.unescape(texto)
+    if em_jsonld:
+        texto = texto.replace('\\"', '"')
+    texto = unicodedata.normalize("NFC", texto.translate(_ESPACOS_ESPECIAIS))
+    return re.sub(r"\s+", " ", texto).strip()
+
+
+def _dentro_de_jsonld(conteudo: str, inicio: int) -> bool:
+    return any(m.start() < inicio < m.end() for m in _REGEX_JSONLD.finditer(conteudo))
+
+
+def _valor_de_atributo(conteudo: str, inicio: int, fim: int) -> str | None:
+    """Se a ocorrência está dentro de uma tag (ex.: meta description), a
+    frase é o valor do atributo que a contém."""
+    abre = conteudo.rfind("<", 0, inicio)
+    if abre == -1 or conteudo.rfind(">", 0, inicio) > abre:
+        return None
+    for aspa in ('"', "'"):
+        esq = conteudo.rfind(aspa, abre, inicio)
+        dir_ = conteudo.find(aspa, fim)
+        if esq != -1 and dir_ != -1 and conteudo.find(">", fim, dir_) == -1:
+            return conteudo[esq + 1:dir_]
+    return None
+
+
+def frase_envolvente(conteudo: str, inicio: int, fim: int) -> str:
+    """Frase que contém a ocorrência `conteudo[inicio:fim]`, normalizada.
+
+    Expande a partir da ocorrência até ao limite do bloco — tag de bloco,
+    string JSON (só dentro de JSON-LD; fora dele as aspas são texto) — com
+    as tags inline transparentes; dentro do bloco, corta na frase; tira as
+    tags, desfaz entidades, converte NBSP/espaços finos em espaço, aplica
+    NFC e colapsa espaços. Dentro de um atributo, a frase é o valor do
+    atributo."""
+    comentario = conteudo.rfind("<!--", 0, inicio)
+    fim_comentario = conteudo.find("-->", comentario) if comentario != -1 else -1
+    if comentario != -1 and fim_comentario >= fim:
+        # Dentro de um comentário HTML: o bloco é o próprio comentário.
+        return _frase_no_bloco(conteudo, comentario + 4, fim_comentario, inicio, fim, False)
+
+    atributo = _valor_de_atributo(conteudo, inicio, fim)
+    if atributo is not None:
+        return _normalizar_frase(atributo, em_jsonld=False)
+
+    em_jsonld = _dentro_de_jsonld(conteudo, inicio)
+
+    i = inicio
+    while i > 0:
+        ch = conteudo[i - 1]
+        if ch == ">":
+            j = conteudo.rfind("<", 0, i - 1)
+            if j != -1 and _e_tag_inline(conteudo[j:i]):
+                i = j
+                continue
+            break
+        if em_jsonld and ch == '"' and conteudo[i - 2:i - 1] != "\\":
+            break
+        i -= 1
+
+    k = fim
+    while k < len(conteudo):
+        ch = conteudo[k]
+        if ch == "<":
+            j = conteudo.find(">", k)
+            if j != -1 and _e_tag_inline(conteudo[k:j + 1]):
+                k = j + 1
+                continue
+            break
+        if em_jsonld and ch == '"' and conteudo[k - 1] != "\\":
+            break
+        k += 1
+    return _frase_no_bloco(conteudo, i, k, inicio, fim, em_jsonld)
+
+
+def _frase_no_bloco(conteudo: str, i: int, k: int, inicio: int, fim: int, em_jsonld: bool) -> str:
+    """Corta, dentro do bloco `conteudo[i:k]`, a frase que contém a
+    ocorrência `conteudo[inicio:fim]`, depois de tirar as tags inline."""
+    bloco = conteudo[i:k]
+    pedacos, pos, removidos_antes = [], 0, 0
+    for m in _REGEX_TAG.finditer(bloco):
+        pedacos.append(bloco[pos:m.start()])
+        if m.end() <= inicio - i:
+            removidos_antes += m.end() - m.start()
+        pos = m.end()
+    pedacos.append(bloco[pos:])
+    texto = "".join(pedacos)
+    ini_ocorrencia = inicio - i - removidos_antes
+    fim_ocorrencia = ini_ocorrencia + (fim - inicio)
+
+    ini_frase, fim_frase = 0, len(texto)
+    for m in _REGEX_FIM_FRASE.finditer(texto):
+        if m.end() <= ini_ocorrencia:
+            ini_frase = m.end()
+        elif m.start() >= fim_ocorrencia:
+            fim_frase = m.start() + 1
+            break
+    return _normalizar_frase(texto[ini_frase:fim_frase], em_jsonld)
+
+
 def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) -> list[dict]:
     """Todas as (ocorrência antiga, marcador) desta página — sem `ordinal`
-    ainda, essa desambiguação de duplicados exactos é feita a nível do
+    ainda, essa desambiguação de frases repetidas é feita a nível do
     corpus inteiro em `auditar_corpus()`."""
     verificado_em = verificado_em_do_texto(conteudo)
     registos = []
@@ -137,23 +269,27 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
             data_ocorrencia = _data_da_ocorrencia(padrao, m)
             if _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
                 continue  # já não é permanente à data de referência — ver docstring do módulo
+            frase = None
             for marcador in MARCADORES_HISTORICOS:
                 if re.search(marcador, janela, re.IGNORECASE):
+                    if frase is None:
+                        frase = frase_envolvente(conteudo, m.start(), m.end())
                     registos.append({
                         "pagina": pagina,
                         "marcador": marcador,
                         "tipo": padrao["tipo"],
-                        "correspondencia": m.group(0),
-                        "contexto": _normalizar_contexto(janela),
+                        "correspondencia": _normalizar_frase(m.group(0), em_jsonld=False),
+                        "frase": frase,
                     })
     return registos
 
 
 def auditar_corpus(raiz: Path = RAIZ, ano: int = ANO_REFERENCIA) -> list[dict]:
     """Todas as supressões do corpus, com `ordinal` (1-based, por ordem de
-    aparição no ficheiro) para desambiguar duplicados exactos — a mesma
-    (pagina, marcador, tipo, correspondencia) pode legitimamente aparecer
-    mais do que uma vez na mesma página. Ordenado de forma determinística
+    aparição no ficheiro) só para desambiguar a MESMA frase repetida na
+    mesma página (ex.: FAQ no corpo e no JSON-LD) — nunca conta ocorrências
+    noutras frases, que é o que tornava as entradas antigas sensíveis a
+    texto inserido antes delas (issue #264). Ordenado de forma determinística
     (nunca pela ordem de varrimento do glob/regex, que não é garantida
     entre corridas) para o baseline nunca gerar diffs espúrios de
     ordenação."""
@@ -167,21 +303,21 @@ def auditar_corpus(raiz: Path = RAIZ, ano: int = ANO_REFERENCIA) -> list[dict]:
             print(f"Erro ao ler {pagina}: {e}", file=sys.stderr)
             continue
         for registo in supressoes_da_pagina(conteudo, pagina, ano):
-            chave = (registo["pagina"], registo["marcador"], registo["tipo"], registo["correspondencia"])
+            chave = (registo["pagina"], registo["marcador"], registo["tipo"],
+                     registo["correspondencia"], registo["frase"])
             contador[chave] += 1
             registo["ordinal"] = contador[chave]
             todos.append(registo)
 
-    todos.sort(key=lambda r: (r["pagina"], r["marcador"], r["tipo"], r["correspondencia"], r["ordinal"]))
+    todos.sort(key=identidade)
     return todos
 
 
 def identidade(registo: dict) -> tuple:
-    """Chave de comparação — nunca inclui `contexto` (ver docstring do
-    módulo: o contexto é só informativo, sensível a edições próximas mas
-    irrelevantes; comparar por ele tornaria o baseline demasiado frágil)."""
+    """Chave de comparação e de ordenação (issue #264): a frase envolvente
+    identifica a supressão; o ordinal só desempata a mesma frase repetida."""
     return (registo["pagina"], registo["marcador"], registo["tipo"],
-            registo["correspondencia"], registo["ordinal"])
+            registo["correspondencia"], registo["frase"], registo["ordinal"])
 
 
 def carregar_baseline(caminho: Path = BASELINE_PATH) -> list[dict]:

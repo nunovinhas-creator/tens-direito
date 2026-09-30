@@ -6745,6 +6745,25 @@ canário de URLs inalterados. Guardrail: `tests/test_integridade_workflow.py`
 (provado a falhar com o gatilho antigo). Provado em PRs descartáveis: mudança
 de base, rascunho → pronto e edição de título a meio do run.
 
+
+*Última revisão: 2026-09-30 — issue #264: baseline de marcadores
+históricos identificado pela frase envolvente, não pela posição.*
+`scripts/auditar_marcadores_historicos.py`: identidade passa a
+(pagina, marcador, tipo, correspondencia, frase, ordinal), com o ordinal só a
+desempatar a mesma frase repetida (ex.: FAQ no corpo e no JSON-LD).
+`frase_envolvente()`: bloco = tag de bloco, string JSON (só dentro de
+JSON-LD), valor de atributo ou comentário HTML; tags inline transparentes;
+corte na frase (pontuação + espaço + maiúscula, sem partir "art. 4.º");
+normalização com entidades, NBSP/espaços finos → espaço, NFC. `contexto`
+saiu do baseline (substituído por `frase`). Migração: 372 → 372 entradas,
+190 grupos (pagina, marcador, tipo, correspondencia) com contagens iguais;
+entradas com ordinal > 1 de 182 para 44. 9 testes novos, provados a falhar
+com a identidade antiga — os do #260 (Portaria n.º 158/2024/1), da frase
+alterada e da FAQ repetida pela asserção de identidade (o do #260 reproduz
+as duas entradas «novas» reais do #260); os de tags inline, atributo,
+NBSP/NFC, frase vazia e corte de frase por não existir frase na identidade
+antiga.
+
 ---
 
 *Última revisão automática: 2026-09-30*
