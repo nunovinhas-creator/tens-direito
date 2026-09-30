@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-09-30",
+      "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro",
+      "fonte_nome": "ODigital.pt",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNN3owSllySGtyemNnSVdlclJtYjlVeGg0UFVzbkFHdURiZ2tFejlrMnE5YlIwNkVSTmpIcXhuVzJJQW90em1LeGJBelJHdTVGWTB2TkxMNXJ6T1ZLVTRFWVVKZGUtR1VFMW1RdTBJRHlEMDBmNzZWVUFTTHpnQ0ZJdg?oc=5",
+      "resumo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro ODigital.pt",
+      "categoria": "educacao",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-09-28",
       "titulo": "Transparência salarial, pensões e Prestação Social Única em destaque na agenda laboral",
       "fonte_nome": "Human Resources Portugal",
@@ -17,6 +26,15 @@
       "resumo": "Salário mínimo em Portugal abaixo da média da União Europeia Now Canal",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-09-28",
+      "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em outubro",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQNWV2QXFuUWVVNHpIX1VxaE9nbEZJV3ptRnhvb1pqWXlreWNZb0ZCVngxSWxYaFExUVJtbV96X3JGcGs0eGIweF9XR2ppVm9RTnFwXy1fWEpWQVJneGlCQVVYNGdDUDhuZnNnZXpGQlhvTHR2VG9fYTdXQ1c1UjlxbVZ2cFNxNkc1YTZuNTIxWFhNYnhoZlF1ck1mQ3plUEhyU005SzB1bzM5RWV0STJiTDNmRjNORjVsbUVWUw?oc=5",
+      "resumo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em outubro Notícias ao Minuto",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-09-24",

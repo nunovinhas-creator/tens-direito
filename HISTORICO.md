@@ -6734,4 +6734,4 @@ páginas em `test_valores_ancora.py` (3 × "≥ 60%", transportes, motora, sem
 
 ---
 
-*Última revisão automática: 2026-09-29*
+*Última revisão automática: 2026-09-30*
