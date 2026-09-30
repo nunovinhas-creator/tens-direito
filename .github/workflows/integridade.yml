@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    # Sem `types:` só disparava em opened/synchronize/reopened (issue #266):
+    # - edited: apanha a mudança de base para main (caso do #262). Sem filtro
+    #   de propósito — um `if` por job criaria checks `skipped` numa edição
+    #   de título, que cancelavam o run real (concurrency) e contam como
+    #   passados num check obrigatório. Custo: um run extra por edição.
+    # - ready_for_review: rascunho → pronto volta a correr tudo.
+    types: [opened, synchronize, reopened, ready_for_review, edited]
   schedule:
     - cron: '0 8 * * 1'  # semanal segunda 08:00
   workflow_dispatch:
