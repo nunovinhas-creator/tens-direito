@@ -6764,6 +6764,26 @@ as duas entradas «novas» reais do #260); os de tags inline, atributo,
 NBSP/NFC, frase vazia e corte de frase por não existir frase na identidade
 antiga.
 
+
+*Última revisão: 2026-09-30 — canário de URLs oficiais: workflow diário
+próprio e issue única.* Diagnóstico (60 corridas do `integridade.yml` em
+`main`, 13-30/09): 3 falhas do canário — `www.sns24.gov.pt` HTTP 405 (14/09 e
+28/09; o 405 era do GET de recurso, não só do HEAD), connect timeouts em
+`registocriminal.justica.gov.pt` (14/09) e `www.autenticacao.gov.pt`
+(27/09). `scripts/verificar_urls_como_pedir.py`: regista HEAD/GET/URL final;
+404/410/domínio inexistente falham logo; 403/405/429/5xx/timeouts têm 4
+tentativas (esperas 15/45/90 s); GET de recurso com cabeçalhos de navegador;
+`--relatorio` grava o JSON com o corpo da issue. Novo
+`.github/workflows/canario-urls.yml` (cron diário + manual): uma falha abre ou
+actualiza a issue única `canario-urls` (assignee nunovinhas-creator, @menção,
+tabela HEAD/GET), com comentário só quando muda o conjunto de URLs a falhar;
+fecha-se na primeira corrida verde; job vermelho sempre que há falhas. O job
+saiu do `integridade.yml` (um push a `main` já não fica vermelho por um
+portal em baixo). Testes: `tests/test_urls_como_pedir.py` (retry/definitiva/
+corpo, provados a falhar com o script antigo) e
+`tests/test_canario_urls_workflow.py` (estrutura + o JavaScript real do step
+em Node, provado por mutação).
+
 ---
 
 *Última revisão automática: 2026-09-30*
