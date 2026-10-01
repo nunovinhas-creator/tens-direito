@@ -6769,7 +6769,8 @@ antiga.
 setembro retirados.* `test_urgente_home_frescura.py` ficou vermelho a 1/10
 com "ASE — candidatura" e "Bolsas de mérito" (prazo 30 de setembro). Por
 decisão do Nuno, saíram esses dois e "Abono a dobrar" ("duplica em
-setembro"), sem prazos novos no lugar. O canário cortava cartões com
+setembro") e, a seguir, "Manuais gratuitos" ("julho/agosto"), sem prazos
+novos no lugar. Ficam Prova Escolar, PSU e Passe sub-23, sem prazo passado. O canário cortava cartões com
 `<div>` aninhado (badge da PSU) e exigia ≥5: passa a dividir pela tag de
 abertura, a contagem tem de bater com as aberturas, e um teste novo exige
 que a secção nunca fique visível sem cartões (vazia → sai de
