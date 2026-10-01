@@ -6764,6 +6764,17 @@ as duas entradas «novas» reais do #260); os de tags inline, atributo,
 NBSP/NFC, frase vazia e corte de frase por não existir frase na identidade
 antiga.
 
+
+*Última revisão: 2026-10-01 — "⏰ Datas a não perder": cartões de
+setembro retirados.* `test_urgente_home_frescura.py` ficou vermelho a 1/10
+com "ASE — candidatura" e "Bolsas de mérito" (prazo 30 de setembro). Por
+decisão do Nuno, saíram esses dois e "Abono a dobrar" ("duplica em
+setembro"), sem prazos novos no lugar. O canário cortava cartões com
+`<div>` aninhado (badge da PSU) e exigia ≥5: passa a dividir pela tag de
+abertura, a contagem tem de bater com as aberturas, e um teste novo exige
+que a secção nunca fique visível sem cartões (vazia → sai de
+`index.html`).
+
 ---
 
 *Última revisão automática: 2026-09-30*
