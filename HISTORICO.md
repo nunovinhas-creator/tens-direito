@@ -6795,6 +6795,20 @@ abertura, a contagem tem de bater com as aberturas, e um teste novo exige
 que a secção nunca fique visível sem cartões (vazia → sai de
 `index.html`).
 
+*Última revisão: 2026-10-01 — smoke inline vigiava o deploy do commit
+errado.* `scripts/garantir_deploy_pages.sh` usava sempre `GITHUB_SHA`
+(o commit que disparou o run). Em `calendario-mensal.yml`,
+`pipeline-diario.yml` e `shadow-daily.yml` o run faz push de um commit
+novo e só depois corre o smoke — o script vigiava o deploy do commit
+anterior, já terminado, e o smoke corria antes do deploy do commit
+publicado (run 36857076880: vigiou `8128964`, deploy de `c69d629` só
+acabou 25s depois do smoke). Corrigido: `commit_push` exporta
+`sha=$(git rev-parse HEAD)` depois do push, passado como `SHA_DEPLOY`;
+vazio falha; deploy `cancelled` (substituído por commit mais novo) nunca
+é relançado. `|| true` retirado em `calendario-mensal.yml`.
+`tests/test_garantir_deploy_pages.py`: 10 testes, 7 a falhar com a
+lógica antiga.
+
 ---
 
 *Última revisão automática: 2026-10-03*
