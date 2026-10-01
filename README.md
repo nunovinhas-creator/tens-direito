@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **30 de setembro de 2026**.
+Actualizado automaticamente a partir do repositório em **01 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -34,7 +34,7 @@ Actualizado automaticamente a partir do repositório em **30 de setembro de 2026
 | [`caixa-geral-aposentacoes.html`](caixa-geral-aposentacoes.html) | Caixa Geral de Aposentações: quem está abrangido e como funciona |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
-| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: setembro 2026 |
+| [`calendario-pagamentos-seguranca-social.html`](calendario-pagamentos-seguranca-social.html) | Calendário de Pagamentos Segurança Social: outubro 2026 |
 | [`carreiras-contributivas-estrangeiro.html`](carreiras-contributivas-estrangeiro.html) | Carreira Contributiva no Estrangeiro: totalização de períodos na UE |
 | [`carreiras-muito-longas.html`](carreiras-muito-longas.html) | Carreiras Muito Longas: reforma aos 60 anos sem cortes |
 | [`cartao-europeu-estacionamento.html`](cartao-europeu-estacionamento.html) | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | Tens Direito |
@@ -441,6 +441,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 30 de setembro de 2026 às 13:13 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 01 de outubro de 2026 às 13:34 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
