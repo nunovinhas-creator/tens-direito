@@ -2090,21 +2090,43 @@ silenciosa.
   imagens og (`tests/test_og_image.py`) exige `og:title == manifest` —
   um título mensal obrigaria a regenerar a imagem todos os meses. Só
   `<title>`/description variam com o mês.
+- **Viragem de mês do lado do cliente (#280, 2026-10-01)**: com o mês
+  seguinte no JSON, a zona `CAL:CORPO` traz também o topo completo desse
+  mês num `<template id="cal-vista-AAAA-MM">` (inerte: âncoras nunca
+  duplicadas). O script de runtime, com a data de hoje em
+  **Europe/Lisbon** (helper único `assets/js/hoje-lisboa.js`,
+  `window.tdHojeLisboa()`, fallback para a data do aparelho), troca o topo
+  por esse template quando o mês de Lisboa já é o seguinte — a página vira
+  à meia-noite de Lisboa sem esperar pelo `calendario-mensal.yml` (cujo
+  cron do dia 1 chega a correr com horas de atraso). O HTML estático
+  continua a ser regenerado pelo workflow: é a base sem JS e o que o
+  Google vê (incluindo `<title>`/description). A barra `CAL-HOME` da
+  homepage segue o mesmo princípio: `#cal-home-dados` é
+  `{"AAAA-MM": [...]}` com o mês corrente e o seguinte.
 - **Destaque "Próximo pagamento"** no topo, antes da tabela: camada
   estática (sempre visível mesmo sem JS, com todas as datas do mês) +
-  `#cal-dados` (JSON `dia`+`resumo` curto por pagamento) que um script
-  de runtime lê para promover a próxima data a contar de hoje — só
-  quando o mês renderizado é o mês corrente do visitante; num mês velho
+  `#cal-dados` (JSON `dia`+`resumo` curto por pagamento) que o script
+  de runtime lê para promover a próxima data a contar de hoje (Lisboa) —
+  só quando o topo (depois da troca) é o mês de Lisboa; num mês velho
   (aviso de desatualização activo) ou em estado degradado nunca inventa
   um "próximo", e a camada estática mantém-se.
-- **Guarda JS em runtime** (progressive enhancement, zero rede): compara
-  `#cal-corrente[data-mes]` com a data do visitante e mostra
-  `#cal-aviso-desatualizado` se a página tiver ficado velha.
-- **`tests/test_calendario_frescura.py`** — canário de frescura (falha
-  se o mês renderizado for anterior ao mês real), sincronização
-  página↔script↔JSON, estado degradado (JSON vazio ou só com meses
-  passados nunca rende tabela), caminhos de falha da validação, e
-  Playwright mobile (375px sem overflow, âncoras, guarda JS).
+- **Guarda JS em runtime** (progressive enhancement, zero rede): depois
+  da troca, compara `#cal-corrente[data-mes]` com o mês de Lisboa e
+  mostra `#cal-aviso-desatualizado` se o topo ainda for de um mês
+  anterior — o caso em que o mês novo não está nos dados.
+- **Linha dos dados**: "Datas confirmadas na Segurança Social a
+  DD/MM/AAAA" (`atualizado_em` do JSON) — nunca "verificado", para não se
+  confundir com o carimbo manual "Verificado a" da página (que cobre o
+  texto e continua manual).
+- **`tests/test_calendario_frescura.py`** — canário de frescura
+  (`erro_de_frescura()`): o topo estático pode estar no mês anterior só
+  até ao dia `DIA_LIMITE_TOPO_ESTATICO` (3) de Lisboa e só se a página
+  trouxer o mês corrente em `<template>`; a partir daí, vermelho
+  (workflow mensal parado). Sincronização página↔script↔JSON gerada para
+  o mês do topo estático (não para hoje), estado degradado, caminhos de
+  falha da validação, Playwright mobile (375px sem overflow, âncoras,
+  guarda JS) e testes com relógio fixo e fuso do aparelho diferente de
+  Lisboa (`TestViragemDeMesLisboa`).
 - Integração: `EXCLUIDAS` em `sincronizar_clusters.py` (página
   utilitária cross-cluster, mesma categoria de `simuladores.html`),
   nav/sitemap/pesquisa.js/og-image próprios, cross-links nos dois
