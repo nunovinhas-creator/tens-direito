@@ -45,24 +45,40 @@ REGEX_DATA_DIA_MES = re.compile(
 
 
 def _cards_urgente_banda() -> list[str]:
-    """Devolve o texto bruto (HTML) de cada `.urgente-card` de index.html."""
+    """Devolve o texto bruto (HTML) de cada `.urgente-card` de index.html.
+
+    Divide pela tag de abertura de cada cartão, em vez de procurar o
+    `</div>` de fecho: um cartão pode ter `<div>` aninhados (ex.: o badge
+    "Em vigor" da PSU), e um `.*?</div>` cortava-o a meio. Sem a secção em
+    `index.html` (escondida por ficar vazia), devolve `[]`."""
+    if 'class="urgente-banda"' not in INDEX_HTML:
+        return []
     m = re.search(
         r'<div class="urgente-cards"[^>]*>(.*?)</div>\s*</div>\s*</div>',
         INDEX_HTML,
         re.S,
     )
     assert m, (
-        "não encontrei .urgente-cards em index.html — a secção 'Datas a não "
-        "perder' foi removida ou a estrutura mudou sem actualizar este canário"
+        "não encontrei .urgente-cards em index.html — a estrutura da secção "
+        "'Datas a não perder' mudou sem actualizar este canário"
     )
     corpo = m.group(1)
-    cartoes = re.findall(
-        r'<div class="urgente-card"[^>]*>(.*?)</div>\s*(?=<div class="urgente-card"|\Z)',
-        corpo,
-        re.S,
+    cartoes = re.split(r'<div class="urgente-card"[^>]*>', corpo)[1:]
+    assert len(cartoes) == corpo.count('class="urgente-card"'), (
+        "contagem de cartões não bate com as aberturas .urgente-card — estrutura mudou?"
     )
-    assert len(cartoes) >= 5, f"só encontrei {len(cartoes)} cartões — estrutura mudou?"
     return cartoes
+
+
+def test_seccao_datas_a_nao_perder_nunca_fica_vazia():
+    """Decisão de 2026-10-01: se todos os cartões saírem, a secção
+    esconde-se (sai de index.html) — nunca o título sozinho, sem cartões."""
+    if 'class="urgente-banda"' not in INDEX_HTML:
+        return
+    assert _cards_urgente_banda(), (
+        "'⏰ Datas a não perder' está em index.html sem nenhum cartão — "
+        "retira a secção inteira em vez de deixar o título vazio"
+    )
 
 
 def _titulo(card_html: str) -> str:
