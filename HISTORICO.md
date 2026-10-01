@@ -6765,6 +6765,25 @@ NBSP/NFC, frase vazia e corte de frase por não existir frase na identidade
 antiga.
 
 
+*Última revisão: 2026-09-30 — PR 13 do simulador universal: guardrail de
+cobertura + issue #261.* Novo `tests/test_cobertura_simulador_universal.py`:
+cada página `tipo: "artigo"` de `data/clusters.json` é a `pagina` de um apoio
+em `dados/condicoes.json` ou está em `FORA_DO_SIMULADOR_UNIVERSAL` com
+categoria (`complementar`, `processo`, `reforma`, `encerrado`,
+`por_implementar`) e motivo; falha nos dois sentidos (página sem
+classificação; entrada órfã — página que saiu de `clusters.json` ou passou a
+estar coberta); `complementar` tem de apontar para um apoio coberto ou por
+implementar. Classificação confirmada pelo Nuno. Issue #261:
+`APOIOS_COM_ARTIGO_OBRIGATORIO` substituída por
+`PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR` (5 parâmetros, "por confirmar em fonte
+primária") em `tests/test_gerar_condicoes_json.py` — a regra do artigo
+passa a valer para todos os apoios, e uma excepção órfã (parâmetro que ganhou
+artigo ou deixou de ser usado) falha. Nenhum valor nem citação mudou.
+Provado por mutação: repor a regra antiga (só creche/cartão) ou tirar as
+verificações de órfãs faz falhar os testes novos. ROADMAP.md aponta para as
+duas constantes.
+
+
 *Última revisão: 2026-10-01 — "⏰ Datas a não perder": cartões de
 setembro retirados.* `test_urgente_home_frescura.py` ficou vermelho a 1/10
 com "ASE — candidatura" e "Bolsas de mérito" (prazo 30 de setembro). Por
