@@ -6797,4 +6797,4 @@ que a secção nunca fique visível sem cartões (vazia → sai de
 
 ---
 
-*Última revisão automática: 2026-10-01*
+*Última revisão automática: 2026-10-02*
