@@ -1,232 +1,5 @@
 [
   {
-    "data": "2026-09-18",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 8,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 12,
-      "habitacao_arrendamento": 14,
-      "salario_minimo": 7,
-      "csi_idosos": 14
-    },
-    "candidatos": [
-      {
-        "titulo": "Segurança Social já tem calendário para outubro: saiba em que dia recebe pensões, subsídios e outros apoios - executivedigest.sapo.pt",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-15",
-        "score": 6,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-15"
-      },
-      {
-        "titulo": "Segurança Social prevê reforço do abono escolar de milhares de famílias portuguesas - Magazine.HD",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-15",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Segurança Social: quando vai receber as suas prestações em outubro de 2026 - Pplware",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-15",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Guimarães sobe limite do apoio ao arrendamento - CASA SAPO",
-        "feed_nome": "habitacao_arrendamento",
-        "data_iso": "2026-09-17",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=habitacao"
-      },
-      {
-        "titulo": "Governo anuncia que abono pode ser pago a dobrar este mês: A quem? - Notícias ao Minuto",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Em setembro, o Abono de Família pode ser pago a dobrar. Este pagamento abrang… - SAPO",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de família poderá ser pago a dobrar em setembro - Echo Boomer",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Orçamento para 2027: Livre quer passe de mobilidade nacional e reforçar abono de família - Expresso",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-13",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Livre quer passe de mobilidade nacional, reforçar abono de família e rede pública de lares - ZAP Notícias",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de família a dobrar este mês: há crianças e jovens que podem receber pagamento adicional. Veja os requisitos - executivedigest.sapo.pt",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Já são conhecidas as datas dos pagamentos da Segurança Social em outubro - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-14",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Salário mínimo de mil euros já em 2027? UGT defende, patrões afastam - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-16",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Aumento do Salário Mínimo Nacional - Partido Comunista Português",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-15",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Salário mínimo no Estado acima dos 1.030 euros em 2027? Valor ainda seria \"curto\" - Jornal SOL",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-15",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Empresários admitem não aumentar salário mínimo em 2027 e acusam Governo de falhar acordo - SIC Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-13",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "CGTP quer salário mínimo nos 1.100 euros em 2027 e mobiliza trabalhadores para manifestação nacional - Expresso",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "CGTP quer aumento do salário mínimo para 1.100 euros em 2027 - Observador",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "CGTP convoca manifestação nacional para outubro e exige salário mínimo de 1.100 euros em 2027 - Jornal SOL",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-11",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Aumentos salariais em 2027 travam nos 3% - Dinheiro Vivo",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-15",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Governo aprova suplemento extraordinário para pensionistas - dnoticias.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-09-17",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Segurança Social prevê reforço do abono escolar de milhares de famílias portuguesas - Magazine.HD",
-        "feed_nome": "abono_familia",
-        "score": 2
-      },
-      {
-        "titulo": "Guimarães sobe limite do apoio ao arrendamento - CASA SAPO",
-        "feed_nome": "habitacao_arrendamento",
-        "score": 2
-      },
-      {
-        "titulo": "Salário mínimo de mil euros já em 2027? UGT defende, patrões afastam - ECO",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-09-19",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2664,6 +2437,360 @@
         "titulo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário - Público",
         "feed_nome": "subsidio_desemprego",
         "score": 2
+      }
+    ]
+  },
+  {
+    "data": "2026-10-03",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 3,
+      "rsi": 15,
+      "psu_pensoes": 13,
+      "acao_social_escolar": 14,
+      "cuidador_informal": 14,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 11,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em outubro - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-28",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-28"
+      },
+      {
+        "titulo": "Segurança Social: Veja quando são pagas as pensões e os subsídios em outubro - SAPO",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-28",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-28"
+      },
+      {
+        "titulo": "Transparência salarial, pensões e Prestação Social Única em destaque na agenda laboral - Human Resources Portugal",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-09-28",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-28"
+      },
+      {
+        "titulo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário - Público",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-01"
+      },
+      {
+        "titulo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos - ECO",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "Trabalhadores mais velhos, mulheres e estrangeiros pesam mais no subsídio de desemprego - Observador",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego passou a valer menos face ao salário. Vale agora 64% - Jornal de Negócios",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego aumentou, mas compensa uma fatia cada vez menor do salário - Expresso",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Número de estrangeiros com subsídio de desemprego disparou na última década - Renascença",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego passou de 70% do último salário para 64% em 10 anos - Jornal PT50",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Valor do subsídio de desemprego esmagado pela economia - TSF",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário - Público",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-02",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "60% dos beneficiários de subsídio de desemprego regressam com salário mais elevado - Jornal Económico",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego perdeu peso face aos salários na última década e estrangeiros representam já 26% dos beneficiários - A Verdade",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-02",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de desemprego passa de 70% para 64% do último salário numa década - Jornal Económico",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=fiscal"
+      },
+      {
+        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-09-28",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-24"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-01",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'fiscal' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro - ODigital.pt",
+        "feed_nome": "acao_social_escolar",
+        "data_iso": "2026-09-30",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-30"
+      },
+      {
+        "titulo": "UGT reivindica salário mínimo nacional acima de 1.000 euros em janeiro - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro - XXV Governo Constitucional",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Conselho de Ministros. Governo anuncia aumento do complemento solidário para idosos - RTP",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo aumenta Complemento Solidário para Idosos em 50 euros - ECO",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos aumenta 50 euros em 2027 - Jornal de Notícias",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo português aprova aumento de 50 euros no complemento solidário para idosos - contacto.lu",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Complemento solidário para idosos sobe para 720 euros em 2027: saiba quanto pode receber - Contas Poupança",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo anuncia aumento do Complemento Solidário para Idosos em 2027 - Jornal de Negócios",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Montenegro anuncia aumento de 50 euros no Complemento Solidário para Idosos - CNN Portugal",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo anuncia aumento de 50 euros no Complemento Solidário para Idosos - Expresso",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo anuncia aumento do Complemento Solidário para Idosos em 2027 - SIC Notícias",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Montenegro promete aumentar Complemento Solidário para Idosos para 720 euros - Renascença",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Governo anuncia aumento de 50 euros no complemento solidário para idosos - Correio da Manhã",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos vai aumentar 50 euros em 2027 - Ekonomista",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "O que vai mudar no Complemento Solidário para Idosos e nos medicamentos gratuitos? - Renascença",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-01",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Era cuidador informal de crianças e acaba preso por abusos - noticiasdecoimbra.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-09-28",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Presidente da República promulga suplemento extraordinário para pensionistas - CNN Portugal",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-09-29",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos - ECO",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "score": 2
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro - XXV Governo Constitucional",
+        "feed_nome": "csi_idosos",
+        "score": 1
       }
     ]
   }

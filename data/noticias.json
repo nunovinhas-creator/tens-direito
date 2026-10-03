@@ -10,6 +10,33 @@
       "cluster_id": "trabalho-rendimento"
     },
     {
+      "data_iso": "2026-10-01",
+      "titulo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQTRGVC1EcHJSSmg3a201ZnVzNGJEMklicW5qcE5VanJvZmFRZWRuckRzVS1Sa3JKdE5aSXl3VWlab2p4QWhMSTNBTVVfQU9fSjNxbXFMd0hiamJkd1FTMjJSN0lCSHdUdUJVdl9jOEs0NzJJSmdyNlJzampsV0lJV3hYZEdtYnRLVHloVG92NF80Um9TUnRzRGpjNDRndGZ2R1NWUzJNaUxXZw?oc=5",
+      "resumo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxON1A5V3FjQzNhT0dsZmVmcnY0eGlnXzR2X2Fvc2ttdmR5THNKUDJDRzBIVURZNXduellRUGtiR2VGTkdFMm5qZEUwWmFpMGxKWmZMV3N0dHBwNmVhc0FxeU05Qmc1cmhDNWFUWTJhcDNUc0lhQUU1Qk1XUmdIbl9hb0U1OVZiVkRZdG9zajdNZkxtMlZIRGZLbjBQSkJhbXk2Y0w1Q2hOOGdQQmM?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro",
+      "fonte_nome": "XXV Governo Constitucional",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQOEZJOGhsTEhPUGFhRVZnNUFfcnRhLTNMY0RSNUp5UGZDRHVqY042bVBvNmgyb3FoZUZ2Z282Wi1meGtFTjZOTVVFVmNxNG9pczEwYmg1ZXM2Z0tKYzJ0eV9HM1NaMGpSTzN6SF9ES2pvYWdTSlpuM0tsOXFNeFlhVWJKTG90YU93ZUxGUHpkRmVJODkydktOeG1tdzBRUW9HXzhTM0ZUWmpMRUxWZXlGQnRDR0FMQkZ6dmdRNA?oc=5",
+      "resumo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro XXV Governo Constitucional",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
       "data_iso": "2026-09-30",
       "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro",
       "fonte_nome": "ODigital.pt",
