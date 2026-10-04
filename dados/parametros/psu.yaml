@@ -490,6 +490,8 @@ veiculo_coeficiente_ano10mais:
 # ler de parametros.json; o schema de condições precisa dele em dados, por
 # isso fica aqui, com a mesma fonte já usada em abono/rsi/desemprego. O
 # simulador NÃO foi alterado (dívida técnica dele, fora desta série).
+# Artigo (04/10/2026, issue #261): art. 2.º da Portaria n.º 480-A/2025/1,
+# confirmado em fonte primária pelo Nuno.
 
 ias_2026:
   descricao: "Indexante dos Apoios Sociais (IAS) 2026 — base dos limites da PSU derivados de multiplicadores"
@@ -497,9 +499,9 @@ ias_2026:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 537.13
-      referencia_legal: "Portaria n.º 480-A/2025/1, de 30 de dezembro"
+      referencia_legal: "Portaria n.º 480-A/2025/1, art. 2.º"
       fonte_url: "https://dre.pt"
-      verificado_em: "2026-07-13"
+      verificado_em: "2026-10-04"
 
 # Valor derivado (60 × IAS 2026), precomputado e versionado à parte — mesmo
 # tratamento do RSI. Os dois limites do art. 8.º/1, alíneas c) e d)

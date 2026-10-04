@@ -676,11 +676,11 @@ CAMPOS_FONTE = ("vigencia_inicio", "referencia_legal", "fonte_url", "verificado_
 # uma excepção que deixe de ser necessária (o parâmetro ganhou artigo ou já
 # não é usado) falha em `test_excecoes_sem_artigo_nao_sao_orfas`.
 PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR = {
-    "abono.escalao4_limite_cenario_pedidos_novos_2026": "por confirmar em fonte primária",
+    "abono.escalao4_limite_cenario_pedidos_novos_2026": (
+        "diploma citado (Portaria 60/2026/1) fixa montantes, não limites; "
+        "limite deriva de 2,5 × IAS × 14 do DL 176/2003, artigo por confirmar"
+    ),
     "ase.escalao_b_limite_rpc_mensal": "por confirmar em fonte primária",
-    "psu.ias_2026": "por confirmar em fonte primária",
-    "rsi.idade_minima_anos": "por confirmar em fonte primária",
-    "rsi.valor_titular_mensal": "por confirmar em fonte primária",
 }
 _REGEX_ARTIGO = r"\bart(\.|igo)"
 
@@ -757,7 +757,7 @@ def test_excecoes_sem_artigo_nao_sao_orfas():
 
 
 def test_guardrail_artigo_aplica_se_a_todos_os_apoios():
-    """Sem a lista de excepções, os 5 parâmetros por confirmar falham —
+    """Sem a lista de excepções, os parâmetros por confirmar falham —
     a regra já não depende de o apoio estar numa lista."""
     erros = _erros_de_proveniencia(_json_real("condicoes.json"), _json_real("parametros.json"), excecoes={})
     refs = sorted({e.split(": ")[1].split(" ")[0] for e in erros})
@@ -766,9 +766,9 @@ def test_guardrail_artigo_aplica_se_a_todos_os_apoios():
 
 def test_excecao_de_parametro_que_ja_cita_artigo_e_orfa():
     parametros = _json_real("parametros.json")
-    parametros["prestacoes"]["rsi"]["idade_minima_anos"]["referencia_legal"] = "Lei n.º 13/2003, artigo 1.º"
+    parametros["prestacoes"]["ase"]["escalao_b_limite_rpc_mensal"]["referencia_legal"] = "Despacho n.º 8452-A/2015, artigo 1.º"
     assert _excecoes_orfas(_json_real("condicoes.json"), parametros) == [
-        "rsi.idade_minima_anos: órfã — a referencia_legal já cita o artigo"
+        "ase.escalao_b_limite_rpc_mensal: órfã — a referencia_legal já cita o artigo"
     ]
 
 

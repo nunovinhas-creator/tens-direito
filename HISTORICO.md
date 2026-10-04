@@ -6933,6 +6933,21 @@ são relançadas. `tests/test_garantir_deploy_pages.py`: em curso → sem rerun;
 `action_required` → sem rerun. Com a lógica anterior falham 4 casos (em
 curso e as 3 conclusões novas).
 
+
+*Última revisão: 2026-10-04 — artigo na `referencia_legal` de 3 parâmetros
+das condições (issue #261).* Artigos confirmados em fonte primária pelo Nuno
+(files.dre.pt bloqueado nesta sessão): `psu.ias_2026` → Portaria n.º
+480-A/2025/1, art. 2.º; `rsi.idade_minima_anos` → Lei n.º 13/2003, art. 4.º,
+n.º 1; `rsi.valor_titular_mensal` → Portaria n.º 257/2012, art. 31.º, n.º 1,
+na redação da Portaria n.º 71/2026/1. Saem de
+`PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR`. Ficam na lista
+`abono.escalao4_limite_cenario_pedidos_novos_2026` (motivo novo: a Portaria
+60/2026/1 fixa montantes, não limites; o limite deriva de 2,5 × IAS × 14 do
+DL 176/2003, artigo por confirmar) e `ase.escalao_b_limite_rpc_mensal`.
+Nenhum valor mudou; os três parâmetros corrigidos ficam com
+`verificado_em` 2026-10-04 (valores reverificados em fonte pelo Nuno);
+`dados/parametros.json` regenerado.
+
 ---
 
 *Última revisão automática: 2026-10-04*
