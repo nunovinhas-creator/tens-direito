@@ -1867,6 +1867,24 @@ idempotente. Escrito por `scripts/sincronizar_clusters.py` (script de
 **Posição na homepage**: logo a seguir a "Guias principais"
 (`DESTAQUES:HOME`) e antes de "Como funciona".
 
+### C) "⏰ Datas a não perder" — cartões manuais com `data-ate`
+
+Secção 100% manual de `index.html` (`.urgente-banda`), sem marcadores nem
+script — `verificar_datas.py` exclui `index.html`. Desde a issue #283, cada
+`.urgente-card` declara a data de fim em `data-ate="AAAA-MM-DD"` (ou
+`data-ate="permanente"`), e `tests/test_urgente_home_frescura.py` exige:
+1) `data-ate` presente e válido; 2) `data-ate` ainda não passou;
+3) `permanente` só num cartão sem nenhum nome de mês no texto;
+4) `data-ate` nunca posterior à data não histórica mais tardia do texto, e
+— se o texto tiver uma data sem ano — a menos de 12 meses de hoje (sem
+este limite, `data-ate="2030-12-31"` arrastava o ano implícito de "até 31
+de dezembro" e passava). O detector reconhece dia + mês, mês sem dia
+("setembro" → último dia do mês) e sequências ("julho/agosto" → 31 de
+agosto); "todos os meses" nunca conta. Uma data sem ano usa o ano do
+`data-ate`, nunca o ano corrente. A supressão por `MARCADORES_HISTORICOS`
+é por ocorrência (só a frase da data), nunca pelo cartão inteiro. Cartão
+novo: escrever sempre o `data-ate` no mesmo commit.
+
 ### Regra de honestidade
 
 Nenhum dos dois blocos mostra alguma vez "hoje" ou uma data inventada. Se
