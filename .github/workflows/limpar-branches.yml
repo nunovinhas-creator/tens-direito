@@ -101,6 +101,7 @@ jobs:
 
             if [ "$accao" = "APAGAR" ]; then
               if [ "$SIMULAR" = "true" ]; then
+                echo "SIMULAÇÃO: branch '$b' seria apagada ($motivo)."
                 echo "- 🧪 \`$b\` — seria apagada: $motivo" >> "$GITHUB_STEP_SUMMARY"
               else
                 echo "Branch '$b' integrada ($motivo) — a apagar."
