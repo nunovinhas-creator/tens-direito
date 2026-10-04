@@ -52,10 +52,10 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Como se calcula o Rendimento Per Capita (RPC)?",
+        "name": "Como sei qual é o meu escalão ASE?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O RPC é calculado dividindo o rendimento anual bruto do agregado pelo número de elementos da família e depois por 12 meses. Exemplo: agregado com 4 pessoas e 24.000€ anuais → RPC = 24.000 ÷ 4 ÷ 12 = 500€/mês."
+          "text": "O escalão da ASE é o escalão do abono de família da criança: o 1.º escalão do abono dá o escalão A, o 2.º dá o escalão B. A partir do 3.º escalão não há auxílios económicos. Regra do Despacho n.º 8452-A/2015."
         }
       },
       {
@@ -115,7 +115,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-06"
+    "dateModified": "2026-10-04"
   }
   </script>
 
@@ -595,32 +595,22 @@
       ⏰ Candidatura até 30 de Setembro de 2026
     </div>
 
-    <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 1.5rem;">💡 <strong>Despacho n.º 8452-A/2015 e 5296/2017</strong> · IAS 2026: 537,13€ · <strong>Verificado a 24/06/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a></p>
+    <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 1.5rem;">💡 <strong>Despacho n.º 8452-A/2015 e 5296/2017</strong> · <strong>Verificado a 04/10/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a></p>
 
     <div class="calc-card">
       <h2 style="color: #0F766E; margin-bottom: 1.5rem;">Descobre o teu escalão ASE</h2>
 
       <form id="formASE" onsubmit="calcularASE(event)">
         <div class="form-group">
-          <label for="rendimento">Rendimento anual bruto do agregado (€)</label>
-          <input type="number" id="rendimento" inputmode="numeric" placeholder="24000" min="0" step="100" required>
-          <small>Soma de todos os rendimentos do agregado (12 meses) — rendimentos 2025</small>
-        </div>
-
-        <div class="form-group">
-          <label for="numPessoas">Número de pessoas no agregado familiar</label>
-          <select id="numPessoas" required>
+          <label for="escalaoAbono">Qual é o escalão do abono de família da criança ou jovem?</label>
+          <select id="escalaoAbono" required>
             <option value="">— Selecciona —</option>
-            <option value="1">1 pessoa</option>
-            <option value="2">2 pessoas</option>
-            <option value="3">3 pessoas</option>
-            <option value="4">4 pessoas</option>
-            <option value="5">5 pessoas</option>
-            <option value="6">6 pessoas</option>
-            <option value="7">7 pessoas</option>
-            <option value="8">8+ pessoas</option>
+            <option value="1">1.º escalão</option>
+            <option value="2">2.º escalão</option>
+            <option value="3_ou_superior">3.º escalão ou superior</option>
+            <option value="nao_sei">Não sei</option>
           </select>
-          <small>Inclui o aluno e todos os encarregados de educação</small>
+          <small>Vês o escalão na Segurança Social Direta. Não sabes? Estima-o no <a href="/simulador-abono.html">simulador do abono de família</a>. Se o aluno não recebe abono de família, fala com a secretaria da escola.</small>
         </div>
 
         <div class="form-group">
@@ -646,9 +636,9 @@
       <h2>Perguntas frequentes</h2>
 
       <details>
-        <summary>Como se calcula o Rendimento Per Capita (RPC)?</summary>
+        <summary>Como sei qual é o meu escalão ASE?</summary>
         <div class="faq-resposta">
-          O RPC é calculado dividindo o rendimento anual bruto do agregado pelo número de elementos da família e depois por 12 meses. <strong>Exemplo:</strong> agregado com 4 pessoas e 24.000€ anuais → RPC = 24.000 ÷ 4 ÷ 12 = 500€/mês.
+          O escalão da ASE é o escalão do abono de família da criança: o 1.º escalão do abono dá o <strong>escalão A</strong>, o 2.º dá o <strong>escalão B</strong>. A partir do 3.º escalão não há auxílios económicos. Regra do Despacho n.º 8452-A/2015.
         </div>
       </details>
 
@@ -714,12 +704,12 @@
     // ── CONFIG — fonte única de verdade da fórmula ───────────────────────────
     // Cada valor tem a fonte (diploma) citada em comentário — nunca um número
     // solto no meio da lógica. Valores fact-checked e publicados em
-    // acao-social-escolar.html (verificado 24/06/2026).
+    // acao-social-escolar.html (verificado 04/10/2026).
     const CONFIG = {
-      verificado: '2026-06-24',
-      ias2026: 537.13, // Portaria n.º 480-A/2025/1, de 30 dez 2025 — https://dre.pt
-      limiteEscalaoA: 268.57, // Despacho n.º 8452-A/2015 — 50% do IAS 2026
-      limiteEscalaoB: 537.13, // Despacho n.º 8452-A/2015 — 100% do IAS 2026
+      verificado: '2026-10-04',
+      // Despacho n.º 8452-A/2015: o escalão da ASE é o escalão do abono de
+      // família (issue #295) — nunca um rendimento por pessoa face ao IAS.
+      escalaoPorAbono: { '1': 'a', '2': 'b', '3_ou_superior': 'sem_auxilios' },
       cobertura: {
         a: {
           refeicoes: { valor: 'Gratuitas', descricao: 'Todas as refeições' }, // Despacho n.º 8452-A/2015
@@ -741,29 +731,23 @@
     // ── Mecânica de cálculo ──────────────────────────────────────────────────
     // Função pura, testada em tests/test_simulador_ase_calculo.py.
     function calcularASEValor(config, input) {
-      const { rendimentoAnual, numPessoas, tipoEscola } = input;
+      const { escalaoAbono, tipoEscola } = input;
 
       if (tipoEscola === 'privada') {
         return { escalao: 'privada' };
       }
 
-      const rpc = rendimentoAnual / numPessoas / 12;
-      let escalao = 'nao';
-      if (rpc <= config.limiteEscalaoA) escalao = 'a';
-      else if (rpc <= config.limiteEscalaoB) escalao = 'b';
-
-      return { escalao, rpc };
+      return { escalao: config.escalaoPorAbono[escalaoAbono] || 'nao_sei' };
     }
 
     // ── Ligação ao formulário (não testada directamente — só calcularASEValor) ──
     function calcularASE(e) {
       e.preventDefault();
 
-      const rendimento = parseFloat(document.getElementById('rendimento').value);
-      const numPessoas = parseInt(document.getElementById('numPessoas').value);
+      const escalaoAbono = document.getElementById('escalaoAbono').value;
       const tipoEscola = document.getElementById('tipoEscola').value;
 
-      const r = calcularASEValor(CONFIG, { rendimentoAnual: rendimento, numPessoas, tipoEscola });
+      const r = calcularASEValor(CONFIG, { escalaoAbono, tipoEscola });
 
       if (r.escalao === 'privada') {
         mostrarResultadoPrivada();
@@ -771,22 +755,34 @@
       }
 
       const escalao = r.escalao;
-      const rpc = r.rpc;
       const resultDiv = document.getElementById('resultado');
       let html = '';
+      let elegivel = null;
 
-      if (escalao === 'nao') {
+      if (escalao === 'nao_sei') {
         html = `
           <div class="resultado-card sem-direito">
             <div class="resultado-titulo">Resultado da simulação</div>
-            <div class="resultado-valor">Sem direito</div>
+            <div class="resultado-valor">Precisas primeiro do escalão do abono</div>
             <div class="resultado-detalhe">
-              <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
-              <p>O rendimento do agregado ultrapassa o limite para ASE (€${CONFIG.limiteEscalaoB.toFixed(2)}/mês).</p>
+              <p>Consulta-o na Segurança Social Direta, ou estima-o no <a href="/simulador-abono.html">simulador do abono de família</a>.</p>
+            </div>
+          </div>
+        `;
+      } else if (escalao === 'sem_auxilios') {
+        elegivel = false;
+        html = `
+          <div class="resultado-card sem-direito">
+            <div class="resultado-titulo">Resultado da simulação</div>
+            <div class="resultado-valor">Sem auxílios económicos da ASE</div>
+            <div class="resultado-detalhe">
+              <p>A partir do 3.º escalão do abono de família, a ASE não dá auxílios económicos (refeições, material, visitas de estudo).</p>
+              <p>Os manuais continuam gratuitos para todos, pelo programa MEGA. Se o rendimento do agregado baixou, fala com a secretaria da escola sobre a reavaliação.</p>
             </div>
           </div>
         `;
       } else {
+        elegivel = true;
         const nomeEscalao = escalao === 'a' ? 'Escalão A' : 'Escalão B';
         const corClass = escalao === 'a' ? 'escalao-a' : 'escalao-b';
         const cobertura = CONFIG.cobertura;
@@ -796,8 +792,7 @@
             <div class="resultado-titulo">Resultado da simulação</div>
             <div class="resultado-valor">${nomeEscalao}</div>
             <div class="resultado-detalhe">
-              <p>Rendimento Per Capita: <strong>€${rpc.toFixed(2)}/mês</strong></p>
-              <p>Limite do escalão: até €${escalao === 'a' ? CONFIG.limiteEscalaoA : CONFIG.limiteEscalaoB}/mês</p>
+              <p>Com o ${escalao === 'a' ? '1.º' : '2.º'} escalão do abono de família, ficas no ${nomeEscalao.replace('Escalão', 'escalão')} da ASE.</p>
             </div>
           </div>
 
@@ -838,7 +833,7 @@
 
           <div class="aviso-escura">
             <strong>📋 Próximos passos:</strong>
-            <p>1. Recolhe a declaração de rendimentos da Segurança Social (2025)
+            <p>1. Pede à Segurança Social a declaração do escalão do abono de família
             <br>2. Entrega a candidatura na secretaria da escola até <strong>30 de setembro de 2026</strong>
             <br>3. A secretaria confirmará o escalão e os direitos após análise</p>
           </div>
@@ -853,7 +848,11 @@
 
       if (typeof gtag === 'function') {
         gtag('event', 'calc_resultado', { calculadora: 'ase' });
-        gtag('event', 'simulacao_concluida', { simulador: 'ase', elegivel: true });
+        if (elegivel === true) {
+          gtag('event', 'simulacao_concluida', { simulador: 'ase', elegivel: true });
+        } else if (elegivel === false) {
+          gtag('event', 'simulacao_concluida', { simulador: 'ase', elegivel: false });
+        }
       }
     }
 

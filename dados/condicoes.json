@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-09-28",
-  "verificado_em": "2026-09-28",
+  "gerado_em": "2026-10-04",
+  "verificado_em": "2026-10-04",
   "perguntas": {
     "data_nascimento_requerente": {
       "descricao": "Data de nascimento da pessoa que faz o pedido, quando é também a própria beneficiária do apoio (ex.: CSI, subsídios individuais)",
@@ -168,12 +168,25 @@
         "valor": "sim"
       }
     },
-    "rendimento_per_capita_mensal_agregado": {
-      "descricao": "Rendimento Per Capita (RPC) mensal do agregado — rendimento anual bruto do agregado dividido pelo número de elementos e por 12 meses",
-      "tipo": "numero",
-      "unidade": "EUR/mês",
-      "pergunta": "Qual é o rendimento mensal por pessoa do teu agregado?",
-      "ajuda": "Rendimento anual bruto do agregado ÷ número de pessoas ÷ 12."
+    "escalao_abono_crianca": {
+      "descricao": "Escalão do abono de família da criança ou jovem — o escalão da ASE é este (Despacho n.º 8452-A/2015): 1.º escalão do abono = escalão A, 2.º = escalão B, 3.º ou superior = sem auxílios económicos (issue #295). Sem opção para quem não recebe abono, de propósito: a regra para esse caso não está confirmada, e sem resposta a ASE fica indeterminada",
+      "tipo": "categorica",
+      "opcoes": [
+        "primeiro",
+        "segundo",
+        "terceiro_ou_superior"
+      ],
+      "pergunta": "Qual é o escalão do abono de família da criança?",
+      "rotulos": {
+        "primeiro": "1.º escalão",
+        "segundo": "2.º escalão",
+        "terceiro_ou_superior": "3.º escalão ou superior"
+      },
+      "ajuda": "Vês o escalão na Segurança Social Direta.",
+      "aplicavel_se": {
+        "campo": "tem_filhos_a_cargo",
+        "valor": "sim"
+      }
     },
     "rendimento_mensal_agregado": {
       "descricao": "Rendimento mensal total do agregado familiar, já considerado nos termos da condição de recursos (trabalho, pensões, subsídios)",
@@ -793,20 +806,34 @@
           }
         },
         {
-          "id": "rendimento_dentro_do_limite",
-          "tipo": "limiar",
-          "campo": "rendimento_per_capita_mensal_agregado",
-          "operador_comparacao": "lte",
-          "valor": 537.13,
-          "unidade_comparacao": null,
-          "fonte": {
-            "tipo": "parametro",
-            "referencia": "ase.escalao_b_limite_rpc_mensal"
-          },
-          "verificado_em": "2026-06-24"
+          "id": "escalao_abono_ate_ao_segundo",
+          "operador": "any",
+          "condicoes": [
+            {
+              "id": "abono_primeiro_escalao",
+              "tipo": "categorica",
+              "campo": "escalao_abono_crianca",
+              "operador_comparacao": "eq",
+              "valor": "primeiro",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            },
+            {
+              "id": "abono_segundo_escalao",
+              "tipo": "categorica",
+              "campo": "escalao_abono_crianca",
+              "operador_comparacao": "eq",
+              "valor": "segundo",
+              "unidade_comparacao": null,
+              "fonte": {
+                "tipo": "literal_enum"
+              }
+            }
+          ]
         }
-      ],
-      "verificado_em": "2026-06-24"
+      ]
     },
     "cartao-estacionamento": {
       "pagina": "cartao-europeu-estacionamento.html",
@@ -1320,7 +1347,7 @@
               "psu.valor_minimo_euros"
             ]
           },
-          "verificado_em": "2026-08-13"
+          "verificado_em": "2026-10-04"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -1336,7 +1363,7 @@
           "verificado_em": "2026-09-27"
         }
       ],
-      "verificado_em": "2026-09-27"
+      "verificado_em": "2026-10-04"
     },
     "rsi": {
       "pagina": "rsi.html",
@@ -1360,7 +1387,7 @@
                 "tipo": "parametro",
                 "referencia": "rsi.idade_minima_anos"
               },
-              "verificado_em": "2026-08-24"
+              "verificado_em": "2026-10-04"
             },
             {
               "id": "excepcao_menor",
@@ -1519,7 +1546,7 @@
               "rsi.valor_menor_mensal"
             ]
           },
-          "verificado_em": "2026-08-24"
+          "verificado_em": "2026-10-04"
         },
         {
           "id": "patrimonio_dentro_do_limite",
@@ -1574,7 +1601,7 @@
           }
         }
       ],
-      "verificado_em": "2026-09-27",
+      "verificado_em": "2026-10-04",
       "substituido_por": "psu",
       "substituido_a_partir_de": "2026-12-31"
     },

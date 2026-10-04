@@ -88,26 +88,18 @@ def test_ias_2026_simulador_abono():
     assert todos["prestacoes"]["abono"]["ias_2026"]["valor"] == IAS_2026
 
 
-def test_ias_2026_simulador_ase():
-    assert _valor_js(_ler("simulador-ase.html"), "ias2026") == IAS_2026
+def test_simulador_ase_nao_usa_ias_nem_rendimento_por_pessoa():
+    # Issue #295: o escalão da ASE é o escalão do abono (Despacho n.º
+    # 8452-A/2015) — o simulador deixou de comparar um rendimento por pessoa
+    # com o IAS, e essas constantes não podem voltar.
+    html = _ler("simulador-ase.html")
+    for chave in ("ias2026", "limiteEscalaoA", "limiteEscalaoB"):
+        assert chave not in html, chave
 
 
-def test_ias_2026_visivel_no_texto():
-    # simulador-subsidio-doenca.html saiu desta lista na sessão de
-    # 2026-07-19: o piso diário deixou de ser calculado sobre o IAS (era
-    # o erro corrigido nesta sessão) — passa a ser calculado sobre a
-    # RMMG 2026 (920€), sem relação nenhuma com o IAS. Ver
-    # test_piso_diario_minimo_baseado_na_rmmg_nunca_no_ias mais abaixo.
-    #
-    # simulador-abono.html saiu desta lista na mesma sessão: o simulador
-    # aplica sempre o cenário (b) — pedidos novos, indexado ao IAS de
-    # 2025 (522,50€) — e a Garantia para a Infância usa sempre o IAS de
-    # 2024 (509,26€, corrigido nesta sessão); o IAS 2026 (537,13€) deixou
-    # de ser um valor funcionalmente relevante nesta página. Continua
-    # coberto como dado aberto (ias_2026 em dados/parametros/abono.yaml,
-    # ver test_ias_2026_simulador_abono acima).
-    for pagina in ("simulador-ase.html",):
-        assert "537,13" in _ler(pagina), f"{pagina}: IAS 2026 (537,13€) não visível no texto"
+# test_ias_2026_visivel_no_texto saiu com a issue #295: simulador-ase.html,
+# a última página da lista, deixou de usar o IAS (o escalão da ASE é o do
+# abono de família) — ver test_simulador_ase_nao_usa_ias_nem_rendimento_por_pessoa.
 
 
 # ── Subsídio de doença — percentagens/piso, lidos de dados/parametros.json ──
@@ -220,9 +212,13 @@ def test_cuidador_informal_meta_description_valor_1_1x_ias():
     assert _valores_eur(desc) == [round(IAS_2026 * 1.1, 2)], desc
 
 
-def test_acao_social_escolar_meta_description_ias_literal():
+def test_acao_social_escolar_meta_description_sem_valor_legal():
+    # Issue #295: a ASE não tem limite de rendimento em euros — o escalão é o
+    # do abono de família. A description deixou de citar o IAS; nenhum valor
+    # em € pode voltar a aparecer nela sem um canário próprio.
     desc = _meta_description("acao-social-escolar.html")
-    assert _valores_eur(desc) == [IAS_2026], desc
+    assert _valores_eur(desc) == [], desc
+    assert "abono de família" in desc, desc
 
 
 def test_bolsa_merito_meta_description_valor_2_5x_ias():
