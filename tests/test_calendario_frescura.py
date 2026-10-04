@@ -157,7 +157,9 @@ def test_vista_do_mes_seguinte_presente_quando_ha_dados():
     ano, m = (int(x) for x in mes.split("-"))
     ano_s, mes_s = (ano + 1, 1) if m == 12 else (ano, m + 1)
     if _encontrar_mes(carregar_dados(), ano_s, mes_s) is None:
-        assert 'id="cal-vista-' not in HTML
+        # Só uma <template> real conta — o comentário do JS cita o padrão
+        # literal "cal-vista-AAAA-MM", que nunca é uma vista do mês.
+        assert not re.search(r'<template id="cal-vista-\d{4}-\d{2}">', HTML)
         return
     vista = re.search(rf'<template id="cal-vista-{ano_s}-{mes_s:02d}">([\s\S]*?)</template>', HTML)
     assert vista, "template do mês seguinte em falta"
