@@ -193,7 +193,7 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   `dados/condicoes/`. A lista vive só nessa constante, nunca aqui. Ao
   acrescentar um apoio a `dados/condicoes/`, a entrada correspondente tem
   de sair da constante — o teste falha se ficar órfã.
-- **Artigo por confirmar em 5 parâmetros do simulador universal** (issue
+- **Artigo por confirmar em parâmetros do simulador universal** (issue
   #261): `PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR`
   (`tests/test_gerar_condicoes_json.py`). A regra do artigo em
   `referencia_legal` já se aplica a todos os apoios; estas são as únicas
@@ -251,32 +251,14 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 - **Variante clara de `clusters.css`** — se um dia se quiser dar
   breadcrumb/relacionados também aos simuladores, sem forçar hero escuro —
   ver CLAUDE.md **"FECHO DO PROJECTO"** → "Registado para o futuro", ponto 2.
-- **Migração do ASE para parâmetros YAML (Commit 3 da sessão "Parâmetros
-  YAML + auditoria factual", 2026-07-19)** — ✅ **já não bloqueado**.
-  Investigação de 2026-08-25 ("Sentinela para o despacho da ASE", ver
-  CLAUDE.md **"PÁGINAS COM DATAS SAZONAIS"** → nota
-  `acao-social-escolar.html`/`bolsa-de-merito.html`) confirmou que a
-  razão do bloqueio anterior — "exige o despacho anual da DGEstE com os
-  escalões ASE do ano lectivo 2026/2027" — não corresponde a nenhum acto
-  real: o regime está fixado desde 2015 pelos Despachos n.º 8452-A/2015,
-  5296/2017 e 7255/2018 (escalões em %IAS, tectos de material/visitas em
-  euros, desconto de refeições), sem nenhuma república anual; a única
-  variável é o IAS, já publicado por Portaria própria e já vigiado pelo
-  `dre_ias`. Pronto para migrar como qualquer outra prestação:
-  `dados/parametros/ase.yaml` deve **referenciar os escalões do abono**
-  (A↔1.º, B↔2.º) em vez de duplicar limiares — dependência explícita
-  para que uma actualização do abono nunca deixe o ASE inconsistente —
-  mais auditoria de `simulador-ase.html` e `acao-social-escolar.html`
-  contra os 3 despachos-base (nunca assumir que os valores hoje no site
-  já batem certo, mesma disciplina dos outros commits desta série).
-  Commits 1 (subsídio de doença) e 2 (abono de família) desta sessão
-  concluídos — ver CLAUDE.md **"DADOS ABERTOS"** e a entrada de revisão
-  "Última revisão: 2026-07-19" (sessão "Parâmetros YAML + auditoria
-  factual") para o detalhe completo, incluindo as 2 correcções factuais
-  reais encontradas (piso do subsídio de doença RMMG-não-IAS; limite da
-  Garantia para a Infância IAS-2024). Sem prazo, não feito ainda —
-  fica como candidato ao próximo commit desta série, não como sessão de
-  documentação.
+- **Migração do ASE para parâmetros YAML** — reduzida pela issue #295
+  (2026-10-04): o escalão da ASE é o escalão do abono de família
+  (Despacho n.º 8452-A/2015 — 1.º → A, 2.º → B, 3.º ou superior sem
+  auxílios económicos), por isso já não há limiares de rendimento a
+  migrar; `dados/parametros/ase.yaml` saiu. Só os valores de cobertura do
+  `CONFIG` de `simulador-ase.html` (material, visitas) continuam inline —
+  dependem da #298 (tectos em euros fixos ou indexados ao
+  IAS. Sem prazo.
 - **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
   para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
   com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca

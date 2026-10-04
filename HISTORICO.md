@@ -6974,6 +6974,52 @@ casos falham sem a isenção.
 CI verde" num pedido do Nuno passa a autorizar o merge por squash assim que o
 CI estiver verde, sem confirmação, salvo "não faças merge".*
 
+
+*Última revisão: 2026-10-04 — ASE: o escalão é o escalão do abono de família
+(issue #295).* O Despacho n.º 8452-A/2015 faz corresponder o escalão da ASE
+ao do abono de família: o 1.º escalão do abono dá o escalão A, o 2.º dá o B,
+e do 3.º para cima não há auxílios económicos. Os dois simuladores e as
+páginas usavam um rendimento por pessoa face ao IAS (50%/100%), o que está
+errado. A regra foi indicada pelo Nuno; cita-se só "Despacho n.º 8452-A/2015",
+sem artigo.
+`simulador-ase.html`: o formulário pergunta o escalão do abono (1.º / 2.º /
+3.º ou superior / Não sei) em vez do rendimento e do número de pessoas.
+"Não sei" encaminha para a Segurança Social Direta e para o simulador do
+abono; para quem não recebe abono não há opção, e a página só encaminha para
+a secretaria da escola, sem afirmar nenhuma regra. Saem do `CONFIG`
+`ias2026`, `limiteEscalaoA` e `limiteEscalaoB`. `simulacao_concluida` deixa
+de enviar `elegivel: true` em todos os casos (incluindo "sem direito") e
+passa a enviar `elegivel: true` só no A/B, `false` no "sem auxílios"/escola
+privada, e nada no "Não sei".
+No simulador universal, a condição `rendimento_dentro_do_limite` dá lugar a
+`escalao_abono_ate_ao_segundo` (grupo `any`: 1.º ou 2.º escalão), com a
+pergunta nova `escalao_abono_crianca`. Saem
+`rendimento_per_capita_mensal_agregado`, `dados/parametros/ase.yaml`
+(`ase.escalao_b_limite_rpc_mensal`) e a excepção correspondente em
+`PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR`. `parametros.json`, `condicoes.json`
+e `tensdireito.db` foram regenerados. Isto resolve também as 4 divergências
+descritas na issue (agregados com 9 ou mais pessoas, RPC calculado à mão,
+portão de filhos a cargo, constantes duplicadas).
+Na secção "Quem tem direito" de `acao-social-escolar.html`, a tabela passa
+a "Escalão ASE ↔ escalão do abono"; a FAQ (corpo e JSON-LD), o resumo e a
+resposta rápida já não falam em rendimento por pessoa, e a meta/og
+description deixa de citar o IAS. O canário
+`test_acao_social_escolar_meta_description_ias_literal` passa a
+`…_sem_valor_legal`. "Família → Abono de família" sai de todos os textos:
+fica só "na Segurança Social Direta". Carimbo e `dateModified` avançam para
+04/10/2026 nesta página e em `simulador-ase.html`.
+Linhas alinhadas: `p/apoios-escolares.html` (cartão e descrição do
+simulador) e `calendario-escolar-apoios.html` (linha da ASE na tabela). Sai
+`test_ias_2026_visivel_no_texto`, porque a última página da lista deixou de
+usar o IAS. A excepção do desemprego (B → A) continua sem menção no site,
+por decisão do Nuno.
+Abertas: #298 (os tectos de material e visitas são euros fixos ou indexados
+ao IAS? a nota de fontes da página ficou como estava) e #299 (a resposta
+rápida diz que a ASE pode cobrir manuais, o que contradiz o MEGA).
+Limitação conhecida no simulador universal: sem uma opção para quem não
+recebe abono, essa pessoa só sai da pergunta com "Ver resultados agora" ou
+"Voltar". A ASE fica indeterminada, como pedido.
+
 ---
 
 *Última revisão automática: 2026-10-04*

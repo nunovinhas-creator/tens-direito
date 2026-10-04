@@ -353,18 +353,6 @@
         "verificado_em": "2026-09-27"
       }
     },
-    "ase": {
-      "escalao_b_limite_rpc_mensal": {
-        "descricao": "Limite de Rendimento Per Capita (RPC) mensal do agregado para acesso à ASE (escalão B) — acima deste valor não há direito",
-        "unidade": "EUR/mês",
-        "valor": 537.13,
-        "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Despacho n.º 8452-A/2015, de 31 de julho (100% do IAS em vigor) — IAS 2026 = 537,13€, Portaria n.º 480-A/2025/1, de 30 de dezembro",
-        "fonte_url": "https://dre.pt",
-        "fonte_url_complementar": null,
-        "verificado_em": "2026-06-24"
-      }
-    },
     "cartao-estacionamento": {
       "grau_minimo_motora_pct": {
         "descricao": "Cartão de estacionamento — grau mínimo da limitação funcional permanente, na deficiência motora, física ou orgânica (Tabela Nacional de Incapacidades)",

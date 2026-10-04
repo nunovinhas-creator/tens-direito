@@ -1017,7 +1017,7 @@ padrões de €/%. Resultado, com a cobertura adicionada:
 | `subsidio-desemprego.html` (`<title>`) | 1.342,83€ | 2,5 × IAS | `test_subsidio_desemprego_title_teto_2_5x_ias` |
 | `subsidio-desemprego.html` (description) | 537,13€ + 1.342,83€ | 100%/2,5× IAS | `test_subsidio_desemprego_meta_description_piso_e_teto_ias` |
 | `cuidador-informal.html` (description) | 590,84€ | 1,1 × IAS | `test_cuidador_informal_meta_description_valor_1_1x_ias` |
-| `acao-social-escolar.html` (description) | 537,13€ | IAS literal | `test_acao_social_escolar_meta_description_ias_literal` |
+| `acao-social-escolar.html` (description) | nenhum valor em € desde a issue #295 (o escalão da ASE é o do abono) — o canário garante que não volta a aparecer nenhum | — | `test_acao_social_escolar_meta_description_sem_valor_legal` |
 | `baixa-medica-subsidio-doenca.html` (description) | 55%/75% | via `taxaEscalao1`/`4` do simulador | `test_baixa_medica_meta_description_percentagens_batem_com_simulador` |
 | `simulador-subsidio-doenca.html` (description) | 55%/75% | idem, mesmo ficheiro | `test_simulador_subsidio_doenca_meta_description_percentagens_batem_com_o_js` |
 | `abono-de-familia.html` (description) | 190,98€ | nenhuma (Portaria própria) — canário de consistência com a tabela do corpo | `test_abono_meta_description_bate_com_tabela_do_artigo` |
@@ -2560,14 +2560,19 @@ aos encarregados de educação** que esta página documenta; scraper essa
 fonte não ajudaria a detectar o sinal que importa aqui.
 
 **`acao-social-escolar.html`/`bolsa-de-merito.html` — regime substantivo
-sem república anual**: escalões A/B como % do IAS, tectos de material
-escolar (16€/8€) e visitas de estudo (20€/10€) em euros, desconto nas
-refeições (gratuita no A, 50% no B) estão fixados desde 2015 pelos
-Despachos n.º 8452-A/2015, 5296/2017 e 7255/2018 — **sem nenhuma
-república anual**. A única variável real é o IAS, publicado por
-Portaria própria (tipicamente dezembro/janeiro) — **já vigiado pelo
-sentinela `dre_ias`** (Issue automática de janeiro, ver "PÁGINAS COM
-DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de Mérito: o valor é
+sem república anual**: o escalão da ASE é o **escalão do abono de
+família** (Despacho n.º 8452-A/2015: 1.º escalão do abono → escalão A,
+2.º → escalão B, 3.º ou superior → sem auxílios económicos) — nunca um
+rendimento por pessoa face ao IAS (corrigido nos dois simuladores e nas
+páginas pela issue #295, 2026-10-04). Tectos de material escolar
+(16€/8€) e visitas de estudo (20€/10€), desconto nas refeições
+(gratuita no A, 50% no B) estão fixados desde 2015 pelos Despachos n.º
+8452-A/2015, 5296/2017 e 7255/2018 — **sem nenhuma república anual**
+(se esses tectos são euros fixos ou indexados ao IAS fica por confirmar
+em fonte — issue #298). Os limites de escalão do abono sobem com o
+IAS, publicado por Portaria própria (tipicamente dezembro/janeiro) —
+**já vigiado pelo sentinela `dre_ias`** (Issue automática de janeiro,
+ver "PÁGINAS COM DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de Mérito: o valor é
 sempre 2,5×IAS, calculado a partir do mesmo Despacho n.º 8452-A/2015 —
 **nunca** um despacho anual próprio. `bolsa-de-merito.html` reflecte
 isto correctamente (1.342,83 € = 2,5 × IAS 2026, "Verificado a
@@ -4421,7 +4426,9 @@ apagados, só deixam de ser o "vigente").
   tocada — continua testável sem rede): `simulador-csi.html`,
   `simulador-abono.html`, `simulador-subsidio-doenca.html`. Só
   `simulador-ase.html` continua com valores inline (`CONFIG`, nunca
-  `PARAMETROS_*`) — ver `ROADMAP.md` para o estado da migração.
+  `PARAMETROS_*`) — desde a issue #295 só os valores de cobertura, já
+  sem limiares de rendimento (o escalão vem do escalão do abono); ver
+  `ROADMAP.md` para o estado da migração.
 - Golden tests de cada simulador migrado constroem `params` directamente
   de `dados/parametros.json` (nunca de um objecto global da página),
   mais 2 testes de runtime real por simulador (`http.server`, mesmo

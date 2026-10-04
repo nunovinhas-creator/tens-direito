@@ -6,9 +6,9 @@ uma cópia à parte (mesma filosofia de test_simulador_csi_calculo.py).
 
 Os valores de CONFIG usados aqui SÃO os valores de produção (Despacho
 n.º 8452-A/2015 + 5296/2017) — já fact-checked e publicados em
-acao-social-escolar.html (verificado 24/06/2026). O caso 2 replica
-literalmente o exemplo de RPC ("4 pessoas e 24.000€ anuais → 500€/mês")
-já publicado no FAQ da própria página.
+acao-social-escolar.html (verificado 04/10/2026). Desde a issue #295 o
+escalão vem do escalão do abono de família (1.º → A, 2.º → B, 3.º ou
+superior → sem auxílios), nunca de um rendimento por pessoa.
 
 Inclui uma regressão dedicada ao bug real encontrado nesta sessão: o
 simulador afirmava que o escalão B tinha transporte GRATUITO — a fonte
@@ -86,40 +86,36 @@ def _calcular(pagina, input_):
     )
 
 
-# ── Escalão A ────────────────────────────────────────────────────────────────
-def test_escalao_a_rpc_abaixo_do_limite(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 12000, "numPessoas": 4, "tipoEscola": "publica"})
-    assert r["escalao"] == "a"
-    assert round(r["rpc"], 2) == 250.0
+# ── Issue #295: escalão ASE = escalão do abono (Despacho n.º 8452-A/2015) ──
+@pytest.mark.parametrize("abono,esperado", [
+    ("1", "a"),
+    ("2", "b"),
+    ("3_ou_superior", "sem_auxilios"),
+    ("nao_sei", "nao_sei"),
+])
+def test_escalao_ase_e_o_escalao_do_abono(pagina, abono, esperado):
+    r = _calcular(pagina, {"escalaoAbono": abono, "tipoEscola": "publica"})
+    assert r == {"escalao": esperado}
 
 
-# ── Escalão B — replica o exemplo literal do FAQ publicado ──────────────────
-def test_escalao_b_replica_exemplo_do_faq(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 24000, "numPessoas": 4, "tipoEscola": "publica"})
-    assert r["escalao"] == "b"
-    assert round(r["rpc"], 2) == 500.0
+def test_valor_desconhecido_nunca_inventa_escalao(pagina):
+    r = _calcular(pagina, {"escalaoAbono": "", "tipoEscola": "publica"})
+    assert r["escalao"] == "nao_sei"
 
 
-# ── Sem direito — acima do limite do escalão B ──────────────────────────────
-def test_sem_direito_acima_do_limite(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 40000, "numPessoas": 2, "tipoEscola": "publica"})
-    assert r["escalao"] == "nao"
+def test_select_do_formulario_bate_com_a_correspondencia():
+    opcoes = re.findall(r'<option value="([^"]+)">', SIMULADOR_HTML.split('id="escalaoAbono"')[1].split("</select>")[0])
+    assert opcoes == ["1", "2", "3_ou_superior", "nao_sei"]
 
 
-# ── Fronteiras exactas ───────────────────────────────────────────────────────
-def test_rpc_exactamente_no_limite_do_escalao_a(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 268.57 * 48, "numPessoas": 4, "tipoEscola": "publica"})
-    assert r["escalao"] == "a"
-
-
-def test_rpc_exactamente_no_limite_do_escalao_b(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 537.13 * 48, "numPessoas": 4, "tipoEscola": "publica"})
-    assert r["escalao"] == "b"
+def test_simulador_nunca_pede_rendimento_nem_pessoas():
+    assert 'id="rendimento"' not in SIMULADOR_HTML
+    assert 'id="numPessoas"' not in SIMULADOR_HTML
 
 
 # ── Escola privada sem protocolo — nunca calcula escalão ────────────────────
 def test_escola_privada_sem_protocolo_fica_sem_escalao(pagina):
-    r = _calcular(pagina, {"rendimentoAnual": 5000, "numPessoas": 4, "tipoEscola": "privada"})
+    r = _calcular(pagina, {"escalaoAbono": "1", "tipoEscola": "privada"})
     assert r["escalao"] == "privada"
 
 
@@ -137,9 +133,7 @@ def test_cobertura_escalao_b_transporte_nao_e_gratuito(pagina):
 # ── Sanidade — nenhum campo de CONFIG a null ─────────────────────────────────
 def test_config_producao_sem_nenhum_campo_null(pagina):
     config = pagina.evaluate("CONFIG")
-    assert config["ias2026"] is not None
-    assert config["limiteEscalaoA"] is not None
-    assert config["limiteEscalaoB"] is not None
+    assert config["escalaoPorAbono"] == {"1": "a", "2": "b", "3_ou_superior": "sem_auxilios"}
     for escalao in ("a", "b"):
         for chave, item in config["cobertura"][escalao].items():
             assert item["valor"] is not None, f"cobertura {escalao}.{chave}.valor é null"

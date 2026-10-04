@@ -327,42 +327,36 @@ def test_abono_real_indeterminado_quando_falta_apenas_situacao_contributiva(pagi
 # ── ASE real (dados/condicoes.json de produção) ─────────────────────────────
 
 
-def test_ase_real_elegivel_escola_publica_rendimento_baixo(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 200}
-    r = _avaliar(pagina, condicoes, respostas)
+ASE_BASE = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo"}
+
+
+@pytest.mark.parametrize("escalao", ["primeiro", "segundo"])
+def test_ase_real_elegivel_com_abono_no_1o_ou_2o_escalao(pagina, escalao):
+    # Issue #295: escalão ASE = escalão do abono (Despacho n.º 8452-A/2015).
+    r = _avaliar(pagina, _condicoes_reais(), {**ASE_BASE, "escalao_abono_crianca": escalao})
     assert r["ase"]["estado"] == "elegivel"
 
 
-def test_ase_real_elegivel_no_limite_exacto_do_escalao_b(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 537.13}
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["ase"]["estado"] == "elegivel"
-
-
-def test_ase_real_inelegivel_rendimento_acima_do_escalao_b(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo", "rendimento_per_capita_mensal_agregado": 600}
-    r = _avaliar(pagina, condicoes, respostas)
+def test_ase_real_inelegivel_com_abono_no_3o_escalao_ou_superior(pagina):
+    r = _avaliar(pagina, _condicoes_reais(), {**ASE_BASE, "escalao_abono_crianca": "terceiro_ou_superior"})
     assert r["ase"]["estado"] == "inelegivel"
 
 
-def test_ase_real_inelegivel_escola_privada_sem_protocolo_mesmo_com_rendimento_baixo(pagina):
-    # Short-circuit do `all`: escola privada sem protocolo decide sozinha,
-    # sem precisar de saber o rendimento.
+def test_ase_real_inelegivel_escola_privada_sem_protocolo_mesmo_com_abono_no_1o_escalao(pagina):
+    # Short-circuit do `all`: escola privada sem protocolo decide sozinha.
     condicoes = _condicoes_reais()
     respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "privada_sem_protocolo"}
-    r = _avaliar(pagina, condicoes, respostas)
-    assert r["ase"]["estado"] == "inelegivel"
+    assert _avaliar(pagina, condicoes, respostas)["ase"]["estado"] == "inelegivel"
+    respostas["escalao_abono_crianca"] = "primeiro"
+    assert _avaliar(pagina, condicoes, respostas)["ase"]["estado"] == "inelegivel"
 
 
-def test_ase_real_indeterminado_quando_falta_rendimento(pagina):
-    condicoes = _condicoes_reais()
-    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo"}
-    r = _avaliar(pagina, condicoes, respostas)
+def test_ase_real_indeterminado_sem_escalao_do_abono(pagina):
+    # Quem não recebe abono não tem opção (regra por confirmar) — fica sempre
+    # indeterminado, nunca "não tens direito".
+    r = _avaliar(pagina, _condicoes_reais(), ASE_BASE)
     assert r["ase"]["estado"] == "indeterminado"
-    assert r["ase"]["perguntasEmFalta"] == ["rendimento_per_capita_mensal_agregado"]
+    assert r["ase"]["perguntasEmFalta"] == ["escalao_abono_crianca"]
 
 
 # ── RSI real (dados/condicoes.json de produção) — fórmula da escala de
@@ -1099,12 +1093,13 @@ def test_rsi_csi_psu_reais_inelegiveis_sem_residencia_legal(pagina):
         assert r[apoio]["estado"] == "inelegivel", apoio
 
 
-def test_ase_e_psu_nunca_elegiveis_sem_a_pergunta_de_rendimento(pagina):
-    # Tudo o resto respondido a favor; só falta o rendimento → nunca "elegivel".
+def test_ase_e_psu_nunca_elegiveis_sem_a_pergunta_decisiva(pagina):
+    # Tudo o resto respondido a favor; só falta a pergunta decisiva (escalão do
+    # abono na ASE, rendimentos na PSU) → nunca "elegivel".
     condicoes = _condicoes_reais()
     ase = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "publica_ou_protocolo"}
     assert _avaliar(pagina, condicoes, ase)["ase"]["estado"] == "indeterminado"
-    assert _avaliar(pagina, condicoes, {**ase, "rendimento_per_capita_mensal_agregado": 0})["ase"]["estado"] == "elegivel"
+    assert _avaliar(pagina, condicoes, {**ase, "escalao_abono_crianca": "primeiro"})["ase"]["estado"] == "elegivel"
 
     psu = {k: v for k, v in RESPOSTAS_PSU_BASE.items()
            if k not in ("rendimento_trabalho_mensal_agregado", "outros_rendimentos_mensais_agregado")}

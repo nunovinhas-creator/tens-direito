@@ -7,10 +7,11 @@
 # (PR 11, simulador universal) mais as duas de acesso propriamente ditas:
 #   - tipo de escola (pública ou privada com protocolo — nunca privada
 #     sem protocolo, que não tem ASE de todo);
-#   - RPC mensal do agregado dentro do limite do escalão B (o limite
-#     exterior — o escalão A é um detalhe do simulador dedicado, não
-#     uma segunda condição de acesso: quem está dentro de A também está
-#     dentro de B).
+#   - escalão do abono de família no 1.º ou no 2.º escalão (issue #295:
+#     o Despacho n.º 8452-A/2015 faz corresponder o escalão da ASE ao do
+#     abono — A = 1.º, B = 2.º, 3.º ou superior sem auxílios económicos —
+#     nunca um rendimento por pessoa face ao IAS). O escalão A/B em si é
+#     detalhe do simulador dedicado.
 
 apoio: ase
 pagina: acao-social-escolar.html
@@ -36,8 +37,16 @@ condicoes:
     operador_comparacao: eq
     valor_literal: publica_ou_protocolo
 
-  - id: rendimento_dentro_do_limite
-    tipo: limiar
-    campo: rendimento_per_capita_mensal_agregado
-    operador_comparacao: lte
-    parametro: ase.escalao_b_limite_rpc_mensal
+  - id: escalao_abono_ate_ao_segundo
+    operador: any
+    condicoes:
+      - id: abono_primeiro_escalao
+        tipo: categorica
+        campo: escalao_abono_crianca
+        operador_comparacao: eq
+        valor_literal: primeiro
+      - id: abono_segundo_escalao
+        tipo: categorica
+        campo: escalao_abono_crianca
+        operador_comparacao: eq
+        valor_literal: segundo

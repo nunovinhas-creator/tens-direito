@@ -680,7 +680,6 @@ PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR = {
         "diploma citado (Portaria 60/2026/1) fixa montantes, não limites; "
         "limite deriva de 2,5 × IAS × 14 do DL 176/2003, artigo por confirmar"
     ),
-    "ase.escalao_b_limite_rpc_mensal": "por confirmar em fonte primária",
 }
 _REGEX_ARTIGO = r"\bart(\.|igo)"
 
@@ -766,10 +765,20 @@ def test_guardrail_artigo_aplica_se_a_todos_os_apoios():
 
 def test_excecao_de_parametro_que_ja_cita_artigo_e_orfa():
     parametros = _json_real("parametros.json")
-    parametros["prestacoes"]["ase"]["escalao_b_limite_rpc_mensal"]["referencia_legal"] = "Despacho n.º 8452-A/2015, artigo 1.º"
+    parametros["prestacoes"]["abono"]["escalao4_limite_cenario_pedidos_novos_2026"]["referencia_legal"] = (
+        "Decreto-Lei n.º 176/2003, artigo 14.º"
+    )
     assert _excecoes_orfas(_json_real("condicoes.json"), parametros) == [
-        "ase.escalao_b_limite_rpc_mensal: órfã — a referencia_legal já cita o artigo"
+        "abono.escalao4_limite_cenario_pedidos_novos_2026: órfã — a referencia_legal já cita o artigo"
     ]
+
+
+def test_ase_ja_nao_usa_parametro_de_rendimento_por_pessoa():
+    """Issue #295: o escalão da ASE é o do abono (Despacho n.º 8452-A/2015),
+    nunca um rendimento por pessoa face ao IAS — o parâmetro saiu e não volta."""
+    parametros = _json_real("parametros.json")
+    assert "ase" not in parametros["prestacoes"]
+    assert "ase.escalao_b_limite_rpc_mensal" not in PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR
 
 
 def test_excecao_de_parametro_nao_usado_e_orfa():
