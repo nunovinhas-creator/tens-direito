@@ -17,7 +17,9 @@
 # nunca uma só fonte):
 # - Valor base (247,56€/mês, titular): Portaria n.º 71/2026/1, de 13 de
 #   fevereiro (DR n.º 31/2026, Série I) — fixa o valor de referência anual
-#   do RSI, 46,09% do IAS 2026.
+#   do RSI, 46,09% do IAS 2026. Artigo (04/10/2026, issue #261, fonte
+#   primária lida pelo Nuno): Portaria n.º 257/2012, art. 31.º, n.º 1, na
+#   redação da Portaria n.º 71/2026/1.
 # - Percentagens por adulto adicional (70%) e por menor (50%): Lei n.º
 #   13/2003, de 21 de maio, artigo 10.º (escala de equivalência), na
 #   redação do Decreto-Lei n.º 1/2016, de 6 de janeiro — este DL subiu as
@@ -39,9 +41,10 @@
 #   confirmado com confiança (as pesquisas não isolaram um artigo único
 #   para esta regra); nunca inventado um número — citado só o diploma,
 #   corroborado pelo Guia Prático 8001 do ISS, I.P.
-# - Idade mínima (18 anos): Lei n.º 13/2003, de 21 de maio — condições
-#   gerais de atribuição (há excepções legais para menores, não
-#   modeladas pelo simulador, já documentadas em rsi.html).
+# - Idade mínima (18 anos): Lei n.º 13/2003, de 21 de maio, art. 4.º,
+#   n.º 1 (artigo confirmado em fonte primária pelo Nuno a 04/10/2026,
+#   issue #261; há excepções legais para menores, não modeladas pelo
+#   simulador, já documentadas em rsi.html).
 #
 # Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
 
@@ -51,7 +54,7 @@ valor_titular_mensal:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 247.56
-      referencia_legal: "Portaria n.º 71/2026/1, de 13 de fevereiro — valor de referência do RSI para 2026 (46,09% do IAS)"
+      referencia_legal: "Portaria n.º 257/2012, art. 31.º, n.º 1, na redação da Portaria n.º 71/2026/1"
       fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/71-2026-1049254415"
       fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
       verificado_em: "2026-08-24"
@@ -139,7 +142,7 @@ idade_minima_anos:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 18
-      referencia_legal: "Lei n.º 13/2003, de 21 de maio — condições gerais de atribuição"
+      referencia_legal: "Lei n.º 13/2003, art. 4.º, n.º 1"
       fonte_url: "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856"
       fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58"
       verificado_em: "2026-08-24"

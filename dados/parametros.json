@@ -1673,7 +1673,7 @@
         "unidade": "EUR/mês",
         "valor": 537.13,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Portaria n.º 480-A/2025/1, de 30 de dezembro",
+        "referencia_legal": "Portaria n.º 480-A/2025/1, art. 2.º",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
         "verificado_em": "2026-07-13"
@@ -1695,7 +1695,7 @@
         "unidade": "EUR/mês",
         "valor": 247.56,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Portaria n.º 71/2026/1, de 13 de fevereiro — valor de referência do RSI para 2026 (46,09% do IAS)",
+        "referencia_legal": "Portaria n.º 257/2012, art. 31.º, n.º 1, na redação da Portaria n.º 71/2026/1",
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/portaria/71-2026-1049254415",
         "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
         "verificado_em": "2026-08-24"
@@ -1775,7 +1775,7 @@
         "unidade": "anos",
         "valor": 18,
         "vigencia_inicio": "2026-01-01",
-        "referencia_legal": "Lei n.º 13/2003, de 21 de maio — condições gerais de atribuição",
+        "referencia_legal": "Lei n.º 13/2003, art. 4.º, n.º 1",
         "fonte_url": "https://diariodarepublica.pt/dr/detalhe/lei/13-2003-541856",
         "fonte_url_complementar": "https://www.seg-social.pt/ptss/pssd/documento/cmc20aw2e00ovkl2ysmfehy58",
         "verificado_em": "2026-08-24"
