@@ -119,7 +119,28 @@ def test_sem_sha_deploy_usa_github_sha(tmp_path):
 def test_deploy_falhado_e_relancado(tmp_path):
     runs = {SHA_PUSH: {"id": 7, "status": "completed", "conclusion": "failure"}}
     res, chamadas = _correr(tmp_path, runs, {"SHA_DEPLOY": SHA_PUSH})
+    assert res.returncode == 0
     assert any("actions/runs/7/rerun" in c for c in chamadas), chamadas
+
+
+def test_deploy_ainda_em_curso_nao_e_falha_nem_relancado(tmp_path):
+    # Caso real (pipeline-diario.yml, run 37199982253, 2026-10-04): ao fim
+    # do tempo o deploy ainda corria (conclusion=null); o script registou
+    # "deploy falhou" e pediu um rerun de um run em curso.
+    runs = {SHA_PUSH: {"id": 7, "status": "in_progress", "conclusion": None}}
+    res, chamadas = _correr(tmp_path, runs, {"SHA_DEPLOY": SHA_PUSH})
+    assert res.returncode == 0
+    assert not any("rerun" in c for c in chamadas), chamadas
+    assert "deploy ainda em curso" in res.stdout
+    assert "falhou" not in res.stdout, res.stdout
+
+
+@pytest.mark.parametrize("conclusao", ["timed_out", "startup_failure", "action_required"])
+def test_so_failure_e_relancado(tmp_path, conclusao):
+    runs = {SHA_PUSH: {"id": 7, "status": "completed", "conclusion": conclusao}}
+    res, chamadas = _correr(tmp_path, runs, {"SHA_DEPLOY": SHA_PUSH})
+    assert res.returncode == 0
+    assert not any("rerun" in c for c in chamadas), chamadas
 
 
 def test_deploy_cancelado_nunca_e_relancado(tmp_path):
