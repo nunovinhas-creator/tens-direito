@@ -426,7 +426,12 @@ passam-no como `SHA_DEPLOY`; `SHA_DEPLOY` definido mas vazio falha
 `smoke-producao.yml` (`on: push`, onde `GITHUB_SHA` já é o commit
 publicado) continua sem `SHA_DEPLOY`. Um deploy `cancelled` (o Pages
 substituiu-o por um commit mais novo) nunca é relançado — publicaria a
-versão antiga por cima. Guarda: `tests/test_garantir_deploy_pages.py`
+versão antiga por cima. **Só `conclusion=failure` é relançado** (2026-10-04):
+um deploy ainda em curso ao fim do tempo (`conclusion=null`) regista
+"deploy ainda em curso" e segue sem relançar — o smoke a seguir é o gate
+(caso real: run 37199982253, que o tratava como falha e pedia um rerun de
+um run em curso); qualquer outra conclusão (`timed_out`, etc.) também não é
+relançada. Guarda: `tests/test_garantir_deploy_pages.py`
 (script real com `gh` falso + verificação estática dos workflows).
 
 **Verificado no incidente real que motivou esta correcção**: o deploy

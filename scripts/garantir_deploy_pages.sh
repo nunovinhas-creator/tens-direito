@@ -9,7 +9,8 @@
 # "GATILHO CORRIGIDO" para o `workflow_run` que nunca disparava).
 #
 # Este script trata o problema pelo lado de fora: corre a seguir a um
-# push nosso, espera que o deploy do commit publicado termine e, se falhar com o erro genérico "Deployment failed, try
+# push nosso, espera que o deploy do commit publicado termine e, se falhar
+# (conclusion=failure — nunca outro estado) com o erro genérico "Deployment failed, try
 # again later." — falha de infraestrutura confirmada 3 vezes nesta
 # sessão e nas duas anteriores, nunca relacionada com o conteúdo —
 # dispara automaticamente um novo deploy via API em vez de esperar por
@@ -92,6 +93,15 @@ for tentativa in $(seq 1 "$MAX_TENTATIVAS"); do
     exit 0
   fi
 
+  # Ainda a correr ao fim do tempo (status != completed, conclusion=null)
+  # não é falha — relançar um deploy em curso só o atrasaria (caso real:
+  # pipeline-diario.yml, run 37199982253, 2026-10-04). O smoke a seguir
+  # espera pela versão servida e é o gate.
+  if [ "$status" != "completed" ]; then
+    echo "::notice::deploy ainda em curso (run ${run_id}, status=${status}) ao fim de ${TIMEOUT_ESPERA_S}s — sem relançar; o smoke test a seguir confirma a versão servida."
+    exit 0
+  fi
+
   # Cancelado = o Pages substituiu este deploy por um de um commit mais
   # novo. Relançá-lo publicaria a versão antiga por cima da nova.
   if [ "$conclusion" = "cancelled" ]; then
@@ -99,7 +109,13 @@ for tentativa in $(seq 1 "$MAX_TENTATIVAS"); do
     exit 0
   fi
 
-  echo "::warning::deploy falhou (conclusion=${conclusion}) — a tentar novamente via API (run ${run_id})."
+  # Só failure é relançado; qualquer outra conclusão fica para o smoke.
+  if [ "$conclusion" != "failure" ]; then
+    echo "::warning::deploy terminou com conclusion=${conclusion} (run ${run_id}) — sem relançar; o smoke test a seguir decide."
+    exit 0
+  fi
+
+  echo "::warning::deploy falhou (conclusion=failure) — a tentar novamente via API (run ${run_id})."
   if ! gh api --method POST "repos/${REPO}/actions/runs/${run_id}/rerun" >/dev/null 2>&1; then
     echo "::warning::pedido de rerun falhou (run já pode estar em nova tentativa, ou sem permissão) — a desistir de recuperar automaticamente."
     exit 0

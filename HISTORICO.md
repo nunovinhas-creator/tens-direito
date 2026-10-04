@@ -6921,6 +6921,18 @@ antiga falham os casos 1, 4, 7 e 8 e as guardas do workflow (os restantes
 já mantinham a branch). Sem prova real do "push depois do merge" — decisão
 do Nuno: testes unitários + corrida simulada.
 
+
+*Última revisão: 2026-10-04 — garantir_deploy_pages.sh só relança
+`conclusion=failure`.* No run 37199982253 do pipeline diário o deploy ainda
+corria ao fim dos 180 s (`conclusion=null`); o script registou "deploy
+falhou" e pediu um rerun de um run em curso (falhou sem efeito). Agora um
+deploy ainda em curso regista "deploy ainda em curso" e segue sem relançar —
+o smoke a seguir é o gate; `cancelled` e as restantes conclusões também não
+são relançadas. `tests/test_garantir_deploy_pages.py`: em curso → sem rerun;
+`failure` → rerun; `cancelled`/`timed_out`/`startup_failure`/
+`action_required` → sem rerun. Com a lógica anterior falham 4 casos (em
+curso e as 3 conclusões novas).
+
 ---
 
 *Última revisão automática: 2026-10-04*
