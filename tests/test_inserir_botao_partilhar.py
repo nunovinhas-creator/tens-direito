@@ -225,3 +225,78 @@ def test_ficheiro_inexistente_nao_crasha(tmp_path):
     resultado = processar_pagina(tmp_path / "nao-existe.html", raiz=tmp_path)
     assert resultado.alterada is False
     assert "erro ao ler" in resultado.motivo
+
+
+# ── Texto por tipo de página (issue #259) ───────────────────────────────
+
+def test_texto_botao_simulador_vs_artigo():
+    assert ibp.texto_botao("simulador-abono.html") == "Partilhar este simulador"
+    assert ibp.texto_botao("abono-de-familia.html") == "Partilhar este artigo"
+    assert ibp.texto_botao("simuladores.html") == "Partilhar este artigo"  # hub, não simulador
+    assert ibp.texto_botao("p/familia.html") == "Partilhar este artigo"
+
+
+def test_simulador_novo_nasce_com_texto_de_simulador(tmp_path):
+    caminho = _escrever(tmp_path, "simulador-teste.html", _PAGINA_COM_H1)
+    resultado = processar_pagina(caminho, raiz=tmp_path)
+    conteudo = caminho.read_text(encoding="utf-8")
+    assert resultado.alterada is True
+    assert 'aria-label="Partilhar este simulador">📤 Partilhar este simulador</button>' in conteudo
+    assert "Partilhar este artigo" not in conteudo
+
+
+def test_simulador_com_texto_de_artigo_e_sincronizado_so_no_botao(tmp_path):
+    caminho = _escrever(tmp_path, "simulador-teste.html", _PAGINA_JA_COM_BOTAO)
+    antes = caminho.read_text(encoding="utf-8")
+
+    resultado = processar_pagina(caminho, raiz=tmp_path)
+    depois = caminho.read_text(encoding="utf-8")
+
+    assert resultado.alterada is True
+    assert "sincronizado" in resultado.motivo
+    assert depois == antes.replace(
+        'aria-label="Partilhar este artigo">📤 Partilhar este artigo',
+        'aria-label="Partilhar este simulador">📤 Partilhar este simulador',
+    )
+    # 2.ª corrida: nada a fazer.
+    assert processar_pagina(caminho, raiz=tmp_path).alterada is False
+    assert caminho.read_text(encoding="utf-8") == depois
+
+
+def test_botao_com_formato_inesperado_nunca_e_reescrito(tmp_path):
+    pagina = _PAGINA_JA_COM_BOTAO.replace("📤 ", "")
+    caminho = _escrever(tmp_path, "simulador-teste.html", pagina)
+    resultado = processar_pagina(caminho, raiz=tmp_path)
+    assert resultado.alterada is False
+    assert "formato inesperado" in resultado.motivo
+    assert caminho.read_text(encoding="utf-8") == pagina
+
+
+# ── Páginas reais do repositório ─────────────────────────────────────────
+
+_RAIZ_REPO = Path(__file__).parent.parent
+_PAGINAS_COM_BOTAO = sorted(
+    p for p in _RAIZ_REPO.rglob("*.html")
+    if "tests" not in p.parts and "botao-partilhar" in p.read_text(encoding="utf-8")
+)
+
+
+def test_ha_paginas_reais_com_botao():
+    assert any(p.name.startswith("simulador-") for p in _PAGINAS_COM_BOTAO)
+
+
+def test_paginas_reais_texto_do_botao_certo_e_aria_label_igual_ao_visivel():
+    erros = []
+    for pagina in _PAGINAS_COM_BOTAO:
+        botoes = ibp._REGEX_BOTAO_EXISTENTE.findall(pagina.read_text(encoding="utf-8"))
+        nome = str(pagina.relative_to(_RAIZ_REPO))
+        if len(botoes) != 1:
+            erros.append(f"{nome}: {len(botoes)} botões no formato esperado")
+            continue
+        aria, visivel = botoes[0]
+        esperado = ibp.texto_botao(pagina.name)
+        if aria != visivel:
+            erros.append(f"{nome}: aria-label {aria!r} ≠ texto visível {visivel!r}")
+        if visivel != esperado:
+            erros.append(f"{nome}: {visivel!r}, esperado {esperado!r}")
+    assert not erros, "\n".join(erros)

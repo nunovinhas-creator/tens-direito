@@ -31,6 +31,13 @@ todas as páginas):
    reportada como não alterável — nunca se adivinha um ponto de
    inserção arriscado.
 
+Texto do botão (issue #259): "Partilhar este simulador" nas páginas
+`simulador-*.html`, "Partilhar este artigo" no resto (`texto_botao()`).
+Numa página que já tem o botão, o script sincroniza só o texto visível e
+o `aria-label` desse `<button>` com o texto esperado — nunca reinsere o
+bloco nem toca noutra linha. Um botão com formato inesperado nunca é
+reescrito: fica reportado para revisão manual.
+
 Este script só toca no conteúdo indicado acima — nunca altera título,
 meta description, dados estruturados (JSON-LD), URLs ou o resto do
 conteúdo de cada página.
@@ -50,13 +57,40 @@ RAIZ = Path(__file__).resolve().parent.parent
 
 MARCADOR_IDEMPOTENCIA = "botao-partilhar"
 
-BLOCO_BOTAO = (
-    "\n<!-- partilhar:inicio -->\n"
-    '<div class="partilhar-artigo">\n'
-    '  <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">'
-    "📤 Partilhar este artigo</button>\n"
-    "</div>\n"
-    "<!-- partilhar:fim -->\n"
+TEXTO_ARTIGO = "Partilhar este artigo"
+TEXTO_SIMULADOR = "Partilhar este simulador"
+
+
+def texto_botao(nome_ficheiro: str) -> str:
+    """Texto do botão (visível e aria-label) para a página dada."""
+    nome = Path(nome_ficheiro).name
+    if nome.startswith("simulador-") and nome.endswith(".html"):
+        return TEXTO_SIMULADOR
+    return TEXTO_ARTIGO
+
+
+def html_botao(texto: str) -> str:
+    return (
+        f'<button type="button" class="botao-partilhar" aria-label="{texto}">'
+        f"📤 {texto}</button>"
+    )
+
+
+def bloco_botao(texto: str) -> str:
+    return (
+        "\n<!-- partilhar:inicio -->\n"
+        '<div class="partilhar-artigo">\n'
+        f"  {html_botao(texto)}\n"
+        "</div>\n"
+        "<!-- partilhar:fim -->\n"
+    )
+
+
+BLOCO_BOTAO = bloco_botao(TEXTO_ARTIGO)
+
+_REGEX_BOTAO_EXISTENTE = re.compile(
+    r'<button type="button" class="botao-partilhar" aria-label="([^"]*)">'
+    r"📤 ([^<]*)</button>"
 )
 
 TAGS_HEAD = (
@@ -76,18 +110,18 @@ class ResultadoPagina:
     motivo: str
 
 
-def _inserir_bloco_botao(conteudo: str) -> Optional[str]:
+def _inserir_bloco_botao(conteudo: str, bloco: str = BLOCO_BOTAO) -> Optional[str]:
     """Devolve o conteúdo com o bloco do botão inserido, ou None se não
     houver nenhum ponto de inserção seguro (nem <h1> nem <main>)."""
     match_h1 = _REGEX_H1_FECHO.search(conteudo)
     if match_h1:
         pos = match_h1.end()
-        return conteudo[:pos] + BLOCO_BOTAO + conteudo[pos:]
+        return conteudo[:pos] + bloco + conteudo[pos:]
 
     match_main = _REGEX_MAIN_FECHO.search(conteudo)
     if match_main:
         pos = match_main.start()
-        return conteudo[:pos] + BLOCO_BOTAO + conteudo[pos:]
+        return conteudo[:pos] + bloco + conteudo[pos:]
 
     return None
 
@@ -119,11 +153,28 @@ def processar_pagina(caminho: Path, *, raiz: Path = RAIZ) -> ResultadoPagina:
     except Exception as e:
         return ResultadoPagina(nome, False, f"erro ao ler ficheiro: {e}")
 
+    texto = texto_botao(caminho.name)
+
     if MARCADOR_IDEMPOTENCIA in conteudo_original:
-        return ResultadoPagina(nome, False, "já tem o botão — sem alterações")
+        botoes = _REGEX_BOTAO_EXISTENTE.findall(conteudo_original)
+        if len(botoes) != 1:
+            return ResultadoPagina(
+                nome, False,
+                "botão com formato inesperado — sem alterações, rever à mão",
+            )
+        if botoes[0] == (texto, texto):
+            return ResultadoPagina(nome, False, "já tem o botão — sem alterações")
+        novo_conteudo = _REGEX_BOTAO_EXISTENTE.sub(
+            lambda _m: html_botao(texto), conteudo_original, count=1
+        )
+        try:
+            caminho.write_text(novo_conteudo, encoding="utf-8")
+        except Exception as e:
+            return ResultadoPagina(nome, False, f"erro ao escrever ficheiro: {e}")
+        return ResultadoPagina(nome, True, f'texto do botão sincronizado: "{texto}"')
 
     tinha_h1 = bool(_REGEX_H1_FECHO.search(conteudo_original))
-    novo_conteudo = _inserir_bloco_botao(conteudo_original)
+    novo_conteudo = _inserir_bloco_botao(conteudo_original, bloco_botao(texto))
     if novo_conteudo is None:
         return ResultadoPagina(nome, False, "sem <h1> nem <main> — sem ponto de inserção seguro")
 
@@ -148,7 +199,7 @@ def _imprimir_relatorio(resultados: List[ResultadoPagina]) -> None:
     ja_tinham = [r for r in resultados if not r.alterada and r.motivo.startswith("já tem")]
     nao_alteraveis = [r for r in resultados if not r.alterada and not r.motivo.startswith("já tem")]
 
-    print("=== Relatório — inserção do botão \"Partilhar este artigo\" ===\n")
+    print("=== Relatório — botão de partilha ===\n")
     print(f"Páginas verificadas: {len(resultados)}")
     print(f"Páginas alteradas agora: {len(alteradas)}")
     print(f"Páginas já com o botão (sem alterações): {len(ja_tinham)}")
