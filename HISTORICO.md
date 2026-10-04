@@ -6854,6 +6854,19 @@ o que o gerador produz para o mês do topo. Linha dos dados reescrita para
 do aparelho diferente (Kiritimati, São Paulo) provados a falhar com o JS
 anterior.
 
+*Última revisão: 2026-10-04 — botão de partilha nos simuladores diz
+"Partilhar este simulador" (issue #259).* `scripts/inserir_botao_partilhar.py`
+escolhe o texto por página (`texto_botao()`: `simulador-*.html` →
+"Partilhar este simulador", resto → "Partilhar este artigo") e, numa página
+que já tem o botão, sincroniza só o texto visível e o `aria-label` do
+`<button>`; um botão com formato inesperado nunca é reescrito. Aplicado aos 9
+simuladores que ainda diziam "artigo" (uma linha cada); 2.ª corrida sem
+alterações. `tests/test_inserir_botao_partilhar.py`: texto por tipo de
+página, sincronização, formato inesperado, e teste sobre as páginas reais
+(texto certo e `aria-label` igual ao visível), provado a falhar com os 9
+simuladores antigos. Sem mudança ao comportamento de partilha nem ao evento
+`partilha_clique`.
+
 ---
 
 *Última revisão automática: 2026-09-30*

@@ -633,7 +633,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
 - [ ] `sitemap.xml` actualizado se nova página
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
-- [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão "Partilhar este artigo" só às páginas que ainda não o têm)
+- [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
@@ -713,7 +713,7 @@ caminho feliz, todos com asserts explícitos (nunca só "não rebentou").
 tens-direito/
 ├── *.html                    ← páginas estáticas publicadas (raiz = GitHub Pages)
 ├── assets/
-│   ├── js/share.js           ← lógica do botão "Partilhar este artigo" (vanilla JS)
+│   ├── js/share.js           ← lógica do botão de partilha (vanilla JS)
 │   ├── js/nav.js             ← interacção da nav principal (dropdown, hamburger) — partilhado
 │   ├── js/checklist.js       ← contador do bloco .checklist-final (vanilla JS, sem localStorage)
 │   ├── css/share.css         ← estilo do botão/mensagens de partilha
