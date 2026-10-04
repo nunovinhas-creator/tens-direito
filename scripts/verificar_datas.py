@@ -75,6 +75,27 @@ REGEX_MES_ANO = (
 # (conjunção condicional, ex.: "tens direito desde que cumpras as condições"),
 # que não tem nada a ver com uma data histórica e mascarava datas realmente
 # antigas.
+# Data fixada por lei, citada como facto legal permanente — isenta do portão
+# de confirmação (issue #186). O portão expõe qualquer data posterior ao
+# carimbo "Verificado a"; estas formulações dizem só o que a lei fixa
+# (31/12/2026 do artigo 63.º/57.º do Decreto-Lei n.º 166/2026) e remetem a
+# confirmação do pagamento para a Segurança Social — continuam verdade depois
+# da data. Estreitas de propósito: as frases prospectivas do cluster PSU
+# ("pagamento a partir de", "até 31/12/2026 mantém-se") NUNCA podem ser
+# apanhadas aqui — têm de ficar expostas em 2027 (issue #293). Cada entrada
+# também está em MARCADORES_HISTORICOS (contenção testada), por isso entra no
+# baseline de tests/marcadores_historicos_baseline.json.
+MARCADORES_ISENTOS_DO_PORTAO = [
+    # "o artigo 63.º fixa 31 de dezembro de 2026 como (a) data de produção de efeitos"
+    r"como\s+(?:a\s+)?data\s+de\s+produ[çc][ãa]o\s+de\s+efeitos",
+    # "produção de efeitos a 31/12/2026 (art. 63.º)" — aviso/meta/tabela
+    r"produ[çc][ãa]o\s+de\s+efeitos\s+a\s+31/12/2026\s+\(art(?:igo|\.)\s*63\.º\)",
+    # ficha do diploma no bloco de fontes: "Produção de efeitos: 31/12/2026"
+    r"produ[çc][ãa]o\s+de\s+efeitos:\s+31/12/2026",
+    # conversão oficiosa do artigo 57.º descrita como evento único fixado por lei
+    r"fixa-a\s+como\s+um\s+evento\s+[úu]nico|data\s+fixada\s+por\s+lei(?:\s+para|,\s+como\s+evento\s+[úu]nico)",
+]
+
 MARCADORES_HISTORICOS = [
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"despacho", r"\bdl\s*n",
     r"lei\s+n\.?º", r"diário da república", r"dre\.pt", r"em vigor desde",
@@ -224,7 +245,7 @@ MARCADORES_HISTORICOS = [
     # aplicar: `nasc[a-zç]*\s+a\s+partir\s+de` só ocorre em
     # creche-gratuita.html.
     r"nasc\w*\s+a\s+partir\s+de\b",
-]
+] + MARCADORES_ISENTOS_DO_PORTAO
 
 # Exemplo ilustrativo de cálculo — datas fixas usadas só para exemplificar o método.
 MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
@@ -345,6 +366,9 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verif
 
     if _tem_algum(MARCADORES_EXEMPLO, janela):
         return True  # data hipotética de exemplo — nunca passa pelo portão
+
+    if _tem_algum(MARCADORES_ISENTOS_DO_PORTAO, janela):
+        return True  # data fixada por lei, citada como facto permanente (#186)
 
     if _tem_algum(MARCADORES_HISTORICOS, janela):
         if data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em:

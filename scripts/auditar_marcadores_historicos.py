@@ -53,6 +53,16 @@ Portaria n.º 158/2024/1). Agora, uma edição fora da frase não muda nada;
 uma edição dentro da frase aparece como uma entrada órfã (frase antiga)
 mais uma nova (frase actual) — obriga a olhar para a frase alterada.
 
+Issue #186 — `MARCADORES_ISENTOS_DO_PORTAO` (subconjunto de
+MARCADORES_HISTORICOS): datas fixadas por lei, citadas como facto
+permanente, que `_esta_suprimido()` suprime antes do portão. A auditoria
+regista-as mesmo quando a data não é "antiga" face a `ANO_REFERENCIA` — basta
+ser posterior ao carimbo "Verificado a" (o conjunto que o portão exporia mais
+tarde). Sem isto, estas supressões só apareceriam no baseline depois de a data
+passar, e nunca teriam sido revistas linha a linha antes de entrarem em vigor.
+Nesses casos só os marcadores isentos são atribuídos: os restantes marcadores
+históricos da janela não suprimem uma data posterior ao carimbo.
+
 Nunca escreve HTML nem altera MARCADORES_HISTORICOS — só lê.
 """
 
@@ -73,6 +83,7 @@ from sincronizar_clusters import encontrar_paginas, verificado_em_do_texto  # no
 from verificar_datas import (  # noqa: E402
     AUTO_GERADOS,
     MARCADORES_HISTORICOS,
+    MARCADORES_ISENTOS_DO_PORTAO,
     PADROES,
     _data_da_ocorrencia,
     _janela_contexto,
@@ -130,6 +141,12 @@ def _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano: int) -> bool:
     if data_ocorrencia <= verificado_em:
         return False  # já era um facto fechado à última verificação — permanente
     return data_ocorrencia <= date(ano, 12, 31)
+
+
+def _posterior_ao_carimbo(data_ocorrencia, verificado_em) -> bool:
+    """Data que o portão de confirmação acabaria por expor (posterior ao
+    carimbo "Verificado a") — só usada para os marcadores isentos (#186)."""
+    return data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em
 
 
 # Tags que não partem uma frase: pôr uma palavra a negrito ou num link não
@@ -263,14 +280,18 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
     registos = []
     for padrao in PADROES:
         for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
-            if not _e_ocorrencia_antiga(padrao, m, conteudo, ano):
-                continue
             janela = _janela_contexto(conteudo, m.start(), m.end())
             data_ocorrencia = _data_da_ocorrencia(padrao, m)
-            if _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
-                continue  # já não é permanente à data de referência — ver docstring do módulo
+            antiga = _e_ocorrencia_antiga(padrao, m, conteudo, ano)
+            isentos = [mk for mk in MARCADORES_ISENTOS_DO_PORTAO if re.search(mk, janela, re.IGNORECASE)]
+            if antiga and not _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
+                candidatos = MARCADORES_HISTORICOS
+            elif isentos and (antiga or _posterior_ao_carimbo(data_ocorrencia, verificado_em)):
+                candidatos = isentos  # só a isenção a suprime (#186) — ver docstring do módulo
+            else:
+                continue
             frase = None
-            for marcador in MARCADORES_HISTORICOS:
+            for marcador in candidatos:
                 if re.search(marcador, janela, re.IGNORECASE):
                     if frase is None:
                         frase = frase_envolvente(conteudo, m.start(), m.end())

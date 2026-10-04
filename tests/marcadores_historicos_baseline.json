@@ -1224,6 +1224,22 @@
     "ordinal": 1
   },
   {
+    "pagina": "calendario-pagamentos-psu.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "14/08/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 30.º, 57.º e 63.º, Diário da República n.º 156/2026, Série I) · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "calendario-pagamentos-psu.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 30.º, 57.º e 63.º, Diário da República n.º 156/2026, Série I) · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
     "pagina": "carreiras-contributivas-estrangeiro.html",
     "marcador": "decreto-lei",
     "tipo": "data_mes_ano",
@@ -1285,6 +1301,14 @@
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2025",
     "frase": "📅 Vale 4 meses — validade alargada desde 1 de julho de 2025 (antes eram 3 meses).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "como-pedir-psu.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 31.º, 57.º e 63.º, Diário da República n.º 156/2026, Série I; Portaria n.º 394/2026/1, de 27 de agosto, artigos 4.º a 6.º, Diário da República n.º 166/2026, Série I) · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 30 de agosto de 2026 pela redação do Tens Direito",
     "ordinal": 1
   },
   {
@@ -2432,6 +2456,166 @@
     "ordinal": 1
   },
   {
+    "pagina": "prestacao-social-unica.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Diário da República — Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em Conselho de Ministros 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 15/09/2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quando-entra-em-vigor.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "14/08/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em CM 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quando-entra-em-vigor.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em CM 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Conversão automática (artigo 57.º), com data fixada por lei para 31 de dezembro de 2026 (confirma na Segurança Social Direta se já foi aplicada ao teu caso), sem precisares de pedir nada: RSI, pensão social de velhice, pensão social de invalidez especial, pensão de viuvez, complemento extraordinário de solidariedade, e pensão de orfandade — esta última só quando o órfão integra o mesmo agregado familiar do pensionista de viuvez.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Conversão automática (artigo 57.º), com data fixada por lei para 31 de dezembro de 2026 (confirma na Segurança Social Direta se já foi aplicada ao teu caso), sem precisares de pedir nada: RSI, pensão social de velhice, pensão social de invalidez especial, pensão de viuvez, complemento extraordinário de solidariedade, e pensão de orfandade — esta última só quando o órfão integra o mesmo agregado familiar do pensionista de viuvez.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "⚠️ Isto não é a conversão do RSI (ou outro apoio) para PSU A conversão oficiosa do artigo 57.º do decreto-lei — de quem já recebe RSI ou uma das outras prestações que esse artigo converte automaticamente (nem todas as 13 seguem este mecanismo, ver a pergunta seguinte) — tem data fixada por lei, como evento único, a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Conversão automática (artigo 57.º), com data fixada por lei para 31 de dezembro de 2026 (confirma na Segurança Social Direta se já foi aplicada ao teu caso), sem precisares de pedir nada: RSI, pensão social de velhice, pensão social de invalidez especial, pensão de viuvez, complemento extraordinário de solidariedade, e pensão de orfandade — esta última só quando o órfão integra o mesmo agregado familiar do pensionista de viuvez.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Conversão automática (artigo 57.º), com data fixada por lei para 31 de dezembro de 2026 (confirma na Segurança Social Direta se já foi aplicada ao teu caso), sem precisares de pedir nada: RSI, pensão social de velhice, pensão social de invalidez especial, pensão de viuvez, complemento extraordinário de solidariedade, e pensão de orfandade — esta última só quando o órfão integra o mesmo agregado familiar do pensionista de viuvez.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "⚠️ Isto não é a conversão do RSI (ou outro apoio) para PSU A conversão oficiosa do artigo 57.º do decreto-lei — de quem já recebe RSI ou uma das outras prestações que esse artigo converte automaticamente (nem todas as 13 seguem este mecanismo, ver a pergunta seguinte) — tem data fixada por lei, como evento único, a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, Diário da República n.º 156/2026, Série I; Portaria n.º 394/2026/1, de 27 de agosto, artigo 11.º, Diário da República n.º 166/2026, Série I) · Assembleia da República — parlamento.pt · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 15 de setembro de 2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "📌 Regime em vigor desde 14/08/2026; produção de efeitos a 31/12/2026 (art. 63.º) As condições descritas nesta página já estão fixadas pelo Decreto-Lei n.º 166/2026, de 13 de agosto.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-quem-tem-direito.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "psu-vs-abono-familia.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Decreto-Lei n.º 166/2026, em vigor desde 14/08/2026; produção de efeitos a 31/12/2026 (artigo 63.º) — confirma na Segurança Social Direta se já está a pagar no teu caso",
+    "ordinal": 1
+  },
+  {
     "pagina": "reforma-reino-unido-brexit.html",
     "marcador": "per[íi]odo\\s+de\\s+transi[çc][ãa]o",
     "tipo": "data_mes_ano",
@@ -2774,6 +2958,94 @@
     "correspondencia": "outubro de 2025",
     "frase": "A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que a compra de terreno para construção está excluída do IMT Jovem — mesmo que a construção da casa já esteja em curso à data da escritura.",
     "ordinal": 2
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "O artigo 63.º fixa 31 de dezembro de 2026 como a data de produção de efeitos — confirma na Segurança Social Direta se, no teu caso, a PSU já está a ser paga.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação — o artigo 63.º fixa 31 de dezembro de 2026 como a data de produção de efeitos do decreto-lei; confirma na Segurança Social Direta se, no teu caso, o pagamento já está em curso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_numerica",
+    "correspondencia": "14/08/2026",
+    "frase": "Activado na Fase 2 (2026-08-13) — Decreto-Lei n.º 166/2026 publicado, valores reais em vigor desde 14/08/2026.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Ver aviso de vigência no corpo: o artigo 63.º fixa 31/12/2026 como data de produção de efeitos (facto legal, permanente); se o pagamento já está a acontecer é sempre confirmado na Segurança Social Direta, nunca assumido aqui (Issue #186).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "O artigo 63.º fixa 31 de dezembro de 2026 como a data de produção de efeitos — confirma na Segurança Social Direta se, no teu caso, a PSU já está a ser paga.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação informativa — o artigo 63.º do Decreto-Lei n.º 166/2026 fixa 31 de dezembro de 2026 como a data de produção de efeitos.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2026",
+    "frase": "O resultado é sempre uma simulação — o artigo 63.º fixa 31 de dezembro de 2026 como a data de produção de efeitos do decreto-lei; confirma na Segurança Social Direta se, no teu caso, o pagamento já está em curso.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "simulador-psu.html",
+    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
+    "tipo": "data_numerica",
+    "correspondencia": "31/12/2026",
+    "frase": "Simulador da Prestação Social Única com os valores reais do Decreto-Lei n.º 166/2026: Valor de Referência, adultos equivalentes, Componente de Incentivo ao Trabalho, teto e mínimo. Produção de efeitos a 31/12/2026 (artigo 63.º).",
+    "ordinal": 1
   },
   {
     "pagina": "simulador-subsidio-desemprego.html",
