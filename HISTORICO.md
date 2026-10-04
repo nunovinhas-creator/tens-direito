@@ -6944,7 +6944,9 @@ na redação da Portaria n.º 71/2026/1. Saem de
 `abono.escalao4_limite_cenario_pedidos_novos_2026` (motivo novo: a Portaria
 60/2026/1 fixa montantes, não limites; o limite deriva de 2,5 × IAS × 14 do
 DL 176/2003, artigo por confirmar) e `ase.escalao_b_limite_rpc_mensal`.
-Nenhum valor mudou; `dados/parametros.json` regenerado.
+Nenhum valor mudou; os três parâmetros corrigidos ficam com
+`verificado_em` 2026-10-04 (valores reverificados em fonte pelo Nuno);
+`dados/parametros.json` regenerado.
 
 ---
 
