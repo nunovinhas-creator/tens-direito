@@ -388,8 +388,9 @@ retries internos.
 **Corrigido com um script novo, chamado de fora**: `scripts/
 garantir_deploy_pages.sh` corre logo antes do smoke test nos **3
 sítios** que já verificam produção (`smoke-producao.yml` e o smoke
-inline de `pipeline-diario.yml`/`shadow-daily.yml`) — espera que o
-deploy do commit actual (`GITHUB_SHA`) termine (polling via `gh api`,
+inline de `pipeline-diario.yml`/`shadow-daily.yml`, mais
+`calendario-mensal.yml`) — espera que o deploy do commit publicado
+termine (polling via `gh api`,
 até 180s por tentativa) e, se falhar, dispara-o de novo
 automaticamente via `POST .../actions/runs/{id}/rerun`, até 3
 tentativas. **Nunca é um gate rígido** — se não conseguir confirmar ou
@@ -399,6 +400,21 @@ eliminar a necessidade de um humano ver uma notificação e correr um
 comando à mão, não substituir o smoke test como fonte de verdade.
 Requer `permissions: actions: write` nos 3 workflows (novo, só para
 poder disparar o rerun via API — nada mais muda de comportamento).
+
+**SHA vigiado = SHA do push (2026-10-01)**: num workflow que faz push e
+depois smoke, `GITHUB_SHA` é o commit que DISPAROU o run, não o que o
+run publicou — o script vigiava um deploy já terminado, dava sucesso de
+imediato e o smoke corria contra a versão anterior do site (caso real:
+`calendario-mensal.yml`, run 36857076880, vigiou `8128964` depois de
+publicar `c69d629`). Os 3 workflows com push + smoke inline exportam
+`sha=$(git rev-parse HEAD)` no step `commit_push`, depois do push, e
+passam-no como `SHA_DEPLOY`; `SHA_DEPLOY` definido mas vazio falha
+(`exit 1`), nunca cai em silêncio para `GITHUB_SHA`. Só
+`smoke-producao.yml` (`on: push`, onde `GITHUB_SHA` já é o commit
+publicado) continua sem `SHA_DEPLOY`. Um deploy `cancelled` (o Pages
+substituiu-o por um commit mais novo) nunca é relançado — publicaria a
+versão antiga por cima. Guarda: `tests/test_garantir_deploy_pages.py`
+(script real com `gh` falso + verificação estática dos workflows).
 
 **Verificado no incidente real que motivou esta correcção**: o deploy
 do commit `cdaee04` falhou com o erro genérico habitual; corrigido

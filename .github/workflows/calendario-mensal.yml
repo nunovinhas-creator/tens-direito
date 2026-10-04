@@ -110,6 +110,7 @@ jobs:
             git commit -m "auto(calendario): sincronizar página e barra da homepage (alvo ${{ steps.verificar.outputs.mes_alvo }}, estado ${{ steps.verificar.outputs.estado }})"
             git pull --rebase --autostash origin main
             git push origin main
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           else
             echo "Página já sincronizada — nada a commitar."
@@ -120,7 +121,8 @@ jobs:
         if: steps.commit_push.outputs.pushed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash scripts/garantir_deploy_pages.sh || true
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
+        run: bash scripts/garantir_deploy_pages.sh
 
       - name: Smoke test de produção (inline, pós-push)
         if: steps.commit_push.outputs.pushed == 'true'
