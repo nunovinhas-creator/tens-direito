@@ -110,6 +110,12 @@ Motivo real (2026-07-17): a sessão do menu móvel terminou com o trabalho
 apenas na branch, e a sessão seguinte partiu do princípio errado de que já
 estava integrado em main.
 
+**"squash, CI verde" = merge sem confirmação (2026-10-04):** quando um
+pedido do Nuno disser "squash, CI verde", o PR é integrado por squash assim
+que o CI estiver verde no commit actual, sem pedir confirmação. Única
+excepção: o pedido dizer "não faças merge". CI vermelho ou conflito nunca
+contam como verde — corrige-se primeiro.
+
 **Arranque de sessão (handoff) (2026-07-20):** guarda simétrica ao
 protocolo de fim de sessão acima — para o erro de 2026-07-17 nunca se
 repetir na direcção inversa (a sessão seguinte a assumir "integrado" sem

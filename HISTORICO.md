@@ -6969,6 +6969,11 @@ isentas, as 3 páginas da #186 limpas em 2027, as frases prospectivas das 5
 páginas PSU + `simulador-rsi` continuam expostas (#293), e a auditoria; 18
 casos falham sem a isenção.
 
+
+*Última revisão: 2026-10-04 — `CLAUDE.md`, "REGRA ABSOLUTA — GIT": "squash,
+CI verde" num pedido do Nuno passa a autorizar o merge por squash assim que o
+CI estiver verde, sem confirmação, salvo "não faças merge".*
+
 ---
 
 *Última revisão automática: 2026-10-04*
