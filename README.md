@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **03 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **04 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -258,6 +258,7 @@ tens-direito/
 ├── .github/
 │   └── workflows/
 │       ├── calendario-mensal.yml
+│       ├── canario-urls.yml
 │       ├── integridade.yml
 │       ├── limpar-branches.yml
 │       ├── pipeline-diario.yml
@@ -375,6 +376,7 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 | Workflow | Cron / Trigger | Função |
 |---|---|---|
 | `calendario-mensal.yml` | — | calendario-mensal |
+| `canario-urls.yml` | — | canario-urls |
 | `integridade.yml` | — | integridade |
 | `limpar-branches.yml` | — | limpar-branches |
 | `pipeline-diario.yml` | `0 6 * * *` (diário 06:00 UTC) | Pipeline único: scrape + detectar mudanças + notícias + validar + README + push |
@@ -441,6 +443,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 03 de outubro de 2026 às 12:20 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 04 de outubro de 2026 às 13:03 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

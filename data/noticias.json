@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-10-01",
+      "titulo": "Subsídio de desemprego passou a valer menos face ao salário. Vale agora 64%",
+      "fonte_nome": "Jornal de Negócios",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNRHNjOFZPQmlvNmgyLXN2VlZvZXY4NHdQSUFGNzhCa080UmhleUFLaEs0VjhJR3VjVmdBeEJ6NmVWalZyN1dzeDVhdTM0WFRKMllUem5KelpGNnFNVV9MTU1iVGJLRVdQX0R1cVdDcmpEUDNkYUc5Tk4yVTFlVE81dERsWDM1VFdOaW1hdVhMbjlMMGwzUXRGYjA0VVpKVFJQOE5EcndjMFJHMC1US2VFaHJhM2p5UFR1NlgxcDVfRzlPZjdkWm9UUUw0Z1UxR09Mcml3QVJ3?oc=5",
+      "resumo": "Subsídio de desemprego passou a valer menos face ao salário. Vale agora 64% Jornal de Negócios",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
       "titulo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário",
       "fonte_nome": "Público",
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPbmtyU1Z2OWM4cFNDdjl4LWoyMGVNc2pvNmRsUHYzU3gyN1d3VkV4eTcwejJkNnBmSjRHSEVXX3RCZ2Q1Qk9CMXEtTHk5cE9wQ0Q4RzFOSTNhQ0FnSDJvc1FUc2lXaFh5OElfd1N3cjU5Y2czUF9NWnR0eHh6VHFITEFQeVZsV0xRaDB1TF9KRUlPWHFjSmZLUkdpUldlcXFvMF9PM0FQYVEtTUdMZkFvTW5nRHI?oc=5",
@@ -17,6 +26,15 @@
       "resumo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos ECO",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de outubro",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNUHdBNjFwN2xwdS1nd19BeWItNTUyM3F5eGM2TWRueG9lcmZhU2dNb2R2MUlabkctMFhhVzdwTVp4UDZmcmhZeEIteWExVmhWSTRnTi1aZDlOYUdUZ0plWkpaRURGclFvVGRjU1pyWlBVSUtTbThkeHBJSHAtVk9LNk44eHAxU0NmbzBvTDZZeTJkRE1zbXJCSk1QZEFnZlZSMFBZQlJQSXo4dTMtdTQyOGROekNNRnE1X1E?oc=5",
+      "resumo": "Recebe subsídios ou pensões? Confira as datas de pagamento de outubro Notícias ao Minuto",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-10-01",
