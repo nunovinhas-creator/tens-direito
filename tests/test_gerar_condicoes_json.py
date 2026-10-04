@@ -671,7 +671,18 @@ def test_creche_real_compila_com_data_do_parametro():
 CAMPOS_FONTE = ("vigencia_inicio", "referencia_legal", "fonte_url", "verificado_em")
 # Apoios cujos parâmetros têm de citar o artigo (regra a partir do PR 12;
 # os anteriores ficam como estão — ver "Por confirmar" do PR 12).
-APOIOS_COM_ARTIGO_OBRIGATORIO = ("creche", "cartao-estacionamento")
+# Issue #261 (PR 13): a `referencia_legal` de todos os parâmetros usados
+# pelas condições tem de citar o artigo. Excepções só nominais, com motivo;
+# uma excepção que deixe de ser necessária (o parâmetro ganhou artigo ou já
+# não é usado) falha em `test_excecoes_sem_artigo_nao_sao_orfas`.
+PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR = {
+    "abono.escalao4_limite_cenario_pedidos_novos_2026": "por confirmar em fonte primária",
+    "ase.escalao_b_limite_rpc_mensal": "por confirmar em fonte primária",
+    "psu.ias_2026": "por confirmar em fonte primária",
+    "rsi.idade_minima_anos": "por confirmar em fonte primária",
+    "rsi.valor_titular_mensal": "por confirmar em fonte primária",
+}
+_REGEX_ARTIGO = r"\bart(\.|igo)"
 
 
 def _referencias(condicoes: list) -> set[str]:
@@ -688,7 +699,8 @@ def _referencias(condicoes: list) -> set[str]:
     return refs
 
 
-def _erros_de_proveniencia(condicoes_json: dict, parametros_json: dict) -> list[str]:
+def _erros_de_proveniencia(condicoes_json: dict, parametros_json: dict,
+                           excecoes: dict = PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR) -> list[str]:
     import re
     erros = []
     prestacoes = parametros_json["prestacoes"]
@@ -699,8 +711,28 @@ def _erros_de_proveniencia(condicoes_json: dict, parametros_json: dict) -> list[
             falta = [k for k in CAMPOS_FONTE if not p.get(k)]
             if falta:
                 erros.append(f"{apoio}: {ref} sem {falta}")
-            if apoio in APOIOS_COM_ARTIGO_OBRIGATORIO and not re.search(r"\bart(\.|igo)", p.get("referencia_legal") or "", re.I):
+            if ref not in excecoes and not re.search(_REGEX_ARTIGO, p.get("referencia_legal") or "", re.I):
                 erros.append(f"{apoio}: {ref} sem artigo na referencia_legal")
+    return erros
+
+
+def _excecoes_orfas(condicoes_json: dict, parametros_json: dict,
+                    excecoes: dict = PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR) -> list[str]:
+    import re
+    usados = set()
+    for dados in condicoes_json["apoios"].values():
+        usados |= _referencias(dados["condicoes"])
+    prestacoes = parametros_json["prestacoes"]
+    erros = []
+    for ref, motivo in sorted(excecoes.items()):
+        if not motivo:
+            erros.append(f"{ref}: excepção sem motivo")
+        if ref not in usados:
+            erros.append(f"{ref}: órfã — já não é usado por dados/condicoes")
+            continue
+        prestacao, nome = ref.split(".", 1)
+        if re.search(_REGEX_ARTIGO, prestacoes[prestacao][nome].get("referencia_legal") or "", re.I):
+            erros.append(f"{ref}: órfã — a referencia_legal já cita o artigo")
     return erros
 
 
@@ -718,6 +750,33 @@ def test_guardrail_proveniencia_falha_quando_estragado(campo):
     parametros["prestacoes"]["creche"]["creche_elegivel_nascidos_apos"][campo] = None
     erros = _erros_de_proveniencia(_json_real("condicoes.json"), parametros)
     assert any("creche.creche_elegivel_nascidos_apos" in e and campo in e for e in erros), erros
+
+
+def test_excecoes_sem_artigo_nao_sao_orfas():
+    assert _excecoes_orfas(_json_real("condicoes.json"), _json_real("parametros.json")) == []
+
+
+def test_guardrail_artigo_aplica_se_a_todos_os_apoios():
+    """Sem a lista de excepções, os 5 parâmetros por confirmar falham —
+    a regra já não depende de o apoio estar numa lista."""
+    erros = _erros_de_proveniencia(_json_real("condicoes.json"), _json_real("parametros.json"), excecoes={})
+    refs = sorted({e.split(": ")[1].split(" ")[0] for e in erros})
+    assert refs == sorted(PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR)
+
+
+def test_excecao_de_parametro_que_ja_cita_artigo_e_orfa():
+    parametros = _json_real("parametros.json")
+    parametros["prestacoes"]["rsi"]["idade_minima_anos"]["referencia_legal"] = "Lei n.º 13/2003, artigo 1.º"
+    assert _excecoes_orfas(_json_real("condicoes.json"), parametros) == [
+        "rsi.idade_minima_anos: órfã — a referencia_legal já cita o artigo"
+    ]
+
+
+def test_excecao_de_parametro_nao_usado_e_orfa():
+    excecoes = dict(PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR, **{"csi.inexistente": "por confirmar em fonte primária"})
+    assert _excecoes_orfas(_json_real("condicoes.json"), _json_real("parametros.json"), excecoes) == [
+        "csi.inexistente: órfã — já não é usado por dados/condicoes"
+    ]
 
 
 def test_guardrail_artigo_falha_quando_estragado():

@@ -186,6 +186,21 @@ filtro que capture notícias genuinamente novas sem sobrepor o gatilho
 Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
 "quando" tomada:
 
+- **Simulador universal — apoios por implementar** (PR 13, 2026-09-30):
+  as páginas com categoria `por_implementar` em
+  `FORA_DO_SIMULADOR_UNIVERSAL` (`tests/test_cobertura_simulador_universal.py`)
+  são apoios com condições de acesso ainda sem entrada em
+  `dados/condicoes/`. A lista vive só nessa constante, nunca aqui. Ao
+  acrescentar um apoio a `dados/condicoes/`, a entrada correspondente tem
+  de sair da constante — o teste falha se ficar órfã.
+- **Artigo por confirmar em 5 parâmetros do simulador universal** (issue
+  #261): `PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR`
+  (`tests/test_gerar_condicoes_json.py`). A regra do artigo em
+  `referencia_legal` já se aplica a todos os apoios; estas são as únicas
+  excepções, por falta de leitura em fonte primária (nenhum dos diplomas
+  está em `dados/fontes/`). Com o texto consolidado em `dados/fontes/`,
+  acrescenta-se o artigo e a excepção sai — o teste falha se ficar órfã.
+
 - **Assimetria de entrada entre `categoria` e `cluster_id` em
   `data/noticias.json`** (issue #192, 2026-09-15): `cluster_id` é
   recalculável em massa com segurança via `--recalcular-clusters`
