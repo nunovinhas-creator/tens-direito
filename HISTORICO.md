@@ -6783,6 +6783,25 @@ Provado por mutação: repor a regra antiga (só creche/cartão) ou tirar as
 verificações de órfãs faz falhar os testes novos. ROADMAP.md aponta para as
 duas constantes.
 
+*Última revisão: 2026-09-30 — canário de URLs oficiais: workflow diário
+próprio e issue única.* Diagnóstico (60 corridas do `integridade.yml` em
+`main`, 13-30/09): 3 falhas do canário — `www.sns24.gov.pt` HTTP 405 (14/09 e
+28/09; o 405 era do GET de recurso, não só do HEAD), connect timeouts em
+`registocriminal.justica.gov.pt` (14/09) e `www.autenticacao.gov.pt`
+(27/09). `scripts/verificar_urls_como_pedir.py`: regista HEAD/GET/URL final;
+404/410/domínio inexistente falham logo; 403/405/429/5xx/timeouts têm 4
+tentativas (esperas 15/45/90 s); GET de recurso com cabeçalhos de navegador;
+`--relatorio` grava o JSON com o corpo da issue. Novo
+`.github/workflows/canario-urls.yml` (cron diário + manual): uma falha abre ou
+actualiza a issue única `canario-urls` (assignee nunovinhas-creator, @menção,
+tabela HEAD/GET), com comentário só quando muda o conjunto de URLs a falhar;
+fecha-se na primeira corrida verde; job vermelho sempre que há falhas. O job
+saiu do `integridade.yml` (um push a `main` já não fica vermelho por um
+portal em baixo). Testes: `tests/test_urls_como_pedir.py` (retry/definitiva/
+corpo, provados a falhar com o script antigo) e
+`tests/test_canario_urls_workflow.py` (estrutura + o JavaScript real do step
+em Node, provado por mutação).
+
 
 *Última revisão: 2026-10-01 — "⏰ Datas a não perder": cartões de
 setembro retirados.* `test_urgente_home_frescura.py` ficou vermelho a 1/10
@@ -6794,6 +6813,20 @@ novos no lugar. Ficam Prova Escolar, PSU e Passe sub-23, sem prazo passado. O ca
 abertura, a contagem tem de bater com as aberturas, e um teste novo exige
 que a secção nunca fique visível sem cartões (vazia → sai de
 `index.html`).
+
+*Última revisão: 2026-10-01 — smoke inline vigiava o deploy do commit
+errado.* `scripts/garantir_deploy_pages.sh` usava sempre `GITHUB_SHA`
+(o commit que disparou o run). Em `calendario-mensal.yml`,
+`pipeline-diario.yml` e `shadow-daily.yml` o run faz push de um commit
+novo e só depois corre o smoke — o script vigiava o deploy do commit
+anterior, já terminado, e o smoke corria antes do deploy do commit
+publicado (run 36857076880: vigiou `8128964`, deploy de `c69d629` só
+acabou 25s depois do smoke). Corrigido: `commit_push` exporta
+`sha=$(git rev-parse HEAD)` depois do push, passado como `SHA_DEPLOY`;
+vazio falha; deploy `cancelled` (substituído por commit mais novo) nunca
+é relançado. `|| true` retirado em `calendario-mensal.yml`.
+`tests/test_garantir_deploy_pages.py`: 10 testes, 7 a falhar com a
+lógica antiga.
 
 ---
 

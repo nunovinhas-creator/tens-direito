@@ -312,7 +312,8 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `shadow-daily.yml` | `workflow_run` após "Pipeline Diário" + cron `0 8 * * *` (rede de segurança) | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
-| `integridade.yml` | push a main, **pull_request para main** (2026-07-17; desde 2026-09-30 também `edited` — mudança de base para main — e `ready_for_review`, sem filtro por job, issue #266), cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04). Em PRs correm só os jobs determinísticos (dependem apenas do checkout); o canário de URLs oficiais tem `if: github.event_name != 'pull_request'` — validar portais externos a cada push de PR arriscaria flakiness/rate-limit sem validar o código do PR. `concurrency` com `cancel-in-progress` só em PRs (pushes sucessivos cancelam runs obsoletos; em main/schedule nunca cancela) | ❌ não |
+| `integridade.yml` | push a main, **pull_request para main** (2026-07-17; desde 2026-09-30 também `edited` — mudança de base para main — e `ready_for_review`, sem filtro por job, issue #266), cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04). Todos os jobs são determinísticos (dependem apenas do checkout) — o canário de URLs oficiais saiu para `canario-urls.yml` a 2026-09-30. `concurrency` com `cancel-in-progress` só em PRs (pushes sucessivos cancelam runs obsoletos; em main/schedule nunca cancela) | ❌ não |
+| `canario-urls.yml` | cron diário `23 7 * * *` + manual (nunca push nem PR — a disponibilidade de um portal não depende do commit) | `scripts/verificar_urls_como_pedir.py`: HEAD (e GET de recurso com cabeçalhos de navegador se HEAD ≥ 400) aos URLs de `data/urls_como_pedir.json`; 404/410/domínio inexistente falham logo, o resto tem 4 tentativas (esperas 15/45/90 s); uma falha abre ou actualiza UMA issue `canario-urls` (atribuída ao Nuno, @menção, status HEAD/GET de cada URL; comentário só quando muda o conjunto de URLs a falhar), fechada sozinha na primeira corrida verde; o job fica vermelho sempre que há falhas | ❌ não — só gere a issue (`issues: write`) |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
 | `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage; guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
@@ -387,8 +388,9 @@ retries internos.
 **Corrigido com um script novo, chamado de fora**: `scripts/
 garantir_deploy_pages.sh` corre logo antes do smoke test nos **3
 sítios** que já verificam produção (`smoke-producao.yml` e o smoke
-inline de `pipeline-diario.yml`/`shadow-daily.yml`) — espera que o
-deploy do commit actual (`GITHUB_SHA`) termine (polling via `gh api`,
+inline de `pipeline-diario.yml`/`shadow-daily.yml`, mais
+`calendario-mensal.yml`) — espera que o deploy do commit publicado
+termine (polling via `gh api`,
 até 180s por tentativa) e, se falhar, dispara-o de novo
 automaticamente via `POST .../actions/runs/{id}/rerun`, até 3
 tentativas. **Nunca é um gate rígido** — se não conseguir confirmar ou
@@ -398,6 +400,21 @@ eliminar a necessidade de um humano ver uma notificação e correr um
 comando à mão, não substituir o smoke test como fonte de verdade.
 Requer `permissions: actions: write` nos 3 workflows (novo, só para
 poder disparar o rerun via API — nada mais muda de comportamento).
+
+**SHA vigiado = SHA do push (2026-10-01)**: num workflow que faz push e
+depois smoke, `GITHUB_SHA` é o commit que DISPAROU o run, não o que o
+run publicou — o script vigiava um deploy já terminado, dava sucesso de
+imediato e o smoke corria contra a versão anterior do site (caso real:
+`calendario-mensal.yml`, run 36857076880, vigiou `8128964` depois de
+publicar `c69d629`). Os 3 workflows com push + smoke inline exportam
+`sha=$(git rev-parse HEAD)` no step `commit_push`, depois do push, e
+passam-no como `SHA_DEPLOY`; `SHA_DEPLOY` definido mas vazio falha
+(`exit 1`), nunca cai em silêncio para `GITHUB_SHA`. Só
+`smoke-producao.yml` (`on: push`, onde `GITHUB_SHA` já é o commit
+publicado) continua sem `SHA_DEPLOY`. Um deploy `cancelled` (o Pages
+substituiu-o por um commit mais novo) nunca é relançado — publicaria a
+versão antiga por cima. Guarda: `tests/test_garantir_deploy_pages.py`
+(script real com `gh` falso + verificação estática dos workflows).
 
 **Verificado no incidente real que motivou esta correcção**: o deploy
 do commit `cdaee04` falhou com o erro genérico habitual; corrigido

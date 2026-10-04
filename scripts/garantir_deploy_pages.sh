@@ -9,8 +9,7 @@
 # "GATILHO CORRIGIDO" para o `workflow_run` que nunca disparava).
 #
 # Este script trata o problema pelo lado de fora: corre a seguir a um
-# push nosso, espera que o deploy do commit actual (GITHUB_SHA)
-# termine e, se falhar com o erro genérico "Deployment failed, try
+# push nosso, espera que o deploy do commit publicado termine e, se falhar com o erro genérico "Deployment failed, try
 # again later." — falha de infraestrutura confirmada 3 vezes nesta
 # sessão e nas duas anteriores, nunca relacionada com o conteúdo —
 # dispara automaticamente um novo deploy via API em vez de esperar por
@@ -28,7 +27,22 @@
 # workflow que o chama (para poder disparar o rerun via API).
 set -uo pipefail
 
-SHA="${GITHUB_SHA:-}"
+# Commit a vigiar: SHA_DEPLOY quando o workflow acabou de fazer push (o
+# HEAD depois do push — GITHUB_SHA é o commit que DISPAROU o run, cujo
+# deploy normalmente já terminou; incidente de 2026-10-01 em
+# calendario-mensal.yml, ver tests/test_garantir_deploy_pages.py).
+# Sem SHA_DEPLOY (smoke-producao.yml, on: push) GITHUB_SHA é o commit
+# publicado. SHA_DEPLOY definido mas vazio é um erro do workflow — nunca
+# cai em silêncio para GITHUB_SHA.
+if [ -n "${SHA_DEPLOY+x}" ]; then
+  if [ -z "$SHA_DEPLOY" ]; then
+    echo "::error::SHA_DEPLOY definido mas vazio — o step de push não exportou o SHA publicado."
+    exit 1
+  fi
+  SHA="$SHA_DEPLOY"
+else
+  SHA="${GITHUB_SHA:-}"
+fi
 REPO="${GITHUB_REPOSITORY:-}"
 
 if [ -z "$SHA" ] || [ -z "$REPO" ]; then
@@ -39,6 +53,7 @@ fi
 MAX_TENTATIVAS="${MAX_TENTATIVAS:-3}"
 TIMEOUT_ESPERA_S="${TIMEOUT_ESPERA_S:-180}"
 INTERVALO_POLL_S="${INTERVALO_POLL_S:-10}"
+ESPERA_RERUN_S="${ESPERA_RERUN_S:-5}"
 
 echo "A vigiar o deploy do GitHub Pages para ${SHA}..."
 
@@ -77,12 +92,19 @@ for tentativa in $(seq 1 "$MAX_TENTATIVAS"); do
     exit 0
   fi
 
+  # Cancelado = o Pages substituiu este deploy por um de um commit mais
+  # novo. Relançá-lo publicaria a versão antiga por cima da nova.
+  if [ "$conclusion" = "cancelled" ]; then
+    echo "::warning::deploy de ${SHA} cancelado (substituído por um commit mais novo) — sem relançar."
+    exit 0
+  fi
+
   echo "::warning::deploy falhou (conclusion=${conclusion}) — a tentar novamente via API (run ${run_id})."
   if ! gh api --method POST "repos/${REPO}/actions/runs/${run_id}/rerun" >/dev/null 2>&1; then
     echo "::warning::pedido de rerun falhou (run já pode estar em nova tentativa, ou sem permissão) — a desistir de recuperar automaticamente."
     exit 0
   fi
-  sleep 5
+  sleep "$ESPERA_RERUN_S"
 done
 
 echo "::warning::deploy continuou a falhar após ${MAX_TENTATIVAS} tentativa(s) automáticas — o smoke test a seguir vai reportar isto como falha real."

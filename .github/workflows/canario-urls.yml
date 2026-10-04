@@ -1,0 +1,100 @@
+name: Canário de URLs Oficiais
+
+# Verifica, uma vez por dia, que os URLs oficiais citados nos guias "Como
+# Pedir" (data/urls_como_pedir.json) continuam a responder. Saiu do
+# integridade.yml a 2026-09-30: a disponibilidade de um portal do Estado não
+# depende do commit, e um push a main ficava vermelho por um 405 da sns24
+# sem relação nenhuma com o que mudou.
+#
+# Uma falha abre ou actualiza UMA issue (label canario-urls), atribuída ao
+# Nuno e com @menção, com os status HEAD/GET de cada URL. A issue fecha-se
+# sozinha na primeira corrida verde seguinte. O job fica vermelho sempre que
+# há falhas — nunca mascarado.
+on:
+  schedule:
+    - cron: '23 7 * * *'  # diário
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: canario-urls
+  cancel-in-progress: false
+
+jobs:
+  canario:
+    name: Canário de URLs Oficiais (Como Pedir)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Verificar URLs oficiais citadas nos guias "Como Pedir"
+        id: canario
+        continue-on-error: true
+        run: python scripts/verificar_urls_como_pedir.py --relatorio /tmp/canario.json
+
+      - name: Abrir, actualizar ou fechar a issue canario-urls
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const TITULO = '🔗 Canário de URLs oficiais a falhar';
+            const LABEL = 'canario-urls';
+            const DONO = 'nunovinhas-creator';
+            const { owner, repo } = context.repo;
+            const urlRun = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+
+            let relatorio = null;
+            try {
+              relatorio = JSON.parse(fs.readFileSync('/tmp/canario.json', 'utf8'));
+            } catch (_) {}
+
+            const abertas = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: LABEL });
+            const issue = abertas.data.find(i => i.title === TITULO);
+
+            const passou = '${{ steps.canario.outcome }}' === 'success';
+            if (passou && relatorio && relatorio.falhas.length === 0) {
+              if (issue) {
+                await github.rest.issues.createComment({ owner, repo, issue_number: issue.number,
+                  body: `✅ Todos os URLs voltaram a responder — fechada pela corrida ${urlRun}.` });
+                await github.rest.issues.update({ owner, repo, issue_number: issue.number,
+                  state: 'closed', state_reason: 'completed' });
+              }
+              return;
+            }
+
+            // Script rebentou antes de escrever o relatório: nunca fecha nada,
+            // regista a falha com o que se sabe.
+            const falhas = relatorio ? relatorio.falhas : [];
+            const corpo = (relatorio && relatorio.corpo) ||
+              `@${DONO} — o canário de URLs oficiais falhou sem relatório (o script terminou antes de o escrever). Ver a corrida: ${urlRun}`;
+            const marcador = `<!-- falhas: ${falhas.join(' ')} -->`;
+            const corpoFinal = `${corpo}\n\n${marcador}`;
+
+            if (!issue) {
+              await github.rest.issues.create({ owner, repo, title: TITULO, body: corpoFinal,
+                labels: [LABEL, 'verificar'], assignees: [DONO] });
+              return;
+            }
+            const anterior = (issue.body || '').match(/<!-- falhas: (.*?) -->/);
+            await github.rest.issues.update({ owner, repo, issue_number: issue.number, body: corpoFinal });
+            // Comentário (com @menção, para chegar por email) só quando o
+            // conjunto de URLs a falhar muda — nunca um comentário por dia.
+            if (!anterior || anterior[1] !== falhas.join(' ')) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: issue.number,
+                body: `@${DONO} — mudou o conjunto de URLs a falhar: ${falhas.join(', ') || '(sem relatório)'}. Tabela actualizada acima. Corrida: ${urlRun}` });
+            }
+
+      - name: Falhar o job se o canário falhou
+        if: steps.canario.outcome != 'success'
+        run: |
+          echo "::error::Canário de URLs oficiais falhou — ver a issue canario-urls."
+          exit 1
