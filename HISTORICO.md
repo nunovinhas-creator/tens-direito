@@ -6867,6 +6867,26 @@ página, sincronização, formato inesperado, e teste sobre as páginas reais
 simuladores antigos. Sem mudança ao comportamento de partilha nem ao evento
 `partilha_clique`.
 
+
+*Última revisão: 2026-10-04 — "⏰ Datas a não perder": data de fim
+explícita por cartão (issue #283).* Cada `.urgente-card` de `index.html`
+tem `data-ate` (Prova Escolar e PSU `2026-12-31`, Passe sub-23
+`permanente`). `tests/test_urgente_home_frescura.py` reescrito: `data-ate`
+obrigatório, não passado, `permanente` só sem nomes de meses, e coerente
+com o texto (nunca posterior à data não histórica mais tardia; com datas
+sem ano, a menos de 12 meses de hoje — acrescentado depois de a mutação
+`data-ate="2030-12-31"` na Prova Escolar ter passado). Detector novo: mês
+sem dia e pares de meses contam como o último dia do mês; ano implícito
+vem do `data-ate`; supressão histórica por ocorrência (antes, "em vigor
+desde" suprimia também o "31 de dezembro" do cartão da PSU). Provas com os
+cartões reais retirados no #282 (`tests/fixtures/urgente_cards_pre_282.html`,
+extraídos de `868d67f`): Manuais ("julho/agosto") e Abono ("duplica em
+setembro") falham a 1/10 — o detector antigo não encontrava data nenhuma
+neles —, e Manuais falharia logo a 1/9. Não disparam: "janeiro" com
+`data-ate` de 2027 escrito em dezembro de 2026; "Carrega todos os meses".
+"Até 31 de dezembro" a 2 de janeiro de 2027 já não passa como o 31 de
+dezembro seguinte.
+
 ---
 
 *Última revisão automática: 2026-09-30*
