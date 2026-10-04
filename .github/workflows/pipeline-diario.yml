@@ -880,42 +880,6 @@ jobs:
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # ── Step 7c2: Garantir deploy do GitHub Pages ────────────────────────────
-      # Achado de 2026-07-05 (fecho da auditoria): "pages build and
-      # deployment" falha esporadicamente com um erro genérico de
-      # infra-estrutura ("Deployment failed, try again later.", já
-      # confirmado 3 vezes, nunca relacionado com o conteúdo) — até agora
-      # só descoberto por um humano a ver a notificação de email e a
-      # correr o rerun manualmente. Como esse workflow é dinâmico (sem
-      # ficheiro .yml no repositório — não podemos editar-lhe a lógica
-      # nem dar-lhe retries internos), este step trata o problema por
-      # fora: espera pelo deploy do commit actual e, se falhar, dispara-o
-      # de novo via API automaticamente (scripts/garantir_deploy_pages.sh,
-      # nunca um gate rígido — segue sempre para o smoke test a seguir).
-      - name: Garantir deploy do GitHub Pages
-        if: steps.commit_push.outputs.pushed == 'true'
-        run: bash scripts/garantir_deploy_pages.sh
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
-
-      # ── Step 7d: Smoke test de produção inline ───────────────────────────────
-      # Achado de 2026-07-05: pushes feitos com o GITHUB_TOKEN por omissão
-      # (o caso deste workflow) NUNCA disparam outros workflows via `on:
-      # push` — é uma proteção anti-recursão nativa do GitHub Actions, sem
-      # forma de contornar sem um PAT/App token dedicado. smoke-producao.yml
-      # (`on: push`) nunca correu, e nunca vai correr, a seguir a um commit
-      # deste pipeline — só o cron de segurança das 06:30 UTC o cobria, com
-      # risco de disparar antes do commit do dia (por causa da espera
-      # aleatória + tempo de scrape). Corrigido correndo o mesmo script de
-      # smoke aqui, no mesmo run que fez o push — causalidade, não timing.
-      # Reutiliza scripts/smoke_producao.sh tal como smoke-producao.yml o
-      # usa, sem duplicar a lógica de verificação. Só corre se este run
-      # publicou de facto um commit novo.
-      - name: Smoke test de produção (inline, pós-push)
-        if: steps.commit_push.outputs.pushed == 'true'
-        run: bash scripts/smoke_producao.sh
-
       # ── Step 7b: Garantir label fonte-bloqueada ──────────────────────────────
       - name: Criar label fonte-bloqueada se não existir
         uses: actions/github-script@v7
@@ -1778,3 +1742,45 @@ jobs:
                 }
               }
             } catch(_) {}
+
+      # ── Step 7c2: Garantir deploy do GitHub Pages ────────────────────────────
+      # Achado de 2026-07-05 (fecho da auditoria): "pages build and
+      # deployment" falha esporadicamente com um erro genérico de
+      # infra-estrutura ("Deployment failed, try again later.", já
+      # confirmado 3 vezes, nunca relacionado com o conteúdo) — até agora
+      # só descoberto por um humano a ver a notificação de email e a
+      # correr o rerun manualmente. Como esse workflow é dinâmico (sem
+      # ficheiro .yml no repositório — não podemos editar-lhe a lógica
+      # nem dar-lhe retries internos), este step trata o problema por
+      # fora: espera pelo deploy do commit actual e, se falhar, dispara-o
+      # de novo via API automaticamente (scripts/garantir_deploy_pages.sh,
+      # nunca um gate rígido — segue sempre para o smoke test a seguir).
+      - name: Garantir deploy do GitHub Pages
+        if: ${{ !cancelled() && steps.commit_push.outputs.pushed == 'true' }}
+        run: bash scripts/garantir_deploy_pages.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
+
+      # ── Step 7d: Smoke test de produção inline ───────────────────────────────
+      # Achado de 2026-07-05: pushes feitos com o GITHUB_TOKEN por omissão
+      # (o caso deste workflow) NUNCA disparam outros workflows via `on:
+      # push` — é uma proteção anti-recursão nativa do GitHub Actions, sem
+      # forma de contornar sem um PAT/App token dedicado. smoke-producao.yml
+      # (`on: push`) nunca correu, e nunca vai correr, a seguir a um commit
+      # deste pipeline — só o cron de segurança das 06:30 UTC o cobria, com
+      # risco de disparar antes do commit do dia (por causa da espera
+      # aleatória + tempo de scrape). Corrigido correndo o mesmo script de
+      # smoke aqui, no mesmo run que fez o push — causalidade, não timing.
+      # Reutiliza scripts/smoke_producao.sh tal como smoke-producao.yml o
+      # usa, sem duplicar a lógica de verificação. Só corre se este run
+      # publicou de facto um commit novo.
+      # Desde #281: confirma que o site serve a versão do SHA_DEPLOY (gate
+      # rígido), e corre no fim do job — antes, uma falha aqui saltava os
+      # passos das Issues (incluindo a do canal). !cancelled() corre-o mesmo
+      # que um passo de Issue tenha falhado.
+      - name: Smoke test de produção (inline, pós-push)
+        if: ${{ !cancelled() && steps.commit_push.outputs.pushed == 'true' }}
+        run: bash scripts/smoke_producao.sh
+        env:
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}

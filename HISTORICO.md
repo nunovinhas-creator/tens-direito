@@ -6887,6 +6887,22 @@ neles —, e Manuais falharia logo a 1/9. Não disparam: "janeiro" com
 "Até 31 de dezembro" a 2 de janeiro de 2027 já não passa como o 31 de
 dezembro seguinte.
 
+
+*Última revisão: 2026-10-04 — smoke de produção confirma a versão servida
+(issue #281).* `scripts/smoke_producao.sh` ganhou `verificar_versao_servida`:
+cada HTML publicado alterado pelo commit vigiado (ou a homepage, se nenhum)
+tem de ser servido como o blob desse commit ou de um commit mais novo de
+`origin/main`; pedidos com `?v=<sha>`; até 20 × 30 s, depois falha (gate
+rígido). `garantir_deploy_pages.sh` continua não bloqueante. Em
+`pipeline-diario.yml` e `calendario-mensal.yml`, deploy + smoke passaram para
+o fim do job com `!cancelled()` (antes, um smoke vermelho saltava as Issues,
+incluindo a do canal); smoke inline recebe `SHA_DEPLOY` nos 3 workflows;
+`fetch-depth: 2` em `calendario-mensal.yml` e `smoke-producao.yml`;
+`timeout-minutes` do calendário 20 → 40. `tests/test_smoke_versao_servida.py`:
+script real contra repositório git temporário e servidor local, incidente de
+2026-10-01 reproduzido (deploy do commit anterior já concluído, tudo 200);
+8 casos do script e 7 dos workflows falham com a lógica anterior.
+
 ---
 
 *Última revisão automática: 2026-09-30*

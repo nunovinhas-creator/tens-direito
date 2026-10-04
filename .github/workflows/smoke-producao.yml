@@ -44,6 +44,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Commit-pai: o smoke compara os HTML que o push alterou (#281).
+          fetch-depth: 2
 
       # ── Garantir deploy do GitHub Pages ──────────────────────────────────────
       # Achado de 2026-07-05 (fecho da auditoria): "pages build and

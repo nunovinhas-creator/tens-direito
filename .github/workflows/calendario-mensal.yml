@@ -47,9 +47,14 @@ permissions:
 jobs:
   calendario:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 40: o deploy pode levar até ~9 min a recuperar e o smoke até ~15 min
+    # (páginas + versão servida, #281).
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Commit-pai: o smoke compara os HTML que o push alterou (#281).
+          fetch-depth: 2
 
       - uses: actions/setup-python@v5
         with:
@@ -117,17 +122,6 @@ jobs:
             echo "pushed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Garantir deploy do GitHub Pages (recuperação automática)
-        if: steps.commit_push.outputs.pushed == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
-        run: bash scripts/garantir_deploy_pages.sh
-
-      - name: Smoke test de produção (inline, pós-push)
-        if: steps.commit_push.outputs.pushed == 'true'
-        run: bash scripts/smoke_producao.sh
-
       - name: Fechar Issue calendario-manual resolvida
         if: steps.verificar.outputs.estado == 'dados_ok'
         uses: actions/github-script@v7
@@ -192,3 +186,19 @@ jobs:
               });
               console.log(`Issue #${criada.data.number} criada.`);
             }
+
+      # Deploy + smoke no fim do job (#281): um smoke vermelho deixa o job
+      # vermelho sem impedir que as Issues acima corram; !cancelled() corre-os
+      # mesmo que um passo de Issue tenha falhado.
+      - name: Garantir deploy do GitHub Pages (recuperação automática)
+        if: ${{ !cancelled() && steps.commit_push.outputs.pushed == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
+        run: bash scripts/garantir_deploy_pages.sh
+
+      - name: Smoke test de produção (inline, pós-push)
+        if: ${{ !cancelled() && steps.commit_push.outputs.pushed == 'true' }}
+        run: bash scripts/smoke_producao.sh
+        env:
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}
