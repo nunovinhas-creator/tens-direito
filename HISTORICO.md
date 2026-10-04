@@ -7019,6 +7019,10 @@ rápida diz que a ASE pode cobrir manuais, o que contradiz o MEGA).
 Limitação conhecida no simulador universal: sem uma opção para quem não
 recebe abono, essa pessoa só sai da pergunta com "Ver resultados agora" ou
 "Voltar". A ASE fica indeterminada, como pedido.
+Com `condicoes.json` regenerado, o `verificado_em` global passou a
+2026-10-04 (já vinha dos parâmetros reverificados no #294). Por isso, o
+carimbo e o `dateModified` de `simulador-universal.html` avançam para
+04/10/2026 (`test_carimbo_estatico_bate_com_os_dados_e_com_o_date_modified`).
 
 ---
 
