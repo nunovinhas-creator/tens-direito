@@ -1,12 +1,57 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-01",
+      "titulo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPbmtyU1Z2OWM4cFNDdjl4LWoyMGVNc2pvNmRsUHYzU3gyN1d3VkV4eTcwejJkNnBmSjRHSEVXX3RCZ2Q1Qk9CMXEtTHk5cE9wQ0Q4RzFOSTNhQ0FnSDJvc1FUc2lXaFh5OElfd1N3cjU5Y2czUF9NWnR0eHh6VHFITEFQeVZsV0xRaDB1TF9KRUlPWHFjSmZLUkdpUldlcXFvMF9PM0FQYVEtTUdMZkFvTW5nRHI?oc=5",
+      "resumo": "Subsídio de desemprego está há dez anos a afastar-se do valor do salário Público",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQTRGVC1EcHJSSmg3a201ZnVzNGJEMklicW5qcE5VanJvZmFRZWRuckRzVS1Sa3JKdE5aSXl3VWlab2p4QWhMSTNBTVVfQU9fSjNxbXFMd0hiamJkd1FTMjJSN0lCSHdUdUJVdl9jOEs0NzJJSmdyNlJzampsV0lJV3hYZEdtYnRLVHloVG92NF80Um9TUnRzRGpjNDRndGZ2R1NWUzJNaUxXZw?oc=5",
+      "resumo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxON1A5V3FjQzNhT0dsZmVmcnY0eGlnXzR2X2Fvc2ttdmR5THNKUDJDRzBIVURZNXduellRUGtiR2VGTkdFMm5qZEUwWmFpMGxKWmZMV3N0dHBwNmVhc0FxeU05Qmc1cmhDNWFUWTJhcDNUc0lhQUU1Qk1XUmdIbl9hb0U1OVZiVkRZdG9zajdNZkxtMlZIRGZLbjBQSkJhbXk2Y0w1Q2hOOGdQQmM?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais - 1ª Quinzena de Outubro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro",
+      "fonte_nome": "XXV Governo Constitucional",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQOEZJOGhsTEhPUGFhRVZnNUFfcnRhLTNMY0RSNUp5UGZDRHVqY042bVBvNmgyb3FoZUZ2Z282Wi1meGtFTjZOTVVFVmNxNG9pczEwYmg1ZXM2Z0tKYzJ0eV9HM1NaMGpSTzN6SF9ES2pvYWdTSlpuM0tsOXFNeFlhVWJKTG90YU93ZUxGUHpkRmVJODkydktOeG1tdzBRUW9HXzhTM0ZUWmpMRUxWZXlGQnRDR0FMQkZ6dmdRNA?oc=5",
+      "resumo": "Complemento Solidário para Idosos aumenta 50 euros a partir de janeiro XXV Governo Constitucional",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
       "data_iso": "2026-09-30",
       "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro",
       "fonte_nome": "ODigital.pt",
       "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNN3owSllySGtyemNnSVdlclJtYjlVeGg0UFVzbkFHdURiZ2tFejlrMnE5YlIwNkVSTmpIcXhuVzJJQW90em1LeGJBelJHdTVGWTB2TkxMNXJ6T1ZLVTRFWVVKZGUtR1VFMW1RdTBJRHlEMDBmNzZWVUFTTHpnQ0ZJdg?oc=5",
       "resumo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro ODigital.pt",
       "categoria": "educacao",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-09-29",
+      "titulo": "Mãe das gémeas pediu apoio para leite a movimento católico. Acusação descreve plano para \"aproveitar-se\" de todos os apoios humanitários e públicos",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMivAJBVV95cUxObXNTbzZfNDYxX3Znc1ZqOWtkTWJSYWI2X2Z2VTM3Tm5iQ19IZ084c2c1akVUU0RPU2dhdFpnQ0o1TURlclZmRkV0a1FueDJTNWljNmN2b29SWWVxYUFjVUxfSXY2LUZwSklJemVNNTVPLUpZd3dzeGlUV2dHRVJveVhDS0JOVEZiTEt2TWxuQWlValdZUWdSUHQ1N1ZfX25nbXp0bEswNlVlNE9uWDNzU25EQ3Z6a1RhRnFzYWJrUG11R0JubmZQUGZrSVQ2bWdxcEV1X2hfekFNYTlYUkhWOXZqanNtSXNMeGhiVWNkQlZ2cTlEaWR2OEF1czdkN1N4T1VQcUtTd0xxdzlqLThwZUNXLW9kcld5a2todzRoR1NUOUxPZUt5QTluenh4SU54dFlNc3VDYzkxeDVl?oc=5",
+      "resumo": "Mãe das gémeas pediu apoio para leite a movimento católico. Acusação descreve plano para \"aproveitar-se\" de todos os apoios humanitários e públicos CNN Portugal",
+      "categoria": "apoios",
       "cluster_id": null
     },
     {
@@ -17,6 +62,15 @@
       "resumo": "Transparência salarial, pensões e Prestação Social Única em destaque na agenda laboral Human Resources Portugal",
       "categoria": "apoios",
       "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-09-28",
+      "titulo": "Segurança Social: Veja quando são pagas as pensões e os subsídios em outubro",
+      "fonte_nome": "SAPO",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNamJLbEJWbEh0UjduemdRM04zamZwYnVIUVBKelRxXzNNSDZNbFY0RHhsQVNfOVZ6OTUyUTRxcUpkbkRsVEc1ZDZpUGdNWXRMeGUwWE1zWnd0WTFqTC1TZ2c2SHM2RFNfR0tIbmFZZmVEQ1c2ZHZfVGdRYzhkM3FwOWp3bFZYQjY2WW5Oc1ZsZXZqU2txTGh3ai0tZVk0S3F2V1h5d0N3T0dvQ1BjQXlEdTNtWVlPcC05OTh6NWRjMm8?oc=5",
+      "resumo": "Segurança Social: Veja quando são pagas as pensões e os subsídios em outubro SAPO",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-09-28",

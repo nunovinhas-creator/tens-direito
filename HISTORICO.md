@@ -6764,7 +6764,40 @@ as duas entradas «novas» reais do #260); os de tags inline, atributo,
 NBSP/NFC, frase vazia e corte de frase por não existir frase na identidade
 antiga.
 
+
+*Última revisão: 2026-09-30 — PR 13 do simulador universal: guardrail de
+cobertura + issue #261.* Novo `tests/test_cobertura_simulador_universal.py`:
+cada página `tipo: "artigo"` de `data/clusters.json` é a `pagina` de um apoio
+em `dados/condicoes.json` ou está em `FORA_DO_SIMULADOR_UNIVERSAL` com
+categoria (`complementar`, `processo`, `reforma`, `encerrado`,
+`por_implementar`) e motivo; falha nos dois sentidos (página sem
+classificação; entrada órfã — página que saiu de `clusters.json` ou passou a
+estar coberta); `complementar` tem de apontar para um apoio coberto ou por
+implementar. Classificação confirmada pelo Nuno. Issue #261:
+`APOIOS_COM_ARTIGO_OBRIGATORIO` substituída por
+`PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR` (5 parâmetros, "por confirmar em fonte
+primária") em `tests/test_gerar_condicoes_json.py` — a regra do artigo
+passa a valer para todos os apoios, e uma excepção órfã (parâmetro que ganhou
+artigo ou deixou de ser usado) falha. Nenhum valor nem citação mudou.
+Provado por mutação: repor a regra antiga (só creche/cartão) ou tirar as
+verificações de órfãs faz falhar os testes novos. ROADMAP.md aponta para as
+duas constantes.
+
+
+*Última revisão: 2026-10-01 — "⏰ Datas a não perder": cartões de
+setembro retirados.* `test_urgente_home_frescura.py` ficou vermelho a 1/10
+com "ASE — candidatura" e "Bolsas de mérito" (prazo 30 de setembro). Por
+decisão do Nuno, saíram esses dois e "Abono a dobrar" ("duplica em
+setembro") e, a seguir, "Manuais gratuitos" ("julho/agosto"), sem prazos
+novos no lugar. Ficam Prova Escolar, PSU e Passe sub-23, sem prazo passado. O canário cortava cartões com
+`<div>` aninhado (badge da PSU) e exigia ≥5: passa a dividir pela tag de
+abertura, a contagem tem de bater com as aberturas, e um teste novo exige
+que a secção nunca fique visível sem cartões (vazia → sai de
+`index.html`).
+
 ---
+
+*Última revisão automática: 2026-10-03*
 
 *Última revisão: 2026-10-01 — Calendário de pagamentos vira de mês do
 lado do cliente, à meia-noite de Lisboa (#280).*
