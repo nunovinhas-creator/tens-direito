@@ -21,10 +21,18 @@ on:
   schedule:
     - cron: '0 5 * * *'  # diário, antes do pipeline das 06:00 UTC
   workflow_dispatch:
+    inputs:
+      simular:
+        description: "Só mostrar as decisões no resumo — não apaga branches nem mexe na Issue"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
   issues: write
+  # Ler os PRs de cada branch: uma branch integrada por squash só se
+  # reconhece pelo PR merged (issue #276, scripts/decidir_branch.sh).
+  pull-requests: read
 
 jobs:
   limpar-branches:
@@ -41,6 +49,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
+          SIMULAR: ${{ inputs.simular == true }}
         run: |
           set -uo pipefail
 
@@ -51,10 +60,15 @@ jobs:
 
           apagadas=()
           falhas_delete=()
+          falhas_api=()
           orfas_json="[]"
 
           {
             echo "## 🌿 Limpar Branches Órfãs"
+            if [ "$SIMULAR" = "true" ]; then
+              echo ""
+              echo "**🧪 Simulação** — nenhuma branch apagada, Issue não tocada."
+            fi
             echo ""
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -72,23 +86,40 @@ jobs:
               exit 1
             fi
 
-            commits_unicos=$(git rev-list --count "origin/main..origin/$b")
+            # Decisão em scripts/decidir_branch.sh (issue #276): 0 commits
+            # únicos, ou PR merged por squash para main com a mesma cabeça e
+            # sem PR aberto. Uma falha da API nunca apaga — a branch fica na
+            # Issue e o job fica vermelho.
+            if ! decisao=$(bash scripts/decidir_branch.sh "$b"); then
+              falhas_api+=("$b")
+              echo "- ⚠️ \`$b\` — não foi possível decidir (falha da API); não apagada" >> "$GITHUB_STEP_SUMMARY"
+              orfas_json=$(jq --arg b "$b" '. + [{"branch": $b, "commits_unicos": "?"}]' <<< "$orfas_json")
+              continue
+            fi
+            accao=${decisao%% *}
+            motivo=${decisao#* }
 
-            if [ "$commits_unicos" -eq 0 ]; then
-              echo "Branch '$b' totalmente integrada em main (0 commits únicos) — a apagar."
-              if gh api -X DELETE "repos/${REPO}/git/refs/heads/${b}" >/dev/null 2>/tmp/gh_erro; then
-                apagadas+=("$b")
-                echo "- 🗑️ \`$b\` — apagada (já totalmente integrada em main)" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$accao" = "APAGAR" ]; then
+              if [ "$SIMULAR" = "true" ]; then
+                echo "- 🧪 \`$b\` — seria apagada: $motivo" >> "$GITHUB_STEP_SUMMARY"
               else
-                falhas_delete+=("$b")
-                erro=$(cat /tmp/gh_erro)
-                echo "::error::Falha ao apagar '$b' via API: $erro"
-                echo "- ⚠️ \`$b\` — devia ser apagada (0 commits únicos) mas a API falhou: $erro" >> "$GITHUB_STEP_SUMMARY"
-                echo "  Se for 403 mesmo com GITHUB_TOKEN, é sinal de um ruleset \"restrict deletions\" activo — a correcção é pôr o Actions no bypass do ruleset, nunca baixar a protecção." >> "$GITHUB_STEP_SUMMARY"
+                echo "Branch '$b' integrada ($motivo) — a apagar."
+                if gh api -X DELETE "repos/${REPO}/git/refs/heads/${b}" >/dev/null 2>/tmp/gh_erro; then
+                  apagadas+=("$b")
+                  echo "- 🗑️ \`$b\` — apagada: $motivo" >> "$GITHUB_STEP_SUMMARY"
+                else
+                  falhas_delete+=("$b")
+                  erro=$(cat /tmp/gh_erro)
+                  echo "::error::Falha ao apagar '$b' via API: $erro"
+                  echo "- ⚠️ \`$b\` — devia ser apagada ($motivo) mas a API falhou: $erro" >> "$GITHUB_STEP_SUMMARY"
+                  echo "  Se for 403 mesmo com GITHUB_TOKEN, é sinal de um ruleset \"restrict deletions\" activo — a correcção é pôr o Actions no bypass do ruleset, nunca baixar a protecção." >> "$GITHUB_STEP_SUMMARY"
+                fi
               fi
             else
-              echo "Branch '$b' tem $commits_unicos commit(s) único(s) — NÃO apagada."
-              echo "- 🔶 \`$b\` — $commits_unicos commit(s) único(s), por integrar" >> "$GITHUB_STEP_SUMMARY"
+              commits_unicos=${motivo%% *}
+              motivo=${motivo#* }
+              echo "Branch '$b' tem $commits_unicos commit(s) único(s) — NÃO apagada ($motivo)."
+              echo "- 🔶 \`$b\` — $commits_unicos commit(s) único(s), por integrar ($motivo)" >> "$GITHUB_STEP_SUMMARY"
               # jq (não Python/bash string interpolation) para nunca partir
               # com um nome de branch que contenha aspas ou outros
               # caracteres especiais — escaping JSON correcto garantido.
@@ -99,13 +130,18 @@ jobs:
           echo "$orfas_json" > /tmp/orfas.json
           echo "orfas_json_path=/tmp/orfas.json" >> "$GITHUB_OUTPUT"
 
+          if [ "${#falhas_api[@]}" -gt 0 ]; then
+            echo "::error::${#falhas_api[@]} branch(es) sem decisão por falha da API — ver acima."
+            exit 1
+          fi
+
           if [ "${#falhas_delete[@]}" -gt 0 ]; then
             echo "::error::${#falhas_delete[@]} branch(es) deviam ter sido apagadas mas a API falhou — ver acima."
             exit 1
           fi
 
       - name: Gerir Issue única de branches por integrar
-        if: always() && steps.processar.outputs.orfas_json_path != ''
+        if: always() && inputs.simular != true && steps.processar.outputs.orfas_json_path != ''
         uses: actions/github-script@v7
         with:
           script: |

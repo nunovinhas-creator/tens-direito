@@ -170,7 +170,19 @@ das 06:00 UTC, rede de segurança) + `workflow_dispatch` (manual).
      `gh api -X DELETE repos/{owner}/{repo}/git/refs/heads/<b>`,
      registada no job summary, **sem** Issue nem email — é o caso
      normal e silencioso.
-   - **≥1 commit único** → nunca apagada, entra na lista para a Issue.
+   - **≥1 commit único** → nunca apagada, entra na lista para a Issue —
+     **excepto integração por squash** (issue #276, 2026-10-04): num
+     squash os commits da branch nunca entram em `main`, por isso a
+     contagem nunca chega a 0. A decisão vive em
+     `scripts/decidir_branch.sh` (`APAGAR`/`MANTER`, testado com `gh` falso
+     em `tests/test_decidir_branch.py`): apaga também quando há um PR
+     **merged para `main`** dessa branch cuja `head.sha` é a cabeça actual
+     da branch e **nenhum PR aberto** dela. Push depois do merge, PR para
+     outra base, PR fechado sem merge ou branch sem PR → mantém, como
+     antes. Falha da API → nunca apaga; a branch fica na Issue e o job
+     fica vermelho. Requer `permissions: pull-requests: read`.
+     `workflow_dispatch` com `simular: true` só escreve as decisões no
+     resumo do run — não apaga nada nem mexe na Issue.
 3. Issue única de título estável (`🌿 Branches órfãs por integrar`,
    labels `branch-orfa`+`verificar`): corpo **substituído** a cada
    corrida (nunca acumula comentários, ao contrário de

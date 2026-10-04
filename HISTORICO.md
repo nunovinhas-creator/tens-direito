@@ -6903,6 +6903,24 @@ script real contra repositório git temporário e servidor local, incidente de
 2026-10-01 reproduzido (deploy do commit anterior já concluído, tudo 200);
 8 casos do script e 7 dos workflows falham com a lógica anterior.
 
+
+*Última revisão: 2026-10-04 — limpar-branches.yml apaga branches de PRs
+integrados por squash (issue #276).* Num squash os commits da branch nunca
+entram em `main`, por isso a regra "0 commits únicos" nunca apagava a branch
+e ela ia para a Issue #278 como trabalho por integrar. A decisão saiu para
+`scripts/decidir_branch.sh`: apaga também quando há um PR merged para `main`
+com `head.sha` igual à cabeça actual da branch e nenhum PR aberto dela; push
+depois do merge, PR para outra base, PR fechado sem merge ou branch sem PR
+mantêm-se; falha da API nunca apaga e deixa o job vermelho. Workflow ganha
+`pull-requests: read` e `workflow_dispatch` com `simular: true` (só resumo,
+sem apagar nem mexer na Issue). `tests/test_decidir_branch.py`: 9 casos com
+`gh` falso (squash, push depois do merge, outra base, PR aberto, sem PR,
+fechado sem merge, vários PRs com só o último a coincidir, falha da API,
+`main`), mais 0 commits únicos sem API e guardas do workflow; com a regra
+antiga falham os casos 1, 4, 7 e 8 e as guardas do workflow (os restantes
+já mantinham a branch). Sem prova real do "push depois do merge" — decisão
+do Nuno: testes unitários + corrida simulada.
+
 ---
 
 *Última revisão automática: 2026-09-30*
