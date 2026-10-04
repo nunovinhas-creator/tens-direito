@@ -101,6 +101,20 @@ Sem carimbo (só `fontes.html`, entre as páginas com citações de
 diploma): preserva-se o comportamento antigo, supressão sempre
 permanente — nunca "sem carimbo = expõe tudo".
 
+**Isenção do portão (#186)** — `MARCADORES_ISENTOS_DO_PORTAO`
+(subconjunto de `MARCADORES_HISTORICOS`, contenção testada em
+`tests/test_marcadores_isentos_portao.py`) suprime antes do portão, sem
+olhar para o carimbo. Só para formulações que dizem o que a lei fixa e
+continuam verdade depois da data (hoje: 31/12/2026 do artigo 63.º/57.º do
+DL 166/2026 — "fixa … como (a) data de produção de efeitos", "produção de
+efeitos a 31/12/2026 (art. 63.º)", a ficha "Produção de efeitos:
+31/12/2026", "evento único"/"data fixada por lei"). Nunca uma frase
+prospectiva ("pagamento a partir de", "até … mantém-se") — essas têm de
+ficar expostas quando a data passa (issue #293; o mesmo teste tranca as
+duas direcções). A auditoria regista estas supressões no baseline assim que
+a data é posterior ao carimbo, mesmo antes de ser "antiga", para serem
+revistas linha a linha antes de entrarem em vigor.
+
 ## AS TRÊS LISTAS DE SUPRESSÃO, MESMO PADRÃO
 
 `MARCADORES_HISTORICOS`/baseline, `EXCECOES_DIPLOMAS_FONTES` e

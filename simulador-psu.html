@@ -565,7 +565,7 @@
     // #186) — nunca alterna consoante a data de hoje: a data de produção
     // de efeitos é um facto fixo da lei, mas se o pagamento já está a
     // acontecer é um facto operacional que só a Segurança Social confirma,
-    // antes ou depois de 31/12/2026. ──────────────────────────────────────
+    // antes ou depois da data de produção de efeitos. ─────────────────────
     function aplicarBannerVigencia() {
       const banner = document.getElementById('bannerVigencia');
       if (!banner || !PARAMETROS_PSU || !PARAMETROS_PSU.dataProducaoEfeitos) return;

@@ -6948,6 +6948,27 @@ Nenhum valor mudou; os três parâmetros corrigidos ficam com
 `verificado_em` 2026-10-04 (valores reverificados em fonte pelo Nuno);
 `dados/parametros.json` regenerado.
 
+
+*Última revisão: 2026-10-04 — isenção do portão para a data de efeitos do
+DL 166/2026 (issue #186).* `MARCADORES_ISENTOS_DO_PORTAO` em
+`verificar_datas.py` (4 marcadores, todos também em
+`MARCADORES_HISTORICOS`) suprime antes do portão as formulações
+permanentes do art. 63.º/57.º; `_esta_suprimido()` verifica-os primeiro.
+`auditar_marcadores_historicos.py` passa a registar estas supressões quando
+a data é posterior ao carimbo, mesmo não sendo "antiga" face a
+`ANO_REFERENCIA`: baseline com 34 entradas novas, 0 órfãs —
+`psu-quem-tem-direito` (16), `simulador-psu` (11), `psu-vs-abono-familia`
+(1) e as fichas "Produção de efeitos: 31/12/2026" de
+`calendario-pagamentos-psu`, `como-pedir-psu`, `prestacao-social-unica` e
+`psu-quando-entra-em-vigor` (6, alargamento aceite pelo Nuno).
+`psu-vs-abono-familia.html`: linha "Estado em 2026" passa a "Regime" (sem
+"valores confirmados" na coluna do abono). `simulador-psu.html`: comentário
+JS sem a data. `tests/test_marcadores_isentos_portao.py`: contenção,
+isento vs. histórico normal, as 7 formulações isentas, 4 prospectivas nunca
+isentas, as 3 páginas da #186 limpas em 2027, as frases prospectivas das 5
+páginas PSU + `simulador-rsi` continuam expostas (#293), e a auditoria; 18
+casos falham sem a isenção.
+
 ---
 
 *Última revisão automática: 2026-10-04*
