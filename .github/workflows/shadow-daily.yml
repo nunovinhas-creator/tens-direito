@@ -150,3 +150,5 @@ jobs:
       - name: Smoke test de produção (inline, pós-push)
         if: steps.commit_push.outputs.pushed == 'true'
         run: bash scripts/smoke_producao.sh
+        env:
+          SHA_DEPLOY: ${{ steps.commit_push.outputs.sha }}

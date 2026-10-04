@@ -314,7 +314,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
 | `integridade.yml` | push a main, **pull_request para main** (2026-07-17; desde 2026-09-30 também `edited` — mudança de base para main — e `ready_for_review`, sem filtro por job, issue #266), cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04). Todos os jobs são determinísticos (dependem apenas do checkout) — o canário de URLs oficiais saiu para `canario-urls.yml` a 2026-09-30. `concurrency` com `cancel-in-progress` só em PRs (pushes sucessivos cancelam runs obsoletos; em main/schedule nunca cancela) | ❌ não |
 | `canario-urls.yml` | cron diário `23 7 * * *` + manual (nunca push nem PR — a disponibilidade de um portal não depende do commit) | `scripts/verificar_urls_como_pedir.py`: HEAD (e GET de recurso com cabeçalhos de navegador se HEAD ≥ 400) aos URLs de `data/urls_como_pedir.json`; 404/410/domínio inexistente falham logo, o resto tem 4 tentativas (esperas 15/45/90 s); uma falha abre ou actualiza UMA issue `canario-urls` (atribuída ao Nuno, @menção, status HEAD/GET de cada URL; comentário só quando muda o conjunto de URLs a falhar), fechada sozinha na primeira corrida verde; o job fica vermelho sempre que há falhas | ❌ não — só gere a issue (`issues: write`) |
-| `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, ou se um simulador devolver 200 com conteúdo errado/antigo (ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
+| `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, se um simulador devolver 200 com conteúdo errado/antigo, ou se os HTML que o commit alterou não forem servidos nessa versão (#281, gate rígido — ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
 | `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage; guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
@@ -395,7 +395,8 @@ até 180s por tentativa) e, se falhar, dispara-o de novo
 automaticamente via `POST .../actions/runs/{id}/rerun`, até 3
 tentativas. **Nunca é um gate rígido** — se não conseguir confirmar ou
 recuperar dentro do tempo limite, sai com sucesso na mesma (`exit 0`)
-e deixa o smoke test a seguir ser a verificação real; o objectivo é só
+e deixa o smoke test a seguir ser a verificação real (desde #281, um gate
+rígido sobre a versão servida — ver "VERSÃO SERVIDA" abaixo); o objectivo é só
 eliminar a necessidade de um humano ver uma notificação e correr um
 comando à mão, não substituir o smoke test como fonte de verdade.
 Requer `permissions: actions: write` nos 3 workflows (novo, só para
@@ -422,6 +423,38 @@ manualmente nessa altura (`rerun_workflow_run`, sucesso na 2.ª
 tentativa, confirmado por `smoke-producao.yml` a seguir) — este script
 existe precisamente para a *próxima* vez que isto acontecer não
 precisar de repetir esse processo manual.
+
+### VERSÃO SERVIDA — GATE RÍGIDO (2026-10-04, #281)
+
+200 + "Verificado a" + JSON válido não provam a versão: a 2026-10-01
+(`calendario-mensal.yml`, run 36857076880) o smoke deu verde contra o site
+anterior. Desde #281, `scripts/smoke_producao.sh` (função
+`verificar_versao_servida`) exige, para cada HTML publicado (raiz, `p/`,
+`documentos/` — nunca `tests/` nem outras pastas) que o commit vigiado
+alterou face ao pai — ou a homepage, se não alterou nenhum —, que o corpo
+servido seja byte a byte o blob desse ficheiro nesse commit **ou num commit
+mais novo de `origin/main`** (outro push pode ter chegado entretanto).
+Pedidos com `?v=<sha>` + `Cache-Control: no-cache`, para não ler a cache do
+CDN. Orçamento `TENTATIVAS_VERSAO` × `ESPERA_VERSAO_S` (20 × 30 s, ~10 min);
+sem coincidência no fim, **falha** (gate rígido). Commit vigiado =
+`SHA_DEPLOY` (vazio → falha) ou `GITHUB_SHA`; sem nenhum dos dois (corrida
+local fora do Actions) a verificação é saltada com aviso. Commit-pai ausente
+no checkout → falha: todos os workflows com smoke fazem checkout com
+`fetch-depth: 2`. `garantir_deploy_pages.sh` continua **não** bloqueante — a
+regra "nunca gate rígido" passou a valer só para ele; o smoke é o gate.
+
+**Posição no job**: em `pipeline-diario.yml` e `calendario-mensal.yml`,
+`garantir_deploy_pages.sh` + smoke são os dois últimos passos, com
+`if: ${{ !cancelled() && steps.commit_push.outputs.pushed == 'true' }}` —
+uma falha do smoke deixa o job vermelho sem saltar as Issues (antes, saltava
+a Issue `canal-rascunho` do dia, cujo estado já estava commitado), e correm
+mesmo que um passo de Issue falhe. `calendario-mensal.yml` subiu
+`timeout-minutes` para 40. Testes: `tests/test_smoke_versao_servida.py`
+(script real contra repositório git temporário + servidor HTTP local —
+incidente reproduzido, HTML alterado fora da homepage, homepage como
+fallback, versão mais nova aceite, `?v=<sha>`, `SHA_DEPLOY` vazio, pai
+ausente — e guarda estática sobre os workflows); 8 dos 11 casos do script e
+7 dos casos dos workflows falham com a lógica anterior.
 
 ### GATILHO CORRIGIDO (2026-07-05) — `workflow_run` nunca disparou
 
