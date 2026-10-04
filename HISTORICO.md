@@ -6831,3 +6831,29 @@ lógica antiga.
 ---
 
 *Última revisão automática: 2026-10-03*
+
+*Última revisão: 2026-10-01 — Calendário de pagamentos vira de mês do
+lado do cliente, à meia-noite de Lisboa (#280).*
+
+No dia 1/10 a página continuava a mostrar setembro no topo, com o aviso de
+desactualizado, apesar de outubro estar nos dados desde 25/09: o topo só
+mudava quando o `calendario-mensal.yml` regenerava o HTML, e o cron do dia
+1 (05:30 UTC) chega a correr com horas de atraso (1/09 às 10:16 UTC). O
+mesmo intervalo punha `test_calendario_frescura` vermelho em qualquer CI
+(#280). Agora o gerador escreve também o topo completo do mês seguinte num
+`<template id="cal-vista-AAAA-MM">`, e o script da página troca o topo por
+ele quando o mês de hoje em Europe/Lisbon já é o seguinte (helper único
+`assets/js/hoje-lisboa.js`, fallback para a data do aparelho). A barra da
+homepage passa a ter os dias por mês (`{"AAAA-MM": [...]}`) e escolhe o de
+Lisboa. Sem o mês novo nos dados, o topo mantém-se e o aviso aparece. O
+canário de frescura aceita o topo estático no mês anterior só até ao dia 3
+de Lisboa e só com o template do mês corrente; a sincronização compara com
+o que o gerador produz para o mês do topo. Linha dos dados reescrita para
+"Datas confirmadas na Segurança Social a DD/MM/AAAA". O carimbo manual
+"Verificado a 18/07/2026" fica como estava. Testes com relógio fixo e fuso
+do aparelho diferente (Kiritimati, São Paulo) provados a falhar com o JS
+anterior.
+
+---
+
+*Última revisão automática: 2026-09-30*

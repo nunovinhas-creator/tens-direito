@@ -237,7 +237,7 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       <span class="cal-topo-texto">📅 <span class="cal-topo-longo">Calendário de pagamentos da Segurança Social — ver as datas do mês</span><span class="cal-topo-curto">Calendário de pagamentos SS</span></span> <span class="cal-topo-seta" aria-hidden="true">→</span>
     </a>
     <!-- CAL-HOME:INICIO -->
-    <script id="cal-home-dados" type="application/json" data-mes="2026-10">[{"dia": 2, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "CSI · Reembolso de funeral · PSI · Pensões"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "Fundo de Garantia Salarial · Suspensão de atividade cultural · RSI"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]</script>
+    <script id="cal-home-dados" type="application/json" data-mes="2026-10">{"2026-10": [{"dia": 2, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "CSI · Reembolso de funeral · PSI · Pensões"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "Fundo de Garantia Salarial · Suspensão de atividade cultural · RSI"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]}</script>
 <!-- CAL-HOME:FIM -->
   </div>
 
@@ -823,33 +823,32 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
     });
   </script>
 
+  <script src="/assets/js/hoje-lisboa.js"></script>
   <script>
   // Barra fixa do calendário — promove a próxima data de pagamento a contar
-  // de hoje (progressive enhancement, zero rede). Só quando o mês dos dados
-  // (#cal-home-dados[data-mes], escrito por scripts/atualizar_calendario.py)
-  // é o mês corrente do visitante; num mês diferente (dados por actualizar)
-  // ou sem dados, mantém o rótulo genérico — nunca inventa uma data velha.
+  // de hoje em Europe/Lisbon (progressive enhancement, zero rede).
+  // #cal-home-dados (escrito por scripts/atualizar_calendario.py) traz os
+  // dias por mês, {"AAAA-MM": [...]}, com o mês corrente e o seguinte: a
+  // barra usa a entrada do mês de Lisboa e vira à meia-noite de Lisboa, sem
+  // esperar pelo workflow mensal (#280). Sem entrada para esse mês (dados por
+  // actualizar), mantém o rótulo genérico — nunca inventa uma data velha.
   (function () {
     var d = document.getElementById('cal-home-dados');
     var texto = document.querySelector('.cal-topo .cal-topo-texto');
-    if (!d || !texto) return;
-    var mes = d.getAttribute('data-mes');
-    if (!/^\d{4}-\d{2}$/.test(mes)) return;
-    var agora = new Date();
-    var mesCorrente = agora.getFullYear() + '-' + ('0' + (agora.getMonth() + 1)).slice(-2);
-    if (mes !== mesCorrente) return;
-    var itens;
-    try { itens = JSON.parse(d.textContent); } catch (e) { return; }
+    if (!d || !texto || typeof window.tdHojeLisboa !== 'function') return;
+    var hoje = window.tdHojeLisboa();
+    var porMes;
+    try { porMes = JSON.parse(d.textContent); } catch (e) { return; }
+    var itens = porMes && porMes[hoje.chave];
     if (!Array.isArray(itens) || !itens.length) return;
     var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
                  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    var hojeDia = agora.getDate();
     var prox = null;
     for (var i = 0; i < itens.length; i++) {
-      if (itens[i].dia >= hojeDia) { prox = itens[i]; break; }
+      if (itens[i].dia >= hoje.dia) { prox = itens[i]; break; }
     }
     if (!prox) return;  // pagamentos do mês já processados — mantém o rótulo genérico
-    texto.innerHTML = '📅 Próximo pagamento: <strong>' + prox.dia + ' de ' + nomes[agora.getMonth()] + '</strong>';
+    texto.innerHTML = '📅 Próximo pagamento: <strong>' + prox.dia + ' de ' + nomes[hoje.mes - 1] + '</strong>';
   })();
   </script>
 

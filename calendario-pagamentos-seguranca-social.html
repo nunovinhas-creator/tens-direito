@@ -389,7 +389,7 @@
 
 <p class="cal-proximo-mes">O calendário de novembro de 2026 ainda não foi confirmado na fonte oficial — é publicado aqui assim que a Segurança Social o divulgar.</p>
 
-<p class="cal-fonte-inline">Fonte: <a href="https://www.seg-social.pt/ptss/pssd/pagamentos" target="_blank" rel="noopener">Segurança Social</a> · dados verificados a 2026-09-25</p>
+<p class="cal-fonte-inline">Fonte: <a href="https://www.seg-social.pt/ptss/pssd/pagamentos" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a 25/09/2026</p>
 <!-- CAL:CORPO:FIM -->
 
   <div class="card">
@@ -460,67 +460,73 @@
     <!-- NVLABS:FOOTER:FIM -->
   </footer>
 
+  <script src="/assets/js/hoje-lisboa.js"></script>
   <script>
-  // Guarda de honestidade em runtime (progressive enhancement, zero rede):
-  // se o mês renderizado em #cal-corrente[data-mes] for anterior ao mês real
-  // do visitante, mostra o aviso explícito em vez de deixar uma tabela velha
-  // passar por corrente. O estado degradado (data-mes vazio) já é explícito
-  // por si — o aviso não dispara nesse caso.
+  // Calendário em runtime (progressive enhancement, zero rede), sempre com a
+  // data de hoje em Europe/Lisbon (assets/js/hoje-lisboa.js):
+  // 1) Troca do topo: se o mês de Lisboa já não é o do topo estático e a
+  //    página traz esse mês em <template id="cal-vista-AAAA-MM">, o topo passa
+  //    a ser esse — vira à meia-noite de Lisboa, sem esperar que o workflow
+  //    mensal regenere o HTML (#280). O HTML estático continua a ser a base
+  //    sem JS e o que o Google vê.
+  // 2) Guarda de honestidade: se, depois disso, o topo ainda é de um mês
+  //    anterior (o mês novo não está nos dados), mostra o aviso explícito.
+  //    O estado degradado (data-mes vazio) já é explícito — sem aviso.
+  // 3) Destaque "Próximo pagamento": só quando o topo é o mês de Lisboa;
+  //    num mês velho ou degradado nunca inventa um "próximo".
   (function () {
-    var el = document.getElementById('cal-corrente');
-    var aviso = document.getElementById('cal-aviso-desatualizado');
-    if (!el || !aviso) return;
-    var mes = el.getAttribute('data-mes');
-    if (!/^\d{4}-\d{2}$/.test(mes)) return;
-    var agora = new Date();
-    var corrente = agora.getFullYear() + '-' + ('0' + (agora.getMonth() + 1)).slice(-2);
-    if (corrente > mes) {
-      var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-                   'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-      var alvo = document.getElementById('cal-mes-actual-nome');
-      if (alvo) alvo.textContent = nomes[agora.getMonth()] + ' de ' + agora.getFullYear();
-      aviso.hidden = false;
-    }
-  })();
+    if (typeof window.tdHojeLisboa !== 'function') return;
+    var hoje = window.tdHojeLisboa();
+    var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    var nomeMes = nomes[hoje.mes - 1];
 
-  // Destaque "Próximo pagamento" (progressive enhancement, zero rede):
-  // lê #cal-dados e, SÓ quando o mês renderizado é o mês corrente do
-  // visitante, promove a próxima data a contar de hoje no topo da página.
-  // Num mês passado (aviso de desatualização activo) ou no estado
-  // degradado nunca inventa um "próximo" — a camada estática das datas
-  // mantém-se sempre visível, com ou sem JS.
-  (function () {
-    var caixa = document.getElementById('cal-destaque');
     var corr = document.getElementById('cal-corrente');
-    var dados = document.getElementById('cal-dados');
-    if (!caixa || !corr || !dados) return;
+    if (!corr) return;
+    if (corr.getAttribute('data-mes') !== hoje.chave) {
+      var vista = document.getElementById('cal-vista-' + hoje.chave);
+      if (vista && vista.content) {
+        var frag = vista.content.cloneNode(true);
+        var novo = frag.firstElementChild;
+        corr.parentNode.replaceChild(novo, corr);
+        // o resto do template (nota do mês seguinte) ocupa o lugar do bloco
+        // "mês seguinte", que passou a ser o mês corrente
+        var seg = document.getElementById('cal-seguinte');
+        if (seg) seg.parentNode.replaceChild(frag, seg);
+        else novo.parentNode.insertBefore(frag, novo.nextSibling);
+        corr = novo;
+      }
+    }
+
     var mes = corr.getAttribute('data-mes');
     if (!/^\d{4}-\d{2}$/.test(mes)) return;
-    var agora = new Date();
-    var mesCorrente = agora.getFullYear() + '-' + ('0' + (agora.getMonth() + 1)).slice(-2);
-    if (mes !== mesCorrente) return;  // mês passado/futuro: só a camada estática
+    if (hoje.chave > mes) {
+      var aviso = document.getElementById('cal-aviso-desatualizado');
+      var alvo = document.getElementById('cal-mes-actual-nome');
+      if (alvo) alvo.textContent = nomeMes + ' de ' + hoje.ano;
+      if (aviso) aviso.hidden = false;
+      return;
+    }
+    if (mes !== hoje.chave) return;  // mês futuro: só a camada estática
 
+    var caixa = document.getElementById('cal-destaque');
+    var dados = document.getElementById('cal-dados');
+    if (!caixa || !dados) return;
     var itens;
     try { itens = JSON.parse(dados.textContent); } catch (e) { return; }
     if (!Array.isArray(itens) || !itens.length) return;
-
-    var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    var mesNome = nomes[agora.getMonth()];
-    var hojeDia = agora.getDate();
     var proximo = null;
     for (var i = 0; i < itens.length; i++) {
-      if (itens[i].dia >= hojeDia) { proximo = itens[i]; break; }
+      if (itens[i].dia >= hoje.dia) { proximo = itens[i]; break; }
     }
-
     var destaque = document.createElement('p');
     destaque.className = 'cal-destaque-proximo';
     if (proximo) {
       destaque.innerHTML = '📅 <span class="cal-destaque-rotulo">Próximo pagamento</span> ' +
-        '<strong>' + proximo.dia + ' de ' + mesNome + '</strong>' +
+        '<strong>' + proximo.dia + ' de ' + nomeMes + '</strong>' +
         ' <span class="cal-destaque-itens">' + proximo.resumo + '</span>';
     } else {
-      destaque.innerHTML = '✅ Os pagamentos de ' + mesNome + ' já foram todos processados. ' +
+      destaque.innerHTML = '✅ Os pagamentos de ' + nomeMes + ' já foram todos processados. ' +
         'Vê abaixo o calendário do mês seguinte, quando disponível.';
     }
     caixa.insertBefore(destaque, caixa.firstChild);

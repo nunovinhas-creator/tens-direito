@@ -474,8 +474,55 @@ def _bloco_degradado(dados: dict, ano: int, mes: int) -> str:
     )
 
 
+def _bloco_corrente(m: dict) -> str:
+    """Topo do mês: destaque, tabela do mês e 'Quando recebo'."""
+    ano, mes = m["ano"], m["mes"]
+    return (
+        f'<div id="cal-corrente" data-mes="{ano}-{mes:02d}">\n'
+        f"{_destaque_topo(m)}\n"
+        f'  <h2 id="mes-corrente">Calendário de {html.escape(nome_mes(ano, mes))}</h2>\n'
+        f"{_tabela_mes(m)}\n"
+        f"{_seccao_por_prestacao(m)}\n"
+        "</div>"
+    )
+
+
+def _nota_proximo_mes(ano: int, mes: int) -> str:
+    return (
+        '<p class="cal-proximo-mes">O calendário de '
+        + html.escape(nome_mes(ano, mes))
+        + " ainda não foi confirmado na fonte oficial — é publicado aqui assim que a"
+        " Segurança Social o divulgar.</p>"
+    )
+
+
+def _vista_mes_seguinte(dados: dict, seguinte: dict) -> str:
+    """Topo completo do mês seguinte, num <template> inerte.
+
+    O script de runtime da página troca o topo por este bloco quando o mês
+    de hoje em Europe/Lisbon já é o mês seguinte — sem esperar que o
+    workflow mensal regenere o HTML (#280). O conteúdo de um <template> não
+    faz parte do documento: as âncoras (#pensoes, #rsi, ...) nunca ficam
+    duplicadas, nem para o Google nem para leitores de ecrã.
+    """
+    ano, mes = seguinte["ano"], seguinte["mes"]
+    conteudo = _bloco_corrente(seguinte)
+    ano_d, mes_d = _mes_seguinte(ano, mes)
+    if not _encontrar_mes(dados, ano_d, mes_d):
+        conteudo += "\n" + _nota_proximo_mes(ano_d, mes_d)
+    return f'<template id="cal-vista-{ano}-{mes:02d}">\n{conteudo}\n</template>'
+
+
+def _data_pt(iso: str) -> str:
+    try:
+        return dt.date.fromisoformat(iso).strftime("%d/%m/%Y")
+    except (TypeError, ValueError):
+        return iso or ""
+
+
 def render_corpo(dados: dict, hoje: dt.date) -> str:
-    """Zona CAL:CORPO — mês corrente (ou estado degradado) + mês seguinte."""
+    """Zona CAL:CORPO — mês corrente (ou estado degradado) + mês seguinte,
+    este também em <template> para a troca do lado do cliente."""
     ano_a, mes_a = hoje.year, hoje.month
     ano_s, mes_s = _mes_seguinte(ano_a, mes_a)
     atual = _encontrar_mes(dados, ano_a, mes_a)
@@ -483,14 +530,7 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
 
     blocos: list[str] = []
     if atual:
-        blocos.append(
-            f'<div id="cal-corrente" data-mes="{ano_a}-{mes_a:02d}">\n'
-            f"{_destaque_topo(atual)}\n"
-            f'  <h2 id="mes-corrente">Calendário de {html.escape(nome_mes(ano_a, mes_a))}</h2>\n'
-            f"{_tabela_mes(atual)}\n"
-            f"{_seccao_por_prestacao(atual)}\n"
-            "</div>"
-        )
+        blocos.append(_bloco_corrente(atual))
     else:
         blocos.append(_bloco_degradado(dados, ano_a, mes_a))
 
@@ -501,43 +541,42 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
             f"{_tabela_mes(seguinte)}\n"
             "</div>"
         )
+        blocos.append(_vista_mes_seguinte(dados, seguinte))
     elif atual:
-        blocos.append(
-            '<p class="cal-proximo-mes">O calendário de '
-            + html.escape(nome_mes(ano_s, mes_s))
-            + " ainda não foi confirmado na fonte oficial — é publicado aqui assim que a"
-            " Segurança Social o divulgar.</p>"
-        )
+        blocos.append(_nota_proximo_mes(ano_s, mes_s))
 
-    atualizado = html.escape(dados.get("atualizado_em", ""))
+    confirmado = html.escape(_data_pt(dados.get("atualizado_em", "")))
     fonte = html.escape(dados.get("fonte_url") or FONTE_OFICIAL_FALLBACK)
     blocos.append(
         '<p class="cal-fonte-inline">Fonte: <a href="'
         + fonte
-        + '" target="_blank" rel="noopener">Segurança Social</a> · dados verificados a '
-        + atualizado
+        + '" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a '
+        + confirmado
         + "</p>"
     )
     return "\n\n".join(blocos)
 
 
 def render_home(dados: dict, hoje: dt.date) -> str:
-    """Zona CAL-HOME do index.html: dados do mês corrente para a barra fixa
-    'Próximo pagamento' da homepage.
+    """Zona CAL-HOME do index.html: dados para a barra fixa 'Próximo
+    pagamento' da homepage, por mês — {"AAAA-MM": [{dia, resumo}, ...]} —
+    com o mês corrente e o seguinte, quando existem no JSON.
 
-    Sem mês corrente no JSON, data-mes fica vazio e a lista vazia — a barra
-    mantém o rótulo genérico ('Calendário de pagamentos SS'), nunca uma data
-    velha (mesma honestidade do estado degradado da página). O script de
-    runtime da homepage só promove a próxima data quando este data-mes é
-    igual ao mês corrente do visitante.
+    O script de runtime da homepage escolhe a entrada do mês de hoje em
+    Europe/Lisbon; sem entrada para esse mês, a barra mantém o rótulo
+    genérico ('Calendário de pagamentos SS'), nunca uma data velha. Assim a
+    barra vira de mês à meia-noite de Lisboa, sem esperar pelo workflow
+    mensal (#280). data-mes continua a ser o mês corrente do gerador ('' sem
+    mês corrente no JSON — mesma honestidade do estado degradado da página).
     """
     atual = _encontrar_mes(dados, hoje.year, hoje.month)
-    if atual:
-        data_mes = f"{hoje.year}-{hoje.month:02d}"
-        dados_json = json.dumps(_dados_js(atual), ensure_ascii=False)
-    else:
-        data_mes = ""
-        dados_json = "[]"
+    ano_s, mes_s = _mes_seguinte(hoje.year, hoje.month)
+    seguinte = _encontrar_mes(dados, ano_s, mes_s)
+    por_mes = {
+        f'{m["ano"]}-{m["mes"]:02d}': _dados_js(m) for m in (atual, seguinte) if m
+    }
+    data_mes = f"{hoje.year}-{hoje.month:02d}" if atual else ""
+    dados_json = json.dumps(por_mes, ensure_ascii=False)
     return (
         f'    <script id="cal-home-dados" type="application/json" '
         f'data-mes="{data_mes}">{dados_json}</script>'

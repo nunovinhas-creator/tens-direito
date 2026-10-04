@@ -39,7 +39,9 @@ from atualizar_calendario import (  # noqa: E402
     atualizar_pagina,
     carregar_dados,
     hoje_lisboa,
+    injetar_zona,
     render_corpo,
+    render_home,
     render_meta,
     validar_dados,
 )
@@ -57,36 +59,122 @@ def _mes_renderizado() -> str | None:
     return m.group(1) if m else None
 
 
-def test_canario_pagina_nunca_mostra_mes_passado_como_corrente():
-    mes = _mes_renderizado()
-    assert mes is not None, (
-        "não encontrei #cal-corrente[data-mes] na página — a zona CAL:CORPO "
-        "foi apagada ou o formato mudou sem actualizar este canário"
-    )
+# O topo estático pode ficar no mês anterior até este dia (inclusive) de
+# Lisboa, se a página já trouxer o mês novo em <template> — o JS vira o topo
+# à meia-noite de Lisboa; o workflow mensal regenera o HTML depois (o cron
+# do dia 1 chega a correr com horas de atraso, #280). Passado este dia, um
+# topo velho é sinal de workflow parado: vermelho.
+DIA_LIMITE_TOPO_ESTATICO = 3
+
+
+def _mes_anterior(ano: int, mes: int) -> str:
+    return f"{ano - 1}-12" if mes == 1 else f"{ano}-{mes - 1:02d}"
+
+
+def erro_de_frescura(html_pagina: str, hoje: dt.date) -> str | None:
+    """None se a página mostra (ou o JS mostra) o mês de `hoje`; senão o
+    motivo. Pura — testada directamente com datas fixas."""
+    m = re.search(r'id="cal-corrente" data-mes="(\d{4}-\d{2}|)"', html_pagina)
+    if not m:
+        return ("não encontrei #cal-corrente[data-mes] na página — a zona CAL:CORPO "
+                "foi apagada ou o formato mudou sem actualizar este canário")
+    mes = m.group(1)
     if mes == "":
         # Estado degradado: honesto e explícito por construção, nunca falha.
-        assert "cal-degradado" in HTML
-        return
-    hoje = hoje_lisboa()
+        return None if "cal-degradado" in html_pagina else "estado degradado sem .cal-degradado"
     corrente = f"{hoje.year}-{hoje.month:02d}"
-    assert mes >= corrente, (
-        f"A página mostra {mes} como mês corrente mas já estamos em {corrente} — "
-        "correr o workflow mensal / scripts/atualizar_calendario.py com dados novos "
-        "da fonte oficial (ver docs/FONTE-CALENDARIO.md). Este vermelho é deliberado."
+    if mes >= corrente:
+        return None
+    if (mes == _mes_anterior(hoje.year, hoje.month)
+            and f'id="cal-vista-{corrente}"' in html_pagina
+            and hoje.day <= DIA_LIMITE_TOPO_ESTATICO):
+        return None
+    return (
+        f"A página tem {mes} no topo estático e já estamos em {corrente} "
+        f"(dia {hoje.day} de Lisboa) — o workflow mensal não regenerou o HTML. "
+        f"Até ao dia {DIA_LIMITE_TOPO_ESTATICO} basta haver <template id=\"cal-vista-{corrente}\">; "
+        "a partir daí é preciso correr o workflow mensal / scripts/atualizar_calendario.py "
+        "(ver docs/FONTE-CALENDARIO.md). Este vermelho é deliberado."
     )
+
+
+def test_canario_pagina_nunca_mostra_mes_passado_como_corrente():
+    erro = erro_de_frescura(HTML, hoje_lisboa())
+    assert erro is None, erro
+
+
+_SET = '<div id="cal-corrente" data-mes="2026-09">'
+_VISTA_OUT = '<template id="cal-vista-2026-10">'
+
+
+@pytest.mark.parametrize("html_pagina, hoje, passa", [
+    (_SET + _VISTA_OUT, dt.date(2026, 9, 30), True),
+    (_SET + _VISTA_OUT, dt.date(2026, 10, 1), True),
+    (_SET + _VISTA_OUT, dt.date(2026, 10, 3), True),
+    (_SET + _VISTA_OUT, dt.date(2026, 10, 4), False),   # workflow parado
+    (_SET, dt.date(2026, 10, 1), False),                # sem dados de outubro
+    ('<div id="cal-corrente" data-mes="2026-08">' + '<template id="cal-vista-2026-09">',
+     dt.date(2026, 10, 1), False),                      # dois meses atrás
+    ('<div id="cal-corrente" data-mes="2026-12">' + '<template id="cal-vista-2027-01">',
+     dt.date(2027, 1, 2), True),                        # viragem de ano
+    ('<div id="cal-corrente" data-mes="" class="cal-degradado">', dt.date(2026, 10, 9), True),
+])
+def test_erro_de_frescura_limite_do_dia_3(html_pagina, hoje, passa):
+    assert (erro_de_frescura(html_pagina, hoje) is None) is passa
+
+
+def _hoje_do_gerador() -> dt.date:
+    """Data com que o gerador produziu a página publicada: o render só
+    depende do mês, por isso o dia 1 do mês do topo estático. Em estado
+    degradado, hoje em Lisboa."""
+    mes = _mes_renderizado()
+    if not mes:
+        return hoje_lisboa()
+    ano, m = mes.split("-")
+    return dt.date(int(ano), int(m), 1)
 
 
 def test_pagina_esta_sincronizada_com_os_dados_e_script_e_idempotente():
     """O ficheiro publicado tem de ser exactamente o que o script geraria
-    hoje — apanha tanto uma edição manual dentro das zonas CAL:* como um
-    JSON actualizado sem a injecção ter corrido."""
+    para o mês do topo — apanha tanto uma edição manual dentro das zonas
+    CAL:* como um JSON actualizado sem a injecção ter corrido. A frescura
+    (o mês do topo ser o de hoje) é o canário acima."""
     dados = carregar_dados()
     assert validar_dados(dados) == []
-    mudou = atualizar_pagina(dados, hoje_lisboa(), escrever=False)
+    mudou = atualizar_pagina(dados, _hoje_do_gerador(), escrever=False)
     assert not mudou, (
         "scripts/atualizar_calendario.py produziria conteúdo diferente do "
         "publicado — correr o script e commitar o resultado"
     )
+
+
+def test_vista_do_mes_seguinte_presente_quando_ha_dados():
+    """Com o mês seguinte no JSON, a página traz o topo completo desse mês
+    num <template> — é ele que o JS usa para virar à meia-noite de Lisboa."""
+    mes = _mes_renderizado()
+    if not mes:
+        pytest.skip("estado degradado")
+    ano, m = (int(x) for x in mes.split("-"))
+    ano_s, mes_s = (ano + 1, 1) if m == 12 else (ano, m + 1)
+    if _encontrar_mes(carregar_dados(), ano_s, mes_s) is None:
+        # Só uma <template> real conta — o comentário do JS cita o padrão
+        # literal "cal-vista-AAAA-MM", que nunca é uma vista do mês.
+        assert not re.search(r'<template id="cal-vista-\d{4}-\d{2}">', HTML)
+        return
+    vista = re.search(rf'<template id="cal-vista-{ano_s}-{mes_s:02d}">([\s\S]*?)</template>', HTML)
+    assert vista, "template do mês seguinte em falta"
+    corpo = vista.group(1)
+    assert f'id="cal-corrente" data-mes="{ano_s}-{mes_s:02d}"' in corpo
+    for anchor in ANCORAS_SPEC:
+        assert f'id="{anchor}"' in corpo
+
+
+def test_linha_dos_dados_em_dd_mm_aaaa_sem_verificado():
+    m = re.search(r'<p class="cal-fonte-inline">(.*?)</p>', HTML, re.S)
+    assert m
+    linha = m.group(1)
+    assert re.search(r"Datas confirmadas na Segurança Social a \d{2}/\d{2}/\d{4}$", linha), linha
+    assert "verificad" not in linha.lower()
 
 
 # ── dados reais ────────────────────────────────────────────────────────────
@@ -334,9 +422,8 @@ def test_cal_dados_json_valido_e_coerente_com_o_json_de_dados():
     assert m, "#cal-dados em falta"
     itens = _json.loads(m.group(1))
     assert itens and all("dia" in it and "resumo" in it for it in itens)
-    dados = carregar_dados()
-    hoje = hoje_lisboa()
-    atual = _encontrar_mes(dados, hoje.year, hoje.month)
+    hoje = _hoje_do_gerador()
+    atual = _encontrar_mes(carregar_dados(), hoje.year, hoje.month)
     dias_esperados = sorted(p["dia"] for p in atual["pagamentos"])
     assert [it["dia"] for it in itens] == dias_esperados, (
         "os dias de #cal-dados não batem com o JSON de dados — o destaque "
@@ -353,12 +440,25 @@ def test_homepage_tem_marcadores_e_dados_da_barra_do_calendario():
     assert 'id="cal-home-dados"' in INDEX_HTML
 
 
+def _cal_home() -> tuple[str, dict]:
+    import json as _json
+    m = re.search(
+        r'<script id="cal-home-dados" type="application/json" data-mes="(\d{4}-\d{2}|)">(.*?)</script>',
+        INDEX_HTML, re.S)
+    assert m, "#cal-home-dados em falta na homepage"
+    return m.group(1), _json.loads(m.group(2))
+
+
 def test_homepage_barra_sincronizada_com_os_dados_e_idempotente():
     """A zona CAL-HOME publicada tem de ser exactamente o que o injector
-    geraria hoje — apanha um JSON actualizado sem a injecção ter corrido."""
+    geraria para o mês com que foi gerada — apanha um JSON actualizado sem
+    a injecção ter corrido."""
     dados = carregar_dados()
     assert validar_dados(dados) == []
-    mudou = atualizar_homepage(dados, hoje_lisboa(), escrever=False)
+    data_mes, _ = _cal_home()
+    hoje = (dt.date(int(data_mes[:4]), int(data_mes[5:]), 1) if data_mes
+            else hoje_lisboa())
+    mudou = atualizar_homepage(dados, hoje, escrever=False)
     assert not mudou, (
         "scripts/atualizar_calendario.py produziria uma barra CAL-HOME diferente "
         "da publicada em index.html — correr o script e commitar o resultado"
@@ -366,25 +466,26 @@ def test_homepage_barra_sincronizada_com_os_dados_e_idempotente():
 
 
 def test_homepage_cal_home_dados_coerente_com_o_json_e_mes_corrente():
-    import json as _json
-    m = re.search(
-        r'<script id="cal-home-dados" type="application/json" data-mes="(\d{4}-\d{2}|)">(.*?)</script>',
-        INDEX_HTML, re.S)
-    assert m, "#cal-home-dados em falta na homepage"
-    data_mes, payload = m.group(1), m.group(2)
-    itens = _json.loads(payload)
-    hoje = hoje_lisboa()
-    atual = _encontrar_mes(carregar_dados(), hoje.year, hoje.month)
-    if atual is None:
-        # sem mês corrente no JSON: barra degrada — data-mes vazio, sem dias.
-        assert data_mes == "" and itens == []
+    data_mes, por_mes = _cal_home()
+    assert isinstance(por_mes, dict), "#cal-home-dados tem de ser {AAAA-MM: [...]}"
+    dados = carregar_dados()
+    if data_mes == "":
+        # sem mês corrente no JSON quando foi gerada: nunca uma data velha.
+        assert all(k > f"{hoje_lisboa():%Y-%m}" for k in por_mes)
         return
-    assert data_mes == f"{hoje.year}-{hoje.month:02d}"
-    dias_esperados = sorted(p["dia"] for p in atual["pagamentos"])
-    assert [it["dia"] for it in itens] == dias_esperados, (
-        "os dias de #cal-home-dados não batem com o JSON de dados"
-    )
-    assert all("dia" in it and "resumo" in it for it in itens)
+    assert data_mes in por_mes
+    hoje = hoje_lisboa()
+    corrente = f"{hoje.year}-{hoje.month:02d}"
+    # o mesmo canário da página: o mês de hoje tem de estar nos dados da barra
+    # (no topo ou como mês seguinte, até ao dia limite).
+    assert data_mes >= corrente or (
+        corrente in por_mes and hoje.day <= DIA_LIMITE_TOPO_ESTATICO
+    ), f"barra da homepage gerada para {data_mes} e já estamos em {corrente}"
+    for chave, itens in por_mes.items():
+        mes = _encontrar_mes(dados, int(chave[:4]), int(chave[5:]))
+        assert mes is not None, f"{chave} na barra mas não no JSON de dados"
+        assert [it["dia"] for it in itens] == sorted(p["dia"] for p in mes["pagamentos"])
+        assert all("dia" in it and "resumo" in it for it in itens)
 
 
 # ── Fase 4: Playwright mobile 375px (Chromium real, nunca file://) ────────
@@ -413,12 +514,64 @@ PAGINA_URL = "/calendario-pagamentos-seguranca-social.html"
 PAGINA_VELHA_URL = "/_calendario_mes_velho_teste.html"
 INDEX_URL = "/index.html"
 INDEX_VELHO_URL = "/_index_mes_velho_teste.html"
+# Páginas geradas em memória com dados fixos (nunca escritas no repositório),
+# para os testes de relógio fixo da viragem de mês.
+PAGINA_SET_OUT_URL = "/_calendario_set_out_teste.html"
+PAGINA_SO_SET_URL = "/_calendario_so_set_teste.html"
+INDEX_SET_OUT_URL = "/_index_set_out_teste.html"
+INDEX_SO_SET_URL = "/_index_so_set_teste.html"
+
+
+def _pagamento(dia: int, *slugs: str) -> dict:
+    return {"dia": dia, "prestacoes": list(slugs), "metodo": ["transferencia_bancaria"]}
+
+
+_FIX_SET = {"ano": 2026, "mes": 9, "pagamentos": [
+    _pagamento(3, "pensoes"), _pagamento(16, "prestacoes_familiares"), _pagamento(30, "rsi")]}
+_FIX_OUT = {"ano": 2026, "mes": 10, "pagamentos": [
+    _pagamento(2, "pensoes"), _pagamento(16, "prestacoes_familiares"), _pagamento(23, "rsi")]}
+_FONTE_FIX = "https://www.seg-social.pt/ptss/pssd/pagamentos"
+DADOS_SET_OUT = {"atualizado_em": "2026-09-25", "fonte_url": _FONTE_FIX, "meses": [_FIX_SET, _FIX_OUT]}
+DADOS_SO_SET = {"atualizado_em": "2026-08-25", "fonte_url": _FONTE_FIX, "meses": [_FIX_SET]}
+_GERADO_A = dt.date(2026, 9, 25)
+
+
+def _pagina_gerada(dados: dict) -> str:
+    return injetar_zona(HTML, "CORPO", render_corpo(dados, _GERADO_A))
+
+
+def _index_gerado(dados: dict) -> str:
+    return re.sub(r"<!-- CAL-HOME:INICIO -->[\s\S]*?<!-- CAL-HOME:FIM -->",
+                  lambda _: "<!-- CAL-HOME:INICIO -->\n" + render_home(dados, _GERADO_A)
+                  + "\n<!-- CAL-HOME:FIM -->", INDEX_HTML)
+
+
+def _pagina_velha() -> str:
+    sem_vistas = re.sub(r'<template id="cal-vista-[\s\S]*?</template>', "", HTML)
+    return re.sub(r'(id="cal-(?:corrente|destaque)" data-mes=")\d{4}-\d{2}"',
+                  r'\g<1>2000-01"', sem_vistas)
+
+
+def _index_velho() -> str:
+    def _adulterar(m):
+        return re.sub(r'"\d{4}-\d{2}"', '"2000-01"', m.group(0))
+    return re.sub(r'<script id="cal-home-dados"[\s\S]*?</script>', _adulterar, INDEX_HTML)
+
+
+_ROTAS_TESTE = {
+    PAGINA_VELHA_URL: _pagina_velha,
+    INDEX_VELHO_URL: _index_velho,
+    PAGINA_SET_OUT_URL: lambda: _pagina_gerada(DADOS_SET_OUT),
+    PAGINA_SO_SET_URL: lambda: _pagina_gerada(DADOS_SO_SET),
+    INDEX_SET_OUT_URL: lambda: _index_gerado(DADOS_SET_OUT),
+    INDEX_SO_SET_URL: lambda: _index_gerado(DADOS_SO_SET),
+}
 
 
 class _Handler(http.server.SimpleHTTPRequestHandler):
-    """Serve o repositório real; os caminhos especiais de teste devolvem a
-    página / a homepage com data-mes adulterado para um mês passado — só em
-    memória, nunca um ficheiro escrito no repositório."""
+    """Serve o repositório real; os caminhos especiais de teste devolvem
+    variantes da página / da homepage geradas em memória — nunca um ficheiro
+    escrito no repositório."""
 
     def _servir(self, corpo: bytes):
         self.send_response(200)
@@ -428,17 +581,9 @@ class _Handler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(corpo)
 
     def do_GET(self):  # noqa: N802 (API do http.server)
-        if self.path == PAGINA_VELHA_URL:
-            self._servir(HTML.replace(
-                re.search(r'data-mes="\d{4}-\d{2}"', HTML).group(0),
-                'data-mes="2000-01"',
-            ).encode("utf-8"))
-            return
-        if self.path == INDEX_VELHO_URL:
-            self._servir(re.sub(
-                r'(id="cal-home-dados"[^>]*data-mes=")\d{4}-\d{2}(")',
-                r'\g<1>2000-01\g<2>', INDEX_HTML,
-            ).encode("utf-8"))
+        rota = _ROTAS_TESTE.get(self.path)
+        if rota:
+            self._servir(rota().encode("utf-8"))
             return
         super().do_GET()
 
@@ -505,13 +650,21 @@ class TestMobilePlaywright:
     def test_destaque_promove_proximo_pagamento_no_mes_corrente(self, servidor):
         if _mes_renderizado() == "":
             pytest.skip("estado degradado — sem destaque")
-        hoje = dt.date.today()
-        if _mes_renderizado() != f"{hoje.year}-{hoje.month:02d}":
-            pytest.skip("página não é do mês corrente hoje (o canário de frescura cobre isso)")
+        hoje = hoje_lisboa()
+        corrente = f"{hoje.year}-{hoje.month:02d}"
+        if _mes_renderizado() == corrente:
+            fonte = HTML
+        else:
+            # topo estático do mês anterior: o JS troca-o pelo template do mês
+            # de Lisboa (entre o dia 1 e a corrida do workflow mensal)
+            vista = re.search(rf'<template id="cal-vista-{corrente}">([\s\S]*?)</template>', HTML)
+            if vista is None:
+                pytest.skip("página sem o mês corrente (o canário de frescura cobre isso)")
+            fonte = vista.group(1)
         import json as _json
         itens = _json.loads(re.search(
             r'<script id="cal-dados" type="application/json">(.*?)</script>',
-            HTML, re.S).group(1))
+            fonte, re.S).group(1))
         dias = sorted(it["dia"] for it in itens)
         futuros = [d for d in dias if d >= hoje.day]
         with sync_playwright() as pw:
@@ -546,18 +699,14 @@ class TestMobilePlaywright:
             browser.close()
 
     def test_barra_homepage_promove_proximo_pagamento_no_mes_corrente(self, servidor):
-        """A barra fixa da homepage promove a próxima data a contar de hoje,
-        SÓ quando os dados (#cal-home-dados[data-mes]) são do mês corrente."""
-        import json as _json
-        m = re.search(
-            r'<script id="cal-home-dados"[^>]*data-mes="(\d{4}-\d{2}|)">(.*?)</script>',
-            INDEX_HTML, re.S)
-        assert m, "#cal-home-dados em falta"
-        data_mes, payload = m.group(1), m.group(2)
-        hoje = dt.date.today()
-        if data_mes != f"{hoje.year}-{hoje.month:02d}":
-            pytest.skip("barra da homepage não é do mês corrente hoje")
-        dias = sorted(it["dia"] for it in _json.loads(payload))
+        """A barra fixa da homepage promove a próxima data a contar de hoje
+        (Lisboa), a partir da entrada do mês corrente em #cal-home-dados."""
+        _, por_mes = _cal_home()
+        hoje = hoje_lisboa()
+        itens = por_mes.get(f"{hoje.year}-{hoje.month:02d}")
+        if not itens:
+            pytest.skip("barra da homepage sem dados do mês corrente hoje")
+        dias = sorted(it["dia"] for it in itens)
         futuros = [d for d in dias if d >= hoje.day]
         with sync_playwright() as pw:
             browser = pw.chromium.launch(executable_path=_localizar_chromium())
@@ -584,5 +733,98 @@ class TestMobilePlaywright:
             texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
             assert "Próximo pagamento" not in texto, (
                 f"barra promoveu uma data num mês velho: {texto!r}")
+            assert "Calendário de pagamentos" in texto
+            browser.close()
+
+
+# ── Viragem de mês do lado do cliente, com relógio fixo (#280) ─────────────
+
+
+def _abrir(pw, url, *, instante, fuso):
+    """Página com o relógio fixo em `instante` (UTC) e o aparelho em `fuso`."""
+    browser = pw.chromium.launch(executable_path=_localizar_chromium())
+    contexto = browser.new_context(viewport={"width": 375, "height": 800}, timezone_id=fuso)
+    page = contexto.new_page()
+    erros: list[str] = []
+    page.on("pageerror", lambda e: erros.append(str(e)))
+    page.clock.set_fixed_time(dt.datetime.fromisoformat(instante))
+    page.goto(url)
+    page.wait_for_load_state("networkidle")
+    return browser, page, erros
+
+
+@pytest.mark.skipif(not _PLAYWRIGHT_DISPONIVEL,
+                    reason="Playwright/Chromium indisponível neste ambiente")
+class TestViragemDeMesLisboa:
+    def _topo_e_outubro(self, page, erros):
+        assert page.get_attribute("#cal-corrente", "data-mes") == "2026-10"
+        assert "outubro" in page.locator("#mes-corrente").inner_text()
+        assert "Datas de pagamento em outubro" in page.locator(".cal-destaque-linha").inner_text()
+        assert "Data em outubro" in page.locator(".cal-tabela-prestacoes thead").text_content()
+        assert page.locator("#cal-aviso-desatualizado").is_hidden()
+        assert page.locator("#cal-seguinte").count() == 0, "outubro ficou duplicado em baixo"
+        assert "novembro de 2026 ainda não foi confirmado" in page.locator(".cal-proximo-mes").inner_text()
+        assert "2 de outubro" in page.locator(".cal-destaque-proximo").inner_text()
+        for anchor in ANCORAS_SPEC:
+            assert page.locator(f"#{anchor}").count() == 1, f"âncora #{anchor}"
+        assert erros == [], f"erros JS: {erros}"
+
+    def test_vira_a_meia_noite_de_lisboa(self, servidor):
+        # 23:30 UTC de 30/09 = 00:30 de 1/10 em Lisboa (horário de verão)
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + PAGINA_SET_OUT_URL,
+                                          instante="2026-09-30T23:30:00+00:00", fuso="UTC")
+            self._topo_e_outubro(page, erros)
+            browser.close()
+
+    def test_aparelho_atrasado_vira_com_lisboa(self, servidor):
+        # 01:30 UTC de 1/10: 02:30 em Lisboa, ainda 22:30 de 30/09 em São Paulo
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + PAGINA_SET_OUT_URL,
+                                          instante="2026-10-01T01:30:00+00:00",
+                                          fuso="America/Sao_Paulo")
+            self._topo_e_outubro(page, erros)
+            browser.close()
+
+    def test_aparelho_adiantado_nao_vira_antes_de_lisboa(self, servidor):
+        # 22:30 UTC de 30/09: 23:30 em Lisboa, já 12:30 de 1/10 em Kiritimati
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + PAGINA_SET_OUT_URL,
+                                          instante="2026-09-30T22:30:00+00:00",
+                                          fuso="Pacific/Kiritimati")
+            assert page.get_attribute("#cal-corrente", "data-mes") == "2026-09"
+            assert page.locator("#cal-aviso-desatualizado").is_hidden()
+            assert page.locator("#cal-seguinte").count() == 1
+            assert "30 de setembro" in page.locator(".cal-destaque-proximo").inner_text()
+            assert erros == [], f"erros JS: {erros}"
+            browser.close()
+
+    def test_sem_dados_do_mes_novo_mantem_topo_e_mostra_aviso(self, servidor):
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + PAGINA_SO_SET_URL,
+                                          instante="2026-10-01T09:00:00+00:00", fuso="UTC")
+            assert page.get_attribute("#cal-corrente", "data-mes") == "2026-09"
+            assert page.locator("#cal-aviso-desatualizado").is_visible()
+            assert page.locator("#cal-mes-actual-nome").inner_text() == "outubro de 2026"
+            assert page.locator(".cal-destaque-proximo").count() == 0
+            assert erros == [], f"erros JS: {erros}"
+            browser.close()
+
+    def test_barra_homepage_vira_a_meia_noite_de_lisboa(self, servidor):
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + INDEX_SET_OUT_URL,
+                                          instante="2026-09-30T23:30:00+00:00",
+                                          fuso="America/Sao_Paulo")
+            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            assert "Próximo pagamento" in texto and "2 de outubro" in texto, texto
+            assert erros == [], f"erros JS: {erros}"
+            browser.close()
+
+    def test_barra_homepage_sem_dados_do_mes_novo_fica_generica(self, servidor):
+        with sync_playwright() as pw:
+            browser, page, erros = _abrir(pw, servidor + INDEX_SO_SET_URL,
+                                          instante="2026-10-01T09:00:00+00:00", fuso="UTC")
+            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            assert "Próximo pagamento" not in texto, texto
             assert "Calendário de pagamentos" in texto
             browser.close()
