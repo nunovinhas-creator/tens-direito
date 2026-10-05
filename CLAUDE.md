@@ -688,6 +688,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `"Verificado a [data]"` visível no corpo da página
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
 - [ ] `sitemap.xml` actualizado se nova página
+- [ ] Avançaste um `dateModified` ou um "Verificado a" (ou criaste uma página)? Correr `python scripts/sincronizar_sitemap_lastmod.py --write` no mesmo commit — `tests/test_sitemap_lastmod.py` falha se o `<lastmod>` do sitemap divergir da data da página (ver "SITEMAP — LASTMOD")
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
 - [ ] Página nova com carimbo "Verificado a … pela redação do Tens Direito"? Correr `python scripts/inserir_reportar_erro.py --write` (idempotente — insere o link "Reportar um erro nesta página" → `/sobre.html#contacto` logo a seguir ao carimbo, entre `<!-- REPORTAR-ERRO:INICIO/FIM -->`; `tests/test_reportar_erro.py` falha se faltar)
@@ -786,6 +787,7 @@ tens-direito/
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
 │   ├── inserir_reportar_erro.py ← link "Reportar um erro nesta página" a seguir ao carimbo canónico (idempotente)
+│   ├── sincronizar_sitemap_lastmod.py ← <lastmod> do sitemap = dateModified/"Verificado a" de cada página (idempotente, --check)
 │   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas páginas do site (idempotente)
 │   ├── adicionar_og_image.py ← bootstrap: insere o bloco og:image em páginas novas (idempotente)
 │   ├── gerar_og_images.py    ← gera assets/img/og/<slug>.jpg por página (Chromium real, manifest, idempotente)
@@ -3825,6 +3827,34 @@ a" real em todas as 14 páginas que o têm (verificado com
 `extrair_verificado_em()`, a mesma função que `sincronizar_clusters.py`
 já usa — nunca recalculado à parte). **O sitemap já estava correcto
 antes desta sessão** — não houve nada para corrigir neste passo.
+
+### SITEMAP — LASTMOD (2026-10-05)
+
+`<lastmod>` de cada URL = data da própria página: `dateModified` do JSON-LD
+ou, sem ele, o último "Verificado a" (`extrair_verificado_em()`). Gerado por
+`scripts/sincronizar_sitemap_lastmod.py --write` (idempotente; `--check`),
+nunca à mão. **Quem avança um carimbo corre o script no mesmo commit.**
+`tests/test_sitemap_lastmod.py` falha se um `<lastmod>` faltar ou divergir
+da data da página. Excepções nominais (`EXCECOES_SEM_LASTMOD`, motivo por
+página): `index.html`/`noticias.html` (alteradas todos os dias pelo
+pipeline, que não escreve no sitemap) e `comecar-aqui.html`/`sobre.html`/
+`privacidade.html`/`acessibilidade.html` (institucionais, sem data
+editorial); uma excepção órfã (institucional que ganhe data, página que o
+pipeline deixe de escrever, ou fora do sitemap) faz o teste falhar.
+
+O mesmo teste vigia os três caminhos por onde uma data podia mudar sem o
+sitemap acompanhar: (1) qualquer `.yml` em `.github/workflows` que escreva
+`dateModified`/"Verificado a" numa página fora das excepções; (2) qualquer
+script corrido por um workflow que mencione essas datas (só
+`verificar_datas.py`, que as lê, está em `SCRIPTS_SO_LEEM_DATAS`); (3)
+**revalidação de carimbo**: `auto_update_engine.aplicar_refresh_carimbo`
+avança "Verificado a" e `dateModified` — no dia em que
+`REVALIDACAO_CARIMBO_HABILITADA` (ou `AUTO_UPDATE_HABILITADO`) passar a
+`True`, o workflow que aplica o refresh tem de correr
+`sincronizar_sitemap_lastmod.py --write` no mesmo commit e incluir
+`sitemap.xml` no seu guardrail, senão o teste fica vermelho. Os três foram
+provados a falhar. `verificador-apoios.html` (só redireccionamento) é
+`noindex, follow`.
 
 ### Passo 2 — canónicas (a causa técnica real encontrada)
 
