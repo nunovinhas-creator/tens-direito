@@ -36,7 +36,8 @@ main p a,
 .nota-tabela a,
 .destaque-verde a,
 .zona-cinzenta a,
-.resumo-rapido a {
+.resumo-rapido a,
+a.reportar-erro {
   text-decoration: underline;
   text-underline-offset: 2px;
 }

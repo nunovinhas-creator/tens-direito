@@ -7090,6 +7090,17 @@ link "ver todos os guias" (`/#guias-de-apoios`) na caixa do topo e no
 `<noscript>`, `calc-apoios.js` com `defer`; cabeçalhos "Regra"/"Nesta via"
 na tabela das condições de reforma.
 
+
+Última revisão: 2026-10-05 — contacto e "Reportar um erro". `sobre.html`:
+sem JavaScript, o email ofuscado mostra "contacto (arroba) tensdireito
+(ponto) com" na própria frase (saem o "a carregar contacto…" e os dois
+`<noscript>`); com JavaScript, o link mailto como antes. Novo
+`scripts/inserir_reportar_erro.py` (idempotente) põe "· Reportar um erro
+nesta página" (→ `/sobre.html#contacto`) logo a seguir ao carimbo canónico
+em todas as páginas que o têm (100: guias, pillars, simuladores, minutas,
+hubs); sublinhado via `a.reportar-erro` em `nav.css`. Teste:
+`tests/test_reportar_erro.py`.
+
 ---
 
 *Última revisão automática: 2026-10-05*
