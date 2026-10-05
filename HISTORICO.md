@@ -7092,4 +7092,4 @@ na tabela das condições de reforma.
 
 ---
 
-*Última revisão automática: 2026-10-04*
+*Última revisão automática: 2026-10-05*

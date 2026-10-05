@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-10-01",
+      "titulo": "Trabalhadores mais velhos, mulheres e estrangeiros pesam mais no subsídio de desemprego",
+      "fonte_nome": "Observador",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPUFhjcmxTa280THBOcUhrclpsUmY1RVRaUmRGZ0M4Q1FCQUg0bUg4TThKZGRrSTI5UHlMZm5IckQyLUdIQVpwNG9oeFZ4cFlNMHBOQzJyMzJtMWhMWDREU3lQdHdRckdTNFlQdUU1Z3dkeFNDZV9mSU9RN2xLUDlaSC1wdmEtNkIyR29ia25BSGNyTlFqT0ZrQjNuMUZ0VHNyLUduV2VEb05CWjVFWUQ0Vkp5VXFlUnJ3dmlHXw?oc=5",
+      "resumo": "Trabalhadores mais velhos, mulheres e estrangeiros pesam mais no subsídio de desemprego Observador",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
       "titulo": "Subsídio de desemprego passou a valer menos face ao salário. Vale agora 64%",
       "fonte_nome": "Jornal de Negócios",
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNRHNjOFZPQmlvNmgyLXN2VlZvZXY4NHdQSUFGNzhCa080UmhleUFLaEs0VjhJR3VjVmdBeEJ6NmVWalZyN1dzeDVhdTM0WFRKMllUem5KelpGNnFNVV9MTU1iVGJLRVdQX0R1cVdDcmpEUDNkYUc5Tk4yVTFlVE81dERsWDM1VFdOaW1hdVhMbjlMMGwzUXRGYjA0VVpKVFJQOE5EcndjMFJHMC1US2VFaHJhM2p5UFR1NlgxcDVfRzlPZjdkWm9UUUw0Z1UxR09Mcml3QVJ3?oc=5",
@@ -35,6 +44,15 @@
       "resumo": "Recebe subsídios ou pensões? Confira as datas de pagamento de outubro Notícias ao Minuto",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Governo aumenta Complemento Solidário para Idosos em 50 euros",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPbGJ4NDJXY0tGaU1ld2dvWEtwdjJQZ0FFdkd4RFota3FaWDI5RmpNZ24xVl95U1hCN3FxZ01CR2lmc1hxS0RhbUt5YTlCQ2JIeHB1SFRWYXhxeWp4dDQtN2I2YXVBMTdsU1Rnd1dMcWUzYXkyZENsUWxFZEhXZkdWZFM5WDFrRVBxSmkteUNrRm5FUk00R1d6enZ3VnVjR0tYNnc?oc=5",
+      "resumo": "Governo aumenta Complemento Solidário para Idosos em 50 euros ECO",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
     },
     {
       "data_iso": "2026-10-01",
