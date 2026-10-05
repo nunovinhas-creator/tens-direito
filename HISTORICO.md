@@ -7053,6 +7053,14 @@ passa a "o dia de pagamento muda", e sai "Conta-corrente → Pagamentos".
 Carimbo e `dateModified` a 04/10/2026. O item do
 `garantir_deploy_pages.sh` (`conclusion=null` não é falha) já estava em
 `main` (#292).
+Mesma redacção aplicada ao resto da página do calendário (FAQ visível e
+JSON-LD, que passa a ter o texto exacto do corpo nas 3 respostas tocadas),
+à mensagem do estado degradado gerada por `atualizar_calendario.py`, a
+`pagamento-apos-deferimento.html` (5 ocorrências de "Conta-corrente →
+Pagamentos" no HowTo, FAQ e fontes; carimbo não avança, só sai o caminho de
+menu) e a `docs/FONTE-CALENDARIO.md`. Zero ocorrências restantes de
+"Conta-corrente → Pagamentos" ou "dia útil anterior" (no sentido de
+antecipação) no site.
 
 ---
 
