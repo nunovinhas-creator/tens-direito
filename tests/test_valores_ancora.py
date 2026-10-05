@@ -72,9 +72,9 @@ def _valores_eur(texto: str) -> list:
 
 
 def _percentagens(texto: str) -> list:
-    """Extrai todas as percentagens (ex.: "60%", "55%"), na ordem em que
-    aparecem no texto."""
-    return [float(p) for p in re.findall(r"(\d{1,3}(?:,\d+)?)\s?%", texto)]
+    """Extrai todas as percentagens (ex.: "60%", "55%", "33,8%"), na ordem
+    em que aparecem no texto."""
+    return [float(p.replace(",", ".")) for p in re.findall(r"(\d{1,3}(?:,\d+)?)\s?%", texto)]
 
 
 # ── IAS 2026 ─────────────────────────────────────────────────────────────────
@@ -1997,3 +1997,115 @@ def test_creche_artigo_4_nunca_apresentado_como_alterado():
         "Portaria n.º 305/2022 nunca foi alterado pela Portaria n.º "
         "158/2024/1 — risco de se confundir com os artigos que foram"
     )
+
+
+# ── Cluster Habitação — Tarifa social de energia (luz e gás natural) ──
+# dados/parametros/energia.yaml é a fonte única. Os dois descontos têm
+# períodos diferentes: o da luz vale para o ano civil, o do gás de 1 de
+# outubro a 30 de setembro. `erros_vigencia_tarifa_social()` é a vigilância
+# dessas duas datas: verificar_datas.py não reconhece "33,8% (2026)" e só
+# trataria "30 de setembro de 2027" como antiga em 2028.
+
+_ENERGIA = None
+
+
+def _param_energia(nome: str) -> dict:
+    global _ENERGIA
+    if _ENERGIA is None:
+        todos = json.loads(PARAMETROS_JSON.read_text(encoding="utf-8"))
+        _ENERGIA = todos["prestacoes"]["energia"]
+    return _ENERGIA[nome]
+
+
+def _pct_pt(valor: float) -> str:
+    return f"{valor:.1f}".replace(".", ",") + "%"
+
+
+def _inicio_ano_gas(hoje: date) -> date:
+    return date(hoje.year if hoje.month >= 10 else hoje.year - 1, 10, 1)
+
+
+def erros_vigencia_tarifa_social(vig_luz: date, vig_gas: date, hoje: date) -> list[str]:
+    erros = []
+    if vig_luz.year != hoje.year:
+        erros.append(
+            f"desconto da luz vigente é de {vig_luz.year}, mas já estamos em "
+            f"{hoje.year} — acrescentar o desconto de {hoje.year} (ERSE) a "
+            "dados/parametros/energia.yaml e rever tarifa-social-energia.html"
+        )
+    if vig_gas != _inicio_ano_gas(hoje):
+        erros.append(
+            f"desconto do gás vigente começou a {vig_gas.isoformat()}, mas o ano "
+            f"gás em curso começou a {_inicio_ano_gas(hoje).isoformat()} — "
+            "acrescentar o desconto novo (ERSE) a dados/parametros/energia.yaml "
+            "e rever tarifa-social-energia.html"
+        )
+    return erros
+
+
+def test_tarifa_social_descontos_dentro_do_periodo_de_vigencia():
+    luz = _param_energia("tarifa_social_luz_desconto_pct")
+    gas = _param_energia("tarifa_social_gas_desconto_pct")
+    assert erros_vigencia_tarifa_social(
+        date.fromisoformat(luz["vigencia_inicio"]),
+        date.fromisoformat(gas["vigencia_inicio"]),
+        date.today(),
+    ) == []
+
+
+def test_tarifa_social_vigilancia_falha_quando_o_periodo_acaba():
+    luz, gas = date(2026, 1, 1), date(2026, 10, 1)
+    assert erros_vigencia_tarifa_social(luz, gas, date(2026, 12, 31)) == []
+    assert erros_vigencia_tarifa_social(luz, gas, date(2027, 9, 30)) != []
+    erros_jan = erros_vigencia_tarifa_social(luz, gas, date(2027, 1, 1))
+    assert len(erros_jan) == 1 and "luz" in erros_jan[0]
+    erros_out = erros_vigencia_tarifa_social(date(2027, 1, 1), gas, date(2027, 10, 1))
+    assert len(erros_out) == 1 and "gás" in erros_out[0]
+
+
+def test_tarifa_social_descontos_na_meta_e_no_corpo():
+    """33,8% e 31,2% vêm do YAML: meta description (regra 11), resposta
+    rápida, corpo e FAQPage JSON-LD (33,8%)."""
+    html = _ler("tarifa-social-energia.html")
+    meta = re.search(r'<meta name="description" content="([^"]+)"', html).group(1)
+    luz = _pct_pt(_param_energia("tarifa_social_luz_desconto_pct")["valor"])
+    gas = _pct_pt(_param_energia("tarifa_social_gas_desconto_pct")["valor"])
+    assert luz in meta and gas in meta
+    assert html.count(luz) >= 4, f"{luz} devia aparecer na meta, resposta rápida, corpo e FAQ"
+    assert html.count(gas) >= 3
+
+
+def test_tarifa_social_periodo_do_gas_bate_com_a_vigencia():
+    inicio = date.fromisoformat(_param_energia("tarifa_social_gas_desconto_pct")["vigencia_inicio"])
+    html = _ler("tarifa-social-energia.html")
+    assert f"1 de outubro de {inicio.year} a 30 de setembro de {inicio.year + 1}" in html
+    assert f"30/09/{inicio.year + 1}" in html
+
+
+def test_tarifa_social_cartao_do_pillar_habitacao_bate_com_o_yaml():
+    """O cartão de p/habitacao.html repete os dois descontos e o período do
+    gás — escritos à mão, por isso ligados ao YAML aqui."""
+    html = _ler("p/habitacao.html")
+    luz = _param_energia("tarifa_social_luz_desconto_pct")
+    gas = _param_energia("tarifa_social_gas_desconto_pct")
+    ano_luz = date.fromisoformat(luz["vigencia_inicio"]).year
+    inicio_gas = date.fromisoformat(gas["vigencia_inicio"])
+    assert f"{_pct_pt(luz['valor'])} em {ano_luz}" in html
+    assert (
+        f"{_pct_pt(gas['valor'])} de 1 de outubro de {inicio_gas.year} "
+        f"a 30 de setembro de {inicio_gas.year + 1}"
+    ) in html
+
+
+def test_tarifa_social_valores_fixos_da_lei_no_corpo():
+    html = _ler("tarifa-social-energia.html")
+    rendimento = _param_energia("tarifa_social_luz_rendimento_anual_max_eur")["valor"]
+    assert f"{rendimento:,.2f}".replace(",", " ").replace(".", ",").replace(" ", ".") + " €" in html
+    kva = _param_energia("tarifa_social_luz_potencia_max_kva")["valor"]
+    assert f"{kva}".replace(".", ",") + " kVA" in html
+    m3 = _param_energia("tarifa_social_gas_consumo_anual_max_m3")["valor"]
+    assert f"{m3} m³" in html
+    elementos = _param_energia("tarifa_social_luz_max_elementos")["valor"]
+    assert f"máximo de {elementos} elementos" in html
+    assert _param_energia("tarifa_social_luz_acrescimo_por_elemento")["valor"] == 0.5
+    assert "50% por cada elemento" in html

@@ -544,6 +544,11 @@
     "pagina": "subsidio-por-morte.html",
     "titulo": "Subsídio por Morte: quem recebe, quanto e como pedir"
   },
+  "tarifa-social-energia": {
+    "chip": "Habitação",
+    "pagina": "tarifa-social-energia.html",
+    "titulo": "Tarifa Social de Energia 2026: luz e gás, quem tem direito"
+  },
   "verificador-apoios": {
     "chip": "Simuladores e calculadoras",
     "pagina": "verificador-apoios.html",

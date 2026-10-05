@@ -104,6 +104,7 @@ FORA_DO_SIMULADOR_UNIVERSAL: dict[str, tuple[str, str, str | None]] = {
     "deducao-rendas-irs.html": ("por_implementar", _POR_IMPLEMENTAR, None),
     "garantia-publica-credito-habitacao.html": ("por_implementar", _POR_IMPLEMENTAR, None),
     "primeiro-direito.html": ("por_implementar", _POR_IMPLEMENTAR, None),
+    "tarifa-social-energia.html": ("por_implementar", _POR_IMPLEMENTAR, None),
     _SOBREVIVENCIA: ("por_implementar", _POR_IMPLEMENTAR, None),
     "subsidio-por-morte.html": ("por_implementar", _POR_IMPLEMENTAR, None),
 }
