@@ -7132,6 +7132,23 @@ Direta fora da lista, ou uma entrada órfã, falha (provado: 8 falhas contra o
 estado anterior). Baseline de marcadores históricos regenerado (só o texto das
 frases da Declaração de Situação Familiar). Carimbos não avançam.
 
+
+Última revisão: 2026-10-05 — página nova `tarifa-social-energia.html`
+(cluster Habitação, secção "Situações de carência" do pillar). Luz (DL
+15/2022, arts. 199.º/200.º) e gás natural (DL 101/2011) em secções separadas;
+o que é comum está numa secção própria que o diz. Factos entregues pelo Nuno
+(DGEG, ERSE, diplomas); datas dos dois diplomas trianguladas por WebSearch.
+Parâmetros em `dados/parametros/energia.yaml` (descontos com vigência,
+6,9 kVA, 500 m³, 6.272,64 € — valor fixo na lei —, +50%, máximo 10).
+Vigilância: `erros_vigencia_tarifa_social()` em `tests/test_valores_ancora.py`
+falha a 1/1/2027 (luz) e a 1/10/2027 (gás) sem entrada nova no YAML (provado
+com datas fixas). Frase da PSU fixada pelo Nuno, a acompanhar com a #293.
+Simulador universal: `por_implementar`. Cartões em `fontes.html` (DL 15/2022,
+DL 101/2011, ERSE, DGEG). Ligações de volta em `complemento-solidario-idosos`,
+`rsi`, `subsidio-desemprego`, `abono-de-familia` e
+`prestacao-social-para-a-inclusao` — carimbos não avançam. Pillar
+`p/habitacao.html`: "Seis apoios" → "Sete apoios" e cartão novo.
+
 ---
 
 *Última revisão automática: 2026-10-05*

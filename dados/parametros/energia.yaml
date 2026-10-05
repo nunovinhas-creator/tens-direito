@@ -1,0 +1,87 @@
+# Tarifa social de energia — luz (eletricidade) e gás natural.
+#
+# Luz: Decreto-Lei n.º 15/2022, de 14 de janeiro, arts. 199.º e 200.º, na
+# redação em vigor. Gás natural: Decreto-Lei n.º 101/2011, de 30 de
+# setembro, na redação em vigor. Os dois regimes têm critérios diferentes —
+# nunca tratar um parâmetro de um como válido para o outro.
+#
+# Factos entregues pelo Nuno a 2026-10-05 (verificação fora desta sessão;
+# diariodarepublica.pt, erse.pt e dgeg.gov.pt bloqueados no sandbox).
+# Datas dos dois diplomas trianguladas por WebSearch (GRAU 2).
+#
+# Vigência dos descontos: o da luz vale para o ano civil (ano tarifário);
+# o do gás vale de 1 de outubro a 30 de setembro (ano gás).
+# tests/test_valores_ancora.py falha quando o período acaba sem entrada nova
+# aqui — é esse o mecanismo de vigilância destas duas datas.
+#
+# Consolidado em dados/parametros.json por scripts/gerar_parametros_json.py.
+
+tarifa_social_luz_desconto_pct:
+  descricao: "Tarifa social da luz — desconto sobre as tarifas transitórias, sem taxas e impostos; aplica-se também no mercado livre. Vale para o ano civil indicado pela vigência"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2026-01-01"
+      valor: 33.8
+      referencia_legal: "ERSE — desconto da tarifa social de eletricidade para 2026 (Decreto-Lei n.º 15/2022)"
+      fonte_url: "https://www.erse.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_gas_desconto_pct:
+  descricao: "Tarifa social do gás natural — desconto em vigor de 1 de outubro a 30 de setembro do ano seguinte (ano gás)"
+  unidade: "%"
+  valores:
+    - vigencia_inicio: "2026-10-01"
+      valor: 31.2
+      referencia_legal: "ERSE — desconto da tarifa social de gás natural de 1/10/2026 a 30/9/2027 (Decreto-Lei n.º 101/2011)"
+      fonte_url: "https://www.erse.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_luz_potencia_max_kva:
+  descricao: "Tarifa social da luz — potência contratada máxima, em baixa tensão normal (BTN)"
+  unidade: "kVA"
+  valores:
+    - vigencia_inicio: "2022-01-14"
+      valor: 6.9
+      referencia_legal: "Decreto-Lei n.º 15/2022, de 14 de janeiro, art. 200.º, na redação em vigor"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_luz_rendimento_anual_max_eur:
+  descricao: "Tarifa social da luz — rendimento anual máximo do agregado (critério de rendimento, só na luz); valor fixo na lei, não indexado ao IAS"
+  unidade: "EUR/ano"
+  valores:
+    - vigencia_inicio: "2023-01-01"
+      valor: 6272.64
+      referencia_legal: "Decreto-Lei n.º 15/2022, art. 199.º, n.º 4, na redação da Lei n.º 24-D/2022 (substituiu os 5.808 €, com efeitos a 1 de janeiro de 2023)"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_luz_acrescimo_por_elemento:
+  descricao: "Tarifa social da luz — acréscimo ao rendimento máximo por cada elemento do agregado sem rendimentos, incluindo o próprio"
+  unidade: "ratio (0-1)"
+  valores:
+    - vigencia_inicio: "2022-01-14"
+      valor: 0.5
+      referencia_legal: "Decreto-Lei n.º 15/2022, art. 199.º, n.º 4, na redação em vigor"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_luz_max_elementos:
+  descricao: "Tarifa social da luz — número máximo de elementos do agregado considerados no acréscimo ao rendimento máximo"
+  unidade: "pessoas"
+  valores:
+    - vigencia_inicio: "2022-01-14"
+      valor: 10
+      referencia_legal: "Decreto-Lei n.º 15/2022, art. 199.º, n.º 4, na redação em vigor"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-10-05"
+
+tarifa_social_gas_consumo_anual_max_m3:
+  descricao: "Tarifa social do gás natural — consumo anual máximo, em baixa pressão"
+  unidade: "m³/ano"
+  valores:
+    - vigencia_inicio: "2011-09-30"
+      valor: 500
+      referencia_legal: "Decreto-Lei n.º 101/2011, de 30 de setembro, na redação em vigor"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-10-05"

@@ -121,6 +121,7 @@
         {"slug": "imt-jovem.html", "titulo": "IMT Jovem 2026: isenção na compra da primeira casa", "tipo": "artigo", "destaque": false},
         {"slug": "garantia-publica-credito-habitacao.html", "titulo": "Garantia Pública no Crédito Habitação Jovem 2026", "tipo": "artigo", "destaque": false},
         {"slug": "primeiro-direito.html", "titulo": "1.º Direito", "tipo": "artigo", "destaque": false},
+        {"slug": "tarifa-social-energia.html", "titulo": "Tarifa social de energia", "tipo": "artigo", "destaque": false},
         {"slug": "simulador-imt-jovem.html", "titulo": "Simulador de IMT Jovem", "tipo": "ferramenta", "destaque": false}
       ],
       "relacionados": ["trabalho-rendimento"]

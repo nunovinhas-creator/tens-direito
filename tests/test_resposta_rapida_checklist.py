@@ -51,6 +51,7 @@ PAGINAS_ALVO = [
     "amim.html",
     "amim-beneficios-fiscais.html",
     "cartao-europeu-estacionamento.html",
+    "tarifa-social-energia.html",
 ]
 
 # Só as páginas com secção "Dúvidas frequentes" dedicada é que permitem
@@ -75,6 +76,7 @@ MARCADOR_FAQ_POR_PAGINA = {
     "amim.html": 'id="faq"',
     "amim-beneficios-fiscais.html": "Perguntas frequentes",
     "cartao-europeu-estacionamento.html": "Perguntas frequentes",
+    "tarifa-social-energia.html": "Dúvidas frequentes",
 }
 
 MAX_PALAVRAS_RESPOSTA_RAPIDA = 60
