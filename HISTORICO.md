@@ -7115,6 +7115,23 @@ três caminhos provados a falhar; 42 falhas contra o estado anterior).
 `calendario-pagamentos-psu.html` deixa de carregar `checklist.css/js` (não
 tem checklist).
 
+
+Última revisão: 2026-10-05 — caminhos de menu da Segurança Social Direta
+(seguimento do #304), conferidos pelo Nuno no portal a 05/10/2026. Corrigidos
+(corpo = JSON-LD): pedir abono e reavaliação do abono ("Família → Abono de
+Família e de Pré-Natal → Pedir e consultar → …"), PSI ("Família → Deficiência e
+incapacidade → …"), Declaração de Situação Familiar ("Família → Agregado e
+Relações Familiares → …"), RSI e CSI (passam ao e-Clic: "Evento de vida: Apoio
+social → Assunto: … → Motivo: Apresentar um pedido"). Sem caminho: alteração
+de morada (`alterar-morada.html`, as 3 ocorrências — no NISS fica "Perfil →
+Dados pessoais") e prova escolar (as duas versões do caminho). Mantidos:
+IBAN, majoração, representação legal, "Pensões → Prova Escolar", gov.pt.
+Guarda nova: `tests/test_caminhos_ssd.py` — `CAMINHOS_PERMITIDOS` (só os
+conferidos); um caminho com "→"/">" depois de uma menção à Segurança Social
+Direta fora da lista, ou uma entrada órfã, falha (provado: 8 falhas contra o
+estado anterior). Baseline de marcadores históricos regenerado (só o texto das
+frases da Declaração de Situação Familiar). Carimbos não avançam.
+
 ---
 
 *Última revisão automática: 2026-10-05*

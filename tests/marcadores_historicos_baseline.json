@@ -1612,7 +1612,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2023",
-    "frase": "A Declaração de Situação Familiar (Perfil → Agregado e relações familiares) é o canal principal desde julho de 2023.",
+    "frase": "A Declaração de Situação Familiar (Família → Agregado e Relações Familiares → Declarações de Situação Familiar) é o canal principal desde julho de 2023.",
     "ordinal": 1
   },
   {
@@ -1620,7 +1620,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2023",
-    "frase": "A Declaração de Situação Familiar na Segurança Social Direta (Perfil > Agregado e relações familiares), disponível desde julho de 2023, é o canal mais rápido e completo.",
+    "frase": "A Declaração de Situação Familiar na Segurança Social Direta (Família → Agregado e Relações Familiares → Declarações de Situação Familiar), disponível desde julho de 2023, é o canal mais rápido e completo.",
     "ordinal": 1
   },
   {
@@ -1628,15 +1628,15 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2023",
-    "frase": "Agregado e relações familiares), disponível desde julho de 2023, é o canal mais rápido e completo.",
-    "ordinal": 1
+    "frase": "A Declaração de Situação Familiar na Segurança Social Direta (Família → Agregado e Relações Familiares → Declarações de Situação Familiar), disponível desde julho de 2023, é o canal mais rápido e completo.",
+    "ordinal": 2
   },
   {
     "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2023",
-    "frase": "Confirmado via pesquisa (2026-07-06): desde julho de 2023 a Segurança Social Direta tem uma \"Declaração de Situação Familiar\" própria (Perfil > Agregado e relações familiares) como canal principal e mais completo para comunicar alterações ao agregado; existem também formulários específicos mais antigos ligados a prestações por encargos familiares (Mod.",
+    "frase": "Confirmado via pesquisa (2026-07-06): desde julho de 2023 a Segurança Social Direta tem uma \"Declaração de Situação Familiar\" própria (Família > Agregado e Relações Familiares > Declarações de Situação Familiar — caminho conferido pelo Nuno a 05/10/2026) como canal principal e mais completo para comunicar alterações ao agregado; existem também formulários específicos mais antigos ligados a prestações por encargos familiares (Mod.",
     "ordinal": 1
   },
   {
