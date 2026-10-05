@@ -257,8 +257,8 @@ Correcções/decisões adiadas, já documentadas — sem prazo, sem decisão de
   auxílios económicos), por isso já não há limiares de rendimento a
   migrar; `dados/parametros/ase.yaml` saiu. Só os valores de cobertura do
   `CONFIG` de `simulador-ase.html` (material, visitas) continuam inline —
-  dependem da #298 (tectos em euros fixos ou indexados ao
-  IAS. Sem prazo.
+  são euros fixos, não indexados ao IAS (#298), por isso não há fórmula a
+  migrar. Sem prazo.
 - **Branch de teste `teste-janitor-nao-integrada`** — criada de propósito
   para provar em CI real que `limpar-branches.yml` nunca apaga uma branch
   com commits únicos (1 commit, marcador `.janitor-test-marker.txt`, nunca
