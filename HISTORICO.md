@@ -7073,6 +7073,23 @@ tocados; carimbos não avançam. Os restantes caminhos de menu do site ficam
 listados, por caminho e com o objectivo do leitor, no corpo do PR, para
 decisão do Nuno.
 
+
+Última revisão: 2026-10-05 — acessibilidade dos simuladores no estado com
+resultado. Novo `tests/test_acessibilidade_resultados.py`: um cálculo por
+simulador (no universal, até aos resultados) e axe-core com o mesmo limiar de
+`test_acessibilidade.py`, depois de terminar a animação de entrada do
+resultado (a meio dela o axe mede cores semi-transparentes). Antes da
+correcção falhava em: `simulador-psu.html` (#resultado sem região viva),
+`simulador-universal.html` (região viva dentro de `#resultados[hidden]`, que
+nunca anuncia; sem link para os guias sem JS; `calc-apoios.js` sem `defer`) e
+`simulador-condicoes-reforma.html` (`<th>` vazios na tabela de consequências
+de cada via — `empty-table-header`, só visível com resultado). Corrigido:
+`aria-live="polite"` no PSU; no universal, `<p role="status">` sempre presente
+fora de `#resultados` com o resumo das contagens, foco no título mantido,
+link "ver todos os guias" (`/#guias-de-apoios`) na caixa do topo e no
+`<noscript>`, `calc-apoios.js` com `defer`; cabeçalhos "Regra"/"Nesta via"
+na tabela das condições de reforma.
+
 ---
 
 *Última revisão automática: 2026-10-04*
