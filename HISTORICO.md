@@ -7101,6 +7101,20 @@ em todas as páginas que o têm (100: guias, pillars, simuladores, minutas,
 hubs); sublinhado via `a.reportar-erro` em `nav.css`. Teste:
 `tests/test_reportar_erro.py`.
 
+
+Última revisão: 2026-10-05 — sitemap: `<lastmod>` = data da página. Novo
+`scripts/sincronizar_sitemap_lastmod.py` (dateModified ou, sem ele, o último
+"Verificado a"); 15 lastmod acrescentados e 24 corrigidos. Sem lastmod, por
+excepção nominal com motivo: `index.html`, `noticias.html` (pipeline diário)
+e `comecar-aqui`/`sobre`/`privacidade`/`acessibilidade` (sem data editorial).
+`tests/test_sitemap_lastmod.py` falha com lastmod em falta ou divergente,
+excepção órfã, workflow ou script de workflow a escrever datas de páginas
+com lastmod, e revalidação de carimbo ligada sem o script no workflow (os
+três caminhos provados a falhar; 42 falhas contra o estado anterior).
+`verificador-apoios.html` passa a `noindex, follow`;
+`calendario-pagamentos-psu.html` deixa de carregar `checklist.css/js` (não
+tem checklist).
+
 ---
 
 *Última revisão automática: 2026-10-05*
