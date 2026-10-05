@@ -184,6 +184,7 @@
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin: 2rem 0; color: #664d03; }
     footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
     [hidden] { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     #assistente, #resultados { scroll-margin-top: 88px; }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     @media (max-width: 768px) { .calc-card { padding: 1.25rem; } .btn-grupo .btn { flex: 1 1 100%; } }
@@ -194,7 +195,7 @@
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
-  <script src="/assets/js/calc-apoios.js"></script>
+  <script src="/assets/js/calc-apoios.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -294,7 +295,7 @@
 
   <main id="main-content">
     <div class="info-box">
-      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 04/10/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a>
+      💡 <strong>Como ler o resultado</strong> — as condições de acesso vêm dos guias de cada apoio, com fonte oficial. <span id="carimboVerificacao" hidden><strong id="dataVerificacao">Verificado a 04/10/2026</strong> pela redação do <a href="/sobre.html#metodo">Tens Direito</a> · </span><a href="/simuladores.html">ver todos os simuladores</a> · <a href="/#guias-de-apoios">ver todos os guias</a>
     </div>
 
     <div id="avisoErro" class="aviso-erro" role="alert" hidden>
@@ -302,7 +303,7 @@
     </div>
 
     <p id="carregando" class="carregando">A carregar as perguntas…</p>
-    <noscript><p class="aviso-erro">Este simulador precisa de JavaScript ativo no navegador.</p></noscript>
+    <noscript><p class="aviso-erro">Este simulador precisa de JavaScript ativo no navegador. Sem ele, podes consultar <a href="/#guias-de-apoios">todos os guias de apoios</a>.</p></noscript>
 
     <section id="assistente" class="calc-card" aria-labelledby="perguntaTexto" hidden>
       <p class="progresso" id="progresso"></p>
@@ -323,7 +324,9 @@
       </div>
     </section>
 
-    <section id="resultados" class="resultados" aria-live="polite" hidden>
+    <p id="resultadosAnuncio" class="sr-only" role="status" data-regiao="resultados"></p>
+
+    <section id="resultados" class="resultados" aria-labelledby="resultadosTitulo" hidden>
       <h2 tabindex="-1" id="resultadosTitulo">Os teus resultados</h2>
 
       <div id="avisoFilhos" class="aviso-info" hidden>
@@ -467,6 +470,7 @@
       // ── Assistente ──────────────────────────────────────────────────────
       function mostrarAssistente() {
         el('resultados').hidden = true;
+        el('resultadosAnuncio').textContent = '';
         el('assistente').hidden = false;
         campoAtual = proximaPergunta(CONDICOES, respostas, hojeISO());
         if (campoAtual === null) {
@@ -571,6 +575,7 @@
         const campo = historico.pop();
         delete respostas[campo];
         el('resultados').hidden = true;
+        el('resultadosAnuncio').textContent = '';
         el('assistente').hidden = false;
         campoAtual = campo;
         desenharPergunta(campo);
@@ -687,6 +692,15 @@
         });
       }
 
+      // Região viva sempre presente (fora de #resultados, que está [hidden]
+      // até aqui — uma região escondida não anuncia nada ao aparecer).
+      function textoAnuncio(avaliacao) {
+        const n = { elegivel: 0, indeterminado: 0, inelegivel: 0 };
+        Object.values(avaliacao).forEach((r) => { if (r.estado in n) n[r.estado] += 1; });
+        return 'Resultados prontos: ' + n.elegivel + ' com provável direito, '
+          + n.indeterminado + ' em que falta saber, ' + n.inelegivel + ' sem direito.';
+      }
+
       function mostrarResultadosSimulador() {
         const avaliacao = avaliarApoios(CONDICOES, respostas, hojeISO());
         const grupos = { elegivel: el('grupoElegivel'), indeterminado: el('grupoIndeterminado'), inelegivel: el('grupoInelegivel') };
@@ -711,6 +725,7 @@
 
         el('assistente').hidden = true;
         el('resultados').hidden = false;
+        el('resultadosAnuncio').textContent = textoAnuncio(avaliacao);
         el('resultadosTitulo').focus({ preventScroll: true });
         rolarPara('resultados');
 

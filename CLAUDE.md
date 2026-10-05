@@ -4077,6 +4077,15 @@ CI, mesmo padrão de `test_higiene_indexacao.py`. Checklist da secção
 "CHECKLIST OBRIGATÓRIA" ganhou o item "página nova nasce a passar
 `test_acessibilidade.py`".
 
+**Estado com resultado (2026-10-05)**: `tests/test_acessibilidade_resultados.py`
+faz um cálculo em cada simulador (no universal, responde até aos resultados)
+e corre o mesmo axe com o mesmo limiar — o HTML que o cálculo injecta nunca
+era auditado. Exige também que o contentor do resultado seja uma região viva
+(`aria-live`/`role="status"`) antes do cálculo e, no universal, que a região
+viva esteja fora de qualquer `[hidden]` e o foco vá para o título dos
+resultados. Simulador novo: acrescentar o seu cálculo a `SIMULADORES` nesse
+ficheiro.
+
 Nova página `acessibilidade.html` — compromisso WCAG 2.1 AA, lista do
 que está implementado, e como reportar barreiras (aponta para
 `/sobre.html#contacto`, mesmo canal de contacto único do site,
