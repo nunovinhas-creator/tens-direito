@@ -85,7 +85,7 @@ sessão da Fase 3 (workflow do dia 25) ou para a corrida manual seguinte.
   prestações familiares + 1.º pagamento desemprego/doença/parentalidade/
   ação social dia 16; FGADM dia 21; RSI + FGS dia 23; 2.º pagamento +
   cuidador informal dia 28 (aprox. — os dias exactos variam com o mês).
-- Data ao fim-de-semana/feriado → antecipada para o dia útil anterior.
+- Data ao fim de semana/feriado → o dia de pagamento muda (ver o calendário oficial do mês).
 - Vale de correio: entrega é responsabilidade dos CTT, pode demorar
   mais alguns dias do que a data indicada.
 - Apoio à renda: pago exclusivamente por transferência bancária.

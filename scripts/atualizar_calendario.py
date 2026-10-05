@@ -469,7 +469,7 @@ def _bloco_degradado(dados: dict, ano: int, mes: int) -> str:
         "  <p>Para não te mostrar datas erradas ou antigas, esta página só publica o calendário\n"
         "  depois de o confirmar na fonte oficial. Consulta as datas directamente na\n"
         f'  <a href="{fonte}" target="_blank" rel="noopener">Segurança Social</a>\n'
-        "  ou na Segurança Social Direta (Conta-corrente → Pagamentos).</p>\n"
+        "  ou na Segurança Social Direta.</p>\n"
         "</div>"
     )
 

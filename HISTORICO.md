@@ -7039,6 +7039,29 @@ independentemente do escalão; a resposta "O que é a Ação Social Escolar?"
 do `FAQPage` JSON-LD passa a ter o mesmo texto. Carimbo e `dateModified`
 não avançam: não há facto legal novo além do já verificado a 04/10/2026.
 
+
+Última revisão: 2026-10-05 — abono (escalão 4) e calendário. A
+`referencia_legal` de `abono.escalao4_limite_cenario_pedidos_novos_2026`
+passa a "Decreto-Lei n.º 176/2003, art. 14.º, n.os 2 e 3, na redação do
+Decreto-Lei n.º 56/2022" (verificado a 04/10/2026, valor inalterado); sai de
+`PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR`, que fica vazia — o teste de órfãs
+continua válido com a lista vazia. Em
+`calendario-pagamentos-seguranca-social.html`, secção "Como funciona o
+calendário" (texto estático, fora de `CAL:CORPO`, não gerado por
+`atualizar_calendario.py`): a frase "antecipado para o dia útil anterior"
+passa a "o dia de pagamento muda", e sai "Conta-corrente → Pagamentos".
+Carimbo e `dateModified` a 04/10/2026. O item do
+`garantir_deploy_pages.sh` (`conclusion=null` não é falha) já estava em
+`main` (#292).
+Mesma redacção aplicada ao resto da página do calendário (FAQ visível e
+JSON-LD, que passa a ter o texto exacto do corpo nas 3 respostas tocadas),
+à mensagem do estado degradado gerada por `atualizar_calendario.py`, a
+`pagamento-apos-deferimento.html` (5 ocorrências de "Conta-corrente →
+Pagamentos" no HowTo, FAQ e fontes; carimbo não avança, só sai o caminho de
+menu) e a `docs/FONTE-CALENDARIO.md`. Zero ocorrências restantes de
+"Conta-corrente → Pagamentos" ou "dia útil anterior" (no sentido de
+antecipação) no site.
+
 ---
 
 *Última revisão automática: 2026-10-04*
