@@ -2568,8 +2568,8 @@ páginas pela issue #295, 2026-10-04). Tectos de material escolar
 (16€/8€) e visitas de estudo (20€/10€), desconto nas refeições
 (gratuita no A, 50% no B) estão fixados desde 2015 pelos Despachos n.º
 8452-A/2015, 5296/2017 e 7255/2018 — **sem nenhuma república anual**
-(se esses tectos são euros fixos ou indexados ao IAS fica por confirmar
-em fonte — issue #298). Os limites de escalão do abono sobem com o
+(os tectos são euros fixos, não indexados ao IAS: mesmos valores em
+2021, com IAS 438,81 €, e em 2025/2026, com IAS 537,13 € — issue #298). Os limites de escalão do abono sobem com o
 IAS, publicado por Portaria própria (tipicamente dezembro/janeiro) —
 **já vigiado pelo sentinela `dre_ias`** (Issue automática de janeiro,
 ver "PÁGINAS COM DATAS SAZONAIS" acima). O mesmo se aplica à Bolsa de Mérito: o valor é

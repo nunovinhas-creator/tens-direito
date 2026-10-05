@@ -7024,6 +7024,21 @@ Com `condicoes.json` regenerado, o `verificado_em` global passou a
 carimbo e o `dateModified` de `simulador-universal.html` avançam para
 04/10/2026 (`test_carimbo_estatico_bate_com_os_dados_e_com_o_date_modified`).
 
+
+*Última revisão: 2026-10-05 — ASE: tectos em euros fixos e manuais fora da
+resposta rápida (issues #298 e #299).* Os tectos de material escolar
+(16 €/8 €) e de visitas de estudo (20 €/10 €) são valores fixos em euros,
+não indexados ao IAS: são os mesmos em 2021 (IAS 438,81 €) e em 2025/2026
+(IAS 537,13 €). Na nota de fontes de `acao-social-escolar.html`, "indexados
+ao IAS" passa a "valores fixos, definidos pelo Ministério da Educação" e sai
+a menção ao IAS 2026, que já não se aplica a nada nesta página desde a #295.
+Nenhuma outra página dizia que estes tectos dependem do IAS. A resposta
+rápida deixa de pôr os manuais na lista do que a ASE cobre e acrescenta que
+são gratuitos para todos os alunos do ensino público, pelo programa MEGA,
+independentemente do escalão; a resposta "O que é a Ação Social Escolar?"
+do `FAQPage` JSON-LD passa a ter o mesmo texto. Carimbo e `dateModified`
+não avançam: não há facto legal novo além do já verificado a 04/10/2026.
+
 ---
 
 *Última revisão automática: 2026-10-04*
