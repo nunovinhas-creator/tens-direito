@@ -7062,6 +7062,17 @@ menu) e a `docs/FONTE-CALENDARIO.md`. Zero ocorrências restantes de
 "Conta-corrente → Pagamentos" ou "dia útil anterior" (no sentido de
 antecipação) no site.
 
+
+Última revisão: 2026-10-05 — caminhos de menu da Segurança Social Direta.
+Retirados os caminhos não verificados ("Conta-corrente", "Conta-corrente →
+Situação Contributiva", "Conta Corrente > Execuções Fiscais e Penhoras > …")
+de `pagamento-apos-deferimento.html`, `declaracao-situacao-contributiva.html`
+e `documentos/carta-acompanhamento-divida-prestacoes.html`, substituídos por
+"na Segurança Social Direta"; JSON-LD igual ao corpo nos passos e respostas
+tocados; carimbos não avançam. Os restantes caminhos de menu do site ficam
+listados, por caminho e com o objectivo do leitor, no corpo do PR, para
+decisão do Nuno.
+
 ---
 
 *Última revisão automática: 2026-10-04*
