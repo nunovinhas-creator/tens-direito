@@ -690,6 +690,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `sitemap.xml` actualizado se nova página
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
+- [ ] Página nova com carimbo "Verificado a … pela redação do Tens Direito"? Correr `python scripts/inserir_reportar_erro.py --write` (idempotente — insere o link "Reportar um erro nesta página" → `/sobre.html#contacto` logo a seguir ao carimbo, entre `<!-- REPORTAR-ERRO:INICIO/FIM -->`; `tests/test_reportar_erro.py` falha se faltar)
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
@@ -784,6 +785,7 @@ tens-direito/
 │   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
+│   ├── inserir_reportar_erro.py ← link "Reportar um erro nesta página" a seguir ao carimbo canónico (idempotente)
 │   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas páginas do site (idempotente)
 │   ├── adicionar_og_image.py ← bootstrap: insere o bloco og:image em páginas novas (idempotente)
 │   ├── gerar_og_images.py    ← gera assets/img/og/<slug>.jpg por página (Chromium real, manifest, idempotente)
@@ -1693,6 +1695,8 @@ externas. O marcador `<!-- CONTACTO-EMAIL:INICIO/FIM -->` mantém-se
 nos blocos "Correcções"/"Contacto" como âncora documental — nunca com
 o endereço literal dentro do comentário (um comentário HTML continua a
 ser texto simples no fonte, por isso quebraria a mesma regra).
+Sem JavaScript, o `<span>` mostra "contacto (arroba) tensdireito (ponto)
+com" dentro da própria frase (sem `<noscript>` à parte nem "a carregar…").
 Qualquer outra página que precise de referenciar contacto liga para
 `/sobre.html#contacto` — nunca duplica o email nem o script de
 desofuscação. `tests/test_sobre_jsonld.py` confirma: literal
