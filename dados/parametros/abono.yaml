@@ -67,9 +67,9 @@ escalao4_limite_cenario_pedidos_novos_2026:
   valores:
     - vigencia_inicio: "2026-01-01"
       valor: 18287.50
-      referencia_legal: "Portaria n.º 60/2026/1, de 5 de fevereiro — confirmado no Guia Prático 4001 do ISS, I.P., v4.80, de 30/06/2026"
+      referencia_legal: "Decreto-Lei n.º 176/2003, art. 14.º, n.os 2 e 3, na redação do Decreto-Lei n.º 56/2022"
       fonte_url: "https://dre.pt"
-      verificado_em: "2026-07-19"
+      verificado_em: "2026-10-04"
 
 # ── Cenário (a) — manutenção/pedidos activos, rendimentos de 2024 ──────────
 # (IAS 2024 = 509,26€) — não simulado pela calculadora, só documentado

@@ -675,12 +675,7 @@ CAMPOS_FONTE = ("vigencia_inicio", "referencia_legal", "fonte_url", "verificado_
 # pelas condições tem de citar o artigo. Excepções só nominais, com motivo;
 # uma excepção que deixe de ser necessária (o parâmetro ganhou artigo ou já
 # não é usado) falha em `test_excecoes_sem_artigo_nao_sao_orfas`.
-PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR = {
-    "abono.escalao4_limite_cenario_pedidos_novos_2026": (
-        "diploma citado (Portaria 60/2026/1) fixa montantes, não limites; "
-        "limite deriva de 2,5 × IAS × 14 do DL 176/2003, artigo por confirmar"
-    ),
-}
+PARAMETROS_SEM_ARTIGO_POR_CONFIRMAR: dict[str, str] = {}
 _REGEX_ARTIGO = r"\bart(\.|igo)"
 
 
@@ -768,7 +763,8 @@ def test_excecao_de_parametro_que_ja_cita_artigo_e_orfa():
     parametros["prestacoes"]["abono"]["escalao4_limite_cenario_pedidos_novos_2026"]["referencia_legal"] = (
         "Decreto-Lei n.º 176/2003, artigo 14.º"
     )
-    assert _excecoes_orfas(_json_real("condicoes.json"), parametros) == [
+    excecoes = {"abono.escalao4_limite_cenario_pedidos_novos_2026": "por confirmar em fonte primária"}
+    assert _excecoes_orfas(_json_real("condicoes.json"), parametros, excecoes) == [
         "abono.escalao4_limite_cenario_pedidos_novos_2026: órfã — a referencia_legal já cita o artigo"
     ]
 
