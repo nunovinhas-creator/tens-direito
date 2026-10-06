@@ -7160,6 +7160,22 @@ telemóvel). Removidas as duas tags a mais. Guarda nova:
 falha com `<style>` aninhado, `</style>` órfão ou bloco por fechar) — provado
 a falhar sem a correcção. Só esta página tinha o problema.
 
+
+### Última revisão: 2026-10-06 — `bolsa-de-merito.html`: SEO e prazo encerrado
+
+Title "Bolsa de mérito 2026/2027: 1.342,83 €, requisitos e prazo" (57
+caracteres; `og:title` igual e imagem og regenerada). Resposta directa,
+resumo e caixa do prazo dizem que as candidaturas de 2026/2027 terminaram a
+30/09/2026 e que a próxima (2027/2028) é até 30/09/2027 ou dia útil seguinte
+— sem valor de 2027/2028 (depende do IAS 2027). FAQ nova "valor no 11.º ano"
+(corpo + JSON-LD): igual nos três anos. Retirado "não costuma haver
+prorrogações" (nunca verificado; 3 sítios). Valores e prazo reconfirmados
+pelo Nuno; carimbo 05/10/2026. Testes novos: valor do title = 2,5 × IAS, e
+"prorroga" ausente da página. Diagnóstico: `verificar_datas.py` não apanhou
+"abrem em setembro de 2026" porque só considera anos anteriores ao corrente
+e `data_mes_ano` só é revisto em jan/jul/ago/set — proposta (não aplicada)
+no resumo da sessão.
+
 ---
 
 *Última revisão automática: 2026-10-05*

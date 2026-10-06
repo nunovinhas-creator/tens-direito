@@ -234,6 +234,18 @@ def test_bolsa_merito_meta_description_valor_2_5x_ias():
     assert _valores_eur(desc) == [round(2.5 * IAS_2026, 2)], desc
 
 
+def test_bolsa_merito_title_valor_2_5x_ias():
+    # Title passou a citar o valor a 2026-10-05 (SEO) — mesmo canário da
+    # description: sobe com a Portaria do IAS, nunca com despacho próprio.
+    assert _valores_eur(_title("bolsa-de-merito.html")) == [round(2.5 * IAS_2026, 2)]
+
+
+def test_bolsa_merito_nao_promete_ausencia_de_prorrogacoes():
+    # "não costuma haver prorrogações" nunca foi verificado — retirado a
+    # 2026-10-05; não pode voltar sem fonte.
+    assert "prorroga" not in _ler("bolsa-de-merito.html")
+
+
 def test_bolsa_merito_og_tags_espelham_title_e_description():
     assert _meta_og("bolsa-de-merito.html", "og:title") == _title("bolsa-de-merito.html")
     assert _meta_og("bolsa-de-merito.html", "og:description") == _meta_description("bolsa-de-merito.html")
