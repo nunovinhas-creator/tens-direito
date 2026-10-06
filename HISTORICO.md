@@ -7210,6 +7210,26 @@ excluídos na medição). Testes em `tests/test_verificar_datas.py`: frase antig
 da bolsa falha sem a correcção; pretérito e "desde" nunca disparam; nenhuma
 página real dispara em out. 2026.
 
+### Última revisão: 2026-10-06 — AMIM: Lei n.º 8/2026, custo e título (#317)
+
+`amim.html`: secção nova "O que mudou em 2026" — Lei n.º 8/2026, de 25 de
+fevereiro (em vigor no dia seguinte): processo extraordinário de recuperação
+de pendências das juntas médicas, nas ULS (levantamento em 60 dias, depois
+recuperação com trabalho extraordinário); não altera critérios de avaliação
+nem direitos do AMIM; a Portaria n.º 171/2025/1 continua a regra. Factos
+entregues pelo Nuno; sem estado da regulamentação nem prazos de espera. Nota
+de secção "Verificado a 05/10/2026"; carimbo geral da página não avança.
+Destaque do resumo passa a "Novidade 2026"; entrada sem número no índice.
+FAQ "Quanto custa?": saiu "não tem, em regra, custo" — pode haver taxa,
+variável por tipo de avaliação, com isenções; sem valores até confirmação;
+pergunta acrescentada ao FAQPage JSON-LD (não existia). Title/og:title/
+headline: "Atestado multiusos (AMIM) 2026: novas regras e como pedir" (57
+caracteres); imagem og regenerada. `fontes.html`: cartão da Lei n.º 8/2026;
+carimbo da página mantém-se 15/09/2026 (acrescentar um cartão não avança o
+carimbo — decisão do Nuno), sitemap sem alteração. Textos aprovados antes do
+commit; squash com CI verde; smoke de produção verde, versão servida de
+`amim.html`/`fontes.html` confirmada (run 37469878151).
+
 ---
 
 *Última revisão automática: 2026-10-06*
