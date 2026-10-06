@@ -7183,6 +7183,19 @@ no resumo da sessão.
 prevalece sobre "squash, CI verde" — sem commit, push nem PR até o Nuno
 aprovar os textos. Motivo: no #311 o commit seguiu no mesmo turno.
 
+
+### Última revisão: 2026-10-06 — FAQPage sem perguntas repetidas
+
+`bolsa-de-merito.html`: o JSON-LD FAQPage tinha 17 perguntas, três repetidas
+(uma três vezes) e quatro que não aparecem na página. Passou a ter as 8
+perguntas visíveis, uma vez cada, com o texto do corpo. As duas perguntas do
+corpo sobre a compatibilidade com a ASE e o abono foram juntadas numa só
+(texto do Nuno; fonte: Decreto-Lei n.º 55/2009, art. 36.º). Teste novo
+`tests/test_faqpage_sem_duplicados.py`: nenhuma página pode repetir uma
+pergunta no FAQPage (todas as de `encontrar_paginas()`), e o FAQPage da bolsa
+tem de ser igual ao corpo. Só a bolsa falhava. Carimbo não avança (nenhum
+facto mudou).
+
 ---
 
 *Última revisão automática: 2026-10-05*
