@@ -7149,6 +7149,17 @@ DL 101/2011, ERSE, DGEG). Ligações de volta em `complemento-solidario-idosos`,
 `prestacao-social-para-a-inclusao` — carimbos não avançam. Pillar
 `p/habitacao.html`: "Seis apoios" → "Sete apoios" e cartão novo.
 
+
+### Última revisão: 2026-10-06 — CSS visível no topo de `tarifa-social-energia.html`
+
+`<style>` duplicado (linhas 31-32) e `</style>` a mais (linha 89): o primeiro
+`</style>` fechava o bloco e a regra `.comparacao td:first-child{font-weight:600}`
+aparecia como texto no topo da página em produção (reportado com captura do
+telemóvel). Removidas as duas tags a mais. Guarda nova:
+`tests/test_style_equilibrado.py` (todas as páginas de `encontrar_paginas()`;
+falha com `<style>` aninhado, `</style>` órfão ou bloco por fechar) — provado
+a falhar sem a correcção. Só esta página tinha o problema.
+
 ---
 
 *Última revisão automática: 2026-10-05*
