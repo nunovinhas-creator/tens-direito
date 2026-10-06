@@ -7176,6 +7176,13 @@ pelo Nuno; carimbo 05/10/2026. Testes novos: valor do title = 2,5 × IAS, e
 e `data_mes_ano` só é revisto em jan/jul/ago/set — proposta (não aplicada)
 no resumo da sessão.
 
+
+### Última revisão: 2026-10-06 — regra GIT: aprovação de textos antes do commit
+
+`CLAUDE.md`, "REGRA ABSOLUTA — GIT": "mostra os textos antes do commit"
+prevalece sobre "squash, CI verde" — sem commit, push nem PR até o Nuno
+aprovar os textos. Motivo: no #311 o commit seguiu no mesmo turno.
+
 ---
 
 *Última revisão automática: 2026-10-05*

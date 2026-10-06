@@ -116,6 +116,12 @@ que o CI estiver verde no commit actual, sem pedir confirmação. Única
 excepção: o pedido dizer "não faças merge". CI vermelho ou conflito nunca
 contam como verde — corrige-se primeiro.
 
+**"Mostra os textos antes do commit" prevalece (2026-10-06):** se o mesmo
+pedido também disser "mostra os textos antes do commit" (ou equivalente),
+não há commit, push nem PR até o Nuno aprovar os textos mostrados — o
+"squash, CI verde" só vale depois dessa aprovação. Motivo real (#311): os
+textos foram mostrados e o commit seguiu no mesmo turno, sem aprovação.
+
 **Arranque de sessão (handoff) (2026-07-20):** guarda simétrica ao
 protocolo de fim de sessão acima — para o erro de 2026-07-17 nunca se
 repetir na direcção inversa (a sessão seguinte a assumir "integrado" sem
