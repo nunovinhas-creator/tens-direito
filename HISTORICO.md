@@ -7196,6 +7196,20 @@ pergunta no FAQPage (todas as de `encontrar_paginas()`), e o FAQPage da bolsa
 tem de ser igual ao corpo. Só a bolsa falhava. Carimbo não avança (nenhum
 facto mudou).
 
+
+### Última revisão: 2026-10-06 — `verificar_datas.py`: compromissos no futuro
+
+Padrão novo `PADRAO_COMPROMISSO_FUTURO`: verbo no presente/futuro + data com
+mês já passado → alerta, comparação ao mês, todos os meses. Motivo: "as
+candidaturas abrem em setembro de 2026" (bolsa de mérito) não deu alerta em
+outubro — os `PADROES` só olham para anos anteriores e `data_mes_ano` só é
+revisto em jan/jul/ago/set. Medição aprovada pelo Nuno antes de ligar: 9
+ocorrências nas páginas reais, todas frases prospectivas da PSU/Garantia
+Pública a expirar em jan. 2027, zero falsos positivos (pretérito e "desde"
+excluídos na medição). Testes em `tests/test_verificar_datas.py`: frase antiga
+da bolsa falha sem a correcção; pretérito e "desde" nunca disparam; nenhuma
+página real dispara em out. 2026.
+
 ---
 
 *Última revisão automática: 2026-10-05*

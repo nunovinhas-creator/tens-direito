@@ -4633,6 +4633,15 @@ uma Issue é criada ou um valor é alterado:
    `data/alertas_datas.json` e as Issues `data-expirada` do `pipeline-diario.yml`.
    O Shadow Mode (ponto 8) **nunca lê esse ficheiro** — corre
    `detectar_alertas` outra vez, em runtime, sobre o próprio checkout.
+   **Compromisso no futuro** (`PADRAO_COMPROMISSO_FUTURO`, 2026-10-06):
+   além dos `PADROES` (que só alertam para anos anteriores ao corrente, nos
+   meses de `REVER_EM`), um verbo no presente/futuro ("abrem", "começa",
+   "termina", "vai mudar", "será"…) seguido de uma data cujo **mês** já
+   passou dá alerta, **todos os meses** — caso real: "abrem em setembro de
+   2026" na bolsa de mérito, sem alerta em outubro. Nunca o pretérito, nunca
+   com "desde" entre o verbo e a data; as supressões de `_esta_suprimido`
+   aplicam-se. Medido antes de ligar: 9 ocorrências reais, todas a expirar
+   em janeiro de 2027, zero falsos positivos.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
