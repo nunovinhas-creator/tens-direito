@@ -372,7 +372,7 @@
     "marcador": "despacho",
     "tipo": "ano_letivo",
     "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) foi 1.306,25 €; em 2026/2027 (IAS 2026 = 537,13 €, já em vigor) é 1.342,83 €: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%).",
+    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
     "ordinal": 1
   },
   {
@@ -381,7 +381,7 @@
     "tipo": "ano_letivo",
     "correspondencia": "2025/2026",
     "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "bolsa-de-merito.html",
@@ -396,7 +396,7 @@
     "marcador": "portaria",
     "tipo": "ano_letivo",
     "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) foi 1.306,25 €; em 2026/2027 (IAS 2026 = 537,13 €, já em vigor) é 1.342,83 €: 537,13 € no 1.º período (40%), 402,85 € no 2.º período (30%) e 402,85 € no 3.º período (30%).",
+    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
     "ordinal": 1
   },
   {
@@ -405,7 +405,7 @@
     "tipo": "ano_letivo",
     "correspondencia": "2025/2026",
     "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "bolsa-de-merito.html",
