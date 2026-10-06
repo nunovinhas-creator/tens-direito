@@ -1023,6 +1023,7 @@ padrões de €/%. Resultado, com a cobertura adicionada:
 | `subsidio-desemprego.html` (description) | 537,13€ + 1.342,83€ | 100%/2,5× IAS | `test_subsidio_desemprego_meta_description_piso_e_teto_ias` |
 | `cuidador-informal.html` (description) | 590,84€ | 1,1 × IAS | `test_cuidador_informal_meta_description_valor_1_1x_ias` |
 | `acao-social-escolar.html` (description) | nenhum valor em € desde a issue #295 (o escalão da ASE é o do abono) — o canário garante que não volta a aparecer nenhum | — | `test_acao_social_escolar_meta_description_sem_valor_legal` |
+| `bolsa-de-merito.html` (`<title>` + description) | 1.342,83€ | 2,5 × IAS | `test_bolsa_merito_title_valor_2_5x_ias`, `test_bolsa_merito_meta_description_valor_2_5x_ias` |
 | `baixa-medica-subsidio-doenca.html` (description) | 55%/75% | via `taxaEscalao1`/`4` do simulador | `test_baixa_medica_meta_description_percentagens_batem_com_simulador` |
 | `simulador-subsidio-doenca.html` (description) | 55%/75% | idem, mesmo ficheiro | `test_simulador_subsidio_doenca_meta_description_percentagens_batem_com_o_js` |
 | `abono-de-familia.html` (description) | 190,98€ | nenhuma (Portaria própria) — canário de consistência com a tabela do corpo | `test_abono_meta_description_bate_com_tabela_do_artigo` |
