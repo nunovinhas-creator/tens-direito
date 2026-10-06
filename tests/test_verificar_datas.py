@@ -692,3 +692,59 @@ def test_marcador_nasc_a_partir_de_cobre_a_clausula_real():
         "setembro de 2021, inclusive.</p>"
     )
     assert detectar_alertas(conteudo, "sintetica.html", ANO, MES) is None
+
+
+# ── Compromisso no futuro com data já passada (2026-10-06) ────────────────────
+# Comparação ao mês, todos os meses — ver REGEX_COMPROMISSO_FUTURO.
+
+def test_bolsa_antiga_abrem_em_setembro_gera_alerta_em_outubro():
+    # Frase real de bolsa-de-merito.html antes do #311: ficou na página depois
+    # de setembro de 2026 sem nenhum alerta.
+    html = _html(
+        "<p>As candidaturas para 2026/2027 abrem em setembro de 2026.</p>"
+        "<p>Verificado a 25/08/2026 pela redação</p>"
+    )
+    alerta = detectar_alertas(html, "bolsa-de-merito.html", 2026, 10)
+    assert alerta is not None and alerta["tipo"] == "compromisso_futuro"
+
+
+def test_compromisso_futuro_no_proprio_mes_ainda_nao_gera_alerta():
+    html = _html("<p>As candidaturas abrem em setembro de 2026.</p>")
+    assert detectar_alertas(html, "x.html", 2026, 9) is None
+
+
+def test_compromisso_futuro_corre_em_meses_fora_de_rever_em():
+    html = _html("<p>A medida termina a 31 de março de 2026.</p>")
+    assert detectar_alertas(html, "x.html", 2026, 5)["tipo"] == "compromisso_futuro"
+
+
+def test_pretérito_nunca_gera_alerta_de_compromisso_futuro():
+    html = _html(
+        "<p>As candidaturas para 2026/2027 terminaram a 30 de setembro de 2026.</p>"
+        "<p>Comecei o processo de crédito antes de agosto de 2026.</p>"
+        "<p>A lista ficou fechada em 25 de junho de 2026.</p>"
+    )
+    assert detectar_alertas(html, "x.html", 2026, 11) is None
+
+
+def test_desde_entre_verbo_e_data_nao_gera_alerta():
+    # psu-trabalho-social.html: a data pertence a "em vigor desde", não ao verbo.
+    html = _html(
+        "<p>quando a PSU em si começa a ser paga — a portaria já está em vigor "
+        "desde 28 de agosto de 2026, mas só produz efeitos nessa data.</p>"
+    )
+    assert detectar_alertas(html, "x.html", 2026, 10) is None
+
+
+def test_paginas_reais_hoje_sem_alerta_de_compromisso_futuro():
+    # Medição de 2026-10-06: nenhuma página real tem um compromisso expirado
+    # em outubro de 2026 (os 9 casos expiram em janeiro de 2027).
+    from verificar_datas import _compromisso_futuro_expirado
+    from sincronizar_clusters import encontrar_paginas, verificado_em_do_texto
+    for pagina in encontrar_paginas():
+        if pagina.name in ("index.html", "noticias.html", "404.html"):
+            continue
+        conteudo = pagina.read_text(encoding="utf-8")
+        assert not _compromisso_futuro_expirado(
+            conteudo, 2026, 10, verificado_em_do_texto(conteudo)
+        ), pagina.name

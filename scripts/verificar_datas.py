@@ -309,6 +309,62 @@ REVER_EM = {
 }
 
 
+# Compromisso no futuro com data (2026-10-06): "as candidaturas abrem em
+# setembro de 2026" ficou na bolsa-de-merito.html depois de setembro, porque os
+# PADROES só dão alerta a anos anteriores ao corrente e "data_mes_ano" só é
+# revisto em jan/jul/ago/set. Aqui a comparação é ao mês, todos os meses: um
+# verbo no presente/futuro seguido de uma data cujo mês já passou é uma frase
+# desactualizada. Só formas de presente/futuro (nunca o pretérito —
+# "terminaram", "comecei" são factos passados) e nunca com "desde" entre o
+# verbo e a data (a data é então o início de outra coisa — caso real:
+# psu-trabalho-social.html, "começa a ser paga — ... em vigor desde 28 de
+# agosto de 2026"). Medido sobre as páginas reais antes de ligar: 9
+# ocorrências, todas frases prospectivas da PSU/Garantia Pública que expiram
+# a 31/12/2026 — zero falsos positivos.
+_VERBOS_FUTURO = (
+    r"abre|abrem|abrir[áã]o|abrirá"
+    r"|come[çc]a|come[çc]am|come[çc]ar[áã]o|começará"
+    r"|arranca|arrancam|arrancar[áã]o|arrancará"
+    r"|decorre|decorrem|decorrer[áã]o|decorrerá"
+    r"|termina|terminam|terminar[áã]o|terminará"
+    r"|entra|entram|entrar[áã]o|entrará"
+    r"|ser[áã]o?|vai\s+\w+|v[ãa]o\s+\w+|ir[áã]o?\s+\w+"
+)
+REGEX_COMPROMISSO_FUTURO = (
+    r"\b(?:" + _VERBOS_FUTURO + r")\b"
+    r"(?:(?!\bdesde\b)[^.!?<>\n]){0,60}?"
+    r"(?:(?:(\d{1,2})\s+de\s+)?(janeiro|fevereiro|março|abril|maio|junho|julho|"
+    r"agosto|setembro|outubro|novembro|dezembro)\s+(?:de\s+)?(\d{4})"
+    r"|(\d{1,2})/(\d{1,2})/(\d{4}))"
+)
+PADRAO_COMPROMISSO_FUTURO = {
+    "regex": REGEX_COMPROMISSO_FUTURO,
+    "tipo": "compromisso_futuro",
+    "descricao": "Compromisso no futuro com data já passada",
+}
+
+
+def _data_do_compromisso(m):
+    try:
+        if m.group(3):
+            return date(int(m.group(3)), MESES[m.group(2).lower()], int(m.group(1) or 1))
+        return date(int(m.group(6)), int(m.group(5)), int(m.group(4)))
+    except ValueError:
+        return None
+
+
+def _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em=None):
+    for m in re.finditer(REGEX_COMPROMISSO_FUTURO, conteudo, re.IGNORECASE):
+        d = _data_do_compromisso(m)
+        if d is None or (d.year, d.month) >= (ano, mes):
+            continue  # mês ainda não passou
+        if _esta_suprimido(conteudo, m.start(), m.end(), ano, mes,
+                           data_ocorrencia=d, verificado_em=verificado_em):
+            continue
+        return True
+    return False
+
+
 def _janela_contexto(conteudo, inicio, fim):
     return conteudo[max(0, inicio - JANELA):fim + JANELA]
 
@@ -461,10 +517,14 @@ def _contexto_representativo(conteudo, padrao):
 def detectar_alertas(conteudo, nome_pagina, ano, mes):
     """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado."""
     verificado_em = verificado_em_do_texto(conteudo)
-    for padrao in PADROES:
-        if mes not in REVER_EM[padrao["tipo"]]:
+    for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO]:
+        if padrao is PADRAO_COMPROMISSO_FUTURO:
+            tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em)
+        elif mes not in REVER_EM[padrao["tipo"]]:
             continue
-        if _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em):
+        else:
+            tem_alerta = _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em)
+        if tem_alerta:
             alerta = {
                 "pagina": nome_pagina,
                 "tipo": padrao["tipo"],
