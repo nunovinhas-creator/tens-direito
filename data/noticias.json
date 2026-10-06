@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-05",
+      "titulo": "Peso dos mais velhos sobe no subsídio de desemprego",
+      "fonte_nome": "Correio da Manhã",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQZlF6MmF2cUpBa3VnZ2s0QTVSYk1VclZTWEo0aUtyOHRyOHpPZldET2VtWVdqODZwYjdJVk44NzdyNVRTT0NUNHFaWHhJVWtVVW8teTZTWjFzUVh6eENSY3hyalJVMVBwdjZBa2tzS3pIRlBmUjVRMFZiUFJtc0pzU0tUYlJBY0hXSXgxQXNxbEl6Z9IBkgFBVV95cUxQZlF6MmF2cUpBa3VnZ2s0QTVSYk1VclZTWEo0aUtyOHRyOHpPZldET2VtWVdqODZwYjdJVk44NzdyNVRTT0NUNHFaWHhJVWtVVW8teTZTWjFzUVh6eENSY3hyalJVMVBwdjZBa2tzS3pIRlBmUjVRMFZiUFJtc0pzU0tUYlJBY0hXSXgxQXNxbEl6Zw?oc=5",
+      "resumo": "Peso dos mais velhos sobe no subsídio de desemprego Correio da Manhã",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-02",
+      "titulo": "Polígrafo. Estudantes universitários que façam um part-time perdem direito ao abono de família?",
+      "fonte_nome": "TVI",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNZUJvY1ZoUExnQjhTb3ZtRm05M3l5dTlEX2d6OTBJT2dCaEtVS1ZhZDRFNk5RajJwZGhTaGxrb0JUWmM1YU9OT1N4WjZuVG8tcTIwMHJFeGRUdHpMb1BEbUhGZFhzdWxMVFFibVlhcHNRd2xxdnUtaEE2aU5FMnlsRllFMm9LOWN3VVJkaTJfeXFOU1M5V3NGZlhnWHpPdUxTWndBRGh4RjluU0c0LXh0R21ZY1VxenVieWdPeGVib2U5Z2FCNF9jZ0d4WDJfZ2w3R0hQTDN2M1dBd0VLZ2oxbEVSYnBEU2s?oc=5",
+      "resumo": "Polígrafo. Estudantes universitários que façam um part-time perdem direito ao abono de família? TVI",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-10-01",
       "titulo": "Trabalhadores mais velhos, mulheres e estrangeiros pesam mais no subsídio de desemprego",
       "fonte_nome": "Observador",

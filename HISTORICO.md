@@ -7212,4 +7212,4 @@ página real dispara em out. 2026.
 
 ---
 
-*Última revisão automática: 2026-10-05*
+*Última revisão automática: 2026-10-06*

@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **05 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **06 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -30,7 +30,7 @@ Actualizado automaticamente a partir do repositório em **05 de outubro de 2026*
 | [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
-| [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: quem tem direito e como candidatar |
+| [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: 1.342,83 €, requisitos e prazo |
 | [`caixa-geral-aposentacoes.html`](caixa-geral-aposentacoes.html) | Caixa Geral de Aposentações: quem está abrangido e como funciona |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
@@ -109,6 +109,7 @@ Actualizado automaticamente a partir do repositório em **05 de outubro de 2026*
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor, duração e como pedir |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
 | [`subsidio-por-morte.html`](subsidio-por-morte.html) | Subsídio por Morte: quem recebe, quanto e como pedir |
+| [`tarifa-social-energia.html`](tarifa-social-energia.html) | Tarifa Social de Energia 2026: luz e gás, quem tem direito |
 | [`verificador-apoios.html`](verificador-apoios.html) | Esta ferramenta mudou-se — Tens Direito |
 
 <!-- END:ESTADO -->
@@ -304,6 +305,7 @@ tens-direito/
 │   ├── gerir_estado_feeds.py
 │   ├── gerir_estado_fontes.py
 │   ├── inserir_botao_partilhar.py
+│   ├── inserir_reportar_erro.py
 │   ├── inventario_css_morto.py
 │   ├── limpar_css_morto_nav.py
 │   ├── migrar_consentimento.py
@@ -320,6 +322,7 @@ tens-direito/
 │   ├── shadow_report_md.py
 │   ├── sincronizar_clusters.py
 │   ├── sincronizar_nav.py
+│   ├── sincronizar_sitemap_lastmod.py
 │   ├── source_adapter.py
 │   ├── validar_carimbos_elegiveis.py
 │   ├── verificar_calendario_mensal.py
@@ -443,6 +446,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 05 de outubro de 2026 às 14:44 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 06 de outubro de 2026 às 13:58 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
