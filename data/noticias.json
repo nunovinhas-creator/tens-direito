@@ -19,6 +19,15 @@
       "cluster_id": "familia"
     },
     {
+      "data_iso": "2026-10-02",
+      "titulo": "Complemento solidário para idosos: como funciona e quem tem direito?",
+      "fonte_nome": "DECO Proteste",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNWDZVbXdzcFAwdjdYdGdKOHRmcEprM0NjN0NyVkdMUE92YWVJQWItQXk4Y0NqZTYwTnQtWjN1UTZxVWN0TktXRWUwS0EtaFo0Q2VzeGdEQ0RGNlc3cm8xWURBTWwwemtHTFA1QVBSQW43dWYzN1A0NHd5UFNpakpURW1XM2szOTlzZUQyN2l3bFRDby12a1h6eWtweVlRd2JjRkpKdmx6M1I0RkYwcE9ScWpaeFZLZw?oc=5",
+      "resumo": "Complemento solidário para idosos: como funciona e quem tem direito? DECO Proteste",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
       "data_iso": "2026-10-01",
       "titulo": "Trabalhadores mais velhos, mulheres e estrangeiros pesam mais no subsídio de desemprego",
       "fonte_nome": "Observador",
@@ -51,6 +60,15 @@
       "fonte_nome": "ECO",
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQTRGVC1EcHJSSmg3a201ZnVzNGJEMklicW5qcE5VanJvZmFRZWRuckRzVS1Sa3JKdE5aSXl3VWlab2p4QWhMSTNBTVVfQU9fSjNxbXFMd0hiamJkd1FTMjJSN0lCSHdUdUJVdl9jOEs0NzJJSmdyNlJzampsV0lJV3hYZEdtYnRLVHloVG92NF80Um9TUnRzRGpjNDRndGZ2R1NWUzJNaUxXZw?oc=5",
       "resumo": "Subsídio de desemprego compensa menos o salário perdido do que há dez anos ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-01",
+      "titulo": "Subsídio de desemprego aumentou, mas compensa uma fatia cada vez menor do salário",
+      "fonte_nome": "Expresso",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOWUU2MkpCTlNIU2lDekJ5Q3RNWm9abnJMR2libGdOR2MzMFhhenJ3Xy1uaUFSZ0RibzV1bjVtcU1fQjJsb3ZTS0lHQ2ZtOGFTaHhoaWVGTnc1WlFlMEQzN1ZzdFgtYS0xLS1LOHlGRFBIUDQ5eWxsTF9ZUkw5T0xMLXJTUlg3Y1YwLUFrUEFiQVd6YlJkblZvSzZCXy1Sblo3anE0R3ZLV0dlem9VX0t6eVp1SlNZLWJ1X3hFcGxUcTBCLVVpaEhhcHJIelRiUThjUzFOUg?oc=5",
+      "resumo": "Subsídio de desemprego aumentou, mas compensa uma fatia cada vez menor do salário Expresso",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },

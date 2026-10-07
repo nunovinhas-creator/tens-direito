@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **06 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **07 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -25,7 +25,7 @@ Actualizado automaticamente a partir do repositório em **06 de outubro de 2026*
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
 | [`amim-beneficios-fiscais.html`](amim-beneficios-fiscais.html) | Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC | Tens Direito |
-| [`amim.html`](amim.html) | Atestado Médico de Incapacidade Multiuso (AMIM) 2026: Guia Completo | Tens Direito |
+| [`amim.html`](amim.html) | Atestado multiusos (AMIM) 2026: novas regras e como pedir |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
 | [`assistencia-familia-filhos.html`](assistencia-familia-filhos.html) | Faltas para Assistência a Filhos e Família 2026: Dias, Subsídio e Como Pedir |
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica 2026: percentagens, prazos e autodeclaração |
@@ -446,6 +446,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 06 de outubro de 2026 às 13:58 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 07 de outubro de 2026 às 13:45 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

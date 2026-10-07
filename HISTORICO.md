@@ -7232,4 +7232,4 @@ commit; squash com CI verde; smoke de produção verde, versão servida de
 
 ---
 
-*Última revisão automática: 2026-10-06*
+*Última revisão automática: 2026-10-07*
