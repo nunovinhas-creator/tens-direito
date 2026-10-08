@@ -1,6 +1,33 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-08",
+      "titulo": "AO MINUTO | Subidas no Complemento Solidário para Idosos ou novas descidas no IRS: OE 2027 chega hoje ao parlamento",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBzdFg1Q2hBT0tZblU1TGFmTHZtX05FOVVjTGdCSkFMTE15bUpDTjkwR1pRT2Q0WjYtMVU2dmh0dThXQTA5Uy1LdTdmMFMzY0tRclctcUdBWk5iNUZ2eHFnZUwtU3N3RFRRRHBfaQ?oc=5",
+      "resumo": "AO MINUTO | Subidas no Complemento Solidário para Idosos ou novas descidas no IRS: OE 2027 chega hoje ao parlamento CNN Portugal",
+      "categoria": "fiscal",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
+      "data_iso": "2026-10-07",
+      "titulo": "Prestação Social Única: o que acontece aos teus apoios",
+      "fonte_nome": "Leak.pt",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE54LWl1dUxLakhaT3k3YkphZjVCbjZRUFNSN0VJZFhyMGdWYXQwaHluUU9ET0hkYktHMGpLV280RkhIOUdxQndDQXZ4c2h1eEhOTzBJOV9zenQ0di1meEwzTFVFM2hGZw?oc=5",
+      "resumo": "Prestação Social Única: o que acontece aos teus apoios Leak.pt",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-10-06",
+      "titulo": "Peso dos mais velhos sobe no subsídio de desemprego",
+      "fonte_nome": "Correio da Manhã",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQcXJoNHZxMnB5OXpwd20tRG9FZnIxWFNlX3UxU0RPREo3WXdFdkdaaVNLM0lUbndkTGdrUW9KV2hMNEt4anhIMTc2RmtQakE2N2tXRXptYU1YYWY3cnNYR012QTFuZHBmc3Zac0hVMUdKN3dDRjdfLTNZYkkxOXNUMS1ZMnNDa1Rpa1FLZUdTSzRoMFFrUkdN0gGSAUFVX3lxTFBmUXoyYXZxSkFrdWdnazRBNVJiTVVyVlNYSjRpS3I4dHI4ek9mV0RPZW1ZV2o4NnBiN0lWTjg3N3I1VFNPQ1Q0cVpYeElVa1VVby15NlNaMXNRWHp4Q1JjeHJqUlUxUHB2NkFra3NLekhGUGZSNVEwVmJQUm1zSnNTS1RiUkFjSFdJeDFBc3FsSXpn?oc=5",
+      "resumo": "Peso dos mais velhos sobe no subsídio de desemprego Correio da Manhã",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-10-05",
       "titulo": "Peso dos mais velhos sobe no subsídio de desemprego",
       "fonte_nome": "Correio da Manhã",
