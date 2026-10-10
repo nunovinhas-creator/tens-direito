@@ -1,163 +1,5 @@
 [
   {
-    "data": "2026-09-25",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 12,
-      "cuidador_informal": 13,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 13,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 12,
-      "csi_idosos": 14
-    },
-    "candidatos": [
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=fiscal"
-      },
-      {
-        "titulo": "ODEMIRA INVESTE 4,7 MILHÕES DE EUROS NA AÇÃO SOCIAL ESCOLAR, APOIOS MUNICIPAIS ÀS FAMÍLIAS E PROJETOS EDUCATIVOS - A voz do Algarve",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-22",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-22"
-      },
-      {
-        "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto - Seia Digital",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-23"
-      },
-      {
-        "titulo": "Cuidar de alguém com demência: os apoios que existem e onde pedir ajuda - SAPO",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-09-18",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-18"
-      },
-      {
-        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-24",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'fiscal' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 - CNN Portugal",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-24",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-24"
-      },
-      {
-        "titulo": "“Estamos a criar o país do salário mínimo nacional” - Renascença",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-21",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-21"
-      },
-      {
-        "titulo": "O apoio de até 670€ para idosos que muitos têm direito e desconhecem - Leak.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-09-22",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Odemira investe 4,7 milhões de euros na ação social escolar e nas famílias - Alentejo Ilustrado",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-21",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Prisão preventiva para homem que fingia ser cuidador informal para burlar idosos - dnoticias.pt",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-09-23",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "As propostas dos presidenciáveis para a Previdência impactam quem está em Portugal? Confirme aqui! - DN Brasil",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-23",
-        "score": -1,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "score": 2
-      },
-      {
-        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 2
-      }
-    ]
-  },
-  {
     "data": "2026-09-26",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -3526,5 +3368,211 @@
     "fora_da_janela_por_feed": {},
     "candidatos": [],
     "vencedores": []
+  },
+  {
+    "data": "2026-10-10",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 14,
+      "subsidio_desemprego": 11,
+      "rsi": 15,
+      "psu_pensoes": 13,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 14,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 14,
+      "salario_minimo": 7,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única: o que acontece aos teus apoios - Leak.pt",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-07",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-07"
+      },
+      {
+        "titulo": "Peso dos mais velhos sobe no subsídio de desemprego - Correio da Manhã",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-06"
+      },
+      {
+        "titulo": "Há menos jovens a receber subsídio de desemprego e peso dos mais velhos subiu na última década - TVI",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-06",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "Taxa de reposição do subsídio de desemprego cai em Portugal - The Portugal News",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-05",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Peso dos mais velhos sobe no subsídio de desemprego - Correio da Manhã",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-06",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes (com OE 2027) - Economia e Finanças",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-09",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-10-07",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano - CNN Portugal",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo nacional vai aumentar para 970 euros em 2027 - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Aumento do salário mínimo para 970 euros assumido no OE2027 - Observador",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "OE para 2027 assume salário mínimo de 970 euros | Orçamento do Estado 2027 - Público",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "OE2027. Governo assume salário mínimo nos 970 euros no próximo ano - CNN Portugal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-07",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Portugal vai fixar o salário mínimo em 970 € no próximo ano - The Portugal News",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027 - DECO PROteste",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-09",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Garantia pública para jovens comprarem primeira casa mantém-se em 2027 e “Porta 65” é reforçado - ECO",
+        "feed_nome": "porta65_arrendamento",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Garantia pública para jovens comprarem primeira casa mantém-se em 2027 e “Porta 65” é reforçado - ECO",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "OE 2027: um Portugal mais preparado, com mais rendimento e investimento - XXV Governo Constitucional",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Portugal aumenta suplemento solidário para idosos - The Portugal News",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Há menos jovens a receber subsídio de desemprego e peso dos mais velhos subiu na última década - TVI",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
+      },
+      {
+        "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "score": 1
+      }
+    ]
   }
 ]

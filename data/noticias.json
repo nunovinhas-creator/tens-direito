@@ -19,11 +19,29 @@
       "cluster_id": "prestacao-social-unica"
     },
     {
+      "data_iso": "2026-10-07",
+      "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxOVU16aUJQWFVaUmxyRDBiamxScjlLMU9PRGI0cTVxM3lQcVhxOHNsejItUXl1V0llMnlQN2I2UkxlSUNEZmVxa2xOX3JWLXhoLXVhRk1xZV9vbDFqMVJjMER0UzR6QV8tMnNzMVRhNU0ySmxYMVBOTW5oeW5OYUtyT1FqLWN5bkRXeWR4MWZMYWxnZ1BjMWJ1Nl9NZUdkWHpPeE45aUV6VmJ3cmo5RXMyYy1yUVFzU3hYRTFLT1U4eF9LZDQ4UWFtc3ZiT3RZSGg3dm16T2t1eHNyNGxuUktpNFR1WFBBUkJ2RTdwNmt3ZjA?oc=5",
+      "resumo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano CNN Portugal",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-10-06",
       "titulo": "Peso dos mais velhos sobe no subsídio de desemprego",
       "fonte_nome": "Correio da Manhã",
       "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQcXJoNHZxMnB5OXpwd20tRG9FZnIxWFNlX3UxU0RPREo3WXdFdkdaaVNLM0lUbndkTGdrUW9KV2hMNEt4anhIMTc2RmtQakE2N2tXRXptYU1YYWY3cnNYR012QTFuZHBmc3Zac0hVMUdKN3dDRjdfLTNZYkkxOXNUMS1ZMnNDa1Rpa1FLZUdTSzRoMFFrUkdN0gGSAUFVX3lxTFBmUXoyYXZxSkFrdWdnazRBNVJiTVVyVlNYSjRpS3I4dHI4ek9mV0RPZW1ZV2o4NnBiN0lWTjg3N3I1VFNPQ1Q0cVpYeElVa1VVby15NlNaMXNRWHp4Q1JjeHJqUlUxUHB2NkFra3NLekhGUGZSNVEwVmJQUm1zSnNTS1RiUkFjSFdJeDFBc3FsSXpn?oc=5",
       "resumo": "Peso dos mais velhos sobe no subsídio de desemprego Correio da Manhã",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-06",
+      "titulo": "Há menos jovens a receber subsídio de desemprego e peso dos mais velhos subiu na última década",
+      "fonte_nome": "TVI",
+      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQUEU0MmpkMzZibXk0Zkk1LXNfR01IMWpfOXlwNEpqOWUzS3BGU3ozU1FmaWdva2lYOUdHUWlzQlo1ZExMbW5wdzREbDlQYm12UXRoQWJ4ZlNJZndWQXlYY0ttMXdlX0VsWXlWT2J1X0c0SHUyT1pvRS1tQ2tQbzZjb0R1eUYxaXJ3SDVuX1dCVHFuTGZFN0REYkpSaUJLWXhiUGh1Y003aXo5dE95UVdTUUlwVHdYWXc4c1BzXzJrVkx2U1ZWUkF4Q2w4SDN3MXZ3VzZ0NXg0UGg1ejc2TlFvS2NzTWo0MjNB?oc=5",
+      "resumo": "Há menos jovens a receber subsídio de desemprego e peso dos mais velhos subiu na última década TVI",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },

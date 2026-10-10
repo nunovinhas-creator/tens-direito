@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **09 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **10 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -446,6 +446,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 09 de outubro de 2026 às 13:49 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 10 de outubro de 2026 às 13:25 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
