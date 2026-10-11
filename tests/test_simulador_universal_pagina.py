@@ -302,6 +302,35 @@ def test_creche_com_3_anos_mostra_o_motivo_dos_dados(browser, servidor):
     contexto.close()
 
 
+def _so_ase():
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"] = {"ase": dados["apoios"]["ase"]}
+    return {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(dados))}
+
+
+def test_ase_sem_abono_ou_nao_sei_mostra_o_motivo_e_nao_exclui(browser, servidor):
+    contexto, page = _abrir(browser, servidor, _so_ase())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"tem_filhos_a_cargo": "sim", "data_nascimento_crianca": "2016-03-01",
+                                 "tipo_escola_aluno": "publica_ou_protocolo",
+                                 "escalao_abono_crianca": "nao_recebe_ou_nao_sei"})
+    cartoes = _cartoes(page, "grupoIndeterminado")
+    assert [c["apoio"] for c in cartoes] == ["ase"]
+    assert cartoes[0]["motivo"] == (
+        "Não é possível decidir: o escalão da ASE é o do abono de família, e sem ele não dá para saber"
+        " — se o teu filho não recebe abono, fala com a secretaria da escola. Confirma no simulador dedicado."
+    )
+    assert not _cartoes(page, "grupoInelegivel")
+    assert not page.is_visible("#btnContinuarResponder")
+    contexto.close()
+
+
+def test_pergunta_do_escalao_tem_a_opcao_sem_abono(pagina):
+    rotulos = PERGUNTAS["escalao_abono_crianca"]["rotulos"]
+    assert rotulos["nao_recebe_ou_nao_sei"] == "Não recebe abono, ou não sei"
+
+
 def test_creche_com_4_anos_mostra_o_texto_proprio_e_nao_o_generico(browser, servidor):
     from datetime import date
     hoje = date.today()

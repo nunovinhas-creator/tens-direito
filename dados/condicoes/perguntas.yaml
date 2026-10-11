@@ -212,14 +212,15 @@ tipo_escola_aluno:
 
 
 escalao_abono_crianca:
-  descricao: "Escalão do abono de família da criança ou jovem — o escalão da ASE é este (Despacho n.º 8452-A/2015): 1.º escalão do abono = escalão A, 2.º = escalão B, 3.º ou superior = sem auxílios económicos (issue #295). Sem opção para quem não recebe abono, de propósito: a regra para esse caso não está confirmada, e sem resposta a ASE fica indeterminada"
+  descricao: "Escalão do abono de família da criança ou jovem — o escalão da ASE é este (Despacho n.º 8452-A/2015): 1.º escalão do abono = escalão A, 2.º = escalão B, 3.º ou superior = sem auxílios económicos (issue #295). «Não recebe abono, ou não sei» deixa a ASE em «Falta saber» (indeterminado_se em ase.yaml): a regra para quem não recebe abono não está confirmada, por isso nunca decide"
   tipo: categorica
-  opcoes: [primeiro, segundo, terceiro_ou_superior]
+  opcoes: [primeiro, segundo, terceiro_ou_superior, nao_recebe_ou_nao_sei]
   pergunta: "Qual é o escalão do abono de família da criança?"
   rotulos:
     primeiro: "1.º escalão"
     segundo: "2.º escalão"
     terceiro_ou_superior: "3.º escalão ou superior"
+    nao_recebe_ou_nao_sei: "Não recebe abono, ou não sei"
   ajuda: "Vês o escalão na Segurança Social Direta."
   aplicavel_se:
     campo: tem_filhos_a_cargo

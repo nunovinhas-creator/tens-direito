@@ -352,11 +352,46 @@ def test_ase_real_inelegivel_escola_privada_sem_protocolo_mesmo_com_abono_no_1o_
 
 
 def test_ase_real_indeterminado_sem_escalao_do_abono(pagina):
-    # Quem não recebe abono não tem opção (regra por confirmar) — fica sempre
-    # indeterminado, nunca "não tens direito".
+    # Sem resposta à pergunta do escalão: indeterminado, a pedir a pergunta.
     r = _avaliar(pagina, _condicoes_reais(), ASE_BASE)
     assert r["ase"]["estado"] == "indeterminado"
     assert r["ase"]["perguntasEmFalta"] == ["escalao_abono_crianca"]
+
+
+MOTIVO_ASE_SEM_ESCALAO = (
+    "o escalão da ASE é o do abono de família, e sem ele não dá para saber — "
+    "se o teu filho não recebe abono, fala com a secretaria da escola"
+)
+
+
+def test_ase_real_sem_abono_ou_nao_sei_fica_por_saber_com_motivo(pagina):
+    # «Não recebe abono, ou não sei»: a regra não decide — nunca «não tens
+    # direito», e nenhuma outra resposta muda isto.
+    condicoes = _condicoes_reais()
+    respostas = {**ASE_BASE, "escalao_abono_crianca": "nao_recebe_ou_nao_sei"}
+    r = _avaliar(pagina, condicoes, respostas)["ase"]
+    assert r["estado"] == "indeterminado"
+    assert r["perguntasEmFalta"] == []
+    assert r["motivos"] == [MOTIVO_ASE_SEM_ESCALAO]
+
+
+def test_ase_real_escola_privada_sem_protocolo_decide_mesmo_sem_escalao(pagina):
+    respostas = {"tem_filhos_a_cargo": "sim", "tipo_escola_aluno": "privada_sem_protocolo",
+                 "escalao_abono_crianca": "nao_recebe_ou_nao_sei"}
+    assert _avaliar(pagina, _condicoes_reais(), respostas)["ase"]["estado"] == "inelegivel"
+
+
+def test_indeterminado_se_sintetico(pagina):
+    c = _sintetico(["f1"], {"a": ["f1"]})
+    c["perguntas"]["f1"]["opcoes"] = ["sim", "nao", "talvez"]
+    folha = c["apoios"]["a"]["condicoes"][0]
+    folha["indeterminado_se"] = ["talvez"]
+    folha["motivo_indeterminado"] = "a regra não diz"
+    assert _avaliar(pagina, c, {"f1": "sim"})["a"]["estado"] == "elegivel"
+    assert _avaliar(pagina, c, {"f1": "nao"})["a"]["estado"] == "inelegivel"
+    r = _avaliar(pagina, c, {"f1": "talvez"})["a"]
+    assert r == {"estado": "indeterminado", "perguntasEmFalta": [], "motivos": ["a regra não diz"]}
+    assert _proxima(pagina, c, {"f1": "talvez"}) is None
 
 
 # ── RSI real (dados/condicoes.json de produção) — fórmula da escala de

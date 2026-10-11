@@ -677,6 +677,55 @@ def test_dados_reais_agregado_num_so_ecra_e_anos_depois_da_situacao_de_residenci
     assert "estatuto_residencia" in perguntas["anos_residencia_pt"]["depois_de"]
 
 
+# ── indeterminado_se (resposta para a qual a regra não decide) ──────────
+
+
+def _pergunta_escalao():
+    return {"descricao": "e", "tipo": "categorica", "opcoes": ["um", "dois", "nao_sei"], "pergunta": "Escalão?",
+            "rotulos": {"um": "1", "dois": "2", "nao_sei": "Não sei"}}
+
+
+def _apoio_escalao(**extra):
+    folha = {"id": "c", "tipo": "categorica", "campo": "escalao", "operador_comparacao": "eq",
+             "valor_literal": "um"}
+    folha.update(extra)
+    return {**_apoio_min(), "condicoes": [folha]}
+
+
+def test_indeterminado_se_valido_passa_para_o_json(tmp_path, monkeypatch):
+    apoio = _apoio_escalao(indeterminado_se=["nao_sei"], motivo_indeterminado="a regra não diz")
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside(), "escalao": _pergunta_escalao()},
+              {"prestacoes": {}}, {"x": apoio}, completar=False)
+    folha = gerar_condicoes_json.consolidar()["apoios"]["x"]["condicoes"][0]
+    assert folha["indeterminado_se"] == ["nao_sei"]
+    assert folha["motivo_indeterminado"] == "a regra não diz"
+
+
+@pytest.mark.parametrize("extra,erro", [
+    ({"indeterminado_se": ["nao_sei"]}, "motivo_indeterminado"),
+    ({"indeterminado_se": ["nao_sei"], "motivo_indeterminado": " "}, "motivo_indeterminado"),
+    ({"motivo_indeterminado": "x"}, "lista não vazia"),
+    ({"indeterminado_se": [], "motivo_indeterminado": "x"}, "lista não vazia"),
+    ({"indeterminado_se": ["talvez"], "motivo_indeterminado": "x"}, "lista não vazia"),
+    ({"indeterminado_se": ["um"], "motivo_indeterminado": "x"}, "próprio valor"),
+])
+def test_indeterminado_se_invalido_falha(tmp_path, monkeypatch, extra, erro):
+    _preparar(tmp_path, monkeypatch, {"reside": _pergunta_reside(), "escalao": _pergunta_escalao()},
+              {"prestacoes": {}}, {"x": _apoio_escalao(**extra)}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_indeterminado_se_so_em_categoricas(tmp_path, monkeypatch):
+    perguntas = {"reside": _pergunta_reside(), "anos": _numero()}
+    folha = {"id": "c", "tipo": "limiar", "campo": "anos", "operador_comparacao": "gte", "valor_literal": 1,
+             "fonte_pagina": "p.html", "indeterminado_se": [0], "motivo_indeterminado": "x"}
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": {**_apoio_min(), "condicoes": [folha]}},
+              completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="só existe em condições categóricas"):
+        gerar_condicoes_json.consolidar()
+
+
 def test_campo_generico_data_nascimento_proibido(tmp_path, monkeypatch):
     perguntas = {"reside": _pergunta_reside(),
                  "data_nascimento": {"descricao": "d", "tipo": "data", "pergunta": "Quando nasceste?"}}
