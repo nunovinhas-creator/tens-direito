@@ -1068,6 +1068,122 @@ def test_proxima_pergunta_ignora_apoios_ja_decididos(pagina):
     assert _proxima(pagina, c, {"f1": "nao"}) == "f3"
 
 
+# ── depois_de, grupo (várias perguntas num ecrã) e etapas ───────────────────
+
+
+def _ecra(pagina, condicoes_json, respostas, hoje="2026-09-27"):
+    return pagina.evaluate(
+        "([c, r, h]) => perguntasDoEcra(c, r, h)",
+        [condicoes_json, respostas, hoje],
+    )
+
+
+def test_depois_de_espera_enquanto_o_outro_campo_for_candidato(pagina):
+    c = _sintetico(["f1", "f2"], {"a": ["f1", "f2"], "b": ["f2"]})
+    assert _proxima(pagina, c, {}) == "f2"  # sem depois_de: f2 está em mais apoios
+    c["perguntas"]["f2"]["depois_de"] = ["f1"]
+    assert _proxima(pagina, c, {}) == "f1"
+    assert _proxima(pagina, c, {"f1": "sim"}) == "f2"
+    # f1 = nao decide "a" (inelegível); f2 continua a contar por "b".
+    assert _proxima(pagina, c, {"f1": "nao"}) == "f2"
+
+
+def test_depois_de_nao_espera_por_campo_que_ja_nao_conta(pagina):
+    c = _sintetico(["f1", "f2"], {"a": ["f2"]})
+    c["perguntas"]["f2"]["depois_de"] = ["f1"]  # f1 não é pedido por nenhum apoio
+    assert _proxima(pagina, c, {}) == "f2"
+
+
+def test_depois_de_em_ciclo_nunca_deixa_o_assistente_sem_pergunta(pagina):
+    # O compilador recusa ciclos; o motor, mesmo assim, nunca termina por isso.
+    c = _sintetico(["f1", "f2"], {"a": ["f1", "f2"]})
+    c["perguntas"]["f1"]["depois_de"] = ["f2"]
+    c["perguntas"]["f2"]["depois_de"] = ["f1"]
+    assert _proxima(pagina, c, {}) == "f1"
+
+
+def test_depois_de_nao_muda_resultados(pagina):
+    condicoes = _condicoes_reais()
+    sem = json.loads(json.dumps(condicoes))
+    for d in sem["perguntas"].values():
+        d.pop("depois_de", None)
+    respostas = {"data_nascimento_requerente": "1950-01-01", "reside_legalmente_pt": "sim",
+                 "estatuto_residencia": "nacional_pt", "anos_residencia_pt": 30}
+    assert _avaliar(pagina, condicoes, respostas) == _avaliar(pagina, sem, respostas)
+
+
+def test_grupo_mostra_os_campos_juntos_pela_ordem_de_perguntas(pagina):
+    c = _sintetico(["n2", "f1", "n1"], {"a": ["n1", "n2", "f1"], "b": ["n1"]}, monetarios=())
+    for campo in ("n1", "n2"):
+        c["perguntas"][campo] = {"tipo": "categorica", "opcoes": ["sim", "nao"],
+                                 "grupo": {"id": "g", "titulo": "T"}}
+    assert _proxima(pagina, c, {}) == "n1"
+    assert _ecra(pagina, c, {}) == ["n2", "n1"]  # ordem de perguntas.yaml, não a da contagem
+    assert _ecra(pagina, c, {"n2": "sim"}) == ["n1"]  # já respondido sai do ecrã
+    assert _ecra(pagina, c, {"n1": "sim", "n2": "sim"}) == ["f1"]
+    assert _ecra(pagina, c, {"n1": "sim", "n2": "sim", "f1": "sim"}) == []
+
+
+def test_grupo_so_inclui_campos_que_ainda_contam(pagina):
+    c = _sintetico(["n1", "n2", "f1"], {"a": ["n1", "f1"]})
+    for campo in ("n1", "n2"):
+        c["perguntas"][campo]["grupo"] = {"id": "g", "titulo": "T"}
+    assert _ecra(pagina, c, {}) == ["n1"]  # n2 não é pedido por nenhum apoio
+
+
+def test_dados_reais_adultos_e_menores_no_mesmo_ecra(pagina):
+    condicoes = _condicoes_reais()
+    respostas = {}
+    for _ in range(80):
+        campos = _ecra(pagina, condicoes, respostas)
+        if not campos:
+            break
+        if "numero_adultos_adicionais_agregado" in campos or "numero_menores_agregado" in campos:
+            assert campos == ["numero_adultos_adicionais_agregado", "numero_menores_agregado"]
+            return
+        for campo in campos:
+            d = condicoes["perguntas"][campo]
+            respostas[campo] = (d["opcoes"][0] if d["tipo"] == "categorica"
+                                else "1990-01-01" if d["tipo"] == "data" else 1)
+    raise AssertionError("nunca chegou às perguntas do agregado")
+
+
+@pytest.mark.parametrize("estatuto,pede_anos", [("nacional_pt", False), ("titulo_residencia_valido", True)])
+def test_dados_reais_anos_de_residencia_so_depois_da_situacao(pagina, estatuto, pede_anos):
+    """Quem tem nacionalidade portuguesa e não pode ter CSI nunca responde aos
+    anos de residência; com título de residência, responde — mas só depois."""
+    condicoes = _condicoes_reais()
+    respostas = {"data_nascimento_requerente": "1988-05-01", "reside_legalmente_pt": "sim",
+                 "tem_pensao_invalidez_sem_reavaliacao": "nao"}
+    ordem = []
+    for _ in range(80):
+        campo = _proxima(pagina, condicoes, respostas)
+        if campo is None:
+            break
+        ordem.append(campo)
+        d = condicoes["perguntas"][campo]
+        if campo == "estatuto_residencia":
+            respostas[campo] = estatuto
+        elif d["tipo"] == "categorica":
+            respostas[campo] = d["opcoes"][-1]
+        elif d["tipo"] == "data":
+            respostas[campo] = "2018-06-01"
+        else:
+            respostas[campo] = 1
+    assert ("anos_residencia_pt" in ordem) is pede_anos, ordem
+    if pede_anos:
+        assert ordem.index("estatuto_residencia") < ordem.index("anos_residencia_pt")
+
+
+def test_etapa_da_pergunta(pagina):
+    condicoes = _condicoes_reais()
+    etapa = lambda campo: pagina.evaluate("d => etapaDaPergunta(d)", condicoes["perguntas"][campo])  # noqa: E731
+    assert etapa("data_nascimento_requerente") == 0
+    assert etapa("numero_menores_agregado") == 0
+    assert etapa("data_nascimento_crianca") == 1
+    assert etapa("rendimento_mensal_agregado") == 2
+
+
 def test_proxima_pergunta_desempate_estavel_pela_ordem_de_perguntas(pagina):
     c1 = _sintetico(["x", "y"], {"a": ["y"], "b": ["x"]})
     c2 = _sintetico(["y", "x"], {"a": ["y"], "b": ["x"]})

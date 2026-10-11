@@ -135,24 +135,30 @@ def _responder_universal_ate_aos_resultados(page, limite=80):
     for _ in range(limite):
         if page.is_visible("#resultados"):
             return
-        campo = page.evaluate("window.simuladorUniversal.campoAtual")
-        n = page.evaluate("window.simuladorUniversal.historico.length")
-        d = CONDICOES["perguntas"][campo]
-        if campo in RESPOSTAS_UNIVERSAL:
-            valor = RESPOSTAS_UNIVERSAL[campo]
-        elif d["tipo"] == "categorica":
-            valor = d["opcoes"][0]
-        elif d["tipo"] == "data":
-            valor = "1990-01-01"
+        campos = page.evaluate("window.simuladorUniversal.camposAtuais")
+        n = page.evaluate("window.simuladorUniversal.ecras")
+
+        def valor_para(campo):
+            d = CONDICOES["perguntas"][campo]
+            if campo in RESPOSTAS_UNIVERSAL:
+                return RESPOSTAS_UNIVERSAL[campo]
+            if d["tipo"] == "categorica":
+                return d["opcoes"][0]
+            if d["tipo"] == "data":
+                return "1990-01-01"
+            return 0
+
+        if len(campos) > 1:
+            for campo in campos:
+                page.fill(f"#campo-{campo}", str(valor_para(campo)))
+            page.click("#btnContinuarConjunto")
+        elif CONDICOES["perguntas"][campos[0]]["tipo"] == "categorica":
+            page.click(f"#opcoes button[data-valor='{valor_para(campos[0])}']")
         else:
-            valor = 0
-        if d["tipo"] == "categorica":
-            page.click(f"#opcoes button[data-valor='{valor}']")
-        else:
-            page.fill("#campoResposta", str(valor))
+            page.fill("#campoResposta", str(valor_para(campos[0])))
             page.click("#btnContinuar")
         page.wait_for_function(
-            f"window.simuladorUniversal.historico.length === {n + 1} || !document.getElementById('resultados').hidden"
+            f"window.simuladorUniversal.ecras === {n + 1} || !document.getElementById('resultados').hidden"
         )
     raise AssertionError("o simulador universal não chegou aos resultados")
 

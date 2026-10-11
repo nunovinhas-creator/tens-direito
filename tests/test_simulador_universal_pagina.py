@@ -138,18 +138,26 @@ def _valor_para(campo, respostas_fixas):
     return 0
 
 
-def _responder_atual(page, respostas_fixas=RESPOSTAS_PADRAO):
-    """Responde à pergunta actual como um utilizador (clique ou teclado)."""
-    campo = _estado(page)["campoAtual"]
-    valor = _valor_para(campo, respostas_fixas)
-    n_antes = len(_estado(page)["historico"])
-    if PERGUNTAS[campo]["tipo"] == "categorica":
-        page.click(f"#opcoes button[data-valor='{valor}']")
+def _responder_ecra(page, respostas_fixas=RESPOSTAS_PADRAO):
+    """Responde ao ecrã actual como um utilizador (clique ou teclado).
+    Devolve os campos do ecrã — mais do que um quando é um grupo."""
+    campos = page.evaluate("window.simuladorUniversal.camposAtuais")
+    n_antes = page.evaluate("window.simuladorUniversal.ecras")
+    if len(campos) > 1:
+        for campo in campos:
+            page.fill(f"#campo-{campo}", str(_valor_para(campo, respostas_fixas)))
+        page.click("#btnContinuarConjunto")
+    elif PERGUNTAS[campos[0]]["tipo"] == "categorica":
+        page.click(f"#opcoes button[data-valor='{_valor_para(campos[0], respostas_fixas)}']")
     else:
-        page.fill("#campoResposta", str(valor))
+        page.fill("#campoResposta", str(_valor_para(campos[0], respostas_fixas)))
         page.click("#btnContinuar")
-    page.wait_for_function(f"window.simuladorUniversal.historico.length === {n_antes + 1}")
-    return campo
+    page.wait_for_function(f"window.simuladorUniversal.ecras === {n_antes + 1}")
+    return campos
+
+
+def _responder_atual(page, respostas_fixas=RESPOSTAS_PADRAO):
+    return _responder_ecra(page, respostas_fixas)[0]
 
 
 def _percorrer_ate_ao_fim(page, respostas_fixas=RESPOSTAS_PADRAO, limite=80):
@@ -157,7 +165,7 @@ def _percorrer_ate_ao_fim(page, respostas_fixas=RESPOSTAS_PADRAO, limite=80):
     for _ in range(limite):
         if page.is_visible("#resultados"):
             return ordem
-        ordem.append(_responder_atual(page, respostas_fixas))
+        ordem.extend(_responder_ecra(page, respostas_fixas))
     raise AssertionError("o assistente não terminou")
 
 
@@ -437,7 +445,8 @@ def test_voltar_desfaz_a_ultima_resposta(pagina):
 def test_numero_negativo_rejeitado_sem_avancar(pagina):
     for _ in range(30):
         campo = _estado(pagina)["campoAtual"]
-        if PERGUNTAS[campo]["tipo"] == "numero":
+        sozinho = len(pagina.evaluate("window.simuladorUniversal.camposAtuais")) == 1
+        if PERGUNTAS[campo]["tipo"] == "numero" and sozinho:
             break
         _responder_atual(pagina)
     else:
@@ -451,6 +460,104 @@ def test_numero_negativo_rejeitado_sem_avancar(pagina):
     assert depois["campoAtual"] == campo
     assert depois["historico"] == antes["historico"]
     assert campo not in depois["respostas"]
+
+
+def _ate_ao_ecra_do_agregado(page, respostas_fixas=RESPOSTAS_PADRAO, limite=40):
+    for _ in range(limite):
+        if len(page.evaluate("window.simuladorUniversal.camposAtuais")) > 1:
+            return
+        _responder_ecra(page, respostas_fixas)
+    raise AssertionError("nunca chegou ao ecrã do agregado")
+
+
+GRUPO_AGREGADO = ["numero_adultos_adicionais_agregado", "numero_menores_agregado"]
+
+
+def test_ecra_do_agregado_pergunta_adultos_e_menores_juntos(pagina):
+    _ate_ao_ecra_do_agregado(pagina)
+    assert pagina.evaluate("window.simuladorUniversal.camposAtuais") == GRUPO_AGREGADO
+    titulo = PERGUNTAS[GRUPO_AGREGADO[0]]["grupo"]["titulo"]
+    assert pagina.inner_text("#perguntaTexto") == titulo
+    assert pagina.get_attribute("#perguntaTexto", "for") is None
+    assert not pagina.is_visible("#campoLinha") and not pagina.is_visible("#opcoes")
+    for campo in GRUPO_AGREGADO:
+        rotulo = pagina.inner_text(f"label[for='campo-{campo}']")
+        assert rotulo == PERGUNTAS[campo]["pergunta"]
+        assert pagina.get_attribute(f"#campo-{campo}", "type") == "number"
+    assert pagina.evaluate("document.activeElement.id") == f"campo-{GRUPO_AGREGADO[0]}"
+
+
+def test_ecra_do_agregado_so_avanca_com_os_dois_numeros_validos(pagina):
+    _ate_ao_ecra_do_agregado(pagina)
+    antes = _estado(pagina)
+    pagina.fill(f"#campo-{GRUPO_AGREGADO[0]}", "1")
+    pagina.click("#btnContinuarConjunto")
+    assert pagina.inner_text("#erroResposta") == "Indica um número."
+    assert pagina.evaluate("document.activeElement.id") == f"campo-{GRUPO_AGREGADO[1]}"
+    pagina.fill(f"#campo-{GRUPO_AGREGADO[1]}", "-1")
+    pagina.click("#btnContinuarConjunto")
+    assert "igual ou superior a 0" in pagina.inner_text("#erroResposta")
+    depois = _estado(pagina)
+    assert depois["historico"] == antes["historico"]
+    assert not set(GRUPO_AGREGADO) & set(depois["respostas"])
+
+    pagina.fill(f"#campo-{GRUPO_AGREGADO[1]}", "2")
+    pagina.click("#btnContinuarConjunto")
+    pagina.wait_for_function(f"window.simuladorUniversal.ecras === {len(antes['historico']) + 1}")
+    respostas = _estado(pagina)["respostas"]
+    assert respostas[GRUPO_AGREGADO[0]] == 1 and respostas[GRUPO_AGREGADO[1]] == 2
+
+
+def test_voltar_desfaz_o_ecra_do_agregado_inteiro(pagina):
+    _ate_ao_ecra_do_agregado(pagina)
+    n = pagina.evaluate("window.simuladorUniversal.ecras")
+    _responder_ecra(pagina)
+    assert set(GRUPO_AGREGADO) <= set(_estado(pagina)["respostas"])
+    pagina.click("#btnVoltar")
+    estado = _estado(pagina)
+    assert pagina.evaluate("window.simuladorUniversal.ecras") == n
+    assert not set(GRUPO_AGREGADO) & set(estado["respostas"])
+    assert pagina.evaluate("window.simuladorUniversal.camposAtuais") == GRUPO_AGREGADO
+    assert pagina.is_visible(f"#campo-{GRUPO_AGREGADO[1]}")
+
+
+def _etapas(page):
+    return page.eval_on_selector_all(
+        "#etapas li",
+        "els => els.map(e => ({etapa: e.dataset.etapa, texto: e.textContent, oculta: e.hidden,"
+        " feita: e.classList.contains('feita'), atual: e.getAttribute('aria-current')}))",
+    )
+
+
+def test_etapas_avancam_com_as_perguntas(pagina):
+    etapas = _etapas(pagina)
+    assert [e["texto"] for e in etapas] == ["Sobre ti", "O teu filho mais novo", "Rendimentos e poupanças"]
+    assert etapas[0]["atual"] == "step" and not any(e["feita"] for e in etapas)
+
+    vistas = set()
+    for _ in range(80):
+        if pagina.is_visible("#resultados"):
+            break
+        campo = _estado(pagina)["campoAtual"]
+        etapa = pagina.evaluate("d => etapaDaPergunta(d)", PERGUNTAS[campo])
+        etapas = _etapas(pagina)
+        assert [e["atual"] for e in etapas] == ["step" if i == etapa else None for i in range(3)], campo
+        assert [e["feita"] for e in etapas] == [i < etapa for i in range(3)], campo
+        vistas.add(etapa)
+        _responder_ecra(pagina)
+    assert vistas == {0, 1, 2}
+
+
+def test_etapa_do_filho_desaparece_a_quem_nao_tem_filhos(pagina):
+    sem_filhos = {**RESPOSTAS_PADRAO, "tem_filhos_a_cargo": "nao"}
+    for _ in range(40):
+        if "tem_filhos_a_cargo" in _estado(pagina)["respostas"]:
+            break
+        _responder_ecra(pagina, sem_filhos)
+    assert [e["oculta"] for e in _etapas(pagina)] == [False, True, False]
+    while "tem_filhos_a_cargo" in _estado(pagina)["respostas"]:
+        pagina.click("#btnVoltar")
+    assert not any(e["oculta"] for e in _etapas(pagina))
 
 
 def test_recomecar_limpa_respostas_e_historico(pagina):

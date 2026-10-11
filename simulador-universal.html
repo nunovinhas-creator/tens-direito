@@ -141,6 +141,14 @@
     .carregando { color: var(--muted); text-align: center; padding: 2rem 0; }
     .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
     .progresso { font-size: 0.85rem; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .etapas { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; margin-bottom: 0.9rem; padding: 0; font-size: 0.85rem; }
+    .etapas li { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.7rem; border-radius: 999px; background: #F3F4F6; color: var(--muted); font-weight: 600; }
+    .etapas li.feita { background: var(--teal-light); color: #0F766E; }
+    .etapas li.feita::before { content: "✓"; }
+    .etapas li[aria-current="step"] { background: #0F766E; color: var(--white); }
+    .campos-conjuntos { display: grid; gap: 0.9rem; margin: 1rem 0 0.5rem; }
+    .campo-conjunto label { display: block; font-weight: 600; font-size: 0.98rem; margin-bottom: 0.35rem; line-height: 1.4; }
+    .campo-conjunto .campo-linha { margin: 0; }
     .pergunta-texto { font-size: 1.2rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.4rem; display: block; }
     .pergunta-ajuda { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
     .opcoes { display: grid; gap: 0.6rem; margin: 1rem 0 0.5rem; }
@@ -335,6 +343,11 @@
     <noscript><p class="aviso-erro">Este simulador precisa de JavaScript ativo no navegador. Sem ele, podes consultar <a href="/#guias-de-apoios">todos os guias de apoios</a>.</p></noscript>
 
     <section id="assistente" class="calc-card" aria-labelledby="perguntaTexto" hidden>
+      <ol class="etapas" id="etapas" aria-label="Etapas do simulador">
+        <li data-etapa="0">Sobre ti</li>
+        <li data-etapa="1">O teu filho mais novo</li>
+        <li data-etapa="2">Rendimentos e poupanças</li>
+      </ol>
       <p class="progresso" id="progresso"></p>
       <form id="formPergunta" novalidate>
         <label class="pergunta-texto" id="perguntaTexto" for="campoResposta"></label>
@@ -344,6 +357,10 @@
           <input id="campoResposta" autocomplete="off">
           <span class="campo-unidade" id="campoUnidade"></span>
           <button type="submit" class="btn btn-primary" id="btnContinuar">Continuar →</button>
+        </div>
+        <div id="camposConjuntos" role="group" aria-labelledby="perguntaTexto" hidden>
+          <div id="camposConjuntosLista" class="campos-conjuntos"></div>
+          <div><button type="submit" class="btn btn-primary" id="btnContinuarConjunto">Continuar →</button></div>
         </div>
         <p class="erro-resposta" id="erroResposta" role="alert"></p>
       </form>
@@ -489,8 +506,13 @@
       let CALENDARIO = null;
       let EVENTOS_CALENDARIO = [];
       let respostas = {};
-      let historico = [];
+      // Um ecrã pode ter várias perguntas (grupo em perguntas.yaml, ex.:
+      // adultos e menores do agregado). `ecras` guarda os ecrãs respondidos,
+      // para o «Voltar» desfazer o ecrã inteiro.
+      let ecras = [];
+      let camposAtuais = [];
       let campoAtual = null;
+      const historicoPlano = () => ecras.reduce((todos, e) => todos.concat(e), []);
 
       const el = (id) => document.getElementById(id);
 
@@ -532,29 +554,95 @@
         el('resultados').hidden = true;
         el('resultadosAnuncio').textContent = '';
         el('assistente').hidden = false;
-        campoAtual = proximaPergunta(CONDICOES, respostas, hojeISO());
+        camposAtuais = perguntasDoEcra(CONDICOES, respostas, hojeISO());
+        campoAtual = camposAtuais.length ? camposAtuais[0] : null;
         if (campoAtual === null) {
           mostrarResultadosSimulador();
           return;
         }
-        desenharPergunta(campoAtual);
+        desenharPergunta(camposAtuais);
       }
 
-      function desenharPergunta(campo) {
-        const def = CONDICOES.perguntas[campo];
-        el('progresso').textContent = 'Pergunta ' + (historico.length + 1);
-        el('perguntaTexto').textContent = def.pergunta;
+      // Etapas: as já passadas ficam marcadas, a actual com aria-current.
+      // A dos filhos desaparece a quem respondeu que não tem filhos.
+      function desenharEtapas(etapa) {
+        el('etapas').querySelectorAll('li').forEach((li) => {
+          const n = Number(li.dataset.etapa);
+          li.hidden = n === 1 && respostas.tem_filhos_a_cargo === 'nao';
+          li.classList.toggle('feita', n < etapa);
+          if (n === etapa) li.setAttribute('aria-current', 'step');
+          else li.removeAttribute('aria-current');
+        });
+      }
+
+      function prepararInput(input, def) {
+        input.value = '';
+        input.removeAttribute('min');
+        input.removeAttribute('max');
+        input.removeAttribute('step');
+        if (def.tipo === 'data') {
+          input.type = 'date';
+          input.max = hojeISO();
+          input.inputMode = '';
+        } else {
+          input.type = 'number';
+          input.min = '0';
+          input.step = eMonetario(def) ? '0.01' : '1';
+          input.inputMode = eMonetario(def) ? 'decimal' : 'numeric';
+        }
+      }
+
+      function desenharPergunta(campos) {
+        const def = CONDICOES.perguntas[campos[0]];
+        const conjunto = campos.length > 1;
+        desenharEtapas(etapaDaPergunta(def));
+        el('progresso').textContent = 'Pergunta ' + (ecras.length + 1);
+        const titulo = el('perguntaTexto');
+        titulo.textContent = conjunto ? def.grupo.titulo : def.pergunta;
+        if (conjunto) titulo.removeAttribute('for');
+        else titulo.setAttribute('for', 'campoResposta');
         const ajuda = el('perguntaAjuda');
-        ajuda.textContent = def.ajuda || '';
-        ajuda.hidden = !def.ajuda;
+        const textoAjuda = conjunto ? '' : (def.ajuda || '');
+        ajuda.textContent = textoAjuda;
+        ajuda.hidden = !textoAjuda;
         el('erroResposta').textContent = '';
-        el('btnVoltar').disabled = historico.length === 0;
+        el('btnVoltar').disabled = ecras.length === 0;
 
         const opcoes = el('opcoes');
         const linha = el('campoLinha');
-        const input = el('campoResposta');
+        const lista = el('camposConjuntosLista');
         opcoes.innerHTML = '';
+        lista.innerHTML = '';
+        el('camposConjuntos').hidden = !conjunto;
 
+        if (conjunto) {
+          opcoes.hidden = true;
+          linha.hidden = true;
+          campos.forEach((campo) => {
+            const d = CONDICOES.perguntas[campo];
+            const bloco = document.createElement('div');
+            bloco.className = 'campo-conjunto';
+            const rotulo = document.createElement('label');
+            rotulo.htmlFor = 'campo-' + campo;
+            rotulo.textContent = d.pergunta;
+            const linhaCampo = document.createElement('div');
+            linhaCampo.className = 'campo-linha';
+            const input = document.createElement('input');
+            input.id = 'campo-' + campo;
+            input.autocomplete = 'off';
+            prepararInput(input, d);
+            const unidade = document.createElement('span');
+            unidade.className = 'campo-unidade';
+            unidade.textContent = textoUnidade(d.unidade);
+            linhaCampo.append(input, unidade);
+            bloco.append(rotulo, linhaCampo);
+            lista.appendChild(bloco);
+          });
+          lista.querySelector('input').focus({ preventScroll: true });
+          return;
+        }
+
+        const campo = campos[0];
         if (def.tipo === 'categorica') {
           opcoes.hidden = false;
           linha.hidden = true;
@@ -564,7 +652,7 @@
             b.className = 'opcao';
             b.dataset.valor = opcao;
             b.textContent = def.rotulos[opcao];
-            b.addEventListener('click', () => responder(campo, opcao));
+            b.addEventListener('click', () => responder([campo], [opcao]));
             opcoes.appendChild(b);
           });
           const primeiro = opcoes.querySelector('button');
@@ -574,27 +662,13 @@
 
         opcoes.hidden = true;
         linha.hidden = false;
-        input.value = '';
-        input.removeAttribute('min');
-        input.removeAttribute('max');
-        input.removeAttribute('step');
-        if (def.tipo === 'data') {
-          input.type = 'date';
-          input.max = hojeISO();
-          input.inputMode = '';
-          el('campoUnidade').textContent = '';
-        } else {
-          input.type = 'number';
-          input.min = '0';
-          input.step = eMonetario(def) ? '0.01' : '1';
-          input.inputMode = eMonetario(def) ? 'decimal' : 'numeric';
-          el('campoUnidade').textContent = textoUnidade(def.unidade);
-        }
+        const input = el('campoResposta');
+        prepararInput(input, def);
+        el('campoUnidade').textContent = def.tipo === 'data' ? '' : textoUnidade(def.unidade);
         input.focus({ preventScroll: true });
       }
 
-      function lerValorDoCampo(def) {
-        const input = el('campoResposta');
+      function lerValorDoCampo(def, input) {
         if (def.tipo === 'data') {
           const v = input.value;
           if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return { erro: 'Indica uma data completa (dia, mês e ano).' };
@@ -610,40 +684,46 @@
         return { valor: n };
       }
 
-      function responder(campo, valor) {
-        respostas[campo] = valor;
-        historico.push(campo);
+      function responder(campos, valores) {
+        campos.forEach((campo, i) => { respostas[campo] = valores[i]; });
+        ecras.push(campos.slice());
         mostrarAssistente();
       }
 
       function submeterCampo(evento) {
         evento.preventDefault();
         if (!campoAtual) return;
-        const def = CONDICOES.perguntas[campoAtual];
-        if (def.tipo === 'categorica') return;
-        const r = lerValorDoCampo(def);
-        if (r.erro) {
-          el('erroResposta').textContent = r.erro;
-          el('campoResposta').focus();
-          return;
+        if (CONDICOES.perguntas[campoAtual].tipo === 'categorica') return;
+        const conjunto = camposAtuais.length > 1;
+        const valores = [];
+        for (const campo of camposAtuais) {
+          const input = conjunto ? el('campo-' + campo) : el('campoResposta');
+          const r = lerValorDoCampo(CONDICOES.perguntas[campo], input);
+          if (r.erro) {
+            el('erroResposta').textContent = r.erro;
+            input.focus();
+            return;
+          }
+          valores.push(r.valor);
         }
-        responder(campoAtual, r.valor);
+        responder(camposAtuais, valores);
       }
 
       function voltar() {
-        if (historico.length === 0) return;
-        const campo = historico.pop();
-        delete respostas[campo];
+        if (ecras.length === 0) return;
+        const campos = ecras.pop();
+        campos.forEach((campo) => { delete respostas[campo]; });
         el('resultados').hidden = true;
         el('resultadosAnuncio').textContent = '';
         el('assistente').hidden = false;
-        campoAtual = campo;
-        desenharPergunta(campo);
+        camposAtuais = campos;
+        campoAtual = campos[0];
+        desenharPergunta(campos);
       }
 
       function recomecar() {
         respostas = {};
-        historico = [];
+        ecras = [];
         el('detalhesInelegivel').open = false;
         mostrarAssistente();
         rolarPara('assistente');
@@ -1005,8 +1085,10 @@
       // Só o necessário para os testes (tests/test_simulador_universal_pagina.py).
       window.simuladorUniversal = {
         get respostas() { return respostas; },
-        get historico() { return historico; },
+        get historico() { return historicoPlano(); },
+        get ecras() { return ecras.length; },
         get campoAtual() { return campoAtual; },
+        get camposAtuais() { return camposAtuais.slice(); },
         get eventosCalendario() { return EVENTOS_CALENDARIO; },
         gerarICS: gerarICS,
       };

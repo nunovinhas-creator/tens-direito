@@ -38,6 +38,11 @@
 #     campo == valor, ou alternativa campo != valor no mesmo grupo any) —
 #     senão, quem responde o contrário fica eternamente em "falta saber"
 #     (guardrail em tests/test_perguntas_coerencia.py).
+#   depois_de: opcional — lista de campos; enquanto algum deles ainda for
+#     candidato, este espera (só muda a ordem, nunca o que se pergunta).
+#   grupo: opcional — {id, titulo}; os campos com o mesmo id aparecem no
+#     mesmo ecrã, com o titulo por cima e a `pergunta` de cada um como
+#     rótulo. Só para perguntas numéricas, todas com o mesmo aplicavel_se.
 #
 # As perguntas sobre a criança referem-se sempre ao filho MAIS NOVO — a
 # página avisa que os restantes se avaliam repetindo o simulador.
@@ -88,6 +93,10 @@ anos_residencia_pt:
     campo: reside_legalmente_pt
     valor: sim
   pergunta: "Há quantos anos resides legalmente em Portugal, sem interrupções?"
+  # A situação de residência e a pensão de invalidez primeiro: a quem tem
+  # nacionalidade portuguesa, ou já não pode ter CSI, os anos deixam de ser
+  # precisos e a pergunta não aparece.
+  depois_de: [estatuto_residencia, tem_pensao_invalidez_sem_reavaliacao]
 
 
 estatuto_residencia:
@@ -213,6 +222,9 @@ numero_adultos_adicionais_agregado:
   tipo: numero
   unidade: pessoas
   pergunta: "Quantos adultos vivem contigo no agregado, além de ti?"
+  grupo:
+    id: agregado
+    titulo: "Quem vive contigo?"
 
 
 numero_menores_agregado:
@@ -220,6 +232,9 @@ numero_menores_agregado:
   tipo: numero
   unidade: pessoas
   pergunta: "Quantos menores de 18 anos fazem parte do teu agregado?"
+  grupo:
+    id: agregado
+    titulo: "Quem vive contigo?"
 
 
 situacao_profissional:

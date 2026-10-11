@@ -50,7 +50,11 @@
         "campo": "reside_legalmente_pt",
         "valor": "sim"
       },
-      "pergunta": "Há quantos anos resides legalmente em Portugal, sem interrupções?"
+      "pergunta": "Há quantos anos resides legalmente em Portugal, sem interrupções?",
+      "depois_de": [
+        "estatuto_residencia",
+        "tem_pensao_invalidez_sem_reavaliacao"
+      ]
     },
     "estatuto_residencia": {
       "descricao": "Estatuto de residência para efeitos de condições de nacionalidade/residência",
@@ -198,13 +202,21 @@
       "descricao": "Número de adultos do agregado além do requerente/titular",
       "tipo": "numero",
       "unidade": "pessoas",
-      "pergunta": "Quantos adultos vivem contigo no agregado, além de ti?"
+      "pergunta": "Quantos adultos vivem contigo no agregado, além de ti?",
+      "grupo": {
+        "id": "agregado",
+        "titulo": "Quem vive contigo?"
+      }
     },
     "numero_menores_agregado": {
       "descricao": "Número de menores de 18 anos do agregado",
       "tipo": "numero",
       "unidade": "pessoas",
-      "pergunta": "Quantos menores de 18 anos fazem parte do teu agregado?"
+      "pergunta": "Quantos menores de 18 anos fazem parte do teu agregado?",
+      "grupo": {
+        "id": "agregado",
+        "titulo": "Quem vive contigo?"
+      }
     },
     "situacao_profissional": {
       "descricao": "Situação profissional actual da pessoa requerente",

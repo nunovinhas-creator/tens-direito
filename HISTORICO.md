@@ -7266,6 +7266,25 @@ sem datas nem botão. Evento `calendario_descarregado` (só `pagina`). Testes em
 real ao calendário) e `test_simulador_universal_pagina.py` (data certa, hoje
 conta, falhas, entradas malformadas, conteúdo e linhas do `.ics`).
 
+### Última revisão: 2026-10-11 — Simulador universal: ordem das perguntas, ecrã do agregado e etapas
+
+Primeira parte da simplificação das perguntas do simulador universal: só ordem
+e apresentação, sem tocar em nenhuma regra (os estados finais dos apoios são
+os mesmos). (1) `depois_de` em `perguntas.yaml`: um campo espera enquanto os
+campos listados ainda forem candidatos — os anos de residência só depois da
+situação de residência e da pensão de invalidez, para quem tem nacionalidade
+portuguesa e já não pode ter CSI nunca os responder. (2) `grupo` (`{id,
+titulo}`): campos numéricos do mesmo grupo no mesmo ecrã — adultos e menores
+do agregado, sob «Quem vive contigo?»; `perguntasDoEcra()` em
+`calc-apoios.js`, «Voltar» desfaz o ecrã inteiro. (3) Indicador de etapas
+(«Sobre ti», «O teu filho mais novo», «Rendimentos e poupanças»), a partir do
+mesmo escalão que já ordenava as perguntas; a etapa do filho desaparece a
+quem diz que não tem filhos. `gerar_condicoes_json.py` valida as duas chaves
+(campos existentes, sem ciclos, grupo só numérico, ≥2 campos, mesmo título e
+mesmo `aplicavel_se`). Medido com quatro perfis: 22→20, 16→15, 23→21 e 29→27
+ecrãs. O ganho grande (ecrã inicial «O que se aplica a ti?») fica para o PR
+seguinte.
+
 ---
 
 *Última revisão automática: 2026-10-11*
