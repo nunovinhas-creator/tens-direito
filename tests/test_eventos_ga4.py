@@ -64,6 +64,7 @@ EVENTOS_POR_FICHEIRO = {
     "comecar-aqui.html": ["comecar_aqui_percurso"],
     "index.html": ["cal_home_clique"],
     **{ficheiro: ["simulacao_concluida"] for ficheiro in SIMULADORES},
+    "simulador-universal.html": ["simulacao_concluida", "partilha_whatsapp"],
 }
 
 
@@ -154,6 +155,17 @@ def test_partilha_clique_existe_guardada_e_so_com_pathname():
     assert not _sem_tokens_proibidos(corpo), f"partilha_clique com dados pessoais: {corpo}"
     # Nunca enviar o título da página.
     assert "titulo" not in corpo and "title" not in corpo
+
+
+def test_partilha_whatsapp_existe_guardada_e_so_com_pathname():
+    fonte = _ler("simulador-universal.html")
+    chamadas = _chamadas_evento(fonte, "partilha_whatsapp")
+    assert len(chamadas) == 1, "esperava exactamente uma definição do evento"
+    indice, corpo = chamadas[0]
+    assert _tem_guarda_antes(fonte, indice), "partilha_whatsapp sem guarda typeof gtag"
+    assert re.fullmatch(r"\{\s*pagina:\s*window\.location\.pathname\s*\}", corpo), (
+        f"partilha_whatsapp deve enviar só o pathname: {corpo}"
+    )
 
 
 def test_partilha_clique_nao_e_disparada_no_fallback_manual():
