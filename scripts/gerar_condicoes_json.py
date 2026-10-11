@@ -83,7 +83,65 @@ def _carregar_perguntas() -> dict:
         if dados.get("tipo") not in TIPOS_VALIDOS:
             raise CondicaoInvalida(f"perguntas.yaml: '{campo}' com tipo inválido")
         _validar_campos_do_assistente(campo, dados, perguntas)
+    _validar_ordem_e_grupos(perguntas)
     return perguntas
+
+
+def _validar_ordem_e_grupos(perguntas: dict) -> None:
+    """`depois_de` (ordem) e `grupo` (várias perguntas no mesmo ecrã) só
+    mudam a apresentação, nunca a elegibilidade — mas um erro aqui deixava
+    a página a mostrar um ecrã sem título ou a esperar para sempre."""
+    depois = {}
+    for campo, dados in perguntas.items():
+        contexto = f"perguntas.yaml: '{campo}'"
+        if "depois_de" in dados:
+            lista = dados["depois_de"]
+            if not isinstance(lista, list) or not lista or not all(isinstance(c, str) for c in lista):
+                raise CondicaoInvalida(f"{contexto}: 'depois_de' tem de ser uma lista não vazia de campos")
+            for alvo in lista:
+                if alvo == campo:
+                    raise CondicaoInvalida(f"{contexto}: 'depois_de' não pode referenciar o próprio campo")
+                if alvo not in perguntas:
+                    raise CondicaoInvalida(f"{contexto}: 'depois_de' referencia campo inexistente '{alvo}'")
+            depois[campo] = lista
+
+    def ciclo(campo, caminho):
+        for alvo in depois.get(campo, []):
+            if alvo in caminho:
+                return caminho + [alvo]
+            encontrado = ciclo(alvo, caminho + [alvo])
+            if encontrado:
+                return encontrado
+        return None
+
+    for campo in depois:
+        encontrado = ciclo(campo, [campo])
+        if encontrado:
+            raise CondicaoInvalida(f"perguntas.yaml: ciclo em 'depois_de' ({' → '.join(encontrado)})")
+
+    grupos: dict[str, list[str]] = {}
+    for campo, dados in perguntas.items():
+        if "grupo" not in dados:
+            continue
+        contexto = f"perguntas.yaml: '{campo}'"
+        grupo = dados["grupo"]
+        if not isinstance(grupo, dict) or set(grupo) != {"id", "titulo"}:
+            raise CondicaoInvalida(f"{contexto}: 'grupo' tem de ser exactamente {{id, titulo}}")
+        if not all(isinstance(grupo[k], str) and grupo[k].strip() for k in ("id", "titulo")):
+            raise CondicaoInvalida(f"{contexto}: 'grupo.id' e 'grupo.titulo' têm de ser texto não vazio")
+        if dados["tipo"] != "numero":
+            raise CondicaoInvalida(f"{contexto}: 'grupo' só é suportado em perguntas numéricas")
+        grupos.setdefault(grupo["id"], []).append(campo)
+
+    for gid, campos in grupos.items():
+        if len(campos) < 2:
+            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' só tem um campo ({campos[0]})")
+        titulos = {perguntas[c]["grupo"]["titulo"] for c in campos}
+        if len(titulos) != 1:
+            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' com títulos diferentes ({sorted(titulos)})")
+        portoes = {repr(perguntas[c].get("aplicavel_se")) for c in campos}
+        if len(portoes) != 1:
+            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' com 'aplicavel_se' diferentes entre campos")
 
 
 def _validar_campos_do_assistente(campo: str, dados: dict, perguntas: dict) -> None:

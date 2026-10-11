@@ -256,6 +256,11 @@ function avaliarApoios(condicoesJson, respostas, hojeISO) {
 //   4. Dentro do escalão, o campo presente em mais apoios indeterminados (o
 //      que mais ajuda a decidir); desempate estável pela ordem de
 //      perguntas.yaml, nunca pela ordem das respostas.
+//   0. Antes de ordenar: um campo com `depois_de` espera enquanto algum dos
+//      campos listados ainda for candidato (ex.: os anos de residência só
+//      depois da situação de residência — a quem tem nacionalidade
+//      portuguesa, muitas vezes deixam de ser precisos). Nunca muda o que
+//      se pergunta, só a ordem; se o filtro deixasse tudo de fora, ignora-se.
 
 const CAMPO_FILHOS_A_CARGO = 'tem_filhos_a_cargo';
 
@@ -291,7 +296,9 @@ function escalaoPergunta(def) {
   return 0;
 }
 
-function proximaPergunta(condicoesJson, respostas, hojeISO) {
+// Candidatos a perguntar já pela ordem das regras acima (o primeiro é a
+// próxima pergunta).
+function candidatosOrdenados(condicoesJson, respostas, hojeISO) {
   const perguntas = condicoesJson.perguntas || {};
   const ordem = Object.keys(perguntas);
   const avaliacao = avaliarApoios(condicoesJson, respostas, hojeISO);
@@ -307,8 +314,10 @@ function proximaPergunta(condicoesJson, respostas, hojeISO) {
     candidatosDoApoio.forEach(c => { contagem[c] = (contagem[c] || 0) + 1; });
   }
 
-  const candidatos = Object.keys(contagem);
-  if (candidatos.length === 0) return null;
+  let candidatos = Object.keys(contagem);
+  const semEspera = candidatos.filter(c =>
+    !(perguntas[c].depois_de || []).some(antes => antes in contagem));
+  if (semEspera.length) candidatos = semEspera;
   candidatos.sort((a, b) => {
     const ea = escalaoPergunta(perguntas[a]);
     const eb = escalaoPergunta(perguntas[b]);
@@ -316,7 +325,34 @@ function proximaPergunta(condicoesJson, respostas, hojeISO) {
     if (contagem[a] !== contagem[b]) return contagem[b] - contagem[a];
     return ordem.indexOf(a) - ordem.indexOf(b);
   });
-  return candidatos[0];
+  return { candidatos, todos: Object.keys(contagem) };
+}
+
+function proximaPergunta(condicoesJson, respostas, hojeISO) {
+  const { candidatos } = candidatosOrdenados(condicoesJson, respostas, hojeISO);
+  return candidatos.length ? candidatos[0] : null;
+}
+
+// Campos a mostrar juntos no próximo ecrã: a próxima pergunta e, se ela
+// pertencer a um `grupo`, os outros campos do mesmo grupo que ainda sejam
+// candidatos, pela ordem de perguntas.yaml. Lista vazia no fim.
+function perguntasDoEcra(condicoesJson, respostas, hojeISO) {
+  const perguntas = condicoesJson.perguntas || {};
+  const { candidatos, todos } = candidatosOrdenados(condicoesJson, respostas, hojeISO);
+  if (!candidatos.length) return [];
+  const primeira = candidatos[0];
+  const grupo = perguntas[primeira].grupo;
+  if (!grupo) return [primeira];
+  const ordem = Object.keys(perguntas);
+  return ordem.filter(c =>
+    c === primeira || (todos.indexOf(c) !== -1 && perguntas[c].grupo && perguntas[c].grupo.id === grupo.id));
+}
+
+// Etapa da pergunta para o indicador de progresso da página: 0 = sobre a
+// pessoa, 1 = sobre o filho mais novo, 2 = rendimentos e poupanças. É o
+// mesmo escalão que ordena as perguntas, por isso as etapas só avançam.
+function etapaDaPergunta(def) {
+  return escalaoPergunta(def);
 }
 
 // PR 12: textos próprios (motivo_inelegivel, vindos dos dados) das folhas

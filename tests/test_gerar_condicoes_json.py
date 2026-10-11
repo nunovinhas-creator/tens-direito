@@ -569,6 +569,78 @@ def test_aplicavel_se_com_valor_fora_das_opcoes_falha(tmp_path, monkeypatch):
         gerar_condicoes_json.consolidar()
 
 
+# ── Ordem (depois_de) e ecrãs com várias perguntas (grupo) ──────────────
+
+
+def _numero(pergunta="Quantos?", **extra):
+    base = {"descricao": "n", "tipo": "numero", "unidade": "pessoas", "pergunta": pergunta}
+    base.update(extra)
+    return base
+
+
+GRUPO = {"id": "agregado", "titulo": "Quem vive contigo?"}
+
+
+def test_depois_de_e_grupo_validos_passam_para_o_json(tmp_path, monkeypatch):
+    perguntas = {
+        "reside": _pergunta_reside(),
+        "adultos": _numero(grupo=GRUPO),
+        "menores": _numero(grupo=GRUPO, depois_de=["reside"]),
+    }
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    saida = gerar_condicoes_json.consolidar()["perguntas"]
+    assert saida["adultos"]["grupo"] == GRUPO
+    assert saida["menores"]["depois_de"] == ["reside"]
+
+
+@pytest.mark.parametrize("depois_de,erro", [
+    ([], "lista não vazia"),
+    ("reside", "lista não vazia"),
+    (["anos"], "próprio campo"),
+    (["fantasma"], "inexistente"),
+])
+def test_depois_de_invalido_falha(tmp_path, monkeypatch, depois_de, erro):
+    perguntas = {"reside": _pergunta_reside(), "anos": _numero(depois_de=depois_de)}
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_depois_de_em_ciclo_falha(tmp_path, monkeypatch):
+    perguntas = {
+        "reside": _pergunta_reside(depois_de=["anos"]),
+        "anos": _numero(depois_de=["filhos"]),
+        "filhos": _numero(depois_de=["reside"]),
+    }
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="ciclo"):
+        gerar_condicoes_json.consolidar()
+
+
+@pytest.mark.parametrize("perguntas_grupo,erro", [
+    ({"a": _numero(grupo=GRUPO)}, "só tem um campo"),
+    ({"a": _numero(grupo=GRUPO), "b": _numero(grupo={"id": "agregado", "titulo": "Outro"})}, "títulos diferentes"),
+    ({"a": _numero(grupo=GRUPO), "b": _numero(grupo=GRUPO, aplicavel_se={"campo": "reside", "valor": "sim"})},
+     "aplicavel_se"),
+    ({"a": _numero(grupo={"id": "agregado"}), "b": _numero(grupo=GRUPO)}, "exactamente"),
+    ({"a": _numero(grupo={"id": "agregado", "titulo": " "}), "b": _numero(grupo=GRUPO)}, "texto não vazio"),
+    ({"a": _numero(grupo=GRUPO), "b": {**_pergunta_reside(), "grupo": GRUPO}}, "numéricas"),
+])
+def test_grupo_invalido_falha(tmp_path, monkeypatch, perguntas_grupo, erro):
+    perguntas = {"reside": _pergunta_reside(), **perguntas_grupo}
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
+        gerar_condicoes_json.consolidar()
+
+
+def test_dados_reais_agregado_num_so_ecra_e_anos_depois_da_situacao_de_residencia():
+    perguntas = json.loads((Path(__file__).resolve().parent.parent / "dados" / "condicoes.json")
+                           .read_text(encoding="utf-8"))["perguntas"]
+    grupo = {c for c, d in perguntas.items() if (d.get("grupo") or {}).get("id") == "agregado"}
+    assert grupo == {"numero_adultos_adicionais_agregado", "numero_menores_agregado"}
+    assert "estatuto_residencia" in perguntas["anos_residencia_pt"]["depois_de"]
+
+
 def test_campo_generico_data_nascimento_proibido(tmp_path, monkeypatch):
     perguntas = {"reside": _pergunta_reside(),
                  "data_nascimento": {"descricao": "d", "tipo": "data", "pergunta": "Quando nasceste?"}}
