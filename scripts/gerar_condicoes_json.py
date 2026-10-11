@@ -121,28 +121,39 @@ def _validar_ordem_e_grupos(perguntas: dict) -> None:
 
     grupos: dict[str, list[str]] = {}
     for campo, dados in perguntas.items():
-        if "grupo" not in dados:
-            continue
         contexto = f"perguntas.yaml: '{campo}'"
+        if "grupo" not in dados:
+            if "rotulo_caixa" in dados:
+                raise CondicaoInvalida(f"{contexto}: 'rotulo_caixa' só faz sentido numa pergunta sim/não de um grupo")
+            continue
         grupo = dados["grupo"]
-        if not isinstance(grupo, dict) or set(grupo) != {"id", "titulo"}:
-            raise CondicaoInvalida(f"{contexto}: 'grupo' tem de ser exactamente {{id, titulo}}")
-        if not all(isinstance(grupo[k], str) and grupo[k].strip() for k in ("id", "titulo")):
-            raise CondicaoInvalida(f"{contexto}: 'grupo.id' e 'grupo.titulo' têm de ser texto não vazio")
-        if dados["tipo"] != "numero":
-            raise CondicaoInvalida(f"{contexto}: 'grupo' só é suportado em perguntas numéricas")
+        if not isinstance(grupo, dict) or not {"id", "titulo"} <= set(grupo) or set(grupo) - {"id", "titulo", "ajuda"}:
+            raise CondicaoInvalida(f"{contexto}: 'grupo' tem de ter {{id, titulo}} e, opcional, 'ajuda'")
+        if not all(isinstance(v, str) and v.strip() for v in grupo.values()):
+            raise CondicaoInvalida(f"{contexto}: 'grupo.id', 'grupo.titulo' e 'grupo.ajuda' têm de ser texto não vazio")
+        sim_nao = dados["tipo"] == "categorica" and dados.get("opcoes") == ["sim", "nao"]
+        if dados["tipo"] != "numero" and not sim_nao:
+            raise CondicaoInvalida(f"{contexto}: 'grupo' só é suportado em perguntas numéricas ou sim/não")
+        if sim_nao:
+            rotulo = dados.get("rotulo_caixa")
+            if not isinstance(rotulo, str) or not rotulo.strip():
+                raise CondicaoInvalida(f"{contexto}: pergunta sim/não num grupo sem 'rotulo_caixa'")
+        elif "rotulo_caixa" in dados:
+            raise CondicaoInvalida(f"{contexto}: 'rotulo_caixa' só faz sentido numa pergunta sim/não de um grupo")
         grupos.setdefault(grupo["id"], []).append(campo)
 
     for gid, campos in grupos.items():
         if len(campos) < 2:
             raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' só tem um campo ({campos[0]})")
-        titulos = {perguntas[c]["grupo"]["titulo"] for c in campos}
-        if len(titulos) != 1:
-            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' com títulos diferentes ({sorted(titulos)})")
+        definicoes = {repr(sorted(perguntas[c]["grupo"].items())) for c in campos}
+        if len(definicoes) != 1:
+            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' com título ou ajuda diferentes entre campos")
+        tipos = {perguntas[c]["tipo"] for c in campos}
+        if len(tipos) != 1:
+            raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' mistura perguntas numéricas e sim/não")
         portoes = {repr(perguntas[c].get("aplicavel_se")) for c in campos}
         if len(portoes) != 1:
             raise CondicaoInvalida(f"perguntas.yaml: grupo '{gid}' com 'aplicavel_se' diferentes entre campos")
-
 
 def _validar_campos_do_assistente(campo: str, dados: dict, perguntas: dict) -> None:
     """PR 11: o que simulador-universal.html precisa para mostrar a pergunta

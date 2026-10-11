@@ -145,9 +145,9 @@ condicoes:
     condicoes:
       - id: nao_desempregado
         tipo: categorica
-        campo: situacao_profissional
+        campo: esta_desempregado
         operador_comparacao: neq
-        valor_literal: desempregado
+        valor_literal: sim
       - id: inscrito_e_disponivel
         tipo: categorica
         campo: inscrito_centro_emprego_e_disponivel

@@ -148,7 +148,11 @@ def _responder_universal_ate_aos_resultados(page, limite=80):
                 return "1990-01-01"
             return 0
 
-        if len(campos) > 1:
+        if len(campos) > 1 and CONDICOES["perguntas"][campos[0]]["tipo"] == "categorica":
+            for campo in campos:
+                page.set_checked(f"#campo-{campo}", valor_para(campo) == "sim")
+            page.click("#btnContinuarConjunto")
+        elif len(campos) > 1:
             for campo in campos:
                 page.fill(f"#campo-{campo}", str(valor_para(campo)))
             page.click("#btnContinuarConjunto")

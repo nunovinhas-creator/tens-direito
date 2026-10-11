@@ -250,7 +250,8 @@ function avaliarApoios(condicoesJson, respostas, hojeISO) {
 //      cuja pergunta-mãe ainda não foi respondida "sobe" para a pergunta-mãe
 //      (ex.: as perguntas da criança puxam tem_filhos_a_cargo); se a mãe já
 //      foi respondida com outro valor, o campo simplesmente não se pergunta.
-//   3. Escalões: perguntas sobre o requerente primeiro, depois as da criança
+//   3. Escalões: o ecrã de situações (grupo sim/não) antes de tudo; depois
+//      perguntas sobre o requerente, depois as da criança
 //      (aplicavel_se em tem_filhos_a_cargo — referem-se sempre ao filho mais
 //      novo), e os campos monetários (unidade em EUR) sempre no fim.
 //   4. Dentro do escalão, o campo presente em mais apoios indeterminados (o
@@ -291,6 +292,9 @@ function campoAPerguntar(perguntas, respostas, campo) {
 }
 
 function escalaoPergunta(def) {
+  // O ecrã «O que se aplica a ti?» (grupo de perguntas sim/não) vem sempre
+  // primeiro: decide de uma vez que apoios ficam de fora.
+  if (def.grupo && def.tipo === 'categorica') return -1;
   if (def.unidade && String(def.unidade).indexOf('EUR') !== -1) return 2;
   if (def.aplicavel_se && def.aplicavel_se.campo === CAMPO_FILHOS_A_CARGO) return 1;
   return 0;
@@ -352,7 +356,7 @@ function perguntasDoEcra(condicoesJson, respostas, hojeISO) {
 // pessoa, 1 = sobre o filho mais novo, 2 = rendimentos e poupanças. É o
 // mesmo escalão que ordena as perguntas, por isso as etapas só avançam.
 function etapaDaPergunta(def) {
-  return escalaoPergunta(def);
+  return Math.max(0, escalaoPergunta(def));
 }
 
 // PR 12: textos próprios (motivo_inelegivel, vindos dos dados) das folhas

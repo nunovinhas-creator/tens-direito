@@ -143,7 +143,11 @@ def _responder_ecra(page, respostas_fixas=RESPOSTAS_PADRAO):
     Devolve os campos do ecrã — mais do que um quando é um grupo."""
     campos = page.evaluate("window.simuladorUniversal.camposAtuais")
     n_antes = page.evaluate("window.simuladorUniversal.ecras")
-    if len(campos) > 1:
+    if len(campos) > 1 and PERGUNTAS[campos[0]]["tipo"] == "categorica":
+        for campo in campos:
+            page.set_checked(f"#campo-{campo}", _valor_para(campo, respostas_fixas) == "sim")
+        page.click("#btnContinuarConjunto")
+    elif len(campos) > 1:
         for campo in campos:
             page.fill(f"#campo-{campo}", str(_valor_para(campo, respostas_fixas)))
         page.click("#btnContinuarConjunto")
@@ -189,7 +193,7 @@ def test_le_mesmo_condicoes_json_e_nao_tem_apoios_no_html(browser, servidor):
     assert any(u.endswith("/dados/condicoes.json") for u in pedidos)
 
     primeiro = _estado(page)["campoAtual"]
-    assert page.inner_text("#perguntaTexto") == PERGUNTAS[primeiro]["pergunta"]
+    assert page.inner_text("#perguntaTexto") == PERGUNTAS[primeiro]["grupo"]["titulo"]
 
     page.click("#btnVerResultados")
     page.wait_for_selector("#resultados:not([hidden])")
@@ -426,16 +430,17 @@ def test_falha_a_carregar_dados_mostra_erro_e_nunca_sem_direito(browser, servido
 
 
 def test_voltar_desfaz_a_ultima_resposta(pagina):
-    primeiro = _responder_atual(pagina)
-    segundo = _responder_atual(pagina)
-    assert _estado(pagina)["historico"] == [primeiro, segundo]
+    primeiro = _responder_ecra(pagina)
+    segundo = _responder_ecra(pagina)
+    assert len(segundo) == 1, "o 2.º ecrã devia ter uma só pergunta"
+    assert _estado(pagina)["historico"] == primeiro + segundo
 
     pagina.click("#btnVoltar")
     estado = _estado(pagina)
-    assert estado["historico"] == [primeiro]
-    assert estado["campoAtual"] == segundo
-    assert segundo not in estado["respostas"]
-    assert pagina.inner_text("#perguntaTexto") == PERGUNTAS[segundo]["pergunta"]
+    assert estado["historico"] == primeiro
+    assert estado["campoAtual"] == segundo[0]
+    assert segundo[0] not in estado["respostas"]
+    assert pagina.inner_text("#perguntaTexto") == PERGUNTAS[segundo[0]]["pergunta"]
 
     pagina.click("#btnVoltar")
     assert _estado(pagina)["historico"] == []
@@ -464,7 +469,7 @@ def test_numero_negativo_rejeitado_sem_avancar(pagina):
 
 def _ate_ao_ecra_do_agregado(page, respostas_fixas=RESPOSTAS_PADRAO, limite=40):
     for _ in range(limite):
-        if len(page.evaluate("window.simuladorUniversal.camposAtuais")) > 1:
+        if page.evaluate("window.simuladorUniversal.camposAtuais") == GRUPO_AGREGADO:
             return
         _responder_ecra(page, respostas_fixas)
     raise AssertionError("nunca chegou ao ecrã do agregado")
@@ -490,6 +495,7 @@ def test_ecra_do_agregado_pergunta_adultos_e_menores_juntos(pagina):
 def test_ecra_do_agregado_so_avanca_com_os_dois_numeros_validos(pagina):
     _ate_ao_ecra_do_agregado(pagina)
     antes = _estado(pagina)
+    n_ecras = pagina.evaluate("window.simuladorUniversal.ecras")
     pagina.fill(f"#campo-{GRUPO_AGREGADO[0]}", "1")
     pagina.click("#btnContinuarConjunto")
     assert pagina.inner_text("#erroResposta") == "Indica um número."
@@ -503,7 +509,7 @@ def test_ecra_do_agregado_so_avanca_com_os_dois_numeros_validos(pagina):
 
     pagina.fill(f"#campo-{GRUPO_AGREGADO[1]}", "2")
     pagina.click("#btnContinuarConjunto")
-    pagina.wait_for_function(f"window.simuladorUniversal.ecras === {len(antes['historico']) + 1}")
+    pagina.wait_for_function(f"window.simuladorUniversal.ecras === {n_ecras + 1}")
     respostas = _estado(pagina)["respostas"]
     assert respostas[GRUPO_AGREGADO[0]] == 1 and respostas[GRUPO_AGREGADO[1]] == 2
 
@@ -560,10 +566,82 @@ def test_etapa_do_filho_desaparece_a_quem_nao_tem_filhos(pagina):
     assert not any(e["oculta"] for e in _etapas(pagina))
 
 
+SITUACOES = [c for c, d in PERGUNTAS.items() if (d.get("grupo") or {}).get("id") == "situacoes"]
+
+
+def test_primeiro_ecra_e_o_que_se_aplica_a_ti(pagina):
+    assert pagina.evaluate("window.simuladorUniversal.camposAtuais") == SITUACOES
+    titulo = PERGUNTAS[SITUACOES[0]]["grupo"]
+    assert pagina.inner_text("#perguntaTexto") == titulo["titulo"]
+    assert pagina.inner_text("#perguntaAjuda") == titulo["ajuda"]
+    for campo in SITUACOES:
+        caixa = f"#campo-{campo}"
+        assert pagina.get_attribute(caixa, "type") == "checkbox"
+        assert not pagina.is_checked(caixa)
+        rotulo = pagina.eval_on_selector(caixa, "e => e.closest('label').textContent")
+        assert rotulo == PERGUNTAS[campo]["rotulo_caixa"]
+    assert pagina.evaluate("document.activeElement.id") == f"campo-{SITUACOES[0]}"
+    assert pagina.get_attribute("#etapas li[data-etapa='0']", "aria-current") == "step"
+
+
+def test_situacoes_marcadas_sim_por_marcar_nao(pagina):
+    pagina.check("#campo-tem_filhos_a_cargo")
+    pagina.click("label:has(#campo-esta_desempregado)")  # clicar no texto também marca
+    pagina.click("#btnContinuarConjunto")
+    pagina.wait_for_function("window.simuladorUniversal.ecras === 1")
+    respostas = _estado(pagina)["respostas"]
+    assert {c: respostas[c] for c in SITUACOES} == {
+        c: ("sim" if c in ("tem_filhos_a_cargo", "esta_desempregado") else "nao") for c in SITUACOES}
+
+
+def test_nada_marcado_avanca_e_voltar_repoe_as_caixas(pagina):
+    pagina.click("#btnContinuarConjunto")
+    pagina.wait_for_function("window.simuladorUniversal.ecras === 1")
+    assert all(_estado(pagina)["respostas"][c] == "nao" for c in SITUACOES)
+    pagina.click("#btnVoltar")
+    pagina.check("#campo-tem_cit_valido")
+    pagina.click("#btnContinuarConjunto")
+    pagina.wait_for_function("window.simuladorUniversal.ecras === 1")
+    pagina.click("#btnVoltar")
+    assert pagina.is_checked("#campo-tem_cit_valido")
+    assert not pagina.is_checked("#campo-tem_filhos_a_cargo")
+    assert not set(SITUACOES) & set(_estado(pagina)["respostas"])
+
+
+def _resultados_apos_situacoes(pagina, marcar):
+    for campo in marcar:
+        pagina.check(f"#campo-{campo}")
+    pagina.click("#btnContinuarConjunto")
+    pagina.wait_for_function("window.simuladorUniversal.ecras === 1")
+    pagina.click("#btnVerResultados")
+    pagina.wait_for_selector("#resultados:not([hidden])")
+
+
+def test_aviso_quando_nenhuma_situacao_foi_marcada(pagina):
+    _resultados_apos_situacoes(pagina, [])
+    assert pagina.is_visible("#avisoNadaMarcado")
+    texto = pagina.inner_text("#avisoNadaMarcado")
+    assert texto.startswith("Não marcaste nenhuma situação no primeiro ecrã.")
+    assert "«Recomeçar»" in texto
+    # No topo: antes do resumo.
+    assert pagina.evaluate(
+        "document.getElementById('avisoNadaMarcado').compareDocumentPosition("
+        "document.getElementById('resumoResultados')) & Node.DOCUMENT_POSITION_FOLLOWING")
+
+
+def test_sem_aviso_com_uma_situacao_marcada_ou_antes_do_primeiro_ecra(pagina):
+    pagina.click("#btnVerResultados")
+    pagina.wait_for_selector("#resultados:not([hidden])")
+    assert not pagina.is_visible("#avisoNadaMarcado")
+    pagina.click("#btnRecomecar")
+    _resultados_apos_situacoes(pagina, ["esta_desempregado"])
+    assert not pagina.is_visible("#avisoNadaMarcado")
+
+
 def test_recomecar_limpa_respostas_e_historico(pagina):
     _responder_atual(pagina)
     _responder_atual(pagina)
-    assert len(_estado(pagina)["historico"]) == 2
+    assert pagina.evaluate("window.simuladorUniversal.ecras") == 2
     pagina.click("#btnVerResultados")
     pagina.wait_for_selector("#resultados:not([hidden])")
     pagina.click("#btnRecomecar")

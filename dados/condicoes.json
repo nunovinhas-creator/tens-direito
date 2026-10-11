@@ -18,6 +18,12 @@
       "rotulos": {
         "sim": "Sim",
         "nao": "Não"
+      },
+      "rotulo_caixa": "Tenho filhos (ou outras crianças ou jovens) a meu cargo",
+      "grupo": {
+        "id": "situacoes",
+        "titulo": "O que se aplica a ti?",
+        "ajuda": "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
       }
     },
     "data_nascimento_crianca": {
@@ -218,23 +224,23 @@
         "titulo": "Quem vive contigo?"
       }
     },
-    "situacao_profissional": {
-      "descricao": "Situação profissional actual da pessoa requerente",
+    "esta_desempregado": {
+      "descricao": "A pessoa requerente está desempregada (substitui a antiga situacao_profissional: nenhuma condição usava outra situação além de desempregado/não desempregado)",
       "tipo": "categorica",
       "opcoes": [
-        "empregado",
-        "desempregado",
-        "estudante",
-        "reformado",
-        "inativo"
+        "sim",
+        "nao"
       ],
-      "pergunta": "Qual é a tua situação profissional atual?",
+      "pergunta": "Estás desempregado/a?",
       "rotulos": {
-        "empregado": "A trabalhar",
-        "desempregado": "Desempregado/a",
-        "estudante": "Estudante",
-        "reformado": "Reformado/a",
-        "inativo": "Outra situação (sem atividade)"
+        "sim": "Sim",
+        "nao": "Não"
+      },
+      "rotulo_caixa": "Estou desempregado/a",
+      "grupo": {
+        "id": "situacoes",
+        "titulo": "O que se aplica a ti?",
+        "ajuda": "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
       }
     },
     "inscrito_centro_emprego_e_disponivel": {
@@ -250,8 +256,8 @@
         "nao": "Não"
       },
       "aplicavel_se": {
-        "campo": "situacao_profissional",
-        "valor": "desempregado"
+        "campo": "esta_desempregado",
+        "valor": "sim"
       }
     },
     "esta_em_estabelecimento_prisional_ou_institucionalizado": {
@@ -332,8 +338,8 @@
         "nao": "Não"
       },
       "aplicavel_se": {
-        "campo": "situacao_profissional",
-        "valor": "desempregado"
+        "campo": "esta_desempregado",
+        "valor": "sim"
       }
     },
     "dias_registo_remuneracoes_24_meses": {
@@ -342,8 +348,8 @@
       "unidade": "dias",
       "pergunta": "Nos 24 meses antes de ficares desempregado/a, quantos dias tens com descontos para a Segurança Social?",
       "aplicavel_se": {
-        "campo": "situacao_profissional",
-        "valor": "desempregado"
+        "campo": "esta_desempregado",
+        "valor": "sim"
       }
     },
     "tem_cit_valido": {
@@ -358,6 +364,12 @@
       "rotulos": {
         "sim": "Sim",
         "nao": "Não"
+      },
+      "rotulo_caixa": "Estou de baixa médica (passada por um médico)",
+      "grupo": {
+        "id": "situacoes",
+        "titulo": "O que se aplica a ti?",
+        "ajuda": "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
       }
     },
     "tipo_trabalhador": {
@@ -452,6 +464,12 @@
       "rotulos": {
         "sim": "Sim, vai ser a minha casa",
         "nao": "Não, ou não vou comprar casa"
+      },
+      "rotulo_caixa": "Vou comprar casa para morar nela",
+      "grupo": {
+        "id": "situacoes",
+        "titulo": "O que se aplica a ti?",
+        "ajuda": "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
       }
     },
     "rendimento_trabalho_mensal_agregado": {
@@ -477,6 +495,12 @@
       "rotulos": {
         "sim": "Sim",
         "nao": "Não"
+      },
+      "rotulo_caixa": "Tenho uma deficiência ou incapacidade reconhecida",
+      "grupo": {
+        "id": "situacoes",
+        "titulo": "O que se aplica a ti?",
+        "ajuda": "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
       }
     },
     "deficiencia_motora_fisica_organica": {
@@ -1144,9 +1168,9 @@
         {
           "id": "esta_desempregado",
           "tipo": "categorica",
-          "campo": "situacao_profissional",
+          "campo": "esta_desempregado",
           "operador_comparacao": "eq",
-          "valor": "desempregado",
+          "valor": "sim",
           "unidade_comparacao": null,
           "fonte": {
             "tipo": "literal_enum"
@@ -1582,9 +1606,9 @@
             {
               "id": "nao_desempregado",
               "tipo": "categorica",
-              "campo": "situacao_profissional",
+              "campo": "esta_desempregado",
               "operador_comparacao": "neq",
-              "valor": "desempregado",
+              "valor": "sim",
               "unidade_comparacao": null,
               "fonte": {
                 "tipo": "literal_enum"

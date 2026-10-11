@@ -371,7 +371,7 @@ RESPOSTAS_RSI_BASE = {
     "numero_adultos_adicionais_agregado": 0,
     "numero_menores_agregado": 0,
     "patrimonio_mobiliario_pessoal": 1000,
-    "situacao_profissional": "empregado",
+    "esta_desempregado": "nao",
     "esta_em_estabelecimento_prisional_ou_institucionalizado": "nao",
 }
 
@@ -420,7 +420,7 @@ def test_rsi_real_inelegivel_desempregado_nao_inscrito(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_RSI_BASE,
-        "situacao_profissional": "desempregado",
+        "esta_desempregado": "sim",
         "inscrito_centro_emprego_e_disponivel": "nao",
     }
     r = _avaliar(pagina, condicoes, respostas)
@@ -431,7 +431,7 @@ def test_rsi_real_elegivel_desempregado_inscrito_e_disponivel(pagina):
     condicoes = _condicoes_reais()
     respostas = {
         **RESPOSTAS_RSI_BASE,
-        "situacao_profissional": "desempregado",
+        "esta_desempregado": "sim",
         "inscrito_centro_emprego_e_disponivel": "sim",
     }
     r = _avaliar(pagina, condicoes, respostas)
@@ -440,7 +440,7 @@ def test_rsi_real_elegivel_desempregado_inscrito_e_disponivel(pagina):
 
 def test_rsi_real_indeterminado_desempregado_sem_responder_inscricao(pagina):
     condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_RSI_BASE, "situacao_profissional": "desempregado"}
+    respostas = {**RESPOSTAS_RSI_BASE, "esta_desempregado": "sim"}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["rsi"]["estado"] == "indeterminado"
     assert r["rsi"]["perguntasEmFalta"] == ["inscrito_centro_emprego_e_disponivel"]
@@ -530,7 +530,7 @@ def test_rsi_real_menor_inelegivel_rendimentos_altos_mas_sem_situacao_pessoal(pa
 
 
 RESPOSTAS_DESEMPREGO_BASE = {
-    "situacao_profissional": "desempregado",
+    "esta_desempregado": "sim",
     "desemprego_involuntario": "sim",
     "dias_registo_remuneracoes_24_meses": 400,
     "inscrito_centro_emprego_e_disponivel": "sim",
@@ -546,7 +546,7 @@ def test_desemprego_real_elegivel_caso_simples(pagina):
 
 def test_desemprego_real_inelegivel_se_nao_desempregado(pagina):
     condicoes = _condicoes_reais()
-    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "situacao_profissional": "empregado"}
+    respostas = {**RESPOSTAS_DESEMPREGO_BASE, "esta_desempregado": "nao"}
     r = _avaliar(pagina, condicoes, respostas)
     assert r["desemprego"]["estado"] == "inelegivel"
 
@@ -598,7 +598,7 @@ def test_desemprego_real_indeterminado_quando_falta_prazo_de_garantia(pagina):
 def test_desemprego_real_inelegivel_sem_saber_prazo_de_garantia_se_ja_empregado(pagina):
     # Short-circuit: já sabemos que não está desempregado, decide sozinho.
     condicoes = _condicoes_reais()
-    r = _avaliar(pagina, condicoes, {"situacao_profissional": "empregado"})
+    r = _avaliar(pagina, condicoes, {"esta_desempregado": "nao"})
     assert r["desemprego"]["estado"] == "inelegivel"
 
 
@@ -1175,10 +1175,31 @@ def test_dados_reais_anos_de_residencia_so_depois_da_situacao(pagina, estatuto, 
         assert ordem.index("estatuto_residencia") < ordem.index("anos_residencia_pt")
 
 
+SITUACOES = ["tem_filhos_a_cargo", "esta_desempregado", "tem_cit_valido",
+             "destino_habitacao_propria_permanente", "tem_deficiencia_requerente"]
+
+
+def test_dados_reais_primeiro_ecra_e_o_das_situacoes(pagina):
+    assert _ecra(pagina, _condicoes_reais(), {}) == SITUACOES
+
+
+def test_dados_reais_nada_marcado_exclui_os_apoios_dessas_situacoes(pagina):
+    condicoes = _condicoes_reais()
+    estados = {a: r["estado"] for a, r in
+               _avaliar(pagina, condicoes, {c: "nao" for c in SITUACOES}).items()}
+    for apoio in ("abono", "ase", "creche", "desemprego", "subsidio-doenca", "imt-jovem",
+                  "cartao-estacionamento"):
+        assert estados[apoio] == "inelegivel", (apoio, estados)
+    for apoio in ("csi", "rsi", "psu"):
+        assert estados[apoio] == "indeterminado", (apoio, estados)
+    assert "esta_desempregado" not in _ecra(pagina, condicoes, {c: "nao" for c in SITUACOES})
+
+
 def test_etapa_da_pergunta(pagina):
     condicoes = _condicoes_reais()
     etapa = lambda campo: pagina.evaluate("d => etapaDaPergunta(d)", condicoes["perguntas"][campo])  # noqa: E731
     assert etapa("data_nascimento_requerente") == 0
+    assert etapa("tem_filhos_a_cargo") == 0  # ecrã de situações conta como «Sobre ti»
     assert etapa("numero_menores_agregado") == 0
     assert etapa("data_nascimento_crianca") == 1
     assert etapa("rendimento_mensal_agregado") == 2

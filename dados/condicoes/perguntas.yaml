@@ -40,9 +40,17 @@
 #     (guardrail em tests/test_perguntas_coerencia.py).
 #   depois_de: opcional — lista de campos; enquanto algum deles ainda for
 #     candidato, este espera (só muda a ordem, nunca o que se pergunta).
-#   grupo: opcional — {id, titulo}; os campos com o mesmo id aparecem no
-#     mesmo ecrã, com o titulo por cima e a `pergunta` de cada um como
-#     rótulo. Só para perguntas numéricas, todas com o mesmo aplicavel_se.
+#   grupo: opcional — {id, titulo, ajuda?}; os campos com o mesmo id
+#     aparecem no mesmo ecrã, com o titulo (e a ajuda) por cima. O grupo é
+#     igual em todos os campos (usar uma âncora YAML) e todos têm o mesmo
+#     aplicavel_se. Dois tipos:
+#       - só perguntas numéricas: uma caixa de número por campo, com a
+#         `pergunta` como rótulo;
+#       - só perguntas sim/não: uma caixa de seleção por campo, com o
+#         `rotulo_caixa` como rótulo — marcada = sim, por marcar = não.
+#         Este ecrã vem sempre primeiro (é o «O que se aplica a ti?»).
+#   rotulo_caixa: obrigatório nas perguntas sim/não de um grupo, proibido
+#     nas outras — o texto da caixa de seleção, na 1.ª pessoa.
 #
 # As perguntas sobre a criança referem-se sempre ao filho MAIS NOVO — a
 # página avisa que os restantes se avaliam repetindo o simulador.
@@ -57,6 +65,9 @@ data_nascimento_requerente:
   pergunta: "Qual é a tua data de nascimento?"
 
 
+# Ecrã inicial «O que se aplica a ti?»: cinco perguntas sim/não que
+# decidem de uma vez que apoios ficam de fora, em vez de cinco ecrãs. A
+# âncora &situacoes define o grupo; os outros quatro campos usam *situacoes.
 tem_filhos_a_cargo:
   descricao: "O requerente tem filhos (ou outras crianças/jovens) a cargo no agregado — porta de entrada das perguntas sobre a criança; sem ela, um apoio para crianças nunca pode ficar decidido para quem não tem filhos"
   tipo: categorica
@@ -65,6 +76,11 @@ tem_filhos_a_cargo:
   rotulos:
     sim: "Sim"
     nao: "Não"
+  rotulo_caixa: "Tenho filhos (ou outras crianças ou jovens) a meu cargo"
+  grupo: &situacoes
+    id: situacoes
+    titulo: "O que se aplica a ti?"
+    ajuda: "Marca tudo o que se aplica. Se nada se aplicar, carrega em Continuar."
 
 data_nascimento_crianca:
   descricao: "Data de nascimento da criança ou jovem beneficiário do apoio, quando distinto do requerente (ex.: abono de família, ASE, creche)"
@@ -237,17 +253,16 @@ numero_menores_agregado:
     titulo: "Quem vive contigo?"
 
 
-situacao_profissional:
-  descricao: "Situação profissional actual da pessoa requerente"
+esta_desempregado:
+  descricao: "A pessoa requerente está desempregada (substitui a antiga situacao_profissional: nenhuma condição usava outra situação além de desempregado/não desempregado)"
   tipo: categorica
-  opcoes: [empregado, desempregado, estudante, reformado, inativo]
-  pergunta: "Qual é a tua situação profissional atual?"
+  opcoes: [sim, nao]
+  pergunta: "Estás desempregado/a?"
   rotulos:
-    empregado: "A trabalhar"
-    desempregado: "Desempregado/a"
-    estudante: "Estudante"
-    reformado: "Reformado/a"
-    inativo: "Outra situação (sem atividade)"
+    sim: "Sim"
+    nao: "Não"
+  rotulo_caixa: "Estou desempregado/a"
+  grupo: *situacoes
 
 
 inscrito_centro_emprego_e_disponivel:
@@ -259,8 +274,8 @@ inscrito_centro_emprego_e_disponivel:
     sim: "Sim"
     nao: "Não"
   aplicavel_se:
-    campo: situacao_profissional
-    valor: desempregado
+    campo: esta_desempregado
+    valor: sim
 
 
 esta_em_estabelecimento_prisional_ou_institucionalizado:
@@ -327,8 +342,8 @@ desemprego_involuntario:
     sim: "Sim"
     nao: "Não"
   aplicavel_se:
-    campo: situacao_profissional
-    valor: desempregado
+    campo: esta_desempregado
+    valor: sim
 
 
 dias_registo_remuneracoes_24_meses:
@@ -337,8 +352,8 @@ dias_registo_remuneracoes_24_meses:
   unidade: dias
   pergunta: "Nos 24 meses antes de ficares desempregado/a, quantos dias tens com descontos para a Segurança Social?"
   aplicavel_se:
-    campo: situacao_profissional
-    valor: desempregado
+    campo: esta_desempregado
+    valor: sim
 
 
 tem_cit_valido:
@@ -350,6 +365,8 @@ tem_cit_valido:
   rotulos:
     sim: "Sim"
     nao: "Não"
+  rotulo_caixa: "Estou de baixa médica (passada por um médico)"
+  grupo: *situacoes
 
 
 tipo_trabalhador:
@@ -426,6 +443,8 @@ destino_habitacao_propria_permanente:
   rotulos:
     sim: "Sim, vai ser a minha casa"
     nao: "Não, ou não vou comprar casa"
+  rotulo_caixa: "Vou comprar casa para morar nela"
+  grupo: *situacoes
 
 
 rendimento_trabalho_mensal_agregado:
@@ -456,6 +475,8 @@ tem_deficiencia_requerente:
   rotulos:
     sim: "Sim"
     nao: "Não"
+  rotulo_caixa: "Tenho uma deficiência ou incapacidade reconhecida"
+  grupo: *situacoes
 
 
 deficiencia_motora_fisica_organica:

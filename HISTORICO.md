@@ -7285,6 +7285,23 @@ mesmo `aplicavel_se`). Medido com quatro perfis: 22→20, 16→15, 23→21 e 29�
 ecrãs. O ganho grande (ecrã inicial «O que se aplica a ti?») fica para o PR
 seguinte.
 
+### Última revisão: 2026-10-11 — Simulador universal: ecrã «O que se aplica a ti?»
+
+Segunda parte da simplificação das perguntas. Cinco perguntas sim/não que
+decidem logo que apoios ficam de fora passam a um só ecrã inicial com caixas
+de seleção (marcada = sim, por marcar = não): filhos a cargo, desemprego,
+baixa médica (passada por um médico), compra de casa para morar nela e
+deficiência ou incapacidade reconhecida. Mecanismo: `grupo` de perguntas
+sim/não com `rotulo_caixa` (texto da caixa) e `ajuda` opcional no grupo; vem
+sempre primeiro (escalão −1, etapa «Sobre ti»). `situacao_profissional` (cinco
+opções, só «desempregado» era usada) passa a `esta_desempregado` (sim/não) —
+mesma lógica no desemprego (eq sim) e no RSI (neq sim). «Voltar» repõe as
+respostas do ecrã. Sem nenhuma caixa marcada, um aviso no topo dos
+resultados diz que apoios ficaram de fora e aponta para «Recomeçar». FAQ
+«Como funciona» (corpo e JSON-LD) actualizada. Os
+resultados ficam iguais. Medido com quatro perfis, desde o início da série:
+22→17, 16→11, 23→17 e 29→22 ecrãs.
+
 ---
 
 *Última revisão automática: 2026-10-11*
