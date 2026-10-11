@@ -2,6 +2,15 @@
   "itens": [
     {
       "data_iso": "2026-10-08",
+      "titulo": "Prestação Social Única: a despesa prevista sobe 10% em relação a 2026",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNcjdQSVBxb09QWEFvY1Izb2ZDa3BqNGhZRWpTaWpZU2d1cWpNeExzSUkyLUZwblZ4THFBcG9VekRNdDJ5cU1NdVhqWGVONnJJdW5ILTl1OUhfT3ljNzM5a3hnOG8zVXVzWUJMWXJQQW9sLXdIb21lT3pzU2twak1YTlRVUHdtWDBOYmlwaklGbkk0cWtZejRjaS11U013VUJURWVPZ2pFbDRtaVc2RXhqa2dSWEdaQ0tNR2c?oc=5",
+      "resumo": "Prestação Social Única: a despesa prevista sobe 10% em relação a 2026 Público",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
+    },
+    {
+      "data_iso": "2026-10-08",
       "titulo": "AO MINUTO | Subidas no Complemento Solidário para Idosos ou novas descidas no IRS: OE 2027 chega hoje ao parlamento",
       "fonte_nome": "CNN Portugal",
       "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBzdFg1Q2hBT0tZblU1TGFmTHZtX05FOVVjTGdCSkFMTE15bUpDTjkwR1pRT2Q0WjYtMVU2dmh0dThXQTA5Uy1LdTdmMFMzY0tRclctcUdBWk5iNUZ2eHFnZUwtU3N3RFRRRHBfaQ?oc=5",
@@ -42,6 +51,15 @@
       "fonte_nome": "TVI",
       "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQUEU0MmpkMzZibXk0Zkk1LXNfR01IMWpfOXlwNEpqOWUzS3BGU3ozU1FmaWdva2lYOUdHUWlzQlo1ZExMbW5wdzREbDlQYm12UXRoQWJ4ZlNJZndWQXlYY0ttMXdlX0VsWXlWT2J1X0c0SHUyT1pvRS1tQ2tQbzZjb0R1eUYxaXJ3SDVuX1dCVHFuTGZFN0REYkpSaUJLWXhiUGh1Y003aXo5dE95UVdTUUlwVHdYWXc4c1BzXzJrVkx2U1ZWUkF4Q2w4SDN3MXZ3VzZ0NXg0UGg1ejc2TlFvS2NzTWo0MjNB?oc=5",
       "resumo": "Há menos jovens a receber subsídio de desemprego e peso dos mais velhos subiu na última década TVI",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-05",
+      "titulo": "Taxa de reposição do subsídio de desemprego cai em Portugal",
+      "fonte_nome": "The Portugal News",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPN1NNRldzdkVNT3ZBLTV1Z08wMDRpLWYtTVZZV1hmRkN2RzZ3emJCT1NKTEE3T2Vwa0dxMXEyc2Vxc0VLVjhCb2FuRkkxTU5mdXpZYUpmMTRiNXJwX2I3UHBKSjJ4YUIzdi10UVdSdmtqOXZrOVBfejdWR3ZSaXZDNzgxNW5oeHlvMmR0SHR6SlBVSTBfbVc4LVNaR1FxWXVEa0RienY0YVJ6VjZKenUzaXB2V1JRLVR5RWxrWnNWc2dNR2ZPdkE?oc=5",
+      "resumo": "Taxa de reposição do subsídio de desemprego cai em Portugal The Portugal News",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
