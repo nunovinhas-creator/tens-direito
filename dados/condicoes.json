@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-10-05",
+  "gerado_em": "2026-10-11",
   "verificado_em": "2026-10-04",
   "perguntas": {
     "data_nascimento_requerente": {
@@ -774,7 +774,8 @@
           "verificado_em": "2026-09-27"
         }
       ],
-      "verificado_em": "2026-10-04"
+      "verificado_em": "2026-10-04",
+      "calendario": "prestacoes_familiares"
     },
     "ase": {
       "pagina": "acao-social-escolar.html",
@@ -1118,7 +1119,8 @@
           "verificado_em": "2026-09-27"
         }
       ],
-      "verificado_em": "2026-09-27"
+      "verificado_em": "2026-09-27",
+      "calendario": "csi"
     },
     "desemprego": {
       "pagina": "subsidio-desemprego.html",
@@ -1603,7 +1605,8 @@
       ],
       "verificado_em": "2026-10-04",
       "substituido_por": "psu",
-      "substituido_a_partir_de": "2026-12-31"
+      "substituido_a_partir_de": "2026-12-31",
+      "calendario": "rsi"
     },
     "subsidio-doenca": {
       "pagina": "baixa-medica-subsidio-doenca.html",

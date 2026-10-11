@@ -193,7 +193,14 @@
     .bloco-partilha-botoes { display: flex; gap: 0.6rem; flex-wrap: wrap; }
     .bloco-partilha-botoes .btn { flex: 1 1 220px; }
     .bloco-partilha-botoes a.btn-primary { color: var(--white); }
-    .aviso-canal { margin-top: 1.25rem; margin-bottom: 0; }
+    .bloco-datas { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .bloco-datas h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.6rem; }
+    .bloco-datas-nota { font-size: 0.85rem; color: var(--muted); margin: 0.4rem 0 1rem; }
+    #btnCalendario { width: 100%; }
+    .aviso-canal { margin-bottom: 0; }
+    .apoio-pagamento { background: #ECFDF5; border-radius: 6px; padding: 0.5rem 0.7rem; margin-bottom: 0.5rem; font-size: 0.9rem; color: #065F46; }
+    .apoio-pagamento strong { display: block; }
+    .apoio-card .apoio-pagamento a { color: #065F46; font-weight: 600; font-size: 0.82rem; }
     .faq-section { margin-top: 2.5rem; }
     .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
     details { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
@@ -217,6 +224,7 @@
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
   <script src="/assets/js/calc-apoios.js" defer></script>
+  <script src="/assets/js/hoje-lisboa.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
@@ -393,7 +401,14 @@
         </div>
       </section>
 
-      <p class="aviso-info aviso-canal">📲 Sabe primeiro quando cai cada pagamento — segue o <a href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=simulador-universal-resultado" target="_blank" rel="noopener noreferrer">canal de WhatsApp do Tens Direito</a>. Avisamos na véspera de cada pagamento da Segurança Social e quando uma regra muda a sério — sem grupo, sem responderes a nada. Sais quando quiseres.</p>
+      <section class="bloco-datas" aria-labelledby="datasTitulo">
+        <h3 id="datasTitulo">Não percas as datas</h3>
+        <div id="blocoCalendario" hidden>
+          <button type="button" class="btn btn-outline" id="btnCalendario">Adicionar ao meu calendário</button>
+          <p class="bloco-datas-nota">Só datas já publicadas pela Segurança Social, para os apoios em que provavelmente tens direito. O ficheiro é criado neste dispositivo e nada é enviado.</p>
+        </div>
+        <p class="aviso-info aviso-canal">📲 Sabe primeiro quando cai cada pagamento — segue o <a href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=simulador-universal-resultado" target="_blank" rel="noopener noreferrer">canal de WhatsApp do Tens Direito</a>. Avisamos na véspera de cada pagamento da Segurança Social e quando uma regra muda a sério — sem grupo, sem responderes a nada. Sais quando quiseres.</p>
+      </section>
     </section>
 
     <section class="faq-section">
@@ -469,6 +484,10 @@
       'use strict';
 
       let CONDICOES = null;
+      // Calendário de pagamentos da Segurança Social (data/calendario_pagamentos.json).
+      // Opcional: sem ele, os resultados aparecem iguais, só sem datas.
+      let CALENDARIO = null;
+      let EVENTOS_CALENDARIO = [];
       let respostas = {};
       let historico = [];
       let campoAtual = null;
@@ -681,6 +700,119 @@
         return 'Não cumpres uma condição de acesso, pela tua resposta a ' + partes.join('; ') + (campos.length > 2 ? ' (entre outras)' : '') + '.';
       }
 
+      // ── Datas de pagamento (calendário da Segurança Social) ─────────────
+      const MESES_PT = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho',
+        'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      const PAGINA_CALENDARIO = '/calendario-pagamentos-seguranca-social.html';
+      const doisDigitos = (n) => String(n).padStart(2, '0');
+
+      // As datas de pagamento seguem o dia de Lisboa, não o do aparelho.
+      function hojeLisboaISO() {
+        if (typeof window.tdHojeLisboa !== 'function') return hojeISO();
+        const h = window.tdHojeLisboa();
+        return h.ano + '-' + doisDigitos(h.mes) + '-' + doisDigitos(h.dia);
+      }
+
+      // Só dias publicados no calendário, de hoje em diante; nunca uma data
+      // calculada ou adivinhada.
+      function datasDePagamento(calendario, slug, desdeISO) {
+        if (!calendario || !Array.isArray(calendario.meses) || !slug) return [];
+        const datas = [];
+        calendario.meses.forEach((m) => {
+          if (!Number.isInteger(m.ano) || !Number.isInteger(m.mes) || m.mes < 1 || m.mes > 12) return;
+          (m.pagamentos || []).forEach((pag) => {
+            if (!Number.isInteger(pag.dia) || pag.dia < 1 || pag.dia > 31) return;
+            if (!Array.isArray(pag.prestacoes) || pag.prestacoes.indexOf(slug) === -1) return;
+            const iso = m.ano + '-' + doisDigitos(m.mes) + '-' + doisDigitos(pag.dia);
+            if (iso >= desdeISO && datas.indexOf(iso) === -1) datas.push(iso);
+          });
+        });
+        return datas.sort();
+      }
+
+      function dataPorExtenso(iso, hojeISOValor) {
+        const [a, m, d] = iso.split('-').map(Number);
+        const texto = d + ' de ' + MESES_PT[m - 1];
+        return iso.slice(0, 4) === hojeISOValor.slice(0, 4) ? texto : texto + ' de ' + a;
+      }
+
+      function eventosDoCalendario(avaliacao, calendario, hojeISOValor) {
+        const eventos = [];
+        Object.keys(avaliacao).forEach((apoioId) => {
+          const apoio = CONDICOES.apoios[apoioId];
+          if (avaliacao[apoioId].estado !== 'elegivel' || !apoio.calendario) return;
+          datasDePagamento(calendario, apoio.calendario, hojeISOValor).forEach((iso) => {
+            eventos.push({ apoioId: apoioId, titulo: apoio.titulo, iso: iso });
+          });
+        });
+        return eventos.sort((x, y) => (x.iso + x.apoioId < y.iso + y.apoioId ? -1 : 1));
+      }
+
+      function textoICS(t) {
+        return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+      }
+
+      // RFC 5545: linhas com mais de 75 octetos continuam na linha seguinte,
+      // começada por um espaço.
+      function dobrarLinhaICS(linha) {
+        const codificador = new TextEncoder();
+        const partes = [];
+        let atual = '';
+        let octetos = 0;
+        for (const ch of linha) {
+          const n = codificador.encode(ch).length;
+          if (octetos + n > (partes.length ? 74 : 75)) {
+            partes.push(atual);
+            atual = '';
+            octetos = 0;
+          }
+          atual += ch;
+          octetos += n;
+        }
+        partes.push(atual);
+        return partes.join('\r\n ');
+      }
+
+      function gerarICS(eventos, agora) {
+        const z = (agora || new Date()).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        const linhas = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Tens Direito//Datas de pagamento//PT',
+          'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+        eventos.forEach((e) => {
+          const dia = e.iso.replace(/-/g, '');
+          const seguinte = new Date(Date.UTC(+e.iso.slice(0, 4), +e.iso.slice(5, 7) - 1, +e.iso.slice(8, 10) + 1))
+            .toISOString().slice(0, 10).replace(/-/g, '');
+          linhas.push('BEGIN:VEVENT',
+            'UID:' + e.apoioId + '-' + dia + '@tensdireito.com',
+            'DTSTAMP:' + z,
+            'DTSTART;VALUE=DATE:' + dia,
+            'DTEND;VALUE=DATE:' + seguinte,
+            'SUMMARY:' + textoICS('Pagamento da Segurança Social: ' + e.titulo),
+            'DESCRIPTION:' + textoICS('Data do calendário de pagamentos da Segurança Social. Confirma em https://tensdireito.com' + PAGINA_CALENDARIO),
+            'TRANSP:TRANSPARENT',
+            'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-PT12H',
+            'DESCRIPTION:' + textoICS('Amanhã a Segurança Social paga: ' + e.titulo),
+            'END:VALARM', 'END:VEVENT');
+        });
+        linhas.push('END:VCALENDAR');
+        return linhas.map(dobrarLinhaICS).join('\r\n') + '\r\n';
+      }
+
+      function descarregarCalendario() {
+        if (!EVENTOS_CALENDARIO.length) return;
+        const blob = new Blob([gerarICS(EVENTOS_CALENDARIO)], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'pagamentos-seguranca-social.ics';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        if (typeof gtag === 'function') {
+          gtag('event', 'calendario_descarregado', { pagina: window.location.pathname });
+        }
+      }
+
       function cartaoApoio(apoioId, resultado) {
         const apoio = CONDICOES.apoios[apoioId];
         const li = document.createElement('li');
@@ -692,6 +824,22 @@
         p.className = 'apoio-motivo';
         p.textContent = motivo(apoioId, resultado);
         li.append(h, p);
+        if (resultado.estado === 'elegivel' && apoio.calendario) {
+          const hoje = hojeLisboaISO();
+          const proxima = datasDePagamento(CALENDARIO, apoio.calendario, hoje)[0];
+          if (proxima) {
+            const caixa = document.createElement('p');
+            caixa.className = 'apoio-pagamento';
+            caixa.dataset.data = proxima;
+            const forte = document.createElement('strong');
+            forte.textContent = 'Próximo pagamento: ' + dataPorExtenso(proxima, hoje);
+            const fonte = document.createElement('a');
+            fonte.href = PAGINA_CALENDARIO;
+            fonte.textContent = 'Calendário da Segurança Social';
+            caixa.append(forte, fonte);
+            li.append(caixa);
+          }
+        }
         // Sem tipo_link conhecido, nenhum link: nunca um texto que prometa o
         // destino errado (o compilador já o impede — isto é a última defesa).
         if (TEXTO_LINK[apoio.tipo_link]) {
@@ -780,6 +928,8 @@
         });
 
         desenharResumo(contarEstados(avaliacao));
+        EVENTOS_CALENDARIO = eventosDoCalendario(avaliacao, CALENDARIO, hojeLisboaISO());
+        el('blocoCalendario').hidden = EVENTOS_CALENDARIO.length === 0;
         el('avisoFilhos').hidden = respostas.tem_filhos_a_cargo !== 'sim';
         desenharAvisosSubstituicao(avaliacao);
         el('btnContinuarResponder').hidden = proximaPergunta(CONDICOES, respostas, hojeISO()) === null;
@@ -814,6 +964,7 @@
           rolarPara('assistente');
         });
         el('btnRecomecar').addEventListener('click', recomecar);
+        el('btnCalendario').addEventListener('click', descarregarCalendario);
         // Só o facto de a partilha ter sido aberta — a ligação é fixa no HTML
         // e nunca leva respostas.
         el('linkPartilharWhatsapp').addEventListener('click', () => {
@@ -821,6 +972,12 @@
             gtag('event', 'partilha_whatsapp', { pagina: window.location.pathname });
           }
         });
+        // Em paralelo e sem bloquear: se o calendário falhar, os resultados
+        // continuam iguais, só sem datas de pagamento.
+        const calendario = fetch('/data/calendario_pagamentos.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d) => (d && Array.isArray(d.meses) ? d : null))
+          .catch(() => null);
         try {
           const resp = await fetch('/dados/condicoes.json');
           if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -833,6 +990,7 @@
           mostrarErro(erro);
           return;
         }
+        CALENDARIO = await calendario;
         el('carregando').hidden = true;
         // Carimbo: a data de verificação mais recente das condições (via
         // parâmetros, calculada por gerar_condicoes_json.py) — nunca a data
@@ -849,6 +1007,8 @@
         get respostas() { return respostas; },
         get historico() { return historico; },
         get campoAtual() { return campoAtual; },
+        get eventosCalendario() { return EVENTOS_CALENDARIO; },
+        gerarICS: gerarICS,
       };
 
       if (document.readyState === 'loading') {

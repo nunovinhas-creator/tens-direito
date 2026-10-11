@@ -7249,6 +7249,23 @@ zero, lista fechada, ligação de partilha exacta e sem estado, evento só com o
 pathname, convite ao canal) e `tests/test_eventos_ga4.py`; tabela de eventos
 em CLAUDE.md actualizada.
 
+### Última revisão: 2026-10-11 — Simulador universal: próximo pagamento e ficheiro de calendário
+
+Seguimento do PR #320. Nos cartões de «Provavelmente tens direito», o próximo
+pagamento publicado em `data/calendario_pagamentos.json` (hoje ou depois, dia
+de Lisboa via `hoje-lisboa.js`), com ligação ao calendário de pagamentos; só
+para apoios com `calendario:` no YAML de condições — hoje abono
+(`prestacoes_familiares`), CSI e RSI. Desemprego e doença ficam sem data: o
+lote `_1`/`_2` tem dois dias e o calendário não diz qual cabe a cada pessoa
+(`gerar_condicoes_json.py` recusa-os). Bloco «Não percas as datas»: botão
+«Adicionar ao meu calendário», que cria no navegador um `.ics` com um evento
+por data futura e aviso às 12h da véspera, mais o convite ao canal. Sem
+calendário (falha de rede, 404, só datas passadas) os resultados ficam iguais,
+sem datas nem botão. Evento `calendario_descarregado` (só `pagina`). Testes em
+`test_gerar_condicoes_json.py` (slug válido, inválido, lote ambíguo, ligação
+real ao calendário) e `test_simulador_universal_pagina.py` (data certa, hoje
+conta, falhas, entradas malformadas, conteúdo e linhas do `.ics`).
+
 ---
 
 *Última revisão automática: 2026-10-11*

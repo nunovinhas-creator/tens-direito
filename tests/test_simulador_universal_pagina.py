@@ -165,7 +165,7 @@ def _cartoes(page, grupo_id):
     return page.eval_on_selector_all(
         f"#{grupo_id} li.apoio-card",
         "els => els.map(e => ({apoio: e.dataset.apoio, motivo: e.querySelector('.apoio-motivo').textContent,"
-        " link: e.querySelector('a').getAttribute('href')}))",
+        " link: e.querySelector('a.apoio-link').getAttribute('href')}))",
     )
 
 
@@ -222,8 +222,8 @@ def _links(page):
     return page.eval_on_selector_all(
         "li.apoio-card",
         "els => Object.fromEntries(els.map(e => [e.dataset.apoio,"
-        " e.querySelector('a') ? {href: e.querySelector('a').getAttribute('href'),"
-        " texto: e.querySelector('a').textContent} : null]))",
+        " e.querySelector('a.apoio-link') ? {href: e.querySelector('a.apoio-link').getAttribute('href'),"
+        " texto: e.querySelector('a.apoio-link').textContent} : null]))",
     )
 
 
@@ -643,3 +643,180 @@ def test_resultados_convidam_para_o_canal_com_a_promessa_do_site(pagina):
     assert href.startswith("https://whatsapp.com/channel/")
     assert "utm_content=simulador-universal-resultado" in href
     assert "Avisamos na véspera de cada pagamento da Segurança Social" in aviso.inner_text()
+
+
+# ── Próximo pagamento e ficheiro de calendário (.ics) ───────────────────
+
+MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
+            "agosto", "setembro", "outubro", "novembro", "dezembro"]
+
+
+def _hoje_lisboa():
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    return datetime.now(ZoneInfo("Europe/Lisbon")).date()
+
+
+def _calendario_sintetico(datas_por_slug):
+    """{slug: [date, ...]} → mesmo formato de data/calendario_pagamentos.json."""
+    meses = {}
+    for slug, datas in datas_por_slug.items():
+        for d in datas:
+            mes = meses.setdefault((d.year, d.month), {})
+            mes.setdefault(d.day, []).append(slug)
+    return {
+        "atualizado_em": "2026-01-01",
+        "meses": [
+            {"ano": a, "mes": m, "pagamentos": [{"dia": dia, "prestacoes": sl, "metodo": ["transferencia_bancaria"]}
+                                                for dia, sl in sorted(dias.items())]}
+            for (a, m), dias in sorted(meses.items())
+        ],
+    }
+
+
+def _rota_calendario(dados):
+    corpo = json.dumps(dados)
+    return {"**/data/calendario_pagamentos.json":
+            lambda r: r.fulfill(status=200, content_type="application/json", body=corpo)}
+
+
+def _por_extenso(d, hoje):
+    texto = f"{d.day} de {MESES_PT[d.month - 1]}"
+    return texto if d.year == hoje.year else f"{texto} de {d.year}"
+
+
+def _abrir_com_calendario(browser, servidor, rotas):
+    contexto, page = _abrir(browser, servidor, rotas)
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    return contexto, page
+
+
+def _pagamentos_nos_cartoes(page):
+    return page.eval_on_selector_all(
+        "li.apoio-card",
+        "els => Object.fromEntries(els.map(e => { const c = e.querySelector('.apoio-pagamento');"
+        " return [e.dataset.apoio, c ? {data: c.dataset.data, texto: c.querySelector('strong').textContent,"
+        " fonte: c.querySelector('a').getAttribute('href')} : null]; }))",
+    )
+
+
+def test_proximo_pagamento_so_nos_apoios_provaveis_com_calendario(browser, servidor):
+    from datetime import timedelta
+    hoje = _hoje_lisboa()
+    futuro, mais_tarde = hoje + timedelta(days=5), hoje + timedelta(days=35)
+    dados = _calendario_sintetico({
+        "prestacoes_familiares": [hoje - timedelta(days=1), mais_tarde, futuro],
+        "rsi": [futuro], "csi": [futuro],
+    })
+    contexto, page = _abrir_com_calendario(browser, servidor, _rota_calendario(dados))
+    _percorrer_ate_ao_fim(page)
+    elegiveis = {c["apoio"] for c in _cartoes(page, "grupoElegivel")}
+    assert "abono" in elegiveis and "rsi" not in elegiveis and "csi" not in elegiveis
+    pagamentos = _pagamentos_nos_cartoes(page)
+    assert pagamentos["abono"] == {
+        "data": futuro.isoformat(),
+        "texto": "Próximo pagamento: " + _por_extenso(futuro, hoje),
+        "fonte": "/calendario-pagamentos-seguranca-social.html",
+    }, "o mais próximo a partir de hoje — nunca um dia já passado"
+    sem_data = {a for a, p in pagamentos.items() if p is None}
+    assert sem_data == set(CONDICOES["apoios"]) - {"abono"}, "só um apoio provável e ligado ao calendário tem data"
+    assert page.is_visible("#blocoCalendario")
+    contexto.close()
+
+
+def test_hoje_conta_como_proximo_pagamento(browser, servidor):
+    hoje = _hoje_lisboa()
+    contexto, page = _abrir_com_calendario(
+        browser, servidor, _rota_calendario(_calendario_sintetico({"prestacoes_familiares": [hoje]})))
+    _percorrer_ate_ao_fim(page)
+    assert _pagamentos_nos_cartoes(page)["abono"]["data"] == hoje.isoformat()
+    contexto.close()
+
+
+@pytest.mark.parametrize("falha", ["abort", "http404", "sem_meses", "so_passado"])
+def test_sem_datas_futuras_os_resultados_nao_mostram_datas_nem_calendario(browser, servidor, falha):
+    from datetime import timedelta
+    passado = _calendario_sintetico({"prestacoes_familiares": [_hoje_lisboa() - timedelta(days=3)]})
+    rotas = {
+        "abort": {"**/data/calendario_pagamentos.json": lambda r: r.abort()},
+        "http404": {"**/data/calendario_pagamentos.json": lambda r: r.fulfill(status=404, body="")},
+        "sem_meses": _rota_calendario({"atualizado_em": "2026-01-01"}),
+        "so_passado": _rota_calendario(passado),
+    }[falha]
+    contexto, page = _abrir_com_calendario(browser, servidor, rotas)
+    _percorrer_ate_ao_fim(page)
+    assert _cartoes(page, "grupoElegivel"), "os resultados aparecem na mesma"
+    assert all(p is None for p in _pagamentos_nos_cartoes(page).values())
+    assert not page.is_visible("#blocoCalendario")
+    assert page.is_visible("#resultados .aviso-canal"), "o convite ao canal fica sempre"
+    contexto.close()
+
+
+def test_entradas_malformadas_do_calendario_sao_ignoradas(browser, servidor):
+    from datetime import timedelta
+    hoje = _hoje_lisboa()
+    bom = hoje + timedelta(days=9)
+    dados = _calendario_sintetico({"prestacoes_familiares": [bom]})
+    dados["meses"].append({"ano": hoje.year + 1, "mes": 13, "pagamentos": [{"dia": 1, "prestacoes": ["prestacoes_familiares"]}]})
+    dados["meses"].append({"ano": hoje.year, "mes": hoje.month, "pagamentos": [
+        {"dia": "1", "prestacoes": ["prestacoes_familiares"]},
+        {"dia": 40, "prestacoes": ["prestacoes_familiares"]},
+        {"dia": 2, "prestacoes": "prestacoes_familiares"},
+    ]})
+    contexto, page = _abrir_com_calendario(browser, servidor, _rota_calendario(dados))
+    _percorrer_ate_ao_fim(page)
+    eventos = page.evaluate("window.simuladorUniversal.eventosCalendario")
+    assert eventos == [{"apoioId": "abono", "titulo": CONDICOES["apoios"]["abono"]["titulo"], "iso": bom.isoformat()}]
+    contexto.close()
+
+
+def _linhas_ics(texto):
+    assert texto.endswith("\r\n") and "\n" not in texto.replace("\r\n", "")
+    for linha in texto.split("\r\n"):
+        assert len(linha.encode("utf-8")) <= 75, f"linha com mais de 75 octetos: {linha!r}"
+    # Desdobrar as linhas continuadas (RFC 5545).
+    return texto.replace("\r\n ", "").split("\r\n")[:-1]
+
+
+def test_ficheiro_ics_tem_um_evento_por_data_futura_e_nada_das_respostas(browser, servidor):
+    from datetime import timedelta
+    hoje = _hoje_lisboa()
+    d1, d2 = hoje + timedelta(days=2), hoje + timedelta(days=33)
+    contexto, page = _abrir_com_calendario(
+        browser, servidor, _rota_calendario(_calendario_sintetico({"prestacoes_familiares": [d2, d1]})))
+    _percorrer_ate_ao_fim(page)
+    page.evaluate("window.dataLayer = []")
+    with page.expect_download() as info:
+        page.click("#btnCalendario")
+    download = info.value
+    assert download.suggested_filename == "pagamentos-seguranca-social.ics"
+    texto = Path(download.path()).read_bytes().decode("utf-8")  # sem converter CRLF
+    linhas = _linhas_ics(texto)
+    assert linhas[0] == "BEGIN:VCALENDAR" and linhas[-1] == "END:VCALENDAR"
+    titulo = CONDICOES["apoios"]["abono"]["titulo"]
+    inicios = [ln for ln in linhas if ln.startswith("DTSTART")]
+    assert inicios == [f"DTSTART;VALUE=DATE:{d:%Y%m%d}" for d in (d1, d2)]
+    fins = [ln for ln in linhas if ln.startswith("DTEND")]
+    assert fins == [f"DTEND;VALUE=DATE:{d + timedelta(days=1):%Y%m%d}" for d in (d1, d2)]
+    assert [ln for ln in linhas if ln.startswith("UID:")] == [f"UID:abono-{d:%Y%m%d}@tensdireito.com" for d in (d1, d2)]
+    assert linhas.count(f"SUMMARY:Pagamento da Segurança Social: {titulo}") == 2
+    assert linhas.count(f"DESCRIPTION:Amanhã a Segurança Social paga: {titulo}") == 2
+    assert linhas.count("TRIGGER:-PT12H") == 2
+    for valor in ("1990", "2020-05", "19900101", "20200501"):
+        assert valor not in texto, "o ficheiro nunca leva respostas"
+    eventos = page.evaluate(
+        "window.dataLayer.map((a) => Array.from(a)).filter((a) => a[0] === 'event' && a[1] === 'calendario_descarregado')")
+    assert eventos == [["event", "calendario_descarregado", {"pagina": "/simulador-universal.html"}]]
+    contexto.close()
+
+
+def test_ics_escapa_virgulas_e_dobra_linhas_longas(pagina):
+    texto = pagina.evaluate(
+        "window.simuladorUniversal.gerarICS([{apoioId: 'x', titulo: 'Apoio, com; vírgulas e acentos — ' + 'é'.repeat(60),"
+        " iso: '2031-12-31'}], new Date(Date.UTC(2031, 0, 2, 3, 4, 5)))"
+    )
+    linhas = _linhas_ics(texto)
+    assert "DTSTAMP:20310102T030405Z" in linhas
+    assert "DTEND;VALUE=DATE:20320101" in linhas, "o dia seguinte vira o ano"
+    resumo = next(ln for ln in linhas if ln.startswith("SUMMARY:"))
+    assert resumo.startswith(r"SUMMARY:Pagamento da Segurança Social: Apoio\, com\; vírgulas")

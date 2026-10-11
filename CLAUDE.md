@@ -2223,6 +2223,15 @@ silenciosa.
   DD/MM/AAAA" (`atualizado_em` do JSON) — nunca "verificado", para não se
   confundir com o carimbo manual "Verificado a" da página (que cobre o
   texto e continua manual).
+- **Outro leitor do JSON — `simulador-universal.html`**: no ecrã de
+  resultados, mostra o próximo pagamento dos apoios prováveis e gera o
+  `.ics` no navegador, só a partir de `data/calendario_pagamentos.json`
+  (datas de hoje em diante, dia de Lisboa). Cada apoio liga-se a um slug
+  por `calendario:` no seu YAML de `dados/condicoes/`, validado por
+  `gerar_condicoes_json.py` contra `PRESTACOES`; os lotes `_1`/`_2`
+  (desemprego, doença, parentalidade) são recusados, porque o calendário
+  não diz qual dos dois dias cabe a cada pessoa. Renomear um slug em
+  `PRESTACOES` parte essa validação de propósito.
 - **`tests/test_calendario_frescura.py`** — canário de frescura
   (`erro_de_frescura()`): o topo estático pode estar no mês anterior só
   até ao dia `DIA_LIMITE_TOPO_ESTATICO` (3) de Lisboa e só se a página
@@ -2312,6 +2321,7 @@ simulador, nunca um valor introduzido).
 | `menu_tool_click` | `assets/js/nav.js`, clique nos cartões da grelha de ferramentas do menu móvel e no link "Começa aqui" (`.nav-mobile-card`/`.nav-mobile-destaque`) | `tool_destino` (basename do próprio `href`, nunca um ID fixo por cartão) | Só no menu móvel, não no desktop. |
 | `partilha_clique` | `assets/js/share.js`, nos dois pontos de sucesso (Web Share API e cópia para a área de transferência) | `pagina` (pathname) | Nunca no fallback da caixa manual (falha de cópia) nem em cancelamento (AbortError). Nunca envia o título. |
 | `partilha_whatsapp` | `simulador-universal.html`, clique em "Enviar por WhatsApp" no ecrã de resultados | `pagina` (pathname) | A ligação `wa.me` é fixa no HTML (texto + URL com `utm_source=whatsapp`) e nunca leva respostas — `tests/test_simulador_universal_pagina.py` tranca o texto exacto. "Outras formas de partilhar", no mesmo bloco, é um 2.º `.botao-partilhar` (com classes extra, fora da regex de `inserir_botao_partilhar.py`) e dispara o `partilha_clique` de `share.js`. |
+| `calendario_descarregado` | `simulador-universal.html`, clique em "Adicionar ao meu calendário" no ecrã de resultados | `pagina` (pathname) | O `.ics` é criado no navegador a partir de `data/calendario_pagamentos.json` (só datas publicadas, de hoje em diante, dos apoios prováveis com `calendario:` no YAML de condições) e nunca sai do dispositivo; o evento não diz quais apoios nem quantas datas. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
 | `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
 

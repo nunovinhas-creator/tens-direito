@@ -64,7 +64,7 @@ EVENTOS_POR_FICHEIRO = {
     "comecar-aqui.html": ["comecar_aqui_percurso"],
     "index.html": ["cal_home_clique"],
     **{ficheiro: ["simulacao_concluida"] for ficheiro in SIMULADORES},
-    "simulador-universal.html": ["simulacao_concluida", "partilha_whatsapp"],
+    "simulador-universal.html": ["simulacao_concluida", "partilha_whatsapp", "calendario_descarregado"],
 }
 
 
@@ -165,6 +165,17 @@ def test_partilha_whatsapp_existe_guardada_e_so_com_pathname():
     assert _tem_guarda_antes(fonte, indice), "partilha_whatsapp sem guarda typeof gtag"
     assert re.fullmatch(r"\{\s*pagina:\s*window\.location\.pathname\s*\}", corpo), (
         f"partilha_whatsapp deve enviar só o pathname: {corpo}"
+    )
+
+
+def test_calendario_descarregado_existe_guardado_e_so_com_pathname():
+    fonte = _ler("simulador-universal.html")
+    chamadas = _chamadas_evento(fonte, "calendario_descarregado")
+    assert len(chamadas) == 1, "esperava exactamente uma definição do evento"
+    indice, corpo = chamadas[0]
+    assert _tem_guarda_antes(fonte, indice), "calendario_descarregado sem guarda typeof gtag"
+    assert re.fullmatch(r"\{\s*pagina:\s*window\.location\.pathname\s*\}", corpo), (
+        f"calendario_descarregado deve enviar só o pathname: {corpo}"
     )
 
 
