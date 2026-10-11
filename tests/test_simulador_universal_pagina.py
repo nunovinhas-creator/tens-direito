@@ -520,3 +520,126 @@ def test_carimbo_estatico_bate_com_os_dados_e_com_o_date_modified():
     assert m, "#dataVerificacao com 'Verificado a <data>' não encontrado"
     assert m.group(1) == _data_pt(CONDICOES["verificado_em"])
     assert f'"dateModified": "{CONDICOES["verificado_em"]}"' in html
+
+
+# ── Ecrã de resultados: resumo, «Não tens direito» fechado, partilha, canal ─
+
+LINK_WHATSAPP_TEXTO = (
+    "Experimenta o simulador do Tens Direito: mostra a que apoios sociais podes ter direito, "
+    "uma pergunta de cada vez. https://tensdireito.com/simulador-universal.html"
+    "?utm_source=whatsapp&utm_medium=partilha&utm_campaign=simulador_universal"
+)
+
+
+def _so_apoio_de_teste():
+    dados = json.loads(json.dumps(CONDICOES))
+    dados["apoios"] = {
+        "apoio-de-teste": {
+            "titulo": "Apoio de Teste Inventado",
+            "simulador": "/simuladores.html",
+            "tipo_link": "guia",
+            "operador": "all",
+            "condicoes": [{"id": "x", "tipo": "categorica", "campo": "reside_legalmente_pt",
+                           "operador_comparacao": "eq", "valor": "sim"}],
+        }
+    }
+    return {"**/dados/condicoes.json": lambda r: r.fulfill(status=200, content_type="application/json",
+                                                           body=json.dumps(dados))}
+
+
+def _resumo(page):
+    return page.evaluate(
+        "({numero: document.getElementById('resumoNumero').textContent,"
+        " numeroVisivel: !document.getElementById('resumoNumero').hidden,"
+        " texto: document.getElementById('resumoTexto').textContent,"
+        " resto: document.getElementById('resumoResto').textContent,"
+        " vazio: document.getElementById('resumoResultados').classList.contains('resumo-vazio'),"
+        " contagem: document.getElementById('contagemInelegivel').textContent})"
+    )
+
+
+def test_resumo_bate_com_os_cartoes_de_cada_grupo(pagina):
+    _percorrer_ate_ao_fim(pagina)
+    n_eleg = len(_cartoes(pagina, "grupoElegivel"))
+    n_ind = len(_cartoes(pagina, "grupoIndeterminado"))
+    n_inel = len(_cartoes(pagina, "grupoInelegivel"))
+    assert n_eleg > 1, "o percurso padrão tem de dar mais de um apoio provável"
+    r = _resumo(pagina)
+    assert r == {
+        "numero": str(n_eleg), "numeroVisivel": True, "texto": "apoios com provável direito",
+        "resto": f"{n_ind} em que falta saber · {n_inel} sem direito", "vazio": False,
+        "contagem": f"({n_inel})",
+    }
+    assert pagina.is_visible("#resumoResultados")
+
+
+def test_resumo_sem_apoio_provavel_nunca_mostra_numero(pagina):
+    pagina.click("#btnVerResultados")
+    pagina.wait_for_selector("#resultados:not([hidden])")
+    r = _resumo(pagina)
+    assert r["texto"] == "Por agora, nenhum apoio com provável direito"
+    assert not r["numeroVisivel"] and r["numero"] == "" and r["vazio"]
+    assert r["resto"] == f"{len(CONDICOES['apoios'])} em que falta saber · 0 sem direito"
+
+
+def test_resumo_singular_com_um_so_apoio(browser, servidor):
+    contexto, page = _abrir(browser, servidor, _so_apoio_de_teste())
+    page.wait_for_function("window.simuladorUniversal && window.simuladorUniversal.campoAtual !== null")
+    _percorrer_ate_ao_fim(page, {"reside_legalmente_pt": "sim"})
+    r = _resumo(page)
+    assert (r["numero"], r["texto"], r["resto"]) == ("1", "apoio com provável direito", "0 em que falta saber · 0 sem direito")
+    page.click("#btnRecomecar")
+    _percorrer_ate_ao_fim(page, {"reside_legalmente_pt": "nao"})
+    r = _resumo(page)
+    assert r["texto"] == "Por agora, nenhum apoio com provável direito" and r["contagem"] == "(1)"
+    contexto.close()
+
+
+def test_nao_tens_direito_fechado_por_defeito_e_ao_recomecar(pagina):
+    _percorrer_ate_ao_fim(pagina)
+    assert pagina.evaluate("document.getElementById('detalhesInelegivel').open") is False
+    assert _cartoes(pagina, "grupoInelegivel"), "os cartões existem mesmo com a lista fechada"
+    assert not pagina.is_visible("#grupoInelegivel li.apoio-card")
+    pagina.click("#detalhesInelegivel summary")
+    assert pagina.is_visible("#grupoInelegivel li.apoio-card")
+    pagina.click("#btnRecomecar")
+    _percorrer_ate_ao_fim(pagina)
+    assert pagina.evaluate("document.getElementById('detalhesInelegivel').open") is False
+
+
+def test_partilha_whatsapp_leva_so_a_ligacao_nunca_respostas(pagina):
+    from urllib.parse import parse_qs, urlsplit
+
+    href_inicial = pagina.get_attribute("#linkPartilharWhatsapp", "href")
+    _percorrer_ate_ao_fim(pagina)
+    href = pagina.get_attribute("#linkPartilharWhatsapp", "href")
+    assert href == href_inicial, "a ligação de partilha nunca muda com as respostas"
+    partes = urlsplit(href)
+    assert (partes.scheme, partes.netloc) == ("https", "wa.me")
+    # Igualdade exacta ao texto fixo: nada das respostas pode lá estar.
+    assert parse_qs(partes.query) == {"text": [LINK_WHATSAPP_TEXTO]}
+    assert pagina.get_attribute("#linkPartilharWhatsapp", "rel") == "noopener noreferrer"
+    # "Outras formas" reutiliza share.js, que partilha o URL da página — sem estado.
+    assert pagina.evaluate("location.search + location.hash") == ""
+    assert pagina.get_attribute("#btnPartilharOutras", "class").split()[-1] == "botao-partilhar"
+
+
+def test_partilha_whatsapp_regista_so_o_pathname(pagina):
+    _percorrer_ate_ao_fim(pagina)
+    pagina.evaluate("document.getElementById('linkPartilharWhatsapp')"
+                    ".addEventListener('click', (e) => e.preventDefault())")
+    pagina.click("#linkPartilharWhatsapp")
+    eventos = pagina.evaluate(
+        "window.dataLayer.map((a) => Array.from(a)).filter((a) => a[0] === 'event' && a[1] === 'partilha_whatsapp')"
+    )
+    assert eventos == [["event", "partilha_whatsapp", {"pagina": "/simulador-universal.html"}]]
+
+
+def test_resultados_convidam_para_o_canal_com_a_promessa_do_site(pagina):
+    _percorrer_ate_ao_fim(pagina)
+    aviso = pagina.locator("#resultados .aviso-canal")
+    assert aviso.is_visible()
+    href = aviso.locator("a").get_attribute("href")
+    assert href.startswith("https://whatsapp.com/channel/")
+    assert "utm_content=simulador-universal-resultado" in href
+    assert "Avisamos na véspera de cada pagamento da Segurança Social" in aviso.inner_text()

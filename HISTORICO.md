@@ -7230,6 +7230,25 @@ carimbo — decisão do Nuno), sitemap sem alteração. Textos aprovados antes d
 commit; squash com CI verde; smoke de produção verde, versão servida de
 `amim.html`/`fontes.html` confirmada (run 37469878151).
 
+### Última revisão: 2026-10-11 — Simulador universal: ecrã de resultados (resumo, partilha, canal)
+
+`simulador-universal.html`, só no ecrã de resultados, sem tocar no motor nem
+nos dados: (1) resumo no topo com a contagem de cada grupo ("N apoios com
+provável direito", "X em que falta saber · Y sem direito") e a nota de que não
+é decisão oficial — sem valores em euros, porque `avaliarApoios()` só avalia
+condições de acesso; com zero apoios prováveis, texto neutro sem número; (2)
+"Não tens direito" dentro de um `<details>` fechado por defeito, com a
+contagem no `<summary>` e fechado de novo ao recomeçar; (3) bloco de partilha:
+"Enviar por WhatsApp" (`wa.me` com texto e URL fixos no HTML, nunca as
+respostas; evento novo `partilha_whatsapp`, só `pagina`) e "Outras formas de
+partilhar" (2.º `.botao-partilhar`, reutiliza `share.js`); (4) convite ao
+canal de WhatsApp com a frase-padrão do site e
+`utm_content=simulador-universal-resultado`. Testes novos em
+`tests/test_simulador_universal_pagina.py` (resumo vs. cartões, singular,
+zero, lista fechada, ligação de partilha exacta e sem estado, evento só com o
+pathname, convite ao canal) e `tests/test_eventos_ga4.py`; tabela de eventos
+em CLAUDE.md actualizada.
+
 ---
 
 *Última revisão automática: 2026-10-11*

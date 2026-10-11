@@ -173,6 +173,27 @@
     .apoio-card p { font-size: 0.9rem; color: #374151; margin-bottom: 0.4rem; }
     .apoio-card a { color: var(--teal); font-weight: 700; font-size: 0.9rem; text-decoration: underline; text-underline-offset: 2px; }
     .grupo-vazio { font-size: 0.9rem; color: var(--muted); font-style: italic; }
+    .resumo { background: var(--teal-light); border: 1px solid #CCE7E2; border-radius: 12px; padding: 1.1rem 1.15rem; margin-bottom: 1.5rem; }
+    .resumo.resumo-vazio { background: #F8FAFC; border-color: var(--border); }
+    .resumo-rotulo { font-size: 0.875rem; font-weight: 600; color: var(--teal); }
+    .resumo-vazio .resumo-rotulo { color: var(--muted); }
+    .resumo-principal { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin: 0.15rem 0 0.25rem; }
+    .resumo-numero { font-size: 3rem; font-weight: 800; line-height: 1; color: var(--ink); }
+    .resumo-texto { font-size: 1.1rem; font-weight: 700; line-height: 1.35; }
+    .resumo-resto { font-size: 0.95rem; color: #374151; }
+    .resumo-nota { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-top: 0.4rem; }
+    #grupoInelegivel details { border: 1px solid var(--border); border-radius: 8px; padding: 0 1rem; }
+    .grupo-inelegivel summary { min-height: 48px; gap: 0.5rem; }
+    .grupo-inelegivel summary h3 { margin-bottom: 0; }
+    .grupo-inelegivel .grupo-contagem { color: #7F1D1D; font-weight: 700; margin-left: auto; }
+    #grupoInelegivel details[open] .lista-apoios { padding-bottom: 0.9rem; }
+    .bloco-partilha { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .bloco-partilha h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .bloco-partilha p { font-size: 0.9rem; color: #374151; margin-bottom: 0.75rem; }
+    .bloco-partilha-botoes { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .bloco-partilha-botoes .btn { flex: 1 1 220px; }
+    .bloco-partilha-botoes a.btn-primary { color: var(--white); }
+    .aviso-canal { margin-top: 1.25rem; margin-bottom: 0; }
     .faq-section { margin-top: 2.5rem; }
     .faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
     details { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
@@ -329,6 +350,13 @@
     <section id="resultados" class="resultados" aria-labelledby="resultadosTitulo" hidden>
       <h2 tabindex="-1" id="resultadosTitulo">Os teus resultados</h2>
 
+      <div id="resumoResultados" class="resumo">
+        <p class="resumo-rotulo">Pelas tuas respostas</p>
+        <p class="resumo-principal"><span class="resumo-numero" id="resumoNumero"></span><span class="resumo-texto" id="resumoTexto"></span></p>
+        <p class="resumo-resto" id="resumoResto"></p>
+        <p class="resumo-nota">Não é uma decisão oficial. O valor e a decisão final dependem da entidade que atribui cada apoio.</p>
+      </div>
+
       <div id="avisoFilhos" class="aviso-info" hidden>
         <strong>Tens mais filhos?</strong>
         A avaliação considera o teu filho mais novo. Um resultado de «sem direito» para esse filho não significa que a família não tenha direito a nenhum apoio — repete a avaliação para cada um dos restantes filhos.
@@ -345,14 +373,27 @@
         <ul class="lista-apoios"></ul>
       </section>
       <section class="grupo grupo-inelegivel" id="grupoInelegivel">
-        <h3>Não tens direito</h3>
-        <ul class="lista-apoios"></ul>
+        <details id="detalhesInelegivel">
+          <summary><h3>Não tens direito</h3><span class="grupo-contagem" id="contagemInelegivel"></span></summary>
+          <ul class="lista-apoios"></ul>
+        </details>
       </section>
 
       <div class="btn-grupo">
         <button type="button" class="btn btn-primary" id="btnContinuarResponder">Continuar a responder</button>
         <button type="button" class="btn btn-secondary" id="btnRecomecar">Recomeçar</button>
       </div>
+
+      <section class="bloco-partilha" aria-labelledby="partilhaTitulo">
+        <h3 id="partilhaTitulo">Conheces alguém que pode ter direito a apoios?</h3>
+        <p>A partilha envia só a ligação do simulador. As tuas respostas ficam neste dispositivo.</p>
+        <div class="bloco-partilha-botoes">
+          <a class="btn btn-primary" id="linkPartilharWhatsapp" href="https://wa.me/?text=Experimenta%20o%20simulador%20do%20Tens%20Direito%3A%20mostra%20a%20que%20apoios%20sociais%20podes%20ter%20direito%2C%20uma%20pergunta%20de%20cada%20vez.%20https%3A%2F%2Ftensdireito.com%2Fsimulador-universal.html%3Futm_source%3Dwhatsapp%26utm_medium%3Dpartilha%26utm_campaign%3Dsimulador_universal" target="_blank" rel="noopener noreferrer">Enviar por WhatsApp</a>
+          <button type="button" class="btn btn-outline botao-partilhar" id="btnPartilharOutras">Outras formas de partilhar</button>
+        </div>
+      </section>
+
+      <p class="aviso-info aviso-canal">📲 Sabe primeiro quando cai cada pagamento — segue o <a href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=simulador-universal-resultado" target="_blank" rel="noopener noreferrer">canal de WhatsApp do Tens Direito</a>. Avisamos na véspera de cada pagamento da Segurança Social e quando uma regra muda a sério — sem grupo, sem responderes a nada. Sais quando quiseres.</p>
     </section>
 
     <section class="faq-section">
@@ -584,6 +625,7 @@
       function recomecar() {
         respostas = {};
         historico = [];
+        el('detalhesInelegivel').open = false;
         mostrarAssistente();
         rolarPara('assistente');
       }
@@ -695,10 +737,28 @@
       // Região viva sempre presente (fora de #resultados, que está [hidden]
       // até aqui — uma região escondida não anuncia nada ao aparecer).
       function textoAnuncio(avaliacao) {
-        const n = { elegivel: 0, indeterminado: 0, inelegivel: 0 };
-        Object.values(avaliacao).forEach((r) => { if (r.estado in n) n[r.estado] += 1; });
+        const n = contarEstados(avaliacao);
         return 'Resultados prontos: ' + n.elegivel + ' com provável direito, '
           + n.indeterminado + ' em que falta saber, ' + n.inelegivel + ' sem direito.';
+      }
+
+      function contarEstados(avaliacao) {
+        const n = { elegivel: 0, indeterminado: 0, inelegivel: 0 };
+        Object.values(avaliacao).forEach((r) => { if (r.estado in n) n[r.estado] += 1; });
+        return n;
+      }
+
+      function desenharResumo(n) {
+        const caixa = el('resumoResultados');
+        const vazio = n.elegivel === 0;
+        caixa.classList.toggle('resumo-vazio', vazio);
+        el('resumoNumero').hidden = vazio;
+        el('resumoNumero').textContent = vazio ? '' : String(n.elegivel);
+        el('resumoTexto').textContent = vazio
+          ? 'Por agora, nenhum apoio com provável direito'
+          : (n.elegivel === 1 ? 'apoio com provável direito' : 'apoios com provável direito');
+        el('resumoResto').textContent = n.indeterminado + ' em que falta saber · ' + n.inelegivel + ' sem direito';
+        el('contagemInelegivel').textContent = '(' + n.inelegivel + ')';
       }
 
       function mostrarResultadosSimulador() {
@@ -719,6 +779,7 @@
           }
         });
 
+        desenharResumo(contarEstados(avaliacao));
         el('avisoFilhos').hidden = respostas.tem_filhos_a_cargo !== 'sim';
         desenharAvisosSubstituicao(avaliacao);
         el('btnContinuarResponder').hidden = proximaPergunta(CONDICOES, respostas, hojeISO()) === null;
@@ -753,6 +814,13 @@
           rolarPara('assistente');
         });
         el('btnRecomecar').addEventListener('click', recomecar);
+        // Só o facto de a partilha ter sido aberta — a ligação é fixa no HTML
+        // e nunca leva respostas.
+        el('linkPartilharWhatsapp').addEventListener('click', () => {
+          if (typeof gtag === 'function') {
+            gtag('event', 'partilha_whatsapp', { pagina: window.location.pathname });
+          }
+        });
         try {
           const resp = await fetch('/dados/condicoes.json');
           if (!resp.ok) throw new Error('HTTP ' + resp.status);
