@@ -965,3 +965,59 @@ def test_motivo_inelegivel_invalido_falha(tmp_path, monkeypatch, motivo, em_grup
               {"x": _apoio_min(condicoes=[cond])}, completar=False)
     with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
         gerar_condicoes_json.consolidar()
+
+
+# ── `calendario`: slug do calendário de pagamentos (próximo pagamento) ───
+
+def _apoio_para_calendario(**extra):
+    base = {
+        "apoio": "csi",
+        "operador": "all",
+        "condicoes": [{"id": "reside", "tipo": "categorica", "campo": "reside_legalmente_pt",
+                       "operador_comparacao": "eq", "valor_literal": "sim"}],
+    }
+    base.update(extra)
+    return base
+
+
+def test_calendario_valido_passa_para_o_json(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": _apoio_para_calendario(calendario="csi")})
+    assert gerar_condicoes_json.consolidar()["apoios"]["csi"]["calendario"] == "csi"
+
+
+def test_sem_calendario_nao_ha_chave(tmp_path, monkeypatch):
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": _apoio_para_calendario()})
+    assert "calendario" not in gerar_condicoes_json.consolidar()["apoios"]["csi"]
+
+
+@pytest.mark.parametrize("valor", ["inventado", ["csi"], 3, None])
+def test_calendario_fora_da_lista_do_calendario_falha(tmp_path, monkeypatch, valor):
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": _apoio_para_calendario(calendario=valor)})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="calendario"):
+        gerar_condicoes_json.consolidar()
+
+
+@pytest.mark.parametrize("slug", sorted(gerar_condicoes_json.SLUGS_CALENDARIO_AMBIGUOS))
+def test_calendario_com_lote_de_dois_dias_falha(tmp_path, monkeypatch, slug):
+    _preparar(tmp_path, monkeypatch, PERGUNTAS_BASE, PARAMETROS_BASE, {"csi": _apoio_para_calendario(calendario=slug)})
+    with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match="dois dias"):
+        gerar_condicoes_json.consolidar()
+
+
+def test_lotes_ambiguos_sao_os_do_1o_e_2o_pagamento():
+    assert gerar_condicoes_json.SLUGS_CALENDARIO_AMBIGUOS == {
+        "desemprego_doenca_parentalidade_acao_social_1",
+        "desemprego_doenca_parentalidade_acao_social_2",
+    }
+
+
+def test_calendario_real_dos_apoios_existe_nos_dados_do_calendario():
+    """Um slug que nunca aparece em data/calendario_pagamentos.json nunca
+    mostraria data nenhuma — falha em vez de ficar órfão em silêncio."""
+    condicoes = json.loads((RAIZ / "dados" / "condicoes.json").read_text(encoding="utf-8"))
+    calendario = json.loads((RAIZ / "data" / "calendario_pagamentos.json").read_text(encoding="utf-8"))
+    usados = {p for m in calendario["meses"] for pag in m["pagamentos"] for p in pag["prestacoes"]}
+    ligados = {a: d["calendario"] for a, d in condicoes["apoios"].items() if "calendario" in d}
+    assert ligados == {"abono": "prestacoes_familiares", "csi": "csi", "rsi": "rsi"}
+    for apoio, slug in ligados.items():
+        assert slug in usados, f"{apoio}: '{slug}' não aparece em data/calendario_pagamentos.json"

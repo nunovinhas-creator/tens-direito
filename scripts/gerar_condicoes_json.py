@@ -28,6 +28,9 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atualizar_calendario import PRESTACOES as PRESTACOES_CALENDARIO, _ROTULO_SLUG  # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 CONDICOES_DIR = RAIZ / "dados" / "condicoes"
 PERGUNTAS_PATH = CONDICOES_DIR / "perguntas.yaml"
@@ -47,8 +50,28 @@ TIPOS_LINK_VALIDOS = {"simulador", "guia"}
 PREFIXO_PAGINA_SIMULADOR = "simulador-"
 
 
+# Slugs do calendário de pagamentos que o ecrã de resultados pode usar para
+# mostrar o próximo pagamento de um apoio. Os lotes "1.º/2.º pagamento"
+# (desemprego, doença, parentalidade, ação social) ficam de fora: são dois
+# dias por mês e o calendário não diz qual cabe a cada pessoa.
+SLUGS_CALENDARIO_AMBIGUOS = frozenset(_ROTULO_SLUG)
+
+
 class CondicaoInvalida(Exception):
     pass
+
+
+def _validar_calendario(valor, apoio: str) -> str:
+    if not isinstance(valor, str) or valor not in PRESTACOES_CALENDARIO:
+        raise CondicaoInvalida(
+            f"{apoio}: 'calendario' tem de ser um slug de data/calendario_pagamentos.json ({valor!r})"
+        )
+    if valor in SLUGS_CALENDARIO_AMBIGUOS:
+        raise CondicaoInvalida(
+            f"{apoio}: 'calendario: {valor}' é um lote com dois dias de pagamento — "
+            "o calendário não diz qual cabe a cada pessoa"
+        )
+    return valor
 
 
 def _carregar_perguntas() -> dict:
@@ -523,6 +546,10 @@ def consolidar() -> dict:
             if not parametro_data:
                 raise CondicaoInvalida(f"{apoio}: 'substituido_por' exige 'substituido_a_partir_de_parametro'")
             entrada["substituido_a_partir_de"] = _resolver_parametro(parametro_data, parametros, apoio)
+        # Opcional: o slug do calendário de pagamentos que paga este apoio.
+        # Só a página o usa, para mostrar o próximo pagamento já publicado.
+        if "calendario" in bruto:
+            entrada["calendario"] = _validar_calendario(bruto["calendario"], apoio)
         apoios[apoio] = entrada
 
     for apoio, dados in apoios.items():

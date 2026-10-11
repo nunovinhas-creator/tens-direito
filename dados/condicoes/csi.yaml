@@ -30,6 +30,9 @@ pagina: complemento-solidario-idosos.html
 titulo: "Complemento Solidário para Idosos (CSI)"
 simulador: /simulador-csi.html
 tipo_link: simulador
+# Slug do calendário de pagamentos da Segurança Social (CSI) — o ecrã
+# de resultados mostra o próximo pagamento já publicado.
+calendario: csi
 operador: all
 
 condicoes:

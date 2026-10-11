@@ -24,6 +24,9 @@ pagina: abono-de-familia.html
 titulo: "Abono de Família"
 simulador: /simulador-abono.html
 tipo_link: simulador
+# Slug do calendário de pagamentos da Segurança Social (abono e outras prestações familiares) — o ecrã
+# de resultados mostra o próximo pagamento já publicado.
+calendario: prestacoes_familiares
 operador: all
 
 condicoes:
