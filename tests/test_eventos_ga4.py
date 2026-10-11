@@ -63,6 +63,7 @@ EVENTOS_POR_FICHEIRO = {
     "assets/js/nav.js": ["menu_tool_click"],
     "comecar-aqui.html": ["comecar_aqui_percurso"],
     "index.html": ["cal_home_clique"],
+    "calendario-pagamentos-seguranca-social.html": ["calendario_subscrito"],
     **{ficheiro: ["simulacao_concluida"] for ficheiro in SIMULADORES},
     "simulador-universal.html": ["simulacao_concluida", "partilha_whatsapp", "calendario_descarregado"],
 }

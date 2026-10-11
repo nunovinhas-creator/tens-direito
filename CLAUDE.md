@@ -339,7 +339,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `integridade.yml` | push a main, **pull_request para main** (2026-07-17; desde 2026-09-30 também `edited` — mudança de base para main — e `ready_for_review`, sem filtro por job, issue #266), cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04). Todos os jobs são determinísticos (dependem apenas do checkout) — o canário de URLs oficiais saiu para `canario-urls.yml` a 2026-09-30. `concurrency` com `cancel-in-progress` só em PRs (pushes sucessivos cancelam runs obsoletos; em main/schedule nunca cancela) | ❌ não |
 | `canario-urls.yml` | cron diário `23 7 * * *` + manual (nunca push nem PR — a disponibilidade de um portal não depende do commit) | `scripts/verificar_urls_como_pedir.py`: HEAD (e GET de recurso com cabeçalhos de navegador se HEAD ≥ 400) aos URLs de `data/urls_como_pedir.json`; 404/410/domínio inexistente falham logo, o resto tem 4 tentativas (esperas 15/45/90 s); uma falha abre ou actualiza UMA issue `canario-urls` (atribuída ao Nuno, @menção, status HEAD/GET de cada URL; comentário só quando muda o conjunto de URLs a falhar), fechada sozinha na primeira corrida verde; o job fica vermelho sempre que há falhas | ❌ não — só gere a issue (`issues: write`) |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, se um simulador devolver 200 com conteúdo errado/antigo, ou se os HTML que o commit alterou não forem servidos nessa versão (#281, gate rígido — ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
-| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage; guardrail próprio) |
+| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage + `calendario/*.ics` — calendários subscrevíveis; guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
 **`pipeline-diario.yml`, `shadow-daily.yml` e `calendario-mensal.yml` são os
@@ -2223,6 +2223,26 @@ silenciosa.
   DD/MM/AAAA" (`atualizado_em` do JSON) — nunca "verificado", para não se
   confundir com o carimbo manual "Verificado a" da página (que cobre o
   texto e continua manual).
+- **Calendários subscrevíveis — `calendario/<âncora>.ics`** (2026-10-11):
+  um ficheiro por prestação de `VISTA_PRESTACOES`, gerado por
+  `scripts/gerar_calendarios_ics.py` e regenerado por
+  `atualizar_calendario.py` (portanto pelo `calendario-mensal.yml`, cujo
+  guardrail e `git add` passaram a incluir `calendario/*.ics`). Só datas
+  publicadas, de `hoje` (Lisboa, data da geração) em diante; os lotes
+  `_1`/`_2` entram os dois, com «(1.º ou 2.º pagamento)» no título; UID
+  `<âncora>-<AAAAMMDD>@tensdireito.com`, estável. A data de geração fica em
+  `X-TD-GERADO-EM`: `tests/test_calendarios_ics.py` regenera cada ficheiro
+  com ela e falha se o JSON mudou sem regenerar. Só a data a mudar (mesmos
+  eventos) não reescreve o ficheiro. A secção «Recebe as datas no teu
+  calendário» da página vive na zona `CAL:SUBSCREVER:INICIO/FIM`, gerada
+  por `render_subscrever()`: um só botão «Adicionar ao meu calendário» por
+  prestação — `webcal://` por omissão e sem JavaScript (iPhone, iPad e Mac
+  abrem no Calendário); nos outros aparelhos o script troca-o pela ligação
+  `calendar.google.com/calendar/render?cid=webcal://…` (o Google só deixa
+  subscrever no computador). Evento GA4 `calendario_subscrito` (só
+  `destino`, nunca a prestação). O
+  smoke test confirma `/calendario/pensoes.ics` (corpo `BEGIN:VCALENDAR`;
+  tipo `text/calendar` só como aviso).
 - **Outro leitor do JSON — `simulador-universal.html`**: no ecrã de
   resultados, mostra o próximo pagamento dos apoios prováveis e gera o
   `.ics` no navegador, só a partir de `data/calendario_pagamentos.json`
@@ -2323,6 +2343,7 @@ simulador, nunca um valor introduzido).
 | `partilha_whatsapp` | `simulador-universal.html`, clique em "Enviar por WhatsApp" no ecrã de resultados | `pagina` (pathname) | A ligação `wa.me` é fixa no HTML (texto + URL com `utm_source=whatsapp`) e nunca leva respostas — `tests/test_simulador_universal_pagina.py` tranca o texto exacto. "Outras formas de partilhar", no mesmo bloco, é um 2.º `.botao-partilhar` (com classes extra, fora da regex de `inserir_botao_partilhar.py`) e dispara o `partilha_clique` de `share.js`. |
 | `calendario_descarregado` | `simulador-universal.html`, clique em "Adicionar ao meu calendário" no ecrã de resultados | `pagina` (pathname) | O `.ics` é criado no navegador a partir de `data/calendario_pagamentos.json` (só datas publicadas, de hoje em diante, dos apoios prováveis com `calendario:` no YAML de condições) e nunca sai do dispositivo; o evento não diz quais apoios nem quantas datas. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
+| `calendario_subscrito` | `calendario-pagamentos-seguranca-social.html` (zona `CAL:SUBSCREVER`, gerada), clique em «Adicionar ao meu calendário» | `destino` (`apple`/`google`, conforme o aparelho) | Nunca a prestação escolhida — diria que apoio a pessoa recebe. |
 | `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
 
 **`documento_gerado` — deliberadamente NÃO implementado**: o gerador de

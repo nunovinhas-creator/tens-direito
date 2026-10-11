@@ -160,6 +160,13 @@
     .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin: 1.5rem 0; }
     .fonte-bloco a { color: #0F766E; font-weight: 600; }
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
+    .cal-subscrever-item { border: 1px solid #dee2e6; border-radius: 8px; margin-top: 0.6rem; background: #fff; }
+    .cal-subscrever-item summary { cursor: pointer; font-weight: 600; color: #0F766E; padding: 0.75rem 1rem; min-height: 44px; }
+    .cal-subscrever-conteudo { padding: 0 1rem 1rem; }
+    .cal-subscrever-lote { font-size: 0.88rem; color: #495057; margin-bottom: 0.75rem; }
+    .cal-subscrever-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0.55rem 1rem; border-radius: 8px; background: #0F766E; color: #fff; font-weight: 600; text-decoration: none; }
+    .cal-subscrever-btn:hover { background: #115E59; }
+    .cal-subscrever-btn:focus-visible { outline: 3px solid #0F766E; outline-offset: 2px; }
     footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
     footer a { color: #5C6770; }
   </style>
@@ -391,6 +398,99 @@
 
 <p class="cal-fonte-inline">Fonte: <a href="https://www.seg-social.pt/ptss/pssd/pagamentos" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a 25/09/2026</p>
 <!-- CAL:CORPO:FIM -->
+
+<!-- CAL:SUBSCREVER:INICIO -->
+  <section class="card cal-subscrever" aria-labelledby="subscrever">
+  <h2 id="subscrever">Recebe as datas no teu calendário</h2>
+  <p>Escolhe a tua prestação e liga-a ao calendário do telemóvel ou do computador. Só precisas de fazer isto uma vez: quando a Segurança Social publicar as datas do mês seguinte, elas aparecem sozinhas.</p>
+  <details class="cal-subscrever-item" id="subscrever-pensoes">
+    <summary>Pensões</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/pensoes.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/pensoes.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-csi">
+    <summary>Complemento Solidário para Idosos (CSI)</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/csi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/csi.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-psi">
+    <summary>Prestação Social para a Inclusão (PSI)</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/psi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/psi.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-abono-familia">
+    <summary>Abono de família e prestações familiares</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/abono-familia.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/abono-familia.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-subsidio-desemprego">
+    <summary>Subsídio de desemprego</summary>
+    <div class="cal-subscrever-conteudo">
+      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-subsidio-doenca">
+    <summary>Subsídio de doença (baixa médica)</summary>
+    <div class="cal-subscrever-conteudo">
+      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-parentalidade-social">
+    <summary>Subsídios de parentalidade</summary>
+    <div class="cal-subscrever-conteudo">
+      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/parentalidade-social.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/parentalidade-social.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-rsi">
+    <summary>Rendimento Social de Inserção (RSI)</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/rsi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/rsi.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-apoio-renda">
+    <summary>Apoio extraordinário à renda</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/apoio-renda.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/apoio-renda.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  <details class="cal-subscrever-item" id="subscrever-cuidador-informal">
+    <summary>Subsídio de apoio ao cuidador informal</summary>
+    <div class="cal-subscrever-conteudo">
+      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/cuidador-informal.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/cuidador-informal.ics" data-destino="apple">Adicionar ao meu calendário</a>
+    </div>
+  </details>
+  </section>
+  <script>
+    (function () {
+      var seccao = document.querySelector('.cal-subscrever');
+      if (!seccao) return;
+      // iPhone, iPad (que se apresenta como Mac) e Mac abrem webcal:// no
+      // Calendário; os outros aparelhos vão para o Google Calendar.
+      var apple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+      if (!apple) {
+        seccao.querySelectorAll('a[data-google]').forEach(function (a) {
+          a.href = a.dataset.google;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.dataset.destino = 'google';
+        });
+      }
+      seccao.addEventListener('click', function (e) {
+        var ligacao = e.target.closest('a[data-destino]');
+        if (ligacao && typeof gtag === 'function') {
+          gtag('event', 'calendario_subscrito', { destino: ligacao.dataset.destino });
+        }
+      });
+    })();
+  </script>
+<!-- CAL:SUBSCREVER:FIM -->
 
   <div class="card">
     <h2 id="como-funciona">Como funciona o calendário</h2>

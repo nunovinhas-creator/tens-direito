@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tens Direito//Calendario de pagamentos//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pagamentos da Segurança Social: Subsídio de apoio ao cuidado
+ r informal
+X-WR-CALDESC:Datas de pagamento publicadas pela Segurança Social\, atualiz
+ adas todos os meses por tensdireito.com. Calendário completo: https://ten
+ sdireito.com/calendario-pagamentos-seguranca-social.html
+X-WR-TIMEZONE:Europe/Lisbon
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+X-TD-GERADO-EM:2026-10-11
+BEGIN:VEVENT
+UID:cuidador-informal-20261028@tensdireito.com
+DTSTAMP:20261011T000000Z
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+SUMMARY:Pagamento da Segurança Social: Subsídio de apoio ao cuidador info
+ rmal
+DESCRIPTION:Data do calendário de pagamentos da Segurança Social. Por tra
+ nsferência bancária ou vale de correio. Confirma em https://tensdireito.
+ com/calendario-pagamentos-seguranca-social.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT12H
+DESCRIPTION:Amanhã a Segurança Social paga: Subsídio de apoio ao cuidado
+ r informal
+END:VALARM
+END:VEVENT
+END:VCALENDAR

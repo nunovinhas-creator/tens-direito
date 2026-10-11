@@ -106,6 +106,22 @@ verificar_url() {
     return 1
   fi
 
+  # Calendários subscrevíveis (calendario/*.ics): o corpo tem de ser um
+  # calendário (falha se não for); o tipo text/calendar é da plataforma, por
+  # isso só avisa — as aplicações de calendário aceitam-no na mesma.
+  case "$caminho" in
+    /calendario/*.ics)
+      if ! head -c 15 "$corpo_ficheiro" | grep -q "BEGIN:VCALENDAR"; then
+        echo "::error::${url} devolveu 200 mas o corpo não começa por BEGIN:VCALENDAR"
+        rm -f "$corpo_ficheiro"
+        return 1
+      fi
+      if ! curl -sS -A "$USER_AGENT" -I "$url" 2>/dev/null | grep -qi "^content-type: *text/calendar"; then
+        echo "::warning::${url} não foi servido como text/calendar — confirmar que as aplicações de calendário o aceitam"
+      fi
+      ;;
+  esac
+
   # dados/tensdireito.db (FASE 3): confirma que o GitHub Pages serve o
   # ficheiro com CORS aberto, condição necessária para o Datasette Lite o
   # conseguir ler directamente no browser de outro domínio. Nunca falha o
