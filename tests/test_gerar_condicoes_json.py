@@ -617,20 +617,56 @@ def test_depois_de_em_ciclo_falha(tmp_path, monkeypatch):
         gerar_condicoes_json.consolidar()
 
 
+SITUACOES = {"id": "situacoes", "titulo": "O que se aplica a ti?", "ajuda": "Marca tudo."}
+
+
+def _sim_nao(rotulo="Tenho isto", **extra):
+    base = {"descricao": "s", "tipo": "categorica", "opcoes": ["sim", "nao"], "pergunta": "Tens isto?",
+            "rotulos": {"sim": "Sim", "nao": "Não"}, "rotulo_caixa": rotulo}
+    base.update(extra)
+    return base
+
+
 @pytest.mark.parametrize("perguntas_grupo,erro", [
     ({"a": _numero(grupo=GRUPO)}, "só tem um campo"),
-    ({"a": _numero(grupo=GRUPO), "b": _numero(grupo={"id": "agregado", "titulo": "Outro"})}, "títulos diferentes"),
+    ({"a": _numero(grupo=GRUPO), "b": _numero(grupo={"id": "agregado", "titulo": "Outro"})}, "título ou ajuda"),
+    ({"a": _sim_nao(grupo=SITUACOES), "b": _sim_nao(grupo={**SITUACOES, "ajuda": "Outra"})}, "título ou ajuda"),
     ({"a": _numero(grupo=GRUPO), "b": _numero(grupo=GRUPO, aplicavel_se={"campo": "reside", "valor": "sim"})},
      "aplicavel_se"),
-    ({"a": _numero(grupo={"id": "agregado"}), "b": _numero(grupo=GRUPO)}, "exactamente"),
+    ({"a": _numero(grupo={"id": "agregado"}), "b": _numero(grupo=GRUPO)}, "tem de ter"),
+    ({"a": _numero(grupo={**GRUPO, "extra": "x"}), "b": _numero(grupo=GRUPO)}, "tem de ter"),
     ({"a": _numero(grupo={"id": "agregado", "titulo": " "}), "b": _numero(grupo=GRUPO)}, "texto não vazio"),
-    ({"a": _numero(grupo=GRUPO), "b": {**_pergunta_reside(), "grupo": GRUPO}}, "numéricas"),
+    ({"a": _numero(grupo=GRUPO), "b": _sim_nao(grupo=GRUPO)}, "mistura"),
+    ({"a": _sim_nao(grupo=SITUACOES), "b": _sim_nao(grupo=SITUACOES, rotulo_caixa=" ")}, "rotulo_caixa"),
+    ({"a": _sim_nao(grupo=SITUACOES), "b": {**_sim_nao(grupo=SITUACOES), "rotulo_caixa": None}}, "rotulo_caixa"),
+    ({"a": _numero(grupo=GRUPO), "b": _numero(grupo=GRUPO, rotulo_caixa="x")}, "rotulo_caixa"),
+    ({"a": _sim_nao()}, "rotulo_caixa"),
+    ({"a": _sim_nao(grupo=SITUACOES),
+      "b": {**_sim_nao(grupo=SITUACOES), "opcoes": ["sim", "nao", "talvez"],
+            "rotulos": {"sim": "S", "nao": "N", "talvez": "T"}}}, "numéricas ou sim/não"),
 ])
 def test_grupo_invalido_falha(tmp_path, monkeypatch, perguntas_grupo, erro):
     perguntas = {"reside": _pergunta_reside(), **perguntas_grupo}
     _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
     with pytest.raises(gerar_condicoes_json.CondicaoInvalida, match=erro):
         gerar_condicoes_json.consolidar()
+
+
+def test_grupo_sim_nao_valido_passa_para_o_json(tmp_path, monkeypatch):
+    perguntas = {"reside": _pergunta_reside(), "a": _sim_nao(grupo=SITUACOES), "b": _sim_nao("Estou x", grupo=SITUACOES)}
+    _preparar(tmp_path, monkeypatch, perguntas, {"prestacoes": {}}, {"x": _apoio_min()}, completar=False)
+    saida = gerar_condicoes_json.consolidar()["perguntas"]
+    assert saida["b"]["grupo"] == SITUACOES
+    assert saida["b"]["rotulo_caixa"] == "Estou x"
+
+
+def test_dados_reais_ecra_de_situacoes():
+    perguntas = json.loads((Path(__file__).resolve().parent.parent / "dados" / "condicoes.json")
+                           .read_text(encoding="utf-8"))["perguntas"]
+    grupo = [c for c, d in perguntas.items() if (d.get("grupo") or {}).get("id") == "situacoes"]
+    assert grupo == ["tem_filhos_a_cargo", "esta_desempregado", "tem_cit_valido",
+                     "destino_habitacao_propria_permanente", "tem_deficiencia_requerente"]
+    assert "situacao_profissional" not in perguntas
 
 
 def test_dados_reais_agregado_num_so_ecra_e_anos_depois_da_situacao_de_residencia():

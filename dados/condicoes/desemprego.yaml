@@ -2,7 +2,7 @@
 # universal". Fonte: secção "Quem tem direito" de subsidio-desemprego.html.
 #
 # Sem grupos aninhados — as quatro condições são todas cumulativas e
-# planas. Três dos quatro campos já existiam (situacao_profissional,
+# planas. Três dos quatro campos já existiam (esta_desempregado, antes situacao_profissional,
 # inscrito_centro_emprego_e_disponivel, situacao_contributiva_regularizada,
 # todos criados nos PR 5/6) — só dois campos novos foram precisos
 # (desemprego_involuntario, dias_registo_remuneracoes_24_meses). É o
@@ -27,9 +27,9 @@ operador: all
 condicoes:
   - id: esta_desempregado
     tipo: categorica
-    campo: situacao_profissional
+    campo: esta_desempregado
     operador_comparacao: eq
-    valor_literal: desempregado
+    valor_literal: sim
 
   - id: cessacao_involuntaria
     tipo: categorica

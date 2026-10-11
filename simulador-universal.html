@@ -53,7 +53,7 @@
       {
         "@type": "Question",
         "name": "Como funciona este simulador?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Fazes uma pergunta de cada vez. A seguir a cada resposta, o simulador escolhe a pergunta que mais ajuda a decidir os apoios que ainda estão em aberto, e deixa as perguntas sobre rendimentos e poupanças para o fim. Podes ver os resultados em qualquer momento, voltar atrás ou recomeçar."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Começas por marcar o que se aplica a ti: filhos a cargo, desemprego, baixa médica, compra de casa ou deficiência. Depois respondes a uma pergunta de cada vez: a seguir a cada resposta, o simulador escolhe a pergunta que mais ajuda a decidir os apoios que ainda estão em aberto, e deixa as perguntas sobre rendimentos e poupanças para o fim. Podes ver os resultados em qualquer momento, voltar atrás ou recomeçar."}
       },
       {
         "@type": "Question",
@@ -149,6 +149,11 @@
     .campos-conjuntos { display: grid; gap: 0.9rem; margin: 1rem 0 0.5rem; }
     .campo-conjunto label { display: block; font-weight: 600; font-size: 0.98rem; margin-bottom: 0.35rem; line-height: 1.4; }
     .campo-conjunto .campo-linha { margin: 0; }
+    .caixa-situacao { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; min-height: 48px; border: 2px solid var(--border); border-radius: 8px; background: var(--white); cursor: pointer; font-size: 1rem; line-height: 1.4; }
+    .caixa-situacao:hover { border-color: var(--teal); background: var(--teal-light); }
+    .caixa-situacao:has(input:checked) { border-color: #0F766E; background: var(--teal-light); }
+    .caixa-situacao input { width: 22px; height: 22px; flex: 0 0 auto; accent-color: #0F766E; }
+    .caixa-situacao input:focus-visible { outline: 3px solid #0F766E; outline-offset: 2px; }
     .pergunta-texto { font-size: 1.2rem; font-weight: 700; line-height: 1.4; margin-bottom: 0.4rem; display: block; }
     .pergunta-ajuda { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
     .opcoes { display: grid; gap: 0.6rem; margin: 1rem 0 0.5rem; }
@@ -375,6 +380,11 @@
     <section id="resultados" class="resultados" aria-labelledby="resultadosTitulo" hidden>
       <h2 tabindex="-1" id="resultadosTitulo">Os teus resultados</h2>
 
+      <div id="avisoNadaMarcado" class="aviso-info" hidden>
+        <strong>Não marcaste nenhuma situação no primeiro ecrã.</strong>
+        Por isso ficaram de fora os apoios para quem tem filhos, está desempregado/a, está de baixa médica, vai comprar casa ou tem uma deficiência. Se alguma destas situações se aplica a ti, carrega em «Recomeçar» e marca-a.
+      </div>
+
       <div id="resumoResultados" class="resumo">
         <p class="resumo-rotulo">Pelas tuas respostas</p>
         <p class="resumo-principal"><span class="resumo-numero" id="resumoNumero"></span><span class="resumo-texto" id="resumoTexto"></span></p>
@@ -433,7 +443,7 @@
 
       <details>
         <summary>Como funciona este simulador?</summary>
-        <div class="faq-resposta">Fazes uma pergunta de cada vez. A seguir a cada resposta, o simulador escolhe a pergunta que mais ajuda a decidir os apoios que ainda estão em aberto, e deixa as perguntas sobre rendimentos e poupanças para o fim. Podes ver os resultados em qualquer momento, voltar atrás ou recomeçar.</div>
+        <div class="faq-resposta">Começas por marcar o que se aplica a ti: filhos a cargo, desemprego, baixa médica, compra de casa ou deficiência. Depois respondes a uma pergunta de cada vez: a seguir a cada resposta, o simulador escolhe a pergunta que mais ajuda a decidir os apoios que ainda estão em aberto, e deixa as perguntas sobre rendimentos e poupanças para o fim. Podes ver os resultados em qualquer momento, voltar atrás ou recomeçar.</div>
       </details>
 
       <details>
@@ -592,7 +602,9 @@
         }
       }
 
-      function desenharPergunta(campos) {
+      // `anteriores`: respostas a repor quando se volta a este ecrã.
+      function desenharPergunta(campos, anteriores) {
+        anteriores = anteriores || {};
         const def = CONDICOES.perguntas[campos[0]];
         const conjunto = campos.length > 1;
         desenharEtapas(etapaDaPergunta(def));
@@ -602,7 +614,7 @@
         if (conjunto) titulo.removeAttribute('for');
         else titulo.setAttribute('for', 'campoResposta');
         const ajuda = el('perguntaAjuda');
-        const textoAjuda = conjunto ? '' : (def.ajuda || '');
+        const textoAjuda = conjunto ? (def.grupo.ajuda || '') : (def.ajuda || '');
         ajuda.textContent = textoAjuda;
         ajuda.hidden = !textoAjuda;
         el('erroResposta').textContent = '';
@@ -618,6 +630,24 @@
         if (conjunto) {
           opcoes.hidden = true;
           linha.hidden = true;
+          if (def.tipo === 'categorica') {
+            // «O que se aplica a ti?»: caixa marcada = sim, por marcar = não.
+            campos.forEach((campo) => {
+              const d = CONDICOES.perguntas[campo];
+              const rotulo = document.createElement('label');
+              rotulo.className = 'caixa-situacao';
+              const caixa = document.createElement('input');
+              caixa.type = 'checkbox';
+              caixa.id = 'campo-' + campo;
+              caixa.checked = anteriores[campo] === 'sim';
+              const texto = document.createElement('span');
+              texto.textContent = d.rotulo_caixa;
+              rotulo.append(caixa, texto);
+              lista.appendChild(rotulo);
+            });
+            lista.querySelector('input').focus({ preventScroll: true });
+            return;
+          }
           campos.forEach((campo) => {
             const d = CONDICOES.perguntas[campo];
             const bloco = document.createElement('div');
@@ -631,6 +661,7 @@
             input.id = 'campo-' + campo;
             input.autocomplete = 'off';
             prepararInput(input, d);
+            if (campo in anteriores) input.value = String(anteriores[campo]);
             const unidade = document.createElement('span');
             unidade.className = 'campo-unidade';
             unidade.textContent = textoUnidade(d.unidade);
@@ -664,6 +695,7 @@
         linha.hidden = false;
         const input = el('campoResposta');
         prepararInput(input, def);
+        if (campo in anteriores) input.value = String(anteriores[campo]);
         el('campoUnidade').textContent = def.tipo === 'data' ? '' : textoUnidade(def.unidade);
         input.focus({ preventScroll: true });
       }
@@ -693,8 +725,12 @@
       function submeterCampo(evento) {
         evento.preventDefault();
         if (!campoAtual) return;
-        if (CONDICOES.perguntas[campoAtual].tipo === 'categorica') return;
         const conjunto = camposAtuais.length > 1;
+        if (CONDICOES.perguntas[campoAtual].tipo === 'categorica') {
+          if (!conjunto) return;
+          responder(camposAtuais, camposAtuais.map((campo) => (el('campo-' + campo).checked ? 'sim' : 'nao')));
+          return;
+        }
         const valores = [];
         for (const campo of camposAtuais) {
           const input = conjunto ? el('campo-' + campo) : el('campoResposta');
@@ -712,13 +748,14 @@
       function voltar() {
         if (ecras.length === 0) return;
         const campos = ecras.pop();
-        campos.forEach((campo) => { delete respostas[campo]; });
+        const anteriores = {};
+        campos.forEach((campo) => { anteriores[campo] = respostas[campo]; delete respostas[campo]; });
         el('resultados').hidden = true;
         el('resultadosAnuncio').textContent = '';
         el('assistente').hidden = false;
         camposAtuais = campos;
         campoAtual = campos[0];
-        desenharPergunta(campos);
+        desenharPergunta(campos, anteriores);
       }
 
       function recomecar() {
@@ -730,6 +767,16 @@
       }
 
       // ── Resultados ──────────────────────────────────────────────────────
+      // Respondeu ao ecrã «O que se aplica a ti?» sem marcar nada: caixas por
+      // marcar contam como «não», por isso avisa no topo dos resultados.
+      function nadaMarcadoNasSituacoes() {
+        const campos = Object.keys(CONDICOES.perguntas).filter((c) => {
+          const d = CONDICOES.perguntas[c];
+          return d.grupo && d.tipo === 'categorica';
+        });
+        return campos.length > 0 && campos.every((c) => respostas[c] === 'nao');
+      }
+
       function citarPerguntas(campos, maximo) {
         const textos = campos.slice(0, maximo).map((c) => '«' + CONDICOES.perguntas[c].pergunta + '»');
         const resto = campos.length - textos.length;
@@ -1011,6 +1058,7 @@
         EVENTOS_CALENDARIO = eventosDoCalendario(avaliacao, CALENDARIO, hojeLisboaISO());
         el('blocoCalendario').hidden = EVENTOS_CALENDARIO.length === 0;
         el('avisoFilhos').hidden = respostas.tem_filhos_a_cargo !== 'sim';
+        el('avisoNadaMarcado').hidden = !nadaMarcadoNasSituacoes();
         desenharAvisosSubstituicao(avaliacao);
         el('btnContinuarResponder').hidden = proximaPergunta(CONDICOES, respostas, hojeISO()) === null;
 
