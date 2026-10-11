@@ -7302,6 +7302,20 @@ resultados diz que apoios ficaram de fora e aponta para «Recomeçar». FAQ
 resultados ficam iguais. Medido com quatro perfis, desde o início da série:
 22→17, 16→11, 23→17 e 29→22 ecrãs.
 
+### Última revisão: 2026-10-11 — Simulador universal: «Não recebe abono, ou não sei» na pergunta do escalão
+
+A pergunta do escalão do abono (que decide a ASE) só tinha 1.º, 2.º e «3.º
+ou superior» — quem não recebe abono ou não sabe o escalão não tinha resposta
+certa. Nova opção «Não recebe abono, ou não sei»: a ASE fica em «Falta saber»
+com o motivo dos dados («o escalão da ASE é o do abono de família, e sem ele
+não dá para saber — se o teu filho não recebe abono, fala com a secretaria da
+escola»), o mesmo encaminhamento do `simulador-ase.html`; nunca «não tens
+direito», porque a regra para quem não recebe abono não está confirmada.
+Mecanismo novo e genérico: `indeterminado_se` + `motivo_indeterminado` numa
+condição categórica (validado em `gerar_condicoes_json.py`; no motor, a
+condição fica indeterminada com o motivo e sem perguntas em falta). O abono
+continua a ser avaliado pelo rendimento de referência, sem mudança.
+
 ---
 
 *Última revisão automática: 2026-10-11*

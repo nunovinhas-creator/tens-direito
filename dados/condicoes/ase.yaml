@@ -45,6 +45,10 @@ condicoes:
         campo: escalao_abono_crianca
         operador_comparacao: eq
         valor_literal: primeiro
+        # Sem escalão do abono a regra não decide: «Falta saber», nunca
+        # «não tens direito». Mesmo encaminhamento do simulador-ase.html.
+        indeterminado_se: [nao_recebe_ou_nao_sei]
+        motivo_indeterminado: "o escalão da ASE é o do abono de família, e sem ele não dá para saber — se o teu filho não recebe abono, fala com a secretaria da escola"
       - id: abono_segundo_escalao
         tipo: categorica
         campo: escalao_abono_crianca

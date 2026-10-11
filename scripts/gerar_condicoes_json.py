@@ -433,7 +433,7 @@ def _resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: 
     if condicao["tipo"] == "limiar" and perguntas[campo].get("tipo") == "data":
         _validar_limiar_de_data(condicao, valor, contexto)
 
-    return {
+    resolvida = {
         "id": condicao["id"],
         "tipo": condicao["tipo"],
         "campo": campo,
@@ -442,6 +442,26 @@ def _resolver_condicao(condicao: dict, apoio: str, perguntas: dict, parametros: 
         "unidade_comparacao": condicao.get("unidade_comparacao"),
         "fonte": fonte,
     }
+    # Opcional, só em categóricas: respostas para as quais a regra não decide
+    # (ex.: «não recebe abono, ou não sei» na ASE) — a condição fica
+    # indeterminada com o motivo dos dados, nunca elegível nem inelegível.
+    if "indeterminado_se" in condicao or "motivo_indeterminado" in condicao:
+        if condicao["tipo"] != "categorica":
+            raise CondicaoInvalida(f"{contexto}: 'indeterminado_se' só existe em condições categóricas")
+        valores = condicao.get("indeterminado_se")
+        opcoes_campo = perguntas[campo].get("opcoes", [])
+        if not isinstance(valores, list) or not valores or any(v not in opcoes_campo for v in valores):
+            raise CondicaoInvalida(
+                f"{contexto}: 'indeterminado_se' tem de ser uma lista não vazia de opções de '{campo}'"
+            )
+        if valor in valores:
+            raise CondicaoInvalida(f"{contexto}: 'indeterminado_se' não pode incluir o próprio valor da condição")
+        motivo = condicao.get("motivo_indeterminado")
+        if not isinstance(motivo, str) or not motivo.strip():
+            raise CondicaoInvalida(f"{contexto}: 'indeterminado_se' exige 'motivo_indeterminado' (texto)")
+        resolvida["indeterminado_se"] = valores
+        resolvida["motivo_indeterminado"] = motivo
+    return resolvida
 
 
 def _validar_e_resolver_faixa_incerta(condicao: dict, apoio: str, perguntas: dict, parametros: dict) -> dict:

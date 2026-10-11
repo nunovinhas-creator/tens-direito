@@ -212,6 +212,12 @@ function avaliarCondicao(condicao, respostas, hojeISO) {
     return { estado: 'indeterminado', perguntasEmFalta: [], motivos: [condicao.motivo_indeterminado] };
   }
 
+  // Resposta para a qual a regra não decide (ex.: ASE sem escalão do abono):
+  // indeterminado com o motivo dos dados, sem perguntas em falta.
+  if (condicao.indeterminado_se && condicao.indeterminado_se.indexOf(valorResposta) !== -1) {
+    return { estado: 'indeterminado', perguntasEmFalta: [], motivos: [condicao.motivo_indeterminado] };
+  }
+
   const cumpre = compararValores(valorResposta, condicao.operador_comparacao, condicao.valor);
   return { estado: cumpre ? 'elegivel' : 'inelegivel' };
 }
