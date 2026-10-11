@@ -7316,6 +7316,28 @@ condição categórica (validado em `gerar_condicoes_json.py`; no motor, a
 condição fica indeterminada com o motivo e sem perguntas em falta). O abono
 continua a ser avaliado pelo rendimento de referência, sem mudança.
 
+### Última revisão: 2026-10-11 — Calendários subscrevíveis na página do calendário de pagamentos
+
+Nova secção «Recebe as datas no teu calendário» em
+`calendario-pagamentos-seguranca-social.html`: a pessoa escolhe a prestação
+e liga o calendário dela uma vez, com um só botão «Adicionar ao meu
+calendário» (`webcal://` no iPhone, iPad e Mac; Google Calendar por `?cid=`
+nos outros aparelhos); quando o
+workflow mensal grava o mês seguinte, as datas novas chegam sozinhas. Um
+`.ics` por prestação em `calendario/` (`scripts/gerar_calendarios_ics.py`,
+chamado por `atualizar_calendario.py`): só datas publicadas, de hoje em
+diante; lotes `_1`/`_2` com os dois dias e «(1.º ou 2.º pagamento)»; UID
+estável; data de geração no ficheiro para o teste o regenerar igual.
+`calendario-mensal.yml`: guardrail e `git add` incluem `calendario/*.ics`.
+Smoke test confirma `/calendario/pensoes.ics`. Evento `calendario_subscrito`
+(só o destino). Decisões do Nuno: subscrição (não ficheiro solto), na página
+do calendário, por prestação, lotes com os dois dias, só de hoje em diante.
+Verificado: o GitHub Pages usa o mime-db (`.ics` → `text/calendar`); o
+Google só deixa subscrever no computador, não na aplicação do telemóvel; a
+ligação «adicionar ao Outlook» por URL não ficou confirmada. A pedido do
+Nuno, a página ficou só com o botão (sem nota sobre o Android nem endereço
+para copiar).
+
 ---
 
 *Última revisão automática: 2026-10-11*

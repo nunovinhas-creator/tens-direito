@@ -656,10 +656,12 @@ def atualizar_homepage(
 def atualizar_pagina(
     dados: dict, hoje: dt.date, caminho: Path = PAGINA, escrever: bool = True
 ) -> bool:
-    """Regenera as duas zonas. Devolve True se o ficheiro mudou."""
+    """Regenera as zonas META, CORPO e SUBSCREVER. Devolve True se o ficheiro mudou."""
     original = caminho.read_text(encoding="utf-8")
     novo = injetar_zona(original, "META", render_meta(dados, hoje))
     novo = injetar_zona(novo, "CORPO", render_corpo(dados, hoje))
+    from gerar_calendarios_ics import render_subscrever
+    novo = injetar_zona(novo, "SUBSCREVER", render_subscrever())
     mudou = novo != original
     if mudou and escrever:
         caminho.write_text(novo, encoding="utf-8")
@@ -684,6 +686,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         mudou = atualizar_pagina(dados, hoje, escrever=not args.dry_run)
         mudou_home = atualizar_homepage(dados, hoje, escrever=not args.dry_run)
+        # Calendários subscrevíveis (calendario/*.ics), das mesmas datas.
+        from gerar_calendarios_ics import atualizar_ics
+        ics_mudados = atualizar_ics(dados, hoje, escrever=not args.dry_run)
     except ValueError as e:
         print(f"ERRO: {e}", file=sys.stderr)
         return 3
@@ -702,6 +707,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"{PAGINA.name}: {estado}; página {_accao(mudou)}.")
     print(f"{INDEX.name}: barra do calendário {_accao(mudou_home)}.")
+    print(f"calendario/*.ics: {_accao(bool(ics_mudados))}"
+          + (f" ({', '.join(ics_mudados)})" if ics_mudados else "") + ".")
     return 0
 
 

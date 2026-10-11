@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tens Direito//Calendario de pagamentos//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pagamentos da Segurança Social: Prestação Social para a Inc
+ lusão (PSI)
+X-WR-CALDESC:Datas de pagamento publicadas pela Segurança Social\, atualiz
+ adas todos os meses por tensdireito.com. Calendário completo: https://ten
+ sdireito.com/calendario-pagamentos-seguranca-social.html
+X-WR-TIMEZONE:Europe/Lisbon
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+X-TD-GERADO-EM:2026-10-11
+END:VCALENDAR

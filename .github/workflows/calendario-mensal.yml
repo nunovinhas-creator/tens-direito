@@ -99,6 +99,7 @@ jobs:
               data/calendario_pagamentos.json) ;;
               calendario-pagamentos-seguranca-social.html) ;;
               index.html) ;;
+              calendario/*.ics) ;;
               *) echo "::error::Ficheiro fora do âmbito deste workflow modificado: $f"; ERRO=1 ;;
             esac
           done
@@ -111,7 +112,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html index.html
+            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html index.html calendario/
             git commit -m "auto(calendario): sincronizar página e barra da homepage (alvo ${{ steps.verificar.outputs.mes_alvo }}, estado ${{ steps.verificar.outputs.estado }})"
             git pull --rebase --autostash origin main
             git push origin main

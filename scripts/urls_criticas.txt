@@ -20,6 +20,7 @@
 /subsidio-desemprego.html
 /baixa-medica-subsidio-doenca.html
 /calendario-pagamentos-seguranca-social.html
+/calendario/pensoes.ics
 /calendario-escolar-apoios.html
 /p/como-pedir.html
 /dados.html
