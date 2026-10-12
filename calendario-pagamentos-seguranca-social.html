@@ -15,7 +15,7 @@
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <!-- CAL:META:INICIO -->
   <title>Calendário de Pagamentos Segurança Social: outubro 2026</title>
-  <meta name="description" content="Datas de pagamento em outubro de 2026: pensões, abono, subsídios, RSI, CSI e PSI — calendário oficial da Segurança Social.">
+  <meta name="description" content="Datas de pagamento em outubro de 2026: pensões da Segurança Social e da CGA, abono, subsídios, RSI, CSI e PSI.">
 <!-- CAL:META:FIM -->
   <meta property="og:title" content="Calendário de Pagamentos da Segurança Social">
   <meta property="og:description" content="Quando paga a Segurança Social as pensões, o abono de família, o subsídio de desemprego, o RSI e o CSI — calendário mensal com base na fonte oficial.">
@@ -46,11 +46,11 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Calendário de Pagamentos da Segurança Social",
-    "description": "Calendário mensal de pagamentos das prestações sociais em Portugal — pensões, abono de família, subsídio de desemprego, RSI, CSI e PSI — com base no calendário oficial da Segurança Social.",
+    "description": "Calendário mensal de pagamentos das prestações sociais em Portugal — pensões da Segurança Social e da Caixa Geral de Aposentações (CGA), abono de família, subsídio de desemprego, RSI, CSI e PSI — com base nas fontes oficiais.",
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-07-12",
-    "dateModified": "2026-10-04",
+    "dateModified": "2026-10-12",
     "mainEntityOfPage": "https://tensdireito.com/calendario-pagamentos-seguranca-social.html"
   }
   </script>
@@ -84,6 +84,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Os dias de referência são fixos, mas quando calham a um fim de semana ou feriado o dia de pagamento muda. Por isso o calendário oficial é publicado mensalmente — e esta página é actualizada a partir dele, nunca por estimativa."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Sou pensionista da CGA — quando recebo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "As pensões da Caixa Geral de Aposentações (aposentação, sobrevivência, invalidez, reforma e outras pagas pela CGA) são pagas no dia 19 de cada mês ou, se esse dia for fim de semana ou feriado, no dia útil anterior. Não seguem o calendário das pensões da Segurança Social. O 14.º mês é pago em julho e o subsídio de Natal em novembro, junto com a pensão. O subsídio por morte e o reembolso das despesas de funeral pagos pela CGA saem à segunda-feira ou no dia útil seguinte."
         }
       },
       {
@@ -137,9 +145,26 @@
     .cal-tabela tbody th[scope="row"] { font-weight: 600; color: #212529; background: #f8f9fa; }
     .cal-dia { font-weight: 700; color: #0F766E; font-size: 1.1rem; white-space: nowrap; }
     .cal-nota { display: block; margin-top: 0.3rem; font-size: 0.85rem; color: #5C6770; }
-    .cal-guia { font-size: 0.85rem; font-weight: 600; color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
-    .cal-psu-nota { display: block; font-size: 0.8rem; font-weight: 500; color: #1E40AF; margin-top: 0.3rem; }
-    .cal-psu-nota a { color: #1E40AF; text-decoration: underline; text-underline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .cal-dica { font-size: 0.9rem; color: #495057; margin: -0.25rem 0 0.75rem; }
+    .cal-tabela-prestacoes th[scope="row"] a { color: #212529; text-decoration: underline; text-decoration-color: #9fd3cb; text-underline-offset: 3px; }
+    .cal-tabela-prestacoes .cal-quando { font-weight: 700; color: #0F766E; font-size: 1.05rem; white-space: nowrap; vertical-align: middle; }
+    .cal-tabela-prestacoes th[scope="row"] { vertical-align: middle; }
+    .cal-sub-cel { width: 1%; padding-left: 0.25rem !important; padding-right: 0.5rem !important; text-align: center !important; vertical-align: middle; }
+    .cal-sub { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 8px; text-decoration: none; font-size: 1.15rem; }
+    .cal-sub:hover { background: #e6f4f1; }
+    .cal-sub:focus-visible { outline: 3px solid #0F766E; outline-offset: 2px; }
+    .cal-ref { color: #0F766E; text-decoration: none; font-weight: 700; padding: 0 0.15rem; }
+    .cal-psu-marca { text-decoration: none; font-size: 0.9rem; }
+    .cal-extra { display: block; font-size: 0.82rem; font-weight: 500; color: #5C6770; margin-top: 0.15rem; }
+    .cal-notas { font-size: 0.85rem; color: #495057; margin: -0.25rem 0 1rem; }
+    .cal-notas p { margin-bottom: 0.4rem; }
+    .cal-notas a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
+    .cal-completo, .cal-seguinte { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 0.25rem 1rem; margin: 0 0 1rem; }
+    .cal-completo summary, .cal-seguinte summary { cursor: pointer; font-weight: 600; color: #0F766E; padding: 0.6rem 0; min-height: 44px; display: list-item; }
+    .cal-completo[open], .cal-seguinte[open] { padding-bottom: 0.75rem; }
+    .cal-completo .cal-tabela, .cal-seguinte .cal-tabela { box-shadow: none; }
+    .cal-metodo { font-size: 0.85rem; color: #5C6770; margin: 0; }
     .cal-fonte-inline { font-size: 0.85rem; color: #5C6770; margin: 0.75rem 0 1.5rem; }
     .cal-fonte-inline a { color: #0F766E; text-decoration: underline; text-underline-offset: 2px; }
     .cal-destaque { background: #e6f4f1; border: 1px solid #b8e0d8; border-left: 5px solid #0F766E; border-radius: 8px; padding: 1rem 1.25rem; margin: 0 0 1.5rem; }
@@ -160,13 +185,6 @@
     .fonte-bloco { background: #e6f4f1; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.88rem; color: #1a5c56; margin: 1.5rem 0; }
     .fonte-bloco a { color: #0F766E; font-weight: 600; }
     .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem 1.25rem; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
-    .cal-subscrever-item { border: 1px solid #dee2e6; border-radius: 8px; margin-top: 0.6rem; background: #fff; }
-    .cal-subscrever-item summary { cursor: pointer; font-weight: 600; color: #0F766E; padding: 0.75rem 1rem; min-height: 44px; }
-    .cal-subscrever-conteudo { padding: 0 1rem 1rem; }
-    .cal-subscrever-lote { font-size: 0.88rem; color: #495057; margin-bottom: 0.75rem; }
-    .cal-subscrever-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0.55rem 1rem; border-radius: 8px; background: #0F766E; color: #fff; font-weight: 600; text-decoration: none; }
-    .cal-subscrever-btn:hover { background: #115E59; }
-    .cal-subscrever-btn:focus-visible { outline: 3px solid #0F766E; outline-offset: 2px; }
     footer { text-align: center; padding: 2rem; color: #5C6770; font-size: 0.85rem; border-top: 1px solid #dee2e6; margin-top: 1rem; }
     footer a { color: #5C6770; }
   </style>
@@ -264,7 +282,7 @@
 <header class="hero">
   <div class="hero-inner">
     <p class="breadcrumb"><a href="/">Início</a> › Calendário de pagamentos</p>
-    <h1>Calendário de pagamentos da Segurança Social</h1>
+    <h1>Calendário de pagamentos da Segurança Social e da CGA</h1>
 <!-- partilhar:inicio -->
 <div class="partilhar-artigo">
   <button type="button" class="botao-partilhar" aria-label="Partilhar este artigo">📤 Partilhar este artigo</button>
@@ -272,7 +290,7 @@
 <!-- partilhar:fim -->
 
     <div class="resposta-direta">
-      Todos os meses, a Segurança Social publica o calendário oficial com o dia de pagamento de cada prestação. Em regra, as pensões são pagas no início do mês, o abono de família a meio, o RSI perto do fim, e o subsídio de desemprego em dois pagamentos (a meio e no fim) — mas as datas exatas mudam mensalmente. Esta página mostra as datas confirmadas do mês corrente, na fonte oficial.
+      Em que dia recebes este mês. A Segurança Social publica as datas mês a mês: as pensões no início do mês, o abono a meio e o RSI perto do fim. As pensões da Caixa Geral de Aposentações (CGA), da função pública, são pagas no dia 19 ou no dia útil anterior.
     </div>
   </div>
 </header>
@@ -287,204 +305,150 @@
 <!-- CAL:CORPO:INICIO -->
 <div id="cal-corrente" data-mes="2026-10">
   <div id="cal-destaque" class="cal-destaque" data-mes="2026-10">
-    <p class="cal-destaque-linha">📅 <strong>Datas de pagamento em outubro:</strong> 2, 7, 8, 16, 21, 23 e 28 — <a href="#por-prestacao">ver o que é pago em cada dia ↓</a></p>
+    <p class="cal-destaque-linha">📅 <strong>Datas de pagamento em outubro:</strong> 2, 7, 8, 16, 19, 21, 23 e 28</p>
   </div>
-  <script id="cal-dados" type="application/json">[{"dia": 2, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "CSI · Reembolso de funeral · PSI · Pensões"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "Fundo de Garantia Salarial · Suspensão de atividade cultural · RSI"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]</script>
-  <h2 id="mes-corrente">Calendário de outubro de 2026</h2>
-  <div class="tabela-wrap">
-    <table class="cal-tabela">
-      <thead>
-      <tr>
-        <th scope="col">Dia</th>
-        <th scope="col">Prestações pagas</th>
-        <th scope="col">Método de pagamento</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class="cal-dia">2</td>
-        <td>Pensões e subsídios por doença profissional</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">7</td>
-        <td>Apoio extraordinário à renda</td>
-        <td>Só transferência bancária</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">8</td>
-        <td>Complemento Solidário para Idosos (CSI)<br>Reembolso de despesas de funeral<br>Prestação Social para a Inclusão (PSI)<br>Pensões</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">16</td>
-        <td>Abono de família e outras prestações familiares<br>1.º pagamento — subsídio de desemprego, doença, parentalidade e ação social</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">21</td>
-        <td>Fundo de Garantia de Alimentos Devidos a Menores</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">23</td>
-        <td>Fundo de Garantia Salarial<br>Subsídio por Suspensão da Atividade Cultural<br>Rendimento Social de Inserção (RSI)</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      <tr>
-        <td class="cal-dia">28</td>
-        <td>2.º pagamento — subsídio de desemprego, doença, parentalidade e ação social<br>Subsídio de apoio ao cuidador informal</td>
-        <td>Transferência bancária e vale de correio</td>
-      </tr>
-      </tbody>
-    </table>
+  <script id="cal-dados" type="application/json">[{"dia": 2, "resumo": "Doença profissional"}, {"dia": 7, "resumo": "Apoio à renda"}, {"dia": 8, "resumo": "CSI · Reembolso de funeral · PSI · Pensões da Segurança Social"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 19, "resumo": "Pensões da CGA"}, {"dia": 21, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "Fundo de Garantia Salarial · Suspensão de atividade cultural · RSI"}, {"dia": 28, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]</script>
+  <h2 id="mes-corrente">Quando recebo em outubro de 2026?</h2>
+  <p class="cal-dica">Carrega em 📅 para juntar as datas da tua prestação ao calendário do telemóvel ou do computador — as dos meses seguintes aparecem sozinhas.</p>
+    <div class="tabela-wrap">
+      <table class="cal-tabela cal-tabela-prestacoes">
+        <thead>
+        <tr>
+          <th scope="col">Prestação</th>
+          <th scope="col">Dia</th>
+          <th scope="col" class="cal-sub-cel"><span class="sr-only">Calendário</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="apoio-renda">
+          <th scope="row"><a href="/apoio-extraordinario-renda.html">Apoio extraordinário à renda</a></th>
+          <td class="cal-quando">7</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/apoio-renda.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/apoio-renda.ics" data-destino="apple" aria-label="Receber as datas de Apoio extraordinário à renda no meu calendário" title="Receber as datas de Apoio extraordinário à renda no meu calendário">📅</a></td>
+        </tr>
+        <tr id="pensoes">
+          <th scope="row">Pensões da Segurança Social <a class="cal-psu-marca" href="#nota-psu" title="Passa para a Prestação Social Única" aria-label="ver nota sobre a Prestação Social Única">🔄</a></th>
+          <td class="cal-quando">8</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/pensoes.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/pensoes.ics" data-destino="apple" aria-label="Receber as datas de Pensões da Segurança Social no meu calendário" title="Receber as datas de Pensões da Segurança Social no meu calendário">📅</a></td>
+        </tr>
+        <tr id="csi">
+          <th scope="row"><a href="/complemento-solidario-idosos.html">Complemento Solidário para Idosos (CSI)</a></th>
+          <td class="cal-quando">8</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/csi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/csi.ics" data-destino="apple" aria-label="Receber as datas de Complemento Solidário para Idosos (CSI) no meu calendário" title="Receber as datas de Complemento Solidário para Idosos (CSI) no meu calendário">📅</a></td>
+        </tr>
+        <tr id="psi">
+          <th scope="row"><a href="/prestacao-social-para-a-inclusao.html">Prestação Social para a Inclusão (PSI)</a></th>
+          <td class="cal-quando">8</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/psi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/psi.ics" data-destino="apple" aria-label="Receber as datas de Prestação Social para a Inclusão (PSI) no meu calendário" title="Receber as datas de Prestação Social para a Inclusão (PSI) no meu calendário">📅</a></td>
+        </tr>
+        <tr id="abono-familia">
+          <th scope="row"><a href="/abono-de-familia.html">Abono de família e prestações familiares</a></th>
+          <td class="cal-quando">16</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/abono-familia.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/abono-familia.ics" data-destino="apple" aria-label="Receber as datas de Abono de família e prestações familiares no meu calendário" title="Receber as datas de Abono de família e prestações familiares no meu calendário">📅</a></td>
+        </tr>
+        <tr id="subsidio-desemprego">
+          <th scope="row"><a href="/subsidio-desemprego.html">Subsídio de desemprego</a> <a class="cal-psu-marca" href="#nota-psu" title="Passa para a Prestação Social Única" aria-label="ver nota sobre a Prestação Social Única">🔄</a></th>
+          <td class="cal-quando">16 ou 28<sup><a href="#nota-lotes" class="cal-ref" aria-label="ver nota sobre os dois lotes">¹</a></sup></td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-destino="apple" aria-label="Receber as datas de Subsídio de desemprego no meu calendário" title="Receber as datas de Subsídio de desemprego no meu calendário">📅</a></td>
+        </tr>
+        <tr id="subsidio-doenca">
+          <th scope="row"><a href="/baixa-medica-subsidio-doenca.html">Subsídio de doença (baixa médica)</a></th>
+          <td class="cal-quando">16 ou 28<sup><a href="#nota-lotes" class="cal-ref" aria-label="ver nota sobre os dois lotes">¹</a></sup></td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-destino="apple" aria-label="Receber as datas de Subsídio de doença (baixa médica) no meu calendário" title="Receber as datas de Subsídio de doença (baixa médica) no meu calendário">📅</a></td>
+        </tr>
+        <tr id="parentalidade-social">
+          <th scope="row"><a href="/subsidio-parental.html">Subsídios de parentalidade</a> <a class="cal-psu-marca" href="#nota-psu" title="Passa para a Prestação Social Única" aria-label="ver nota sobre a Prestação Social Única">🔄</a></th>
+          <td class="cal-quando">16 ou 28<sup><a href="#nota-lotes" class="cal-ref" aria-label="ver nota sobre os dois lotes">¹</a></sup></td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/parentalidade-social.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/parentalidade-social.ics" data-destino="apple" aria-label="Receber as datas de Subsídios de parentalidade no meu calendário" title="Receber as datas de Subsídios de parentalidade no meu calendário">📅</a></td>
+        </tr>
+        <tr id="pensoes-cga">
+          <th scope="row"><a href="/caixa-geral-aposentacoes.html">Pensões da CGA (função pública)</a></th>
+          <td class="cal-quando">19</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/pensoes-cga.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/pensoes-cga.ics" data-destino="apple" aria-label="Receber as datas de Pensões da CGA (função pública) no meu calendário" title="Receber as datas de Pensões da CGA (função pública) no meu calendário">📅</a></td>
+        </tr>
+        <tr id="rsi">
+          <th scope="row"><a href="/rsi.html">Rendimento Social de Inserção (RSI)</a> <a class="cal-psu-marca" href="#nota-psu" title="Passa para a Prestação Social Única" aria-label="ver nota sobre a Prestação Social Única">🔄</a></th>
+          <td class="cal-quando">23</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/rsi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/rsi.ics" data-destino="apple" aria-label="Receber as datas de Rendimento Social de Inserção (RSI) no meu calendário" title="Receber as datas de Rendimento Social de Inserção (RSI) no meu calendário">📅</a></td>
+        </tr>
+        <tr id="cuidador-informal">
+          <th scope="row"><a href="/cuidador-informal.html">Subsídio de apoio ao cuidador informal</a></th>
+          <td class="cal-quando">28</td>
+          <td class="cal-sub-cel"><a class="cal-sub" href="webcal://tensdireito.com/calendario/cuidador-informal.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/cuidador-informal.ics" data-destino="apple" aria-label="Receber as datas de Subsídio de apoio ao cuidador informal no meu calendário" title="Receber as datas de Subsídio de apoio ao cuidador informal no meu calendário">📅</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  <div class="cal-notas">
+    <p id="nota-lotes">¹ Desemprego, doença e parentalidade são pagos em dois lotes por mês; a Segurança Social não diz qual cabe a cada pessoa — o teu é um dos dois dias.</p>
+    <p id="nota-psu">🔄 Passa para a <a href="/prestacao-social-unica.html">Prestação Social Única</a> por conversão oficiosa a partir de 31 de dezembro de 2026 (artigo 57.º do Decreto-Lei n.º 166/2026) se recebes a versão social, não contributiva: pensão social de velhice ou invalidez, subsídio social de desemprego, subsídios sociais de parentalidade e o RSI. O pagamento continua normal até lá.</p>
   </div>
-  <h2 id="por-prestacao">Quando recebo a minha prestação?</h2>
-  <div class="tabela-wrap">
-    <table class="cal-tabela cal-tabela-prestacoes">
-      <thead>
-      <tr>
-        <th scope="col">Prestação</th>
-        <th scope="col">Data em outubro</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr id="pensoes">
-        <th scope="row">Pensões<br><span class="cal-psu-nota">🔄 Se é pensão social de velhice ou invalidez (não a pensão contributiva), o Decreto-Lei n.º 166/2026 confirma que vai ser <a href="/prestacao-social-unica.html">integrada na PSU</a> por conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de 2026 — o pagamento continua normal até lá.</span></th>
-        <td>8 de outubro</td>
-      </tr>
-      <tr id="csi">
-        <th scope="row">Complemento Solidário para Idosos (CSI)<br><a class="cal-guia" href="/complemento-solidario-idosos.html">Ver o guia →</a></th>
-        <td>8 de outubro</td>
-      </tr>
-      <tr id="psi">
-        <th scope="row">Prestação Social para a Inclusão (PSI)<br><a class="cal-guia" href="/prestacao-social-para-a-inclusao.html">Ver o guia →</a></th>
-        <td>8 de outubro</td>
-      </tr>
-      <tr id="abono-familia">
-        <th scope="row">Abono de família e prestações familiares<br><a class="cal-guia" href="/abono-de-familia.html">Ver o guia →</a></th>
-        <td>16 de outubro</td>
-      </tr>
-      <tr id="subsidio-desemprego">
-        <th scope="row">Subsídio de desemprego<br><a class="cal-guia" href="/subsidio-desemprego.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 Se é o subsídio social de desemprego (não o contributivo), o Decreto-Lei n.º 166/2026 confirma que vai ser <a href="/prestacao-social-unica.html">integrado na PSU</a> por conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de 2026 — o pagamento continua normal até lá.</span></th>
-        <td>16 de outubro (1.º pagamento) · 28 de outubro (2.º pagamento)</td>
-      </tr>
-      <tr id="subsidio-doenca">
-        <th scope="row">Subsídio de doença (baixa médica)<br><a class="cal-guia" href="/baixa-medica-subsidio-doenca.html">Ver o guia →</a></th>
-        <td>16 de outubro (1.º pagamento) · 28 de outubro (2.º pagamento)</td>
-      </tr>
-      <tr id="parentalidade-social">
-        <th scope="row">Subsídios de parentalidade<br><a class="cal-guia" href="/subsidio-parental.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 Os subsídios sociais de parentalidade (não os contributivos) vão ser <a href="/prestacao-social-unica.html">integrados na PSU</a> por conversão oficiosa (artigo 57.º) do Decreto-Lei n.º 166/2026, a partir de 31 de dezembro de 2026 — o pagamento continua normal até lá.</span></th>
-        <td>16 de outubro (1.º pagamento) · 28 de outubro (2.º pagamento)</td>
-      </tr>
-      <tr id="rsi">
-        <th scope="row">Rendimento Social de Inserção (RSI)<br><a class="cal-guia" href="/rsi.html">Ver o guia →</a><br><span class="cal-psu-nota">🔄 O Decreto-Lei n.º 166/2026 confirma que vai ser <a href="/prestacao-social-unica.html">integrado na PSU</a> por conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de 2026 — o pagamento continua normal até lá.</span></th>
-        <td>23 de outubro</td>
-      </tr>
-      <tr id="apoio-renda">
-        <th scope="row">Apoio extraordinário à renda<br><a class="cal-guia" href="/apoio-extraordinario-renda.html">Ver o guia →</a></th>
-        <td>7 de outubro</td>
-      </tr>
-      <tr id="cuidador-informal">
-        <th scope="row">Subsídio de apoio ao cuidador informal<br><a class="cal-guia" href="/cuidador-informal.html">Ver o guia →</a></th>
-        <td>28 de outubro</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <details class="cal-completo">
+    <summary>Calendário completo da Segurança Social em outubro, dia a dia</summary>
+    <div class="tabela-wrap">
+      <table class="cal-tabela cal-tabela-dias">
+        <thead>
+        <tr>
+          <th scope="col">Dia</th>
+          <th scope="col">O que é pago</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="cal-dia">2</td>
+          <td>Pensões e subsídios por doença profissional</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">7</td>
+          <td>Apoio extraordinário à renda</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">8</td>
+          <td>Complemento Solidário para Idosos (CSI)<br>Reembolso de despesas de funeral<br>Prestação Social para a Inclusão (PSI)<br>Pensões da Segurança Social</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">16</td>
+          <td>Abono de família e outras prestações familiares<br>1.º pagamento — subsídio de desemprego, doença, parentalidade e ação social</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">21</td>
+          <td>Fundo de Garantia de Alimentos Devidos a Menores</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">23</td>
+          <td>Fundo de Garantia Salarial<br>Subsídio por Suspensão da Atividade Cultural<br>Rendimento Social de Inserção (RSI)</td>
+        </tr>
+        <tr>
+          <td class="cal-dia">28</td>
+          <td>2.º pagamento — subsídio de desemprego, doença, parentalidade e ação social<br>Subsídio de apoio ao cuidador informal</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cal-metodo">Pagamento por transferência bancária ou vale de correio. Excepto: Apoio à renda — só transferência bancária.</p>
+  </details>
 </div>
 
-<p class="cal-proximo-mes">O calendário de novembro de 2026 ainda não foi confirmado na fonte oficial — é publicado aqui assim que a Segurança Social o divulgar.</p>
+<p class="cal-proximo-mes">O calendário de novembro de 2026 da Segurança Social ainda não foi confirmado na fonte oficial — é publicado aqui assim que for divulgado. As pensões da CGA (função pública) são pagas a 19 de novembro — dia 19 ou o dia útil anterior.</p>
 
-<p class="cal-fonte-inline">Fonte: <a href="https://www.seg-social.pt/ptss/pssd/pagamentos" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a 25/09/2026</p>
+<p class="cal-fonte-inline">Fontes: <a href="https://www.seg-social.pt/ptss/pssd/pagamentos" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a 25/09/2026 · <a href="https://www.cga.pt/pagamentos" target="_blank" rel="noopener">CGA</a>: dia 19 ou o dia útil anterior</p>
 <!-- CAL:CORPO:FIM -->
 
 <!-- CAL:SUBSCREVER:INICIO -->
-  <section class="card cal-subscrever" aria-labelledby="subscrever">
-  <h2 id="subscrever">Recebe as datas no teu calendário</h2>
-  <p>Escolhe a tua prestação e liga-a ao calendário do telemóvel ou do computador. Só precisas de fazer isto uma vez: quando a Segurança Social publicar as datas do mês seguinte, elas aparecem sozinhas.</p>
-  <details class="cal-subscrever-item" id="subscrever-pensoes">
-    <summary>Pensões</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/pensoes.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/pensoes.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-csi">
-    <summary>Complemento Solidário para Idosos (CSI)</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/csi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/csi.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-psi">
-    <summary>Prestação Social para a Inclusão (PSI)</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/psi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/psi.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-abono-familia">
-    <summary>Abono de família e prestações familiares</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/abono-familia.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/abono-familia.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-subsidio-desemprego">
-    <summary>Subsídio de desemprego</summary>
-    <div class="cal-subscrever-conteudo">
-      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-desemprego.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-subsidio-doenca">
-    <summary>Subsídio de doença (baixa médica)</summary>
-    <div class="cal-subscrever-conteudo">
-      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/subsidio-doenca.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-parentalidade-social">
-    <summary>Subsídios de parentalidade</summary>
-    <div class="cal-subscrever-conteudo">
-      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com a indicação «1.º ou 2.º pagamento».</p>
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/parentalidade-social.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/parentalidade-social.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-rsi">
-    <summary>Rendimento Social de Inserção (RSI)</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/rsi.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/rsi.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-apoio-renda">
-    <summary>Apoio extraordinário à renda</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/apoio-renda.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/apoio-renda.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  <details class="cal-subscrever-item" id="subscrever-cuidador-informal">
-    <summary>Subsídio de apoio ao cuidador informal</summary>
-    <div class="cal-subscrever-conteudo">
-      <a class="cal-subscrever-btn" href="webcal://tensdireito.com/calendario/cuidador-informal.ics" data-google="https://calendar.google.com/calendar/render?cid=webcal://tensdireito.com/calendario/cuidador-informal.ics" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>
-  </section>
   <script>
     (function () {
-      var seccao = document.querySelector('.cal-subscrever');
-      if (!seccao) return;
       // iPhone, iPad (que se apresenta como Mac) e Mac abrem webcal:// no
       // Calendário; os outros aparelhos vão para o Google Calendar.
       var apple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-      if (!apple) {
-        seccao.querySelectorAll('a[data-google]').forEach(function (a) {
-          a.href = a.dataset.google;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.dataset.destino = 'google';
-        });
-      }
-      seccao.addEventListener('click', function (e) {
-        var ligacao = e.target.closest('a[data-destino]');
-        if (ligacao && typeof gtag === 'function') {
+      document.addEventListener('click', function (e) {
+        var ligacao = e.target.closest && e.target.closest('a.cal-sub[data-google]');
+        if (!ligacao) return;
+        if (!apple) {
+          ligacao.href = ligacao.dataset.google;
+          ligacao.target = '_blank';
+          ligacao.rel = 'noopener';
+          ligacao.dataset.destino = 'google';
+        }
+        if (typeof gtag === 'function') {
           gtag('event', 'calendario_subscrito', { destino: ligacao.dataset.destino });
         }
       });
@@ -494,9 +458,9 @@
 
   <div class="card">
     <h2 id="como-funciona">Como funciona o calendário</h2>
-    <p>Cada prestação tem um dia fixo de referência no mês — por exemplo, as pensões por volta do dia 8 e o Rendimento Social de Inserção por volta do dia 23. Quando essa data calha a um fim de semana ou feriado, o dia de pagamento muda — é por isso que as datas exactas variam de mês para mês e a Segurança Social publica um calendário oficial novo todos os meses.</p>
-    <p>A data indicada é a do processamento do pagamento. Nas transferências bancárias, o valor costuma ficar disponível pouco depois, consoante o banco; nos vales de correio, a entrega é da responsabilidade dos CTT e pode demorar mais alguns dias. O apoio à renda é pago exclusivamente por transferência bancária.</p>
-    <p>Podes confirmar cada pagamento concreto na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a>.</p>
+    <p><strong>Segurança Social:</strong> cada prestação tem um dia de referência no mês — as pensões por volta do dia 8, o RSI por volta do dia 23. Quando calha a um fim de semana ou feriado, o pagamento muda de dia, por isso a Segurança Social publica as datas exactas todos os meses e esta página actualiza-se a partir delas.</p>
+    <p><strong>Caixa Geral de Aposentações:</strong> as pensões da CGA são pagas no dia 19 de cada mês ou no dia útil anterior. O 14.º mês vem com a pensão de julho e o subsídio de Natal com a de novembro.</p>
+    <p>A data é a do processamento. Por transferência bancária, o dinheiro costuma estar disponível pouco depois, consoante o banco; por vale de correio, a entrega é dos CTT e pode demorar mais alguns dias. Confirma cada pagamento na <a href="https://www.seg-social.pt" target="_blank" rel="noopener">Segurança Social Direta</a> ou no <a href="https://www.cga.pt" target="_blank" rel="noopener">portal da CGA</a>.</p>
   </div>
 
   <h2 id="duvidas">Dúvidas frequentes</h2>
@@ -518,6 +482,10 @@
   </details>
 
   <details class="zona-cinzenta">
+    <summary>Sou pensionista da CGA — quando recebo?</summary>
+    <p>As pensões da Caixa Geral de Aposentações (aposentação, sobrevivência, invalidez, reforma e outras pagas pela CGA) são pagas no dia 19 de cada mês ou, se esse dia for fim de semana ou feriado, no dia útil anterior. Não seguem o calendário das pensões da Segurança Social. O 14.º mês é pago em julho e o subsídio de Natal em novembro, junto com a pensão. O subsídio por morte e o reembolso das despesas de funeral pagos pela CGA saem à segunda-feira ou no dia útil seguinte.</p>
+  </details>
+  <details class="zona-cinzenta">
     <summary>Porque há um 1.º e um 2.º pagamento do desemprego, doença e parentalidade?</summary>
     <p>O calendário oficial prevê duas datas mensais para estas prestações — um 1.º pagamento a meio do mês e um 2.º pagamento perto do fim. A data que se aplica ao teu caso depende do momento em que o processamento da tua prestação ficou concluído nesse mês. Podes confirmar o teu pagamento concreto na Segurança Social Direta.</p>
   </details>
@@ -535,11 +503,12 @@
   <div class="fonte-bloco">
     <strong>Fontes oficiais</strong><br>
     · <a href="https://www.seg-social.pt" target="_blank" rel="noopener">seg-social.pt</a> — notícia mensal "Datas de pagamento dos subsídios sociais e pensões" e página Calendário (Segurança Social Direta → Pagamentos)<br>
-    Verificado a 04/10/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a><!-- REPORTAR-ERRO:INICIO --> · <a class="reportar-erro" href="/sobre.html#contacto">Reportar um erro nesta página</a><!-- REPORTAR-ERRO:FIM -->
+    · <a href="https://www.cga.pt/pagamentos" target="_blank" rel="noopener">cga.pt</a> — página "Pagamentos": pensões no dia 19 de cada mês ou no dia útil anterior; 14.º mês em julho e subsídio de Natal em novembro<br>
+    Verificado a 12/10/2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a><!-- REPORTAR-ERRO:INICIO --> · <a class="reportar-erro" href="/sobre.html#contacto">Reportar um erro nesta página</a><!-- REPORTAR-ERRO:FIM -->
   </div>
 
   <div class="disclaimer">
-    <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. As datas apresentadas vêm do calendário oficial da Segurança Social e podem ser alteradas pela própria Segurança Social — confirma sempre o teu caso concreto na Segurança Social Direta.
+    <strong>Aviso de independência:</strong> O Tens Direito é um site independente, sem afiliação ao Estado ou a qualquer entidade pública. As datas apresentadas vêm do calendário oficial da Segurança Social e da regra de pagamento publicada pela CGA, e podem ser alteradas por estas entidades — confirma sempre o teu caso concreto na Segurança Social Direta ou no portal da CGA.
   </div>
 
 </main>
