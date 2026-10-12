@@ -33,6 +33,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import calendario_cga  # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data" / "calendario_pagamentos.json"
 PAGINA = RAIZ / "calendario-pagamentos-seguranca-social.html"
@@ -46,7 +49,7 @@ FONTE_OFICIAL_FALLBACK = "https://www.seg-social.pt"
 PRESTACOES = {
     "doenca_profissional": "Pensões e subsídios por doença profissional",
     "apoio_renda": "Apoio extraordinário à renda",
-    "pensoes": "Pensões",
+    "pensoes": "Pensões da Segurança Social",
     "csi": "Complemento Solidário para Idosos (CSI)",
     "reembolso_despesas_funeral": "Reembolso de despesas de funeral",
     "psi": "Prestação Social para a Inclusão (PSI)",
@@ -72,7 +75,7 @@ METODOS = {
 RESUMO_CURTO = {
     "doenca_profissional": "Doença profissional",
     "apoio_renda": "Apoio à renda",
-    "pensoes": "Pensões",
+    "pensoes": "Pensões da Segurança Social",
     "csi": "CSI",
     "reembolso_despesas_funeral": "Reembolso de funeral",
     "psi": "PSI",
@@ -160,7 +163,7 @@ VISTA_PRESTACOES = [
 # invalidez, subsídio SOCIAL de desemprego e subsídios sociais de
 # parentalidade — nunca nos respetivos regimes contributivos, que a PSU não
 # toca. Vive fora da zona regenerada só na força (é aplicada dentro de
-# _seccao_por_prestacao, portanto SOBREVIVE à regeneração mensal — nunca um
+# _lista_prestacoes, portanto SOBREVIVE à regeneração mensal — nunca um
 # add-on manual que a próxima corrida do workflow apagaria).
 #
 # CSI e PSI ficam deliberadamente de fora, por dois motivos distintos —
@@ -181,36 +184,24 @@ VISTA_PRESTACOES = [
 #   para novos requerentes desde 2017, mas é hoje um regime autónomo,
 #   nunca a mesma coisa. A nota da linha "pensoes" abaixo refere-se a essa
 #   pensão social (a prestação #2), nunca à PSI — o "psi" nunca deve
-#   ganhar entrada neste dicionário.
-PSU_NOTAS = {
-    "rsi": (
-        'O Decreto-Lei n.º 166/2026 confirma que vai ser <a href="/'
-        'prestacao-social-unica.html">integrado na PSU</a> por conversão '
-        "oficiosa (artigo 57.º), a partir de 31 de dezembro de 2026 — o "
-        "pagamento continua normal até lá."
-    ),
-    "pensoes": (
-        "Se é pensão social de velhice ou invalidez (não a pensão "
-        "contributiva), o Decreto-Lei n.º 166/2026 confirma que vai ser "
-        '<a href="/prestacao-social-unica.html">integrada na PSU</a> por '
-        "conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de "
-        "2026 — o pagamento continua normal até lá."
-    ),
-    "subsidio-desemprego": (
-        "Se é o subsídio social de desemprego (não o contributivo), o "
-        "Decreto-Lei n.º 166/2026 confirma que vai ser "
-        '<a href="/prestacao-social-unica.html">integrado na PSU</a> por '
-        "conversão oficiosa (artigo 57.º), a partir de 31 de dezembro de "
-        "2026 — o pagamento continua normal até lá."
-    ),
-    "parentalidade-social": (
-        "Os subsídios sociais de parentalidade (não os contributivos) "
-        'vão ser <a href="/prestacao-social-unica.html">integrados na '
-        "PSU</a> por conversão oficiosa (artigo 57.º) do Decreto-Lei "
-        "n.º 166/2026, a partir de 31 de dezembro de 2026 — o pagamento "
-        "continua normal até lá."
-    ),
-}
+#   ganhar entrada neste conjunto.
+PSU_MARCA = {"rsi", "pensoes", "subsidio-desemprego", "parentalidade-social"}
+
+# Uma nota só, por baixo da lista (as linhas de PSU_MARCA ganham um 🔄 que
+# aponta para ela) — antes eram 4 notas longas repetidas linha a linha.
+PSU_NOTA = (
+    'Passa para a <a href="/prestacao-social-unica.html">Prestação Social '
+    "Única</a> por conversão oficiosa a partir de 31 de dezembro de 2026 "
+    "(artigo 57.º do Decreto-Lei n.º 166/2026) se recebes a versão social, "
+    "não contributiva: pensão social de velhice ou invalidez, subsídio social "
+    "de desemprego, subsídios sociais de parentalidade e o RSI. O pagamento "
+    "continua normal até lá."
+)
+
+# Nome na lista «Quando recebo?» quando difere do de VISTA_PRESTACOES
+# (que o canal e os .ics continuam a usar). «Pensões» sozinho confundia
+# quem é pensionista da CGA, que tem linha própria.
+NOME_LISTA = {"pensoes": "Pensões da Segurança Social"}
 
 MESES_PT = [
     "", "janeiro", "fevereiro", "março", "abril", "maio", "junho",
@@ -317,40 +308,60 @@ def _metodo_txt(metodo: list[str]) -> str:
 
 
 def _tabela_mes(m: dict) -> str:
+    """Calendário oficial do mês, dia a dia — todas as prestações do JSON da
+    Segurança Social (incluindo as que não têm linha própria na lista)."""
     linhas = []
     for p in sorted(m["pagamentos"], key=lambda x: x["dia"]):
         nomes = "<br>".join(html.escape(PRESTACOES[s]) for s in p["prestacoes"])
         nota = p.get("nota")
         if nota:
-            nomes += (
-                '<br><span class="cal-nota">'
-                + html.escape(nota)
-                + "</span>"
-            )
+            nomes += '<br><span class="cal-nota">' + html.escape(nota) + "</span>"
         linhas.append(
-            "      <tr>\n"
-            f'        <td class="cal-dia">{p["dia"]}</td>\n'
-            f"        <td>{nomes}</td>\n"
-            f"        <td>{html.escape(_metodo_txt(p['metodo']))}</td>\n"
-            "      </tr>"
+            "        <tr>\n"
+            f'          <td class="cal-dia">{p["dia"]}</td>\n'
+            f"          <td>{nomes}</td>\n"
+            "        </tr>"
         )
     corpo = "\n".join(linhas)
     return (
-        '  <div class="tabela-wrap">\n'
-        '    <table class="cal-tabela">\n'
-        "      <thead>\n"
-        "      <tr>\n"
-        '        <th scope="col">Dia</th>\n'
-        '        <th scope="col">Prestações pagas</th>\n'
-        '        <th scope="col">Método de pagamento</th>\n'
-        "      </tr>\n"
-        "      </thead>\n"
-        "      <tbody>\n"
+        '    <div class="tabela-wrap">\n'
+        '      <table class="cal-tabela cal-tabela-dias">\n'
+        "        <thead>\n"
+        "        <tr>\n"
+        '          <th scope="col">Dia</th>\n'
+        '          <th scope="col">O que é pago</th>\n'
+        "        </tr>\n"
+        "        </thead>\n"
+        "        <tbody>\n"
         f"{corpo}\n"
-        "      </tbody>\n"
-        "    </table>\n"
-        "  </div>"
+        "        </tbody>\n"
+        "      </table>\n"
+        "    </div>\n"
+        f'    <p class="cal-metodo">{_nota_metodos(m)}</p>'
     )
+
+
+def _nota_metodos(m: dict) -> str:
+    """Uma frase em vez de uma coluna repetida: o método da maioria dos
+    pagamentos e as excepções, pelo nome."""
+    contagem: dict[tuple, int] = {}
+    for p in m["pagamentos"]:
+        chave = tuple(x for x in p["metodo"] if x in METODOS)
+        contagem[chave] = contagem.get(chave, 0) + 1
+    if not contagem:
+        return ""
+    comum = max(contagem, key=lambda k: (contagem[k], len(k)))
+    nomes_comum = " ou ".join(METODOS[x] for x in comum)
+    frase = f"Pagamento por {nomes_comum}"
+    excecoes = []
+    for p in sorted(m["pagamentos"], key=lambda x: x["dia"]):
+        chave = tuple(x for x in p["metodo"] if x in METODOS)
+        if chave != comum:
+            quem = ", ".join(RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"])
+            excecoes.append(f"{quem} — {_metodo_txt(p['metodo']).lower()}")
+    if excecoes:
+        frase += ". Excepto: " + "; ".join(excecoes)
+    return html.escape(frase + ".")
 
 
 def _dias_por_slug(m: dict) -> dict[str, list[int]]:
@@ -361,73 +372,133 @@ def _dias_por_slug(m: dict) -> dict[str, list[int]]:
     return dias
 
 
-def _seccao_por_prestacao(m: dict) -> str:
-    """Tabela 'Quando recebo a minha prestação?' com as âncoras da spec."""
+def _entradas_lista(m: dict) -> list[dict]:
+    """Uma entrada por prestação da lista «Quando recebo?»: as de
+    VISTA_PRESTACOES (datas do JSON da Segurança Social) mais as pensões da
+    CGA (regra de calendario_cga.py), ordenadas pelo primeiro dia do mês."""
     dias = _dias_por_slug(m)
-    mes_txt = MESES_PT[m["mes"]]
-    linhas = []
-    for anchor, nome, slugs, url in VISTA_PRESTACOES:
-        partes = []
-        for s in slugs:
-            for d in dias.get(s, []):
-                rotulo = _ROTULO_SLUG.get(s)
-                partes.append(
-                    f"{d} de {mes_txt}" + (f" ({rotulo})" if rotulo else "")
-                )
-        if not partes:
-            # Prestação sem data neste mês — nunca inventar: estado explícito.
-            datas_txt = (
-                "sem data no calendário deste mês — "
-                '<a href="' + html.escape(FONTE_OFICIAL_FALLBACK)
-                + '" target="_blank" rel="noopener">consulta a Segurança Social</a>'
-            )
-        else:
-            datas_txt = " · ".join(html.escape(t) for t in partes)
-        nome_html = html.escape(nome)
-        if url:
-            nome_html += (
-                f'<br><a class="cal-guia" href="{html.escape(url)}">Ver o guia →</a>'
-            )
-        nota_psu = PSU_NOTAS.get(anchor)
-        if nota_psu:
-            nome_html += f'<br><span class="cal-psu-nota">🔄 {nota_psu}</span>'
-        linhas.append(
-            f'      <tr id="{anchor}">\n'
-            f'        <th scope="row">{nome_html}</th>\n'
-            f"        <td>{datas_txt}</td>\n"
-            "      </tr>"
+    entradas = []
+    for ordem, (anchor, nome, slugs, url) in enumerate(VISTA_PRESTACOES):
+        ds = sorted({d for s in slugs for d in dias.get(s, [])})
+        entradas.append({
+            "ancora": anchor,
+            "nome": NOME_LISTA.get(anchor, nome),
+            "url": url,
+            "dias": ds,
+            "lote": any(s in _ROTULO_SLUG for s in slugs),
+            "psu": anchor in PSU_MARCA,
+            "extra": None,
+            "ordem": ordem,
+        })
+    dia_cga = calendario_cga.dia_pagamento(m["ano"], m["mes"]).day
+    entradas.append({
+        "ancora": calendario_cga.ANCORA,
+        "nome": calendario_cga.NOME,
+        "url": calendario_cga.GUIA,
+        "dias": [dia_cga],
+        "lote": False,
+        "psu": False,
+        "extra": calendario_cga.EXTRA_POR_MES.get(m["mes"]),
+        "ordem": len(VISTA_PRESTACOES),
+    })
+    # Sem data no mês vai para o fim, nunca para o topo.
+    entradas.sort(key=lambda e: (e["dias"][0] if e["dias"] else 99, e["ordem"]))
+    return entradas
+
+
+def _celula_dias(e: dict) -> str:
+    if not e["dias"]:
+        return (
+            '<span class="cal-sem-data">sem data — <a href="'
+            + html.escape(FONTE_OFICIAL_FALLBACK)
+            + '" target="_blank" rel="noopener">confirma na Segurança Social</a></span>'
         )
-    corpo = "\n".join(linhas)
+    if e["lote"] and len(e["dias"]) == 2:
+        return f'{e["dias"][0]} ou {e["dias"][1]}<sup><a href="#nota-lotes" class="cal-ref" aria-label="ver nota sobre os dois lotes">¹</a></sup>'
+    return " e ".join(str(d) for d in e["dias"])
+
+
+def _lista_prestacoes(m: dict, com_ancoras: bool = True) -> str:
+    """Tabela principal «Quando recebo?»: prestação · dia · subscrever.
+    Sem âncoras (`com_ancoras=False`) para a pré-visualização do mês
+    seguinte, que convive com a do mês corrente no mesmo documento."""
+    from gerar_calendarios_ics import ligacoes
+
+    linhas = []
+    for e in _entradas_lista(m):
+        nome = html.escape(e["nome"])
+        if e["url"]:
+            nome = f'<a href="{html.escape(e["url"])}">{nome}</a>'
+        if e["psu"]:
+            nome += (' <a class="cal-psu-marca" href="#nota-psu" '
+                     'title="Passa para a Prestação Social Única" '
+                     'aria-label="ver nota sobre a Prestação Social Única">🔄</a>')
+        if e["extra"]:
+            nome += f'<span class="cal-extra">{html.escape(e["extra"])}</span>'
+        id_attr = f' id="{e["ancora"]}"' if com_ancoras else ""
+        celula_sub = ""
+        if com_ancoras:
+            webcal, google = ligacoes(e["ancora"])
+            rotulo = f'Receber as datas de {e["nome"]} no meu calendário'
+            celula_sub = (
+                '\n          <td class="cal-sub-cel">'
+                f'<a class="cal-sub" href="{html.escape(webcal)}" '
+                f'data-google="{html.escape(google)}" data-destino="apple" '
+                f'aria-label="{html.escape(rotulo)}" title="{html.escape(rotulo)}">📅</a></td>'
+            )
+        linhas.append(
+            f"        <tr{id_attr}>\n"
+            f'          <th scope="row">{nome}</th>\n'
+            f'          <td class="cal-quando">{_celula_dias(e)}</td>'
+            f"{celula_sub}\n"
+            "        </tr>"
+        )
+    col_sub = (
+        '\n          <th scope="col" class="cal-sub-cel"><span class="sr-only">Calendário</span></th>'
+        if com_ancoras else ""
+    )
     return (
-        '  <h2 id="por-prestacao">Quando recebo a minha prestação?</h2>\n'
-        '  <div class="tabela-wrap">\n'
-        '    <table class="cal-tabela cal-tabela-prestacoes">\n'
-        "      <thead>\n"
-        "      <tr>\n"
-        '        <th scope="col">Prestação</th>\n'
-        f'        <th scope="col">Data em {html.escape(mes_txt)}</th>\n'
-        "      </tr>\n"
-        "      </thead>\n"
-        "      <tbody>\n"
-        f"{corpo}\n"
-        "      </tbody>\n"
-        "    </table>\n"
+        '    <div class="tabela-wrap">\n'
+        '      <table class="cal-tabela cal-tabela-prestacoes">\n'
+        "        <thead>\n"
+        "        <tr>\n"
+        '          <th scope="col">Prestação</th>\n'
+        f'          <th scope="col">Dia</th>{col_sub}\n'
+        "        </tr>\n"
+        "        </thead>\n"
+        "        <tbody>\n"
+        + "\n".join(linhas) + "\n"
+        "        </tbody>\n"
+        "      </table>\n"
+        "    </div>"
+    )
+
+
+def _notas_lista(com_ids: bool = True) -> str:
+    """As duas notas da lista, uma vez cada — em vez de repetidas por linha."""
+    id_lotes = ' id="nota-lotes"' if com_ids else ""
+    id_psu = ' id="nota-psu"' if com_ids else ""
+    return (
+        '  <div class="cal-notas">\n'
+        f"    <p{id_lotes}>¹ Desemprego, doença e parentalidade são pagos em dois lotes por mês; "
+        "a Segurança Social não diz qual cabe a cada pessoa — o teu é um dos dois dias.</p>\n"
+        f"    <p{id_psu}>🔄 {PSU_NOTA}</p>\n"
         "  </div>"
     )
 
 
 def _dados_js(m: dict) -> list[dict]:
     """Lista (dia, resumo curto) do mês, ordenada — partilhada pelo destaque
-    do topo da página do calendário e pela barra da homepage."""
-    return [
-        {
-            "dia": p["dia"],
-            "resumo": " · ".join(
-                RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"]
-            ),
-        }
-        for p in sorted(m["pagamentos"], key=lambda x: x["dia"])
-    ]
+    do topo da página do calendário e pela barra da homepage. Inclui o dia
+    das pensões da CGA (regra fixa, calendario_cga.py)."""
+    por_dia: dict[int, list[str]] = {}
+    for p in sorted(m["pagamentos"], key=lambda x: x["dia"]):
+        por_dia.setdefault(p["dia"], []).extend(
+            RESUMO_CURTO.get(s, PRESTACOES[s]) for s in p["prestacoes"]
+        )
+    dia_cga = calendario_cga.dia_pagamento(m["ano"], m["mes"]).day
+    por_dia.setdefault(dia_cga, []).append(calendario_cga.RESUMO_CURTO)
+    return [{"dia": d, "resumo": " · ".join(por_dia[d])} for d in sorted(por_dia)]
 
 
 def _destaque_topo(m: dict) -> str:
@@ -439,9 +510,9 @@ def _destaque_topo(m: dict) -> str:
     - dados estruturados (`#cal-dados`, JSON) que o script de runtime da
       página lê para promover a PRÓXIMA data a contar de hoje.
     """
-    pagamentos = sorted(m["pagamentos"], key=lambda x: x["dia"])
+    itens = _dados_js(m)
     mes_txt = MESES_PT[m["mes"]]
-    dias = [p["dia"] for p in pagamentos]
+    dias = [it["dia"] for it in itens]
     if len(dias) == 1:
         dias_txt = str(dias[0])
     else:
@@ -449,15 +520,22 @@ def _destaque_topo(m: dict) -> str:
 
     # json.dumps com ensure_ascii=False dá acentos legíveis; nunca contém
     # "</script>" (só nomes de prestações), por isso é seguro embutir.
-    dados_json = json.dumps(_dados_js(m), ensure_ascii=False)
+    dados_json = json.dumps(itens, ensure_ascii=False)
 
     return (
         f'  <div id="cal-destaque" class="cal-destaque" data-mes="{m["ano"]}-{m["mes"]:02d}">\n'
         f'    <p class="cal-destaque-linha">📅 <strong>Datas de pagamento em '
-        f'{html.escape(mes_txt)}:</strong> {html.escape(dias_txt)} — '
-        f'<a href="#por-prestacao">ver o que é pago em cada dia ↓</a></p>\n'
+        f'{html.escape(mes_txt)}:</strong> {html.escape(dias_txt)}</p>\n'
         f'  </div>\n'
         f'  <script id="cal-dados" type="application/json">{dados_json}</script>'
+    )
+
+
+def _linha_cga(ano: int, mes: int) -> str:
+    dia = calendario_cga.dia_pagamento(ano, mes).day
+    return (
+        f"As pensões da CGA (função pública) são pagas a {dia} de "
+        f"{MESES_PT[mes]} — dia 19 ou o dia útil anterior."
     )
 
 
@@ -470,19 +548,28 @@ def _bloco_degradado(dados: dict, ano: int, mes: int) -> str:
         "  depois de o confirmar na fonte oficial. Consulta as datas directamente na\n"
         f'  <a href="{fonte}" target="_blank" rel="noopener">Segurança Social</a>\n'
         "  ou na Segurança Social Direta.</p>\n"
+        f"  <p>{html.escape(_linha_cga(ano, mes))}</p>\n"
         "</div>"
     )
 
 
 def _bloco_corrente(m: dict) -> str:
-    """Topo do mês: destaque, tabela do mês e 'Quando recebo'."""
+    """Topo do mês: destaque, lista «Quando recebo?» (com a CGA), notas e o
+    calendário oficial dia a dia, recolhido."""
     ano, mes = m["ano"], m["mes"]
+    mes_txt = html.escape(MESES_PT[mes])
     return (
         f'<div id="cal-corrente" data-mes="{ano}-{mes:02d}">\n'
         f"{_destaque_topo(m)}\n"
-        f'  <h2 id="mes-corrente">Calendário de {html.escape(nome_mes(ano, mes))}</h2>\n'
+        f'  <h2 id="mes-corrente">Quando recebo em {html.escape(nome_mes(ano, mes))}?</h2>\n'
+        '  <p class="cal-dica">Carrega em 📅 para juntar as datas da tua prestação ao calendário '
+        "do telemóvel ou do computador — as dos meses seguintes aparecem sozinhas.</p>\n"
+        f"{_lista_prestacoes(m)}\n"
+        f"{_notas_lista()}\n"
+        '  <details class="cal-completo">\n'
+        f"    <summary>Calendário completo da Segurança Social em {mes_txt}, dia a dia</summary>\n"
         f"{_tabela_mes(m)}\n"
-        f"{_seccao_por_prestacao(m)}\n"
+        "  </details>\n"
         "</div>"
     )
 
@@ -491,8 +578,10 @@ def _nota_proximo_mes(ano: int, mes: int) -> str:
     return (
         '<p class="cal-proximo-mes">O calendário de '
         + html.escape(nome_mes(ano, mes))
-        + " ainda não foi confirmado na fonte oficial — é publicado aqui assim que a"
-        " Segurança Social o divulgar.</p>"
+        + " da Segurança Social ainda não foi confirmado na fonte oficial — é publicado aqui"
+        " assim que for divulgado. "
+        + html.escape(_linha_cga(ano, mes))
+        + "</p>"
     )
 
 
@@ -536,10 +625,10 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
 
     if seguinte:
         blocos.append(
-            f'<div id="cal-seguinte">\n'
-            f'  <h2 id="mes-seguinte">Calendário de {html.escape(nome_mes(ano_s, mes_s))}</h2>\n'
-            f"{_tabela_mes(seguinte)}\n"
-            "</div>"
+            '<details id="cal-seguinte" class="cal-seguinte">\n'
+            f'  <summary id="mes-seguinte">Ver as datas de {html.escape(nome_mes(ano_s, mes_s))}</summary>\n'
+            f"{_lista_prestacoes(seguinte, com_ancoras=False)}\n"
+            "</details>"
         )
         blocos.append(_vista_mes_seguinte(dados, seguinte))
     elif atual:
@@ -548,11 +637,12 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
     confirmado = html.escape(_data_pt(dados.get("atualizado_em", "")))
     fonte = html.escape(dados.get("fonte_url") or FONTE_OFICIAL_FALLBACK)
     blocos.append(
-        '<p class="cal-fonte-inline">Fonte: <a href="'
+        '<p class="cal-fonte-inline">Fontes: <a href="'
         + fonte
         + '" target="_blank" rel="noopener">Segurança Social</a> · Datas confirmadas na Segurança Social a '
         + confirmado
-        + "</p>"
+        + ' · <a href="' + calendario_cga.FONTE_URL
+        + '" target="_blank" rel="noopener">CGA</a>: dia 19 ou o dia útil anterior</p>'
     )
     return "\n\n".join(blocos)
 
@@ -603,15 +693,15 @@ def render_meta(dados: dict, hoje: dt.date) -> str:
         titulo = f"Calendário de Pagamentos Segurança Social: {mes_ano_curto}"
         mes_txt = nome_mes(hoje.year, hoje.month)
         descricao = (
-            f"Datas de pagamento em {mes_txt}: pensões, abono, subsídios, "
-            "RSI, CSI e PSI — calendário oficial da Segurança Social."
+            f"Datas de pagamento em {mes_txt}: pensões da Segurança Social "
+            "e da CGA, abono, subsídios, RSI, CSI e PSI."
         )
     else:
         titulo = f"Calendário de Pagamentos da Segurança Social {hoje.year}"
         descricao = (
-            "Quando paga a Segurança Social as pensões, o abono de família, o "
-            "subsídio de desemprego, o RSI e o CSI — calendário mensal com base "
-            "na fonte oficial."
+            "Quando são pagas as pensões da Segurança Social e da CGA, o abono "
+            "de família, o subsídio de desemprego, o RSI e o CSI — com base nas "
+            "fontes oficiais."
         )
     return (
         f"  <title>{html.escape(titulo)}</title>\n"

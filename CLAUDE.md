@@ -2164,7 +2164,8 @@ em `tests/test_nav_coerencia.py` (mesmo padrão de
 
 Página evergreen `calendario-pagamentos-seguranca-social.html` — URL
 única que acumula autoridade; o conteúdo do mês é sempre injectado,
-nunca reescrito à mão. Narrativa completa (triangulação inicial de
+nunca reescrito à mão. Desde 2026-10-12 cobre também as pensões da Caixa
+Geral de Aposentações (ver "Pensões da CGA" abaixo). Narrativa completa (triangulação inicial de
 julho 2026, diagnóstico que corrigiu a data-alvo do scraping, histórico
 do scraper) vive em `HISTORICO.md`, não aqui.
 
@@ -2182,12 +2183,24 @@ silenciosa.
   dia/prestações/método/nota).
 - **`scripts/atualizar_calendario.py`** — injecção idempotente
   (`--dry-run` disponível), confinada a `CAL:META:INICIO/FIM` (title +
-  meta description com o mês corrente) e `CAL:CORPO:INICIO/FIM` (tabela
-  do mês; secção "Quando recebo a minha prestação?" com 10 âncoras —
-  `#pensoes`/`#csi`/`#psi`/`#abono-familia`/`#subsidio-desemprego`/
-  `#subsidio-doenca`/`#parentalidade-social`/`#rsi`/`#apoio-renda`/
-  `#cuidador-informal`, `VISTA_PRESTACOES` — e o mês seguinte quando
-  disponível). Validação dura antes de escrever (allow-list
+  meta description com o mês corrente) e `CAL:CORPO:INICIO/FIM`.
+  **Uma só lista principal** (`_lista_prestacoes()`, 2026-10-12 — antes a
+  mesma informação aparecia três vezes: tabela por dia, tabela por
+  prestação e 10 caixas de subscrição): «Quando recebo em <mês>?», uma
+  linha por prestação de `VISTA_PRESTACOES` mais a linha da CGA
+  (`#pensoes-cga`), ordenada pelo dia — nome (link para o guia) · dia ·
+  botão 📅 de subscrição. Âncoras nas linhas (`id` do `<tr>`, as mesmas
+  de sempre — os guias ligam-lhes com `#fragmento`). Os lotes `_1`/`_2`
+  aparecem como «16 ou 28¹» e as prestações que passam para a PSU levam
+  🔄: as duas explicações ficam UMA vez por baixo da lista
+  (`#nota-lotes`, `#nota-psu`). A tabela oficial dia a dia (todas as
+  prestações do JSON, incluindo FGADM, FGS, doença profissional, funeral,
+  cultural) fica recolhida num `<details class="cal-completo">`, sem a
+  coluna de método — uma frase gerada (`_nota_metodos()`) diz o método
+  da maioria e as excepções. O mês seguinte, quando existe, é um
+  `<details id="cal-seguinte">` com a lista sem âncoras nem botões.
+  `NOME_LISTA` renomeia «Pensões» para «Pensões da Segurança Social» só
+  na lista (canal e `.ics` mantêm o nome de `VISTA_PRESTACOES`). Validação dura antes de escrever (allow-list
   `PRESTACOES`, dias 1-31, listas não vazias, `fonte_url` só de
   seg-social.pt, mês duplicado) — falha sem tocar no HTML. Meses
   passados nunca são renderizados, mesmo presentes no JSON.
@@ -2210,7 +2223,8 @@ silenciosa.
   `{"AAAA-MM": [...]}` com o mês corrente e o seguinte.
 - **Destaque "Próximo pagamento"** no topo, antes da tabela: camada
   estática (sempre visível mesmo sem JS, com todas as datas do mês) +
-  `#cal-dados` (JSON `dia`+`resumo` curto por pagamento) que o script
+  `#cal-dados` (JSON `dia`+`resumo` curto por dia, incluindo o dia da CGA
+  — o mesmo `_dados_js()` alimenta `#cal-home-dados` da homepage) que o script
   de runtime lê para promover a próxima data a contar de hoje (Lisboa) —
   só quando o topo (depois da troca) é o mês de Lisboa; num mês velho
   (aviso de desatualização activo) ou em estado degradado nunca inventa
@@ -2233,13 +2247,17 @@ silenciosa.
   `<âncora>-<AAAAMMDD>@tensdireito.com`, estável. A data de geração fica em
   `X-TD-GERADO-EM`: `tests/test_calendarios_ics.py` regenera cada ficheiro
   com ela e falha se o JSON mudou sem regenerar. Só a data a mudar (mesmos
-  eventos) não reescreve o ficheiro. A secção «Recebe as datas no teu
-  calendário» da página vive na zona `CAL:SUBSCREVER:INICIO/FIM`, gerada
-  por `render_subscrever()`: um só botão «Adicionar ao meu calendário» por
-  prestação — `webcal://` por omissão e sem JavaScript (iPhone, iPad e Mac
-  abrem no Calendário); nos outros aparelhos o script troca-o pela ligação
-  `calendar.google.com/calendar/render?cid=webcal://…` (o Google só deixa
-  subscrever no computador). Evento GA4 `calendario_subscrito` (só
+  eventos) não reescreve o ficheiro. O botão de subscrição é o 📅
+  (`a.cal-sub`) de cada linha da lista — `webcal://` por omissão e sem
+  JavaScript (iPhone, iPad e Mac abrem no Calendário); nos outros
+  aparelhos passa, **no momento do clique** (delegação, nunca ao carregar:
+  a lista do mês seguinte entra mais tarde, a partir do `<template>`), à
+  ligação `calendar.google.com/calendar/render?cid=webcal://…` (o Google
+  só deixa subscrever no computador). Esse comportamento é a única coisa
+  que a zona `CAL:SUBSCREVER:INICIO/FIM` ainda traz (`render_subscrever()`
+  só gera o `<script>`). `calendario/pensoes-cga.ics` é a excepção à regra
+  «só datas publicadas»: 12 meses à frente, da regra da CGA
+  (`render_ics_cga()`). Evento GA4 `calendario_subscrito` (só
   `destino`, nunca a prestação). O
   smoke test confirma `/calendario/pensoes.ics` (corpo `BEGIN:VCALENDAR`;
   tipo `text/calendar` só como aviso).
@@ -2299,6 +2317,22 @@ SPA com um separador por mês, sem gateway de login; o fluxo manual
   fallback = sonda `/ptss/pssd/noticias` + Issue. Emite `estado`/
   `mes_alvo` via `GITHUB_OUTPUT`.
 
+### Pensões da CGA (2026-10-12)
+
+Regra oficial da CGA (`cga.pt/pagamentos`): pensões pagas no dia 19 de
+cada mês ou no dia útil anterior; 14.º mês em julho e subsídio de Natal em
+novembro. **Calculada, nunca raspada nem guardada**:
+`scripts/calendario_cga.py` (`dia_pagamento()`, `proximas_datas()`), com
+os feriados nacionais de `scripts/feriados.py` — módulo partilhado com o
+canal (`preparar_canal.py` importa e reexporta daí; foi movido para os dois
+não se importarem um ao outro). Fica fora de `PRESTACOES`, do JSON da
+Segurança Social e da validação dele (fonte, regra e entidade são outras).
+`tests/test_calendario_cga.py` tranca a regra contra as 12 datas de 2026
+publicadas pela CGA; revisão anual em `docs/FONTE-CALENDARIO.md`. No estado
+degradado (sem mês da Segurança Social) a página continua a dar a data da
+CGA, numa frase, nunca numa tabela. **Por fazer**: aviso de véspera da CGA
+no canal de WhatsApp (o canal só lê o JSON da Segurança Social).
+
 Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
 protegido como qualquer outra. `pagamento-apos-deferimento.html`
 ("Pedido deferido: quando cai o primeiro pagamento") é a página irmã
@@ -2314,8 +2348,10 @@ n.º 166/2026, hoje já publicado e em vigor — ver "IMPACTO DA PSU" para o
 estado do diploma). CSI e PSI ficam de fora das 4 linhas — ver
 "PENDÊNCIA PSI vs PSU — FECHADA" na mesma secção para a distinção entre
 exclusão explícita (CSI) e exclusão por omissão (PSI). Implementado
-dentro do próprio gerador (`PSU_NOTAS` em `atualizar_calendario.py`,
-aplicado em `_seccao_por_prestacao()`) — sobrevive a qualquer
+dentro do próprio gerador (`PSU_MARCA` + `PSU_NOTA` em
+`atualizar_calendario.py`, aplicados em `_lista_prestacoes()`/
+`_notas_lista()` — desde 2026-10-12 uma marca 🔄 por linha e uma nota
+única por baixo, em vez de 4 notas longas) — sobrevive a qualquer
 regeneração mensal do `calendario-mensal.yml`, nunca um add-on manual
 que a próxima corrida apagaria.
 
@@ -2343,7 +2379,7 @@ simulador, nunca um valor introduzido).
 | `partilha_whatsapp` | `simulador-universal.html`, clique em "Enviar por WhatsApp" no ecrã de resultados | `pagina` (pathname) | A ligação `wa.me` é fixa no HTML (texto + URL com `utm_source=whatsapp`) e nunca leva respostas — `tests/test_simulador_universal_pagina.py` tranca o texto exacto. "Outras formas de partilhar", no mesmo bloco, é um 2.º `.botao-partilhar` (com classes extra, fora da regex de `inserir_botao_partilhar.py`) e dispara o `partilha_clique` de `share.js`. |
 | `calendario_descarregado` | `simulador-universal.html`, clique em "Adicionar ao meu calendário" no ecrã de resultados | `pagina` (pathname) | O `.ics` é criado no navegador a partir de `data/calendario_pagamentos.json` (só datas publicadas, de hoje em diante, dos apoios prováveis com `calendario:` no YAML de condições) e nunca sai do dispositivo; o evento não diz quais apoios nem quantas datas. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
-| `calendario_subscrito` | `calendario-pagamentos-seguranca-social.html` (zona `CAL:SUBSCREVER`, gerada), clique em «Adicionar ao meu calendário» | `destino` (`apple`/`google`, conforme o aparelho) | Nunca a prestação escolhida — diria que apoio a pessoa recebe. |
+| `calendario_subscrito` | `calendario-pagamentos-seguranca-social.html` (zona `CAL:SUBSCREVER`, gerada), clique no 📅 de uma linha da lista «Quando recebo?» | `destino` (`apple`/`google`, conforme o aparelho) | Nunca a prestação escolhida — diria que apoio a pessoa recebe. |
 | `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
 
 **`documento_gerado` — deliberadamente NÃO implementado**: o gerador de

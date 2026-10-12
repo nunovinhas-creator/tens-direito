@@ -14,6 +14,9 @@ chegam sem a pessoa fazer nada.
 Regras:
 - Só datas já publicadas em data/calendario_pagamentos.json, de `hoje`
   (dia de Lisboa da geração) em diante — nunca uma data calculada.
+  Excepção única: calendario/pensoes-cga.ics, cujas datas são a regra
+  oficial da CGA («dia 19 ou dia útil anterior», calendario_cga.py),
+  12 meses à frente.
 - Os lotes «1.º/2.º pagamento» (desemprego, doença, parentalidade) entram
   os dois, com o título «(1.º ou 2.º pagamento)»: o calendário oficial não
   diz qual dos dois dias cabe a cada pessoa.
@@ -41,6 +44,7 @@ from atualizar_calendario import (  # noqa: E402
     hoje_lisboa,
     validar_dados,
 )
+import calendario_cga  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "calendario"
@@ -146,6 +150,53 @@ def render_ics(ancora: str, nome: str, slugs: list[str], dados: dict, hoje: dt.d
     return "\r\n".join(_dobrar(ln) for ln in linhas) + "\r\n"
 
 
+def render_ics_cga(hoje: dt.date) -> str:
+    """Pensões da CGA: datas da regra oficial, 12 meses a contar de hoje."""
+    ancora, nome = calendario_cga.ANCORA, calendario_cga.NOME
+    carimbo = f"{hoje:%Y%m%d}T000000Z"
+    linhas = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Tens Direito//Calendario de pagamentos//PT",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        "X-WR-CALNAME:" + _texto(nome),
+        "X-WR-CALDESC:" + _texto(
+            "Datas de pagamento das pensões da Caixa Geral de Aposentações: dia 19 de cada "
+            "mês ou o dia útil anterior (regra publicada pela CGA). "
+            f"Calendário completo: {DOMINIO}{PAGINA_CALENDARIO}"
+        ),
+        "X-WR-TIMEZONE:Europe/Lisbon",
+        "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
+        "X-PUBLISHED-TTL:PT12H",
+        f"X-TD-GERADO-EM:{hoje.isoformat()}",
+    ]
+    for dia in calendario_cga.proximas_datas(hoje, meses=12):
+        extra = calendario_cga.EXTRA_POR_MES.get(dia.month)
+        titulo = "Pagamento da pensão da CGA" + (f" ({extra})" if extra else "")
+        linhas += [
+            "BEGIN:VEVENT",
+            f"UID:{ancora}-{dia:%Y%m%d}@tensdireito.com",
+            f"DTSTAMP:{carimbo}",
+            f"DTSTART;VALUE=DATE:{dia:%Y%m%d}",
+            f"DTEND;VALUE=DATE:{dia + dt.timedelta(days=1):%Y%m%d}",
+            "SUMMARY:" + _texto(titulo),
+            "DESCRIPTION:" + _texto(
+                "A CGA paga as pensões no dia 19 de cada mês ou no dia útil anterior. "
+                f"Confirma em {calendario_cga.FONTE_URL}"
+            ),
+            "TRANSP:TRANSPARENT",
+            "BEGIN:VALARM",
+            "ACTION:DISPLAY",
+            "TRIGGER:-PT12H",
+            "DESCRIPTION:" + _texto("Amanhã a CGA paga as pensões"),
+            "END:VALARM",
+            "END:VEVENT",
+        ]
+    linhas.append("END:VCALENDAR")
+    return "\r\n".join(_dobrar(ln) for ln in linhas) + "\r\n"
+
+
 def data_de_geracao(conteudo: str) -> dt.date | None:
     m = REGEX_GERADO.search(conteudo)
     return dt.date.fromisoformat(m.group(1)) if m else None
@@ -158,9 +209,11 @@ def atualizar_ics(dados: dict, hoje: dt.date, pasta: Path = PASTA, escrever: boo
     mudados = []
     if escrever:
         pasta.mkdir(parents=True, exist_ok=True)
-    for ancora, nome, slugs in feeds():
+    ficheiros = [(a, lambda a=a, n=n, s=s: render_ics(a, n, s, dados, hoje)) for a, n, s in feeds()]
+    ficheiros.append((calendario_cga.ANCORA, lambda: render_ics_cga(hoje)))
+    for ancora, gerar in ficheiros:
         caminho = pasta / f"{ancora}.ics"
-        novo = render_ics(ancora, nome, slugs, dados, hoje)
+        novo = gerar()
         antigo = caminho.read_bytes().decode("utf-8") if caminho.exists() else None
         if antigo is not None and _sem_carimbo(novo) == _sem_carimbo(antigo):
             continue
@@ -174,12 +227,14 @@ def _sem_carimbo(conteudo: str) -> str:
     return re.sub(r"(?m)^(X-TD-GERADO-EM|DTSTAMP):.*$", "", conteudo)
 
 
-# ── Secção «Recebe as datas no teu calendário» (zona CAL:SUBSCREVER) ─────
-# Gerada daqui, a partir de feeds(), para a lista de prestações nunca
-# divergir dos ficheiros publicados. Um só botão por prestação: por omissão
-# (e sem JavaScript) é a ligação webcal://, que o iPhone, o iPad e o Mac
-# abrem no Calendário; nos outros aparelhos o script troca-a pela ligação
-# de subscrição do Google Calendar.
+# ── Botões 📅 da lista «Quando recebo?» (zona CAL:SUBSCREVER) ───────────
+# Os botões vivem em cada linha da lista (zona CAL:CORPO, atualizar_calendario
+# ._lista_prestacoes); esta zona só traz o comportamento. Por omissão (e sem
+# JavaScript) o botão é a ligação webcal://, que o iPhone, o iPad e o Mac abrem
+# no Calendário; nos outros aparelhos, no momento do clique, passa a ser a
+# ligação de subscrição do Google Calendar. Decidido no clique (delegação),
+# nunca ao carregar: a lista do mês seguinte entra mais tarde, a partir de um
+# <template> (viragem de mês do lado do cliente).
 
 
 def _e(t: str) -> str:
@@ -193,49 +248,25 @@ def ligacoes(ancora: str) -> tuple[str, str]:
 
 
 def render_subscrever() -> str:
-    itens = []
-    for ancora, nome, slugs in feeds():
-        webcal, google = ligacoes(ancora)
-        nota_lote = ""
-        if any(s in _ROTULO_SLUG for s in slugs):
-            nota_lote = (
-                '\n      <p class="cal-subscrever-lote">Esta prestação é paga num de dois dias do mês e o '
-                "calendário oficial não diz qual cabe a cada pessoa. Por isso aparecem os dois, com "
-                "a indicação «1.º ou 2.º pagamento».</p>"
-            )
-        itens.append(f"""  <details class="cal-subscrever-item" id="subscrever-{ancora}">
-    <summary>{_e(nome)}</summary>
-    <div class="cal-subscrever-conteudo">{nota_lote}
-      <a class="cal-subscrever-btn" href="{_e(webcal)}" data-google="{_e(google)}" data-destino="apple">Adicionar ao meu calendário</a>
-    </div>
-  </details>""")
-    return f"""  <section class="card cal-subscrever" aria-labelledby="subscrever">
-  <h2 id="subscrever">Recebe as datas no teu calendário</h2>
-  <p>Escolhe a tua prestação e liga-a ao calendário do telemóvel ou do computador. Só precisas de fazer isto uma vez: quando a Segurança Social publicar as datas do mês seguinte, elas aparecem sozinhas.</p>
-{chr(10).join(itens)}
-  </section>
-  <script>
-    (function () {{
-      var seccao = document.querySelector('.cal-subscrever');
-      if (!seccao) return;
+    return """  <script>
+    (function () {
       // iPhone, iPad (que se apresenta como Mac) e Mac abrem webcal:// no
       // Calendário; os outros aparelhos vão para o Google Calendar.
       var apple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-      if (!apple) {{
-        seccao.querySelectorAll('a[data-google]').forEach(function (a) {{
-          a.href = a.dataset.google;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.dataset.destino = 'google';
-        }});
-      }}
-      seccao.addEventListener('click', function (e) {{
-        var ligacao = e.target.closest('a[data-destino]');
-        if (ligacao && typeof gtag === 'function') {{
-          gtag('event', 'calendario_subscrito', {{ destino: ligacao.dataset.destino }});
-        }}
-      }});
-    }})();
+      document.addEventListener('click', function (e) {
+        var ligacao = e.target.closest && e.target.closest('a.cal-sub[data-google]');
+        if (!ligacao) return;
+        if (!apple) {
+          ligacao.href = ligacao.dataset.google;
+          ligacao.target = '_blank';
+          ligacao.rel = 'noopener';
+          ligacao.dataset.destino = 'google';
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'calendario_subscrito', { destino: ligacao.dataset.destino });
+        }
+      });
+    })();
   </script>"""
 
 

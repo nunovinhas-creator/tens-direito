@@ -45,6 +45,7 @@ from atualizar_calendario import (  # noqa: E402
     render_meta,
     validar_dados,
 )
+from calendario_cga import dia_pagamento as dia_pagamento_cga  # noqa: E402
 
 HTML = PAGINA.read_text(encoding="utf-8")
 INDEX_HTML = INDEX.read_text(encoding="utf-8")
@@ -173,7 +174,7 @@ def test_linha_dos_dados_em_dd_mm_aaaa_sem_verificado():
     m = re.search(r'<p class="cal-fonte-inline">(.*?)</p>', HTML, re.S)
     assert m
     linha = m.group(1)
-    assert re.search(r"Datas confirmadas na Segurança Social a \d{2}/\d{2}/\d{4}$", linha), linha
+    assert re.search(r"Datas confirmadas na Segurança Social a \d{2}/\d{2}/\d{4}(?: ·|$)", linha), linha
     assert "verificad" not in linha.lower()
 
 
@@ -262,8 +263,8 @@ def test_mes_seguinte_e_renderizado_quando_disponivel():
     dados = {"fonte_url": "https://www.seg-social.pt",
              "meses": [mes_corrente, mes_seguinte]}
     corpo = render_corpo(dados, _HOJE_FIXO)
-    assert "Calendário de julho de 2026" in corpo
-    assert "Calendário de agosto de 2026" in corpo
+    assert "Quando recebo em julho de 2026?" in corpo
+    assert "Ver as datas de agosto de 2026" in corpo
     assert "cal-degradado" not in corpo
 
 
@@ -349,7 +350,7 @@ def test_25_agosto_injector_nao_degrada_e_e_idempotente_sobre_agosto(tmp_path):
     de 1 de agosto), a 2.ª injecção não muda nada → zero commits espúrios."""
     corpo = render_corpo(_SO_AGOSTO, dt.date(2026, 8, 25))
     assert "cal-degradado" not in corpo
-    assert "Calendário de agosto de 2026" in corpo
+    assert "Quando recebo em agosto de 2026?" in corpo
 
     pagina = tmp_path / "cal.html"
     pagina.write_text(PAGINA.read_text(encoding="utf-8"), encoding="utf-8")
@@ -386,6 +387,7 @@ def test_intervalos_plausiveis_cobrem_toda_a_allow_list_e_o_historico_real():
 ANCORAS_SPEC = [
     "pensoes", "csi", "psi", "abono-familia", "subsidio-desemprego",
     "subsidio-doenca", "rsi", "apoio-renda", "cuidador-informal",
+    "parentalidade-social", "pensoes-cga",
 ]
 
 
@@ -424,7 +426,10 @@ def test_cal_dados_json_valido_e_coerente_com_o_json_de_dados():
     assert itens and all("dia" in it and "resumo" in it for it in itens)
     hoje = _hoje_do_gerador()
     atual = _encontrar_mes(carregar_dados(), hoje.year, hoje.month)
-    dias_esperados = sorted(p["dia"] for p in atual["pagamentos"])
+    dias_esperados = sorted(
+        {p["dia"] for p in atual["pagamentos"]}
+        | {dia_pagamento_cga(hoje.year, hoje.month).day}
+    )
     assert [it["dia"] for it in itens] == dias_esperados, (
         "os dias de #cal-dados não batem com o JSON de dados — o destaque "
         "e a tabela deixariam de estar sincronizados"
@@ -484,7 +489,10 @@ def test_homepage_cal_home_dados_coerente_com_o_json_e_mes_corrente():
     for chave, itens in por_mes.items():
         mes = _encontrar_mes(dados, int(chave[:4]), int(chave[5:]))
         assert mes is not None, f"{chave} na barra mas não no JSON de dados"
-        assert [it["dia"] for it in itens] == sorted(p["dia"] for p in mes["pagamentos"])
+        assert [it["dia"] for it in itens] == sorted(
+            {p["dia"] for p in mes["pagamentos"]}
+            | {dia_pagamento_cga(mes["ano"], mes["mes"]).day}
+        )
         assert all("dia" in it and "resumo" in it for it in itens)
 
 
@@ -760,10 +768,12 @@ class TestViragemDeMesLisboa:
         assert page.get_attribute("#cal-corrente", "data-mes") == "2026-10"
         assert "outubro" in page.locator("#mes-corrente").inner_text()
         assert "Datas de pagamento em outubro" in page.locator(".cal-destaque-linha").inner_text()
-        assert "Data em outubro" in page.locator(".cal-tabela-prestacoes thead").text_content()
+        assert page.locator("#pensoes-cga .cal-quando").inner_text().strip() == "19"
         assert page.locator("#cal-aviso-desatualizado").is_hidden()
         assert page.locator("#cal-seguinte").count() == 0, "outubro ficou duplicado em baixo"
-        assert "novembro de 2026 ainda não foi confirmado" in page.locator(".cal-proximo-mes").inner_text()
+        nota = page.locator(".cal-proximo-mes").inner_text()
+        assert "novembro de 2026 da Segurança Social ainda não foi confirmado" in nota
+        assert "pensões da CGA (função pública) são pagas a 19 de novembro" in nota
         assert "2 de outubro" in page.locator(".cal-destaque-proximo").inner_text()
         for anchor in ANCORAS_SPEC:
             assert page.locator(f"#{anchor}").count() == 1, f"âncora #{anchor}"

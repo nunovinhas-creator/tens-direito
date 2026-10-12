@@ -7338,6 +7338,34 @@ ligação «adicionar ao Outlook» por URL não ficou confirmada. A pedido do
 Nuno, a página ficou só com o botão (sem nota sobre o Android nem endereço
 para copiar).
 
+### Última revisão: 2026-10-12 — Calendário de pagamentos: CGA e página simplificada
+
+Pedido do Nuno: acrescentar as pensões da CGA ao calendário sem o encher de
+informação, e simplificar a página toda. Diagnóstico antes de mexer: a
+página tinha 7.570 px de altura a 390 px de largura e mostrava a mesma
+informação três vezes (tabela por dia com coluna de método repetida, tabela
+por prestação com 4 notas PSU longas, 10 caixas «Adicionar ao meu
+calendário»).
+
+Agora: uma só lista «Quando recebo em <mês>?» ordenada pelo dia, uma linha
+por prestação — nome (link para o guia) · dia · botão 📅 — com a linha
+«Pensões da CGA (função pública)» no seu dia e «Pensões» renomeada para
+«Pensões da Segurança Social»; lotes como «16 ou 28¹» e 🔄 nas prestações
+que passam para a PSU, cada explicação uma vez por baixo; a tabela oficial
+dia a dia recolhida num `<details>`, com o método numa frase. Altura a
+390 px: 4.827 px (−36 %). Âncoras de sempre mantidas; `#pensoes-cga` nova.
+
+CGA: regra oficial lida em cga.pt/pagamentos («dia 19 de cada mês ou no dia
+útil anterior»; 14.º mês em julho, subsídio de Natal em novembro). O
+calendário mês a mês do portal da CGA é desenhado por JavaScript e não se
+lê por acesso automatizado — por isso a data é calculada a partir da regra
+(`scripts/calendario_cga.py`), com os feriados de `scripts/feriados.py`
+(movidos de `preparar_canal.py`, que os reexporta). A CGA entra também no
+«Próximo pagamento», na barra da homepage e em `calendario/pensoes-cga.ics`
+(12 meses à frente). FAQ nova «Sou pensionista da CGA — quando recebo?»
+(visível + JSON-LD), «Como funciona» reescrito, fonte cga.pt no bloco de
+fontes, H1 e meta description com a CGA (`og:title` intocado).
+
 ---
 
 *Última revisão automática: 2026-10-11*

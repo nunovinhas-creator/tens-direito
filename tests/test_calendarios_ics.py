@@ -1,5 +1,5 @@
-"""Calendários subscrevíveis (calendario/*.ics) e a secção «Recebe as datas
-no teu calendário» da página do calendário de pagamentos.
+"""Calendários subscrevíveis (calendario/*.ics) e os botões 📅 da lista
+«Quando recebo?» da página do calendário de pagamentos.
 
 Os ficheiros publicados têm de bater certo com data/calendario_pagamentos.json
 (regenerados com a data de geração que trazem) — se o JSON mudar sem
@@ -28,6 +28,7 @@ from gerar_calendarios_ics import (  # noqa: E402
     feeds,
     ligacoes,
     render_ics,
+    render_ics_cga,
     render_subscrever,
 )
 
@@ -72,7 +73,7 @@ def _eventos_ics(conteudo):
 
 
 def test_um_ficheiro_por_prestacao_e_nada_mais():
-    esperados = {f"{ancora}.ics" for ancora, _n, _s in feeds()}
+    esperados = {f"{ancora}.ics" for ancora, _n, _s in feeds()} | {"pensoes-cga.ics"}
     assert {p.name for p in PASTA.glob("*")} == esperados
 
 
@@ -87,7 +88,16 @@ def test_ficheiro_publicado_bate_com_o_json(ancora, nome, slugs):
     )
 
 
-@pytest.mark.parametrize("ancora", [f[0] for f in feeds()])
+def test_ficheiro_publicado_da_cga_bate_com_a_regra():
+    conteudo = _ler(PASTA / "pensoes-cga.ics")
+    gerado = data_de_geracao(conteudo)
+    assert gerado, "falta X-TD-GERADO-EM"
+    assert conteudo == render_ics_cga(gerado), (
+        "calendario/pensoes-cga.ics desactualizado — corre python scripts/atualizar_calendario.py"
+    )
+
+
+@pytest.mark.parametrize("ancora", [f[0] for f in feeds()] + ["pensoes-cga"])
 def test_ficheiro_publicado_e_ics_valido(ancora):
     conteudo = _ler(PASTA / f"{ancora}.ics")
     assert conteudo.startswith("BEGIN:VCALENDAR\r\n") and conteudo.endswith("END:VCALENDAR\r\n")
@@ -139,7 +149,7 @@ def test_virgulas_escapadas_e_sem_datas_e_valido():
 
 def test_atualizar_e_idempotente_e_nao_reescreve_so_pela_data(tmp_path):
     hoje = dt.date(2026, 10, 1)
-    assert len(atualizar_ics(DADOS_TESTE, hoje, pasta=tmp_path)) == len(feeds())
+    assert len(atualizar_ics(DADOS_TESTE, hoje, pasta=tmp_path)) == len(feeds()) + 1
     assert atualizar_ics(DADOS_TESTE, hoje, pasta=tmp_path) == []
     # Dia seguinte, mesmos eventos: não reescreve (zero commits sem nada novo).
     assert atualizar_ics(DADOS_TESTE, dt.date(2026, 10, 2), pasta=tmp_path) == []
@@ -159,23 +169,27 @@ def test_dry_run_nao_escreve(tmp_path):
 # ── Secção da página ─────────────────────────────────────────────────────
 
 
-def test_seccao_tem_um_botao_por_prestacao():
-    html = render_subscrever()
-    for ancora, _nome, _slugs in feeds():
-        webcal = f"webcal://tensdireito.com/calendario/{ancora}.ics"
-        assert f'id="subscrever-{ancora}"' in html
-        assert (f'href="{webcal}" data-google="https://calendar.google.com/calendar/render?cid={webcal}"'
-                in html)
-    assert html.count("<details") == len(feeds())
-    assert html.count(">Adicionar ao meu calendário</a>") == len(feeds())
-    assert "Copiar" not in html and "<input" not in html
+def test_ics_da_cga_doze_meses_com_extras_de_julho_e_novembro():
+    ev = _eventos_ics(render_ics_cga(dt.date(2026, 10, 20)))
+    datas = [e["DTSTART;VALUE=DATE"] for e in ev]
+    assert datas[0] == "20261119" and datas[1] == "20261218"
+    assert len(datas) == 11  # outubro já passou; 12 meses a contar de outubro
+    resumo = {e["DTSTART;VALUE=DATE"]: e["SUMMARY"] for e in ev}
+    assert resumo["20261119"] == "Pagamento da pensão da CGA (inclui o subsídio de Natal)"
+    assert resumo["20270719"] == "Pagamento da pensão da CGA (inclui o 14.º mês)"
+    assert resumo["20261218"] == "Pagamento da pensão da CGA"
+    assert all(e["UID"].startswith("pensoes-cga-") for e in ev)
 
 
-def test_nota_dos_lotes_so_nas_prestacoes_com_dois_dias():
-    html = render_subscrever()
-    blocos = dict(re.findall(r'id="subscrever-([a-z-]+)">(.*?)</details>', html, re.S))
-    com_lote = {a for a, b in blocos.items() if "cal-subscrever-lote" in b}
-    assert com_lote == {"subsidio-desemprego", "subsidio-doenca", "parentalidade-social"}
+def test_lista_tem_um_botao_por_calendario_publicado():
+    """Cada .ics publicado tem um 📅 na lista do mês corrente, e só um."""
+    corpo = re.search(r"<!-- CAL:CORPO:INICIO -->(.*?)<!-- CAL:CORPO:FIM -->",
+                      _ler(PAGINA), re.S).group(1)
+    corpo = re.sub(r"<template.*?</template>", "", corpo, flags=re.S)
+    for ics in PASTA.glob("*.ics"):
+        webcal, google = ligacoes(ics.stem)
+        assert corpo.count(f'href="{webcal}" data-google="{google}"') == 1, ics.name
+    assert corpo.count('class="cal-sub"') == len(list(PASTA.glob("*.ics")))
 
 
 def test_pagina_publicada_tem_a_seccao_gerada():
@@ -236,10 +250,9 @@ def _botao_e_evento(browser, servidor, user_agent):
     page.goto(f"{servidor}/calendario-pagamentos-seguranca-social.html")
     # Não sair da página ao carregar no botão (webcal:// e o Google).
     page.evaluate("document.addEventListener('click', e => { if (e.target.closest('a')) e.preventDefault(); })")
-    page.evaluate("document.getElementById('subscrever-rsi').open = true")
-    botao = page.locator("#subscrever-rsi a.cal-subscrever-btn")
-    href, alvo = botao.get_attribute("href"), botao.get_attribute("target")
+    botao = page.locator("#rsi a.cal-sub")
     botao.click()
+    href, alvo = botao.get_attribute("href"), botao.get_attribute("target")
     eventos_ga = page.evaluate(
         "(window.dataLayer || []).map(a => Array.from(a)).filter(e => e[1] === 'calendario_subscrito')")
     contexto.close()

@@ -171,3 +171,26 @@ Segurança Social") — `tests/test_og_image.py` exige que o manifest das
 imagens og bata com o `og:title`; um og:title mensal obrigaria a
 regenerar a imagem og (Chromium) todos os meses no workflow. Com
 og:title estável, a atualização mensal toca só em texto.
+
+## Pensões da CGA (2026-10-12)
+
+Fonte primária: `https://www.cga.pt/pagamentos` (lida a 12/10/2026, versão
+da página RPRD-07072026). As pensões de aposentação, sobrevivência, preço
+de sangue, reforma, DFA, invalidez, forças de segurança, subvenções
+vitalícias e pensões de alimentos são pagas «no dia 19 de cada mês ou no
+dia útil anterior»; o 14.º mês em julho e o subsídio de Natal em novembro.
+Subsídio por morte e reembolso de despesas de funeral (concessão única): à
+segunda-feira ou no dia útil seguinte — não entra no calendário.
+
+O calendário mês a mês da página da CGA é desenhado por JavaScript e não é
+legível por acesso automatizado — por isso a CGA é **calculada** a partir
+da regra publicada na mesma página (`scripts/calendario_cga.py`, com os
+feriados nacionais de `scripts/feriados.py`), nunca raspada nem guardada no
+JSON da Segurança Social. `tests/test_calendario_cga.py` tranca as 12 datas
+de 2026 dadas pela regra (19, 19, 19, 17, 19, 19, 17, 19, 18, 19, 19, 18).
+**Por confirmar**: comparar estas 12 datas com o calendário mês a mês do
+portal da CGA, aberto num navegador.
+
+**Revisão anual (janeiro)**: confirmar no portal da CGA (num navegador) que
+as datas do novo ano seguem a regra. Se algum mês fugir à regra, a regra
+deixa de chegar e é preciso um mecanismo de excepções.
