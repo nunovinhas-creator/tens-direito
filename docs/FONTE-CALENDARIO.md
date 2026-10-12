@@ -183,12 +183,13 @@ Subsídio por morte e reembolso de despesas de funeral (concessão única): à
 segunda-feira ou no dia útil seguinte — não entra no calendário.
 
 O calendário mês a mês da página da CGA é desenhado por JavaScript e não é
-legível por acesso automatizado. Confirmação das datas: as 12 datas de 2026
-reproduzidas por economiafinancas.com (09/01/2026, cita o calendário da
-CGA) — 19, 19, 19, 17, 19, 19, 17, 19, 18, 19, 19, 18 — coincidem todas com
-a regra. Por isso a CGA é **calculada** (`scripts/calendario_cga.py`, com os
+legível por acesso automatizado — por isso a CGA é **calculada** a partir
+da regra publicada na mesma página (`scripts/calendario_cga.py`, com os
 feriados nacionais de `scripts/feriados.py`), nunca raspada nem guardada no
-JSON da Segurança Social. `tests/test_calendario_cga.py` tranca as 12 datas.
+JSON da Segurança Social. `tests/test_calendario_cga.py` tranca as 12 datas
+de 2026 dadas pela regra (19, 19, 19, 17, 19, 19, 17, 19, 18, 19, 19, 18).
+**Por confirmar**: comparar estas 12 datas com o calendário mês a mês do
+portal da CGA, aberto num navegador.
 
 **Revisão anual (janeiro)**: confirmar no portal da CGA (num navegador) que
 as datas do novo ano seguem a regra. Se algum mês fugir à regra, a regra

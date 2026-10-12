@@ -11,16 +11,17 @@ from calendario_cga import dia_pagamento, proximas_datas  # noqa: E402
 
 D = dt.date
 
-# Calendário de 2026 publicado pela CGA (cga.pt/pagamentos), reproduzido em
-# economiafinancas.com a 09/01/2026. A regra tem de dar exactamente isto.
-PUBLICADO_2026 = {
+# Datas de 2026 conferidas à mão contra o calendário civil e os feriados
+# nacionais: dia 19, ou o dia útil anterior quando calha a fim de semana
+# (abril e julho: domingo; setembro e dezembro: sábado).
+DATAS_2026 = {
     1: 19, 2: 19, 3: 19, 4: 17, 5: 19, 6: 19,
     7: 17, 8: 19, 9: 18, 10: 19, 11: 19, 12: 18,
 }
 
 
-@pytest.mark.parametrize("mes,dia", sorted(PUBLICADO_2026.items()))
-def test_regra_bate_com_calendario_publicado_2026(mes, dia):
+@pytest.mark.parametrize("mes,dia", sorted(DATAS_2026.items()))
+def test_datas_de_2026(mes, dia):
     assert dia_pagamento(2026, mes) == D(2026, mes, dia)
 
 

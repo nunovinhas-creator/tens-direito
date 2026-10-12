@@ -7358,8 +7358,7 @@ dia a dia recolhida num `<details>`, com o método numa frase. Altura a
 CGA: regra oficial lida em cga.pt/pagamentos («dia 19 de cada mês ou no dia
 útil anterior»; 14.º mês em julho, subsídio de Natal em novembro). O
 calendário mês a mês do portal da CGA é desenhado por JavaScript e não se
-lê por acesso automatizado; as 12 datas de 2026 (via economiafinancas.com)
-coincidem todas com a regra — por isso a data é calculada
+lê por acesso automatizado — por isso a data é calculada a partir da regra
 (`scripts/calendario_cga.py`), com os feriados de `scripts/feriados.py`
 (movidos de `preparar_canal.py`, que os reexporta). A CGA entra também no
 «Próximo pagamento», na barra da homepage e em `calendario/pensoes-cga.ics`

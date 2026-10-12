@@ -16,10 +16,10 @@ guardada: dia 19, recuado para o último dia útil (segunda a sexta,
 excepto feriados nacionais obrigatórios — scripts/feriados.py) quando
 calha a fim de semana ou feriado.
 
-A regra está trancada contra as 12 datas que a CGA publicou para 2026
-(tests/test_calendario_cga.py). Se a CGA alguma vez se afastar da regra
-num mês concreto, esse teste não o apanha — a revisão anual do calendário
-publicado pela CGA (docs/FONTE-CALENDARIO.md) é o que o apanha.
+tests/test_calendario_cga.py tranca as datas de 2026 dadas pela regra. Se a
+CGA alguma vez se afastar da regra num mês concreto, esse teste não o apanha
+— a revisão anual do calendário publicado pela CGA (docs/FONTE-CALENDARIO.md)
+é o que o apanha.
 """
 from __future__ import annotations
 
