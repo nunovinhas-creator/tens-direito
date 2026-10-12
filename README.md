@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **11 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **12 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -23,7 +23,7 @@ Actualizado automaticamente a partir do repositório em **11 de outubro de 2026*
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: até 190,98 €, escalões e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
-| [`alterar-morada.html`](alterar-morada.html) | Como alterar a morada no Cartão de Cidadão |
+| [`alterar-morada.html`](alterar-morada.html) | Alterar morada no Cartão de Cidadão: online, grátis e prazos |
 | [`amim-beneficios-fiscais.html`](amim-beneficios-fiscais.html) | Benefícios Fiscais do AMIM 2026: IRS, ISV e IUC | Tens Direito |
 | [`amim.html`](amim.html) | Atestado multiusos (AMIM) 2026: novas regras e como pedir |
 | [`apoio-extraordinario-renda.html`](apoio-extraordinario-renda.html) | Apoio Extraordinário à Renda 2026: o que aconteceu e alternativas |
@@ -39,10 +39,10 @@ Actualizado automaticamente a partir do repositório em **11 de outubro de 2026*
 | [`carreiras-muito-longas.html`](carreiras-muito-longas.html) | Carreiras Muito Longas: reforma aos 60 anos sem cortes |
 | [`cartao-europeu-estacionamento.html`](cartao-europeu-estacionamento.html) | Cartão Europeu de Estacionamento 2026: Quem Tem Direito | Tens Direito |
 | [`certidao-situacao-tributaria.html`](certidao-situacao-tributaria.html) | Certidão de Situação Tributária 2026: a certidão de não dívida às Finanças |
-| [`chave-movel-digital.html`](chave-movel-digital.html) | Como ativar a Chave Móvel Digital |
+| [`chave-movel-digital.html`](chave-movel-digital.html) | Ativar a Chave Móvel Digital: 5 formas, com ou sem leitor |
 | [`comecar-aqui.html`](comecar-aqui.html) | Começa aqui — Tens Direito |
 | [`como-e-calculada.html`](como-e-calculada.html) | Como é Calculada a Pensão: as três peças da fórmula |
-| [`como-pedir-niss.html`](como-pedir-niss.html) | Como pedir o NISS 2026: online, grátis e sem Cartão de Cidadão |
+| [`como-pedir-niss.html`](como-pedir-niss.html) | Pedir NISS online em 2026: formulário, documentos e levantamento |
 | [`como-pedir-psu.html`](como-pedir-psu.html) | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`creche-gratuita.html`](creche-gratuita.html) | Creche gratuita 2026: quem tem direito e o que está incluído |
@@ -292,11 +292,14 @@ tens-direito/
 │   ├── atualizar_claude_md.py
 │   ├── auditar_marcadores_historicos.py
 │   ├── auto_update_engine.py
+│   ├── calendario_cga.py
 │   ├── classificador_resposta.py
 │   ├── classificar_datas.py
 │   ├── decisao_datas.py
 │   ├── extrair_valores.py
+│   ├── feriados.py
 │   ├── gerar_base_dados.py
+│   ├── gerar_calendarios_ics.py
 │   ├── gerar_condicoes_json.py
 │   ├── gerar_noticias.py
 │   ├── gerar_og_images.py
@@ -446,6 +449,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 11 de outubro de 2026 às 13:17 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 12 de outubro de 2026 às 15:48 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
