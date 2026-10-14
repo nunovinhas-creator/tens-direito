@@ -4710,6 +4710,15 @@ uma Issue é criada ou um valor é alterado:
    com "desde" entre o verbo e a data; as supressões de `_esta_suprimido`
    aplicam-se. Medido antes de ligar: 9 ocorrências reais, todas a expirar
    em janeiro de 2027, zero falsos positivos.
+   **Carimbos de verificação** (`REGEX_CARIMBO`, issue #332): a data de um
+   carimbo («Verificado a 2 de setembro de 2026», «Verificado a 2 setembro
+   2026», «Verificado 24/06/2026» das notas por secção) fica fora da lógica
+   de ano civil e dos marcadores de supressão. Tem regra própria:
+   `carimbo_antigo` dispara, em qualquer mês, quando algum carimbo da página
+   tem mais de `LIMITE_MESES_CARIMBO` (12) meses face ao mês de execução.
+   O auditor de marcadores ignora as mesmas datas. Carimbo novo: escrever
+   «Verificado a D de mês de AAAA» (com «de»). Testes:
+   `tests/test_carimbo_antigo.py`.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
