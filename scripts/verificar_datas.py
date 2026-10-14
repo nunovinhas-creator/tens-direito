@@ -32,6 +32,14 @@ regrediria as dezenas de citações permanentes dessa página só por lhe
 faltar a referência; ver o carimbo acrescentado a fontes.html no mesmo
 commit desta correcção.
 
+Carimbos de verificação (issue #332): a data de um carimbo
+("Verificado a 2 de setembro de 2026", "Verificado 24/06/2026") diz quando
+a página foi conferida, não descreve um facto com validade no ano civil.
+Por isso fica fora da lógica de ano civil de `_pagina_tem_alerta` (e dos
+marcadores de supressão) e tem regra própria: alerta `carimbo_antigo`
+quando um carimbo tem mais de LIMITE_MESES_CARIMBO meses face ao mês de
+execução, em qualquer mês do ano.
+
 Âmbito deliberado, sem data prevista de expansão: só os 3 tipos com uma
 data própria e sem ambiguidade — data_mes_ano, data_numerica,
 prazo_outono. `ano_letivo` (par de anos, sem dia) e `valor_ias` (ano
@@ -65,6 +73,20 @@ REGEX_MES_ANO = (
     r"\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
     r"setembro|outubro|novembro|dezembro)\s+de\s+(\d{4})\b"
 )
+
+# Carimbo de verificação: "Verificado a 2 de setembro de 2026", "Verificado
+# a 2 setembro 2026", "Verificado a 02/09/2026" e as notas por secção
+# "Verificado 24/06/2026" (sem "a"). Os grupos captam só a data.
+_MESES_RE = (
+    r"janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
+    r"setembro|outubro|novembro|dezembro"
+)
+REGEX_CARIMBO = (
+    r"\bverificad[oa]\s+(?:a\s+)?"
+    r"(?:(\d{1,2})/(\d{1,2})/(\d{4})"
+    r"|(\d{1,2})\s+(?:de\s+)?(" + _MESES_RE + r")\s+(?:de\s+)?(\d{4}))"
+)
+LIMITE_MESES_CARIMBO = 12  # carimbo com mais do que isto, face ao mês de execução → alerta
 
 # Referência legal/histórica permanente — nunca "expira".
 # "\bdesde\s+(?:\d|<mês>\s+de\s+\d)" exige um número logo a seguir, directamente
@@ -447,6 +469,42 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verif
     return False
 
 
+def _carimbos(conteudo):
+    """(início, fim, data) da parte de data de cada carimbo de verificação."""
+    res = []
+    for m in re.finditer(REGEX_CARIMBO, conteudo, re.IGNORECASE):
+        try:
+            if m.group(3):
+                d = date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+                ini = m.start(1)
+            else:
+                d = date(int(m.group(6)), MESES[m.group(5).lower()], int(m.group(4)))
+                ini = m.start(4)
+        except ValueError:
+            continue
+        res.append((ini, m.end(), d))
+    return res
+
+
+def _em_carimbo(carimbos, inicio, fim):
+    return any(inicio < c_fim and c_ini < fim for c_ini, c_fim, _ in carimbos)
+
+
+def _carimbo_antigo(conteudo, ano, mes):
+    """Algum carimbo com mais de LIMITE_MESES_CARIMBO meses face a ano/mes?"""
+    for _, _, d in _carimbos(conteudo):
+        if (ano * 12 + mes) - (d.year * 12 + d.month) > LIMITE_MESES_CARIMBO:
+            return True
+    return False
+
+
+PADRAO_CARIMBO = {
+    "regex": REGEX_CARIMBO,
+    "tipo": "carimbo_antigo",
+    "descricao": f"Carimbo de verificação com mais de {LIMITE_MESES_CARIMBO} meses",
+}
+
+
 def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
     tipo = padrao["tipo"]
 
@@ -489,10 +547,13 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
             return True
         return False
 
+    carimbos = _carimbos(conteudo)
     for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
         ano_match = int(m.group(padrao["ano_grupo"]))
         if ano_match >= ano:
             continue  # data actual ou futura
+        if _em_carimbo(carimbos, m.start(), m.end()):
+            continue  # data de carimbo — regra própria (_carimbo_antigo)
         if _esta_suprimido(
             conteudo, m.start(), m.end(), ano, mes,
             data_ocorrencia=_data_da_ocorrencia(padrao, m),
@@ -517,9 +578,11 @@ def _contexto_representativo(conteudo, padrao):
 def detectar_alertas(conteudo, nome_pagina, ano, mes):
     """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado."""
     verificado_em = verificado_em_do_texto(conteudo)
-    for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO]:
+    for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]:
         if padrao is PADRAO_COMPROMISSO_FUTURO:
             tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em)
+        elif padrao is PADRAO_CARIMBO:
+            tem_alerta = _carimbo_antigo(conteudo, ano, mes)
         elif mes not in REVER_EM[padrao["tipo"]]:
             continue
         else:

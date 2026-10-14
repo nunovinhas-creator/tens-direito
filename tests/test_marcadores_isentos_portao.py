@@ -131,7 +131,12 @@ def test_paginas_186_todas_as_ocorrencias_de_31_12_2026_suprimidas_em_2027(pagin
 
 @pytest.mark.parametrize("mes", sorted(set(REVER_EM["data_numerica"]) | set(REVER_EM["data_mes_ano"])))
 def test_psu_vs_abono_familia_sem_alerta_em_2027(mes):
-    assert detectar_alertas(_ler("psu-vs-abono-familia.html"), "psu-vs-abono-familia.html", 2027, mes) is None
+    # Só datas: o carimbo tem regra própria (carimbo_antigo, issue #332) e
+    # passa os 12 meses durante 2027. detectar_alertas avalia os tipos de
+    # data antes do carimbo, por isso "carimbo_antigo" garante que nenhuma
+    # data da página deu alerta.
+    alerta = detectar_alertas(_ler("psu-vs-abono-familia.html"), "psu-vs-abono-familia.html", 2027, mes)
+    assert alerta is None or alerta["tipo"] == "carimbo_antigo"
 
 
 @pytest.mark.parametrize("pagina,contexto", [
