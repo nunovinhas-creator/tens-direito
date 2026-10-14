@@ -10,6 +10,15 @@
       "cluster_id": "trabalho-rendimento"
     },
     {
+      "data_iso": "2026-10-09",
+      "titulo": "Salário mínimo sobe para 970 euros em 2027",
+      "fonte_nome": "DECO PROteste",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNazBsTjNoRUQ2T0wzd2YwdHhNUlUzb3NxVE5GanlmN2VmRWdBaWZEcWdzeW1wV2ZwTHpsSkkzeXktSFpNRkhwWnFQc1NNUE04QUtSdGRnc1FWWGZBbGVURkVnWlYxYUZaaEI0a2ZmcmgwckM1ckN6UjRfMWpWQVZXOHYtOEhiLWl4UlVRc3hSbWU5dw?oc=5",
+      "resumo": "Salário mínimo sobe para 970 euros em 2027 DECO PROteste",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-10-08",
       "titulo": "Prestação Social Única: a despesa prevista sobe 10% em relação a 2026",
       "fonte_nome": "Público",
@@ -26,6 +35,15 @@
       "resumo": "Impostos, habitação e propinas. Como vai o Orçamento para 2027 mexer com o bolso das famílias Observador",
       "categoria": "habitacao",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-10-08",
+      "titulo": "Complemento solidário para idosos vai aumentar 50 euros em 2027",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQWlRpN1gzZHZTMEJ2MzFkNDRQVTFHaURfVElUSlBJZ0ptYXlCWHVRd3JVU25rR1d2TndlUThNbXFRelBrT3pfUEpHQ1NVNVNsZkhyQmZRM2Y3TmREQ0ZjOVY0MlJaa0xKUVNvbXkyeTI0OXBQalVBS3lXVWI2MGFsRnRmSkpUamtIdXhQTFBUWVBlcXdJQzNzTHBJMA?oc=5",
+      "resumo": "Complemento solidário para idosos vai aumentar 50 euros em 2027 ECO",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
     },
     {
       "data_iso": "2026-10-08",
