@@ -32,6 +32,7 @@ def _tipo(html, ano, mes):
     "Verificado a 2 de setembro de 2026",
     "Verificado a 2 setembro 2026",   # sem "de"
     "Verificado 02/09/2026",          # nota por secção, sem "a"
+    "Fontes verificadas — 2 de setembro de 2026",  # cabeçalho do bloco de fontes
 ])
 def test_carimbo_de_setembro_2026_so_alerta_passados_12_meses(carimbo):
     html = _pagina(carimbo)

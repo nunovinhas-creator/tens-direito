@@ -7397,7 +7397,11 @@ datas de 2026 nunca entram no baseline. Auditado como se fosse 2027, ficam
 
 ### Última revisão: 2026-10-14 — Carimbos «Verificado a» com regra própria (issue #332, PR 1)
 
-A data de um carimbo deixou de ser tratada como data com validade no ano
+Contam como carimbo «Verificado a …» (com ou sem «de»), as notas por
+secção «Verificado DD/MM/AAAA» e o cabeçalho «Fontes verificadas — …» do
+bloco de fontes (40 ocorrências, achado ao medir o PR 2). Ficam de fora,
+por decidir, 7 ocorrências noutras formas («Última atualização:»,
+«confirmado a»). A data de um carimbo deixou de ser tratada como data com validade no ano
 civil. Antes, cada carimbo de 2026 dava alerta em janeiro de 2027, a menos
 que um marcador vizinho (muitas vezes o diploma citado na mesma linha) o
 suprimisse por acaso. Agora `verificar_datas.py` exclui as datas de
@@ -7413,8 +7417,8 @@ carimbo).
 data). O de `subsidio-parental.html` é tratado no PR #330, que já move essa
 linha.
 
-Medido, janeiro de 2027: 89 de 108 páginas com alerta antes, 42 depois.
-As 47 que saem só alertavam pela data do carimbo; nenhuma página nova.
+Medido, janeiro de 2027: 89 de 108 páginas com alerta antes, 41 depois.
+As 48 que saem só alertavam pela data do carimbo; nenhuma página nova.
 `carimbo_antigo` em 2027: 0 até junho, 12 em julho, 59 em agosto, 99 em
 outubro (com o conteúdo de hoje).
 
