@@ -7372,25 +7372,28 @@ fontes, H1 e meta description com a CGA (`og:title` intocado).
 `subsidio-parental.html`: o aviso do Projecto de Lei n.º 176/XVII passou a
 dizer o estado actual. O texto conjunto PSD/PS foi aprovado no grupo de
 trabalho a 13/10/2026 e ainda não está em vigor; o mesmo vale para a jornada
-contínua. Secção nova «O que pode mudar», com a tabela hoje vs. texto
-aprovado e a linha de vigilância «Voltamos a confirmar até 15 de novembro de
-2026». Os 14 dias facultativos do pai ficaram de fora: só uma fonte os
-refere. Carimbo e `dateModified` a 14/10/2026; `<lastmod>` do sitemap
-sincronizado.
+contínua. O aviso passou para antes da linha do carimbo. Secção nova «O que
+pode mudar», com a tabela hoje vs. texto aprovado e a frase «A próxima
+confirmação será até 15 de novembro de 2026». Os 14 dias facultativos do pai
+ficaram de fora: só uma fonte os refere. Carimbo e `dateModified` a
+14/10/2026; `<lastmod>` do sitemap sincronizado.
 
-`tests/test_vigilancia_licenca_parental.py` falha se «15 de novembro de 2026»
-deixar de ser detectada, deixar de ser pendente (`\bconfirmar\b`) ou passar
-a ser suprimida por outro marcador. Foi provado a falhar nos dois casos.
-Limite conhecido: com esta redacção não há alerta automático em dezembro de
-2026, porque as datas de 2026 só alertam em 2027. A vigilância até lá é a
+Vigilância: «será» activa a verificação de compromissos no futuro de
+`verificar_datas.py`, que corre todos os meses. Por isso sai alerta em
+dezembro de 2026. Com «Voltamos a confirmar até…» não saía nenhum, porque as
+datas de 2026 só alertam em 2027. `tests/test_vigilancia_licenca_parental.py`
+testa o efeito: sem alerta a 14/10/2026, alerta por esta frase a 01/12/2026.
+Confirmado a falhar com a redacção antiga. A checklist do texto final está na
 issue #331.
 
-Achado: «13 de outubro de 2026» (tal como antes «23 de janeiro» e «26 de
-junho de 2026») é suprimida por proximidade ao «Decreto-Lei n.º 91/2009» da
-linha do carimbo. O auditor de marcadores não o vê porque `ANO_REFERENCIA =
-2026` é fixo e as datas de 2026 nunca entram no baseline. São 652
-supressões fora do baseline, em 79 páginas, quando auditadas para 2027.
-Fica registado na issue #332, sem correcção neste PR.
+Achado: no carimbo ao lado do aviso, o «Decreto-Lei n.º 91/2009» suprimia
+por proximidade as datas do aviso. Aconteceu a «13 de outubro de 2026» e,
+antes dela, a «23 de janeiro» e «26 de junho de 2026». Com o aviso antes do
+carimbo, «13 de outubro de 2026» deixou de ser suprimida e dá alerta em 2027,
+tal como a etiqueta «13/10/2026». Não foi acrescentado nenhum marcador. O
+auditor de marcadores não viu o caso: `ANO_REFERENCIA = 2026` é fixo e as
+datas de 2026 nunca entram no baseline. Auditado como se fosse 2027, ficam
+652 supressões fora do baseline (issue #332).
 
 ---
 

@@ -1,12 +1,9 @@
 """Vigilância da proposta de alteração à licença parental (PR #330).
 
 A secção "O que pode mudar" de subsidio-parental.html promete voltar a
-confirmar o estado da proposta até 15 de novembro de 2026. Este teste
-falha se essa data deixar de ser detectada por verificar_datas.py, se
-deixar de ser tratada como pendente (MARCADORES_PENDENTE), ou se passar
-a ser suprimida por outro marcador — em particular um marcador histórico
-apanhado por proximidade, como acontece com "13 de outubro de 2026" no
-aviso do topo (que fica perto do "Decreto-Lei n.º 91/2009" do carimbo).
+confirmar o estado da proposta até 15 de novembro de 2026. Testa o efeito,
+não a redacção: com a data simulada a 01/12/2026, verificar_datas.py tem de
+dar alerta por causa dessa frase; a 14/10/2026 (dia da verificação), não.
 """
 import re
 import sys
@@ -21,36 +18,47 @@ PAGINA = RAIZ_REPO / "subsidio-parental.html"
 DATA = "15 de novembro de 2026"
 
 
-def _ocorrencia():
-    html = PAGINA.read_text(encoding="utf-8")
-    ocorrencias = [m for m in re.finditer(re.escape(DATA), html)]
+def _html():
+    return PAGINA.read_text(encoding="utf-8")
+
+
+def _frase_da_data(html):
+    """A frase (entre fins de frase/tags) que contém DATA."""
+    ocorrencias = [m.start() for m in re.finditer(re.escape(DATA), html)]
     assert len(ocorrencias) == 1, f"esperada 1 ocorrência de {DATA!r}, encontradas {len(ocorrencias)}"
-    return html, ocorrencias[0]
+    i = ocorrencias[0]
+    inicio = max(html.rfind(".", 0, i), html.rfind(">", 0, i)) + 1
+    fim = html.index(".", i + len(DATA)) + 1
+    return inicio, fim
 
 
-def test_data_de_revisao_e_detectada_pelos_padroes():
-    html, alvo = _ocorrencia()
-    tipos = {
-        p["tipo"]
-        for p in v.PADROES
-        if p["ano_grupo"] is not None
-        for m in re.finditer(p["regex"], html, re.IGNORECASE)
-        if m.start() <= alvo.start() < m.end() or alvo.start() <= m.start() < alvo.end()
-    }
-    assert {"data_mes_ano", "prazo_outono"} <= tipos
+def _frase_da_alerta(html, ano, mes):
+    """Mesma decisão de _compromisso_futuro_expirado, restrita à frase da DATA."""
+    inicio, fim = _frase_da_data(html)
+    verificado_em = v.verificado_em_do_texto(html)
+    for m in re.finditer(v.REGEX_COMPROMISSO_FUTURO, html, re.IGNORECASE):
+        if not (inicio <= m.start() < fim):
+            continue
+        d = v._data_do_compromisso(m)
+        if d is None or (d.year, d.month) >= (ano, mes):
+            continue
+        if v._esta_suprimido(html, m.start(), m.end(), ano, mes,
+                             data_ocorrencia=d, verificado_em=verificado_em):
+            continue
+        return True
+    return False
 
 
-def test_data_de_revisao_so_tem_marcador_pendente():
-    html, alvo = _ocorrencia()
-    janela = v._janela_contexto(html, alvo.start(), alvo.end())
-    assert v._tem_algum(v.MARCADORES_PENDENTE, janela)
-    for nome in ("MARCADORES_HISTORICOS", "MARCADORES_ISENTOS_DO_PORTAO", "MARCADORES_EXEMPLO"):
-        apanhados = [p for p in getattr(v, nome) if re.search(p, janela, re.IGNORECASE)]
-        assert apanhados == [], f"{DATA!r} suprimida por {nome}: {apanhados}"
+def test_sem_alerta_no_dia_da_verificacao():
+    html = _html()
+    assert not _frase_da_alerta(html, 2026, 10)
+    assert v.detectar_alertas(html, PAGINA.name, 2026, 10) is None
 
 
-def test_data_de_revisao_pendente_ate_novembro_e_exposta_depois():
-    html, alvo = _ocorrencia()
-    assert v._esta_suprimido(html, alvo.start(), alvo.end(), 2026, 11) is True
-    assert v._esta_suprimido(html, alvo.start(), alvo.end(), 2026, 12) is False
-    assert v._esta_suprimido(html, alvo.start(), alvo.end(), 2027, 1) is False
+def test_alerta_a_1_de_dezembro_de_2026():
+    html = _html()
+    assert _frase_da_alerta(html, 2026, 12), (
+        f"a frase com {DATA!r} já não dá alerta em dezembro de 2026"
+    )
+    alerta = v.detectar_alertas(html, PAGINA.name, 2026, 12)
+    assert alerta is not None and alerta["tipo"] == "compromisso_futuro"
