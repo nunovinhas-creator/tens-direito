@@ -7428,6 +7428,38 @@ carimbo e a exigir o tipo `data_mes_ano`, para continuarem a testar os
 marcadores. `test_psu_vs_abono_familia_sem_alerta_em_2027` aceita
 `carimbo_antigo`, porque o teste é sobre as datas de 31/12/2026.
 
+
+### Última revisão: 2026-10-14 — Marcadores de diploma restringidos à citação (issue #332, PR 2)
+
+`portaria`, `decreto-lei`, `decreto\s+lei` e `lei\s+n\.?º` só suprimem uma
+data que faça parte da própria citação («<diploma> n.º X/AAAA, de D de mês
+de AAAA»), e só quando o marcador corresponde ao diploma citado («lei n.º»
+nunca suprime a data de uma Portaria). Antes suprimiam qualquer data a
+menos de 220 caracteres. A restrição vale só para datas: `ano_letivo`,
+`valor_ias` e o compromisso no futuro ficam como estavam. `despacho` e
+`\bdl\s*n` também.
+
+Baseline do auditor: 406 → 269 entradas, 137 removidas, nenhuma nova. Ficam
+as 4 entradas da Portaria n.º 305/2022 (creche), as únicas legítimas.
+
+Janeiro de 2027: 41 páginas com alerta só com o PR 1, 46 com os dois PRs
+(89 antes de ambos). Lista por página na issue #332, para a revisão de
+janeiro.
+
+Por decidir, testes vermelhos de propósito no PR: `fontes.html` e
+`creche-gratuita.html` (guardas `test_fontes_real_nao_gera_alerta_issue_170`
+e `test_creche_gratuita_real_nao_gera_alerta`) têm datas históricas fixas
+que só eram suprimidas por estarem perto de uma Portaria. Exemplos: «nascido
+<strong>a partir de 1 de setembro de 2021» (a tag parte o marcador
+`nasc\w*\s+a\s+partir\s+de`) e «só a data de 1 de setembro de 2021 se
+manteve». Precisam de marcador novo ou de ajuste ao texto.
+
+Testes do auditor ajustados sem mudar o que testam: atribuição múltipla
+com a data da própria citação; ordinal e FAQ filtrados pelo outro marcador
+da frase («em vigor desde»); casos #260/#264 com o cartão real do
+Decreto-Lei n.º 286/93, porque o da Portaria n.º 158/2024/1 ficou sem
+supressões.
+
 ---
 
 *Última revisão automática: 2026-10-17*

@@ -93,6 +93,7 @@ from verificar_datas import (  # noqa: E402
     _data_da_ocorrencia,
     _em_carimbo,
     _janela_contexto,
+    marcador_historico_aplica,
 )
 
 BASELINE_PATH = RAIZ / "tests" / "marcadores_historicos_baseline.json"
@@ -301,7 +302,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                 continue
             frase = None
             for marcador in candidatos:
-                if re.search(marcador, janela, re.IGNORECASE):
+                if marcador_historico_aplica(marcador, janela, conteudo, m.start(), padrao["tipo"]):
                     if frase is None:
                         frase = frase_envolvente(conteudo, m.start(), m.end())
                     registos.append({
