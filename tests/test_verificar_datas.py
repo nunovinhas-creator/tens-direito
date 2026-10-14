@@ -151,11 +151,12 @@ def test_desde_que_condicional_nao_mascara_data_antiga():
     # data de verificação genuinamente antiga a seguir.
     html = _html(
         "Tens direito ao subsídio desde que cumpras as condições de "
-        "recursos. Verificado a 12 de março de 2024."
+        "recursos. Última revisão em 12 de março de 2024."
     )
     assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
     alerta = detectar_alertas(html, "pagina.html", ANO, MES)
     assert alerta is not None
+    assert alerta["tipo"] == "data_mes_ano"  # fora de carimbo (issue #332): passa pelos marcadores
 
 
 def test_rendimento_generico_nao_mascara_valor_desatualizado():
@@ -167,11 +168,12 @@ def test_rendimento_generico_nao_mascara_valor_desatualizado():
     html = _html(
         "O valor de referência para rendimentos é de 8.010,00 €. "
         "Consulta o rendimento do agregado familiar. "
-        "Verificado a 10 de março de 2025."
+        "Última revisão em 10 de março de 2025."
     )
     assert _tem_correspondencia_de_ano_antigo(html, ANO), "teste vácuo — nada a suprimir"
     alerta = detectar_alertas(html, "pagina.html", ANO, MES)
     assert alerta is not None
+    assert alerta["tipo"] == "data_mes_ano"  # fora de carimbo (issue #332): passa pelos marcadores
 
 
 # ── Regressões da verificação pós-merge E-E-A-T (Issues #51/#52, 2026-07-03) ──
@@ -296,10 +298,12 @@ def test_pagina_escolar_realmente_desatualizada_gera_alerta():
 
 
 def test_data_verificacao_antiga_sem_contexto_gera_alerta():
+    # Desde a issue #332 a data de um carimbo tem regra própria
+    # (carimbo_antigo, mais de 12 meses), fora da lógica de ano civil.
     html = _html("Verificado a 12 de março de 2024. Valor actual: 500 €.")
     alerta = detectar_alertas(html, "pagina.html", ANO, MES)
     assert alerta is not None
-    assert alerta["tipo"] == "data_mes_ano"
+    assert alerta["tipo"] == "carimbo_antigo"
 
 
 def test_aguarda_despacho_com_prazo_ja_passado_gera_alerta():
@@ -307,21 +311,24 @@ def test_aguarda_despacho_com_prazo_ja_passado_gera_alerta():
     # avaliada em setembro — o prazo anunciado já passou, deixa de estar
     # coberto pelo aviso e volta a ser sinalizado.
     html = _html(
-        "Verificado a 10 de maio de 2025. O valor aguarda confirmação, "
+        "Última revisão em 10 de maio de 2025. O valor aguarda confirmação, "
         "prevista para agosto de 2026."
     )
+    assert detectar_alertas(html, "pagina.html", 2026, 8) is None  # prazo ainda não passou
     alerta = detectar_alertas(html, "pagina.html", 2026, 9)
     assert alerta is not None
+    assert alerta["tipo"] == "data_mes_ano"  # fora de carimbo (issue #332)
 
 
 def test_valor_monetario_antigo_sem_ano_letivo_gera_alerta():
     # Valor monetário associado a uma data antiga, numa página sem qualquer
     # relação com ano lectivo, sem referência legal nem aviso de pendência.
     html = _html(
-        "O subsídio mensal é de 400,00 €. Verificado a 15 de fevereiro de 2024."
+        "O subsídio mensal é de 400,00 €. Valor de 15 de fevereiro de 2024."
     )
     alerta = detectar_alertas(html, "pagina.html", ANO, MES)
     assert alerta is not None
+    assert alerta["tipo"] == "data_mes_ano"  # fora de carimbo (issue #332)
 
 
 def test_par_explicado_propaga_para_ocorrencia_repetida_distante():
@@ -366,8 +373,10 @@ def test_data_esperada_ignora_mencao_anterior_a_maior_ja_encontrada():
     # mais próxima (agosto) — a segunda menção não deve substituir a maior
     # já encontrada. Avaliado em agosto: setembro ainda não passou, continua
     # suprimido.
+    # Data antiga fora de carimbo (desde a issue #332 um carimbo tem regra
+    # própria e não passa pela supressão de pendência).
     html = _html(
-        "Verificado a 10 de maio de 2025. Confirmação final aguarda-se "
+        "Última revisão em 10 de maio de 2025. Confirmação final aguarda-se "
         "para setembro de 2026, com uma previsão inicial em agosto de 2026."
     )
     assert detectar_alertas(html, "pagina.html", 2026, 8) is None

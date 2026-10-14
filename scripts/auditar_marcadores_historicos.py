@@ -63,6 +63,10 @@ passar, e nunca teriam sido revistas linha a linha antes de entrarem em vigor.
 Nesses casos só os marcadores isentos são atribuídos: os restantes marcadores
 históricos da janela não suprimem uma data posterior ao carimbo.
 
+Datas de carimbo de verificação ("Verificado a …") ficam de fora, tal como
+em `_pagina_tem_alerta()`: têm regra própria (`carimbo_antigo`) e nunca
+passam pelos marcadores (issue #332).
+
 Nunca escreve HTML nem altera MARCADORES_HISTORICOS — só lê.
 """
 
@@ -85,7 +89,9 @@ from verificar_datas import (  # noqa: E402
     MARCADORES_HISTORICOS,
     MARCADORES_ISENTOS_DO_PORTAO,
     PADROES,
+    _carimbos,
     _data_da_ocorrencia,
+    _em_carimbo,
     _janela_contexto,
 )
 
@@ -277,9 +283,12 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
     ainda, essa desambiguação de frases repetidas é feita a nível do
     corpus inteiro em `auditar_corpus()`."""
     verificado_em = verificado_em_do_texto(conteudo)
+    carimbos = _carimbos(conteudo)
     registos = []
     for padrao in PADROES:
         for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
+            if _em_carimbo(carimbos, m.start(), m.end()):
+                continue  # data de carimbo: regra própria, nunca suprimida (issue #332)
             janela = _janela_contexto(conteudo, m.start(), m.end())
             data_ocorrencia = _data_da_ocorrencia(padrao, m)
             antiga = _e_ocorrencia_antiga(padrao, m, conteudo, ano)
