@@ -83,8 +83,8 @@ def test_ocorrencia_antiga_sem_marcador_nenhum_nao_e_registada():
 
 def test_mesma_ocorrencia_pode_ser_atribuida_a_mais_do_que_um_marcador():
     html = _html(
-        "A Portaria n.º 1/2020 revoga a regra anterior; o novo regime está "
-        "em vigor desde 1 de janeiro de 2020."
+        "O novo regime está em vigor desde a Portaria n.º 1/2020, "
+        "de 1 de janeiro de 2020, que revoga a regra anterior."
     )
     registos = supressoes_da_pagina(html, "sintetica.html", ano=2026)
     marcadores_de_2020 = {
@@ -138,7 +138,7 @@ def test_ordinal_desambigua_a_mesma_frase_repetida_na_mesma_pagina(tmp_path):
     registos = _registos(tmp_path, "sintetica.html", f"<p>{frase}</p><p>{frase}</p>")
     ordinais = sorted(
         r["ordinal"] for r in registos
-        if r["marcador"] == "portaria" and r["correspondencia"] == "janeiro de 2020"
+        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "janeiro de 2020"
     )
     assert ordinais == [1, 2]
 
@@ -160,7 +160,11 @@ def _cartao(titulo: str) -> str:
 
 
 CARTAO_198 = _cartao("Portaria n.º 198/2022")
-CARTAO_158 = _cartao("Portaria n.º 158/2024/1</h2>")
+# Desde a issue #332 os marcadores de diploma só suprimem a data da própria
+# citação, e o cartão da Portaria n.º 158/2024/1 (o do caso real #260) ficou
+# sem supressões. O mecanismo testado é o mesmo com qualquer cartão real que
+# as tenha: este, com as fronteiras de inscrição na CGA.
+CARTAO_286 = _cartao("Decreto-Lei n.º 286/93")
 # Mais de 220 caracteres sem datas nem marcadores: afasta as janelas de
 # contexto de dois blocos, para cada ocorrência ter os mesmos marcadores
 # sozinha e acompanhada.
@@ -173,20 +177,20 @@ def test_inserir_cartao_antes_nao_desloca_entradas_antigas_260(tmp_path):
     158/2024/1 passaram de ordinal 1 a 2 — «novas» sem terem mudado. Com a
     identidade pela frase, a página com os dois cartões tem exactamente as
     entradas de cada cartão sozinho, nem mais nem menos."""
-    so_158 = _ids(tmp_path / "a", "fontes.html", CARTAO_158)
+    so_286 = _ids(tmp_path / "a", "fontes.html", CARTAO_286)
     so_198 = _ids(tmp_path / "b", "fontes.html", CARTAO_198)
-    os_dois = _ids(tmp_path / "c", "fontes.html", CARTAO_198 + SEPARADOR + CARTAO_158)
-    assert so_158 and so_198
-    assert os_dois == so_158 | so_198
+    os_dois = _ids(tmp_path / "c", "fontes.html", CARTAO_198 + SEPARADOR + CARTAO_286)
+    assert so_286 and so_198
+    assert os_dois == so_286 | so_198
 
 
 def test_alterar_a_frase_da_supressao_gera_uma_orfa_e_uma_nova(tmp_path):
-    """Sentido inverso: mudar uma palavra da frase da 158/2024/1 tem de
+    """Sentido inverso: mudar uma palavra da frase suprimida tem de
     aparecer, para cada (marcador, tipo, correspondencia) afectado,
     como exactamente uma entrada órfã e uma nova."""
-    assert "apenas a data" in CARTAO_158
-    alterado = CARTAO_158.replace("apenas a data", "somente a data")
-    antes = _ids(tmp_path / "a", "fontes.html", CARTAO_198 + SEPARADOR + CARTAO_158)
+    assert "fórmula de cálculo" in CARTAO_286
+    alterado = CARTAO_286.replace("fórmula de cálculo", "fórmula do cálculo")
+    antes = _ids(tmp_path / "a", "fontes.html", CARTAO_198 + SEPARADOR + CARTAO_286)
     depois = _ids(tmp_path / "b", "fontes.html", CARTAO_198 + SEPARADOR + alterado)
     orfas, novas = antes - depois, depois - antes
     assert orfas and novas
@@ -205,7 +209,7 @@ def test_faq_repetida_no_corpo_e_no_json_ld_fica_estavel_com_texto_inserido_ante
     registos = _registos(tmp_path / "a", "faq.html", faq)
     ordinais = sorted(
         r["ordinal"] for r in registos
-        if r["marcador"] == "portaria" and r["correspondencia"] == "janeiro de 2020"
+        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "janeiro de 2020"
     )
     assert ordinais == [1, 2]
     so_faq = {identidade(r) for r in registos}

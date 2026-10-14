@@ -50,6 +50,7 @@ ambíguo (ver CLAUDE.md, secção do portão de confirmação).
 """
 
 import glob
+import html as _html
 import json
 import os
 import re
@@ -285,6 +286,48 @@ MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
 
 # Conteúdo que já assume, de forma explícita, que está pendente de confirmação.
 # "confirmar" no infinitivo (pendente) — não "confirmado" (já feito).
+# Marcadores de diploma (issue #332): só suprimem a data que faz parte da
+# própria citação — "Portaria n.º 305/2022, de 22 de dezembro de 2022".
+# Uma data que só está perto de um diploma (carimbo, prazo, anúncio na
+# mesma linha das fontes) deixa de ser suprimida por eles. `despacho` e
+# `\bdl\s*n` ficam como estavam.
+MARCADORES_SO_CITACAO = (r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º")
+# Só para datas: um par de ano lectivo ou um valor do IAS nunca é "a data de
+# uma citação", por isso aí estes marcadores continuam a valer por proximidade.
+# O compromisso no futuro também fica como estava: a correspondência começa no
+# verbo, não na data, e uma frase "vai mudar a 1 de janeiro…" não é citação.
+TIPOS_DATA_CITACAO = ("data_mes_ano", "data_numerica", "prazo_outono")
+assert set(MARCADORES_SO_CITACAO) <= set(MARCADORES_HISTORICOS)
+REGEX_CITACAO_DIPLOMA = re.compile(
+    r"(?:decreto-lei|decreto\s+lei|\blei|portaria)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
+    r",?\s+de\s+(?:\d{1,2}\s+de\s+)?$",
+    re.IGNORECASE,
+)
+
+
+def _citacao_de_diploma(conteudo, inicio):
+    """Se a data que começa em `inicio` é a data de uma citação
+    "<diploma> n.º X/AAAA, de …", devolve o texto dessa citação; senão None.
+    Olha só para o texto imediatamente antes da data."""
+    antes = re.sub(r"<[^>]+>", " ", conteudo[max(0, inicio - 200):inicio])
+    antes = re.sub(r"\s+", " ", _html.unescape(antes))
+    m = REGEX_CITACAO_DIPLOMA.search(antes)
+    return m.group(0) if m else None
+
+
+def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None):
+    """Um marcador de MARCADORES_HISTORICOS suprime esta ocorrência?
+    Única regra, partilhada por `_esta_suprimido` e pelo auditor. Um
+    marcador de diploma só conta se a data for a da citação desse mesmo
+    diploma ("lei n.º" nunca suprime a data de uma Portaria)."""
+    if not re.search(marcador, janela, re.IGNORECASE):
+        return False
+    if marcador in MARCADORES_SO_CITACAO and tipo in TIPOS_DATA_CITACAO:
+        citacao = _citacao_de_diploma(conteudo, inicio)
+        return citacao is not None and re.search(marcador, citacao, re.IGNORECASE) is not None
+    return True
+
+
 MARCADORES_PENDENTE = [
     r"aguarda", r"previst", r"provis[oó]ri", r"\bconfirmar\b", r"estimad",
     r"deverá ser", r"após publicação",
@@ -438,7 +481,7 @@ def _dentro_de_link(conteudo, inicio):
     return ultima_abertura != -1 and ultima_abertura > ultimo_fecho
 
 
-def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verificado_em=None):
+def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verificado_em=None, tipo=None):
     if _dentro_de_link(conteudo, inicio):
         return True
 
@@ -450,7 +493,7 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verif
     if _tem_algum(MARCADORES_ISENTOS_DO_PORTAO, janela):
         return True  # data fixada por lei, citada como facto permanente (#186)
 
-    if _tem_algum(MARCADORES_HISTORICOS, janela):
+    if any(marcador_historico_aplica(mk, janela, conteudo, inicio, tipo) for mk in MARCADORES_HISTORICOS):
         if data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em:
             # Compromisso ainda por cumprir à data da última verificação desta
             # página — um marcador histórico (ex.: `celebrados? at[ée]`) pode
@@ -560,6 +603,7 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
             conteudo, m.start(), m.end(), ano, mes,
             data_ocorrencia=_data_da_ocorrencia(padrao, m),
             verificado_em=verificado_em,
+            tipo=padrao["tipo"],
         ):
             continue
         return True
