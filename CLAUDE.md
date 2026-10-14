@@ -4712,7 +4712,8 @@ uma Issue é criada ou um valor é alterado:
    em janeiro de 2027, zero falsos positivos.
    **Carimbos de verificação** (`REGEX_CARIMBO`, issue #332): a data de um
    carimbo («Verificado a 2 de setembro de 2026», «Verificado a 2 setembro
-   2026», «Verificado 24/06/2026» das notas por secção) fica fora da lógica
+   2026», «Verificado 24/06/2026» das notas por secção, «Fontes verificadas —
+   2 de setembro de 2026» do bloco de fontes) fica fora da lógica
    de ano civil e dos marcadores de supressão. Tem regra própria:
    `carimbo_antigo` dispara, em qualquer mês, quando algum carimbo da página
    tem mais de `LIMITE_MESES_CARIMBO` (12) meses face ao mês de execução.

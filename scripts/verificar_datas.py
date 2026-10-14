@@ -33,7 +33,8 @@ faltar a referência; ver o carimbo acrescentado a fontes.html no mesmo
 commit desta correcção.
 
 Carimbos de verificação (issue #332): a data de um carimbo
-("Verificado a 2 de setembro de 2026", "Verificado 24/06/2026") diz quando
+("Verificado a 2 de setembro de 2026", "Verificado 24/06/2026", "Fontes
+verificadas — 2 de setembro de 2026") diz quando
 a página foi conferida, não descreve um facto com validade no ano civil.
 Por isso fica fora da lógica de ano civil de `_pagina_tem_alerta` (e dos
 marcadores de supressão) e tem regra própria: alerta `carimbo_antigo`
@@ -75,14 +76,15 @@ REGEX_MES_ANO = (
 )
 
 # Carimbo de verificação: "Verificado a 2 de setembro de 2026", "Verificado
-# a 2 setembro 2026", "Verificado a 02/09/2026" e as notas por secção
-# "Verificado 24/06/2026" (sem "a"). Os grupos captam só a data.
+# a 2 setembro 2026", "Verificado a 02/09/2026", as notas por secção
+# "Verificado 24/06/2026" (sem "a") e o cabeçalho do bloco de fontes
+# "Fontes verificadas — 7 de setembro de 2026". Os grupos captam só a data.
 _MESES_RE = (
     r"janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
     r"setembro|outubro|novembro|dezembro"
 )
 REGEX_CARIMBO = (
-    r"\bverificad[oa]\s+(?:a\s+)?"
+    r"\b(?:verificad[oa]\s+(?:a\s+)?|fontes\s+verificadas\s*[—–-]\s*)"
     r"(?:(\d{1,2})/(\d{1,2})/(\d{4})"
     r"|(\d{1,2})\s+(?:de\s+)?(" + _MESES_RE + r")\s+(?:de\s+)?(\d{4}))"
 )
