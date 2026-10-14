@@ -4720,6 +4720,16 @@ uma Issue é criada ou um valor é alterado:
    O auditor de marcadores ignora as mesmas datas. Carimbo novo: escrever
    «Verificado a D de mês de AAAA» (com «de»). Testes:
    `tests/test_carimbo_antigo.py`.
+   **Marcadores de diploma só na citação** (`MARCADORES_SO_CITACAO`, issue
+   #332): `portaria`, `decreto-lei`, `decreto\s+lei` e `lei\s+n\.?º` só
+   suprimem uma **data** que faça parte da própria citação («Portaria n.º
+   305/2022, de 22 de dezembro de 2022» — `_citacao_de_diploma`), e só se o
+   marcador corresponder ao diploma citado. Uma data que apenas está perto
+   de um diploma deixa de ser suprimida por eles. `despacho`, `\bdl\s*n`,
+   os pares de ano lectivo, os valores do IAS e o compromisso no futuro
+   ficam como estavam. Regra única em `marcador_historico_aplica()`,
+   partilhada com o auditor de marcadores. Testes:
+   `tests/test_marcadores_diploma_citacao.py`.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
