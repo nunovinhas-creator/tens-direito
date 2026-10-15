@@ -1,187 +1,5 @@
 [
   {
-    "data": "2026-09-30",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 12,
-      "acao_social_escolar": 13,
-      "cuidador_informal": 12,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 11,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 14,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em outubro - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-28",
-        "score": 5,
-        "decisao": "vencedor",
-        "motivo": "score=5, categoria=apoios"
-      },
-      {
-        "titulo": "Segurança Social: Veja quando são pagas as pensões e os subsídios em outubro - SAPO",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-28",
-        "score": 4,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Prestação Social Única (PSU): Beneficiários vão ou não perder rendimento? - jornaleconomico.sapo.pt",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-25",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Transparência salarial, pensões e Prestação Social Única em destaque na agenda laboral - Human Resources Portugal",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-28",
-        "score": 3,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Mãe das gémeas pediu apoio para leite a movimento católico. Acusação descreve plano para \"aproveitar-se\" de todos os apoios humanitários e públicos - CNN Portugal",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-09-28",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-09-24",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-23"
-      },
-      {
-        "titulo": "Câmara de Seia aprova apoios para ação social, escolas e desporto - Seia Digital",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-23"
-      },
-      {
-        "titulo": "Segurança Social: saiba em que dia é pago cada apoio em outubro - Contas Poupança",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-24",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Outubro 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-09-23",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-23"
-      },
-      {
-        "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro - ODigital.pt",
-        "feed_nome": "acao_social_escolar",
-        "data_iso": "2026-09-30",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=educacao"
-      },
-      {
-        "titulo": "Salário mínimo nos 1.100 euros já em 2027? CGTP diz que \"é possível\" e UGT quer ir além dos 970 - CNN Portugal",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-09-24",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-09-24"
-      },
-      {
-        "titulo": "Amadora: Cuidador informal detido por violação - TV RECORD Europa",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-09-28",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Era cuidador informal de crianças e acaba preso por abusos - Notícias de Coimbra",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-09-28",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      },
-      {
-        "titulo": "Prisão preventiva para homem que fingia ser cuidador informal para burlar idosos - TV RECORD Europa",
-        "feed_nome": "cuidador_informal",
-        "data_iso": "2026-09-23",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Pensões, subsídios e outros apoios: Descubra já quando recebe em outubro - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 5
-      },
-      {
-        "titulo": "Câmara de Campo Maior mantém apoio ao material escolar: Reembolsos até 31 de dezembro - ODigital.pt",
-        "feed_nome": "acao_social_escolar",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-10-01",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -3883,6 +3701,204 @@
       {
         "titulo": "Complemento solidário para idosos vai aumentar 50 euros em 2027 - ECO",
         "feed_nome": "csi_idosos",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-10-15",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 12,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 13,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 14,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 15,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 6,
+      "csi_idosos": 14
+    },
+    "candidatos": [
+      {
+        "titulo": "Prestação Social Única: a despesa prevista sobe 10% em relação a 2026 - Público",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-08",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-08"
+      },
+      {
+        "titulo": "Prestações Sociais: veja as datas de pagamento da Segurança Social - Montepio Associação Mutualista",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-12",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=apoios"
+      },
+      {
+        "titulo": "Salário Mínimo 2027 subirá e terá três valores diferentes (com OE 2027) - Economia e Finanças",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-09",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-09-09"
+      },
+      {
+        "titulo": "Impostos, habitação e propinas. Como vai o Orçamento para 2027 mexer com o bolso das famílias - Observador",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-08"
+      },
+      {
+        "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano - CNN Portugal",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "ESCALÃO E ABONO DE FAMÍLIA | TUDO O QUE VOCÊ PRECISA SABER SOBRE OS ABONOS E BENEFÍCIOS EM PORTUGAL Enfant (Nax5OsVTY8) - Unisba Media",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-10-13",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "OE2027. Estado prevê gastar mais 984,1 milhões de euros com pensões no próximo ano - CNN Portugal",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027 - DECO Proteste",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-09",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-09"
+      },
+      {
+        "titulo": "“Salário típico em Portugal começa a ser perigosamente o salário mínimo” - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-13",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-13"
+      },
+      {
+        "titulo": "O salário mínimo vai subir em 2027. Saiba quais os três valores em cima da mesa - RHmagazine",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-12",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Aumento do salário mínimo para 970 euros assumido no OE2027 - Observador",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "OE2027. Governo assume salário mínimo nos 970 euros no próximo ano - CNN Portugal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo nacional vai aumentar para 970 euros em 2027 - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Portugal vai fixar o salário mínimo em 970 € no próximo ano - The Portugal News",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Suplemento extraordinário de pensões até 200 euros em dezembro: saiba quem tem direito e como vai ser pago - Observador",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-08",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Garantia pública para jovens comprarem primeira casa mantém-se em 2027 e “Porta 65” é reforçado - ECO",
+        "feed_nome": "porta65_arrendamento",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "OE 2027: um Portugal mais preparado, com mais rendimento e investimento - XXV Governo Constitucional",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-08",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Prestações Sociais: veja as datas de pagamento da Segurança Social - Montepio Associação Mutualista",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 2
+      },
+      {
+        "titulo": "O salário mínimo vai subir em 2027. Saiba quais os três valores em cima da mesa - RHmagazine",
+        "feed_nome": "salario_minimo",
         "score": 1
       }
     ]
