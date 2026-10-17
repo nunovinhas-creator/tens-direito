@@ -7368,4 +7368,4 @@ fontes, H1 e meta description com a CGA (`og:title` intocado).
 
 ---
 
-*Última revisão automática: 2026-10-16*
+*Última revisão automática: 2026-10-17*
