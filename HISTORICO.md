@@ -7559,6 +7559,24 @@ ocorrências fora do baseline. Baseline de 2026: só muda a frase da entrada
 «janeiro de 2018» (comentário reescrito). Testes de efeito em
 `tests/test_carimbo_antigo.py`; 7 falham sem a regex nova.
 
+**Prazo da ASE sem data fixa (mesmo PR).** O site dizia que a candidatura à
+ASE era sempre até 30 de setembro, mas o prazo é fixado por cada câmara ou
+agrupamento: na Moita, para 2025/2026, ia até 31 de outubro, e a Lousã tem
+prazos próprios. A confirmação anterior era circular, porque vinha das
+próprias páginas e do CLAUDE.md. Reescritas 17 zonas em `simulador-ase.html`,
+`acao-social-escolar.html`, `calendario-escolar-apoios.html` e
+`p/apoios-escolares.html`, para remeter para a escola ou a câmara. Também
+mudaram o destaque `escolar-setembro` e a nota da ASE no CLAUDE.md, que
+ganhou a regra «nenhuma página do site, nem o CLAUDE.md, serve de fonte».
+A FAQ e o JSON-LD ficam iguais nos dois pares, e a pergunta duplicada «Qual
+é o prazo…», que só existia no JSON-LD, saiu. Saíram também a «renovação
+automática» e os «15 dias (úteis)» da FAQ e da lista, por não terem fonte. A
+frase «depois do prazo continuam a ser aceites pedidos» não entrou: só havia
+excertos de pesquisa, e nenhuma fonte foi lida. Bolsa de mérito, Prova
+Escolar e as afirmações «sempre»/«todos os anos» ficam na #344. Janeiro de
+2027: 39 → 37 páginas com alerta. Carimbos «Verificado a» não avançados:
+nada foi verificado de novo.
+
 ---
 
 *Última revisão automática: 2026-10-18*
