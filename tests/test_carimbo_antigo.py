@@ -7,7 +7,9 @@ em qualquer mês. Testes de efeito, com a data de execução simulada.
 """
 import glob
 import os
+import re
 import sys
+from datetime import date
 from pathlib import Path
 
 RAIZ = Path(__file__).parent.parent
@@ -81,3 +83,74 @@ def test_carimbo_canonico_das_paginas_reais_e_reconhecido(caminho):
     if canonico is None:
         return  # página sem carimbo — nada a reconhecer (sem skip, para não mexer na allow-list)
     assert canonico in {d for *_, d in v._carimbos(html)}
+
+
+# --- Outras formas de carimbo (#332, PR 3) ---------------------------------
+# A data certifica conteúdo publicado, visível ou em comentário HTML/JS.
+
+@pytest.mark.parametrize("carimbo", [
+    "Última atualização: 2 de setembro de 2026",
+    "Estado confirmado a 02/09/2026.",
+    "Valores confirmados a 02/09/2026 no Guia Prático",
+    "<!-- datas confirmadas a 02/09/2026 por triangulação -->",
+    "Datas confirmadas na Segurança Social a 02/09/2026",
+    "<!-- caminho conferido pelo Nuno a 02/09/2026 -->",
+    "<script>// Valores confirmados por triangulação externa (02/09/2026): DECO</script>",
+    "À data de verificação desta página (02/09/2026), não foi possível confirmar",
+])
+def test_outras_formas_de_carimbo_so_alertam_passados_12_meses(carimbo):
+    html = _pagina(carimbo)
+    assert _tipo(html, 2027, 1) is None, "a data do carimbo não pode entrar na lógica de ano civil"
+    assert _tipo(html, 2027, 9) is None
+    assert _tipo(html, 2027, 10) == "carimbo_antigo"
+
+
+@pytest.mark.parametrize("frase", [
+    "<p>A Provedoria pediu uma revisão urgente em agosto de 2025.</p>",
+    "<p>Os valores actualizados produzem efeitos desde 1 de janeiro de 2026.</p>",
+])
+def test_frases_de_conteudo_nao_sao_carimbo(frase):
+    assert v._carimbos(frase) == []
+    assert _tipo(frase, 2028, 1) != "carimbo_antigo"
+
+
+def test_portao_187_continua_a_ler_so_o_verificado_a():
+    # Os carimbos de secção entram em carimbo_antigo, mas nunca em
+    # verificado_em_do_texto (data canónica da página, portão do #187).
+    html = ("<p>Estado confirmado a 14/10/2026.</p><p>Última atualização: 20 de outubro de 2026</p>"
+            "<p>Verificado a 1 de julho de 2026 pela redação do Tens Direito</p>"
+            "<!-- caminho conferido pelo Nuno a 05/10/2026 -->")
+    assert v.verificado_em_do_texto(html) == date(2026, 7, 1)
+    assert v.verificado_em_do_texto("<p>Última atualização: 4 de julho de 2026</p>") is None
+
+
+@pytest.mark.parametrize("pagina, meses_sem_alerta, mes_alerta", [
+    # «Última atualização: 13 de julho de 2026» é a única data da página
+    ("privacidade.html", range(1, 8), 8),
+    # carimbo em comentário HTML («caminho conferido pelo Nuno a 05/10/2026»)
+    ("documentos/carta-acompanhamento-comunicacao-alteracao.html", range(1, 8), 8),
+])
+def test_paginas_reais_com_outras_formas(pagina, meses_sem_alerta, mes_alerta):
+    html = (RAIZ / pagina).read_text(encoding="utf-8")
+    for mes in meses_sem_alerta:
+        assert _tipo(html, 2027, mes) is None, f"{pagina}: alerta inesperado em {mes}/2027"
+    assert _tipo(html, 2027, mes_alerta) == "carimbo_antigo"
+
+
+def _meses_depois(d, n):
+    total = d.year * 12 + d.month - 1 + n
+    return total // 12, total % 12 + 1
+
+
+def test_calendario_data_confirmada_e_carimbo():
+    # «Datas confirmadas na Segurança Social a DD/MM/AAAA» (gerado por
+    # atualizar_calendario.py, reescrito todos os meses) é carimbo, não data
+    # de ano civil; passados 12 meses sem actualização, dá carimbo_antigo.
+    html = (RAIZ / "calendario-pagamentos-seguranca-social.html").read_text(encoding="utf-8")
+    m = re.search(r"Datas confirmadas na Segurança Social a (\d{2})/(\d{2})/(\d{4})", html)
+    assert m, "linha de dados do calendário não encontrada"
+    d = date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+    assert d in {c for *_, c in v._carimbos(html)}
+    sintetica = _pagina(m.group(0))
+    assert _tipo(sintetica, *_meses_depois(d, 12)) is None
+    assert _tipo(sintetica, *_meses_depois(d, 13)) == "carimbo_antigo"

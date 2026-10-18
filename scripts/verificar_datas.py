@@ -34,7 +34,8 @@ commit desta correcção.
 
 Carimbos de verificação (issue #332): a data de um carimbo
 ("Verificado a 2 de setembro de 2026", "Verificado 24/06/2026", "Fontes
-verificadas — 2 de setembro de 2026") diz quando
+verificadas — 2 de setembro de 2026", "Última atualização: …", "confirmado
+a …" — lista completa junto a REGEX_CARIMBO) diz quando
 a página foi conferida, não descreve um facto com validade no ano civil.
 Por isso fica fora da lógica de ano civil de `_pagina_tem_alerta` (e dos
 marcadores de supressão) e tem regra própria: alerta `carimbo_antigo`
@@ -80,12 +81,26 @@ REGEX_MES_ANO = (
 # a 2 setembro 2026", "Verificado a 02/09/2026", as notas por secção
 # "Verificado 24/06/2026" (sem "a") e o cabeçalho do bloco de fontes
 # "Fontes verificadas — 7 de setembro de 2026". Os grupos captam só a data.
+# Também (#332, PR 3) as outras formas cuja data certifica conteúdo
+# publicado, visível ou em comentário HTML/JS: "Última atualização: …",
+# "confirmado(s)/confirmada(s) a …", "Datas confirmadas na Segurança Social
+# a …", "caminho conferido pelo Nuno a …", "confirmados por triangulação
+# externa (…)" e "À data de verificação desta página (…)". Ficam de fora as
+# frases de conteúdo ("revisão urgente em agosto de 2025", "valores
+# actualizados produzem efeitos desde …"). Só para esta regra:
+# verificado_em_do_texto (portão do #187) tem regex própria e continua a ler
+# só "Verificado a …".
 _MESES_RE = (
     r"janeiro|fevereiro|março|abril|maio|junho|julho|agosto|"
     r"setembro|outubro|novembro|dezembro"
 )
 REGEX_CARIMBO = (
-    r"\b(?:verificad[oa]\s+(?:a\s+)?|fontes\s+verificadas\s*[—–-]\s*)"
+    r"(?:\bverificad[oa]\s+(?:a\s+)?|\bfontes\s+verificadas\s*[—–-]\s*"
+    r"|(?<!\w)[úu]ltima\s+atualiza[çc][ãa]o:\s*"
+    r"|\bconfirmad[oa]s?\s+(?:na\s+segurança\s+social\s+)?a\s+"
+    r"|\bconferid[oa]s?\s+pel[oa]\s+\w+\s+a\s+"
+    r"|\bconfirmad[oa]s?\s+por\s+triangulação\s+externa\s*\(\s*"
+    r"|\bdata\s+de\s+verificação\s+desta\s+página\s*\(\s*)"
     r"(?:(\d{1,2})/(\d{1,2})/(\d{4})"
     r"|(\d{1,2})\s+(?:de\s+)?(" + _MESES_RE + r")\s+(?:de\s+)?(\d{4}))"
 )
