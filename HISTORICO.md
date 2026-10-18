@@ -6870,6 +6870,36 @@ bolsa de estudo) ficam expostas, como decidido.
 
 Baseline: 318 → 298. 7 dos testes novos falham com o código anterior.
 
+### Última revisão: 2026-10-18 — Auditor de marcadores no ano corrente e nos seguintes (issue #332, PR C)
+
+`scripts/auditar_marcadores_historicos.py` deixou de usar `ANO_REFERENCIA =
+2026` fixo: audita com o ano da execução (`ano_de_execucao()`), e
+`tests/test_auditar_marcadores_historicos.py` exige um baseline por ano,
+`tests/marcadores_historicos_baseline_<ano>.json`, segundo este calendário
+(`anos_exigidos()`/`anos_tolerados()`, sendo Y o ano corrente):
+- de janeiro a novembro, Y e Y+1;
+- em dezembro, também Y+2 (o trabalho faz-se em dezembro, não a 1 de
+  janeiro);
+- o de Y-1 é tolerado até ser apagado, e qualquer outro ano faz falhar.
+
+Testes com data simulada para 15/11, 15/12 e 01/01. Feito sobre o PR D: o
+baseline de 2026 passou a `..._2026.json` (298 entradas, iguais às do PR D).
+O de 2027 foi gravado com o que sobra depois dos PRs 1-3, A, B e D: 415
+entradas, ou seja, as 298 de 2026 mais 117 novas (73 ocorrências em 13
+páginas). Nenhuma entrada de 2026 desaparece. Confirmado pelo auditor: das
+117, 99 são «desde» que rege a data e 18 são `DATAS_PERMANENTES` — nenhuma
+supressão por proximidade. A lista das 117, por marcador,
+com página, linha e excerto, está no PR. `--write` grava os anos exigidos e
+`--novas` produz essa lista. `linha` só entra nos relatórios, nunca no
+baseline. ROADMAP, «DATAS FIXAS»: 1 de dezembro de cada ano.
+
+O pipeline diário não depende da suite (só corre `test_valores_ancora.py` e
+`test_anos_metadados.py`): a falha de 1 de dezembro só deixa vermelho o
+`integridade.yml`.
+
+Medido: alertas de outubro de 2026 a dezembro de 2027 iguais aos do PR D
+(este PR não muda `verificar_datas.py`).
+
 ---
 
 *Última revisão automática: 2026-10-03*

@@ -20,7 +20,7 @@ test_acessibilidade.py), nunca uma cópia.
 
 Issue #208 (2026-09-15) — EXCECOES_ANOS_HISTORICOS era a mais fraca das 3
 listas de supressão do repositório (comparar com
-tests/marcadores_historicos_baseline.json/test_auditar_marcadores_historicos.py
+tests/marcadores_historicos_baseline_<ano>.json/test_auditar_marcadores_historicos.py
 e EXCECOES_DIPLOMAS_FONTES/test_fontes_coerencia.py): tinha um único braço
 de auto-auditoria (órfã), e mesmo esse por substring solta
 (`str(ano) in texto`), não pelo mesmo critério REGEX_ANO usado pela

@@ -159,7 +159,7 @@ def test_frases_prospectivas_continuam_expostas_em_2027(pagina, contexto):
 # ── Auditoria ───────────────────────────────────────────────────────────────
 
 def test_auditoria_regista_isento_mesmo_com_data_nao_antiga():
-    """31/12/2026 não é "antiga" face a ANO_REFERENCIA = 2026, mas é
+    """31/12/2026 não é "antiga" face ao ano auditado 2026, mas é
     posterior ao carimbo — a supressão isenta tem de aparecer no baseline já
     hoje, não só depois de a data passar."""
     registos = supressoes_da_pagina(_html(FRASE_ISENTA), "sintetica.html", ano=2026)

@@ -31,16 +31,20 @@ produção realmente faz. `_fica_exposta_ao_portao()` decide isto por
 correspondência (não reutiliza `_esta_suprimido()` directamente — essa
 função não devolve qual marcador respondeu, só um booleano agregado).
 
-Ano de referência FIXO (nunca `datetime.now()`): mesma disciplina já usada
-em `tests/test_verificar_datas.py` (`ANO = 2026`, fixo) — um teste de
-regressão não pode ficar dependente do calendário. Se `ANO_REFERENCIA`
-ficasse a acompanhar o ano real, uma menção a "2026" que hoje não é
-"antiga" passaria a sê-lo em 2027 só por o calendário avançar, sem
-nenhuma alteração ao código nem ao conteúdo — o teste falharia por uma
-razão que não tem nada a ver com uma regressão real. Fixar o ano à data
-desta auditoria (2026) torna o resultado uma função só de
-MARCADORES_HISTORICOS + conteúdo das páginas, nunca do dia em que a
-suite corre.
+Ano de referência = ano corrente da execução, auditado também nos anos
+seguintes (issue #332, PRs C e D). Até ao PR C o ano era fixo (2026): as
+datas do próprio ano nunca entravam no baseline, e no dia 1 de janeiro
+passavam a ser «antigas» para `verificar_datas.py` sem nenhuma supressão ter
+sido revista. Agora há um baseline por ano,
+`tests/marcadores_historicos_baseline_<ano>.json`, e o teste segue um
+calendário (`anos_exigidos()`/`anos_tolerados()`), sendo Y o ano corrente:
+- de janeiro a novembro exige os baselines de Y e Y+1;
+- em dezembro exige também o de Y+2, para o trabalho do ano seguinte se
+  fazer em dezembro e nunca a 1 de janeiro;
+- o baseline de Y-1 é tolerado (não faz falhar) até ser apagado; um
+  baseline de qualquer outro ano faz falhar.
+As funções de auditoria recebem sempre `ano` explícito: os testes de unidade
+fixam-no, só o corpus real usa `ano_de_execucao()`.
 
 Identidade de cada supressão (issue #264): (pagina, marcador, tipo,
 correspondencia, frase, ordinal). `frase` é a frase envolvente da
@@ -56,7 +60,7 @@ mais uma nova (frase actual) — obriga a olhar para a frase alterada.
 Issue #186 — `MARCADORES_ISENTOS_DO_PORTAO` (subconjunto de
 MARCADORES_HISTORICOS): datas fixadas por lei, citadas como facto
 permanente, que `_esta_suprimido()` suprime antes do portão. A auditoria
-regista-as mesmo quando a data não é "antiga" face a `ANO_REFERENCIA` — basta
+regista-as mesmo quando a data não é "antiga" face ao ano auditado — basta
 ser posterior ao carimbo "Verificado a" (o conjunto que o portão exporia mais
 tarde). Sem isto, estas supressões só apareceriam no baseline depois de a data
 passar, e nunca teriam sido revistas linha a linha antes de entrarem em vigor.
@@ -104,13 +108,47 @@ from verificar_datas import (  # noqa: E402
     spans_datas_permanentes,
 )
 
-BASELINE_PATH = RAIZ / "tests" / "marcadores_historicos_baseline.json"
+PASTA_BASELINES = RAIZ / "tests"
 
 # Rótulo das supressões por DATAS_PERMANENTES no baseline.
 MARCADOR_DATAS_PERMANENTES = "DATAS_PERMANENTES"
 
-# Fixo — ver docstring do módulo.
-ANO_REFERENCIA = 2026
+
+
+def ano_de_execucao(hoje: date | None = None) -> int:
+    """Ano corrente — ver docstring do módulo."""
+    return (hoje or date.today()).year
+
+
+def caminho_baseline(ano: int, pasta: Path = PASTA_BASELINES) -> Path:
+    return pasta / f"marcadores_historicos_baseline_{ano}.json"
+
+
+def anos_exigidos(hoje: date | None = None) -> tuple[int, ...]:
+    """Baselines que o teste exige: Y e Y+1; em dezembro também Y+2."""
+    hoje = hoje or date.today()
+    anos = (hoje.year, hoje.year + 1)
+    return anos + (hoje.year + 2,) if hoje.month == 12 else anos
+
+
+def anos_tolerados(hoje: date | None = None) -> tuple[int, ...]:
+    """Baselines que podem existir sem serem exigidos: o do ano que acabou."""
+    return ((hoje or date.today()).year - 1,)
+
+
+def anos_com_baseline(pasta: Path = PASTA_BASELINES) -> list[int]:
+    return sorted(int(p.stem.rsplit("_", 1)[1])
+                  for p in pasta.glob("marcadores_historicos_baseline_*.json"))
+
+
+def problemas_do_calendario(anos_presentes, hoje: date | None = None) -> list[str]:
+    """Baselines em falta ou fora do calendário — lista vazia se estiver tudo certo."""
+    exigidos, tolerados = anos_exigidos(hoje), anos_tolerados(hoje)
+    presentes = set(anos_presentes)
+    problemas = [f"falta o baseline de {a}" for a in exigidos if a not in presentes]
+    problemas += [f"baseline de {a} fora do calendário (só {list(exigidos)}, mais {list(tolerados)} "
+                  f"tolerado) — apagar" for a in sorted(presentes - set(exigidos) - set(tolerados))]
+    return problemas
 
 
 def paginas_do_corpus(raiz: Path = RAIZ) -> list[Path]:
@@ -150,8 +188,7 @@ def _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano: int) -> bool:
     páginas sem citações de diploma) preserva-se o comportamento anterior:
     o marcador continua a contar como supressão permanente, nunca
     "sem carimbo = expõe tudo". Esta auditoria não tem um "mês" próprio
-    (só `ANO_REFERENCIA`, fixo por desenho) — usa o último dia do ano de
-    referência como o ponto no tempo a comparar, o mais tarde possível
+    (só o ano auditado) — usa o último dia desse ano como o ponto no tempo a comparar, o mais tarde possível
     dentro desse ano; um prazo que só ultrapassa isso num ano posterior
     continua correctamente suprimido nesta auditoria."""
     if data_ocorrencia is None or verificado_em is None:
@@ -290,7 +327,7 @@ def _frase_no_bloco(conteudo: str, i: int, k: int, inicio: int, fim: int, em_jso
     return _normalizar_frase(texto[ini_frase:fim_frase], em_jsonld)
 
 
-def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) -> list[dict]:
+def supressoes_da_pagina(conteudo: str, pagina: str, ano: int) -> list[dict]:
     """Todas as (ocorrência antiga, marcador) desta página — sem `ordinal`
     ainda, essa desambiguação de frases repetidas é feita a nível do
     corpus inteiro em `auditar_corpus()`."""
@@ -303,6 +340,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
             if _em_carimbo(carimbos, m.start(), m.end()):
                 continue  # data de carimbo: regra própria, nunca suprimida (issue #332)
             janela = _janela_contexto(conteudo, m.start(), m.end())
+            linha = conteudo.count("\n", 0, m.start()) + 1
             data_ocorrencia = _data_da_ocorrencia(padrao, m)
             antiga = _e_ocorrencia_antiga(padrao, m, conteudo, ano)
             if em_data_permanente(permanentes, m.start(), m.end()) and (
@@ -313,6 +351,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                     "tipo": padrao["tipo"],
                     "correspondencia": _normalizar_frase(m.group(0), em_jsonld=False),
                     "frase": frase_envolvente(conteudo, m.start(), m.end()),
+                    "linha": linha,
                 })
             isentos = [mk for mk in MARCADORES_ISENTOS_DO_PORTAO
                        if marcador_historico_aplica(mk, janela, conteudo, m.start(), padrao["tipo"], m.end())]
@@ -333,11 +372,12 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                         "tipo": padrao["tipo"],
                         "correspondencia": _normalizar_frase(m.group(0), em_jsonld=False),
                         "frase": frase,
+                        "linha": linha,
                     })
     return registos
 
 
-def auditar_corpus(raiz: Path = RAIZ, ano: int = ANO_REFERENCIA) -> list[dict]:
+def auditar_corpus(raiz: Path = RAIZ, ano: int | None = None) -> list[dict]:
     """Todas as supressões do corpus, com `ordinal` (1-based, por ordem de
     aparição no ficheiro) só para desambiguar a MESMA frase repetida na
     mesma página (ex.: FAQ no corpo e no JSON-LD) — nunca conta ocorrências
@@ -345,7 +385,8 @@ def auditar_corpus(raiz: Path = RAIZ, ano: int = ANO_REFERENCIA) -> list[dict]:
     texto inserido antes delas (issue #264). Ordenado de forma determinística
     (nunca pela ordem de varrimento do glob/regex, que não é garantida
     entre corridas) para o baseline nunca gerar diffs espúrios de
-    ordenação."""
+    ordenação. Sem `ano`, usa o ano de execução."""
+    ano = ano_de_execucao() if ano is None else ano
     todos = []
     contador: Counter = Counter()
     for caminho in paginas_do_corpus(raiz):
@@ -373,15 +414,54 @@ def identidade(registo: dict) -> tuple:
             registo["correspondencia"], registo["frase"], registo["ordinal"])
 
 
-def carregar_baseline(caminho: Path = BASELINE_PATH) -> list[dict]:
+def carregar_baseline(caminho: Path) -> list[dict]:
     return json.loads(caminho.read_text(encoding="utf-8"))
 
 
-def gravar_baseline(registos: list[dict], caminho: Path = BASELINE_PATH) -> None:
+def gravar_baseline(registos: list[dict], caminho: Path) -> None:
+    sem_linha = [{k: v for k, v in r.items() if k != "linha"} for r in registos]
     caminho.write_text(
-        json.dumps(registos, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(sem_linha, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+
+
+def comparar(registos: list[dict], baseline: list[dict]) -> tuple[list[dict], list[dict]]:
+    """(novas, órfãs) por identidade, cada lista ordenada."""
+    atuais = {identidade(r): r for r in registos}
+    aprovados = {identidade(r): r for r in baseline}
+    novas = [atuais[k] for k in sorted(set(atuais) - set(aprovados))]
+    orfas = [aprovados[k] for k in sorted(set(aprovados) - set(atuais))]
+    return novas, orfas
+
+
+def _excerto(frase: str, correspondencia: str, raio: int = 90) -> str:
+    i = frase.find(correspondencia)
+    if i == -1 or len(frase) <= 2 * raio + len(correspondencia):
+        return frase
+    ini, fim = max(0, i - raio), min(len(frase), i + len(correspondencia) + raio)
+    return ("…" if ini else "") + frase[ini:fim] + ("…" if fim < len(frase) else "")
+
+
+def relatorio_por_marcador(registos: list[dict]) -> str:
+    """Markdown: entradas agrupadas por marcador, com página, linha e
+    excerto — o formato da revisão linha a linha."""
+    por_marcador: dict[str, list[dict]] = {}
+    for r in registos:
+        por_marcador.setdefault(r["marcador"], []).append(r)
+    blocos = []
+    for marcador in MARCADORES_HISTORICOS + [MARCADOR_DATAS_PERMANENTES]:
+        entradas = sorted(por_marcador.get(marcador, []),
+                          key=lambda r: (r["pagina"], r.get("linha", 0), r["correspondencia"]))
+        if not entradas:
+            continue
+        linhas = [f"#### `{marcador}` ({len(entradas)})", "",
+                  "| Página | Linha | Data | Excerto |", "|---|---|---|---|"]
+        for r in entradas:
+            excerto = _excerto(r["frase"], r["correspondencia"]).replace("|", "\\|")
+            linhas.append(f"| {r['pagina']} | {r.get('linha', '—')} | {r['correspondencia']} | {excerto} |")
+        blocos.append("\n".join(linhas))
+    return "\n\n".join(blocos)
 
 
 def _imprimir_relatorio(registos: list[dict]) -> None:
@@ -405,19 +485,41 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--write", action="store_true",
-        help="Regenera tests/marcadores_historicos_baseline.json a partir do corpus actual "
-             "(passo manual, nunca automático — revisar o diff antes de commitar).",
+        help="Regenera os baselines exigidos hoje (ano corrente e seguinte; em dezembro também "
+             "o de daqui a dois anos) a partir do corpus actual (passo manual, nunca automático "
+             "— revisar o diff antes de commitar).",
+    )
+    parser.add_argument(
+        "--ano", type=int,
+        help="Ano corrente a usar em vez do ano de execução, no mês de hoje (para medir; "
+             "o teste segue sempre a data real).",
+    )
+    parser.add_argument(
+        "--novas", action="store_true",
+        help="Lista, por marcador, as entradas do último ano exigido que não estão no "
+             "anterior (Y+1 face a Y; em dezembro, Y+2 face a Y+1) — Markdown, com página e linha.",
     )
     args = parser.parse_args()
-
-    registos = auditar_corpus()
+    hoje = date(args.ano, date.today().month, 1) if args.ano else date.today()
+    exigidos = anos_exigidos(hoje)
+    ano = exigidos[0]
 
     if args.write:
-        gravar_baseline(registos)
-        print(f"Baseline regenerado: {len(registos)} registo(s) em {BASELINE_PATH.relative_to(RAIZ)}")
+        for a in exigidos:
+            registos = auditar_corpus(ano=a)
+            gravar_baseline(registos, caminho_baseline(a))
+            print(f"Baseline {a} regenerado: {len(registos)} registo(s) em "
+                  f"{caminho_baseline(a).relative_to(RAIZ)}")
         return 0
 
-    _imprimir_relatorio(registos)
+    if args.novas:
+        antes, depois = exigidos[-2], exigidos[-1]
+        novas, _ = comparar(auditar_corpus(ano=depois), auditar_corpus(ano=antes))
+        print(f"{len(novas)} entrada(s) em {depois} que não existem em {antes}\n")
+        print(relatorio_por_marcador(novas))
+        return 0
+
+    _imprimir_relatorio(auditar_corpus(ano=ano))
     return 0
 
 
