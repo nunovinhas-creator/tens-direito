@@ -141,11 +141,15 @@ MARCADORES_ISENTOS_DO_PORTAO = [
     r"fixa-a\s+como\s+um\s+evento\s+[úu]nico|data\s+fixada\s+por\s+lei(?:\s+para|,\s+como\s+evento\s+[úu]nico)",
 ]
 
+MARCADOR_DESDE = (
+    r"\bdesde\s+(?:\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|"
+    r"agosto|setembro|outubro|novembro|dezembro)\s+de\s+\d)"
+)
+
 MARCADORES_HISTORICOS = [
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"despacho", r"\bdl\s*n",
     r"lei\s+n\.?º", r"diário da república", r"dre\.pt", r"em vigor desde",
-    r"\bdesde\s+(?:\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|"
-    r"agosto|setembro|outubro|novembro|dezembro)\s+de\s+\d)",
+    MARCADOR_DESDE,
     # Elegibilidade fixa por data-limite de contrato — nunca muda com o tempo,
     # é a própria definição do critério (issue #51, apoio-extraordinario-renda.html:
     # "contrato ... posterior a 15 de março de 2023", "celebrados até 15 de
@@ -309,9 +313,14 @@ MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
 # Marcadores de diploma (issue #332): só suprimem a data que faz parte da
 # própria citação — "Portaria n.º 305/2022, de 22 de dezembro de 2022".
 # Uma data que só está perto de um diploma (carimbo, prazo, anúncio na
-# mesma linha das fontes) deixa de ser suprimida por eles. `despacho` e
-# `\bdl\s*n` ficam como estavam.
-MARCADORES_SO_CITACAO = (r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º")
+# mesma linha das fontes) deixa de ser suprimida por eles. Desde o PR B
+# também `despacho`, `\bdl\s*n`, `diário da república` ("Diário da República
+# n.º 45/2023, Série I, de …") e `dre.pt` — que não tem forma de citação com
+# data, por isso nunca suprime uma data.
+MARCADORES_SO_CITACAO = (
+    r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º",
+    r"despacho", r"\bdl\s*n", r"diário da república", r"dre\.pt",
+)
 # Só para datas: um par de ano lectivo ou um valor do IAS nunca é "a data de
 # uma citação", por isso aí estes marcadores continuam a valer por proximidade.
 # O compromisso no futuro também fica como estava: a correspondência começa no
@@ -319,30 +328,81 @@ MARCADORES_SO_CITACAO = (r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+
 TIPOS_DATA_CITACAO = ("data_mes_ano", "data_numerica", "prazo_outono")
 assert set(MARCADORES_SO_CITACAO) <= set(MARCADORES_HISTORICOS)
 REGEX_CITACAO_DIPLOMA = re.compile(
-    r"(?:decreto-lei|decreto\s+lei|\blei|portaria)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
+    r"(?:decreto-lei|decreto\s+lei|\blei|portaria|despacho|\bdl"
+    r"|di[áa]rio\s+da\s+rep[úu]blica)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
+    r"(?:,?\s*(?:s[ée]rie\s+[ivx]+|\d\.ª\s+s[ée]rie))?"
     r",?\s+de\s+(?:\d{1,2}\s+de\s+)?$",
     re.IGNORECASE,
 )
+
+# Marcadores «desde» (issue #332, PR B; #335): só suprimem a data que regem —
+# a que vem logo a seguir, só com o dia ou «de» pelo meio («em vigor desde 14
+# de agosto de 2026», «desde 16/05/2026»). Uma data só perto de um «desde»
+# (a produção de efeitos na mesma linha, um prazo) deixa de ser suprimida.
+# Excepção: «desde 1 de janeiro de AAAA» nunca é suprimido por estes
+# marcadores — no site é quase sempre a vigência de valores anuais; as datas
+# de início de lei com 1 de janeiro estão em DATAS_PERMANENTES.
+MARCADORES_DESDE = {MARCADOR_DESDE: r"\bdesde", r"em vigor desde": r"\bem\s+vigor\s+desde"}
+_CAUDA_DESDE = r"\s+(?:o\s+dia\s+)?(?:(\d{1,2})(?:\.º)?\s+de\s+)?$"
+
+# Marcadores isentos da produção de efeitos (PR B): só suprimem a própria data
+# — dentro da expressão («Produção de efeitos: 31/12/2026») ou logo antes de
+# «como (a) data de produção de efeitos». As outras datas da mesma linha
+# (Publicado em DR, Aprovado em CM) deixam de ser suprimidas por eles.
+ISENTOS_DATA_PROPRIA = tuple(mk for mk in MARCADORES_ISENTOS_DO_PORTAO if "efeitos" in mk)
+
+
+def _texto_antes(conteudo, inicio, n=200):
+    antes = re.sub(r"<[^>]+>", " ", conteudo[max(0, inicio - n):inicio])
+    return re.sub(r"\s+", " ", _html.unescape(antes))
+
+
+def _rege_por_desde(marcador, conteudo, inicio):
+    """O «desde» deste marcador vem logo antes da data, e a data não é 1 de janeiro?"""
+    m = re.search(MARCADORES_DESDE[marcador] + _CAUDA_DESDE, _texto_antes(conteudo, inicio), re.IGNORECASE)
+    if not m:
+        return False
+    data = conteudo[inicio:inicio + 20]
+    num = re.match(r"(\d{1,2})/(\d{1,2})/", data)
+    if num:
+        return not (int(num.group(1)) == 1 and int(num.group(2)) == 1)
+    return not (m.group(1) is not None and int(m.group(1)) == 1 and data.lower().startswith("janeiro"))
+
+
+def _data_propria_do_isento(marcador, conteudo, inicio, fim):
+    a0 = max(0, inicio - JANELA)
+    for m in re.finditer(marcador, conteudo[a0:fim + JANELA], re.IGNORECASE):
+        a, b = a0 + m.start(), a0 + m.end()
+        if a <= inicio and fim <= b:
+            return True
+        if marcador.startswith("como") and fim <= a and not _texto_antes(conteudo, a, a - fim).strip():
+            return True
+    return False
 
 
 def _citacao_de_diploma(conteudo, inicio):
     """Se a data que começa em `inicio` é a data de uma citação
     "<diploma> n.º X/AAAA, de …", devolve o texto dessa citação; senão None.
     Olha só para o texto imediatamente antes da data."""
-    antes = re.sub(r"<[^>]+>", " ", conteudo[max(0, inicio - 200):inicio])
-    antes = re.sub(r"\s+", " ", _html.unescape(antes))
-    m = REGEX_CITACAO_DIPLOMA.search(antes)
+    m = REGEX_CITACAO_DIPLOMA.search(_texto_antes(conteudo, inicio))
     return m.group(0) if m else None
 
 
-def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None):
+def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None, fim=None):
     """Um marcador de MARCADORES_HISTORICOS suprime esta ocorrência?
-    Única regra, partilhada por `_esta_suprimido` e pelo auditor. Um
-    marcador de diploma só conta se a data for a da citação desse mesmo
-    diploma ("lei n.º" nunca suprime a data de uma Portaria)."""
+    Única regra, partilhada por `_esta_suprimido` e pelo auditor. Em datas,
+    um marcador de diploma só conta se a data for a da citação desse mesmo
+    diploma ("lei n.º" nunca suprime a data de uma Portaria), um «desde» só
+    a data que rege e um isento da produção de efeitos só a própria data."""
     if not re.search(marcador, janela, re.IGNORECASE):
         return False
-    if marcador in MARCADORES_SO_CITACAO and tipo in TIPOS_DATA_CITACAO:
+    if tipo not in TIPOS_DATA_CITACAO:
+        return True
+    if marcador in MARCADORES_DESDE:
+        return _rege_por_desde(marcador, conteudo, inicio)
+    if marcador in ISENTOS_DATA_PROPRIA:
+        return _data_propria_do_isento(marcador, conteudo, inicio, fim if fim is not None else inicio)
+    if marcador in MARCADORES_SO_CITACAO:
         citacao = _citacao_de_diploma(conteudo, inicio)
         return citacao is not None and re.search(marcador, citacao, re.IGNORECASE) is not None
     return True
@@ -373,6 +433,55 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
         "Fecho da CGA a novas inscrições (Lei n.º 60/2005, arts. 2.º e 9.º) — data fixa.",
     ("caixa-geral-aposentacoes.html", "31 de dezembro de 2005"):
         "Data de corte da salvaguarda e da parcela P1 (Lei n.º 60/2005, arts. 5.º e 7.º) — data fixa.",
+    # «desde 1 de janeiro de AAAA» que é início de lei, não vigência de valores
+    # anuais — a restrição do «desde» nunca o suprime (PR B do #332).
+    ("caixa-geral-aposentacoes.html", "1 de janeiro de 2015"):
+        "Desde quando a idade de acesso da CGA é a do regime geral (Lei n.º 60/2005, art. 3.º e Anexo I) — data fixa.",
+    ("cuidador-informal.html", "1 de janeiro de 2026"):
+        "Início de efeitos do Decreto-Lei n.º 138/2025 (subsídio deixa de contar para o abono) — data fixa.",
+    ("cuidador-informal.html", "1/1/2026"):
+        "Início de efeitos do Decreto-Lei n.º 138/2025 — data fixa.",
+    ("cuidador-informal.html", "01/01/2026"):
+        "Início de efeitos do Decreto-Lei n.º 138/2025 — data fixa.",
+    ("majoracao-subsidio-desemprego.html", "1 de janeiro de 2022"):
+        "Entrada em vigor da majoração (art. 28.º-A do DL 220/2006, aditado pelo DL 119/2021) — data fixa.",
+    ("fontes.html", "1 de janeiro de 2022"):
+        "Entrada em vigor da majoração de 10% (DL 119/2021) — data fixa.",
+    ("fontes.html", "1 de janeiro de 2023"):
+        "Início de efeitos do Decreto-Lei n.º 18/2023 — data fixa.",
+    ("fontes.html", "1 de janeiro de 2006"):
+        "Fecho da CGA a novas inscrições e início da parcela P2 (Lei n.º 60/2005) — data fixa.",
+    # Datas históricas que só estavam suprimidas por um «desde» ou um «Diário
+    # da República» por perto (aprovadas pelo Nuno, PR B do #332).
+    ("fontes.html", "31 de agosto de 1993"):
+        "Fronteira fixa da Lei n.º 60/2005.",
+    ("fontes.html", "10 de março de 2023"):
+        "Data da versão consolidada lida; actualidade é tema da revisão de conteúdo.",
+    ("subsidio-por-morte.html", "julho de 2012"):
+        "Limite de um regime passado.",
+    ("subsidio-por-morte.html", "janeiro de 2013"):
+        "Limite de um regime passado.",
+    # Publicação e aprovação do DL 166/2026 (aprovado pelo Nuno, PR B do #332).
+    ("calendario-pagamentos-psu.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("como-pedir-psu.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quem-tem-direito.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-lista-13-apoios.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "30/07/2026"):
+        "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "30/07/2026"):
+        "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
 }
 
 
@@ -556,10 +665,10 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verif
     if _tem_algum(MARCADORES_EXEMPLO, janela):
         return True  # data hipotética de exemplo — nunca passa pelo portão
 
-    if _tem_algum(MARCADORES_ISENTOS_DO_PORTAO, janela):
+    if any(marcador_historico_aplica(mk, janela, conteudo, inicio, tipo, fim) for mk in MARCADORES_ISENTOS_DO_PORTAO):
         return True  # data fixada por lei, citada como facto permanente (#186)
 
-    if any(marcador_historico_aplica(mk, janela, conteudo, inicio, tipo) for mk in MARCADORES_HISTORICOS):
+    if any(marcador_historico_aplica(mk, janela, conteudo, inicio, tipo, fim) for mk in MARCADORES_HISTORICOS):
         if data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em:
             # Compromisso ainda por cumprir à data da última verificação desta
             # página — um marcador histórico (ex.: `celebrados? at[ée]`) pode

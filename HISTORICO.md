@@ -7577,6 +7577,40 @@ Escolar e as afirmações «sempre»/«todos os anos» ficam na #344. Janeiro de
 2027: 39 → 37 páginas com alerta. Carimbos «Verificado a» não avançados:
 nada foi verificado de novo.
 
+
+### Última revisão: 2026-10-18 — «Desde», isentos e citações só na data que regem (issue #332, PR B; fecha #335)
+
+`desde …` e `em vigor desde` só suprimem a data logo a seguir, só com o dia
+ou «de» pelo meio; nunca «desde 1 de janeiro de AAAA» (20 ocorrências no
+site: 6 de valores anuais ficam expostas — PSI ×4, garantia para a infância,
+assistência à família —, 14 de início de lei entram em `DATAS_PERMANENTES`:
+cuidador-informal ×5, CGA ×4, majoração ×2, fontes ×3). Os isentos da
+produção de efeitos só suprimem a própria data. `despacho`, `\bdl\s*n`,
+`diário da república` e `dre.pt` só suprimem a data da própria citação
+(nenhuma citação de despacho ou DL no site traz o ano depois da data).
+
+Mais 4 entradas em `DATAS_PERMANENTES`, não pedidas, aprovadas pelo Nuno
+depois de ver a tabela de alcance: `fontes.html` «31 de agosto de 1993»
+(fronteira fixa da Lei n.º 60/2005) e «10 de março de 2023» (data da versão
+consolidada lida; a actualidade é tema da revisão de conteúdo) — sem elas
+`test_fontes_real_nao_gera_alerta_issue_170` falha — e
+`subsidio-por-morte.html` «julho de 2012» e «janeiro de 2013» (limites de um
+regime passado) — datas históricas que só estavam suprimidas por um
+«desde» ou um «Diário da República» por perto. E as datas de publicação
+(13/08/2026, «13 de agosto de 2026») e de aprovação (30/07/2026) do DL
+166/2026, aprovadas pelo Nuno, em 6 páginas. Ao todo 22 entradas novas, 35
+ocorrências (1 é um carimbo, que mantém a regra própria); tabela de alcance
+no PR.
+
+Baseline do auditor (2026): 345 → 318. Auditor em 2027: 356 → 337
+ocorrências suprimidas; 25 ficam expostas (lista na issue #332). Alertas:
+janeiro de 2027 passa de 39 para 41 páginas (entram assistencia-familia-filhos
+e primeiro-direito); em 2026 só muda majoracao-subsidio-desemprego, que deixa
+de alertar por «a 1 de janeiro de 2022». Testes de efeito em
+`tests/test_marcadores_desde_data.py`; 25 falham sem a regra nova. Testes do
+auditor ajustados sem mudar o que testam (exemplos «desde 1 de janeiro»
+passaram a outro dia; o despacho por proximidade passou a citação).
+
 ---
 
 *Última revisão automática: 2026-10-18*

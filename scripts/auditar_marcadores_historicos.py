@@ -314,7 +314,8 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                     "correspondencia": _normalizar_frase(m.group(0), em_jsonld=False),
                     "frase": frase_envolvente(conteudo, m.start(), m.end()),
                 })
-            isentos = [mk for mk in MARCADORES_ISENTOS_DO_PORTAO if re.search(mk, janela, re.IGNORECASE)]
+            isentos = [mk for mk in MARCADORES_ISENTOS_DO_PORTAO
+                       if marcador_historico_aplica(mk, janela, conteudo, m.start(), padrao["tipo"], m.end())]
             if antiga and not _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
                 candidatos = MARCADORES_HISTORICOS
             elif isentos and (antiga or _posterior_ao_carimbo(data_ocorrencia, verificado_em)):
@@ -323,7 +324,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                 continue
             frase = None
             for marcador in candidatos:
-                if marcador_historico_aplica(marcador, janela, conteudo, m.start(), padrao["tipo"]):
+                if marcador_historico_aplica(marcador, janela, conteudo, m.start(), padrao["tipo"], m.end()):
                     if frase is None:
                         frase = frase_envolvente(conteudo, m.start(), m.end())
                     registos.append({

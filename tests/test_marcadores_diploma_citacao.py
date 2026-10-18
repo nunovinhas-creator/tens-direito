@@ -62,10 +62,11 @@ def test_citacao_de_decreto_lei_suprimida_pelos_marcadores_do_proprio_diploma():
     assert v._esta_suprimido(html, m.start(), m.end(), 2026, 1, tipo="prazo_outono")
 
 
-def test_despacho_continua_a_suprimir_por_proximidade():
+def test_despacho_ja_nao_suprime_por_proximidade():
+    # PR B do #332: despacho passou a só suprimir a data da própria citação.
     html = "<p>O prazo terminou em março de 2025, conforme o Despacho n.º 8452-A/2015.</p>"
     m = _ocorrencias(html, "março de 2025")[0]
-    assert v._esta_suprimido(html, m.start(), m.end(), 2026, 1, tipo="data_mes_ano")
+    assert not v._esta_suprimido(html, m.start(), m.end(), 2026, 1, tipo="data_mes_ano")
 
 
 def test_ano_letivo_e_valor_ias_continuam_a_ser_suprimidos_por_proximidade():

@@ -4741,11 +4741,23 @@ uma Issue é criada ou um valor é alterado:
    suprimem uma **data** que faça parte da própria citação («Portaria n.º
    305/2022, de 22 de dezembro de 2022» — `_citacao_de_diploma`), e só se o
    marcador corresponder ao diploma citado. Uma data que apenas está perto
-   de um diploma deixa de ser suprimida por eles. `despacho`, `\bdl\s*n`,
-   os pares de ano lectivo, os valores do IAS e o compromisso no futuro
-   ficam como estavam. Regra única em `marcador_historico_aplica()`,
+   de um diploma deixa de ser suprimida por eles. Desde o PR B também
+   `despacho`, `\bdl\s*n`, `diário da república` («Diário da República n.º
+   45/2023, Série I, de …») e `dre.pt` (sem forma de citação com data: nunca
+   suprime uma data). **«Desde» só na data que rege** (PR B, #335):
+   `desde …` e `em vigor desde` só suprimem a data logo a seguir, só com o
+   dia ou «de» pelo meio («em vigor desde 14 de agosto de 2026»), e nunca
+   «desde 1 de janeiro de AAAA» — no site é sobretudo vigência de valores
+   anuais; os inícios de lei a 1 de janeiro estão em `DATAS_PERMANENTES`.
+   Os isentos da produção de efeitos (`MARCADORES_ISENTOS_DO_PORTAO` com
+   «efeitos») só suprimem a própria data («Produção de efeitos:
+   31/12/2026»; a data logo antes de «como a data de produção de efeitos»),
+   já não «Publicado em DR …»/«Aprovado em CM …» na mesma linha. Os pares
+   de ano lectivo, os valores do IAS e o compromisso no futuro ficam como
+   estavam (só datas). Regra única em `marcador_historico_aplica()`,
    partilhada com o auditor de marcadores. Testes:
-   `tests/test_marcadores_diploma_citacao.py`.
+   `tests/test_marcadores_diploma_citacao.py`,
+   `tests/test_marcadores_desde_data.py`.
    **Datas permanentes por página** (`DATAS_PERMANENTES`, issue #332):
    (página, data exactamente como está no texto) → motivo numa linha.
    Todas as ocorrências dessa data nessa página ficam suprimidas, sejam

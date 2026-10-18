@@ -209,14 +209,6 @@
   },
   {
     "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "outubro de 2025",
-    "frase": "Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
     "marcador": "exist(?:e|ia|iam)\\s+antes\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "abril de 2024",
@@ -443,6 +435,30 @@
     "pagina": "caixa-geral-aposentacoes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2015",
+    "frase": "Desde 1 de janeiro de 2015, a mesma idade normal do regime geral, com o mesmo prazo de garantia.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "setembro de 1993",
     "frase": "Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º).",
     "ordinal": 1
@@ -685,70 +701,6 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 1993",
     "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "🚪 Fechada a novas inscrições desde 1 de janeiro de 2006 — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2015",
-    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2015",
-    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2015",
-    "frase": "Desde 1 de janeiro de 2015, a mesma idade normal do regime geral, com o mesmo prazo de garantia.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?",
     "ordinal": 1
   },
   {
@@ -1059,14 +1011,6 @@
     "pagina": "calendario-pagamentos-psu.html",
     "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
     "tipo": "data_numerica",
-    "correspondencia": "14/08/2026",
-    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 30.º, 57.º e 63.º, Diário da República n.º 156/2026, Série I) · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
-    "ordinal": 1
-  },
-  {
-    "pagina": "calendario-pagamentos-psu.html",
-    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
-    "tipo": "data_numerica",
     "correspondencia": "31/12/2026",
     "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 30.º, 57.º e 63.º, Diário da República n.º 156/2026, Série I) · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
     "ordinal": 1
@@ -1253,22 +1197,6 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "frase": "👶 Quem tem direito: crianças nascidas a partir de 1 de setembro de 2021, inclusive.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "despacho",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "despacho",
-    "tipo": "prazo_outono",
-    "correspondencia": "22 de dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
     "ordinal": 1
   },
   {
@@ -1491,6 +1419,14 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2023",
     "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
     "ordinal": 1
@@ -1515,8 +1451,48 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Fecha a Caixa Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2013",
     "frase": "Alterou vários regimes de protecção social, incluindo o Decreto-Lei n.º 322/90 — eliminou o prazo de caducidade de 5 anos da pensão de sobrevivência, equiparou a união de facto ao casamento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2023",
+    "frase": "Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).",
     "ordinal": 1
   },
   {
@@ -1595,40 +1571,8 @@
     "pagina": "fontes.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 1993",
-    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
     "frase": "Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2023",
-    "frase": "Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023.",
     "ordinal": 1
   },
   {
@@ -1717,70 +1661,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Altera o n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, de 22 de março (regime do Apoio Extraordinário à Renda, fechado a contratos celebrados até 15 de março de 2023) — acrescenta uma ressalva excecional e temporária: o apoio mantém-se, num contrato posterior a essa data, quando, cumulativamente, o contrato anterior tiver cessado comprovadamente por iniciativa do senhorio (nunca do locatário), o contrato em vigor disser respeito ao mesmo locatário e ao mesmo imóvel, corresponder a habitação permanente e domicílio fiscal, e isso for comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2023",
-    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2023",
-    "frase": "Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "prazo_outono",
-    "correspondencia": "11 de dezembro de 2023",
-    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "diário da república",
-    "tipo": "prazo_outono",
-    "correspondencia": "11 de dezembro de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "dre\\.pt",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
     "ordinal": 1
   },
   {
@@ -1905,7 +1785,15 @@
   },
   {
     "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2022",
+    "frase": "A majoração aplica-se também a trabalhadores independentes — quer aos que prestam serviços maioritariamente a uma entidade contratante e dela dependem economicamente (Subsídio por Cessação de Actividade, art. 10.º-A do Decreto-Lei n.º 65/2012), quer aos que têm actividade empresarial em nome próprio ou são membros dos órgãos estatutários de pessoas colectivas (Subsídio por Cessação de Actividade Profissional, art. 11.º-A do Decreto-Lei n.º 12/2013) — e a quem já recebia o subsídio quando o Decreto-Lei n.º 119/2021 entrou em vigor, a 1 de janeiro de 2022.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "majoracao-subsidio-desemprego.html",
+    "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
     "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
@@ -1913,23 +1801,7 @@
   },
   {
     "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "em vigor desde",
+    "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
     "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
@@ -2075,14 +1947,6 @@
     "pagina": "psu-quando-entra-em-vigor.html",
     "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
     "tipo": "data_numerica",
-    "correspondencia": "14/08/2026",
-    "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em CM 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
-    "ordinal": 1
-  },
-  {
-    "pagina": "psu-quando-entra-em-vigor.html",
-    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
-    "tipo": "data_numerica",
     "correspondencia": "31/12/2026",
     "frase": "Diário da República — dre.pt (Decreto-Lei n.º 166/2026, de 13 de agosto, Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em CM 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 13 de agosto de 2026 pela redação do Tens Direito",
     "ordinal": 1
@@ -2194,25 +2058,9 @@
   {
     "pagina": "psu-quem-tem-direito.html",
     "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2026",
-    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "psu-quem-tem-direito.html",
-    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
     "tipo": "data_numerica",
     "correspondencia": "31/12/2026",
     "frase": "📌 Regime em vigor desde 14/08/2026; produção de efeitos a 31/12/2026 (art. 63.º) As condições descritas nesta página já estão fixadas pelo Decreto-Lei n.º 166/2026, de 13 de agosto.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "psu-quem-tem-direito.html",
-    "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos\\s+a\\s+31/12/2026\\s+\\(art(?:igo|\\.)\\s*63\\.º\\)",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2026",
-    "frase": "Já podes candidatar-te — o artigo 63.º fixa 31 de dezembro de 2026 como data de produção de efeitos; confirma na Segurança Social Direta se o pagamento já está a ser feito ao teu caso.",
     "ordinal": 1
   },
   {
@@ -2389,30 +2237,6 @@
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2020",
     "frase": "📅 Critério pontual: estar sujeito à legislação de um dos lados exactamente a 31 de dezembro de 2020, fim do período de transição (art. 30.º, Acordo de Saída).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, mas o IRN desmentiu-as publicamente: o cartão mantém-se válido até à data impressa nele.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "prazo_outono",
-    "correspondencia": "30 de dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
     "ordinal": 1
   },
   {
@@ -2603,14 +2427,6 @@
     "pagina": "simulador-psu.html",
     "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
     "tipo": "data_numerica",
-    "correspondencia": "14/08/2026",
-    "frase": "Activado na Fase 2 (2026-08-13) — Decreto-Lei n.º 166/2026 publicado, valores reais em vigor desde 14/08/2026.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "simulador-psu.html",
-    "marcador": "como\\s+(?:a\\s+)?data\\s+de\\s+produ[çc][ãa]o\\s+de\\s+efeitos",
-    "tipo": "data_numerica",
     "correspondencia": "31/12/2026",
     "frase": "Ver aviso de vigência no corpo: o artigo 63.º fixa 31/12/2026 como data de produção de efeitos (facto legal, permanente); se o pagamento já está a acontecer é sempre confirmado na Segurança Social Direta, nunca assumido aqui (Issue #186).",
     "ordinal": 1
@@ -2665,6 +2481,38 @@
   },
   {
     "pagina": "subsidio-por-morte.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "subsidio-por-morte.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
@@ -2681,38 +2529,6 @@
   },
   {
     "pagina": "subsidio-por-morte.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
@@ -2724,38 +2540,6 @@
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
     "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
     "ordinal": 2
   }
