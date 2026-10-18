@@ -6843,7 +6843,8 @@ sem `tipo`. A regra nova só se via no auditor, e os alertas ficavam iguais.
 Passou a levar o `tipo`, o que só activa a regra nova: `desde` e os restantes
 marcadores continuam por proximidade no ano lectivo.
 
-Baseline do auditor (2026): 318 → 306, 12 removidas, nenhuma nova. Alertas,
+Baseline do auditor (2026), só com a regra do ano lectivo: 318 → 306, 12
+removidas, nenhuma nova. Alertas,
 outubro de 2026 a dezembro de 2027: iguais, excepto junho de 2027 (10 → 13
 páginas: entram bolsa-de-estudo-ensino-superior, calendario-escolar-apoios e
 simulador-ase) e julho de 2027 (45 → 46: simulador-ase). Em junho de 2027
@@ -6851,10 +6852,23 @@ passam a ficar expostas 34 ocorrências; lista no PR. Testes de efeito em
 `tests/test_marcadores_ano_letivo_citacao.py`: 11 de 13 falham com o código
 anterior.
 
-As 3 supressões por acaso (`celebrados até` em p/habitacao.html, `revisão
-urgente` em apoio-extraordinario-renda.html, `anterior a` em
-garantia-publica-credito-habitacao.html) ficam propostas no PR, sem
-aplicar.
+**Supressões por acaso (aprovado pelo Nuno, mesmo PR).** `celebrados até`,
+`posterior a`, `anterior(es) a` e `revisão urgente` só suprimem a data logo a
+seguir, com o dia ou «de»/«em» pelo meio (`MARCADORES_DATA_SEGUINTE`). No ano
+lectivo e no IAS continuam por proximidade. Os alertas de outubro de 2026 a
+dezembro de 2027 ficam iguais. Auditor: 2026 de 306 para 298 entradas (10
+saem, 2 entram); 2027 de 427 para 415 (14 saem, 2 entram). Ficam expostas 2
+ocorrências, ambas em 2027: «fevereiro de 2026» em p/habitacao.html e em
+apoio-extraordinario-renda.html.
+
+`DATAS_PERMANENTES`: entra «2024/2025» em `calendario-escolar-apoios.html`,
+início fixo do calendário plurianual 2024/2025 a 2027/2028 (Despacho n.º
+8368/2024). O «2027/2028» fica exposto e alerta em junho de 2028. O ramo do ano
+lectivo de `_pagina_tem_alerta` passou a ignorar as ocorrências de
+`DATAS_PERMANENTES`. As frases «Em 2025/2026… tinha sido» (bolsa de mérito e
+bolsa de estudo) ficam expostas, como decidido.
+
+Baseline: 318 → 298. 7 dos testes novos falham com o código anterior.
 
 ---
 

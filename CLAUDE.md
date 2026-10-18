@@ -4757,7 +4757,11 @@ uma Issue é criada ou um valor é alterado:
    próprio número do diploma («Despacho n.º 2025/2026»); um «2026/2027»
    perto de um diploma, ou na ementa da citação, deixa de ser suprimido
    por eles (os outros marcadores, como «desde», continuam por
-   proximidade no ano lectivo). Os valores do IAS e o compromisso no
+   proximidade no ano lectivo). Também no PR D: `celebrados até`,
+   `posterior a`, `anterior(es) a` e `revisão urgente` só suprimem a data
+   logo a seguir («celebrados até 15 de março de 2023», «revisão urgente em
+   agosto de 2025»; `MARCADORES_DATA_SEGUINTE`) — no ano lectivo e no IAS
+   continuam por proximidade. Os valores do IAS e o compromisso no
    futuro ficam como estavam. Regra única em `marcador_historico_aplica()`,
    partilhada com o auditor de marcadores; o ramo do ano lectivo de
    `_pagina_tem_alerta` passa o `tipo` (sem ele a regra só valia no
@@ -4771,7 +4775,10 @@ uma Issue é criada ou um valor é alterado:
    auditor de marcadores regista-as no baseline com o rótulo
    `DATAS_PERMANENTES`. Entrada órfã (a data já não está na página) falha
    `tests/test_datas_permanentes.py`. Uma data que é facto permanente de
-   uma página entra em DATAS_PERMANENTES, não num marcador global.
+   uma página entra em DATAS_PERMANENTES, não num marcador global. Vale
+   também para um ano lectivo («2024/2025» em `calendario-escolar-apoios.html`,
+   PR D): o ramo do ano lectivo de `_pagina_tem_alerta` ignora as
+   ocorrências de DATAS_PERMANENTES.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.

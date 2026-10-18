@@ -94,3 +94,69 @@ def test_paginas_reais_passam_a_alertar_ano_letivo_em_junho_de_2027(pagina, par)
     assert par in html
     pad = next(p for p in v.PADROES if p["tipo"] == "ano_letivo")
     assert v._pagina_tem_alerta(html, pad, 2027, 6, pagina=pagina)
+
+
+# ── Data-limite e evento só na data que regem (PR D) ────────────────────────
+
+@pytest.mark.parametrize("marcador,frase,data", [
+    (r"celebrados?\s+at[ée]\b", "Só para contratos celebrados até 15 de março de 2023.", "março de 2023"),
+    (r"\bposterior a\b", "Contratos de data posterior a 15 de março de 2023.", "março de 2023"),
+    (r"\banterior(?:es)?\s+a\b", "Contratos anteriores a 15/03/2023.", "15/03/2023"),
+    ("revisão urgente", "Pediu uma revisão urgente em agosto de 2025.", "agosto de 2025"),
+])
+def test_marcador_suprime_a_data_que_rege(marcador, frase, data):
+    html = f"<p>{frase}</p>"
+    m = _primeira(html, data)
+    janela = v._janela_contexto(html, m.start(), m.end())
+    assert v.marcador_historico_aplica(marcador, janela, html, m.start(), "data_mes_ano", m.end())
+
+
+@pytest.mark.parametrize("marcador,frase", [
+    (r"celebrados?\s+at[ée]\b",
+     "Só para contratos celebrados até 15 de março de 2023. O Governo anunciou em fevereiro de 2025 a revogação."),
+    (r"\bposterior a\b",
+     "Contratos de data posterior a 15 de março de 2023. O Governo anunciou em fevereiro de 2025 a revogação."),
+    (r"\banterior(?:es)?\s+a\b",
+     "A regra vale desde a revisão, mas se a avaliação for anterior a essa data, anunciada em fevereiro de 2025, mantém-se."),
+    ("revisão urgente",
+     "Pediu uma revisão urgente em agosto de 2024. O Governo anunciou em fevereiro de 2025 a revogação."),
+])
+def test_data_so_perto_do_marcador_deixa_de_ser_suprimida(marcador, frase):
+    html = f"<p>{frase}</p>"
+    m = _primeira(html, "fevereiro de 2025")
+    janela = v._janela_contexto(html, m.start(), m.end())
+    assert re.search(marcador, janela, re.IGNORECASE), "teste vácuo"
+    assert not v.marcador_historico_aplica(marcador, janela, html, m.start(), "data_mes_ano", m.end())
+    alerta = v.detectar_alertas(html, "x.html", 2026, 1)
+    assert alerta is not None and alerta["tipo"] == "data_mes_ano"
+
+
+def test_marcadores_data_seguinte_continuam_por_proximidade_no_ano_letivo():
+    html = "<p>Contratos celebrados até ao fim de 2023/2024.</p>"
+    m = _primeira(html, "2023/2024")
+    janela = v._janela_contexto(html, m.start(), m.end())
+    assert v.marcador_historico_aplica(r"celebrados?\s+at[ée]\b", janela, html, m.start(), "ano_letivo", m.end())
+
+
+@pytest.mark.parametrize("pagina,marcador,data", [
+    ("p/habitacao.html", r"celebrados?\s+at[ée]\b", "fevereiro de 2026"),
+    ("apoio-extraordinario-renda.html", "revisão urgente", "fevereiro de 2026"),
+])
+def test_paginas_reais_supressoes_por_acaso_deixam_de_valer(pagina, marcador, data):
+    """Só as ocorrências com o marcador na janela — as outras «fevereiro de
+    2026» da página já estavam expostas antes."""
+    html = (RAIZ / pagina).read_text(encoding="utf-8")
+    perto = [m for m in re.finditer(re.escape(data), html)
+             if re.search(marcador, v._janela_contexto(html, m.start(), m.end()), re.IGNORECASE)]
+    assert perto, "teste vácuo: nenhuma ocorrência com o marcador por perto"
+    assert any(not v._esta_suprimido(html, m.start(), m.end(), 2027, 1, tipo="data_mes_ano") for m in perto)
+
+
+def test_calendario_plurianual_2024_2025_e_permanente_e_2027_2028_fica_exposto():
+    pagina = "calendario-escolar-apoios.html"
+    html = (RAIZ / pagina).read_text(encoding="utf-8")
+    pad = next(p for p in v.PADROES if p["tipo"] == "ano_letivo")
+    sem_resto = re.sub(r"\b(?!2024/2025\b|2027/2028\b)20\d{2}/20\d{2}\b", "", html)
+    assert "2024/2025" in sem_resto and "2027/2028" in sem_resto
+    assert not v._pagina_tem_alerta(sem_resto, pad, 2027, 6, pagina=pagina)
+    assert v._pagina_tem_alerta(sem_resto, pad, 2028, 6, pagina=pagina)
