@@ -6828,6 +6828,34 @@ vazio falha; deploy `cancelled` (substituído por commit mais novo) nunca
 `tests/test_garantir_deploy_pages.py`: 10 testes, 7 a falhar com a
 lógica antiga.
 
+
+### Última revisão: 2026-10-18 — Ano lectivo só na própria citação (issue #332, PR D)
+
+`despacho`, `decreto-lei`, `decreto lei`, `lei n.º`, `diário da república`,
+`dre.pt`, `portaria` e `\bdl\s*n` só suprimem um ano lectivo «AAAA/AAAA»
+quando o par é o número do próprio diploma (`REGEX_NUMERO_DIPLOMA`). É a
+mesma restrição que o PR 2 aplicou às datas. Nenhum dos 24 anos lectivos do
+site perto de um diploma está nesse caso, incluindo os da ementa («Despacho
+n.º 8368/2024 … — calendário escolar 2024/2025 a 2027/2028»).
+
+Achado: o ramo `ano_letivo` de `_pagina_tem_alerta` chamava `_esta_suprimido`
+sem `tipo`. A regra nova só se via no auditor, e os alertas ficavam iguais.
+Passou a levar o `tipo`, o que só activa a regra nova: `desde` e os restantes
+marcadores continuam por proximidade no ano lectivo.
+
+Baseline do auditor (2026): 318 → 306, 12 removidas, nenhuma nova. Alertas,
+outubro de 2026 a dezembro de 2027: iguais, excepto junho de 2027 (10 → 13
+páginas: entram bolsa-de-estudo-ensino-superior, calendario-escolar-apoios e
+simulador-ase) e julho de 2027 (45 → 46: simulador-ase). Em junho de 2027
+passam a ficar expostas 34 ocorrências; lista no PR. Testes de efeito em
+`tests/test_marcadores_ano_letivo_citacao.py`: 11 de 13 falham com o código
+anterior.
+
+As 3 supressões por acaso (`celebrados até` em p/habitacao.html, `revisão
+urgente` em apoio-extraordinario-renda.html, `anterior a` em
+garantia-publica-credito-habitacao.html) ficam propostas no PR, sem
+aplicar.
+
 ---
 
 *Última revisão automática: 2026-10-03*

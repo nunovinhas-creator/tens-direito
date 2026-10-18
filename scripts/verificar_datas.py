@@ -321,17 +321,27 @@ MARCADORES_SO_CITACAO = (
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º",
     r"despacho", r"\bdl\s*n", r"diário da república", r"dre\.pt",
 )
-# Só para datas: um par de ano lectivo ou um valor do IAS nunca é "a data de
-# uma citação", por isso aí estes marcadores continuam a valer por proximidade.
-# O compromisso no futuro também fica como estava: a correspondência começa no
-# verbo, não na data, e uma frase "vai mudar a 1 de janeiro…" não é citação.
+# Datas: só a data da citação. Ano lectivo (PR D do #332): só o par que é o
+# próprio número do diploma ("Despacho n.º 2026/2027", forma que o site hoje
+# não usa) — um ano lectivo perto de um diploma, mesmo na ementa da citação
+# ("— calendário escolar 2024/2025 a 2027/2028"), deixa de ser suprimido por
+# eles. O valor do IAS continua por proximidade. O compromisso no futuro
+# também fica como estava: a correspondência começa no verbo, não na data,
+# e uma frase "vai mudar a 1 de janeiro…" não é citação.
 TIPOS_DATA_CITACAO = ("data_mes_ano", "data_numerica", "prazo_outono")
+TIPOS_NUMERO_CITACAO = ("ano_letivo",)
 assert set(MARCADORES_SO_CITACAO) <= set(MARCADORES_HISTORICOS)
 REGEX_CITACAO_DIPLOMA = re.compile(
     r"(?:decreto-lei|decreto\s+lei|\blei|portaria|despacho|\bdl"
     r"|di[áa]rio\s+da\s+rep[úu]blica)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
     r"(?:,?\s*(?:s[ée]rie\s+[ivx]+|\d\.ª\s+s[ée]rie))?"
     r",?\s+de\s+(?:\d{1,2}\s+de\s+)?$",
+    re.IGNORECASE,
+)
+# Texto logo antes de um ano lectivo que é o número do diploma citado.
+REGEX_NUMERO_DIPLOMA = re.compile(
+    r"(?:decreto-lei|decreto\s+lei|\blei|portaria|despacho|\bdl"
+    r"|di[áa]rio\s+da\s+rep[úu]blica)\s*n\.?\s*[ºo°]\s*[\w\-]*(?:/[\w\-]+)*/?$",
     re.IGNORECASE,
 )
 
@@ -392,10 +402,14 @@ def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None, fim
     """Um marcador de MARCADORES_HISTORICOS suprime esta ocorrência?
     Única regra, partilhada por `_esta_suprimido` e pelo auditor. Em datas,
     um marcador de diploma só conta se a data for a da citação desse mesmo
-    diploma ("lei n.º" nunca suprime a data de uma Portaria), um «desde» só
+    diploma ("lei n.º" nunca suprime a data de uma Portaria) e num ano
+    lectivo só se o par for o número desse diploma; um «desde» só
     a data que rege e um isento da produção de efeitos só a própria data."""
     if not re.search(marcador, janela, re.IGNORECASE):
         return False
+    if tipo in TIPOS_NUMERO_CITACAO and marcador in MARCADORES_SO_CITACAO:
+        numero = REGEX_NUMERO_DIPLOMA.search(_texto_antes(conteudo, inicio, 80))
+        return numero is not None and re.search(marcador, numero.group(0), re.IGNORECASE) is not None
     if tipo not in TIPOS_DATA_CITACAO:
         return True
     if marcador in MARCADORES_DESDE:
@@ -746,7 +760,7 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None, pagina=No
         ocorrencias = list(re.finditer(padrao["regex"], conteudo))
         pares_explicados = {
             m.group(0) for m in ocorrencias
-            if int(m.group(1)) < ano and _esta_suprimido(conteudo, m.start(), m.end(), ano, mes)
+            if int(m.group(1)) < ano and _esta_suprimido(conteudo, m.start(), m.end(), ano, mes, tipo=tipo)
         }
         for m in ocorrencias:
             if int(m.group(1)) >= ano:

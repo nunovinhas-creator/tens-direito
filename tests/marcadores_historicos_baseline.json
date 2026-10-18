@@ -216,78 +216,6 @@
     "ordinal": 1
   },
   {
-    "pagina": "bolsa-de-estudo-ensino-superior.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "O prazo de 2026/2027 (Despacho n.º 7994/2026) começa mais tarde do que em anos anteriores — em 2025/2026 decorreu entre 25 de junho e 30 de setembro.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-estudo-ensino-superior.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Para 2026/2027, o prazo foi fixado entre 14 de agosto e 2 de outubro de 2026 (Despacho n.º 7994/2026) — mais tarde do que em anos anteriores (em 2025/2026 decorreu entre 25 de junho e 30 de setembro).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-estudo-ensino-superior.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Para 2026/2027: entre 14 de agosto e 2 de outubro de 2026 (Despacho n.º 7994/2026) — mais tarde do que em 2025/2026 (25 de junho a 30 de setembro).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026, com IAS 2025 = 522,50 €, o valor tinha sido 1.306,25 €.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "portaria",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "portaria",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026 (IAS 2025 = 522,50 €) tinha sido 1.306,25 €.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "bolsa-de-merito.html",
-    "marcador": "portaria",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Em 2025/2026, com IAS 2025 = 522,50 €, o valor tinha sido 1.306,25 €.",
-    "ordinal": 1
-  },
-  {
     "pagina": "caixa-geral-aposentacoes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
@@ -981,30 +909,6 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 1993",
     "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "calendario-escolar-apoios.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2024/2025",
-    "frase": "Despacho n.º 8368/2024, de 25 de julho — calendário escolar 2024/2025 a 2027/2028",
-    "ordinal": 1
-  },
-  {
-    "pagina": "calendario-escolar-apoios.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2024/2025",
-    "frase": "Entre 11 e 15 de setembro de 2026 — cada escola fixa o dia exato dentro deste intervalo, segundo o Despacho n.º 8368/2024, de 25 de julho (calendário escolar plurianual 2024/2025 a 2027/2028).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "calendario-escolar-apoios.html",
-    "marcador": "despacho",
-    "tipo": "ano_letivo",
-    "correspondencia": "2025/2026",
-    "frase": "Despacho n.º 9989/2025, de 21 de agosto — altera o 1.º período de 2025/2026 (não afeta 2026/2027)",
     "ordinal": 1
   },
   {
