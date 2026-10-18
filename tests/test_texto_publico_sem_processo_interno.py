@@ -8,8 +8,11 @@ um facto — contra a regra de nunca falar de automação em páginas públicas
 "confirmado em várias fontes secundárias independentes, não no texto
 oficial do Diário da República".
 
-Âmbito: todo o texto que o leitor ou um motor de busca recebe — corpo,
-atributos, meta tags e JSON-LD. Comentários HTML e JavaScript ficam de fora.
+Âmbito: todo o texto que o servidor entrega — corpo, atributos, meta tags,
+JSON-LD, comentários HTML e o código dos `<script>` (incluindo comentários
+JavaScript). Qualquer pessoa os lê com "ver código-fonte"; até à issue #332
+os comentários ficavam de fora e duas frases com "nesta sessão" (creche,
+minuta de reclamação) passaram por isso, mais 11 noutras 7 páginas.
 "Iniciar sessão" (entrar numa conta) é uso legítimo e continua permitido, tal
 como "bloqueado" fora de acesso a sites (vales MEGA, calculadora à espera
 dos parâmetros, direito à dedução).
@@ -43,14 +46,18 @@ PROIBIDO = re.compile(
 
 
 def textos_publicos(html):
-    """(origem, texto) de tudo o que é público: texto, atributos e JSON-LD."""
+    """(origem, texto) de tudo o que o servidor entrega: texto, atributos,
+    JSON-LD, comentários HTML e código dos scripts."""
     soup = BeautifulSoup(html, "html.parser")
-    for c in soup.find_all(string=lambda s: isinstance(s, Comment)):
-        c.extract()
     res = []
+    for c in soup.find_all(string=lambda s: isinstance(s, Comment)):
+        res.append(("comentário HTML", " ".join(c.split())))
+        c.extract()
     for sc in soup.find_all(["script", "style"]):
         if sc.name == "script" and sc.get("type") == "application/ld+json":
             res.append(("JSON-LD", json.dumps(json.loads(sc.string or "null"), ensure_ascii=False)))
+        elif sc.name == "script":
+            res.append(("script", " ".join((sc.string or "").split())))
         sc.extract()
     for el in soup.find_all(True):
         for nome, valor in el.attrs.items():
@@ -86,6 +93,10 @@ def test_pagina_sem_processo_interno_em_texto_publico(caminho):
     "<p>Confirmado numa outra sessão.</p>",
     '<meta name="description" content="Verificado nesta sessão">',
     '<script type="application/ld+json">{"text": "bloqueado nesta sessão"}</script>',
+    "<p>Texto.</p><!-- acesso bloqueado nesta sessão -->",
+    "<script>// confirmado nesta sessão\nvar x = 1;</script>",
+    "<!-- Lido por inteiro em fonte primária nesta sessão (16/09/2026) -->",
+    "<!-- Verificado via pesquisa a fontes que reproduzem o texto legal\n    consolidado nesta sessão — 06/07/2026. -->",
     "<p>Confirmado por triangulação de várias fontes.</p>",
     "<p>As três datas foram trianguladas por fontes secundárias.</p>",
     "<p>O acesso automatizado a bportugal.pt está bloqueado nesta verificação.</p>",
@@ -99,13 +110,13 @@ def test_guarda_apanha_as_variantes(html):
 @pytest.mark.parametrize("html", [
     "<p>Inicia sessão com o teu NIF e palavra-passe.</p>",
     "<p>Passa a ser possível iniciar sessão com o teu email.</p>",
-    "<p>Texto.</p><!-- acesso bloqueado nesta sessão -->",
-    "<script>// confirmado nesta sessão\nvar x = 1;</script>",
+    "<!-- Inicia sessão na Segurança Social Direta -->",
+    "<script>// botão de iniciar sessão\nvar x = 1;</script>",
     "<p>Se ele não o fizer, o teu direito à dedução não fica bloqueado.</p>",
     "<p>Os vales do ano seguinte ficam bloqueados para o NIF do educando.</p>",
     "<p>Esta calculadora fica bloqueada até os parâmetros carregarem.</p>",
     "<p>Página não encontrada (erro 404).</p>",
     "<p>Confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República.</p>",
 ])
-def test_guarda_permite_usos_legitimos_e_ignora_comentarios(html):
+def test_guarda_permite_usos_legitimos(html):
     assert not ocorrencias(html)

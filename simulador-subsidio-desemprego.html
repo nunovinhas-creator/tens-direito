@@ -496,20 +496,21 @@
     // calcularSubsidioDesemprego() e calcularDuracao() lêem exclusivamente
     // deste objecto (e de TABELA_DURACAO_BASE, ver abaixo).
     //
-    // Valores confirmados por triangulação externa (13/07/2026): DECO
+    // Valores confirmados em várias fontes secundárias independentes (13/07/2026): DECO
     // PROteste, ABANCA, CGD, Montepio, Doutor Finanças, Fed Finance —
     // sem divergências. Confirmado também que a redução de 10% aos 180
     // dias (medida histórica de 2012) foi REVOGADA em janeiro de 2018 —
     // não é modelada, nem deve voltar a sê-lo sem um facto novo e
-    // confirmado (ver CLAUDE.md, auditoria da Fase 1 dessa sessão).
+    // confirmado (ver HISTORICO.md, entrada de 2026-07-13 deste simulador,
+    // auditoria da Fase 1).
     //
     // Migração para o padrão OpenFisca (2026-08-24, ver
     // dados/parametros/desemprego.yaml): PARAMETROS_SUBSIDIO_DESEMPREGO e
     // TABELA_DURACAO_BASE deixam de ser objectos JS inline — passam a
     // carregar em runtime de /dados/parametros.json, mesmo padrão de
     // PARAMETROS_RSI em simulador-rsi.html. PASSO 0 desta migração
-    // (WebSearch — WebFetch a diariodarepublica.pt/pgdlisboa.pt/
-    // app.parlamento.pt continua bloqueado nesta sessão) reconfirmou os
+    // (em várias fontes secundárias independentes, não no texto oficial
+    // do Diário da República) reconfirmou os
     // 16 valores + as 12 células da tabela de duração sem nenhuma
     // divergência face ao já publicado — migração só de formato, nunca
     // de conteúdo. Um valor (garantiaDiasTiCessacao) fica deliberadamente

@@ -7530,6 +7530,35 @@ páginas com o texto antigo; «iniciar sessão», vales MEGA bloqueados, a
 calculadora «bloqueada até os parâmetros carregarem» e «404» continuam
 permitidos.
 
+
+### Última revisão: 2026-10-18 — Guarda de texto público inclui comentários; carimbos da nota de fontes (issue #332, PR A)
+
+Porque «nesta sessão» escapou a `test_texto_publico_sem_processo_interno.py`:
+o guarda tirava os comentários HTML e o código dos `<script>` antes de
+procurar (decisão do #341), e as duas frases do #332 vivem em comentários
+HTML (creche, minuta de reclamação). Os comentários são entregues a quem
+abrir o código-fonte, por isso o guarda passou a lê-los, tal como o código
+dos `<script>`. Com o guarda alargado falhavam 9 páginas, 13 frases: as duas
+do #332 e mais 11 (cartas de acompanhamento do CSI e da reavaliação do
+abono, manuais MEGA, simuladores do abono, IMT Jovem, RSI e subsídio de
+desemprego). Reescritas pelas regras do #341 — grau de confirmação em vez do
+acesso («em várias fontes secundárias independentes, não no texto oficial do
+Diário da República»), sem «sessão», «triangulação», «devolve 403», «WebFetch
+… bloqueado». Confirmado: com as páginas antigas o guarda novo falha nas 9.
+
+`carimbo_antigo` (`REGEX_CARIMBO`) ganha «Lido por inteiro em fonte primária
+(…)», «lida directamente a …» e «Verificado via pesquisa … — DD/MM/AAAA»; o
+ramo «confirmados por triangulação externa (…)» passa a «confirmados em
+várias fontes secundárias independentes (…)», a redacção nova do comentário
+do simulador do subsídio de desemprego. Carimbos no site: só mudam estes 4
+(creche 16/09/2026, garantia para a infância 2/09/2026, minuta de reclamação
+06/07/2026, simulador 13/07/2026). As três primeiras datas eram suprimidas por
+acaso (`despacho`, `\bdl\s*n`, `diário da república`): alertas idênticos em
+todos os meses de 2026-2028; o auditor em 2027 desce de 110 para 107
+ocorrências fora do baseline. Baseline de 2026: só muda a frase da entrada
+«janeiro de 2018» (comentário reescrito). Testes de efeito em
+`tests/test_carimbo_antigo.py`; 7 falham sem a regex nova.
+
 ---
 
 *Última revisão automática: 2026-10-18*

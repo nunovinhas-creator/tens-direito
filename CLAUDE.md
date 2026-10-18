@@ -1001,7 +1001,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 - Contacto oficial = **contacto@tensdireito.com** (forwarding ImprovMX → caixa pessoal, activo desde 2026-07-03), sempre ofuscado via JavaScript (`.email-ofuscado`, `sobre.html`), nunca literal em HTML público
 - Não usar subpaths de portais sem confirmar que devolvem 200
 - **Páginas públicas nunca mencionam GitHub, repositório, código aberto, IA/inteligência artificial ou automação de redação** (decisão do Nuno, 2026-07-03) — vocabulário público é "a redação", "monitorização diária", "verificação contra fontes oficiais"; menções a GitHub/infra continuam permitidas em `scripts/`, workflows, `CLAUDE.md` e docs internos
-- Texto público nunca fala do processo interno de verificação — sessão de trabalho («nesta sessão», «na sessão seguinte»), «triangulação», «acesso/pedidos automatizados», bloqueio de acesso a sites ou códigos HTTP («bloqueado nesta verificação», «devolve 403») — diz o grau de confirmação: «confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República» (ou «do Banco de Portugal»). «Iniciar sessão» e «bloqueado» fora de acesso a sites continuam permitidos. Guarda: `tests/test_texto_publico_sem_processo_interno.py` (corpo, atributos, meta e JSON-LD; comentários HTML/JS fora)
+- Texto público nunca fala do processo interno de verificação — sessão de trabalho («nesta sessão», «na sessão seguinte»), «triangulação», «acesso/pedidos automatizados», bloqueio de acesso a sites ou códigos HTTP («bloqueado nesta verificação», «devolve 403») — diz o grau de confirmação: «confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República» (ou «do Banco de Portugal»). «Iniciar sessão» e «bloqueado» fora de acesso a sites continuam permitidos. Guarda: `tests/test_texto_publico_sem_processo_interno.py` (corpo, atributos, meta, JSON-LD, comentários HTML e código dos `<script>` — tudo o que o servidor entrega; os comentários entraram com o #332)
 
 ---
 
@@ -4719,8 +4719,10 @@ uma Issue é criada ou um valor é alterado:
    formas cuja data certifica conteúdo publicado, visível ou em comentário
    HTML/JS: «Última atualização: …», «confirmado(s)/confirmada(s) a …»,
    «Datas confirmadas na Segurança Social a …», «conferido pelo Nuno a …»,
-   «confirmados por triangulação externa (…)», «À data de verificação desta
-   página (…)». Frases de conteúdo («revisão urgente em agosto de 2025»)
+   «confirmados em várias fontes secundárias independentes (…)», «À data de
+   verificação desta página (…)» e, desde o PR A, «Lido por inteiro em fonte
+   primária (…)», «lida directamente a …» e «Verificado via pesquisa … —
+   DD/MM/AAAA». Frases de conteúdo («revisão urgente em agosto de 2025»)
    ficam de fora. `verificado_em_do_texto` (portão do #187) tem regex
    própria e continua a ler só «Verificado a». Tem regra própria:
    `carimbo_antigo` dispara, em qualquer mês, quando algum carimbo da página
