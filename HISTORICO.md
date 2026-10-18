@@ -7430,4 +7430,4 @@ marcadores. `test_psu_vs_abono_familia_sem_alerta_em_2027` aceita
 
 ---
 
-*Última revisão automática: 2026-10-17*
+*Última revisão automática: 2026-10-18*
