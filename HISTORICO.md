@@ -7395,6 +7395,39 @@ auditor de marcadores não viu o caso: `ANO_REFERENCIA = 2026` é fixo e as
 datas de 2026 nunca entram no baseline. Auditado como se fosse 2027, ficam
 652 supressões fora do baseline (issue #332).
 
+### Última revisão: 2026-10-14 — Carimbos «Verificado a» com regra própria (issue #332, PR 1)
+
+Contam como carimbo «Verificado a …» (com ou sem «de»), as notas por
+secção «Verificado DD/MM/AAAA» e o cabeçalho «Fontes verificadas — …» do
+bloco de fontes (40 ocorrências, achado ao medir o PR 2). Ficam de fora,
+por decidir, 7 ocorrências noutras formas («Última atualização:»,
+«confirmado a»). A data de um carimbo deixou de ser tratada como data com validade no ano
+civil. Antes, cada carimbo de 2026 dava alerta em janeiro de 2027, a menos
+que um marcador vizinho (muitas vezes o diploma citado na mesma linha) o
+suprimisse por acaso. Agora `verificar_datas.py` exclui as datas de
+carimbo (`REGEX_CARIMBO`) de `_pagina_tem_alerta` e tem um alerta próprio,
+`carimbo_antigo`. Dispara em qualquer mês, quando um carimbo tem mais de
+`LIMITE_MESES_CARIMBO = 12` meses. `auditar_marcadores_historicos.py`
+ignora as mesmas datas; o baseline não mudou (nenhuma entrada era de
+carimbo).
+
+`verificado_em_do_texto` já lia «16 agosto 2026» (sem «de»), mas
+`REGEX_MES_ANO` não. Os carimbos de `majoracao-subsidio-desemprego.html`,
+`rsi.html` e `subsidio-desemprego.html` passaram a «D de mês de AAAA» (mesma
+data). O de `subsidio-parental.html` é tratado no PR #330, que já move essa
+linha.
+
+Medido, janeiro de 2027: 89 de 108 páginas com alerta antes, 41 depois.
+As 48 que saem só alertavam pela data do carimbo; nenhuma página nova.
+`carimbo_antigo` em 2027: 0 até junho, 12 em julho, 59 em agosto, 99 em
+outubro (com o conteúdo de hoje).
+
+Testes ajustados à regra nova: 6 testes de `test_verificar_datas.py` usavam
+um carimbo como «data antiga genérica». Passaram a usar uma data fora de
+carimbo e a exigir o tipo `data_mes_ano`, para continuarem a testar os
+marcadores. `test_psu_vs_abono_familia_sem_alerta_em_2027` aceita
+`carimbo_antigo`, porque o teste é sobre as datas de 31/12/2026.
+
 ---
 
 *Última revisão automática: 2026-10-17*
