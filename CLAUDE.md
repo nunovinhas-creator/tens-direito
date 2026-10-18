@@ -2681,19 +2681,19 @@ vigiar** — o site expressa sempre o custo da refeição como desconto
 percentual (gratuita/50%), nunca o valor em euros. Razão completa e
 decisão: ver `ROADMAP.md` → "À ESPERA DE UM SINAL" → "Manuais".
 
-**`prova-escolar.html` — nota de manutenção sazonal**: a página refere o
-ano letivo "2026/2027" (título, meta description, `og:title`, breadcrumb
-JSON-LD, fonte-bloco) e a data "31 de julho de 2026" (H1, título,
-`prazo-topo`, resposta directa) — ambos têm de ser revistos **todos os
-anos em junho**, antes do próximo prazo de 31 de julho, para o ano
-letivo seguinte. O conteúdo normativo (quem tem de fazer, tabela de
-prazos/consequências, passo a passo na SSD) não muda todos os anos —
-só as referências ao ano concreto. Candidata natural para
-`verificar_datas.py`: o padrão "2026/2027" nesta página deve expirar em
-**junho de 2027**, não antes — se `MARCADORES_PENDENTE`/supressões
-gerarem um alerta prematuro (por exemplo, logo em 2026), é um falso
-positivo a corrigir na Camada 1, não um sinal de que a página está
-desactualizada.
+**`prova-escolar.html` — nota de manutenção sazonal**: desde a issue #344
+(2026-10-18) a página não fixa nenhum dia do prazo — a prova escolar é
+apresentada "no mês de julho" (art. 44.º, n.º 1, do Decreto-Lei n.º
+176/2003, redação do DL 133/2012) e é automática no ensino básico e
+secundário público ou com contrato de associação e no ensino superior
+(Portaria n.º 191/2019); o efeito do atraso segue o art. 45.º, n.os 1 a 3
+(suspensão a partir do início do ano escolar, meses pagos se a prova chegar
+até 31 de dezembro, perdidos a partir de 1 de janeiro salvo justificação
+aceite). Nunca voltar a escrever "até 31 de julho" sem fonte que o diga. O
+`<title>`, o H1 e o `og:title` não têm ano. Ainda a rever **todos os anos
+em junho**: a referência "Prazo válido para o ano letivo de 2026/2027" do
+bloco de fontes. Se `verificar_datas.py` alertar sobre ela antes de junho de
+2027, é falso positivo a corrigir na Camada 1.
 
 ---
 

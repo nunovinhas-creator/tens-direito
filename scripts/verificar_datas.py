@@ -494,6 +494,8 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
         "Fronteira fixa da Lei n.º 60/2005.",
     ("fontes.html", "10 de março de 2023"):
         "Data da versão consolidada lida; actualidade é tema da revisão de conteúdo.",
+    ("fontes.html", "24 de junho de 2019"):
+        "Data de publicação da Portaria n.º 191/2019 (DR n.º 118) — data fixa (#344).",
     ("subsidio-por-morte.html", "julho de 2012"):
         "Limite de um regime passado.",
     ("subsidio-por-morte.html", "janeiro de 2013"):
