@@ -7589,11 +7589,13 @@ produção de efeitos só suprimem a própria data. `despacho`, `\bdl\s*n`,
 `diário da república` e `dre.pt` só suprimem a data da própria citação
 (nenhuma citação de despacho ou DL no site traz o ano depois da data).
 
-Mais 4 entradas em `DATAS_PERMANENTES`, não pedidas, propostas para
-aprovação: `fontes.html` «31 de agosto de 1993» e «10 de março de 2023»
-(sem elas `test_fontes_real_nao_gera_alerta_issue_170` falha) e
-`subsidio-por-morte.html` «julho de 2012» e «janeiro de 2013» (regime
-anterior ao DL 13/2013) — datas históricas que só estavam suprimidas por um
+Mais 4 entradas em `DATAS_PERMANENTES`, não pedidas, aprovadas pelo Nuno
+depois de ver a tabela de alcance: `fontes.html` «31 de agosto de 1993»
+(fronteira fixa da Lei n.º 60/2005) e «10 de março de 2023» (data da versão
+consolidada lida; a actualidade é tema da revisão de conteúdo) — sem elas
+`test_fontes_real_nao_gera_alerta_issue_170` falha — e
+`subsidio-por-morte.html` «julho de 2012» e «janeiro de 2013» (limites de um
+regime passado) — datas históricas que só estavam suprimidas por um
 «desde» ou um «Diário da República» por perto. E as datas de publicação
 (13/08/2026, «13 de agosto de 2026») e de aprovação (30/07/2026) do DL
 166/2026, aprovadas pelo Nuno, em 6 páginas. Ao todo 22 entradas novas, 35

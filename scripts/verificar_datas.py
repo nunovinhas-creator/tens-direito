@@ -452,15 +452,15 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
     ("fontes.html", "1 de janeiro de 2006"):
         "Fecho da CGA a novas inscrições e início da parcela P2 (Lei n.º 60/2005) — data fixa.",
     # Datas históricas que só estavam suprimidas por um «desde» ou um «Diário
-    # da República» por perto (PR B do #332).
+    # da República» por perto (aprovadas pelo Nuno, PR B do #332).
     ("fontes.html", "31 de agosto de 1993"):
-        "Fronteira dos inscritos na CGA para a parcela P2 (Lei n.º 60/2005) — data fixa.",
+        "Fronteira fixa da Lei n.º 60/2005.",
     ("fontes.html", "10 de março de 2023"):
-        "Data da consolidação do DRE contra a qual o texto foi lido — facto fixo; a actualidade da versão é tema da revisão da página.",
+        "Data da versão consolidada lida; actualidade é tema da revisão de conteúdo.",
     ("subsidio-por-morte.html", "julho de 2012"):
-        "Início do regime anterior do subsídio por morte (DL 133/2012) — facto passado.",
+        "Limite de um regime passado.",
     ("subsidio-por-morte.html", "janeiro de 2013"):
-        "Fim do regime anterior do subsídio por morte, antes do DL 13/2013 — facto passado.",
+        "Limite de um regime passado.",
     # Publicação e aprovação do DL 166/2026 (aprovado pelo Nuno, PR B do #332).
     ("calendario-pagamentos-psu.html", "13/08/2026"):
         "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
