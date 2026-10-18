@@ -1173,7 +1173,7 @@ correcção havia só um braço, e mesmo esse por substring solta
 qualquer outro número sem relação com a citação real); era a mais fraca
 das 3 listas de supressão do repositório, comparada com o baseline por
 ocorrência de `MARCADORES_HISTORICOS`
-(`tests/marcadores_historicos_baseline.json`/
+(`tests/marcadores_historicos_baseline_<ano>.json`/
 `test_auditar_marcadores_historicos.py`) e com os dois braços de
 `EXCECOES_DIPLOMAS_FONTES` (`test_fontes_coerencia.py`). O valor do dict
 passou de `motivo: str` para `(motivo, contextos)`, com `contextos` um
@@ -4779,6 +4779,17 @@ uma Issue é criada ou um valor é alterado:
    também para um ano lectivo («2024/2025» em `calendario-escolar-apoios.html`,
    PR D): o ramo do ano lectivo de `_pagina_tem_alerta` ignora as
    ocorrências de DATAS_PERMANENTES.
+   **Auditor no ano corrente e no seguinte** (issue #332, PR C):
+   `scripts/auditar_marcadores_historicos.py` audita com o ano da
+   execução (`ano_de_execucao()`), nunca um ano fixo, e
+   `tests/test_auditar_marcadores_historicos.py` exige dois baselines,
+   `tests/marcadores_historicos_baseline_<ano>.json` do ano corrente e do
+   seguinte — as datas do próprio ano entram no baseline do ano seguinte,
+   revistas antes de 1 de janeiro. `--write` grava os dois; `--novas`
+   lista, por marcador (página, linha, excerto), o que o ano seguinte
+   acrescenta. **No dia 1 de janeiro o teste fica vermelho sozinho**: gravar
+   o baseline do novo ano seguinte, rever as entradas novas e apagar o do
+   ano que acabou (um baseline fora do par também falha).
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.

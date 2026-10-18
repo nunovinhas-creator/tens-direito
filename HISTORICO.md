@@ -6870,6 +6870,28 @@ bolsa de estudo) ficam expostas, como decidido.
 
 Baseline: 318 → 298. 7 dos testes novos falham com o código anterior.
 
+### Última revisão: 2026-10-18 — Auditor de marcadores no ano corrente e no seguinte (issue #332, PR C)
+
+`scripts/auditar_marcadores_historicos.py` deixou de usar `ANO_REFERENCIA =
+2026` fixo: audita com o ano da execução (`ano_de_execucao()`) e
+`tests/test_auditar_marcadores_historicos.py` exige dois baselines,
+`tests/marcadores_historicos_baseline_<ano>.json` do ano corrente e do
+seguinte. O baseline antigo passou a `..._2026.json` (318 entradas, sem
+alterações); o de 2027 foi gravado com o que sobra depois dos PRs 1-3, A e B
+(455 entradas: as 318 de 2026 mais 137 novas, 88 ocorrências em 18 páginas;
+nenhuma de 2026 desaparece). Lista das 137, por marcador, com página, linha e
+excerto, no PR. `--write` grava os dois anos; `--novas` produz essa lista;
+`linha` só entra nos relatórios, nunca no baseline. Um baseline de um ano
+fora do par (corrente, seguinte) falha o teste. No dia 1 de janeiro o teste
+fica vermelho sozinho até se gravar o do novo ano seguinte (ROADMAP, "DATAS
+FIXAS").
+
+Medido, janeiro de 2027: 41 páginas com alerta antes e depois (julho 45,
+agosto 78, outubro 103, iguais) — o PR não muda `verificar_datas.py`.
+Auditor: 318 registos em 2026 e 455 em 2027, idênticos antes e depois.
+Provado a falhar: sem o baseline de 2027, e com o ano de execução a 2027
+(baseline de 2028 em falta).
+
 ---
 
 *Última revisão automática: 2026-10-03*

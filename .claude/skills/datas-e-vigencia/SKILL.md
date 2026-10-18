@@ -41,12 +41,16 @@ mecanismo).
   #172: `\bsalvaguarda\b` sozinha apanhava qualquer menção verbal;
   corrigida para `\bsalvaguarda\s+(?:transit[óo]ria\s+)?de\s+\d`).
   Baseline exacto de que ocorrência cada entrada suprime, em cada
-  página real: `tests/marcadores_historicos_baseline.json`, gerado por
+  página real: `tests/marcadores_historicos_baseline_<ano>.json`, gerado por
   `scripts/auditar_marcadores_historicos.py` e auditado por
   `tests/test_auditar_marcadores_historicos.py`. Cada entrada é
   identificada pela frase envolvente da ocorrência, não pela posição na
   página (issue #264): inserir texto antes não desloca entradas antigas;
   editar a frase aparece como uma órfã mais uma nova, lado a lado.
+  Há um baseline para o ano corrente e outro para o seguinte (#332, PR
+  C): as datas do próprio ano entram no do ano seguinte. Em janeiro o
+  teste falha até se gravar o do novo ano seguinte (`--write`; rever com
+  `--novas`) e apagar o do ano que acabou.
 - **`EXCECOES_DIPLOMAS_FONTES`** (`tests/test_fontes_coerencia.py`) —
   todo diploma citado em texto visível no formato "Tipo n.º NNN/AAAA"
   precisa de cartão em `fontes.html`, ou entrada aqui com o motivo.

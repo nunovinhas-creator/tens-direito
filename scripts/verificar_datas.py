@@ -129,7 +129,7 @@ LIMITE_MESES_CARIMBO = 12  # carimbo com mais do que isto, face ao mês de execu
 # ("pagamento a partir de", "até 31/12/2026 mantém-se") NUNCA podem ser
 # apanhadas aqui — têm de ficar expostas em 2027 (issue #293). Cada entrada
 # também está em MARCADORES_HISTORICOS (contenção testada), por isso entra no
-# baseline de tests/marcadores_historicos_baseline.json.
+# baseline de tests/marcadores_historicos_baseline_<ano>.json.
 MARCADORES_ISENTOS_DO_PORTAO = [
     # "o artigo 63.º fixa 31 de dezembro de 2026 como (a) data de produção de efeitos"
     r"como\s+(?:a\s+)?data\s+de\s+produ[çc][ãa]o\s+de\s+efeitos",

@@ -7,8 +7,12 @@ Objectivo: capturar, para cada uma das 27 entradas de
 "antigas" (mesmo critério do padrão do tipo — ver
 `scripts/verificar_datas.py::_pagina_tem_alerta`) ficam suprimidas por
 essa entrada em cada página real do site, e comparar contra
-`tests/marcadores_historicos_baseline.json` (baseline aprovado,
-versionado, revisto linha a linha antes de cada alteração).
+`tests/marcadores_historicos_baseline_<ano>.json` (baseline aprovado,
+versionado, revisto linha a linha antes de cada alteração) — um para o
+ano corrente e outro para o ano seguinte (issue #332, PR C): no dia 1 de
+janeiro, a regressão fica vermelha sozinha até se gravar o baseline do
+novo ano seguinte, para as supressões desse ano serem revistas com um ano
+de antecedência.
 
 Duas direcções de falha, mesmo princípio já usado em
 `tests/test_verificar_skips_permitidos.py` para
@@ -42,12 +46,17 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 from verificar_datas import MARCADOR_DESDE  # noqa: E402
 
 from auditar_marcadores_historicos import (  # noqa: E402
-    ANO_REFERENCIA,
-    BASELINE_PATH,
     MARCADOR_DATAS_PERMANENTES,
     MARCADORES_HISTORICOS,
+    PASTA_BASELINES,
+    ano_de_execucao,
+    anos_auditados,
     auditar_corpus,
+    caminho_baseline,
     carregar_baseline,
+    comparar,
+    gravar_baseline,
+    relatorio_por_marcador,
     frase_envolvente,
     identidade,
     paginas_do_corpus,
@@ -254,7 +263,7 @@ def test_nbsp_e_composicao_unicode_nao_mudam_a_identidade(tmp_path):
 
 
 def test_nenhuma_frase_vazia_no_corpus_real():
-    vazias = [r for r in auditar_corpus(RAIZ, ANO_REFERENCIA) if not r["frase"]]
+    vazias = [r for a in anos_auditados() for r in auditar_corpus(RAIZ, a) if not r["frase"]]
     assert not vazias, [(r["pagina"], r["tipo"], r["correspondencia"]) for r in vazias]
 
 
@@ -268,29 +277,51 @@ def test_frase_envolvente_corta_na_frase_e_nao_em_abreviaturas():
 
 # ── Regressão sobre o corpus real — o núcleo da Issue #183 ─────────────────
 
-@pytest.fixture(scope="module")
-def registos_atuais():
-    return auditar_corpus(RAIZ, ANO_REFERENCIA)
+ANOS = anos_auditados()
+
+
+@pytest.fixture(scope="module", params=ANOS, ids=lambda a: str(a))
+def ano(request):
+    return request.param
 
 
 @pytest.fixture(scope="module")
-def baseline():
-    return carregar_baseline(BASELINE_PATH)
+def registos_atuais(ano):
+    return auditar_corpus(RAIZ, ano)
 
 
-def test_baseline_existe_e_nao_esta_vazio():
-    assert BASELINE_PATH.exists(), (
-        f"{BASELINE_PATH.relative_to(RAIZ)} não existe — gerar com "
+@pytest.fixture(scope="module")
+def baseline(ano):
+    return carregar_baseline(caminho_baseline(ano))
+
+
+@pytest.mark.parametrize("ano_baseline", ANOS, ids=str)
+def test_baseline_existe_e_nao_esta_vazio(ano_baseline):
+    caminho = caminho_baseline(ano_baseline)
+    assert caminho.exists(), (
+        f"{caminho.relative_to(RAIZ)} não existe — gerar com "
         f"`python3 scripts/auditar_marcadores_historicos.py --write`, revisar "
-        f"o diff, e só depois commitar."
+        f"as entradas novas (`--novas` lista-as por marcador) e só depois commitar."
     )
-    assert carregar_baseline(BASELINE_PATH), "baseline vazio — nada para comparar"
+    assert carregar_baseline(caminho), "baseline vazio — nada para comparar"
 
 
-def test_supressoes_do_corpus_batem_com_o_baseline_aprovado(registos_atuais, baseline):
+def test_so_existem_baselines_do_ano_corrente_e_do_seguinte():
+    """Um baseline de um ano que já acabou não é auditado por ninguém —
+    apagá-lo quando o ano muda, nunca deixá-lo a parecer vigiado."""
+    anos = sorted(int(p.stem.rsplit("_", 1)[1])
+                  for p in PASTA_BASELINES.glob("marcadores_historicos_baseline_*.json"))
+    assert anos == list(ANOS), (
+        f"Baselines encontrados para {anos}, esperados {list(ANOS)} (ano corrente e "
+        f"seguinte). Apagar os de anos fora deste par; gerar os em falta com "
+        f"`python3 scripts/auditar_marcadores_historicos.py --write`."
+    )
+
+
+def test_supressoes_do_corpus_batem_com_o_baseline_aprovado(ano, registos_atuais, baseline):
     atuais_por_id = {identidade(r): r for r in registos_atuais}
     baseline_por_id = {identidade(r): r for r in baseline}
-
+    caminho = caminho_baseline(ano).relative_to(RAIZ)
     novas = sorted(set(atuais_por_id) - set(baseline_por_id))
     orfas = sorted(set(baseline_por_id) - set(atuais_por_id))
 
@@ -314,7 +345,7 @@ def test_supressoes_do_corpus_batem_com_o_baseline_aprovado(registos_atuais, bas
     if novas:
         linhas.append(
             f"{len(novas)} supressão(ões) NOVA(S) — presentes no corpus mas AUSENTES do "
-            f"baseline ({BASELINE_PATH.relative_to(RAIZ)}). Cada uma precisa de ser revista "
+            f"baseline ({caminho}). Cada uma precisa de ser revista "
             f"e, se legítima, aprovada regenerando o baseline com "
             f"`python3 scripts/auditar_marcadores_historicos.py --write` e commitando o "
             f"diff (nunca em bloco sem olhar para a linha concreta):"
@@ -382,4 +413,48 @@ def test_auditoria_e_deterministica_entre_corridas():
     depender da ordem do glob nem de qualquer outra fonte de não-
     determinismo (a mesma garantia que o resto do site já exige de
     `sincronizar_clusters.py`/`atualizar_calendario.py`)."""
-    assert auditar_corpus(RAIZ, ANO_REFERENCIA) == auditar_corpus(RAIZ, ANO_REFERENCIA)
+    ano = ano_de_execucao()
+    assert auditar_corpus(RAIZ, ano) == auditar_corpus(RAIZ, ano)
+
+
+# ── Ano de execução e ferramentas de revisão (issue #332, PR C) ────────────
+
+def test_anos_auditados_sao_o_ano_corrente_e_o_seguinte():
+    from datetime import date
+    assert anos_auditados() == (date.today().year, date.today().year + 1)
+    assert anos_auditados(2030) == (2030, 2031)
+
+
+def test_auditar_corpus_sem_ano_usa_o_ano_de_execucao(tmp_path):
+    (tmp_path / "s.html").write_text(_html(
+        "<p>Prazo desde 3 de março de %d.</p>" % ano_de_execucao()), encoding="utf-8")
+    assert auditar_corpus(tmp_path) == auditar_corpus(tmp_path, ano_de_execucao())
+
+
+def test_data_do_ano_corrente_so_entra_no_baseline_do_ano_seguinte(tmp_path):
+    """O caso da issue #332: uma data do próprio ano, suprimida por um
+    marcador, nunca aparecia em nenhum baseline. Agora aparece no do ano
+    seguinte — é aí que passa a ter efeito."""
+    (tmp_path / "s.html").write_text(_html(
+        "<p>Obrigatório desde 16 de maio de 2026.</p>"), encoding="utf-8")
+    assert auditar_corpus(tmp_path, 2026) == []
+    registos = auditar_corpus(tmp_path, 2027)
+    assert registos and {r["correspondencia"] for r in registos} == {"maio de 2026"}
+    novas, orfas = comparar(registos, auditar_corpus(tmp_path, 2026))
+    assert novas == registos and orfas == []
+
+
+def test_linha_vem_no_relatorio_mas_nunca_no_baseline_gravado(tmp_path):
+    (tmp_path / "s.html").write_text(
+        "<html><body>\n\n<p>Obrigatório desde 16 de maio de 2026.</p></body></html>",
+        encoding="utf-8")
+    registos = auditar_corpus(tmp_path, 2027)
+    assert {r["linha"] for r in registos} == {3}
+    destino = tmp_path / "b.json"
+    gravar_baseline(registos, destino)
+    gravados = carregar_baseline(destino)
+    assert all("linha" not in r for r in gravados)
+    assert [identidade(r) for r in gravados] == [identidade(r) for r in registos]
+    relatorio = relatorio_por_marcador(registos)
+    assert "| s.html | 3 | maio de 2026 |" in relatorio
+
