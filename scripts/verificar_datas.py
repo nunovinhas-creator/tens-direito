@@ -50,6 +50,7 @@ ambíguo (ver CLAUDE.md, secção do portão de confirmação).
 """
 
 import glob
+import html as _html
 import json
 import os
 import re
@@ -285,6 +286,90 @@ MARCADORES_EXEMPLO = [r"exemplo", r"ilustrat", r"\bex\.\s*:"]
 
 # Conteúdo que já assume, de forma explícita, que está pendente de confirmação.
 # "confirmar" no infinitivo (pendente) — não "confirmado" (já feito).
+# Marcadores de diploma (issue #332): só suprimem a data que faz parte da
+# própria citação — "Portaria n.º 305/2022, de 22 de dezembro de 2022".
+# Uma data que só está perto de um diploma (carimbo, prazo, anúncio na
+# mesma linha das fontes) deixa de ser suprimida por eles. `despacho` e
+# `\bdl\s*n` ficam como estavam.
+MARCADORES_SO_CITACAO = (r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º")
+# Só para datas: um par de ano lectivo ou um valor do IAS nunca é "a data de
+# uma citação", por isso aí estes marcadores continuam a valer por proximidade.
+# O compromisso no futuro também fica como estava: a correspondência começa no
+# verbo, não na data, e uma frase "vai mudar a 1 de janeiro…" não é citação.
+TIPOS_DATA_CITACAO = ("data_mes_ano", "data_numerica", "prazo_outono")
+assert set(MARCADORES_SO_CITACAO) <= set(MARCADORES_HISTORICOS)
+REGEX_CITACAO_DIPLOMA = re.compile(
+    r"(?:decreto-lei|decreto\s+lei|\blei|portaria)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
+    r",?\s+de\s+(?:\d{1,2}\s+de\s+)?$",
+    re.IGNORECASE,
+)
+
+
+def _citacao_de_diploma(conteudo, inicio):
+    """Se a data que começa em `inicio` é a data de uma citação
+    "<diploma> n.º X/AAAA, de …", devolve o texto dessa citação; senão None.
+    Olha só para o texto imediatamente antes da data."""
+    antes = re.sub(r"<[^>]+>", " ", conteudo[max(0, inicio - 200):inicio])
+    antes = re.sub(r"\s+", " ", _html.unescape(antes))
+    m = REGEX_CITACAO_DIPLOMA.search(antes)
+    return m.group(0) if m else None
+
+
+def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None):
+    """Um marcador de MARCADORES_HISTORICOS suprime esta ocorrência?
+    Única regra, partilhada por `_esta_suprimido` e pelo auditor. Um
+    marcador de diploma só conta se a data for a da citação desse mesmo
+    diploma ("lei n.º" nunca suprime a data de uma Portaria)."""
+    if not re.search(marcador, janela, re.IGNORECASE):
+        return False
+    if marcador in MARCADORES_SO_CITACAO and tipo in TIPOS_DATA_CITACAO:
+        citacao = _citacao_de_diploma(conteudo, inicio)
+        return citacao is not None and re.search(marcador, citacao, re.IGNORECASE) is not None
+    return True
+
+
+# Datas que são facto permanente de UMA página (issue #332): (página, data
+# exactamente como aparece no texto) → motivo, numa linha. Cada ocorrência
+# dessa data nessa página fica suprimida, sejam quais forem os marcadores ou
+# o HTML à volta; a mesma data noutra página nunca. Uma data que é facto
+# permanente de uma página entra aqui, não num marcador global. Entrada órfã
+# (a data já não está na página) faz falhar tests/test_datas_permanentes.py.
+DATAS_PERMANENTES: dict[tuple[str, str], str] = {
+    ("creche-gratuita.html", "1 de setembro de 2021"):
+        "Data de nascimento a partir da qual há direito à creche gratuita (Portaria n.º 305/2022, art. 5.º, n.º 1, al. a)) — condição fixa.",
+    ("fontes.html", "1 de setembro de 2021"):
+        "Data de referência da creche gratuita citada no cartão da Portaria n.º 158/2024/1 — condição fixa.",
+    ("fontes.html", "11 de dezembro de 2023"):
+        "Data da consolidação do DRE contra a qual o texto foi verificado — facto fixo; a actualidade da versão é tema da revisão da página.",
+    ("fontes.html", "20 de novembro de 2023"):
+        "Data da versão consolidada do DRE contra a qual o texto foi verificado — facto fixo; a actualidade da versão é tema da revisão da página.",
+    ("fontes.html", "31 de janeiro de 2013"):
+        "Fim da norma transitória do subsídio por morte introduzida pelo DL 13/2013 — facto passado.",
+    ("caixa-geral-aposentacoes.html", "1 de setembro de 1993"):
+        "Fronteira da fórmula de cálculo da pensão CGA (Lei n.º 60/2005, art. 5.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "31 de agosto de 1993"):
+        "Último dia antes da fronteira de 1/9/1993 (Lei n.º 60/2005, arts. 5.º e 6.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "1 de janeiro de 2006"):
+        "Fecho da CGA a novas inscrições (Lei n.º 60/2005, arts. 2.º e 9.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "31 de dezembro de 2005"):
+        "Data de corte da salvaguarda e da parcela P1 (Lei n.º 60/2005, arts. 5.º e 7.º) — data fixa.",
+}
+
+
+def spans_datas_permanentes(conteudo, pagina):
+    """(início, fim) de cada ocorrência de uma data de DATAS_PERMANENTES
+    desta página."""
+    return [
+        (m.start(), m.end())
+        for (p, data) in DATAS_PERMANENTES if p == pagina
+        for m in re.finditer(re.escape(data), conteudo)
+    ]
+
+
+def em_data_permanente(spans, inicio, fim):
+    return any(a <= inicio and fim <= b for a, b in spans)
+
+
 MARCADORES_PENDENTE = [
     r"aguarda", r"previst", r"provis[oó]ri", r"\bconfirmar\b", r"estimad",
     r"deverá ser", r"após publicação",
@@ -377,11 +462,15 @@ def _data_do_compromisso(m):
         return None
 
 
-def _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em=None):
+def _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em=None, pagina=None):
+    permanentes = spans_datas_permanentes(conteudo, pagina)
     for m in re.finditer(REGEX_COMPROMISSO_FUTURO, conteudo, re.IGNORECASE):
         d = _data_do_compromisso(m)
         if d is None or (d.year, d.month) >= (ano, mes):
             continue  # mês ainda não passou
+        grupo_data = 1 if m.group(1) else (2 if m.group(3) else 4)
+        if em_data_permanente(permanentes, m.start(grupo_data), m.end()):
+            continue
         if _esta_suprimido(conteudo, m.start(), m.end(), ano, mes,
                            data_ocorrencia=d, verificado_em=verificado_em):
             continue
@@ -438,7 +527,7 @@ def _dentro_de_link(conteudo, inicio):
     return ultima_abertura != -1 and ultima_abertura > ultimo_fecho
 
 
-def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verificado_em=None):
+def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verificado_em=None, tipo=None):
     if _dentro_de_link(conteudo, inicio):
         return True
 
@@ -450,7 +539,7 @@ def _esta_suprimido(conteudo, inicio, fim, ano, mes, data_ocorrencia=None, verif
     if _tem_algum(MARCADORES_ISENTOS_DO_PORTAO, janela):
         return True  # data fixada por lei, citada como facto permanente (#186)
 
-    if _tem_algum(MARCADORES_HISTORICOS, janela):
+    if any(marcador_historico_aplica(mk, janela, conteudo, inicio, tipo) for mk in MARCADORES_HISTORICOS):
         if data_ocorrencia is not None and verificado_em is not None and data_ocorrencia > verificado_em:
             # Compromisso ainda por cumprir à data da última verificação desta
             # página — um marcador histórico (ex.: `celebrados? at[ée]`) pode
@@ -507,7 +596,7 @@ PADRAO_CARIMBO = {
 }
 
 
-def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
+def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None, pagina=None):
     tipo = padrao["tipo"]
 
     if tipo == "ano_letivo":
@@ -550,16 +639,20 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
         return False
 
     carimbos = _carimbos(conteudo)
+    permanentes = spans_datas_permanentes(conteudo, pagina)
     for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
         ano_match = int(m.group(padrao["ano_grupo"]))
         if ano_match >= ano:
             continue  # data actual ou futura
         if _em_carimbo(carimbos, m.start(), m.end()):
             continue  # data de carimbo — regra própria (_carimbo_antigo)
+        if em_data_permanente(permanentes, m.start(), m.end()):
+            continue  # facto permanente desta página (DATAS_PERMANENTES)
         if _esta_suprimido(
             conteudo, m.start(), m.end(), ano, mes,
             data_ocorrencia=_data_da_ocorrencia(padrao, m),
             verificado_em=verificado_em,
+            tipo=padrao["tipo"],
         ):
             continue
         return True
@@ -582,13 +675,14 @@ def detectar_alertas(conteudo, nome_pagina, ano, mes):
     verificado_em = verificado_em_do_texto(conteudo)
     for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]:
         if padrao is PADRAO_COMPROMISSO_FUTURO:
-            tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em)
+            tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em, nome_pagina)
         elif padrao is PADRAO_CARIMBO:
             tem_alerta = _carimbo_antigo(conteudo, ano, mes)
         elif mes not in REVER_EM[padrao["tipo"]]:
             continue
         else:
-            tem_alerta = _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em)
+            tem_alerta = _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em,
+                                            pagina=nome_pagina)
         if tem_alerta:
             alerta = {
                 "pagina": nome_pagina,

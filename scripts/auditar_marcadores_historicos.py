@@ -63,6 +63,12 @@ passar, e nunca teriam sido revistas linha a linha antes de entrarem em vigor.
 Nesses casos só os marcadores isentos são atribuídos: os restantes marcadores
 históricos da janela não suprimem uma data posterior ao carimbo.
 
+DATAS_PERMANENTES (issue #332): uma data listada para esta página é
+suprimida em produção antes de qualquer marcador. Cada ocorrência dessas
+fica no baseline com `marcador` = "DATAS_PERMANENTES", além dos marcadores
+que também a apanhem — tal como os outros marcadores, só se for antiga ou
+posterior ao carimbo, para ser revista antes de entrar em vigor.
+
 Datas de carimbo de verificação ("Verificado a …") ficam de fora, tal como
 em `_pagina_tem_alerta()`: têm regra própria (`carimbo_antigo`) e nunca
 passam pelos marcadores (issue #332).
@@ -93,9 +99,15 @@ from verificar_datas import (  # noqa: E402
     _data_da_ocorrencia,
     _em_carimbo,
     _janela_contexto,
+    em_data_permanente,
+    marcador_historico_aplica,
+    spans_datas_permanentes,
 )
 
 BASELINE_PATH = RAIZ / "tests" / "marcadores_historicos_baseline.json"
+
+# Rótulo das supressões por DATAS_PERMANENTES no baseline.
+MARCADOR_DATAS_PERMANENTES = "DATAS_PERMANENTES"
 
 # Fixo — ver docstring do módulo.
 ANO_REFERENCIA = 2026
@@ -284,6 +296,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
     corpus inteiro em `auditar_corpus()`."""
     verificado_em = verificado_em_do_texto(conteudo)
     carimbos = _carimbos(conteudo)
+    permanentes = spans_datas_permanentes(conteudo, pagina)
     registos = []
     for padrao in PADROES:
         for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
@@ -292,6 +305,15 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
             janela = _janela_contexto(conteudo, m.start(), m.end())
             data_ocorrencia = _data_da_ocorrencia(padrao, m)
             antiga = _e_ocorrencia_antiga(padrao, m, conteudo, ano)
+            if em_data_permanente(permanentes, m.start(), m.end()) and (
+                    antiga or _posterior_ao_carimbo(data_ocorrencia, verificado_em)):
+                registos.append({
+                    "pagina": pagina,
+                    "marcador": MARCADOR_DATAS_PERMANENTES,
+                    "tipo": padrao["tipo"],
+                    "correspondencia": _normalizar_frase(m.group(0), em_jsonld=False),
+                    "frase": frase_envolvente(conteudo, m.start(), m.end()),
+                })
             isentos = [mk for mk in MARCADORES_ISENTOS_DO_PORTAO if re.search(mk, janela, re.IGNORECASE)]
             if antiga and not _fica_exposta_ao_portao(data_ocorrencia, verificado_em, ano):
                 candidatos = MARCADORES_HISTORICOS
@@ -301,7 +323,7 @@ def supressoes_da_pagina(conteudo: str, pagina: str, ano: int = ANO_REFERENCIA) 
                 continue
             frase = None
             for marcador in candidatos:
-                if re.search(marcador, janela, re.IGNORECASE):
+                if marcador_historico_aplica(marcador, janela, conteudo, m.start(), padrao["tipo"]):
                     if frase is None:
                         frase = frase_envolvente(conteudo, m.start(), m.end())
                     registos.append({
@@ -368,7 +390,7 @@ def _imprimir_relatorio(registos: list[dict]) -> None:
 
     print(f"{len(registos)} supressão(ões) em {len(por_marcador)}/{len(MARCADORES_HISTORICOS)} marcador(es) activos\n")
 
-    for marcador in MARCADORES_HISTORICOS:
+    for marcador in MARCADORES_HISTORICOS + [MARCADOR_DATAS_PERMANENTES]:
         entradas = por_marcador.get(marcador, [])
         print(f"--- {marcador!r} ({len(entradas)}) ---")
         for r in entradas:

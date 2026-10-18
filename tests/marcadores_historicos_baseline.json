@@ -105,70 +105,6 @@
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Há uma excepção estreita, aditada pelo Decreto-Lei n.º 43/2024, de 2 de julho: se, cumulativamente, o teu contrato anterior a 15 de março de 2023 cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa), o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel, continua a ser a tua habitação permanente e domicílio fiscal, e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos, podes continuar abrangido.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023 — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, de 2 de julho, com mais condições cumulativas).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Se o teu contrato de arrendamento é posterior a 15 de março de 2023, não podes candidatar-te a este apoio — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, ver condições completas abaixo).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "ℹ️ Excepção: contrato novo depois de o senhorio ter cessado o anterior O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem cumulativamente estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa); o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel; continua a ser a tua habitação permanente e domicílio fiscal; e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Há uma excepção estreita, aditada pelo Decreto-Lei n.º 43/2024, de 2 de julho: se, cumulativamente, o teu contrato anterior a 15 de março de 2023 cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa), o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel, continua a ser a tua habitação permanente e domicílio fiscal, e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos, podes continuar abrangido.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023 — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, de 2 de julho, com mais condições cumulativas).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Se o teu contrato de arrendamento é posterior a 15 de março de 2023, não podes candidatar-te a este apoio — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, ver condições completas abaixo).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "ℹ️ Excepção: contrato novo depois de o senhorio ter cessado o anterior O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem cumulativamente estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa); o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel; continua a ser a tua habitação permanente e domicílio fiscal; e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
     "marcador": "revisão urgente",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2025",
@@ -257,30 +193,6 @@
   },
   {
     "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "abril de 2024",
-    "frase": "Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "outubro de 2025",
-    "frase": "Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "outubro de 2025",
-    "frase": "Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "abril de 2024",
@@ -309,38 +221,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "abril de 2024",
     "frase": "Quando pode ocorrer: a partir do 4.º dia de baixa — já não existe o limite mínimo de 30 dias que existia antes de 1 de abril de 2024",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "abril de 2024",
-    "frase": "Base legal: Decreto-Lei n.º 8/2024, de 5 de janeiro, em vigor desde 1 de abril de 2024.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "outubro de 2025",
-    "frase": "Desde outubro de 2025, essa justificação também pode ser feita online, sem te deslocares.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "outubro de 2025",
-    "frase": "Tens 2 dias úteis para justificar a falta com prova documental (por exemplo, declaração de internamento); desde outubro de 2025, essa justificação também pode ser feita online.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "baixa-medica-subsidio-doenca.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2024",
-    "frase": "Base legal: Portaria n.º 11/2024, de 18 de janeiro, em vigor desde 1 de março de 2024.",
     "ordinal": 1
   },
   {
@@ -414,6 +294,382 @@
     "correspondencia": "2025/2026",
     "frase": "Em 2025/2026, com IAS 2025 = 522,50 €, o valor tinha sido 1.306,25 €.",
     "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "frase": "Inscritos ATÉ 31 de agosto de 1993",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "agosto de 1993",
+    "frase": "Para quem tem a carreira dividida em duas parcelas (inscritos até 31 de agosto de 1993, art. 6.º da Lei n.º 60/2005), a pensão de sobrevivência da CGA corresponde a 50% de P1, mais o valor que resultar de aplicar a P2 as regras de sobrevivência do regime geral.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Pelo tempo de serviço até 31 de dezembro de 2005.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2005",
+    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "A CGA deixa, a partir de 1 de janeiro de 2006, de aceitar novas inscrições.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "A CGA fechou a novas inscrições em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "A CGA fechou a novas inscrições em 1 de janeiro de 2006. Quem já era subscritor mantém regras próprias, com duas fronteiras — 2006 e, antes dela, 1993 (Lei n.º 60/2005).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Sei se comecei a trabalhar na função pública em data anterior ou posterior a 1 de janeiro de 2006?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais que conferissem direito de inscrição na CGA.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais que conferissem direito de inscrição na CGA.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2006",
+    "frase": "🚪 Fechada a novas inscrições desde 1 de janeiro de 2006 — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: 1 de setembro de 1993.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 1993",
+    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Depende de uma segunda fronteira, anterior à de 2006 — 1 de setembro de 1993 (art. 5.º).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: 1 de setembro de 1993.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 1993",
+    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Confirmei se me aplica a salvaguarda de 36 anos de serviço + 60 anos de idade a 31 de dezembro de 2005?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Pelo tempo de serviço até 31 de dezembro de 2005.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
+    "ordinal": 2
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "caixa-geral-aposentacoes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "31 de dezembro de 2005",
+    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
+    "ordinal": 2
   },
   {
     "pagina": "caixa-geral-aposentacoes.html",
@@ -729,430 +985,6 @@
   },
   {
     "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 1993",
-    "frase": "Inscritos ATÉ 31 de agosto de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 1993",
-    "frase": "Para quem tem a carreira dividida em duas parcelas (inscritos até 31 de agosto de 1993, art. 6.º da Lei n.º 60/2005), a pensão de sobrevivência da CGA corresponde a 50% de P1, mais o valor que resultar de aplicar a P2 as regras de sobrevivência do regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Pelo tempo de serviço até 31 de dezembro de 2005.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2005",
-    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "A CGA deixa, a partir de 1 de janeiro de 2006, de aceitar novas inscrições.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "A CGA fechou a novas inscrições em 1 de janeiro de 2006 (Lei n.º 60/2005) — quem começou a trabalhar na função pública depois disso está sempre na Segurança Social.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "A CGA fechou a novas inscrições em 1 de janeiro de 2006. Quem já era subscritor mantém regras próprias, com duas fronteiras — 2006 e, antes dela, 1993 (Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Pelo tempo de serviço posterior a 1 de janeiro de 2006, já pelas regras do Decreto-Lei n.º 35/2002 — as mesmas usadas no regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais que conferissem direito de inscrição na CGA.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Três normas fecham a CGA: o art. 2.º, n.º 1, da Lei n.º 60/2005 determina que a CGA deixa, a partir de 1 de janeiro de 2006, de inscrever subscritores; o n.º 2 do mesmo artigo obriga quem inicia funções a partir dessa data a inscrever-se no regime geral; e o art. 9.º revoga o art. 1.º do Estatuto da Aposentação e todas as normas especiais que conferissem direito de inscrição na CGA.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "🚪 Fechada a novas inscrições desde 1 de janeiro de 2006 — três normas, não uma (arts. 2.º e 9.º, Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2015",
-    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2015",
-    "frase": "Desde 1 de janeiro de 2015, a idade de acesso é a mesma do regime geral (ver Idade normal de reforma), com o mesmo prazo de garantia.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: 1 de setembro de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Duas fronteiras internas decidem a fórmula de cada carreira — 1 de setembro de 1993 e 1 de janeiro de 2006 (arts. 2.º, 5.º e 9.º da Lei n.º 60/2005).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem já era subscritor mantém-se, com uma segunda fronteira interna, anterior — 1 de setembro de 1993 — a decidir a fórmula da sua pensão.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem já era subscritor à data do fecho de 2006 não tem, forçosamente, a mesma fórmula de cálculo — o art. 5.º da Lei n.º 60/2005 fixa uma segunda fronteira, mais antiga: 1 de setembro de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Quem se inscreveu A PARTIR de 1 de setembro de 1993 tem a pensão calculada inteiramente pelas regras do regime geral, nos termos do Decreto-Lei n.º 286/93 — nunca em duas parcelas.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "· Decreto-Lei n.º 286/93, de 20 de agosto — fórmula de cálculo do regime geral para subscritores inscritos a partir de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "36 anos de serviço + 60 anos de idade, ambos a 31 de dezembro de 2005",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Pelo tempo de serviço até 31 de dezembro de 2005.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem se inscreveu ATÉ essa data tem a pensão calculada em duas parcelas: P1, pelo tempo de serviço até 31 de dezembro de 2005, com a fórmula histórica do Estatuto; e P2, pelo tempo posterior, já pelas regras do Decreto-Lei n.º 35/2002 (as mesmas do regime geral).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2005",
-    "frase": "Quem, a 31 de dezembro de 2005, já contava 36 anos de serviço e 60 anos de idade, pode aposentar-se pelo regime em vigor nessa data, independentemente de quando vier a requerer a aposentação.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
     "marcador": "novas\\s+inscri[çc][õo]es",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2006",
@@ -1241,22 +1073,6 @@
   },
   {
     "pagina": "carreiras-contributivas-estrangeiro.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2009",
-    "frase": "· eur-lex.europa.eu — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º",
-    "ordinal": 1
-  },
-  {
-    "pagina": "carreiras-contributivas-estrangeiro.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "16 de setembro de 2009",
-    "frase": "· eur-lex.europa.eu — Regulamento (CE) n.º 987/2009, do Parlamento Europeu e do Conselho, de 16 de setembro de 2009 — regras de aplicação, lido por inteiro, incluindo arts. 44.º, 45.º, 47.º, 48.º e 50.º",
-    "ordinal": 1
-  },
-  {
-    "pagina": "carreiras-contributivas-estrangeiro.html",
     "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
     "tipo": "data_mes_ano",
     "correspondencia": "abril de 2004",
@@ -1313,18 +1129,130 @@
   },
   {
     "pagina": "creche-gratuita.html",
-    "marcador": "decreto-lei",
+    "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
+    "correspondencia": "setembro de 2021",
+    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
     "ordinal": 1
   },
   {
     "pagina": "creche-gratuita.html",
-    "marcador": "decreto-lei",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "A creche é gratuita para crianças nascidas a partir de 1 de setembro de 2021, na rede solidária com acordo ou na rede pública.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Confirma que a criança nasceu a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Confirmaste que a criança nasceu a partir de 1 de setembro de 2021?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "👶 Quem tem direito: crianças nascidas a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
     "tipo": "prazo_outono",
-    "correspondencia": "22 de dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "A creche é gratuita para crianças nascidas a partir de 1 de setembro de 2021, na rede solidária com acordo ou na rede pública.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Confirma que a criança nasceu a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Confirmaste que a criança nasceu a partir de 1 de setembro de 2021?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "👶 Quem tem direito: crianças nascidas a partir de 1 de setembro de 2021, inclusive.",
     "ordinal": 1
   },
   {
@@ -1338,22 +1266,6 @@
   {
     "pagina": "creche-gratuita.html",
     "marcador": "despacho",
-    "tipo": "prazo_outono",
-    "correspondencia": "22 de dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2022",
-    "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "lei\\s+n\\.?º",
     "tipo": "prazo_outono",
     "correspondencia": "22 de dezembro de 2022",
     "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
@@ -1469,54 +1381,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2022",
     "frase": "Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2021",
-    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2021",
-    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "creche-gratuita.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
     "ordinal": 1
   },
   {
@@ -1592,22 +1456,6 @@
     "ordinal": 1
   },
   {
-    "pagina": "deducao-rendas-irs.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 2025",
-    "frase": "Desde 1 de agosto de 2025, o próprio inquilino pode comunicar o contrato, através da função «Comunicação de Locatário ou Sublocatário» no Portal das Finanças (Portaria n.º 106/2025/1, de 13 de março) — assim que o prazo do senhorio tiver passado sem ele o ter feito.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "deducao-rendas-irs.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 2025",
-    "frase": "Disponível desde 1 de agosto de 2025 (Portaria n.º 106/2025/1, de 13 de março), na área de Imposto do Selo/Arrendamento.",
-    "ordinal": 1
-  },
-  {
     "pagina": "documentos/carta-acompanhamento-comunicacao-alteracao.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
@@ -1637,6 +1485,110 @@
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2023",
     "frase": "Confirmado via pesquisa (2026-07-06): desde julho de 2023 a Segurança Social Direta tem uma \"Declaração de Situação Familiar\" própria (Família > Agregado e Relações Familiares > Declarações de Situação Familiar — caminho conferido pelo Nuno a 05/10/2026) como canal principal e mais completo para comunicar alterações ao agregado; existem também formulários específicos mais antigos ligados a prestações por encargos familiares (Mod.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "dezembro de 2023",
+    "frase": "O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2013",
+    "frase": "Alterou vários regimes de protecção social, incluindo o Decreto-Lei n.º 322/90 — eliminou o prazo de caducidade de 5 anos da pensão de sobrevivência, equiparou a união de facto ao casamento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "novembro de 2023",
+    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Reescreve o artigo 2.º (âmbito pessoal da portaria) e a alínea a) do n.º 1 do artigo 5.º — passa de \"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Reescreve o artigo 2.º (âmbito pessoal da portaria) e a alínea a) do n.º 1 do artigo 5.º — passa de \"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "11 de dezembro de 2023",
+    "frase": "O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "20 de novembro de 2023",
+    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
     "ordinal": 1
   },
   {
@@ -1769,86 +1721,6 @@
   },
   {
     "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Alterou vários regimes de protecção social, incluindo o Decreto-Lei n.º 322/90 — eliminou o prazo de caducidade de 5 anos da pensão de sobrevivência, equiparou a união de facto ao casamento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2023",
-    "frase": "Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Altera o n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, de 22 de março (regime do Apoio Extraordinário à Renda, fechado a contratos celebrados até 15 de março de 2023) — acrescenta uma ressalva excecional e temporária: o apoio mantém-se, num contrato posterior a essa data, quando, cumulativamente, o contrato anterior tiver cessado comprovadamente por iniciativa do senhorio (nunca do locatário), o contrato em vigor disser respeito ao mesmo locatário e ao mesmo imóvel, corresponder a habitação permanente e domicílio fiscal, e isso for comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "novembro de 2023",
-    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "decreto-lei",
-    "tipo": "prazo_outono",
-    "correspondencia": "20 de novembro de 2023",
-    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
     "marcador": "diário da república",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2023",
@@ -1929,118 +1801,6 @@
   },
   {
     "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 1993",
-    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Fecha a Caixa Geral de Aposentações a novas inscrições a partir de 1 de janeiro de 2006 (art. 2.º) e revoga o art. 1.º do Estatuto da Aposentação e as normas especiais de inscrição (art. 9.º).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2006",
-    "frase": "Fixa as regras de cálculo (as mesmas do regime geral) aplicadas à parcela P2 — o tempo de serviço prestado desde 1 de janeiro de 2006 — dos subscritores da Caixa Geral de Aposentações inscritos até 31 de agosto de 1993.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Alterou vários regimes de protecção social, incluindo o Decreto-Lei n.º 322/90 — eliminou o prazo de caducidade de 5 anos da pensão de sobrevivência, equiparou a união de facto ao casamento como causa de cessação (art. 41.º), aditou o limite da pensão do ex-cônjuge ao valor da pensão de alimentos (art. 29.º, n.º 5), e introduziu uma fórmula transitória para o subsídio por morte, em vigor só até 31 de janeiro de 2013.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "Adita o artigo 28.º-A ao Decreto-Lei n.º 220/2006 — cria a majoração de 10% do subsídio de desemprego para agregados com filhos a cargo em que ambos os cônjuges/unidos de facto estão desempregados, em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2023",
-    "frase": "Publicado no Diário da República n.º 45/2023, Série I, pp. 40-43, com efeitos desde 1 de janeiro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Altera o n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, de 22 de março (regime do Apoio Extraordinário à Renda, fechado a contratos celebrados até 15 de março de 2023) — acrescenta uma ressalva excecional e temporária: o apoio mantém-se, num contrato posterior a essa data, quando, cumulativamente, o contrato anterior tiver cessado comprovadamente por iniciativa do senhorio (nunca do locatário), o contrato em vigor disser respeito ao mesmo locatário e ao mesmo imóvel, corresponder a habitação permanente e domicílio fiscal, e isso for comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "novembro de 2023",
-    "frase": "Em vigor desde 21 de novembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "novembro de 2023",
-    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Aplica a fórmula de cálculo em vigor no regime geral da Segurança Social, inteiramente, aos subscritores da Caixa Geral de Aposentações inscritos a partir de 1 de setembro de 1993 — nunca em duas parcelas, ao contrário de quem se inscreveu antes dessa data.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "20 de novembro de 2023",
-    "frase": "Verificado numa consolidação do DRE (texto com a Lei n.º 65/2023 já incorporada, versão de 20 de novembro de 2023) — acesso directo a diariodarepublica.pt bloqueado nesta sessão (GRAU 2).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "prazo_outono",
-    "correspondencia": "21 de novembro de 2023",
-    "frase": "Em vigor desde 21 de novembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
@@ -2113,110 +1873,6 @@
   },
   {
     "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2023",
-    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2023",
-    "frase": "O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2021",
-    "frase": "O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2021",
-    "frase": "Reescreve o artigo 2.º (âmbito pessoal da portaria) e a alínea a) do n.º 1 do artigo 5.º — passa de \"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 2022",
-    "frase": "O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\".",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2021",
-    "frase": "O artigo 2.º, n.º 1, aplica a medida às crianças nascidas a partir de 1 de setembro de 2021, inclusive, que frequentem creche, creche familiar ou ama.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2021",
-    "frase": "Reescreve o artigo 2.º (âmbito pessoal da portaria) e a alínea a) do n.º 1 do artigo 5.º — passa de \"concelho de residência ou do local de trabalho dos pais\" para \"freguesia de residência, do local de trabalho dos pais... ou nas respetivas freguesias limítrofes\", mantendo esta Portaria n.º 158/2024/1 apenas a data de 1 de setembro de 2021 já fixada em 2022 — e o artigo 6.º, n.º 3 — a lista do que mais pode ser cobrado passa a remeter para \"os n.os 2 e 3 do artigo 4.º\" (antes só o n.º 2), confirmando a caução como cobrança legítima.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 2022",
-    "frase": "O artigo 9.º, n.º 4, na redação da Portaria n.º 304/2022 (com efeitos a partir de 1 de setembro de 2022), assegura a continuidade da frequência \"até aos 3 anos\".",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "11 de dezembro de 2023",
-    "frase": "Alterada pelas Portarias n.os 411/2012, 190-A/2023 e 426/2023, até à consolidação de 11 de dezembro de 2023.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "11 de dezembro de 2023",
-    "frase": "Lida em fonte primária (consolidação do Diário da República à data de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
-    "marcador": "portaria",
-    "tipo": "prazo_outono",
-    "correspondencia": "11 de dezembro de 2023",
-    "frase": "O artigo 3.º define a creche como um equipamento \"destinado a acolher crianças até aos 3 anos de idade\" (sem alterações até à consolidação de 11 de dezembro de 2023).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
     "marcador": "regulamento\\s*\\((?:ce|ue)\\)\\s*n\\.?[ºo]",
     "tipo": "data_mes_ano",
     "correspondencia": "abril de 2004",
@@ -2265,30 +1921,6 @@
   },
   {
     "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "A majoração aplica-se também a trabalhadores independentes — quer aos que prestam serviços maioritariamente a uma entidade contratante e dela dependem economicamente (Subsídio por Cessação de Actividade, art. 10.º-A do Decreto-Lei n.º 65/2012), quer aos que têm actividade empresarial em nome próprio ou são membros dos órgãos estatutários de pessoas colectivas (Subsídio por Cessação de Actividade Profissional, art. 11.º-A do Decreto-Lei n.º 12/2013) — e a quem já recebia o subsídio quando o Decreto-Lei n.º 119/2021 entrou em vigor, a 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
@@ -2298,30 +1930,6 @@
   {
     "pagina": "majoracao-subsidio-desemprego.html",
     "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "A majoração aplica-se também a trabalhadores independentes — quer aos que prestam serviços maioritariamente a uma entidade contratante e dela dependem economicamente (Subsídio por Cessação de Actividade, art. 10.º-A do Decreto-Lei n.º 65/2012), quer aos que têm actividade empresarial em nome próprio ou são membros dos órgãos estatutários de pessoas colectivas (Subsídio por Cessação de Actividade Profissional, art. 11.º-A do Decreto-Lei n.º 12/2013) — e a quem já recebia o subsídio quando o Decreto-Lei n.º 119/2021 entrou em vigor, a 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "majoracao-subsidio-desemprego.html",
-    "marcador": "lei\\s+n\\.?º",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
     "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
@@ -3105,54 +2713,6 @@
   },
   {
     "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "decreto-lei",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
@@ -3194,54 +2754,6 @@
   {
     "pagina": "subsidio-por-morte.html",
     "marcador": "em vigor desde",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "janeiro de 2013",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 2
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
-    "tipo": "data_mes_ano",
-    "correspondencia": "julho de 2012",
-    "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "subsidio-por-morte.html",
-    "marcador": "lei\\s+n\\.?º",
     "tipo": "data_mes_ano",
     "correspondencia": "julho de 2012",
     "frase": "Este valor está em vigor desde 1 de fevereiro de 2013 — antes disso, entre julho de 2012 e janeiro de 2013, a fórmula era diferente (6 vezes a remuneração de referência, com um máximo de 6 vezes o IAS).",

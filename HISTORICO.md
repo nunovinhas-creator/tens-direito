@@ -7428,6 +7428,47 @@ carimbo e a exigir o tipo `data_mes_ano`, para continuarem a testar os
 marcadores. `test_psu_vs_abono_familia_sem_alerta_em_2027` aceita
 `carimbo_antigo`, porque o teste é sobre as datas de 31/12/2026.
 
+
+### Última revisão: 2026-10-14 — Marcadores de diploma restringidos à citação (issue #332, PR 2)
+
+`portaria`, `decreto-lei`, `decreto\s+lei` e `lei\s+n\.?º` só suprimem uma
+data que faça parte da própria citação («<diploma> n.º X/AAAA, de D de mês
+de AAAA»), e só quando o marcador corresponde ao diploma citado («lei n.º»
+nunca suprime a data de uma Portaria). Antes suprimiam qualquer data a
+menos de 220 caracteres. A restrição vale só para datas: `ano_letivo`,
+`valor_ias` e o compromisso no futuro ficam como estavam. `despacho` e
+`\bdl\s*n` também.
+
+Baseline do auditor: 406 → 269 entradas, 137 removidas, nenhuma nova. Ficam
+as 4 entradas da Portaria n.º 305/2022 (creche), as únicas legítimas.
+
+Janeiro de 2027: 41 páginas com alerta só com o PR 1, 46 com os dois PRs
+(89 antes de ambos). Lista por página na issue #332, para a revisão de
+janeiro.
+
+`fontes.html` e `creche-gratuita.html` (guardas
+`test_fontes_real_nao_gera_alerta_issue_170` e
+`test_creche_gratuita_real_nao_gera_alerta`) têm datas históricas fixas que
+só eram suprimidas por estarem perto de uma Portaria. Em vez de marcadores
+globais novos, `DATAS_PERMANENTES` (`verificar_datas.py`): (página, data
+exacta) → motivo, suprime só essa data nessa página, sejam quais forem os
+marcadores ou o HTML à volta. Entrada órfã falha
+`tests/test_datas_permanentes.py`; o auditor regista estas supressões com o
+rótulo `DATAS_PERMANENTES` (baseline 269 → 345, 76 novas, nenhuma
+removida). Entradas, aprovadas uma a uma: creche «1 de setembro de 2021»;
+`fontes.html` «1 de setembro de 2021», «11 de dezembro de 2023», «20 de
+novembro de 2023», «31 de janeiro de 2013»; `caixa-geral-aposentacoes.html`
+«1 de setembro de 1993», «31 de agosto de 1993», «1 de janeiro de 2006»,
+«31 de dezembro de 2005» (fronteiras da Lei n.º 60/2005). 44 ocorrências
+cobertas, todas no mesmo sentido; tabela no #334. Janeiro de 2027: 44
+páginas com alerta.
+
+Testes do auditor ajustados sem mudar o que testam: atribuição múltipla
+com a data da própria citação; ordinal e FAQ filtrados pelo outro marcador
+da frase («em vigor desde»); casos #260/#264 com o cartão real do
+Decreto-Lei n.º 286/93, porque o da Portaria n.º 158/2024/1 ficou sem
+supressões.
+
 ---
 
 *Última revisão automática: 2026-10-18*
