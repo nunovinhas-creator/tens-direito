@@ -7733,6 +7733,10 @@ passar `TETO_FAQ_DIVERGENCIAS` (333). Lista de transição em
 As 16 linhas «excerto» da tabela contam aqui como `resposta_diferente`.
 Provados os três caminhos de falha sobre páginas reais. Regra nova no
 CLAUDE.md (regra 7 e checklist): o tecto só desce.
+Correcção no mesmo PR: o teste passa a reconhecer `<details
+class="zona-cinzenta">` soltos no `<main>` (calendário de pagamentos e
+pagamento após deferimento). Duas entradas passam de `so_jsonld` a
+`pergunta_diferente`; a lista continua com 333.
 
 ---
 

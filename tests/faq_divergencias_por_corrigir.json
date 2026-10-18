@@ -546,6 +546,11 @@
  },
  {
   "pagina": "calendario-pagamentos-seguranca-social.html",
+  "tipo": "pergunta_diferente",
+  "pergunta": "Porque há um 1.º e um 2.º pagamento do subsídio de desemprego, doença e parentalidade?"
+ },
+ {
+  "pagina": "calendario-pagamentos-seguranca-social.html",
   "tipo": "resposta_diferente",
   "pergunta": "Mudei de banco — como actualizo o IBAN para não atrasar o pagamento?"
  },
@@ -558,11 +563,6 @@
   "pagina": "calendario-pagamentos-seguranca-social.html",
   "tipo": "resposta_diferente",
   "pergunta": "Recebo por vale de correio — porque demora mais do que a transferência?"
- },
- {
-  "pagina": "calendario-pagamentos-seguranca-social.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Porque há um 1.º e um 2.º pagamento do subsídio de desemprego, doença e parentalidade?"
  },
  {
   "pagina": "carreiras-muito-longas.html",
@@ -1001,6 +1001,11 @@
  },
  {
   "pagina": "pagamento-apos-deferimento.html",
+  "tipo": "pergunta_diferente",
+  "pergunta": "Quanto tempo pode a Segurança Social demorar a decidir o pedido?"
+ },
+ {
+  "pagina": "pagamento-apos-deferimento.html",
   "tipo": "resposta_diferente",
   "pergunta": "O meu pedido foi deferido mas ainda não recebi. É normal?"
  },
@@ -1008,11 +1013,6 @@
   "pagina": "pagamento-apos-deferimento.html",
   "tipo": "resposta_diferente",
   "pergunta": "O prazo legal já passou e continuo sem resposta. O que faço?"
- },
- {
-  "pagina": "pagamento-apos-deferimento.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quanto tempo pode a Segurança Social demorar a decidir o pedido?"
  },
  {
   "pagina": "passe-sub23.html",

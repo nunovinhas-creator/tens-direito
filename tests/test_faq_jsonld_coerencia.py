@@ -14,8 +14,9 @@ Regras, por página com `FAQPage`:
 3. a secção de FAQ visível não tem perguntas fora do JSON-LD.
 
 O que conta como FAQ visível: `<details>`/`.faq-item` fora da navegação
-cuja pergunta exista no JSON-LD, e todos os que estão num contentor cujo
-`h2` seja de perguntas (`RE_TITULO_FAQ`). Os «Erros comuns» e as outras
+cuja pergunta exista no JSON-LD, os `<details class="zona-cinzenta">`, e
+todos os que estão num contentor cujo `h2` seja de perguntas
+(`RE_TITULO_FAQ`). Os «Erros comuns» e as outras
 caixas recolhíveis nunca contam.
 
 `FAQ_DIVERGENCIAS_POR_CORRIGIR` (`tests/faq_divergencias_por_corrigir.json`)
@@ -105,7 +106,12 @@ def faq_visivel(soup, perguntas_jsonld) -> dict:
         if cabeca is None:
             continue
         pergunta = _normalizar(cabeca.get_text(" ", strip=True))
-        e_faq = "faq-item" in (el.get("class") or []) or RE_TITULO_FAQ.search(_titulo_do_contentor(el))
+        classes = el.get("class") or []
+        e_faq = (
+            "faq-item" in classes
+            or "zona-cinzenta" in classes  # <details class="zona-cinzenta"> solto no <main>
+            or RE_TITULO_FAQ.search(_titulo_do_contentor(el))
+        )
         if not (e_faq or pergunta in perguntas_jsonld):
             continue
         resposta = copy.copy(el)
