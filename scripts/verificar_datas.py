@@ -321,17 +321,27 @@ MARCADORES_SO_CITACAO = (
     r"portaria", r"decreto-lei", r"decreto\s+lei", r"lei\s+n\.?º",
     r"despacho", r"\bdl\s*n", r"diário da república", r"dre\.pt",
 )
-# Só para datas: um par de ano lectivo ou um valor do IAS nunca é "a data de
-# uma citação", por isso aí estes marcadores continuam a valer por proximidade.
-# O compromisso no futuro também fica como estava: a correspondência começa no
-# verbo, não na data, e uma frase "vai mudar a 1 de janeiro…" não é citação.
+# Datas: só a data da citação. Ano lectivo (PR D do #332): só o par que é o
+# próprio número do diploma ("Despacho n.º 2026/2027", forma que o site hoje
+# não usa) — um ano lectivo perto de um diploma, mesmo na ementa da citação
+# ("— calendário escolar 2024/2025 a 2027/2028"), deixa de ser suprimido por
+# eles. O valor do IAS continua por proximidade. O compromisso no futuro
+# também fica como estava: a correspondência começa no verbo, não na data,
+# e uma frase "vai mudar a 1 de janeiro…" não é citação.
 TIPOS_DATA_CITACAO = ("data_mes_ano", "data_numerica", "prazo_outono")
+TIPOS_NUMERO_CITACAO = ("ano_letivo",)
 assert set(MARCADORES_SO_CITACAO) <= set(MARCADORES_HISTORICOS)
 REGEX_CITACAO_DIPLOMA = re.compile(
     r"(?:decreto-lei|decreto\s+lei|\blei|portaria|despacho|\bdl"
     r"|di[áa]rio\s+da\s+rep[úu]blica)\s*n\.?\s*[ºo°]\s*[\w\-/\.]+"
     r"(?:,?\s*(?:s[ée]rie\s+[ivx]+|\d\.ª\s+s[ée]rie))?"
     r",?\s+de\s+(?:\d{1,2}\s+de\s+)?$",
+    re.IGNORECASE,
+)
+# Texto logo antes de um ano lectivo que é o número do diploma citado.
+REGEX_NUMERO_DIPLOMA = re.compile(
+    r"(?:decreto-lei|decreto\s+lei|\blei|portaria|despacho|\bdl"
+    r"|di[áa]rio\s+da\s+rep[úu]blica)\s*n\.?\s*[ºo°]\s*[\w\-]*(?:/[\w\-]+)*/?$",
     re.IGNORECASE,
 )
 
@@ -344,6 +354,20 @@ REGEX_CITACAO_DIPLOMA = re.compile(
 # de início de lei com 1 de janeiro estão em DATAS_PERMANENTES.
 MARCADORES_DESDE = {MARCADOR_DESDE: r"\bdesde", r"em vigor desde": r"\bem\s+vigor\s+desde"}
 _CAUDA_DESDE = r"\s+(?:o\s+dia\s+)?(?:(\d{1,2})(?:\.º)?\s+de\s+)?$"
+
+# Marcadores de data-limite e de evento (PR D do #332): `celebrados até`,
+# `posterior a`, `anterior(es) a` e `revisão urgente` só suprimem a data logo
+# a seguir — «celebrados até 15 de março de 2023», «revisão urgente em agosto
+# de 2025». Uma data só perto deles (outra frase, «anterior a essa data»)
+# deixa de ser suprimida. No ano lectivo e no IAS continuam por proximidade.
+MARCADORES_DATA_SEGUINTE = {
+    r"celebrados?\s+at[ée]\b": r"\bcelebrados?\s+at[ée]",
+    r"\bposterior a\b": r"\bposterior\s+a",
+    r"\banterior(?:es)?\s+a\b": r"\banterior(?:es)?\s+a",
+    r"revisão urgente": r"\brevis[ãa]o\s+urgente\s+em",
+}
+_CAUDA_DATA_SEGUINTE = r"\s+(?:o\s+dia\s+)?(?:\d{1,2}(?:\.º)?\s+de\s+)?$"
+assert set(MARCADORES_DATA_SEGUINTE) <= set(MARCADORES_HISTORICOS)
 
 # Marcadores isentos da produção de efeitos (PR B): só suprimem a própria data
 # — dentro da expressão («Produção de efeitos: 31/12/2026») ou logo antes de
@@ -369,6 +393,12 @@ def _rege_por_desde(marcador, conteudo, inicio):
     return not (m.group(1) is not None and int(m.group(1)) == 1 and data.lower().startswith("janeiro"))
 
 
+def _rege_logo_a_seguir(marcador, conteudo, inicio):
+    """O marcador vem logo antes da data, só com o dia ou «de» pelo meio?"""
+    padrao = MARCADORES_DATA_SEGUINTE[marcador] + _CAUDA_DATA_SEGUINTE
+    return re.search(padrao, _texto_antes(conteudo, inicio), re.IGNORECASE) is not None
+
+
 def _data_propria_do_isento(marcador, conteudo, inicio, fim):
     a0 = max(0, inicio - JANELA)
     for m in re.finditer(marcador, conteudo[a0:fim + JANELA], re.IGNORECASE):
@@ -392,14 +422,21 @@ def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None, fim
     """Um marcador de MARCADORES_HISTORICOS suprime esta ocorrência?
     Única regra, partilhada por `_esta_suprimido` e pelo auditor. Em datas,
     um marcador de diploma só conta se a data for a da citação desse mesmo
-    diploma ("lei n.º" nunca suprime a data de uma Portaria), um «desde» só
-    a data que rege e um isento da produção de efeitos só a própria data."""
+    diploma ("lei n.º" nunca suprime a data de uma Portaria) e num ano
+    lectivo só se o par for o número desse diploma; um «desde», um
+    «celebrados até», «posterior/anterior a» ou «revisão urgente» só a data
+    que rege e um isento da produção de efeitos só a própria data."""
     if not re.search(marcador, janela, re.IGNORECASE):
         return False
+    if tipo in TIPOS_NUMERO_CITACAO and marcador in MARCADORES_SO_CITACAO:
+        numero = REGEX_NUMERO_DIPLOMA.search(_texto_antes(conteudo, inicio, 80))
+        return numero is not None and re.search(marcador, numero.group(0), re.IGNORECASE) is not None
     if tipo not in TIPOS_DATA_CITACAO:
         return True
     if marcador in MARCADORES_DESDE:
         return _rege_por_desde(marcador, conteudo, inicio)
+    if marcador in MARCADORES_DATA_SEGUINTE:
+        return _rege_logo_a_seguir(marcador, conteudo, inicio)
     if marcador in ISENTOS_DATA_PROPRIA:
         return _data_propria_do_isento(marcador, conteudo, inicio, fim if fim is not None else inicio)
     if marcador in MARCADORES_SO_CITACAO:
@@ -478,6 +515,8 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
         "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
     ("psu-quando-entra-em-vigor.html", "13 de agosto de 2026"):
         "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("calendario-escolar-apoios.html", "2024/2025"):
+        "Início fixo do calendário escolar plurianual 2024/2025 a 2027/2028 (Despacho n.º 8368/2024) — facto fixo; o 2027/2028 fica exposto.",
     ("prestacao-social-unica.html", "30/07/2026"):
         "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
     ("psu-quando-entra-em-vigor.html", "30/07/2026"):
@@ -743,10 +782,12 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None, pagina=No
         # distintos que citem coincidentemente o mesmo par (ex.: "2025/2026"),
         # uma afirmação não relacionada e genuinamente desactualizada poderia
         # ficar mascarada pela explicação da outra. Ver auditoria.
-        ocorrencias = list(re.finditer(padrao["regex"], conteudo))
+        permanentes = spans_datas_permanentes(conteudo, pagina)
+        ocorrencias = [m for m in re.finditer(padrao["regex"], conteudo)
+                       if not em_data_permanente(permanentes, m.start(), m.end())]
         pares_explicados = {
             m.group(0) for m in ocorrencias
-            if int(m.group(1)) < ano and _esta_suprimido(conteudo, m.start(), m.end(), ano, mes)
+            if int(m.group(1)) < ano and _esta_suprimido(conteudo, m.start(), m.end(), ano, mes, tipo=tipo)
         }
         for m in ocorrencias:
             if int(m.group(1)) >= ano:

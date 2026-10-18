@@ -41,17 +41,22 @@ def _frase_sem_marcadores(data):
     return f"<p>Conta <strong>a data de {data}</strong> para este efeito.</p>"
 
 
+# Ano lectivo (PR D do #332) só é revisto em junho e julho.
+MESES = (1, 6, 7, 8, 9)
+
+
 @pytest.mark.parametrize("pagina,data", ENTRADAS)
 def test_suprime_na_propria_pagina_independentemente_do_html(pagina, data):
     conteudo = _frase_sem_marcadores(data)
-    for mes in (1, 7, 8, 9):
+    for mes in MESES:
         assert detectar_alertas(conteudo, pagina, 2030, mes) is None
 
 
 @pytest.mark.parametrize("pagina,data", ENTRADAS)
 def test_mesma_data_noutra_pagina_nao_e_suprimida(pagina, data):
-    alerta = detectar_alertas(_frase_sem_marcadores(data), "outra-pagina.html", 2030, 1)
-    assert alerta is not None and alerta["tipo"] in ("data_mes_ano", "data_numerica")
+    mes = 6 if "/" in data and len(data) == 9 and data[4] == "/" else 1
+    alerta = detectar_alertas(_frase_sem_marcadores(data), "outra-pagina.html", 2030, mes)
+    assert alerta is not None and alerta["tipo"] in ("data_mes_ano", "data_numerica", "ano_letivo")
 
 
 def test_outra_data_na_mesma_pagina_nao_e_suprimida():
