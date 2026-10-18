@@ -33,30 +33,6 @@
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023 — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, de 2 de julho, com mais condições cumulativas).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Se o teu contrato de arrendamento é posterior a 15 de março de 2023, não podes candidatar-te a este apoio — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, ver condições completas abaixo).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "ℹ️ Excepção: contrato novo depois de o senhorio ter cessado o anterior O Decreto-Lei n.º 43/2024, de 2 de julho, acrescentou uma ressalva excecional e temporária ao regime: continuas abrangido, mesmo com um contrato posterior a 15 de março de 2023, se se verificarem cumulativamente estas condições — o teu contrato de arrendamento anterior a essa data cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa); o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel; continua a ser a tua habitação permanente e domicílio fiscal; e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
@@ -117,14 +93,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2025",
     "frase": "A Provedoria de Justiça recebeu cerca de mil queixas sobre o regime, denunciando atrasos e irregularidades que afectaram sobretudo pessoas idosas, e pediu formalmente uma revisão urgente em agosto de 2025.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "apoio-extraordinario-renda.html",
-    "marcador": "revisão urgente",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2026",
-    "frase": "O Governo reconheceu falhas no desenho da medida e anunciou, em fevereiro de 2026, a intenção de a revogar e integrar os beneficiários actuais num novo programa.",
     "ordinal": 1
   },
   {
@@ -625,22 +593,6 @@
   },
   {
     "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
     "marcador": "\\binscritos?\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2006",
@@ -693,38 +645,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2006",
     "frase": "Sei se comecei a trabalhar na função pública em data anterior ou posterior a 1 de janeiro de 2006?",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bposterior a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bposterior a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "setembro de 1993",
-    "frase": "Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bposterior a\\b",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Inscritos A PARTIR de 1 de setembro de 1993",
-    "ordinal": 1
-  },
-  {
-    "pagina": "caixa-geral-aposentacoes.html",
-    "marcador": "\\bposterior a\\b",
-    "tipo": "prazo_outono",
-    "correspondencia": "1 de setembro de 1993",
-    "frase": "Se sou subscritor de antes de 2006, sei se me inscrevi antes ou depois de 1 de setembro de 1993 — a fronteira que decide a fórmula?",
     "ordinal": 1
   },
   {
@@ -917,6 +837,22 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 1993",
     "frase": "📅 Segunda fronteira, mais antiga: 1 de setembro de 1993 (art. 5.º) — decide se a tua pensão tem duas parcelas ou é calculada inteiramente pelo regime geral.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "calendario-escolar-apoios.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "ano_letivo",
+    "correspondencia": "2024/2025",
+    "frase": "Despacho n.º 8368/2024, de 25 de julho — calendário escolar 2024/2025 a 2027/2028",
+    "ordinal": 1
+  },
+  {
+    "pagina": "calendario-escolar-apoios.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "ano_letivo",
+    "correspondencia": "2024/2025",
+    "frase": "Entre 11 e 15 de setembro de 2026 — cada escola fixa o dia exato dentro deste intervalo, segundo o Despacho n.º 8368/2024, de 25 de julho (calendário escolar plurianual 2024/2025 a 2027/2028).",
     "ordinal": 1
   },
   {
@@ -1777,14 +1713,6 @@
   },
   {
     "pagina": "fontes.html",
-    "marcador": "\\bposterior a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "março de 2023",
-    "frase": "Altera o n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, de 22 de março (regime do Apoio Extraordinário à Renda, fechado a contratos celebrados até 15 de março de 2023) — acrescenta uma ressalva excecional e temporária: o apoio mantém-se, num contrato posterior a essa data, quando, cumulativamente, o contrato anterior tiver cessado comprovadamente por iniciativa do senhorio (nunca do locatário), o contrato em vigor disser respeito ao mesmo locatário e ao mesmo imóvel, corresponder a habitação permanente e domicílio fiscal, e isso for comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "fontes.html",
     "marcador": "\\bsalvaguarda\\s+(?:transit[óo]ria\\s+)?de\\s+\\d",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2005",
@@ -1950,22 +1878,6 @@
     "correspondencia": "16 de setembro de 2009",
     "frase": "Regulamento (CE) n.º 987/2009, de 16 de setembro de 2009",
     "ordinal": 1
-  },
-  {
-    "pagina": "garantia-publica-credito-habitacao.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 2026",
-    "frase": "O que conta é a data em que o banco fez a avaliação da tua solvabilidade, não a data em que assinas o contrato — a Recomendação está em vigor desde 1 de agosto de 2026, mas se essa avaliação for anterior a essa data, o teu processo pode continuar abrangido pelas regras anteriores, mesmo que o contrato só venha a ser celebrado depois.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "garantia-publica-credito-habitacao.html",
-    "marcador": "\\banterior(?:es)?\\s+a\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "agosto de 2026",
-    "frase": "O que conta é a data em que o banco fez a avaliação da tua solvabilidade, não a data em que assinas o contrato — a Recomendação está em vigor desde 1 de agosto de 2026, mas se essa avaliação for anterior a essa data, o teu processo pode continuar abrangido pelas regras anteriores, mesmo que o contrato só venha a ser celebrado depois.",
-    "ordinal": 2
   },
   {
     "pagina": "garantia-publica-credito-habitacao.html",
@@ -2166,14 +2078,6 @@
     "correspondencia": "março de 2023",
     "frase": "O Apoio Extraordinário à Renda só serve quem já tem contrato anterior a 15 de março de 2023.",
     "ordinal": 2
-  },
-  {
-    "pagina": "p/habitacao.html",
-    "marcador": "celebrados?\\s+at[ée]\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "fevereiro de 2026",
-    "frase": "O programa mantém-se em vigor e a pagar quem já foi aprovado, mas o Governo anunciou em fevereiro de 2026 a intenção de o revogar e substituir por um novo regime.",
-    "ordinal": 1
   },
   {
     "pagina": "p/habitacao.html",
