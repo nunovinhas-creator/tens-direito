@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-10-17",
+  "gerado_em": "2026-10-18",
   "prestacoes": {
     "abono": {
       "escalao1_limite_cenario_pedidos_novos_2026": {
@@ -1419,34 +1419,34 @@
     },
     "psu": {
       "art17_mediana_renda_m2_ine": {
-        "descricao": "PSU — art. 17.º/3: mediana das rendas por m² de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao 3.º trimestre do ano anterior, publicada pelo INE. PENDENTE — o INE não tem, à data desta sessão, nenhuma publicação com este recorte exacto confirmada como a fonte oficial para este cálculo; nunca inventar um número. `null` até confirmação directa contra o INE.",
+        "descricao": "PSU — art. 17.º/3: mediana das rendas por m² de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao 3.º trimestre do ano anterior, publicada pelo INE. PENDENTE — o INE não tem, à data desta sessão, nenhuma publicação com este recorte exacto confirmada como a fonte oficial para este cálculo; nunca inventar um número. `null` até confirmação directa contra o INE. 18/10/2026: portaria de actualização do art. 17.º, n.º 5 (conjunta Finanças + Solidariedade) não encontrada. A Portaria n.º 394/2026/1, de 27 de agosto, é a portaria de execução do art. 59.º (normas de execução da PSU) e não é a prevista no art. 17.º, n.º 5.",
         "unidade": "EUR/m²",
         "valor": null,
         "vigencia_inicio": "2026-08-13",
         "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"A renda de referência corresponde a um terço do valor mediano das rendas por metro quadrado de novos contratos de arrendamento para habitação, nos últimos 12 meses, com referência ao terceiro trimestre do ano anterior, publicado pelo Instituto Nacional de Estatística, I. P.\" — valor ainda por confirmar contra a publicação real do INE.",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-08-16"
+        "verificado_em": "2026-10-18"
       },
       "art17_mediana_renda_m2_referencia": {
-        "descricao": "PSU — art. 17.º/3: período civil a que se reporta a mediana acima (ex.: \"3.º trimestre de 2025\") — nunca o mesmo ano da vigência do parâmetro (a lei exige sempre o 3.º trimestre do ano ANTERIOR ao da aplicação). PENDENTE, junto com art17_mediana_renda_m2_ine — os dois só ficam preenchidos em conjunto, nunca um sem o outro.",
+        "descricao": "PSU — art. 17.º/3: período civil a que se reporta a mediana acima (ex.: \"3.º trimestre de 2025\") — nunca o mesmo ano da vigência do parâmetro (a lei exige sempre o 3.º trimestre do ano ANTERIOR ao da aplicação). PENDENTE, junto com art17_mediana_renda_m2_ine — os dois só ficam preenchidos em conjunto, nunca um sem o outro. 18/10/2026: portaria de actualização do art. 17.º, n.º 5 (conjunta Finanças + Solidariedade) não encontrada. A Portaria n.º 394/2026/1, de 27 de agosto, é a portaria de execução do art. 59.º (normas de execução da PSU) e não é a prevista no art. 17.º, n.º 5.",
         "unidade": "texto (trimestre/ano)",
         "valor": null,
         "vigencia_inicio": "2026-08-13",
         "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/3 — \"com referência ao terceiro trimestre do ano anterior\"; artigo 17.º/4 — \"Não estando disponível o valor mediano referido no número anterior, é considerado... o valor mediano mais recente publicado pelo Instituto Nacional de Estatística, I. P.\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-08-16"
+        "verificado_em": "2026-10-18"
       },
       "art17_portaria_habitacao": {
-        "descricao": "PSU — art. 17.º/5: número e data da portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social que fixa/actualiza anualmente o valor dos apoios à habitação determinado pelos números anteriores do artigo. PENDENTE — sentinela `dre_psu_regulamentacao` (scripts/scraper_playwright.py) vigia a publicação; `null` até essa portaria ser confirmada.",
+        "descricao": "PSU — art. 17.º/5: número e data da portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social que fixa/actualiza anualmente o valor dos apoios à habitação determinado pelos números anteriores do artigo. PENDENTE — sentinela `dre_psu_regulamentacao` (scripts/scraper_playwright.py) vigia a publicação; `null` até essa portaria ser confirmada. 18/10/2026: portaria de actualização do art. 17.º, n.º 5 (conjunta Finanças + Solidariedade) não encontrada. A Portaria n.º 394/2026/1, de 27 de agosto, é a portaria de execução do art. 59.º (normas de execução da PSU) e não é a prevista no art. 17.º, n.º 5.",
         "unidade": "texto (n.º/data do diploma)",
         "valor": null,
         "vigencia_inicio": "2026-08-13",
         "referencia_legal": "Decreto-Lei n.º 166/2026, de 13 de agosto, artigo 17.º/5 — \"O valor dos apoios à habitação determinado nos números anteriores é atualizado anualmente por portaria dos membros do Governo das áreas das finanças e da solidariedade e segurança social.\"",
         "fonte_url": "https://dre.pt",
         "fonte_url_complementar": null,
-        "verificado_em": "2026-08-16"
+        "verificado_em": "2026-10-18"
       },
       "art17_area_referencia_m2": {
         "descricao": "PSU — art. 17.º/3: área de referência aplicada ao valor mediano das rendas por m², definida de acordo com os censos mais recentes como área útil média da residência habitual em Portugal. FIXO na lei — não depende do INE nem de portaria, ao contrário dos 3 parâmetros anteriores.",
