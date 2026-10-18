@@ -1082,6 +1082,11 @@
  {
   "pagina": "prestacao-social-para-a-inclusao.html",
   "tipo": "resposta_diferente",
+  "pergunta": "A PSI conta como rendimento para o IRS?"
+ },
+ {
+  "pagina": "prestacao-social-para-a-inclusao.html",
+  "tipo": "resposta_diferente",
   "pergunta": "A partir de que grau de incapacidade tenho direito à PSI?"
  },
  {

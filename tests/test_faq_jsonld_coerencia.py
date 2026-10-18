@@ -41,7 +41,7 @@ RAIZ = Path(__file__).parent.parent
 FICHEIRO_LISTA = RAIZ / "tests" / "faq_divergencias_por_corrigir.json"
 
 # Só desce: ao corrigir divergências, tirá-las da lista e baixar este número.
-TETO_FAQ_DIVERGENCIAS = 333
+TETO_FAQ_DIVERGENCIAS = 334
 
 RE_TITULO_FAQ = re.compile(r"(?i)d[úu]vidas|perguntas|zonas cinzentas|problemas comuns")
 # Par emparelhado quando a pergunta tem redacção diferente nos dois sítios.
@@ -112,8 +112,8 @@ def faq_visivel(soup, perguntas_jsonld) -> dict:
             or "zona-cinzenta" in classes  # <details class="zona-cinzenta"> solto no <main>
             or RE_TITULO_FAQ.search(_titulo_do_contentor(el))
         )
-        if not (e_faq or pergunta in perguntas_jsonld):
-            continue
+        if not (e_faq or pergunta in perguntas_jsonld) or pergunta in faq:
+            continue  # pergunta repetida na página: conta a primeira
         resposta = copy.copy(el)
         for x in resposta.select("summary, h3, .fonte-inline"):
             x.decompose()

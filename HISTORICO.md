@@ -7737,6 +7737,12 @@ Correcção no mesmo PR: o teste passa a reconhecer `<details
 class="zona-cinzenta">` soltos no `<main>` (calendário de pagamentos e
 pagamento após deferimento). Duas entradas passam de `so_jsonld` a
 `pergunta_diferente`; a lista continua com 333.
+Segunda correcção, antes do merge: uma pergunta repetida na página (em
+duas secções) conta a primeira ocorrência, como no gerador
+`sincronizar_faq_jsonld.py`. Antes contava a última. Efeito:
+`prestacao-social-para-a-inclusao.html`, «A PSI conta como rendimento para
+o IRS?» (as duas respostas dizem «não»), passa a divergente. Lista e tecto
+passam a 334.
 
 ---
 
