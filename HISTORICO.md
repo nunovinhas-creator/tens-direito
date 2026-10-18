@@ -7469,6 +7469,38 @@ da frase («em vigor desde»); casos #260/#264 com o cartão real do
 Decreto-Lei n.º 286/93, porque o da Portaria n.º 158/2024/1 ficou sem
 supressões.
 
+
+### Última revisão: 2026-10-18 — Outras formas de carimbo em carimbo_antigo (issue #332, PR 3)
+
+As 12 ocorrências de carimbo que o PR 1 deixou de fora passam a contar para
+`carimbo_antigo` (`REGEX_CARIMBO`, `verificar_datas.py`). Critério do Nuno: a
+data certifica conteúdo publicado, visível ou em comentário HTML/JS. Formas:
+«Última atualização:» (acessibilidade, privacidade), «confirmado a»
+(subsidio-parental, manuais-escolares-mega ×2), «confirmados a»
+(assistencia-familia-filhos), «confirmadas a» (comentário em
+manuais-escolares-mega), «Datas confirmadas na Segurança Social a»
+(calendário, gerado todos os meses), «caminho conferido pelo Nuno a»
+(comentários em 2 minutas de documentos/), «confirmados por triangulação
+externa (…)» (comentário JS do simulador do subsídio de desemprego) e «À data
+de verificação desta página (…)» (bolsa de estudo). Ficam de fora as frases de
+conteúdo «revisão urgente em agosto de 2025» e «valores actualizados produzem
+efeitos desde 1 de janeiro de 2026». Medido: nenhuma outra ocorrência no site
+passou a ser carimbo.
+
+`verificado_em_do_texto` (portão do #187) tem regex própria
+(`_REGEX_VERIFICADO`, `sincronizar_clusters.py`) e continua a ler só
+«Verificado a» — trancado por
+`test_portao_187_continua_a_ler_so_o_verificado_a`.
+`test_vigilancia_licenca_parental` continua verde. Baseline do auditor sem
+alterações.
+
+Janeiro de 2027: 44 → 39 páginas com alerta. Saem acessibilidade,
+privacidade, assistencia-familia-filhos e as 2 minutas de documentos/, que só
+alertavam por estas datas. `carimbo_antigo` em 2027: 3 em julho, 38 em
+agosto, 98 em outubro (antes 2, 32, 92). Testes de efeito em
+`tests/test_carimbo_antigo.py` (8 formas sintéticas, privacidade e minuta
+reais, linha de dados do calendário); 11 falham sem a regex alargada.
+
 ---
 
 *Última revisão automática: 2026-10-18*

@@ -4714,7 +4714,14 @@ uma Issue é criada ou um valor é alterado:
    carimbo («Verificado a 2 de setembro de 2026», «Verificado a 2 setembro
    2026», «Verificado 24/06/2026» das notas por secção, «Fontes verificadas —
    2 de setembro de 2026» do bloco de fontes) fica fora da lógica
-   de ano civil e dos marcadores de supressão. Tem regra própria:
+   de ano civil e dos marcadores de supressão. Desde o PR 3 também as outras
+   formas cuja data certifica conteúdo publicado, visível ou em comentário
+   HTML/JS: «Última atualização: …», «confirmado(s)/confirmada(s) a …»,
+   «Datas confirmadas na Segurança Social a …», «conferido pelo Nuno a …»,
+   «confirmados por triangulação externa (…)», «À data de verificação desta
+   página (…)». Frases de conteúdo («revisão urgente em agosto de 2025»)
+   ficam de fora. `verificado_em_do_texto` (portão do #187) tem regex
+   própria e continua a ler só «Verificado a». Tem regra própria:
    `carimbo_antigo` dispara, em qualquer mês, quando algum carimbo da página
    tem mais de `LIMITE_MESES_CARIMBO` (12) meses face ao mês de execução.
    O auditor de marcadores ignora as mesmas datas. Carimbo novo: escrever
