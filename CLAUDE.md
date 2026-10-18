@@ -1001,6 +1001,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 - Contacto oficial = **contacto@tensdireito.com** (forwarding ImprovMX → caixa pessoal, activo desde 2026-07-03), sempre ofuscado via JavaScript (`.email-ofuscado`, `sobre.html`), nunca literal em HTML público
 - Não usar subpaths de portais sem confirmar que devolvem 200
 - **Páginas públicas nunca mencionam GitHub, repositório, código aberto, IA/inteligência artificial ou automação de redação** (decisão do Nuno, 2026-07-03) — vocabulário público é "a redação", "monitorização diária", "verificação contra fontes oficiais"; menções a GitHub/infra continuam permitidas em `scripts/`, workflows, `CLAUDE.md` e docs internos
+- Texto público nunca fala da sessão de trabalho («nesta sessão», «bloqueado nesta sessão», «na sessão seguinte») — diz o grau de confirmação: «confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República». «Iniciar sessão» (entrar numa conta) continua permitido. Guarda: `tests/test_texto_publico_sem_sessao.py` (corpo, atributos, meta e JSON-LD; comentários HTML/JS fora)
 
 ---
 
