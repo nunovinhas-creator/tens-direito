@@ -991,7 +991,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
 11. **Valor legal em `<title>` ou meta description**: qualquer valor em € ou % com origem legal (IAS, um tecto/piso derivado do IAS, ou um valor próprio de Portaria/limiar) usado num `<title>` ou `<meta name="description">` tem de estar coberto por um teste em `tests/test_valores_ancora.py` — nunca pode ficar um valor "solto" em metadados, invisível a qualquer teste, a ficar errado em silêncio quando a lei mudar (ver secção "CANÁRIO DE VALORES-ÂNCORA — TITLE/META DESCRIPTION").
 12. **Ano civil em `<title>` ou meta description**: um `<title>`/description de uma prestação com valores anuais deve incluir o ano corrente quando fizer sentido editorial (os utilizadores pesquisam com o ano, ex.: "cuidador informal 2026") — páginas atemporais (institucionais, hubs, quiz) ficam de fora por critério editorial, não por omissão. Qualquer ano civil *anterior* ao ano corrente num `<title>`/description tem de estar numa excepção explícita em `tests/test_anos_metadados.py` (citação de diploma legal ou facto histórico permanente) — nunca um esquecimento silencioso (ver secção "CANÁRIO DE ANOS EM METADADOS").
-13. **O próprio site nunca é fonte**: uma afirmação já publicada noutra página deste site nunca conta como confirmação de um facto novo — se essa página afirmou algo sem fonte primária, repeti-lo aqui não o confirma, só duplica a mesma incerteza. Cada afirmação remete sempre para a fonte primária (ou para uma triangulação identificada como tal, GRAU 2/3 — ver "FONTES VERIFICADAS E APROVADAS"), nunca para outra página do próprio site como prova.
+13. **O próprio site nunca é fonte**: uma afirmação já publicada noutra página deste site nunca conta como confirmação de um facto novo — se essa página afirmou algo sem fonte primária, repeti-lo aqui não o confirma, só duplica a mesma incerteza. Cada afirmação remete sempre para a fonte primária (ou para uma triangulação identificada como tal, GRAU 2/3 — ver "FONTES VERIFICADAS E APROVADAS"), nunca para outra página do próprio site como prova. Nenhuma página do site, nem o CLAUDE.md, serve de fonte para confirmar um facto. A confirmação faz-se sempre em fonte externa oficial.
 
 ### Não fazer
 - Não usar Jekyll ou qualquer SSG
@@ -1001,7 +1001,7 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 - Contacto oficial = **contacto@tensdireito.com** (forwarding ImprovMX → caixa pessoal, activo desde 2026-07-03), sempre ofuscado via JavaScript (`.email-ofuscado`, `sobre.html`), nunca literal em HTML público
 - Não usar subpaths de portais sem confirmar que devolvem 200
 - **Páginas públicas nunca mencionam GitHub, repositório, código aberto, IA/inteligência artificial ou automação de redação** (decisão do Nuno, 2026-07-03) — vocabulário público é "a redação", "monitorização diária", "verificação contra fontes oficiais"; menções a GitHub/infra continuam permitidas em `scripts/`, workflows, `CLAUDE.md` e docs internos
-- Texto público nunca fala do processo interno de verificação — sessão de trabalho («nesta sessão», «na sessão seguinte»), «triangulação», «acesso/pedidos automatizados», bloqueio de acesso a sites ou códigos HTTP («bloqueado nesta verificação», «devolve 403») — diz o grau de confirmação: «confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República» (ou «do Banco de Portugal»). «Iniciar sessão» e «bloqueado» fora de acesso a sites continuam permitidos. Guarda: `tests/test_texto_publico_sem_processo_interno.py` (corpo, atributos, meta e JSON-LD; comentários HTML/JS fora)
+- Texto público nunca fala do processo interno de verificação — sessão de trabalho («nesta sessão», «na sessão seguinte»), «triangulação», «acesso/pedidos automatizados», bloqueio de acesso a sites ou códigos HTTP («bloqueado nesta verificação», «devolve 403») — diz o grau de confirmação: «confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República» (ou «do Banco de Portugal»). «Iniciar sessão» e «bloqueado» fora de acesso a sites continuam permitidos. Guarda: `tests/test_texto_publico_sem_processo_interno.py` (corpo, atributos, meta, JSON-LD, comentários HTML e código dos `<script>` — tudo o que o servidor entrega; os comentários entraram com o #332)
 
 ---
 
@@ -2581,7 +2581,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | Página | Data a rever | Trigger |
 |---|---|---|
 | `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
-| `acao-social-escolar.html` | Setembro — prazo de candidatura ("até 30 de setembro"), **nunca** escalões (ver nota abaixo) | Redundante com `calendario-escolar-apoios.html`, mantida por cautela |
+| `acao-social-escolar.html` | Setembro — confirmar que a página continua sem prazo de candidatura nacional (é fixado por cada câmara/agrupamento, ver nota abaixo), **nunca** escalões | Calendário anual |
 | `bolsa-de-merito.html` | Setembro — valor do ano lectivo (2,5×IAS em vigor), **nunca** um despacho próprio (ver nota abaixo) | Calendário anual — corrigida a 25/08/2026, ver nota |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `rsi.html` | Janeiro (novo IAS/RSI) | Issue automática do scraper |
@@ -2663,12 +2663,18 @@ isto correctamente (1.342,83 € = 2,5 × IAS 2026, "Verificado a
 25/08/2026") — investigação da premissa errada original e correcção
 documentadas em `HISTORICO.md`, entrada de 2026-08-25.
 
-O prazo de "30 de setembro" em `acao-social-escolar.html` é uma regra
-fixa do regime-base (não republicada ano a ano); a única coisa que o
-podia genuinamente deslocar é um despacho de calendário escolar/
-matrículas novo — já agregado por `calendario-escolar-apoios.html`
-(ver a entrada dessa página nesta tabela). A revisão de setembro deste
-artigo fica por isso redundante com essa página, mantida por cautela.
+**O prazo de candidatura à ASE não é nacional** (corrigido a
+2026-10-18, issue #332): é fixado por cada câmara municipal ou
+agrupamento (ex.: Moita, 2025/2026, até 31 de outubro; a Lousã tem
+prazos próprios por medida no regulamento municipal). Este ficheiro
+dizia antes que os "30 de setembro" eram "regra fixa do regime-base" —
+afirmação nunca confirmada em fonte externa, repetida a partir das
+próprias páginas do site. As páginas da ASE (`acao-social-escolar.html`,
+`simulador-ase.html`, `calendario-escolar-apoios.html`,
+`p/apoios-escolares.html`) passaram a remeter para a escola ou a câmara,
+sem data fixa. Nenhuma página do site, nem o CLAUDE.md, serve de fonte
+para confirmar um facto. A confirmação faz-se sempre em fonte externa
+oficial.
 
 **Preço-tecto da refeição escolar**: decisão consciente de **não
 vigiar** — o site expressa sempre o custo da refeição como desconto
@@ -4719,8 +4725,10 @@ uma Issue é criada ou um valor é alterado:
    formas cuja data certifica conteúdo publicado, visível ou em comentário
    HTML/JS: «Última atualização: …», «confirmado(s)/confirmada(s) a …»,
    «Datas confirmadas na Segurança Social a …», «conferido pelo Nuno a …»,
-   «confirmados por triangulação externa (…)», «À data de verificação desta
-   página (…)». Frases de conteúdo («revisão urgente em agosto de 2025»)
+   «confirmados em várias fontes secundárias independentes (…)», «À data de
+   verificação desta página (…)» e, desde o PR A, «Lido por inteiro em fonte
+   primária (…)», «lida directamente a …» e «Verificado via pesquisa … —
+   DD/MM/AAAA». Frases de conteúdo («revisão urgente em agosto de 2025»)
    ficam de fora. `verificado_em_do_texto` (portão do #187) tem regex
    própria e continua a ler só «Verificado a». Tem regra própria:
    `carimbo_antigo` dispara, em qualquer mês, quando algum carimbo da página

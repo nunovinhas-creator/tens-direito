@@ -616,7 +616,7 @@ Acima de 660.982 € → tabela geral de IMT, sem isenção</code>
       let html;
       if (!r.elegivel) {
         // NUNCA mostrar valores de poupança a um inelegível — decisão
-        // explícita da spec desta sessão, verificada por teste real.
+        // explícita da especificação, verificada por teste real.
         html = `<div class="resultado-card sem-direito">`;
         html += `<div class="resultado-titulo">Resultado da simulação</div>`;
         html += `<div class="resultado-valor">Sem direito à isenção</div>`;

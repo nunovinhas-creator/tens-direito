@@ -2660,7 +2660,7 @@
     "marcador": "\\bfoi\\s+revogad[ao]\\s+em\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2018",
-    "frase": "Confirmado também que a redução de 10% aos 180 // dias (medida histórica de 2012) foi REVOGADA em janeiro de 2018 — // não é modelada, nem deve voltar a sê-lo sem um facto novo e // confirmado (ver CLAUDE.md, auditoria da Fase 1 dessa sessão). // // Migração para o padrão OpenFisca (2026-08-24, ver // dados/parametros/desemprego.yaml): PARAMETROS_SUBSIDIO_DESEMPREGO e // TABELA_DURACAO_BASE deixam de ser objectos JS inline — passam a // carregar em runtime de /dados/parametros.json, mesmo padrão de // PARAMETROS_RSI em simulador-rsi.html.",
+    "frase": "Confirmado também que a redução de 10% aos 180 // dias (medida histórica de 2012) foi REVOGADA em janeiro de 2018 — // não é modelada, nem deve voltar a sê-lo sem um facto novo e // confirmado (ver HISTORICO.md, entrada de 2026-07-13 deste simulador, // auditoria da Fase 1). // // Migração para o padrão OpenFisca (2026-08-24, ver // dados/parametros/desemprego.yaml): PARAMETROS_SUBSIDIO_DESEMPREGO e // TABELA_DURACAO_BASE deixam de ser objectos JS inline — passam a // carregar em runtime de /dados/parametros.json, mesmo padrão de // PARAMETROS_RSI em simulador-rsi.html.",
     "ordinal": 1
   },
   {

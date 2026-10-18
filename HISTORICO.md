@@ -7530,6 +7530,53 @@ páginas com o texto antigo; «iniciar sessão», vales MEGA bloqueados, a
 calculadora «bloqueada até os parâmetros carregarem» e «404» continuam
 permitidos.
 
+
+### Última revisão: 2026-10-18 — Guarda de texto público inclui comentários; carimbos da nota de fontes (issue #332, PR A)
+
+Porque «nesta sessão» escapou a `test_texto_publico_sem_processo_interno.py`:
+o guarda tirava os comentários HTML e o código dos `<script>` antes de
+procurar (decisão do #341), e as duas frases do #332 vivem em comentários
+HTML (creche, minuta de reclamação). Os comentários são entregues a quem
+abrir o código-fonte, por isso o guarda passou a lê-los, tal como o código
+dos `<script>`. Com o guarda alargado falhavam 9 páginas, 13 frases: as duas
+do #332 e mais 11 (cartas de acompanhamento do CSI e da reavaliação do
+abono, manuais MEGA, simuladores do abono, IMT Jovem, RSI e subsídio de
+desemprego). Reescritas pelas regras do #341 — grau de confirmação em vez do
+acesso («em várias fontes secundárias independentes, não no texto oficial do
+Diário da República»), sem «sessão», «triangulação», «devolve 403», «WebFetch
+… bloqueado». Confirmado: com as páginas antigas o guarda novo falha nas 9.
+
+`carimbo_antigo` (`REGEX_CARIMBO`) ganha «Lido por inteiro em fonte primária
+(…)», «lida directamente a …» e «Verificado via pesquisa … — DD/MM/AAAA»; o
+ramo «confirmados por triangulação externa (…)» passa a «confirmados em
+várias fontes secundárias independentes (…)», a redacção nova do comentário
+do simulador do subsídio de desemprego. Carimbos no site: só mudam estes 4
+(creche 16/09/2026, garantia para a infância 2/09/2026, minuta de reclamação
+06/07/2026, simulador 13/07/2026). As três primeiras datas eram suprimidas por
+acaso (`despacho`, `\bdl\s*n`, `diário da república`): alertas idênticos em
+todos os meses de 2026-2028; o auditor em 2027 desce de 110 para 107
+ocorrências fora do baseline. Baseline de 2026: só muda a frase da entrada
+«janeiro de 2018» (comentário reescrito). Testes de efeito em
+`tests/test_carimbo_antigo.py`; 7 falham sem a regex nova.
+
+**Prazo da ASE sem data fixa (mesmo PR).** O site dizia que a candidatura à
+ASE era sempre até 30 de setembro, mas o prazo é fixado por cada câmara ou
+agrupamento: na Moita, para 2025/2026, ia até 31 de outubro, e a Lousã tem
+prazos próprios. A confirmação anterior era circular, porque vinha das
+próprias páginas e do CLAUDE.md. Reescritas 17 zonas em `simulador-ase.html`,
+`acao-social-escolar.html`, `calendario-escolar-apoios.html` e
+`p/apoios-escolares.html`, para remeter para a escola ou a câmara. Também
+mudaram o destaque `escolar-setembro` e a nota da ASE no CLAUDE.md, que
+ganhou a regra «nenhuma página do site, nem o CLAUDE.md, serve de fonte».
+A FAQ e o JSON-LD ficam iguais nos dois pares, e a pergunta duplicada «Qual
+é o prazo…», que só existia no JSON-LD, saiu. Saíram também a «renovação
+automática» e os «15 dias (úteis)» da FAQ e da lista, por não terem fonte. A
+frase «depois do prazo continuam a ser aceites pedidos» não entrou: só havia
+excertos de pesquisa, e nenhuma fonte foi lida. Bolsa de mérito, Prova
+Escolar e as afirmações «sempre»/«todos os anos» ficam na #344. Janeiro de
+2027: 39 → 37 páginas com alerta. Carimbos «Verificado a» não avançados:
+nada foi verificado de novo.
+
 ---
 
 *Última revisão automática: 2026-10-18*

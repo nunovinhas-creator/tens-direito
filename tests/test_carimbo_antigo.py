@@ -95,7 +95,7 @@ def test_carimbo_canonico_das_paginas_reais_e_reconhecido(caminho):
     "<!-- datas confirmadas a 02/09/2026 por triangulação -->",
     "Datas confirmadas na Segurança Social a 02/09/2026",
     "<!-- caminho conferido pelo Nuno a 02/09/2026 -->",
-    "<script>// Valores confirmados por triangulação externa (02/09/2026): DECO</script>",
+    "<script>// Valores confirmados em várias fontes secundárias independentes (02/09/2026): DECO</script>",
     "À data de verificação desta página (02/09/2026), não foi possível confirmar",
 ])
 def test_outras_formas_de_carimbo_so_alertam_passados_12_meses(carimbo):
@@ -154,3 +154,46 @@ def test_calendario_data_confirmada_e_carimbo():
     sintetica = _pagina(m.group(0))
     assert _tipo(sintetica, *_meses_depois(d, 12)) is None
     assert _tipo(sintetica, *_meses_depois(d, 13)) == "carimbo_antigo"
+
+
+# --- Formas de carimbo da nota de fontes (#332, PR A) -----------------------
+# Cada carimbo vem junto de um marcador que, fora do carimbo, suprimiria a
+# data por proximidade (despacho, diário da república, DL n.º): o teste prova
+# que a data deixou de depender desse acaso.
+
+@pytest.mark.parametrize("carimbo", [
+    "<!-- Lido por inteiro em fonte primária (02/09/2026): Despacho n.º 6573/2024 -->",
+    "<p>Confirmado em fonte primária, lida directamente a 2 de setembro de 2026: DL n.º 176/2003</p>",
+    "<!-- Verificado via pesquisa a fontes que reproduzem o texto legal\n"
+    "    consolidado (Diário da República / repositórios de legislação) — 02/09/2026. -->",
+])
+def test_formas_da_nota_de_fontes_so_alertam_passados_12_meses(carimbo):
+    html = _pagina(carimbo)
+    assert len(v._carimbos(html)) == 1
+    assert _tipo(html, 2027, 1) is None, "a data do carimbo não pode entrar na lógica de ano civil"
+    assert _tipo(html, 2027, 9) is None
+    assert _tipo(html, 2027, 10) == "carimbo_antigo"
+
+
+@pytest.mark.parametrize("frase", [
+    "<p>Lido por inteiro em fonte primária (PDF oficial) em 2 de setembro de 2026.</p>",
+    "<p>Lido directamente em fonte primária: as candidaturas fecharam a 2 de setembro de 2026.</p>",
+    "<p>Verificado via pesquisa. As candidaturas fecharam a 2 de setembro de 2026.</p>",
+])
+def test_formas_parecidas_sem_data_do_carimbo_nao_sao_carimbo(frase):
+    assert v._carimbos(frase) == []
+    assert _tipo(frase, 2027, 1) == "data_mes_ano"
+
+
+@pytest.mark.parametrize("pagina, data", [
+    ("creche-gratuita.html", date(2026, 9, 16)),
+    ("garantia-para-a-infancia.html", date(2026, 9, 2)),
+    ("documentos/reclamacao-decisao-seguranca-social.html", date(2026, 7, 6)),
+])
+def test_paginas_reais_formas_da_nota_de_fontes(pagina, data):
+    html = (RAIZ / pagina).read_text(encoding="utf-8")
+    assert data in {d for *_, d in v._carimbos(html)}
+    # nem o auditor de marcadores a conta como supressão no ano seguinte
+    import auditar_marcadores_historicos as a
+    for r in a.supressoes_da_pagina(html, pagina, ano=data.year + 1):
+        assert r["correspondencia"] not in {data.strftime("%d/%m/%Y"), f"{data.day} de setembro de {data.year}"}, r
