@@ -39,6 +39,8 @@ import pytest
 RAIZ = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
+from verificar_datas import MARCADOR_DESDE  # noqa: E402
+
 from auditar_marcadores_historicos import (  # noqa: E402
     ANO_REFERENCIA,
     BASELINE_PATH,
@@ -60,7 +62,7 @@ def _html(corpo: str) -> str:
 # ── Unidade — a lógica de atribuição marcador↔ocorrência, isolada ──────────
 
 def test_ocorrencia_antiga_junto_de_marcador_e_registada():
-    html = _html("Despacho n.º 1/2020 fixou o valor a partir de 1 de janeiro de 2020.")
+    html = _html("Despacho n.º 1/2020, de 1 de janeiro de 2020, fixou o valor.")
     registos = supressoes_da_pagina(html, "sintetica.html", ano=2026)
     marcadores = {r["marcador"] for r in registos if r["correspondencia"] == "janeiro de 2020"}
     assert "despacho" in marcadores
@@ -84,14 +86,14 @@ def test_ocorrencia_antiga_sem_marcador_nenhum_nao_e_registada():
 
 def test_mesma_ocorrencia_pode_ser_atribuida_a_mais_do_que_um_marcador():
     html = _html(
-        "O novo regime está em vigor desde a Portaria n.º 1/2020, "
-        "de 1 de janeiro de 2020, que revoga a regra anterior."
+        "O novo regime está em vigor desde 1 de março de 2020, "
+        "que revoga a regra anterior."
     )
     registos = supressoes_da_pagina(html, "sintetica.html", ano=2026)
     marcadores_de_2020 = {
-        r["marcador"] for r in registos if r["correspondencia"] == "janeiro de 2020"
+        r["marcador"] for r in registos if r["correspondencia"] == "março de 2020"
     }
-    assert {"portaria", "em vigor desde"} <= marcadores_de_2020
+    assert {MARCADOR_DESDE, "em vigor desde"} <= marcadores_de_2020
 
 
 def test_ano_letivo_par_antigo_e_registado_como_par_completo():
@@ -135,11 +137,11 @@ def _registos(raiz: Path, nome: str, corpo: str) -> list:
 
 
 def test_ordinal_desambigua_a_mesma_frase_repetida_na_mesma_pagina(tmp_path):
-    frase = "Em vigor desde 1 de janeiro de 2020 (Portaria n.º 1/2020)."
+    frase = "Em vigor desde 1 de março de 2020 (Portaria n.º 1/2020)."
     registos = _registos(tmp_path, "sintetica.html", f"<p>{frase}</p><p>{frase}</p>")
     ordinais = sorted(
         r["ordinal"] for r in registos
-        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "janeiro de 2020"
+        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "março de 2020"
     )
     assert ordinais == [1, 2]
 
@@ -201,7 +203,7 @@ def test_alterar_a_frase_da_supressao_gera_uma_orfa_e_uma_nova(tmp_path):
 
 
 def test_faq_repetida_no_corpo_e_no_json_ld_fica_estavel_com_texto_inserido_antes(tmp_path):
-    frase = "Em vigor desde 1 de janeiro de 2020, pela Portaria n.º 1/2020."
+    frase = "Em vigor desde 1 de março de 2020, pela Portaria n.º 1/2020."
     faq = (
         '<script type="application/ld+json">{"@type": "Answer", "text": "' + frase + '"}</script>'
         + SEPARADOR + f"<p>{frase}</p>"
@@ -210,7 +212,7 @@ def test_faq_repetida_no_corpo_e_no_json_ld_fica_estavel_com_texto_inserido_ante
     registos = _registos(tmp_path / "a", "faq.html", faq)
     ordinais = sorted(
         r["ordinal"] for r in registos
-        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "janeiro de 2020"
+        if r["marcador"] == "em vigor desde" and r["correspondencia"] == "março de 2020"
     )
     assert ordinais == [1, 2]
     so_faq = {identidade(r) for r in registos}
@@ -224,14 +226,14 @@ def _frases(raiz: Path, corpo: str) -> set:
 
 
 def test_tags_inline_na_frase_nao_mudam_a_identidade(tmp_path):
-    simples = "<p>Em vigor desde 1 de janeiro de 2020, pela Portaria n.º 1/2020.</p>"
+    simples = "<p>Em vigor desde 1 de março de 2020, pela Portaria n.º 1/2020.</p>"
     # Tags fora dos marcadores: uma tag que parta um marcador (ex.: entre
     # "desde" e "1") muda a própria supressão, que é avaliada sobre o HTML
     # bruto como na produção — aí é certo aparecer como entrada diferente.
-    marcada = ('<p>Em vigor desde 1 de janeiro de 2020, <em>pela</em> '
+    marcada = ('<p>Em vigor desde 1 de março de 2020, <em>pela</em> '
                '<a href="/x.html"><strong>Portaria n.º 1/2020</strong></a>.</p>')
     assert _frases(tmp_path / "a", simples) == {
-        "Em vigor desde 1 de janeiro de 2020, pela Portaria n.º 1/2020."
+        "Em vigor desde 1 de março de 2020, pela Portaria n.º 1/2020."
     }
     assert _ids(tmp_path / "b", "s.html", simples) == _ids(tmp_path / "c", "s.html", marcada)
 
@@ -243,9 +245,10 @@ def test_data_num_atributo_tem_como_frase_o_valor_do_atributo(tmp_path):
 
 
 def test_nbsp_e_composicao_unicode_nao_mudam_a_identidade(tmp_path):
-    normal = "<p>Em vigor desde 1 de janeiro de 2020, pela Portaria n.º 1/2020, até à revisão.</p>"
+    normal = "<p>Em vigor desde 1 de maio de 2020, pela Portaria n.º 1/2020, até à revisão.</p>"
     variante = unicodedata.normalize("NFD", normal).replace("de 2020, pela", "de\u00a02020,\u202fpela")
     assert variante != normal
+    assert _frases(tmp_path / "a", normal)
     assert _frases(tmp_path / "a", normal) == _frases(tmp_path / "b", variante)
     assert _ids(tmp_path / "c", "s.html", normal) == _ids(tmp_path / "d", "s.html", variante)
 
