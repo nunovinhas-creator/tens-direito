@@ -7501,32 +7501,34 @@ agosto, 98 em outubro (antes 2, 32, 92). Testes de efeito em
 `tests/test_carimbo_antigo.py` (8 formas sintéticas, privacidade e minuta
 reais, linha de dados do calendário); 11 falham sem a regex alargada.
 
-### Última revisão: 2026-10-18 — «sessão» fora do texto público
+### Última revisão: 2026-10-18 — processo interno fora do texto público («sessão», «triangulação», bloqueios)
 
-21 ocorrências de «esta/nesta sessão» e «na sessão seguinte», em 19 frases de 5
-páginas (`bolsa-de-estudo-ensino-superior.html`, `fontes.html`,
-`garantia-para-a-infancia.html`, `pensao-sobrevivencia-conjuge.html`,
-`pensao-sobrevivencia-uniao-de-facto.html`), reescritas para o grau de
-confirmação em vez do acesso («confirmado em várias fontes secundárias
-independentes, não no texto oficial do Diário da República»), com
-«triangulação» trocada por «várias fontes independentes» nessas frases. Tabela
-completa no PR. Nenhuma data mudou: datas detectadas, carimbos e alertas de
-`verificar_datas.py` (2026-2028) idênticos a `main`. Em `fontes.html` L317/L323
-a redacção é «não na publicação oficial original» — com «Diário da República»
-na frase, o marcador global `diário da república` passaria a suprimir por
+26 frases públicas em 9 páginas reescritas para o grau de confirmação em vez
+do acesso: as 19 com «esta/nesta sessão» ou «na sessão seguinte» (21
+ocorrências) e mais 7 com «triangulação/triangulada», «acesso automatizado…
+bloqueado nesta verificação», «devolve 403 a pedidos automatizados» ou «a
+leitura directa… não foi possível nesta redação». Padrão: «confirmado em
+várias fontes secundárias independentes, não no texto oficial do Diário da
+República» (ou «do Banco de Portugal», «da própria Recomendação», «do próprio
+portal oficial»). Tabela completa no PR.
+
+Nenhuma data mudou: datas detectadas, carimbos, `verificado_em_do_texto` e
+alertas de `verificar_datas.py` em todos os meses de 2026-2028 idênticos a
+`origin/main`; `test_datas_permanentes` verde. Em `fontes.html` L317/L323 a
+redacção é «não na publicação oficial original»: com «Diário da República» na
+frase, o marcador global `diário da república` passaria a suprimir por
 proximidade «20 de novembro de 2023» e «21 de novembro de 2023» (4 supressões
-novas, sem efeito nos alertas, mas contra o #332). Baseline do auditor: só o
-texto da frase das 2 entradas `DATAS_PERMANENTES` de «20 de novembro de 2023».
-Guarda nova: `tests/test_texto_publico_sem_sessao.py` (falha nas 5 páginas com
-o texto antigo).
+novas, sem efeito nos alertas, mas contra o #332; registado na #335). Baseline
+do auditor: só o texto da frase das 2 entradas `DATAS_PERMANENTES` de «20 de
+novembro de 2023».
 
-Fora deste PR, por decidir: «triangulação/triangulada» noutras 7 frases
-públicas (`fontes.html` L420, `garantia-publica-credito-habitacao.html`
-L400/L568, `manuais-escolares-mega.html` L531, `p/reformas.html` L515,
-`pensao-sobrevivencia-uniao-de-facto.html` L476,
-`quem-tem-direito-por-parentesco.html` L343), três delas com «acesso
-automatizado… bloqueado nesta verificação» ou «devolve 403 a pedidos
-automatizados».
+Guarda nova: `tests/test_texto_publico_sem_processo_interno.py` — sessão de
+trabalho, «triangul…», «acesso/pedidos/leitura/consulta automatizad…»,
+«acesso … bloqueado», «bloqueado nesta verificação/sessão/a pedidos»,
+«devolve/responde com/dá [erro] 4xx/5xx», «4xx a pedidos/bots». Falha nas
+páginas com o texto antigo; «iniciar sessão», vales MEGA bloqueados, a
+calculadora «bloqueada até os parâmetros carregarem» e «404» continuam
+permitidos.
 
 ---
 
