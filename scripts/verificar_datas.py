@@ -461,6 +461,27 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
         "Início do regime anterior do subsídio por morte (DL 133/2012) — facto passado.",
     ("subsidio-por-morte.html", "janeiro de 2013"):
         "Fim do regime anterior do subsídio por morte, antes do DL 13/2013 — facto passado.",
+    # Publicação e aprovação do DL 166/2026 (aprovado pelo Nuno, PR B do #332).
+    ("calendario-pagamentos-psu.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("como-pedir-psu.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quem-tem-direito.html", "13/08/2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-lista-13-apoios.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "13 de agosto de 2026"):
+        "Publicação do Decreto-Lei n.º 166/2026 em Diário da República — facto fixo.",
+    ("prestacao-social-unica.html", "30/07/2026"):
+        "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
+    ("psu-quando-entra-em-vigor.html", "30/07/2026"):
+        "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
 }
 
 
