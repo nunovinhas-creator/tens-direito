@@ -31,18 +31,20 @@ produção realmente faz. `_fica_exposta_ao_portao()` decide isto por
 correspondência (não reutiliza `_esta_suprimido()` directamente — essa
 função não devolve qual marcador respondeu, só um booleano agregado).
 
-Ano de referência = ano corrente da execução, auditado também no ano
-seguinte (issue #332, PR C). Até aqui o ano era fixo (2026): as datas do
-próprio ano nunca entravam no baseline, e no dia 1 de janeiro passavam a
-ser «antigas» para `verificar_datas.py` sem nenhuma supressão ter sido
-revista. Agora há um baseline por ano,
-`tests/marcadores_historicos_baseline_<ano>.json`, e o teste exige os dois:
-o do ano corrente (o que a produção faz hoje) e o do ano seguinte (o que
-passa a fazer a 1 de janeiro). No dia 1 de janeiro o teste fica vermelho
-sozinho até se gravar o baseline do novo ano seguinte e apagar o do ano
-que acabou — a revisão do ano seguinte faz-se sempre com um ano de
-antecedência. As funções recebem sempre `ano` explícito: os testes de
-unidade fixam-no, só o corpus real usa `ano_de_execucao()`.
+Ano de referência = ano corrente da execução, auditado também nos anos
+seguintes (issue #332, PRs C e D). Até ao PR C o ano era fixo (2026): as
+datas do próprio ano nunca entravam no baseline, e no dia 1 de janeiro
+passavam a ser «antigas» para `verificar_datas.py` sem nenhuma supressão ter
+sido revista. Agora há um baseline por ano,
+`tests/marcadores_historicos_baseline_<ano>.json`, e o teste segue um
+calendário (`anos_exigidos()`/`anos_tolerados()`), sendo Y o ano corrente:
+- de janeiro a novembro exige os baselines de Y e Y+1;
+- em dezembro exige também o de Y+2, para o trabalho do ano seguinte se
+  fazer em dezembro e nunca a 1 de janeiro;
+- o baseline de Y-1 é tolerado (não faz falhar) até ser apagado; um
+  baseline de qualquer outro ano faz falhar.
+As funções de auditoria recebem sempre `ano` explícito: os testes de unidade
+fixam-no, só o corpus real usa `ano_de_execucao()`.
 
 Identidade de cada supressão (issue #264): (pagina, marcador, tipo,
 correspondencia, frase, ordinal). `frase` é a frase envolvente da
@@ -113,19 +115,40 @@ MARCADOR_DATAS_PERMANENTES = "DATAS_PERMANENTES"
 
 
 
-def ano_de_execucao() -> int:
+def ano_de_execucao(hoje: date | None = None) -> int:
     """Ano corrente — ver docstring do módulo."""
-    return date.today().year
+    return (hoje or date.today()).year
 
 
 def caminho_baseline(ano: int, pasta: Path = PASTA_BASELINES) -> Path:
     return pasta / f"marcadores_historicos_baseline_{ano}.json"
 
 
-def anos_auditados(ano: int | None = None) -> tuple[int, int]:
-    """Ano corrente e ano seguinte — os dois baselines exigidos."""
-    ano = ano_de_execucao() if ano is None else ano
-    return ano, ano + 1
+def anos_exigidos(hoje: date | None = None) -> tuple[int, ...]:
+    """Baselines que o teste exige: Y e Y+1; em dezembro também Y+2."""
+    hoje = hoje or date.today()
+    anos = (hoje.year, hoje.year + 1)
+    return anos + (hoje.year + 2,) if hoje.month == 12 else anos
+
+
+def anos_tolerados(hoje: date | None = None) -> tuple[int, ...]:
+    """Baselines que podem existir sem serem exigidos: o do ano que acabou."""
+    return ((hoje or date.today()).year - 1,)
+
+
+def anos_com_baseline(pasta: Path = PASTA_BASELINES) -> list[int]:
+    return sorted(int(p.stem.rsplit("_", 1)[1])
+                  for p in pasta.glob("marcadores_historicos_baseline_*.json"))
+
+
+def problemas_do_calendario(anos_presentes, hoje: date | None = None) -> list[str]:
+    """Baselines em falta ou fora do calendário — lista vazia se estiver tudo certo."""
+    exigidos, tolerados = anos_exigidos(hoje), anos_tolerados(hoje)
+    presentes = set(anos_presentes)
+    problemas = [f"falta o baseline de {a}" for a in exigidos if a not in presentes]
+    problemas += [f"baseline de {a} fora do calendário (só {list(exigidos)}, mais {list(tolerados)} "
+                  f"tolerado) — apagar" for a in sorted(presentes - set(exigidos) - set(tolerados))]
+    return problemas
 
 
 def paginas_do_corpus(raiz: Path = RAIZ) -> list[Path]:
@@ -462,24 +485,27 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--write", action="store_true",
-        help="Regenera os baselines do ano corrente e do ano seguinte a partir do corpus "
-             "actual (passo manual, nunca automático — revisar o diff antes de commitar).",
+        help="Regenera os baselines exigidos hoje (ano corrente e seguinte; em dezembro também "
+             "o de daqui a dois anos) a partir do corpus actual (passo manual, nunca automático "
+             "— revisar o diff antes de commitar).",
     )
     parser.add_argument(
         "--ano", type=int,
-        help="Ano corrente a usar em vez do ano de execução (para medir; os baselines "
-             "exigidos pelo teste são sempre os do ano real e do seguinte).",
+        help="Ano corrente a usar em vez do ano de execução, no mês de hoje (para medir; "
+             "o teste segue sempre a data real).",
     )
     parser.add_argument(
         "--novas", action="store_true",
-        help="Lista, por marcador, as entradas do ano seguinte que não estão no "
-             "baseline do ano corrente (Markdown, com página e linha).",
+        help="Lista, por marcador, as entradas do último ano exigido que não estão no "
+             "anterior (Y+1 face a Y; em dezembro, Y+2 face a Y+1) — Markdown, com página e linha.",
     )
     args = parser.parse_args()
-    ano, seguinte = anos_auditados(args.ano)
+    hoje = date(args.ano, date.today().month, 1) if args.ano else date.today()
+    exigidos = anos_exigidos(hoje)
+    ano = exigidos[0]
 
     if args.write:
-        for a in (ano, seguinte):
+        for a in exigidos:
             registos = auditar_corpus(ano=a)
             gravar_baseline(registos, caminho_baseline(a))
             print(f"Baseline {a} regenerado: {len(registos)} registo(s) em "
@@ -487,8 +513,9 @@ def main() -> int:
         return 0
 
     if args.novas:
-        novas, _ = comparar(auditar_corpus(ano=seguinte), auditar_corpus(ano=ano))
-        print(f"{len(novas)} entrada(s) em {seguinte} que não existem em {ano}\n")
+        antes, depois = exigidos[-2], exigidos[-1]
+        novas, _ = comparar(auditar_corpus(ano=depois), auditar_corpus(ano=antes))
+        print(f"{len(novas)} entrada(s) em {depois} que não existem em {antes}\n")
         print(relatorio_por_marcador(novas))
         return 0
 

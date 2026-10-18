@@ -47,10 +47,11 @@ mecanismo).
   identificada pela frase envolvente da ocorrência, não pela posição na
   página (issue #264): inserir texto antes não desloca entradas antigas;
   editar a frase aparece como uma órfã mais uma nova, lado a lado.
-  Há um baseline para o ano corrente e outro para o seguinte (#332, PR
-  C): as datas do próprio ano entram no do ano seguinte. Em janeiro o
-  teste falha até se gravar o do novo ano seguinte (`--write`; rever com
-  `--novas`) e apagar o do ano que acabou.
+  Há um baseline por ano (#332, PRs C e D): ano corrente e seguinte; em
+  dezembro também o de daqui a dois anos (o teste falha a 1 de dezembro
+  até se gravar, com `--write`, e rever com `--novas`); o do ano que
+  acabou é tolerado até ser apagado. As datas do próprio ano entram no do
+  ano seguinte.
 - **`EXCECOES_DIPLOMAS_FONTES`** (`tests/test_fontes_coerencia.py`) —
   todo diploma citado em texto visível no formato "Tipo n.º NNN/AAAA"
   precisa de cartão em `fontes.html`, ou entrada aqui com o motivo.

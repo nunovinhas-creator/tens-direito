@@ -8,11 +8,11 @@ Objectivo: capturar, para cada uma das 27 entradas de
 `scripts/verificar_datas.py::_pagina_tem_alerta`) ficam suprimidas por
 essa entrada em cada página real do site, e comparar contra
 `tests/marcadores_historicos_baseline_<ano>.json` (baseline aprovado,
-versionado, revisto linha a linha antes de cada alteração) — um para o
-ano corrente e outro para o ano seguinte (issue #332, PR C): no dia 1 de
-janeiro, a regressão fica vermelha sozinha até se gravar o baseline do
-novo ano seguinte, para as supressões desse ano serem revistas com um ano
-de antecedência.
+versionado, revisto linha a linha antes de cada alteração) — um por ano,
+segundo o calendário de `anos_exigidos()` (issue #332, PRs C e D): de
+janeiro a novembro os do ano corrente e do seguinte; em dezembro também o
+de daqui a dois anos, para o trabalho se fazer em dezembro e nunca a 1 de
+janeiro; o do ano que acabou é tolerado até ser apagado.
 
 Duas direcções de falha, mesmo princípio já usado em
 `tests/test_verificar_skips_permitidos.py` para
@@ -35,6 +35,7 @@ mesma frase repetida (issue #264; ver docstring de
 """
 import re
 import sys
+from datetime import date
 import unicodedata
 from pathlib import Path
 
@@ -50,7 +51,9 @@ from auditar_marcadores_historicos import (  # noqa: E402
     MARCADORES_HISTORICOS,
     PASTA_BASELINES,
     ano_de_execucao,
-    anos_auditados,
+    anos_com_baseline,
+    anos_exigidos,
+    anos_tolerados,
     auditar_corpus,
     caminho_baseline,
     carregar_baseline,
@@ -60,6 +63,7 @@ from auditar_marcadores_historicos import (  # noqa: E402
     frase_envolvente,
     identidade,
     paginas_do_corpus,
+    problemas_do_calendario,
     supressoes_da_pagina,
 )
 
@@ -263,7 +267,7 @@ def test_nbsp_e_composicao_unicode_nao_mudam_a_identidade(tmp_path):
 
 
 def test_nenhuma_frase_vazia_no_corpus_real():
-    vazias = [r for a in anos_auditados() for r in auditar_corpus(RAIZ, a) if not r["frase"]]
+    vazias = [r for a in anos_exigidos() for r in auditar_corpus(RAIZ, a) if not r["frase"]]
     assert not vazias, [(r["pagina"], r["tipo"], r["correspondencia"]) for r in vazias]
 
 
@@ -277,7 +281,7 @@ def test_frase_envolvente_corta_na_frase_e_nao_em_abreviaturas():
 
 # ── Regressão sobre o corpus real — o núcleo da Issue #183 ─────────────────
 
-ANOS = anos_auditados()
+ANOS = anos_exigidos()
 
 
 @pytest.fixture(scope="module", params=ANOS, ids=lambda a: str(a))
@@ -306,15 +310,14 @@ def test_baseline_existe_e_nao_esta_vazio(ano_baseline):
     assert carregar_baseline(caminho), "baseline vazio — nada para comparar"
 
 
-def test_so_existem_baselines_do_ano_corrente_e_do_seguinte():
-    """Um baseline de um ano que já acabou não é auditado por ninguém —
-    apagá-lo quando o ano muda, nunca deixá-lo a parecer vigiado."""
-    anos = sorted(int(p.stem.rsplit("_", 1)[1])
-                  for p in PASTA_BASELINES.glob("marcadores_historicos_baseline_*.json"))
-    assert anos == list(ANOS), (
-        f"Baselines encontrados para {anos}, esperados {list(ANOS)} (ano corrente e "
-        f"seguinte). Apagar os de anos fora deste par; gerar os em falta com "
-        f"`python3 scripts/auditar_marcadores_historicos.py --write`."
+def test_baselines_seguem_o_calendario():
+    """Ver `anos_exigidos()`/`anos_tolerados()`: Y e Y+1 (mais Y+2 em
+    dezembro) obrigatórios, Y-1 tolerado, qualquer outro ano falha."""
+    problemas = problemas_do_calendario(anos_com_baseline(PASTA_BASELINES))
+    assert not problemas, (
+        "; ".join(problemas) + ". Gerar os em falta com "
+        "`python3 scripts/auditar_marcadores_historicos.py --write` e rever as entradas "
+        "novas com `--novas`."
     )
 
 
@@ -419,10 +422,41 @@ def test_auditoria_e_deterministica_entre_corridas():
 
 # ── Ano de execução e ferramentas de revisão (issue #332, PR C) ────────────
 
-def test_anos_auditados_sao_o_ano_corrente_e_o_seguinte():
-    from datetime import date
-    assert anos_auditados() == (date.today().year, date.today().year + 1)
-    assert anos_auditados(2030) == (2030, 2031)
+@pytest.mark.parametrize("hoje,exigidos,tolerados", [
+    (date(2026, 11, 15), (2026, 2027), (2025,)),
+    (date(2026, 12, 15), (2026, 2027, 2028), (2025,)),
+    (date(2027, 1, 1), (2027, 2028), (2026,)),
+], ids=["15-11", "15-12", "01-01"])
+def test_calendario_dos_baselines(hoje, exigidos, tolerados):
+    assert anos_exigidos(hoje) == exigidos
+    assert anos_tolerados(hoje) == tolerados
+    assert ano_de_execucao(hoje) == hoje.year
+
+
+def test_15_de_novembro_basta_ano_e_seguinte():
+    assert problemas_do_calendario([2026, 2027], date(2026, 11, 15)) == []
+    assert problemas_do_calendario([2025, 2026, 2027], date(2026, 11, 15)) == []  # 2025 tolerado
+    assert problemas_do_calendario([2026], date(2026, 11, 15)) == ["falta o baseline de 2027"]
+
+
+def test_15_de_dezembro_exige_o_de_daqui_a_dois_anos():
+    assert problemas_do_calendario([2026, 2027], date(2026, 12, 15)) == ["falta o baseline de 2028"]
+    assert problemas_do_calendario([2026, 2027, 2028], date(2026, 12, 15)) == []
+
+
+def test_1_de_janeiro_ja_passa_se_dezembro_foi_feito():
+    """O trabalho foi feito em dezembro: a 1 de janeiro nada fica vermelho,
+    e o baseline do ano que acabou é só tolerado."""
+    assert problemas_do_calendario([2026, 2027, 2028], date(2027, 1, 1)) == []
+    assert problemas_do_calendario([2027, 2028], date(2027, 1, 1)) == []
+    assert problemas_do_calendario([2026, 2027], date(2027, 1, 1)) == ["falta o baseline de 2028"]
+
+
+def test_ano_fora_do_calendario_faz_falhar():
+    problemas = problemas_do_calendario([2025, 2026, 2027, 2028], date(2027, 1, 1))
+    assert len(problemas) == 1 and problemas[0].startswith("baseline de 2025 fora do calendário")
+    assert problemas_do_calendario([2026, 2027, 2029], date(2026, 11, 15))[0].startswith(
+        "baseline de 2029 fora do calendário")
 
 
 def test_auditar_corpus_sem_ano_usa_o_ano_de_execucao(tmp_path):

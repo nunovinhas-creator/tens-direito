@@ -4782,14 +4782,16 @@ uma Issue é criada ou um valor é alterado:
    **Auditor no ano corrente e no seguinte** (issue #332, PR C):
    `scripts/auditar_marcadores_historicos.py` audita com o ano da
    execução (`ano_de_execucao()`), nunca um ano fixo, e
-   `tests/test_auditar_marcadores_historicos.py` exige dois baselines,
-   `tests/marcadores_historicos_baseline_<ano>.json` do ano corrente e do
-   seguinte — as datas do próprio ano entram no baseline do ano seguinte,
-   revistas antes de 1 de janeiro. `--write` grava os dois; `--novas`
-   lista, por marcador (página, linha, excerto), o que o ano seguinte
-   acrescenta. **No dia 1 de janeiro o teste fica vermelho sozinho**: gravar
-   o baseline do novo ano seguinte, rever as entradas novas e apagar o do
-   ano que acabou (um baseline fora do par também falha).
+   `tests/test_auditar_marcadores_historicos.py` exige um baseline por ano,
+   `tests/marcadores_historicos_baseline_<ano>.json`, pelo calendário de
+   `anos_exigidos()` (Y = ano corrente): de janeiro a novembro, Y e Y+1;
+   **em dezembro também Y+2** — o trabalho do ano seguinte faz-se em
+   dezembro, nunca a 1 de janeiro; o de Y-1 é tolerado até ser apagado e
+   qualquer outro ano faz falhar. As datas do próprio ano entram no baseline
+   do ano seguinte. `--write` grava os exigidos; `--novas` lista, por
+   marcador (página, linha, excerto), o que o último ano exigido acrescenta
+   ao anterior. A 1 de dezembro o teste fica vermelho até se gravar o de
+   Y+2 e rever as entradas novas.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
