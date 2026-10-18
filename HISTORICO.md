@@ -7711,7 +7711,9 @@ escolares.
 
 `verificar_datas.py`: entrada nova em `DATAS_PERMANENTES` para `fontes.html`
 «24 de junho de 2019» (publicação da Portaria n.º 191/2019) — sem ela
-`test_fontes_real_nao_gera_alerta_issue_170` falha. Baselines do auditor
+`test_fontes_real_nao_gera_alerta_issue_170` falha. Mais «25 de maio de 2026» em
+`prova-escolar.html` e `fontes.html` (data da versão consolidada lida do DL
+176/2003; actualidade é tema da revisão de conteúdo), pedidas pelo Nuno. Baselines do auditor
 2026/2027 regenerados com as supressões novas («desde 2019/2020», «desde
 2020/2021», «em vigor desde 1 de julho de 2012»), todas factos históricos
 dos textos desta revisão.

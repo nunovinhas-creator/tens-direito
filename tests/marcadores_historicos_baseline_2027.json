@@ -1579,6 +1579,14 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "maio de 2026",
+    "frase": "Verificado na versão consolidada do Diário da República de 25 de maio de 2026.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).",
     "ordinal": 1
@@ -2365,6 +2373,14 @@
     "tipo": "data_numerica",
     "correspondencia": "31/12/2026",
     "frase": "Diário da República — Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em Conselho de Ministros 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 15/09/2026 pela redação do Tens Direito",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "maio de 2026",
+    "frase": "Decreto-Lei n.º 176/2003, artigo 44.º, n.º 1 (redação do Decreto-Lei n.º 133/2012), e artigo 45.º, n.os 1 a 3 — versão consolidada do Diário da República de 25 de maio de 2026 · Portaria n.º 191/2019 (prova escolar automática)",
     "ordinal": 1
   },
   {
