@@ -7454,10 +7454,14 @@ globais novos, `DATAS_PERMANENTES` (`verificar_datas.py`): (página, data
 exacta) → motivo, suprime só essa data nessa página, sejam quais forem os
 marcadores ou o HTML à volta. Entrada órfã falha
 `tests/test_datas_permanentes.py`; o auditor regista estas supressões com o
-rótulo `DATAS_PERMANENTES` (baseline 269 → 285, 16 novas, todas da creche).
-Primeira entrada: creche, «1 de setembro de 2021» (8 ocorrências na página).
-Janeiro de 2027: 45 páginas com alerta. `fontes.html` e
-`caixa-geral-aposentacoes.html` à espera de aprovação das entradas.
+rótulo `DATAS_PERMANENTES` (baseline 269 → 345, 76 novas, nenhuma
+removida). Entradas, aprovadas uma a uma: creche «1 de setembro de 2021»;
+`fontes.html` «1 de setembro de 2021», «11 de dezembro de 2023», «20 de
+novembro de 2023», «31 de janeiro de 2013»; `caixa-geral-aposentacoes.html`
+«1 de setembro de 1993», «31 de agosto de 1993», «1 de janeiro de 2006»,
+«31 de dezembro de 2005» (fronteiras da Lei n.º 60/2005). 44 ocorrências
+cobertas, todas no mesmo sentido; tabela no #334. Janeiro de 2027: 44
+páginas com alerta.
 
 Testes do auditor ajustados sem mudar o que testam: atribuição múltipla
 com a data da própria citação; ordinal e FAQ filtrados pelo outro marcador

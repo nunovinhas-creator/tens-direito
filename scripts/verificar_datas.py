@@ -337,6 +337,22 @@ def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None):
 DATAS_PERMANENTES: dict[tuple[str, str], str] = {
     ("creche-gratuita.html", "1 de setembro de 2021"):
         "Data de nascimento a partir da qual há direito à creche gratuita (Portaria n.º 305/2022, art. 5.º, n.º 1, al. a)) — condição fixa.",
+    ("fontes.html", "1 de setembro de 2021"):
+        "Data de referência da creche gratuita citada no cartão da Portaria n.º 158/2024/1 — condição fixa.",
+    ("fontes.html", "11 de dezembro de 2023"):
+        "Data da consolidação do DRE contra a qual o texto foi verificado — facto fixo; a actualidade da versão é tema da revisão da página.",
+    ("fontes.html", "20 de novembro de 2023"):
+        "Data da versão consolidada do DRE contra a qual o texto foi verificado — facto fixo; a actualidade da versão é tema da revisão da página.",
+    ("fontes.html", "31 de janeiro de 2013"):
+        "Fim da norma transitória do subsídio por morte introduzida pelo DL 13/2013 — facto passado.",
+    ("caixa-geral-aposentacoes.html", "1 de setembro de 1993"):
+        "Fronteira da fórmula de cálculo da pensão CGA (Lei n.º 60/2005, art. 5.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "31 de agosto de 1993"):
+        "Último dia antes da fronteira de 1/9/1993 (Lei n.º 60/2005, arts. 5.º e 6.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "1 de janeiro de 2006"):
+        "Fecho da CGA a novas inscrições (Lei n.º 60/2005, arts. 2.º e 9.º) — data fixa.",
+    ("caixa-geral-aposentacoes.html", "31 de dezembro de 2005"):
+        "Data de corte da salvaguarda e da parcela P1 (Lei n.º 60/2005, arts. 5.º e 7.º) — data fixa.",
 }
 
 
