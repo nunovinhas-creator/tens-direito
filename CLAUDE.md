@@ -4730,6 +4730,14 @@ uma Issue é criada ou um valor é alterado:
    ficam como estavam. Regra única em `marcador_historico_aplica()`,
    partilhada com o auditor de marcadores. Testes:
    `tests/test_marcadores_diploma_citacao.py`.
+   **Datas permanentes por página** (`DATAS_PERMANENTES`, issue #332):
+   (página, data exactamente como está no texto) → motivo numa linha.
+   Todas as ocorrências dessa data nessa página ficam suprimidas, sejam
+   quais forem os marcadores ou o HTML à volta; noutra página, nunca. O
+   auditor de marcadores regista-as no baseline com o rótulo
+   `DATAS_PERMANENTES`. Entrada órfã (a data já não está na página) falha
+   `tests/test_datas_permanentes.py`. Uma data que é facto permanente de
+   uma página entra em DATAS_PERMANENTES, não num marcador global.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.

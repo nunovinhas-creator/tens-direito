@@ -7446,13 +7446,18 @@ Janeiro de 2027: 41 páginas com alerta só com o PR 1, 46 com os dois PRs
 (89 antes de ambos). Lista por página na issue #332, para a revisão de
 janeiro.
 
-Por decidir, testes vermelhos de propósito no PR: `fontes.html` e
-`creche-gratuita.html` (guardas `test_fontes_real_nao_gera_alerta_issue_170`
-e `test_creche_gratuita_real_nao_gera_alerta`) têm datas históricas fixas
-que só eram suprimidas por estarem perto de uma Portaria. Exemplos: «nascido
-<strong>a partir de 1 de setembro de 2021» (a tag parte o marcador
-`nasc\w*\s+a\s+partir\s+de`) e «só a data de 1 de setembro de 2021 se
-manteve». Precisam de marcador novo ou de ajuste ao texto.
+`fontes.html` e `creche-gratuita.html` (guardas
+`test_fontes_real_nao_gera_alerta_issue_170` e
+`test_creche_gratuita_real_nao_gera_alerta`) têm datas históricas fixas que
+só eram suprimidas por estarem perto de uma Portaria. Em vez de marcadores
+globais novos, `DATAS_PERMANENTES` (`verificar_datas.py`): (página, data
+exacta) → motivo, suprime só essa data nessa página, sejam quais forem os
+marcadores ou o HTML à volta. Entrada órfã falha
+`tests/test_datas_permanentes.py`; o auditor regista estas supressões com o
+rótulo `DATAS_PERMANENTES` (baseline 269 → 285, 16 novas, todas da creche).
+Primeira entrada: creche, «1 de setembro de 2021» (8 ocorrências na página).
+Janeiro de 2027: 45 páginas com alerta. `fontes.html` e
+`caixa-geral-aposentacoes.html` à espera de aprovação das entradas.
 
 Testes do auditor ajustados sem mudar o que testam: atribuição múltipla
 com a data da própria citação; ordinal e FAQ filtrados pelo outro marcador

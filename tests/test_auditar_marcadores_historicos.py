@@ -42,6 +42,7 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 from auditar_marcadores_historicos import (  # noqa: E402
     ANO_REFERENCIA,
     BASELINE_PATH,
+    MARCADOR_DATAS_PERMANENTES,
     MARCADORES_HISTORICOS,
     auditar_corpus,
     carregar_baseline,
@@ -347,7 +348,7 @@ def test_baseline_referencia_so_marcadores_que_continuam_em_marcadores_historico
     qualquer forma; esta asserção só torna a causa explícita quando for
     esse o motivo."""
     marcadores_baseline = {r["marcador"] for r in baseline}
-    desconhecidos = marcadores_baseline - set(MARCADORES_HISTORICOS)
+    desconhecidos = marcadores_baseline - set(MARCADORES_HISTORICOS) - {MARCADOR_DATAS_PERMANENTES}
     assert not desconhecidos, (
         f"Entradas do baseline referenciam marcador(es) que já não existem em "
         f"MARCADORES_HISTORICOS: {sorted(desconhecidos)!r} — o teste de regressão "

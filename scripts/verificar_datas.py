@@ -328,6 +328,32 @@ def marcador_historico_aplica(marcador, janela, conteudo, inicio, tipo=None):
     return True
 
 
+# Datas que são facto permanente de UMA página (issue #332): (página, data
+# exactamente como aparece no texto) → motivo, numa linha. Cada ocorrência
+# dessa data nessa página fica suprimida, sejam quais forem os marcadores ou
+# o HTML à volta; a mesma data noutra página nunca. Uma data que é facto
+# permanente de uma página entra aqui, não num marcador global. Entrada órfã
+# (a data já não está na página) faz falhar tests/test_datas_permanentes.py.
+DATAS_PERMANENTES: dict[tuple[str, str], str] = {
+    ("creche-gratuita.html", "1 de setembro de 2021"):
+        "Data de nascimento a partir da qual há direito à creche gratuita (Portaria n.º 305/2022, art. 5.º, n.º 1, al. a)) — condição fixa.",
+}
+
+
+def spans_datas_permanentes(conteudo, pagina):
+    """(início, fim) de cada ocorrência de uma data de DATAS_PERMANENTES
+    desta página."""
+    return [
+        (m.start(), m.end())
+        for (p, data) in DATAS_PERMANENTES if p == pagina
+        for m in re.finditer(re.escape(data), conteudo)
+    ]
+
+
+def em_data_permanente(spans, inicio, fim):
+    return any(a <= inicio and fim <= b for a, b in spans)
+
+
 MARCADORES_PENDENTE = [
     r"aguarda", r"previst", r"provis[oó]ri", r"\bconfirmar\b", r"estimad",
     r"deverá ser", r"após publicação",
@@ -420,11 +446,15 @@ def _data_do_compromisso(m):
         return None
 
 
-def _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em=None):
+def _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em=None, pagina=None):
+    permanentes = spans_datas_permanentes(conteudo, pagina)
     for m in re.finditer(REGEX_COMPROMISSO_FUTURO, conteudo, re.IGNORECASE):
         d = _data_do_compromisso(m)
         if d is None or (d.year, d.month) >= (ano, mes):
             continue  # mês ainda não passou
+        grupo_data = 1 if m.group(1) else (2 if m.group(3) else 4)
+        if em_data_permanente(permanentes, m.start(grupo_data), m.end()):
+            continue
         if _esta_suprimido(conteudo, m.start(), m.end(), ano, mes,
                            data_ocorrencia=d, verificado_em=verificado_em):
             continue
@@ -550,7 +580,7 @@ PADRAO_CARIMBO = {
 }
 
 
-def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
+def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None, pagina=None):
     tipo = padrao["tipo"]
 
     if tipo == "ano_letivo":
@@ -593,12 +623,15 @@ def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None):
         return False
 
     carimbos = _carimbos(conteudo)
+    permanentes = spans_datas_permanentes(conteudo, pagina)
     for m in re.finditer(padrao["regex"], conteudo, re.IGNORECASE):
         ano_match = int(m.group(padrao["ano_grupo"]))
         if ano_match >= ano:
             continue  # data actual ou futura
         if _em_carimbo(carimbos, m.start(), m.end()):
             continue  # data de carimbo — regra própria (_carimbo_antigo)
+        if em_data_permanente(permanentes, m.start(), m.end()):
+            continue  # facto permanente desta página (DATAS_PERMANENTES)
         if _esta_suprimido(
             conteudo, m.start(), m.end(), ano, mes,
             data_ocorrencia=_data_da_ocorrencia(padrao, m),
@@ -626,13 +659,14 @@ def detectar_alertas(conteudo, nome_pagina, ano, mes):
     verificado_em = verificado_em_do_texto(conteudo)
     for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]:
         if padrao is PADRAO_COMPROMISSO_FUTURO:
-            tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em)
+            tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em, nome_pagina)
         elif padrao is PADRAO_CARIMBO:
             tem_alerta = _carimbo_antigo(conteudo, ano, mes)
         elif mes not in REVER_EM[padrao["tipo"]]:
             continue
         else:
-            tem_alerta = _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em)
+            tem_alerta = _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=verificado_em,
+                                            pagina=nome_pagina)
         if tem_alerta:
             alerta = {
                 "pagina": nome_pagina,

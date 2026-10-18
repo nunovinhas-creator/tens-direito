@@ -753,6 +753,134 @@
   },
   {
     "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "A creche é gratuita para crianças nascidas a partir de 1 de setembro de 2021, na rede solidária com acordo ou na rede pública.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Confirma que a criança nasceu a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Confirmaste que a criança nasceu a partir de 1 de setembro de 2021?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "setembro de 2021",
+    "frase": "👶 Quem tem direito: crianças nascidas a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "A alínea a) do n.º 1 do artigo 5.º passou a falar em freguesia de residência ou de trabalho dos pais (em 2022 era concelho) — só a data de 1 de setembro de 2021 se manteve das duas versões; os n.os 3 e 4 (mudança de creche, continuidade) mantêm-se inalterados no texto original de 2022, por isso continuam a falar em concelho.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "A creche é gratuita para crianças nascidas a partir de 1 de setembro de 2021, na rede solidária com acordo ou na rede pública.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Confirma que a criança nasceu a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Confirmaste que a criança nasceu a partir de 1 de setembro de 2021?",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "Poderá ter direito à gratuitidade da creche se tiver nascido a partir de 1 de setembro de 2021, inclusive — condição de acesso fixada no artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, de 22 de dezembro de 2022, na redação da Portaria n.º 158/2024/1 (que já constava do texto original de 2022, embora essa alínea tenha sido reescrita entretanto), e reafirmada no artigo 2.º, também na redação de 2024, que define o âmbito pessoal da portaria.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de setembro de 2021",
+    "frase": "👶 Quem tem direito: crianças nascidas a partir de 1 de setembro de 2021, inclusive.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "creche-gratuita.html",
     "marcador": "despacho",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2022",
