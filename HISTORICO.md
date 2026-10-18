@@ -7744,6 +7744,24 @@ duas secções) conta a primeira ocorrência, como no gerador
 o IRS?» (as duas respostas dizem «não»), passa a divergente. Lista e tecto
 passam a 334.
 
+
+## Última revisão: 2026-10-18 — Gerador do JSON-LD FAQPage a partir da FAQ visível (issue #352)
+
+Novo `scripts/sincronizar_faq_jsonld.py`: lê a FAQ visível pelos padrões
+em uso (`SELECTORES_FAQ`: `.zona-cinzenta details`, `details.zona-cinzenta`,
+`.faq-section details`, `.faq-geo .faq-item`; «Erros comuns» e navegação
+excluídos) e reescreve só o `mainEntity` do `FAQPage`. Respostas em texto
+simples, sem `.fonte-inline` nem HTML. Pergunta repetida conta uma vez (a
+primeira); as páginas com duas secções de FAQ entram com ambas. Sem FAQ
+visível, sai o `FAQPage`. Mantém `author`/`publisher`, não toca em
+`HowTo`/`Article`; página já sincronizada fica igual byte a byte.
+`--dry-run`/`--check`/`--write`. Testes em
+`tests/test_sincronizar_faq_jsonld.py`: os 4 padrões, exclusões, os dois
+formatos de bloco (objecto e lista), remoção, idempotência e JSON válido
+nas 99 páginas reais, e a guarda do #353 sem divergências depois de gerar.
+Nenhuma página alterada: a aplicação espera pela aprovação da lista B
+(triagem das respostas diferentes).
+
 ---
 
 *Última revisão automática: 2026-10-18*

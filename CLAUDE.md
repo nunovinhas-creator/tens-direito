@@ -992,6 +992,10 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
    com tecto em `TETO_FAQ_DIVERGENCIAS`. **O tecto só desce**: nunca se acrescenta uma entrada nem se sobe o número —
    corrige-se a FAQ. Uma entrada que deixa de divergir tem de sair da lista no mesmo commit, e o tecto baixa com ela.
    «Erros comuns» e outras caixas recolhíveis que não são perguntas ficam fora por regra (`RE_TITULO_FAQ`).
+   Gerador: `scripts/sincronizar_faq_jsonld.py` (`--dry-run`/`--check`/`--write`, sessão manual, nunca no pipeline)
+   reescreve só o `mainEntity` a partir da FAQ visível, pelos padrões de `SELECTORES_FAQ` — sem uniformizar markup;
+   mantém `author`/`publisher`, não toca em `HowTo`/`Article`; página sem FAQ visível perde o `FAQPage`. Quando a
+   lista chegar a 0, a guarda passa a ser o `--check` do gerador e o tecto sai (#352).
 8. **Dúvidas frequentes** com `<details>`/`<summary>` e classe `.zona-cinzenta`.
 9. **Long-tail**: responder às "zonas cinzentas" que os portais oficiais não respondem directamente (ex: trabalhadores independentes, mudança de escalão a meio do ano, cumulação de apoios).
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
