@@ -39,7 +39,8 @@ def _resposta_visivel() -> str:
 def test_faq_da_idade_igual_no_corpo_e_no_json_ld():
     visivel, json_ld = _resposta_visivel(), _resposta_json_ld()
     assert visivel.endswith(FRASE_IDADE), visivel
-    assert json_ld.endswith(FRASE_IDADE), json_ld
+    # o JSON-LD repete a resposta visível e acaba com a .fonte-inline (#352)
+    assert json_ld.startswith(visivel) and json_ld[len(visivel):].lstrip().startswith("Fonte:"), json_ld
 
 
 def test_paragrafo_da_idade_cita_os_dois_diplomas_e_a_ambiguidade():

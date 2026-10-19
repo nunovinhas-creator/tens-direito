@@ -1148,7 +1148,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1157,7 +1157,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1212,7 +1212,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1221,7 +1221,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1268,7 +1268,7 @@
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1277,7 +1277,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1316,7 +1316,7 @@
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1325,7 +1325,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
