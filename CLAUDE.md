@@ -3940,7 +3940,10 @@ O mesmo teste vigia os três caminhos por onde uma data podia mudar sem o
 sitemap acompanhar: (1) qualquer `.yml` em `.github/workflows` que escreva
 `dateModified`/"Verificado a" numa página fora das excepções; (2) qualquer
 script corrido por um workflow que mencione essas datas (só
-`verificar_datas.py`, que as lê, está em `SCRIPTS_SO_LEEM_DATAS`); (3)
+`verificar_datas.py`, que as lê, e `atualizar_calendario.py`, que só escreve uma
+nota de secção fixa na `PSU_NOTA`, antes do carimbo da página — guarda própria
+`test_nota_psu_do_calendario_nunca_e_a_data_da_pagina` —, estão em
+`SCRIPTS_SO_LEEM_DATAS`); (3)
 **revalidação de carimbo**: `auto_update_engine.aplicar_refresh_carimbo`
 avança "Verificado a" e `dateModified` — no dia em que
 `REVALIDACAO_CARIMBO_HABILITADA` (ou `AUTO_UPDATE_HABILITADO`) passar a
