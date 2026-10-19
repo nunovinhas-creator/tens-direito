@@ -2212,14 +2212,6 @@
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2018",
-    "frase": "O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \"sem MRZ\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2018",
     "frase": "Só afecta duas excepções raras — o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (emissão cessada a 31 de dezembro de 2018).",
     "ordinal": 1
   },
@@ -2244,22 +2236,6 @@
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2024",
-    "frase": "Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas europeias.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "junho de 2024",
-    "frase": "Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas europeias.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "junho de 2024",
     "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
     "ordinal": 1
   },
@@ -2274,9 +2250,25 @@
   {
     "pagina": "renovar-cartao-cidadao.html",
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2018",
-    "frase": "O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \"sem MRZ\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018).",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 3
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 4
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_numerica",
+    "correspondencia": "30/12/2025",
+    "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
     "ordinal": 1
   },
   {
@@ -2300,15 +2292,7 @@
     "marcador": "circularam\\s+not[íi]cias",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "circularam\\s+not[íi]cias",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
+    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, mas o IRN desmentiu-as publicamente: o cartão mantém-se válido até à data impressa nele.",
     "ordinal": 2
   },
   {
@@ -2317,14 +2301,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2025",
     "frase": "✅ Esclarecimento oficial: circularam notícias, em dezembro de 2025, sobre uma obrigação de renovar o Cartão de Cidadão até 3 de agosto de 2026 por causa de novas regras europeias.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "circularam\\s+not[íi]cias",
-    "tipo": "prazo_outono",
-    "correspondencia": "30 de dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
     "ordinal": 1
   },
   {
@@ -2338,10 +2314,26 @@
   {
     "pagina": "renovar-cartao-cidadao.html",
     "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
     "tipo": "data_numerica",
     "correspondencia": "30/12/2025",
     "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
     "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_numerica",
+    "correspondencia": "30/12/2025",
+    "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
+    "ordinal": 2
   },
   {
     "pagina": "simulador-imt-jovem.html",
