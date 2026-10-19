@@ -41,7 +41,7 @@ RAIZ = Path(__file__).parent.parent
 FICHEIRO_LISTA = RAIZ / "tests" / "faq_divergencias_por_corrigir.json"
 
 # Só desce: ao corrigir divergências, tirá-las da lista e baixar este número.
-TETO_FAQ_DIVERGENCIAS = 8
+TETO_FAQ_DIVERGENCIAS = 0
 
 RE_TITULO_FAQ = re.compile(r"(?i)d[úu]vidas|perguntas|zonas cinzentas|problemas comuns")
 # Par emparelhado quando a pergunta tem redacção diferente nos dois sítios.
