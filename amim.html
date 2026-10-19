@@ -80,12 +80,206 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "mainEntity": [
-      {"@type": "Question", "name": "A partir de que percentagem começam os benefícios?", "acceptedAnswer": {"@type": "Answer", "text": "O limiar legal de referência é 60%. É a partir dos 60% de incapacidade permanente que a lei considera a pessoa como pessoa com deficiência para efeitos da generalidade dos benefícios fiscais, sociais e económicos."}},
-      {"@type": "Question", "name": "Posso trabalhar com um AMIM de 60% ou mais?", "acceptedAnswer": {"@type": "Answer", "text": "Sim. O AMIM certifica um grau de incapacidade permanente; não é uma declaração de que não pode trabalhar. Muitas pessoas com AMIM trabalham normalmente e beneficiam ainda de proteções laborais e do sistema de quotas de emprego."}},
-      {"@type": "Question", "name": "O AMIM dá isenção de IMT?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Não existe uma isenção geral de IMT associada ao grau de incapacidade. As isenções de IMT dependem de outros critérios (valor do imóvel, primeira habitação, etc.), não do AMIM."}},
-      {"@type": "Question", "name": "Quanto custa?", "acceptedAnswer": {"@type": "Answer", "text": "A emissão do atestado pode ter uma taxa, que varia conforme seja primeira avaliação, recurso ou reavaliação, e há situações de isenção. Confirma o valor na tua unidade de saúde."}},
-      {"@type": "Question", "name": "Quanto tempo demora a junta médica?", "acceptedAnswer": {"@type": "Answer", "text": "Os tempos variam muito consoante a região e a pressão sobre o SNS. A desmaterialização do processo, prevista na Portaria n.º 171/2025/1, visa acelerar. Enquanto aguardas, guarda sempre o comprovativo do requerimento."}},
-      {"@type": "Question", "name": "Se numa reavaliação o meu grau descer abaixo de 60%, perco tudo?", "acceptedAnswer": {"@type": "Answer", "text": "Nem sempre. Aplica-se o princípio da avaliação mais favorável: se a descida resultar da mesma patologia e das duas avaliações com a mesma Tabela, mantém-se o grau mais favorável para efeitos dos direitos já reconhecidos. Há ainda regimes transitórios em IRS."}}
+      {
+        "@type": "Question",
+        "name": "Posso trabalhar com um AMIM?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. O AMIM certifica um grau de incapacidade permanente; não é uma declaração de \"incapacidade para trabalhar\". Muitas pessoas com AMIM trabalham a tempo inteiro e ainda beneficiam das quotas de emprego e das proteções laborais."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso conduzir?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O AMIM não te tira, por si só, a carta de condução. A aptidão para conduzir é avaliada separadamente (avaliação de condução). Há inclusive benefícios fiscais precisamente para adaptar viaturas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso estudar / o AMIM afeta os estudos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não te limita a estudar. Pelo contrário: pode dar acesso a apoios específicos no ensino (adaptações, contingentes especiais no acesso ao superior), que dependem de regulamentação própria."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso perder o AMIM numa reavaliação?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pode acontecer que uma reavaliação atribua um grau inferior. Mas há uma proteção importante: o princípio da avaliação mais favorável (arts. 4.º e 4.º-A do DL 202/96). Se a descida abaixo de 60% resultar da mesma patologia e ambas as avaliações usaram a mesma Tabela, mantém-se, para os direitos já reconhecidos, o grau mais favorável. Há jurisprudência reiterada do STJ neste sentido e a própria Autoridade Tributária ajustou as suas orientações (Ofício-Circulado n.º 20292/2026)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Se descer abaixo de 60%, perco logo os benefícios de IRS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não necessariamente de forma abrupta. Além do princípio da avaliação mais favorável, o art. 87.º do CIRS prevê um regime transitório: quem beneficiou da dedução durante pelo menos cinco anos e, por reavaliação, desce para um grau inferior a 60% (mas mantém pelo menos 20%), tem direito a deduções decrescentes durante alguns anos, em vez de perder tudo de uma vez."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso pedir novamente / pedir reavaliação por agravamento?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Se a tua condição se agravou, podes requerer nova avaliação. Faz sentido quando há relatórios que documentam a piora."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A junta pode recusar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A junta não \"recusa\" no sentido de barrar o pedido; avalia e atribui um grau — que pode ficar abaixo do esperado. Se não concordares, podes recorrer (ver secção 10)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "60% dá direito a \"tudo\"?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Os 60% abrem a porta à generalidade dos benefícios, mas cada apoio tem as suas próprias condições (rendimentos, tipo de veículo, emissões de CO₂, etc.). E há benefícios que só surgem em graus mais altos (ex.: acompanhamento em IRS aos 90%)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que quer dizer \"multiuso\"?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Que o mesmo atestado serve para vários fins ao mesmo tempo — fiscais, sociais, laborais e de mobilidade."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Onde entrego o requerimento?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nos cuidados de saúde primários (centro de saúde) da tua área de residência. Militares/PSP/GNR usam os serviços médicos próprios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quantos médicos tem a junta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Por regra, três."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Preciso mesmo de relatórios médicos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim — e quanto mais completos e atualizados, melhor. São a base da avaliação funcional."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto custa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A emissão do atestado pode ter uma taxa, que varia conforme seja primeira avaliação, recurso ou reavaliação, e há situações de isenção. Confirma o valor na tua unidade de saúde."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é a PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Prestação Social para a Inclusão, o principal apoio monetário para pessoas com deficiência (grau ≥ 60%), gerida pela Segurança Social."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso acumular PSI com pensão de invalidez?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Em regra, só com grau ≥ 80%."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A empresa é obrigada a contratar pessoas com deficiência?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, acima de 75 trabalhadores: ≥ 1% (médias) e ≥ 2% (grandes), pela Lei n.º 4/2019."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Tenho direito a produtos de apoio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Podes aceder a financiamento de ajudas técnicas via SNS/sistema de produtos de apoio, mediante prescrição."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O atestado caduca?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pode ter data de reavaliação ou ser permanente. Se tiver termo, pede a reavaliação antes de expirar para não perder benefícios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Perdi o prazo de reavaliação. E agora?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Regulariza o quanto antes com nova junta. A continuidade dos benefícios depende de teres requerido a tempo — informa-te na tua unidade de saúde e na entidade do benefício."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso recorrer do grau?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, em 30 dias. A junta de recurso não repete os mesmos médicos e podes indicar um dos vogais."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O empregador pode saber o meu diagnóstico?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O que releva para as quotas é o grau (≥ 60%) comprovado por AMIM, não o detalhe clínico."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Estrangeiro residente pode pedir?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O acesso a prestações como a PSI abrange nacionais e estrangeiros residentes, refugiados e apátridas, nas condições da lei."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Crianças podem ter AMIM?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim; o pedido é feito por quem exerce as responsabilidades parentais."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O AMIM serve para o acesso ao ensino superior?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Há contingentes e apoios específicos no acesso ao superior para estudantes com deficiência, com regras próprias — o AMIM é a peça que comprova a condição."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Tenho de fazer junta todos os anos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. Só quando o atestado tem data de reavaliação ou quando pedes reavaliação por agravamento."
+        }
+      }
     ]
   }
   </script>

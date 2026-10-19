@@ -80,19 +80,142 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "mainEntity": [
-      {"@type": "Question", "name": "A partir de que grau de incapacidade tenho direito à PSI?", "acceptedAnswer": {"@type": "Answer", "text": "Em regra, grau de incapacidade permanente igual ou superior a 60%, certificado pelo Atestado Médico de Incapacidade Multiuso (AMIM), e idade igual ou superior a 18 anos."}},
-      {"@type": "Question", "name": "Preciso de ter o AMIM antes de pedir a PSI?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o AMIM (ou, nalguns casos, o comprovativo de teres requerido a avaliação de incapacidade) é o documento que certifica o grau exigido. Sem ele não há PSI."}},
-      {"@type": "Question", "name": "Qual é o valor da PSI em 2026?", "acceptedAnswer": {"@type": "Answer", "text": "O valor de referência da componente base é 333,64 €/mês (4.003,68 €/ano). O complemento tem valor de referência anual de 8.040 €, o que pode chegar a 670 €/mês consoante os rendimentos. Fonte: Portaria n.º 58-A/2026/1."}},
-      {"@type": "Question", "name": "Tenho 80% de incapacidade. Quanto vou receber em 2026?", "acceptedAnswer": {"@type": "Answer", "text": "O grau de 80% não altera, por si só, o valor da componente base da PSI, que em 2026 é de 333,64 € por mês. O valor total pode ser superior se houver direito ao complemento, que depende dos rendimentos. O grau de 80% é relevante sobretudo para algumas regras de acumulação com pensões de invalidez."}},
-      {"@type": "Question", "name": "Os valores de 2026 têm retroativos?", "acceptedAnswer": {"@type": "Answer", "text": "Sim. A Portaria n.º 58-A/2026/1 produz efeitos desde 1 de janeiro de 2026, mas só foi publicada a 3 de fevereiro — os beneficiários receberam a diferença em atraso (retroativos) juntamente com o pagamento seguinte."}},
-      {"@type": "Question", "name": "Posso trabalhar e continuar a receber a PSI?", "acceptedAnswer": {"@type": "Answer", "text": "Sim, dentro de um limite: a acumulação anual da componente base com rendimentos de trabalho está sujeita, em 2026, a um limite máximo de 12.880 €/ano."}},
-      {"@type": "Question", "name": "Posso acumular a PSI com uma pensão de invalidez?", "acceptedAnswer": {"@type": "Answer", "text": "Só se o grau de incapacidade for igual ou superior a 80%, com a incapacidade certificada ou requerida antes dos 55 anos de idade."}},
-      {"@type": "Question", "name": "O que é a regra dos 55 anos?", "acceptedAnswer": {"@type": "Answer", "text": "Para teres direito à PSI a partir dos 55 anos (ou à acumulação com pensão de invalidez a partir dessa idade), tens de ter requerido a certificação da incapacidade antes de fazeres 55 anos — mesmo que a avaliação só aconteça depois."}},
-      {"@type": "Question", "name": "O que é a majoração e já está em vigor?", "acceptedAnswer": {"@type": "Answer", "text": "É a terceira componente da PSI, pensada para substituir apoios do antigo regime de protecção na deficiência que compensavam encargos específicos. Não está em vigor — aguarda regulamentação própria."}},
-      {"@type": "Question", "name": "Como e onde peço a PSI?", "acceptedAnswer": {"@type": "Answer", "text": "Com o formulário Mod. PSI 1-DGSS, submetido online na Segurança Social Direta ou por carta ao Centro Distrital da Segurança Social da tua área de residência."}},
-      {"@type": "Question", "name": "Tenho de pedir renovação todos os anos?", "acceptedAnswer": {"@type": "Answer", "text": "Não pedes renovação, mas a prestação é reavaliada anualmente (ou sempre que comunicares uma alteração de rendimentos, agregado ou grau de incapacidade), podendo o valor ser alterado, suspenso ou cessado."}},
-      {"@type": "Question", "name": "A PSI conta como rendimento para o IRS?", "acceptedAnswer": {"@type": "Answer", "text": "Não conta."}},
-      {"@type": "Question", "name": "A PSI vai ser integrada na Prestação Social Única (PSU)?", "acceptedAnswer": {"@type": "Answer", "text": "Não. A PSI não consta da lista das 13 prestações que a PSU vai unificar — o perímetro foi fixado pela autorização legislativa promulgada a 17 de julho de 2026, e o decreto-lei não o pode alargar. Cuidado para não confundir com a \"pensão social de invalidez especial\", um dos 13 apoios listados: é uma prestação diferente, que a PSI substituiu para novos requerentes desde 2017, mas que hoje é um regime autónomo."}}
+      {
+        "@type": "Question",
+        "name": "Tenho 58 anos e nunca pedi o AMIM. Ainda posso ter direito à PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Só nas condições gerais dos 18+ anos, sem a regra dos 55 — ou seja, sem o acesso reforçado previsto para quem já tinha a incapacidade requerida antes dessa idade. Pede a avaliação de incapacidade o quanto antes e confirma a tua situação concreta na Segurança Social Direta."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Se o meu grau descer de 65% para 55% numa reavaliação do AMIM, perco logo a PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, em princípio — abaixo de 60% deixa de haver direito à componente base e ao complemento da PSI, tal como acontece com os restantes benefícios ligados ao AMIM. Consulta o guia do AMIM sobre o princípio da avaliação mais favorável, que pode proteger direitos já reconhecidos em certas condições."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A PSI conta como rendimento para o IRS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. A PSI não conta como rendimento para efeitos de IRS."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Trabalho a tempo parcial e ultrapassei o limite de acumulação a meio do ano. O que acontece?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "É uma das alterações que tens o dever de comunicar em 10 dias úteis — a Segurança Social recalcula a partir daí; não esperes pela reavaliação anual para o fazeres."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso ter PSI e Complemento Solidário para Idosos ao mesmo tempo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "São apoios com público-alvo diferente — a PSI depende do grau de incapacidade, o CSI da idade de reforma e de rendimentos baixos — mas as regras de acumulação concretas entre os dois dependem da tua situação específica; confirma sempre na Segurança Social Direta."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A partir de que grau de incapacidade tenho direito à PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Em regra, grau de incapacidade permanente igual ou superior a 60%, certificado pelo AMIM, e idade igual ou superior a 18 anos."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Preciso de ter o AMIM antes de pedir a PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim — o AMIM (ou o comprovativo de teres requerido a avaliação) é o documento que certifica o grau exigido."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Qual é o valor da PSI em 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "333,64 €/mês na componente base; até 670 €/mês no complemento, consoante os rendimentos. Fonte: Portaria n.º 58-A/2026/1."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Tenho 80% de incapacidade. Quanto vou receber em 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O grau de 80% não altera, por si só, o valor da componente base da PSI, que em 2026 é de 333,64 € por mês. O valor total pode ser superior se houver direito ao complemento, que depende dos rendimentos. O grau de 80% é relevante sobretudo para algumas regras de acumulação com pensões de invalidez."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Os valores de 2026 têm retroativos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim — a portaria produz efeitos desde 1 de janeiro de 2026, apesar de só ter sido publicada a 3 de fevereiro."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso trabalhar e continuar a receber a PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, até ao limite anual de acumulação de 12.880 € (2026)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso acumular a PSI com uma pensão de invalidez?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Só com grau de incapacidade ≥ 80%, certificado ou requerido antes dos 55 anos."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é a regra dos 55 anos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Para teres direito à PSI (ou à acumulação com pensão de invalidez) a partir dos 55 anos, tens de ter requerido a certificação da incapacidade antes dessa idade."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que é a majoração e já está em vigor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "É a terceira componente da PSI, para substituir apoios do antigo regime de deficiência. Ainda não está em vigor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como e onde peço a PSI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Com o Mod. PSI 1-DGSS, submetido na Segurança Social Direta ou por carta ao Centro Distrital da tua área."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Tenho de pedir renovação todos os anos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não pedes renovação, mas a prestação é reavaliada anualmente ou sempre que comunicares uma alteração relevante."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A PSI vai ser integrada na Prestação Social Única?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Não. A PSI não consta da lista das 13 prestações que a PSU vai unificar — o perímetro foi fixado pela autorização legislativa promulgada a 17 de julho de 2026, e o decreto-lei não o pode alargar. Cuidado para não confundir com a \"pensão social de invalidez especial\", um dos 13 apoios listados: é uma prestação diferente, que a PSI substituiu para novos requerentes desde 2017, mas que hoje é um regime autónomo. Ver o guia da Prestação Social Única."
+        }
+      }
     ]
   }
   </script>

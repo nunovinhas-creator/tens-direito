@@ -36,7 +36,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "ano_letivo",
     "correspondencia": "2016/2017",
-    "frase": "Desde 2016/2017, os manuais escolares são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) via programa MEGA, independentemente do escalão ASE.",
+    "frase": "Desde 2016/2017, os manuais são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) através do programa MEGA, independentemente do escalão.",
     "ordinal": 1
   },
   {
@@ -45,7 +45,7 @@
     "tipo": "ano_letivo",
     "correspondencia": "2016/2017",
     "frase": "Desde 2016/2017, os manuais são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) através do programa MEGA, independentemente do escalão.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "acao-social-escolar.html",
@@ -65,6 +65,14 @@
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "frase": "Há uma excepção estreita, aditada pelo Decreto-Lei n.º 43/2024, de 2 de julho: se, cumulativamente, o teu contrato anterior a 15 de março de 2023 cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa), o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel, continua a ser a tua habitação permanente e domicílio fiscal, e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos, podes continuar abrangido.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
@@ -76,7 +84,7 @@
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023 — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, de 2 de julho, com mais condições cumulativas).",
+    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023.",
     "ordinal": 1
   },
   {
@@ -85,7 +93,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
@@ -124,8 +132,8 @@
     "marcador": "revisão urgente",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2025",
-    "frase": "A Provedoria de Justiça recebeu cerca de mil queixas sobre o regime, denunciando atrasos e irregularidades que afectaram sobretudo pessoas idosas, e pediu formalmente uma revisão urgente em agosto de 2025.",
-    "ordinal": 1
+    "frase": "A Provedoria de Justiça recebeu cerca de mil queixas sobre atrasos e irregularidades no processamento, que afectaram sobretudo pessoas idosas, e pediu uma revisão urgente em agosto de 2025.",
+    "ordinal": 2
   },
   {
     "pagina": "baixa-medica-subsidio-doenca.html",
@@ -880,14 +888,6 @@
     "ordinal": 1
   },
   {
-    "pagina": "calendario-escolar-apoios.html",
-    "marcador": "DATAS_PERMANENTES",
-    "tipo": "ano_letivo",
-    "correspondencia": "2024/2025",
-    "frase": "Entre 11 e 15 de setembro de 2026 — cada escola fixa o dia exato dentro deste intervalo, segundo o Despacho n.º 8368/2024, de 25 de julho (calendário escolar plurianual 2024/2025 a 2027/2028).",
-    "ordinal": 1
-  },
-  {
     "pagina": "calendario-pagamentos-psu.html",
     "marcador": "produ[çc][ãa]o\\s+de\\s+efeitos:\\s+31/12/2026",
     "tipo": "data_numerica",
@@ -988,7 +988,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -997,7 +997,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1052,7 +1052,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1061,7 +1061,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1108,7 +1108,7 @@
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1117,7 +1117,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1156,7 +1156,7 @@
     "marcador": "nasc\\w*\\s+a\\s+partir\\s+de\\b",
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
-    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive (artigo 5.º, n.º 1, alínea a), da Portaria n.º 305/2022, na redação da Portaria n.º 158/2024/1 — a mesma data consta também do artigo 2.º, na redação do mesmo diploma) e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
+    "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
     "ordinal": 1
   },
   {
@@ -1165,7 +1165,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "1 de setembro de 2021",
     "frase": "Poderá ter direito se tiver nascido a partir de 1 de setembro de 2021, inclusive, e a vaga for numa creche da rede solidária com acordo, da rede pública, ou — só na falta de vaga nas duas anteriores — da bolsa de creches aderentes.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "creche-gratuita.html",
@@ -1716,8 +1716,8 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
+    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
+    "ordinal": 2
   },
   {
     "pagina": "numero-utente-sns.html",
@@ -1820,7 +1820,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
-    "frase": "Desde junho de 2023 as candidaturas ao Porta 65 Jovem funcionam em contínuo, sem janelas temporais — podes candidatar-te em qualquer altura do ano.",
+    "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
     "ordinal": 1
   },
   {
@@ -1829,7 +1829,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
     "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "porta-65.html",
@@ -1844,8 +1844,8 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2024",
-    "frase": "Desde setembro de 2024, as candidaturas são avaliadas mensalmente.",
-    "ordinal": 1
+    "frase": "Desde setembro de 2024, a avaliação passou a ser mensal, em vez de por fases anuais como acontecia antes.",
+    "ordinal": 2
   },
   {
     "pagina": "prestacao-social-unica.html",
@@ -1956,7 +1956,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -1965,7 +1965,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
@@ -1996,7 +1996,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -2005,7 +2005,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
@@ -2212,14 +2212,6 @@
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2018",
-    "frase": "O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \"sem MRZ\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018).",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2018",
     "frase": "Só afecta duas excepções raras — o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (emissão cessada a 31 de dezembro de 2018).",
     "ordinal": 1
   },
@@ -2244,22 +2236,6 @@
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2024",
-    "frase": "Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas europeias.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "junho de 2024",
-    "frase": "Os cartões normais emitidos até 10 de junho de 2024 (com MRZ e chip de contacto) mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 (modelo actual, com chip de dupla interface) já cumprem todas as normas europeias.",
-    "ordinal": 2
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "data_mes_ano",
-    "correspondencia": "junho de 2024",
     "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
     "ordinal": 1
   },
@@ -2274,9 +2250,25 @@
   {
     "pagina": "renovar-cartao-cidadao.html",
     "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
-    "tipo": "prazo_outono",
-    "correspondencia": "31 de dezembro de 2018",
-    "frase": "O Cartão de Cidadão português tem zona de leitura ótica (MRZ) desde 2007, por isso a categoria \"sem MRZ\" só afecta duas excepções raras: o Cartão de Cidadão emitido a cidadãos brasileiros ao abrigo do Tratado de Porto Seguro, e o antigo Bilhete de Identidade vitalício (cuja emissão cessou a 31 de dezembro de 2018).",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 3
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 4
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "\\bemitidos?\\s+(?:entre|at[ée]|a\\s+partir\\s+de)\\b",
+    "tipo": "data_numerica",
+    "correspondencia": "30/12/2025",
+    "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
     "ordinal": 1
   },
   {
@@ -2300,15 +2292,7 @@
     "marcador": "circularam\\s+not[íi]cias",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "circularam\\s+not[íi]cias",
-    "tipo": "data_mes_ano",
-    "correspondencia": "dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
+    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, mas o IRN desmentiu-as publicamente: o cartão mantém-se válido até à data impressa nele.",
     "ordinal": 2
   },
   {
@@ -2317,14 +2301,6 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2025",
     "frase": "✅ Esclarecimento oficial: circularam notícias, em dezembro de 2025, sobre uma obrigação de renovar o Cartão de Cidadão até 3 de agosto de 2026 por causa de novas regras europeias.",
-    "ordinal": 1
-  },
-  {
-    "pagina": "renovar-cartao-cidadao.html",
-    "marcador": "circularam\\s+not[íi]cias",
-    "tipo": "prazo_outono",
-    "correspondencia": "30 de dezembro de 2025",
-    "frase": "Circularam notícias em dezembro de 2025 sobre uma obrigação de renovação antecipada até 3 de agosto de 2026, por causa do Regulamento (UE) 2025/1208 — mas o IRN desmentiu-as publicamente a 30 de dezembro de 2025: o cartão mantém-se válido até à data impressa nele.",
     "ordinal": 1
   },
   {
@@ -2338,10 +2314,26 @@
   {
     "pagina": "renovar-cartao-cidadao.html",
     "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2024",
+    "frase": "Os cartões normais emitidos até 10 de junho de 2024 mantêm-se válidos até à data impressa, no limite até 3 de agosto de 2031; os emitidos a partir de 11 de junho de 2024 já cumprem todas as normas.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
     "tipo": "data_numerica",
     "correspondencia": "30/12/2025",
     "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
     "ordinal": 1
+  },
+  {
+    "pagina": "renovar-cartao-cidadao.html",
+    "marcador": "esclarecimento\\s+(?:oficial\\s+)?de\\s+\\d",
+    "tipo": "data_numerica",
+    "correspondencia": "30/12/2025",
+    "frase": "Verificado 18/07/2026 — irn.justica.gov.pt (esclarecimento de 30/12/2025) / gov.pt / Regulamento (UE) 2025/1208",
+    "ordinal": 2
   },
   {
     "pagina": "simulador-imt-jovem.html",

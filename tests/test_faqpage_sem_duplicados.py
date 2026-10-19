@@ -69,11 +69,15 @@ def test_faqpage_sem_perguntas_repetidas(pagina):
 
 def _perguntas_visiveis_bolsa(soup):
     pares = []
+    # A .fonte-inline vai no fim da resposta do JSON-LD (#352).
     for item in soup.select("section.faq-geo .faq-item"):
-        pares.append((item.h3.get_text(" ", strip=True), item.p.get_text(" ", strip=True)))
+        fontes = [f.get_text(" ", strip=True) for f in item.select(".fonte-inline")]
+        pares.append((item.h3.get_text(" ", strip=True), " ".join([item.p.get_text(" ", strip=True), *fontes])))
     for det in soup.select("section.zona-cinzenta details"):
-        ps = [p for p in det.select(".resposta p") if "fonte-inline" not in (p.get("class") or [])]
-        pares.append((det.summary.get_text(" ", strip=True), " ".join(p.get_text(" ", strip=True) for p in ps)))
+        ps = det.select(".resposta p")
+        corpo = [p for p in ps if "fonte-inline" not in (p.get("class") or [])]
+        fontes = [p for p in ps if "fonte-inline" in (p.get("class") or [])]
+        pares.append((det.summary.get_text(" ", strip=True), " ".join(p.get_text(" ", strip=True) for p in corpo + fontes)))
     return [(_normalizar(q), _normalizar(a)) for q, a in pares]
 
 

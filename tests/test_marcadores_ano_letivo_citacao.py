@@ -140,7 +140,8 @@ def test_marcadores_data_seguinte_continuam_por_proximidade_no_ano_letivo():
 
 @pytest.mark.parametrize("pagina,marcador,data", [
     ("p/habitacao.html", r"celebrados?\s+at[ée]\b", "fevereiro de 2026"),
-    ("apoio-extraordinario-renda.html", "revisão urgente", "fevereiro de 2026"),
+    # apoio-extraordinario-renda.html («revisão urgente» + «fevereiro de 2026») saiu:
+    # a frase só existia no FAQPage JSON-LD, gerado da FAQ visível desde #352.
 ])
 def test_paginas_reais_supressoes_por_acaso_deixam_de_valer(pagina, marcador, data):
     """Só as ocorrências com o marcador na janela — as outras «fevereiro de

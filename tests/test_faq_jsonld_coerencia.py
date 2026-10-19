@@ -10,7 +10,7 @@ Regras, por página com `FAQPage`:
 1. cada pergunta do JSON-LD aparece na página (num `<summary>` ou no `h3`
    de um `.faq-item`) com o mesmo texto;
 2. a resposta do JSON-LD é igual ao texto visível da resposta — espaços
-   normalizados, HTML retirado, `.fonte-inline` excluída;
+   normalizados, HTML retirado, com o texto da `.fonte-inline` no fim;
 3. a secção de FAQ visível não tem perguntas fora do JSON-LD.
 
 O que conta como FAQ visível: `<details>`/`.faq-item` fora da navegação
@@ -19,10 +19,11 @@ todos os que estão num contentor cujo `h2` seja de perguntas
 (`RE_TITULO_FAQ`). Os «Erros comuns» e as outras
 caixas recolhíveis nunca contam.
 
-`FAQ_DIVERGENCIAS_POR_CORRIGIR` (`tests/faq_divergencias_por_corrigir.json`)
-é a lista de transição das divergências antigas. Falha: uma divergência
-fora da lista; uma entrada da lista que já não diverge (tem de sair); e a
-lista maior do que `TETO_FAQ_DIVERGENCIAS`. O tecto só desce (CLAUDE.md).
+Zero divergências, sem excepções: a lista de transição
+(`FAQ_DIVERGENCIAS_POR_CORRIGIR`, com tecto) chegou a 0 e saiu. O JSON-LD é
+gerado por `scripts/sincronizar_faq_jsonld.py`; `--check` do gerador é a
+guarda principal (`test_gerador_check_sem_alteracoes`), e esta leitura
+independente da FAQ fica como segunda verificação.
 """
 import copy
 import difflib
@@ -38,10 +39,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from sincronizar_clusters import encontrar_paginas
 
 RAIZ = Path(__file__).parent.parent
-FICHEIRO_LISTA = RAIZ / "tests" / "faq_divergencias_por_corrigir.json"
-
-# Só desce: ao corrigir divergências, tirá-las da lista e baixar este número.
-TETO_FAQ_DIVERGENCIAS = 334
 
 RE_TITULO_FAQ = re.compile(r"(?i)d[úu]vidas|perguntas|zonas cinzentas|problemas comuns")
 # Par emparelhado quando a pergunta tem redacção diferente nos dois sítios.
@@ -115,9 +112,12 @@ def faq_visivel(soup, perguntas_jsonld) -> dict:
         if not (e_faq or pergunta in perguntas_jsonld) or pergunta in faq:
             continue  # pergunta repetida na página: conta a primeira
         resposta = copy.copy(el)
-        for x in resposta.select("summary, h3, .fonte-inline"):
+        for x in resposta.select("summary, h3"):
             x.decompose()
-        faq[pergunta] = _texto(resposta)
+        fontes = [_texto(x) for x in resposta.select(".fonte-inline")]
+        for x in resposta.select(".fonte-inline"):
+            x.decompose()
+        faq[pergunta] = _normalizar(" ".join([_texto(resposta), *fontes]))
     return faq
 
 
@@ -166,56 +166,24 @@ def _rel(p: Path) -> str:
     return p.relative_to(RAIZ).as_posix()
 
 
-def _carregar_lista():
-    entradas = json.loads(FICHEIRO_LISTA.read_text(encoding="utf-8"))
-    return [(e["pagina"], e["tipo"], e["pergunta"]) for e in entradas]
-
-
-FAQ_DIVERGENCIAS_POR_CORRIGIR = _carregar_lista()
 PAGINAS = _paginas_com_faq()
 
 
-@pytest.fixture(scope="module")
-def divergencias_reais():
-    return {
-        (_rel(p), tipo, q)
-        for p in PAGINAS
-        for tipo, q in divergencias_da_pagina(p.read_text(encoding="utf-8"))
-    }
-
-
-def test_lista_nunca_maior_que_o_teto():
-    assert len(FAQ_DIVERGENCIAS_POR_CORRIGIR) <= TETO_FAQ_DIVERGENCIAS, (
-        f"FAQ_DIVERGENCIAS_POR_CORRIGIR tem {len(FAQ_DIVERGENCIAS_POR_CORRIGIR)} entradas, "
-        f"acima do tecto de {TETO_FAQ_DIVERGENCIAS}. A lista só encolhe: corrige a FAQ "
-        "em vez de a acrescentar."
-    )
-
-
-def test_lista_sem_duplicados_e_com_tipos_validos():
-    assert len(set(FAQ_DIVERGENCIAS_POR_CORRIGIR)) == len(FAQ_DIVERGENCIAS_POR_CORRIGIR)
-    invalidos = [e for e in FAQ_DIVERGENCIAS_POR_CORRIGIR if e[1] not in TIPOS]
-    assert not invalidos, f"tipos inválidos: {invalidos}"
-
-
 @pytest.mark.parametrize("pagina", PAGINAS, ids=_rel)
-def test_faq_visivel_e_jsonld_coincidem(pagina, divergencias_reais):
-    rel = _rel(pagina)
-    permitidas = {e for e in FAQ_DIVERGENCIAS_POR_CORRIGIR if e[0] == rel}
-    reais = {e for e in divergencias_reais if e[0] == rel}
-    novas = sorted(reais - permitidas)
-    assert not novas, "divergências novas entre a FAQ visível e o JSON-LD:\n" + "\n".join(
-        f"  - {TIPOS[t]}: «{q}»" for _, t, q in novas
+def test_faq_visivel_e_jsonld_coincidem(pagina):
+    divs = sorted(divergencias_da_pagina(pagina.read_text(encoding="utf-8")))
+    assert not divs, (
+        "a FAQ visível e o JSON-LD divergem — corre "
+        "`python scripts/sincronizar_faq_jsonld.py --write`:\n"
+        + "\n".join(f"  - {TIPOS[t]}: «{q}»" for t, q in divs)
     )
 
 
-def test_entradas_da_lista_ainda_divergem(divergencias_reais):
-    resolvidas = sorted(set(FAQ_DIVERGENCIAS_POR_CORRIGIR) - divergencias_reais)
-    assert not resolvidas, (
-        "entradas de FAQ_DIVERGENCIAS_POR_CORRIGIR que já não divergem — tira-as da "
-        "lista e baixa TETO_FAQ_DIVERGENCIAS:\n"
-        + "\n".join(f"  - {p} · {t} · «{q}»" for p, t, q in resolvidas)
-    )
+def test_gerador_check_sem_alteracoes(capsys):
+    import sincronizar_faq_jsonld as gerador
+
+    codigo = gerador.main(["--check"])
+    assert codigo == 0, capsys.readouterr().out
 
 
 # ---------- casos sintéticos: cada falha é detectada ----------
@@ -239,13 +207,21 @@ def _pagina(ld_faq, visivel, titulo="Dúvidas frequentes", extra=""):
     )
 
 
+FONTE = " Fonte: x · Verificado a 1/01/2026"
+
+
 def test_sintetico_par_igual_nao_diverge():
-    html = _pagina([("Quem?", "Todos, com <strong>A</strong>.")], [("Quem?", "Todos, com <strong>A</strong>.")])
+    html = _pagina([("Quem?", "Todos, com <strong>A</strong>." + FONTE)], [("Quem?", "Todos, com <strong>A</strong>.")])
     assert divergencias_da_pagina(html) == set()
 
 
+def test_sintetico_fonte_inline_em_falta_no_jsonld_diverge():
+    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Todos.")])
+    assert divergencias_da_pagina(html) == {("resposta_diferente", "Quem?")}
+
+
 def test_sintetico_resposta_diferente():
-    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Só alguns.")])
+    html = _pagina([("Quem?", "Todos." + FONTE)], [("Quem?", "Só alguns.")])
     assert divergencias_da_pagina(html) == {("resposta_diferente", "Quem?")}
 
 
@@ -255,7 +231,7 @@ def test_sintetico_so_jsonld_e_so_visivel():
 
 
 def test_sintetico_pergunta_com_redaccao_diferente():
-    html = _pagina([("Quanto tempo dura o apoio em 2026?", "Um ano.")], [("Quanto tempo dura o apoio?", "Um ano.")])
+    html = _pagina([("Quanto tempo dura o apoio em 2026?", "Um ano." + FONTE)], [("Quanto tempo dura o apoio?", "Um ano.")])
     assert divergencias_da_pagina(html) == {("pergunta_diferente", "Quanto tempo dura o apoio em 2026?")}
 
 
@@ -264,5 +240,5 @@ def test_sintetico_erros_comuns_nunca_contam_como_faq():
         "<section class='zona-cinzenta'><h2>Erros comuns</h2>"
         "<details><summary>Pensar que é automático</summary><p>Não é.</p></details></section>"
     )
-    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Todos.")], extra=extra)
+    html = _pagina([("Quem?", "Todos." + FONTE)], [("Quem?", "Todos.")], extra=extra)
     assert divergencias_da_pagina(html) == set()
