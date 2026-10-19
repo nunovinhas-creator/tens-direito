@@ -2220,7 +2220,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
-    "frase": "Desde junho de 2023 as candidaturas ao Porta 65 Jovem funcionam em contínuo, sem janelas temporais — podes candidatar-te em qualquer altura do ano.",
+    "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
     "ordinal": 1
   },
   {
@@ -2229,7 +2229,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
     "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "porta-65.html",
@@ -2244,8 +2244,8 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2024",
-    "frase": "Desde setembro de 2024, as candidaturas são avaliadas mensalmente.",
-    "ordinal": 1
+    "frase": "Desde setembro de 2024, a avaliação passou a ser mensal, em vez de por fases anuais como acontecia antes.",
+    "ordinal": 2
   },
   {
     "pagina": "prestacao-social-unica.html",
@@ -2444,7 +2444,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
-    "frase": "O preâmbulo do Decreto-Lei n.º 166/2026, publicado a 13 de agosto de 2026, confirma a mesma lista ao pormenor, sem qualquer alteração.",
+    "frase": "O preâmbulo do decreto-lei, publicado a 13 de agosto de 2026, confirma-a ao pormenor, sem qualquer alteração.",
     "ordinal": 1
   },
   {
@@ -2453,7 +2453,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
     "frase": "O preâmbulo do decreto-lei, publicado a 13 de agosto de 2026, confirma-a ao pormenor, sem qualquer alteração.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-lista-13-apoios.html",
@@ -2708,7 +2708,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -2717,7 +2717,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
@@ -2748,7 +2748,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -2757,7 +2757,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
@@ -2804,7 +2804,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
-    "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga (a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data).",
+    "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga — a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data.",
     "ordinal": 1
   },
   {
@@ -2813,7 +2813,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
     "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga — a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-trabalho-social.html",
@@ -2852,7 +2852,7 @@
     "marcador": "em vigor desde",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
-    "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga (a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data).",
+    "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga — a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data.",
     "ordinal": 1
   },
   {
@@ -2861,7 +2861,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2026",
     "frase": "Só passa a ser paga a partir de 31 de dezembro de 2026, quando a PSU em si começa a ser paga — a portaria já está em vigor desde 28 de agosto de 2026, mas só produz efeitos nessa data.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-trabalho-social.html",

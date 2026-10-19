@@ -1820,7 +1820,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
-    "frase": "Desde junho de 2023 as candidaturas ao Porta 65 Jovem funcionam em contínuo, sem janelas temporais — podes candidatar-te em qualquer altura do ano.",
+    "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
     "ordinal": 1
   },
   {
@@ -1829,7 +1829,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "junho de 2023",
     "frase": "Desde junho de 2023, as candidaturas ao Porta 65 Jovem funcionam em contínuo — podes candidatar-te em qualquer altura do ano.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "porta-65.html",
@@ -1844,8 +1844,8 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "setembro de 2024",
-    "frase": "Desde setembro de 2024, as candidaturas são avaliadas mensalmente.",
-    "ordinal": 1
+    "frase": "Desde setembro de 2024, a avaliação passou a ser mensal, em vez de por fases anuais como acontecia antes.",
+    "ordinal": 2
   },
   {
     "pagina": "prestacao-social-unica.html",
@@ -1956,7 +1956,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -1965,7 +1965,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
@@ -1996,7 +1996,7 @@
     "marcador": "fixa-a\\s+como\\s+um\\s+evento\\s+[úu]nico|data\\s+fixada\\s+por\\s+lei(?:\\s+para|,\\s+como\\s+evento\\s+[úu]nico)",
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
-    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
+    "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
     "ordinal": 1
   },
   {
@@ -2005,7 +2005,7 @@
     "tipo": "prazo_outono",
     "correspondencia": "31 de dezembro de 2026",
     "frase": "Isto é diferente da conversão oficiosa do artigo 57.º (RSI e as outras prestações que esse artigo converte, ver a pergunta seguinte) — a lei fixa-a como um evento único a 31 de dezembro de 2026; confirma na Segurança Social Direta se já foi aplicada ao teu caso.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "psu-quem-tem-direito.html",
