@@ -1,5 +1,37 @@
 [
   {
+    "pagina": "abono-de-familia.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — mas vale sempre a pena confirmar na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "abono-de-familia.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — mas vale sempre a pena confirmar na Segurança Social Direta.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "abono-de-familia.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — mas vale sempre a pena confirmar na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "abono-de-familia.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — mas vale sempre a pena confirmar na Segurança Social Direta.",
+    "ordinal": 2
+  },
+  {
     "pagina": "acao-social-escolar.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "ano_letivo",
@@ -1339,6 +1371,14 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "junho de 2019",
+    "frase": "Verificado no texto publicado (Diário da República, 1.ª série, n.º 118, de 24 de junho de 2019), não numa versão consolidada.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Lida em fonte primária (consolidação do Diário da República à data de 10 de março de 2023).",
     "ordinal": 1
@@ -1418,9 +1458,33 @@
   {
     "pagina": "fontes.html",
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "Prova escolar automática: dispensa a entrega pelo beneficiário no ensino básico e secundário público ou com contrato de associação (desde o ano letivo de 2019/2020) e no ensino superior (desde 2020/2021); nos restantes casos, a prova continua a ser feita na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "Prova escolar automática: dispensa a entrega pelo beneficiário no ensino básico e secundário público ou com contrato de associação (desde o ano letivo de 2019/2020) e no ensino superior (desde 2020/2021); nos restantes casos, a prova continua a ser feita na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "data_mes_ano",
     "correspondencia": "fevereiro de 2013",
     "frase": "Fixou, desde 1 de fevereiro de 2013, o valor do subsídio por morte em 3 vezes o IAS e o limite do reembolso de despesas de funeral também em 3 vezes o IAS — substituindo a fórmula transitória do Decreto-Lei n.º 133/2012, que só vigorou sete meses.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "frase": "O art. 44.º, n.º 1 (redação do Decreto-Lei n.º 133/2012, em vigor desde 1 de julho de 2012) fixa a apresentação anual da prova escolar no mês de julho; o art. 45.º, n.os 1 a 3, regula a suspensão do abono sem prova e o pagamento ou a perda dos meses suspensos.",
     "ordinal": 1
   },
   {
@@ -1501,6 +1565,14 @@
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Altera o n.º 2 do artigo 3.º do Decreto-Lei n.º 20-B/2023, de 22 de março (regime do Apoio Extraordinário à Renda, fechado a contratos celebrados até 15 de março de 2023) — acrescenta uma ressalva excecional e temporária: o apoio mantém-se, num contrato posterior a essa data, quando, cumulativamente, o contrato anterior tiver cessado comprovadamente por iniciativa do senhorio (nunca do locatário), o contrato em vigor disser respeito ao mesmo locatário e ao mesmo imóvel, corresponder a habitação permanente e domicílio fiscal, e isso for comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "em vigor desde",
+    "tipo": "data_mes_ano",
+    "correspondencia": "julho de 2012",
+    "frase": "O art. 44.º, n.º 1 (redação do Decreto-Lei n.º 133/2012, em vigor desde 1 de julho de 2012) fixa a apresentação anual da prova escolar no mês de julho; o art. 45.º, n.os 1 a 3, regula a suspensão do abono sem prova e o pagamento ou a perda dos meses suspensos.",
     "ordinal": 1
   },
   {
@@ -1782,6 +1854,62 @@
     "correspondencia": "31/12/2026",
     "frase": "Diário da República — Decreto-Lei n.º 166/2026, de 13 de agosto (Diário da República n.º 156/2026, Série I) · Assembleia da República — parlamento.pt · Aprovado em Conselho de Ministros 30/07/2026 · Publicado em DR 13/08/2026 · Em vigor desde 14/08/2026 · Produção de efeitos: 31/12/2026 · Verificado a 15/09/2026 pela redação do Tens Direito",
     "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesse caso, não tens nada a fazer.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesses casos, o jovem já aparece em «Provas registadas» na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2019/2020",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesses casos, o jovem já aparece em «Provas registadas» na Segurança Social Direta.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "Ensino superior: desde 2020/2021 a prova é automática (Portaria n.º 191/2019).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesse caso, não tens nada a fazer.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesses casos, o jovem já aparece em «Provas registadas» na Segurança Social Direta.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "prova-escolar.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "ano_letivo",
+    "correspondencia": "2020/2021",
+    "frase": "No ensino básico e secundário público ou com contrato de associação (desde 2019/2020) e no ensino superior (desde 2020/2021), a prova é feita automaticamente (Portaria n.º 191/2019) — nesses casos, o jovem já aparece em «Provas registadas» na Segurança Social Direta.",
+    "ordinal": 2
   },
   {
     "pagina": "psu-quando-entra-em-vigor.html",

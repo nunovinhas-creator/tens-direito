@@ -7683,6 +7683,41 @@ de alertar por «a 1 de janeiro de 2022». Testes de efeito em
 auditor ajustados sem mudar o que testam (exemplos «desde 1 de janeiro»
 passaram a outro dia; o despacho por proximidade passou a citação).
 
+
+## Última revisão: 2026-10-18 — Prova Escolar: "em julho", automática, e o efeito do atraso (issue #344)
+
+Fonte primária fornecida pelo Nuno: Decreto-Lei n.º 176/2003, versão
+consolidada do DRE de 25/05/2026 — art. 44.º, n.º 1 (prova escolar
+apresentada anualmente no mês de julho, redação do DL 133/2012) e art. 45.º,
+n.os 1 a 3 (suspensão a partir do início do ano escolar; prova até 31 de
+dezembro levanta a suspensão e paga os meses suspensos; a partir de 1 de
+janeiro perdem-se, salvo justificação aceite, e o pagamento volta no mês
+seguinte ao da entrega). Portaria n.º 191/2019, lida no texto publicado (DR
+1.ª série n.º 118, 24/06/2019): prova automática no básico/secundário
+público ou com contrato de associação (desde 2019/2020) e no ensino superior
+(desde 2020/2021).
+
+O "31 de julho" que o site dava como prazo saiu de `prova-escolar.html`
+(title e H1 sem ano, og regenerado, tabela de prazos, FAQ visível e JSON-LD
+alinhadas par a par), `abono-de-familia.html` (efeito do atraso na secção de
+setembro e na FAQ dos 15 anos, que ganhou par no JSON-LD),
+`calendario-escolar-apoios.html`, `p/apoios-escolares.html` e
+`scripts/pesquisa.js`. Retirada a frase "mês anterior a completar 16 anos"
+(sem fonte — fica na issue #350). `fontes.html`: cartão novo para a
+Portaria n.º 191/2019 e arts. 44.º/45.º no cartão do DL 176/2003. Bolsa de
+mérito sem alterações. Ficaram para a #350: "renovação automática" e "30
+dias úteis" da ASE, e as afirmações "todos os anos"/"(anual)" sobre prazos
+escolares.
+
+`verificar_datas.py`: entrada nova em `DATAS_PERMANENTES` para `fontes.html`
+«24 de junho de 2019» (publicação da Portaria n.º 191/2019) — sem ela
+`test_fontes_real_nao_gera_alerta_issue_170` falha. Mais «25 de maio de 2026» em
+`prova-escolar.html` e `fontes.html` (data da versão consolidada lida do DL
+176/2003; actualidade é tema da revisão de conteúdo), pedidas pelo Nuno. Baselines do auditor
+2026/2027 regenerados com as supressões novas («desde 2019/2020», «desde
+2020/2021», «em vigor desde 1 de julho de 2012»), todas factos históricos
+dos textos desta revisão.
+
 ---
 
 *Última revisão automática: 2026-10-18*
