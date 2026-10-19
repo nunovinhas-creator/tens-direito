@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **18 de outubro de 2026**.
+Actualizado automaticamente a partir do repositório em **19 de outubro de 2026**.
 
 ### Páginas publicadas
 
@@ -80,7 +80,7 @@ Actualizado automaticamente a partir do repositório em **18 de outubro de 2026*
 | [`prestacao-social-unica.html`](prestacao-social-unica.html) | Prestação Social Única (PSU) 2026: valores reais, os 13 apoios e como funciona |
 | [`primeiro-direito.html`](primeiro-direito.html) | 1.º Direito 2026: apoio a quem vive em habitação indigna |
 | [`privacidade.html`](privacidade.html) | Política de Privacidade — Tens Direito |
-| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar 2026: prazo 31 de julho — dá para regularizar |
+| [`prova-escolar.html`](prova-escolar.html) | Prova Escolar: é em julho — quem tem de fazer e como regularizar |
 | [`psu-lista-13-apoios.html`](psu-lista-13-apoios.html) | As 13 prestações que a PSU substitui (lista completa 2026, DL 166/2026) |
 | [`psu-quando-entra-em-vigor.html`](psu-quando-entra-em-vigor.html) | PSU 2026: decreto-lei publicado — timeline completa até 31/12/2026 |
 | [`psu-quem-tem-direito.html`](psu-quem-tem-direito.html) | Quem tem direito à PSU 2026 — condições de acesso do Decreto-Lei n.º 166/2026 |
@@ -324,6 +324,7 @@ tens-direito/
 │   ├── shadow_mode_analytics.py
 │   ├── shadow_report_md.py
 │   ├── sincronizar_clusters.py
+│   ├── sincronizar_faq_jsonld.py
 │   ├── sincronizar_nav.py
 │   ├── sincronizar_sitemap_lastmod.py
 │   ├── source_adapter.py
@@ -449,6 +450,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 18 de outubro de 2026 às 11:40 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 19 de outubro de 2026 às 13:23 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
