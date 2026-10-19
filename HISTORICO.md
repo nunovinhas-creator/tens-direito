@@ -7718,6 +7718,32 @@ escolares.
 2020/2021», «em vigor desde 1 de julho de 2012»), todas factos históricos
 dos textos desta revisão.
 
+
+## Última revisão: 2026-10-18 — Guarda FAQ visível vs. JSON-LD (issue #352)
+
+Novo `tests/test_faq_jsonld_coerencia.py`, parametrizado sobre as 99
+páginas com `FAQPage`: falha numa divergência nova (resposta diferente,
+pergunta com outra redacção, pergunta só no JSON-LD ou só visível), numa
+entrada de `FAQ_DIVERGENCIAS_POR_CORRIGIR` que já não diverge, e se a lista
+passar `TETO_FAQ_DIVERGENCIAS` (333). Lista de transição em
+`tests/faq_divergencias_por_corrigir.json`, gerada do estado actual
+(`main` + #351). São 333 e não as 341 linhas da tabela da #352: os 8
+«Erros comuns» de `garantia-publica-credito-habitacao.html` e
+`imt-jovem.html` não são FAQ e o teste exclui-os por regra (`RE_TITULO_FAQ`).
+As 16 linhas «excerto» da tabela contam aqui como `resposta_diferente`.
+Provados os três caminhos de falha sobre páginas reais. Regra nova no
+CLAUDE.md (regra 7 e checklist): o tecto só desce.
+Correcção no mesmo PR: o teste passa a reconhecer `<details
+class="zona-cinzenta">` soltos no `<main>` (calendário de pagamentos e
+pagamento após deferimento). Duas entradas passam de `so_jsonld` a
+`pergunta_diferente`; a lista continua com 333.
+Segunda correcção, antes do merge: uma pergunta repetida na página (em
+duas secções) conta a primeira ocorrência, como no gerador
+`sincronizar_faq_jsonld.py`. Antes contava a última. Efeito:
+`prestacao-social-para-a-inclusao.html`, «A PSI conta como rendimento para
+o IRS?» (as duas respostas dizem «não»), passa a divergente. Lista e tecto
+passam a 334.
+
 ---
 
 *Última revisão automática: 2026-10-18*

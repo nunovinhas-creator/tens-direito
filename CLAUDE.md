@@ -692,6 +692,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Página tem o bloco de consentimento próprio no `<head>`: stub inline (Consent Mode v2 negado por omissão) + `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — **nunca** gtag.js estático (contornaria o consentimento; `tests/test_consentimento.py` falha se aparecer)
 - [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes — página nova: correr `python scripts/adicionar_og_image.py --write` (insere o bloco og:image) e depois `python scripts/gerar_og_images.py --write` (gera a imagem própria da página, 1200×630, com o título no cartão, e aponta o og:image para ela); mudar um `og:title` exige regenerar (`gerar_og_images.py --write`) — `tests/test_og_image.py` falha se esquecido
 - [ ] JSON-LD `FAQPage` + `HowTo` + `BreadcrumbList` presentes
+- [ ] Cada pergunta e resposta do `FAQPage` é igual à FAQ visível, e o JSON-LD não tem perguntas que a página não mostra — `tests/test_faq_jsonld_coerencia.py` falha se divergirem (ver regra 7 de "REGRAS DE CONTEÚDO")
 - [ ] `"Verificado a [data]"` visível no corpo da página
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
 - [ ] `sitemap.xml` actualizado se nova página
@@ -985,7 +986,12 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 4. **Nunca copiar** texto de bancos, jornais ou agregadores — reescrever sempre.
 5. **Data em cada facto**: "Verificado a [data] · Fonte: [link]".
 6. **Disclaimer** de independência em todas as páginas (`Aviso de independência`).
-7. **JSON-LD** FAQPage/HowTo em todas as páginas de conteúdo.
+7. **JSON-LD** FAQPage/HowTo em todas as páginas de conteúdo. O `FAQPage` repete a FAQ visível: mesmas perguntas, mesmas respostas
+   (espaços normalizados, `.fonte-inline` fora), nenhuma pergunta só no JSON-LD. Guarda: `tests/test_faq_jsonld_coerencia.py`
+   (#352). As divergências antigas estão em `tests/faq_divergencias_por_corrigir.json` (`FAQ_DIVERGENCIAS_POR_CORRIGIR`),
+   com tecto em `TETO_FAQ_DIVERGENCIAS`. **O tecto só desce**: nunca se acrescenta uma entrada nem se sobe o número —
+   corrige-se a FAQ. Uma entrada que deixa de divergir tem de sair da lista no mesmo commit, e o tecto baixa com ela.
+   «Erros comuns» e outras caixas recolhíveis que não são perguntas ficam fora por regra (`RE_TITULO_FAQ`).
 8. **Dúvidas frequentes** com `<details>`/`<summary>` e classe `.zona-cinzenta`.
 9. **Long-tail**: responder às "zonas cinzentas" que os portais oficiais não respondem directamente (ex: trabalhadores independentes, mudança de escalão a meio do ano, cumulação de apoios).
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.
