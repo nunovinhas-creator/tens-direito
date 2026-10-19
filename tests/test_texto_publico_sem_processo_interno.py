@@ -40,7 +40,10 @@ PROIBIDO = re.compile(
     r"|\bacesso\b(?:[^.]|\.(?=\w)){0,80}?\bbloquead\w*"  # o ponto de um domínio não corta a frase
     r"|\bbloquead\w*\s+(?:nesta|a)\s+(?:verifica\w*|sess\w*|pedidos|bots?)\b"
     r"|\b(?:devolve|responde\s+com|dá)\s+(?:um\s+)?(?:erro\s+)?[45]\d\d\b"
-    r"|\b[45]\d\d\s+(?:a|aos?)\s+(?:pedidos|bots?)\b",
+    r"|\b[45]\d\d\s+(?:a|aos?)\s+(?:pedidos|bots?)\b"
+    # estado interno da verificação (rsi.html, #352): «Confirmado — não há aviso de dúvida»
+    r"|\baviso\s+de\s+d[úu]vida\b"
+    r"|(?-i:\bConfirmado\s+—)",  # maiúscula: «Valores confirmados — Portaria …» é citação
     re.IGNORECASE,
 )
 
