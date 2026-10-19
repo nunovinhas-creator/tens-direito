@@ -1716,8 +1716,8 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2022",
-    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo artigo 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
-    "ordinal": 1
+    "frase": "É um acréscimo de 10% ao montante diário do subsídio de desemprego, criado pelo art. 28.º-A do Decreto-Lei n.º 220/2006 (aditado pelo Decreto-Lei n.º 119/2021, de 16 de dezembro), em vigor desde 1 de janeiro de 2022.",
+    "ordinal": 2
   },
   {
     "pagina": "numero-utente-sns.html",
