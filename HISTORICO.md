@@ -7802,6 +7802,13 @@ conversão (art. 61.º, n.º 2) — antes atribuídos ao art. 57.º em
 `subsidio-desemprego.html`, `subsidio-parental.html` e na `PSU_NOTA` de
 `scripts/atualizar_calendario.py`. Isenção de IRS citada pelo art. 29.º.
 B23, B31, B33 e B47 ficaram na issue #356, por confirmar.
+Sem avançar o «Verificado a» das páginas: nota de secção «Verificado a
+19/10/2026 no Decreto-Lei n.º 166/2026, arts. 57.º e 61.º.» junto a cada
+passagem corrigida (`.fonte-inline`; na `PSU_NOTA` do calendário, em
+`<span>`). Reconhecida por `REGEX_CARIMBO`: `carimbo_antigo` dispara em
+novembro de 2027. A data de página (`extrair_verificado_em`) não mudou em
+nenhuma das 8 páginas. `atualizar_calendario.py` entra em
+`SCRIPTS_SO_LEEM_DATAS` com motivo e guarda própria.
 
 ---
 

@@ -196,7 +196,9 @@ PSU_NOTA = (
     "convertidos oficiosamente em PSU (artigo 57.º do Decreto-Lei n.º "
     "166/2026); o subsídio social de desemprego e os subsídios sociais de "
     "parentalidade em curso continuam até ao fim do período de concessão "
-    "(artigo 61.º, n.º 2). O pagamento continua normal até lá."
+    "(artigo 61.º, n.º 2). O pagamento continua normal até lá. "
+    '<span class="fonte-inline">Verificado a 19/10/2026 no Decreto-Lei n.º '
+    "166/2026, arts. 57.º e 61.º.</span>"
 )
 
 # Nome na lista «Quando recebo?» quando difere do de VISTA_PRESTACOES

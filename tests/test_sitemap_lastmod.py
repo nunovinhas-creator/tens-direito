@@ -118,6 +118,11 @@ _RE_SCRIPT = re.compile(r"scripts/([a-z_]+\.py)")
 # mencionar as datas tem de sair.
 SCRIPTS_SO_LEEM_DATAS = {
     "verificar_datas.py": "compara datas do texto com o carimbo; só escreve data/alertas_datas.json",
+    # Não é leitura: escreve uma nota de secção FIXA na PSU_NOTA («Verificado a
+    # 19/10/2026 no Decreto-Lei n.º 166/2026…», #357), nunca o carimbo da página
+    # nem o dateModified — a data da página continua a ser o carimbo do rodapé,
+    # que vem depois (test_nota_psu_do_calendario_nunca_e_a_data_da_pagina).
+    "atualizar_calendario.py": "só uma nota de secção fixa (PSU_NOTA), antes do carimbo da página",
 }
 
 
@@ -188,3 +193,13 @@ def test_revalidacao_de_carimbo_ligada_exige_sitemap_no_mesmo_commit():
         "carimbo tem de correr scripts/sincronizar_sitemap_lastmod.py --write no mesmo commit e incluir "
         "sitemap.xml no seu guardrail"
     )
+
+
+def test_nota_psu_do_calendario_nunca_e_a_data_da_pagina():
+    """A nota de secção da PSU_NOTA (com «Verificado a») fica antes do carimbo
+    da página — extrair_verificado_em() lê o último, por isso o <lastmod> do
+    calendário nunca passa a ser a data da nota (#357)."""
+    html = (RAIZ / "calendario-pagamentos-seguranca-social.html").read_text(encoding="utf-8")
+    nota = html.index('id="nota-psu"')
+    ultimo = max(m.start() for m in re.finditer(r"Verificado a", html))
+    assert ultimo > nota, "o último «Verificado a» do calendário tem de ser o carimbo da página, depois da nota da PSU"
