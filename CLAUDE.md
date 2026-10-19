@@ -692,7 +692,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Página tem o bloco de consentimento próprio no `<head>`: stub inline (Consent Mode v2 negado por omissão) + `<script src="/assets/js/consentimento.js" data-ga4="G-XP46PM8H1Q" defer>` — **nunca** gtag.js estático (contornaria o consentimento; `tests/test_consentimento.py` falha se aparecer)
 - [ ] `og:title`, `og:description`, `og:url`, `og:locale`, `og:image` presentes — página nova: correr `python scripts/adicionar_og_image.py --write` (insere o bloco og:image) e depois `python scripts/gerar_og_images.py --write` (gera a imagem própria da página, 1200×630, com o título no cartão, e aponta o og:image para ela); mudar um `og:title` exige regenerar (`gerar_og_images.py --write`) — `tests/test_og_image.py` falha se esquecido
 - [ ] JSON-LD `FAQPage` + `HowTo` + `BreadcrumbList` presentes
-- [ ] Cada pergunta e resposta do `FAQPage` é igual à FAQ visível, e o JSON-LD não tem perguntas que a página não mostra — `tests/test_faq_jsonld_coerencia.py` falha se divergirem (ver regra 7 de "REGRAS DE CONTEÚDO")
+- [ ] Mexeste numa FAQ visível (ou página nova com FAQ)? Correr `python scripts/sincronizar_faq_jsonld.py --write` no mesmo commit — o `FAQPage` é gerado da FAQ visível; `tests/test_faq_jsonld_coerencia.py` falha se divergirem (ver regra 7 de "REGRAS DE CONTEÚDO")
 - [ ] `"Verificado a [data]"` visível no corpo da página
 - [ ] Disclaimer de independência (`Aviso de independência`) presente
 - [ ] `sitemap.xml` actualizado se nova página
@@ -987,15 +987,15 @@ Se não houver URL confirmado: escrever "consulta nos serviços da escola/agrupa
 5. **Data em cada facto**: "Verificado a [data] · Fonte: [link]".
 6. **Disclaimer** de independência em todas as páginas (`Aviso de independência`).
 7. **JSON-LD** FAQPage/HowTo em todas as páginas de conteúdo. O `FAQPage` repete a FAQ visível: mesmas perguntas, mesmas respostas
-   (espaços normalizados, `.fonte-inline` fora), nenhuma pergunta só no JSON-LD. Guarda: `tests/test_faq_jsonld_coerencia.py`
-   (#352). As divergências antigas estão em `tests/faq_divergencias_por_corrigir.json` (`FAQ_DIVERGENCIAS_POR_CORRIGIR`),
-   com tecto em `TETO_FAQ_DIVERGENCIAS`. **O tecto só desce**: nunca se acrescenta uma entrada nem se sobe o número —
-   corrige-se a FAQ. Uma entrada que deixa de divergir tem de sair da lista no mesmo commit, e o tecto baixa com ela.
-   «Erros comuns» e outras caixas recolhíveis que não são perguntas ficam fora por regra (`RE_TITULO_FAQ`).
-   Gerador: `scripts/sincronizar_faq_jsonld.py` (`--dry-run`/`--check`/`--write`, sessão manual, nunca no pipeline)
-   reescreve só o `mainEntity` a partir da FAQ visível, pelos padrões de `SELECTORES_FAQ` — sem uniformizar markup;
-   mantém `author`/`publisher`, não toca em `HowTo`/`Article`; página sem FAQ visível perde o `FAQPage`. Quando a
-   lista chegar a 0, a guarda passa a ser o `--check` do gerador e o tecto sai (#352).
+   (espaços normalizados, sem HTML, com o texto da `.fonte-inline` no fim), nenhuma pergunta só no JSON-LD — e é sempre
+   **gerado**, nunca escrito à mão: `scripts/sincronizar_faq_jsonld.py --write` (sessão manual, nunca no pipeline) reescreve
+   só o valor de `mainEntity` a partir da FAQ visível, pelos padrões de `SELECTORES_FAQ` (sem uniformizar markup), e deixa
+   o resto do bloco como está; mantém `author`/`publisher`, não toca em `HowTo`/`Article`; página sem FAQ visível perde o
+   `FAQPage`. Mudou uma FAQ visível? Corre o gerador no mesmo commit. Guarda: `--check` do gerador
+   (`tests/test_faq_jsonld_coerencia.py::test_gerador_check_sem_alteracoes`) mais a leitura independente do mesmo ficheiro
+   — zero divergências, sem lista de excepções (a lista de transição e o tecto chegaram a 0 e saíram, #352/#354).
+   «Erros comuns» e outras caixas recolhíveis que não são perguntas ficam fora por regra (`RE_TITULO_FAQ`). Um facto que
+   só estava no JSON-LD nunca passa à página sem fonte primária (issue #356).
 8. **Dúvidas frequentes** com `<details>`/`<summary>` e classe `.zona-cinzenta`.
 9. **Long-tail**: responder às "zonas cinzentas" que os portais oficiais não respondem directamente (ex: trabalhadores independentes, mudança de escalão a meio do ano, cumulação de apoios).
 10. **Independência declarada**: sem imitar o Estado, sem logótipos oficiais.

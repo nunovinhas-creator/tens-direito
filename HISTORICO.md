@@ -7762,6 +7762,30 @@ nas 99 páginas reais, e a guarda do #353 sem divergências depois de gerar.
 Nenhuma página alterada: a aplicação espera pela aprovação da lista B
 (triagem das respostas diferentes).
 
+
+## Última revisão: 2026-10-19 — FAQPage gerado da FAQ visível nas 71 páginas (issue #352, PR #354)
+
+Lista B (80 casos) aprovada pelo Nuno: a versão visível prevalece. Gerador
+ajustado antes de aplicar: o texto da `.fonte-inline` vai no fim da resposta
+do JSON-LD (tal como está na página), e só o valor de `mainEntity` é trocado
+— o resto do bloco fica com a formatação original, para o diff mostrar só as
+respostas que mudam. Medido: das 18 respostas B com citação só no JSON-LD,
+11 ficam cobertas pela `.fonte-inline`; 7 não (B23, B31, B33, B47, B50,
+B51, B52) — citação proposta para o texto visível, à espera de aprovação.
+`rsi.html`: sai «Confirmado — não há aviso de dúvida sobre este valor.» e as
+2 perguntas só no JSON-LD (RSI 1/RSI 28; 45 dias do Contrato de Inserção);
+`test_texto_publico_sem_processo_interno.py` apanha «aviso de dúvida» e
+«Confirmado —». Issue #356 para os factos só no JSON-LD (B16, B25, B63) —
+não entram na página sem fonte. Aplicado em 6 lotes (um commit cada):
+lista 334 → 304 → 224 → 165 → 87 → 8 → 0; o tecto nunca subiu. Com a
+lista a 0, saíram `tests/faq_divergencias_por_corrigir.json` e o tecto; a
+guarda passa a ser o `--check` do gerador mais a leitura independente.
+`manuais-escolares-mega.html` e `passe-sub23.html` perderam o `FAQPage`
+(sem FAQ visível). Testes que liam texto só do JSON-LD acompanhados:
+`test_valores_ancora` (PAER «18-35 anos»), `test_marcadores_ano_letivo_citacao`
+(PAER «revisão urgente» + fevereiro de 2026), `test_faqpage_sem_duplicados`
+e `test_creche_idade_pagina` (fonte no fim). Baselines do auditor regenerados.
+
 ---
 
 *Última revisão automática: 2026-10-18*
