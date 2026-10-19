@@ -1350,14 +1350,17 @@ def test_psu_meios_de_prova_regra_e_interoperabilidade():
     assert "interoperabilidade" in html.lower(), "regra da interoperabilidade ausente de como-pedir-psu.html"
 
 
-def test_psu_prazo_documentos_10_dias_uteis_20_regioes_autonomas():
+def test_psu_prazo_documentos_10_dias_uteis_sem_excepcao_regioes_autonomas():
     """Prazo para entrega de documentos: 10 dias úteis a contar da
-    notificação, 20 nas Regiões Autónomas — diferente do prazo de
-    decisão (30/20 dias, artigo 31.º/1), que a página não pode confundir
-    com este."""
+    notificação (Portaria n.º 394/2026/1, art. 4.º, n.º 4) — diferente do
+    prazo de decisão (30/20 dias, artigo 31.º/1), que a página não pode
+    confundir com este. Os «20 dias úteis nas Regiões Autónomas» que a
+    página chegou a afirmar não estão no art. 4.º nem no art. 6.º da
+    Portaria, nem no DL 166/2026 (issue #356) — só voltam com fonte."""
     html = _ler("como-pedir-psu.html")
     assert "10 dias úteis" in html, "prazo de 10 dias úteis para entrega de documentos ausente de como-pedir-psu.html"
-    assert "Regiões Autónomas" in html, "excepção das Regiões Autónomas (20 dias úteis) ausente de como-pedir-psu.html"
+    assert "artigo 4.º, n.º 4, da Portaria n.º 394/2026/1" in html, "citação do art. 4.º, n.º 4, ausente de como-pedir-psu.html"
+    assert not re.search(r"20 (?:dias úteis )?nas Regiões Autónomas", html), "prazo próprio das Regiões Autónomas sem fonte primária em como-pedir-psu.html"
 
 
 def test_psu_falta_de_documentos_e_suspensao_nunca_indeferimento():
