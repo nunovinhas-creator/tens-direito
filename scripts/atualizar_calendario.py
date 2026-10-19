@@ -190,12 +190,13 @@ PSU_MARCA = {"rsi", "pensoes", "subsidio-desemprego", "parentalidade-social"}
 # Uma nota só, por baixo da lista (as linhas de PSU_MARCA ganham um 🔄 que
 # aponta para ela) — antes eram 4 notas longas repetidas linha a linha.
 PSU_NOTA = (
-    'Passa para a <a href="/prestacao-social-unica.html">Prestação Social '
-    "Única</a> por conversão oficiosa a partir de 31 de dezembro de 2026 "
-    "(artigo 57.º do Decreto-Lei n.º 166/2026) se recebes a versão social, "
-    "não contributiva: pensão social de velhice ou invalidez, subsídio social "
-    "de desemprego, subsídios sociais de parentalidade e o RSI. O pagamento "
-    "continua normal até lá."
+    'Muda com a <a href="/prestacao-social-unica.html">Prestação Social '
+    "Única</a> a partir de 31 de dezembro de 2026, se recebes a versão social, "
+    "não contributiva: a pensão social de velhice ou invalidez e o RSI são "
+    "convertidos oficiosamente em PSU (artigo 57.º do Decreto-Lei n.º "
+    "166/2026); o subsídio social de desemprego e os subsídios sociais de "
+    "parentalidade em curso continuam até ao fim do período de concessão "
+    "(artigo 61.º, n.º 2). O pagamento continua normal até lá."
 )
 
 # Nome na lista «Quando recebo?» quando difere do de VISTA_PRESTACOES
