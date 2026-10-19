@@ -1,573 +1,53 @@
 [
  {
-  "pagina": "abono-de-familia.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O que acontece ao abono de família quando o escalão muda a meio do ano?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Trabalhadores independentes têm direito ao abono de família?"
- },
- {
-  "pagina": "abono-de-familia.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Quanto recebe uma criança no 1.º escalão em 2026?"
+  "pergunta": "Como peço a certidão no Portal das Finanças?"
  },
  {
-  "pagina": "abono-de-familia.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Quanto é o Abono de Família no 2.º escalão em 2026?"
+  "pergunta": "E se eu tiver dívidas às Finanças?"
  },
  {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Como pedir o abono de família?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Como se calcula o escalão do abono de família?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "O abono de família conta para o IRS?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "O que é a Garantia para a Infância?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Qual é o valor do abono de família para bebés até 3 anos em 2026?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quando é pago o abono de família?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quem tem direito ao abono de família?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_visivel",
-  "pergunta": "Como se calcula o Rendimento de Referência para o abono?"
- },
- {
-  "pagina": "abono-de-familia.html",
-  "tipo": "so_visivel",
-  "pergunta": "O IAS subiu — isso afecta o meu escalão?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "A ASE cobre as refeições nas férias da Páscoa e Natal?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Com mais de um filho na escola, preciso de candidatura separada para cada um?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O escalão da ASE mudou a meio do ano — o que devo fazer?"
- },
- {
-  "pagina": "acao-social-escolar.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "A ASE paga os manuais escolares?"
+  "pergunta": "Esta certidão serve também para a Segurança Social?"
  },
  {
-  "pagina": "acao-social-escolar.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Como sei qual é o meu escalão da ASE?"
+  "pergunta": "O que é a Certidão de Situação Tributária?"
  },
  {
-  "pagina": "acao-social-escolar.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "O que cobre o escalão A da ASE?"
+  "pergunta": "Quanto tempo é válida a certidão?"
  },
  {
-  "pagina": "acao-social-escolar.html",
+  "pagina": "certidao-situacao-tributaria.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Quem tem direito à Ação Social Escolar 2026/2027?"
+  "pergunta": "É gratuita e quanto tempo demora?"
  },
  {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "A ASE cobre as visitas de estudo?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "A ASE cobre os manuais escolares?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Como candidatar à Ação Social Escolar?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "O que é a Ação Social Escolar?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Posso pedir reavaliação do escalão da ASE se discordar?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quais são os escalões da ASE?"
- },
- {
-  "pagina": "acao-social-escolar.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso pedir reavaliação se discordar do escalão atribuído?"
- },
- {
-  "pagina": "alterar-morada.html",
+  "pagina": "chave-movel-digital.html",
   "tipo": "resposta_diferente",
-  "pergunta": "A alteração no Cartão de Cidadão chega mesmo sozinha às Finanças e à Segurança Social?"
+  "pergunta": "A Chave Móvel Digital pode estar associada a mais do que uma pessoa ou número?"
  },
  {
-  "pagina": "alterar-morada.html",
+  "pagina": "chave-movel-digital.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Mudar a morada implica renovar o Cartão de Cidadão?"
+  "pergunta": "A Chave Móvel Digital tem algum custo?"
  },
  {
-  "pagina": "alterar-morada.html",
+  "pagina": "chave-movel-digital.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Não tenho Cartão de Cidadão — sou estrangeiro/a ou tenho Bilhete de Identidade vitalício. O que faço?"
+  "pergunta": "Posso ativar a Chave Móvel Digital sem Cartão de Cidadão?"
  },
  {
-  "pagina": "alterar-morada.html",
+  "pagina": "chave-movel-digital.html",
   "tipo": "resposta_diferente",
-  "pergunta": "Não tenho Chave Móvel Digital — como faço o pedido online?"
- },
- {
-  "pagina": "alterar-morada.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O que acontece se eu não confirmar a carta a tempo?"
- },
- {
-  "pagina": "alterar-morada.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Quanto custa alterar a morada?"
- },
- {
-  "pagina": "alterar-morada.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Quanto tempo tenho para alterar a morada depois de mudar de casa?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Posso trabalhar com um AMIM de 60% ou mais?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_jsonld",
-  "pergunta": "A partir de que percentagem começam os benefícios?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_jsonld",
-  "pergunta": "O AMIM dá isenção de IMT?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quanto tempo demora a junta médica?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Se numa reavaliação o meu grau descer abaixo de 60%, perco tudo?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "60% dá direito a \"tudo\"?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "A empresa é obrigada a contratar pessoas com deficiência?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "A junta pode recusar?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Crianças podem ter AMIM?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Estrangeiro residente pode pedir?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "O AMIM serve para o acesso ao ensino superior?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "O atestado caduca?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "O empregador pode saber o meu diagnóstico?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "O que quer dizer \"multiuso\"?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "O que é a PSI?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Onde entrego o requerimento?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Perdi o prazo de reavaliação. E agora?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso acumular PSI com pensão de invalidez?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso conduzir?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso estudar / o AMIM afeta os estudos?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso pedir novamente / pedir reavaliação por agravamento?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso perder o AMIM numa reavaliação?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso recorrer do grau?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Preciso mesmo de relatórios médicos?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Quantos médicos tem a junta?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Se descer abaixo de 60%, perco logo os benefícios de IRS?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Tenho de fazer junta todos os anos?"
- },
- {
-  "pagina": "amim.html",
-  "tipo": "so_visivel",
-  "pergunta": "Tenho direito a produtos de apoio?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O apoio ainda existe em 2026?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Porque é que o Governo quer acabar com este apoio?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Posso candidatar-me ao Apoio Extraordinário à Renda em 2026?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Se não tenho direito a este apoio, que alternativas existem?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "so_visivel",
-  "pergunta": "O que acontece a quem já recebe o apoio quando for revogado?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso candidatar-me em 2026?"
- },
- {
-  "pagina": "apoio-extraordinario-renda.html",
-  "tipo": "so_visivel",
-  "pergunta": "Que apoios existem para quem não tem direito a este?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O pai e a mãe podem faltar ao mesmo tempo para assistir ao mesmo filho?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Uma ida às urgências serve de prova para o subsídio?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "E se o meu filho tiver 12 anos ou mais?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Faltar para assistência a filho conta como baixa médica?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Posso faltar para cuidar dos meus pais ou do meu cônjuge?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "so_jsonld",
-  "pergunta": "O subsídio para assistência a filho paga desde o primeiro dia? E o IRS?"
- },
- {
-  "pagina": "assistencia-familia-filhos.html",
-  "tipo": "so_visivel",
-  "pergunta": "O subsídio paga desde o primeiro dia? Tenho de o declarar no IRS?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O que acontece se faltar a uma convocatória da junta médica de verificação?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Posso viajar para o estrangeiro estando de baixa médica?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O subsídio de doença é tributado em IRS?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "A autodeclaração de doença (autobaixa) dá direito a subsídio de doença?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Posso ser despedido estando de baixa médica?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quanto recebo de subsídio de doença em 2026?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quanto tempo pode durar a baixa médica?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quantos dias tenho de esperar até começar a receber o subsídio de doença?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Sou trabalhador independente (recibos verdes) — tenho direito ao subsídio de doença?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "A empresa pode despedir-me estando eu de baixa médica?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "E se a baixa terminar mas eu ainda não me sentir apto a trabalhar?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "Fico de baixa durante o período experimental — o que acontece ao contrato?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso sair de casa durante a baixa médica?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "Recebo o subsídio de férias e de Natal enquanto estou de baixa?"
- },
- {
-  "pagina": "baixa-medica-subsidio-doenca.html",
-  "tipo": "so_visivel",
-  "pergunta": "Um atestado médico privado (sem ser CIT) dá acesso ao subsídio de doença?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O que muda na bolsa de estudo a partir de 2026/2027?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Qual é o valor mínimo da bolsa de estudo em 2026/2027?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O que é a bolsa de estudo do ensino superior?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quando e onde se candidata à bolsa de estudo do ensino superior?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_jsonld",
-  "pergunta": "Quem tem direito à bolsa de estudo do ensino superior?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "A bolsa de estudo é diferente da bolsa de mérito do secundário?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "E se eu mudar de curso ou de instituição a meio do ano?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "Posso candidatar-me depois do prazo geral (2 de outubro)?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "Quando e onde se candidata?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "Quem tem direito?"
- },
- {
-  "pagina": "bolsa-de-estudo-ensino-superior.html",
-  "tipo": "so_visivel",
-  "pergunta": "Sou trabalhador-estudante — o meu rendimento próprio conta para o cálculo?"
- },
- {
-  "pagina": "caixa-geral-aposentacoes.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Como funciona a pensão de sobrevivência da CGA?"
- },
- {
-  "pagina": "calendario-escolar-apoios.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "O MEGA (manuais escolares) tem prazo-limite de candidatura?"
- },
- {
-  "pagina": "calendario-escolar-apoios.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "A Prova Escolar e a ASE são a mesma coisa?"
- },
- {
-  "pagina": "calendario-escolar-apoios.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O passe sub-23 tem prazo de candidatura?"
- },
- {
-  "pagina": "calendario-escolar-apoios.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Posso acumular vários apoios escolares no mesmo ano?"
- },
- {
-  "pagina": "calendario-escolar-apoios.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Quando começam as aulas no ano letivo 2026/2027?"
- },
- {
-  "pagina": "calendario-pagamentos-psu.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Quando começa a ser paga a PSU?"
- },
- {
-  "pagina": "calendario-pagamentos-seguranca-social.html",
-  "tipo": "pergunta_diferente",
-  "pergunta": "Porque há um 1.º e um 2.º pagamento do subsídio de desemprego, doença e parentalidade?"
- },
- {
-  "pagina": "calendario-pagamentos-seguranca-social.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Mudei de banco — como actualizo o IBAN para não atrasar o pagamento?"
- },
- {
-  "pagina": "calendario-pagamentos-seguranca-social.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O meu pedido foi deferido este mês — recebo logo na data do calendário?"
- },
- {
-  "pagina": "calendario-pagamentos-seguranca-social.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "Recebo por vale de correio — porque demora mais do que a transferência?"
- },
- {
-  "pagina": "carreiras-muito-longas.html",
-  "tipo": "resposta_diferente",
-  "pergunta": "O factor de sustentabilidade aplica-se às carreiras muito longas?"
+  "pergunta": "Qual é a forma mais rápida de ativar a Chave Móvel Digital?"
  },
  {
   "pagina": "como-e-calculada.html",
@@ -582,7 +62,22 @@
  {
   "pagina": "como-pedir-niss.html",
   "tipo": "resposta_diferente",
+  "pergunta": "A minha entidade empregadora pode pedir o NISS por mim?"
+ },
+ {
+  "pagina": "como-pedir-niss.html",
+  "tipo": "resposta_diferente",
   "pergunta": "NISS, NIF e número de utente do SNS são a mesma coisa?"
+ },
+ {
+  "pagina": "como-pedir-niss.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O NISS expira ou muda ao longo da vida?"
+ },
+ {
+  "pagina": "como-pedir-niss.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Pedir o NISS tem algum custo?"
  },
  {
   "pagina": "como-pedir-niss.html",
@@ -592,7 +87,17 @@
  {
   "pagina": "como-pedir-niss.html",
   "tipo": "resposta_diferente",
+  "pergunta": "Posso pedir o NISS para o meu filho ou filha?"
+ },
+ {
+  "pagina": "como-pedir-niss.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Quanto tempo demora a atribuição do NISS?"
+ },
+ {
+  "pagina": "como-pedir-niss.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Tenho Bilhete de Identidade vitalício — peço o NISS como um estrangeiro?"
  },
  {
   "pagina": "como-pedir-psu.html",
@@ -648,6 +153,11 @@
   "pagina": "creche-gratuita.html",
   "tipo": "resposta_diferente",
   "pergunta": "A família recebe o dinheiro da gratuitidade?"
+ },
+ {
+  "pagina": "creche-gratuita.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A gratuitidade da creche faz parte da Prestação Social Única (PSU)?"
  },
  {
   "pagina": "creche-gratuita.html",
@@ -732,7 +242,52 @@
  {
   "pagina": "declaracao-situacao-contributiva.html",
   "tipo": "resposta_diferente",
+  "pergunta": "A declaração é gratuita e quanto tempo demora?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Esta declaração serve também para as Finanças?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Nunca trabalhei — como peço a declaração?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O meu banco ou senhorio pode pedir a declaração por mim?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O que é a Declaração de Situação Contributiva?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Paguei a dívida ontem e a declaração ainda mostra que devo — porquê?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso pedir a declaração se tiver dívidas à Segurança Social?"
+ },
+ {
+  "pagina": "declaracao-situacao-contributiva.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quanto tempo é válida a declaração?"
+ },
+ {
+  "pagina": "deducao-rendas-irs.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Na declaração que entrego em 2026, já posso deduzir até 900 €?"
+ },
+ {
+  "pagina": "deducao-rendas-irs.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O que acontece se o senhorio não comunicar o contrato à Autoridade Tributária?"
  },
  {
   "pagina": "documentos/reclamacao-decisao-seguranca-social.html",
@@ -762,7 +317,17 @@
  {
   "pagina": "garantia-para-a-infancia.html",
   "tipo": "resposta_diferente",
+  "pergunta": "Como se calcula o valor da Garantia para a Infância?"
+ },
+ {
+  "pagina": "garantia-para-a-infancia.html",
+  "tipo": "resposta_diferente",
   "pergunta": "O que acontece se o rendimento da família mudar a meio do ano?"
+ },
+ {
+  "pagina": "garantia-para-a-infancia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quando é que a Garantia para a Infância deixa de ser paga?"
  },
  {
   "pagina": "garantia-para-a-infancia.html",
@@ -773,6 +338,56 @@
   "pagina": "garantia-para-a-infancia.html",
   "tipo": "resposta_diferente",
   "pergunta": "Tenho de pedir a Garantia para a Infância?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A garantia dispensa os limites de taxa de esforço (DSTI) do Banco de Portugal?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A garantia obriga o banco a aprovar o meu crédito?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A garantia pública pode ser prorrogada para 2027?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Há um prazo máximo para pagar o crédito, além da idade limite?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso usar a garantia pública e o IMT Jovem ao mesmo tempo?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Preciso de me candidatar ao Estado para ter esta garantia?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Se comecei o processo de crédito antes de agosto de 2026, aplicam-se as regras novas ou as antigas?"
+ },
+ {
+  "pagina": "garantia-publica-credito-habitacao.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Sem a garantia pública, porque é que o banco não financia os 100% da casa?"
+ },
+ {
+  "pagina": "iban-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A alteração é válida para todas as prestações que recebo?"
+ },
+ {
+  "pagina": "iban-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como sei se a alteração foi aceite?"
  },
  {
   "pagina": "iban-seguranca-social.html",
@@ -807,7 +422,37 @@
  {
   "pagina": "imt-jovem.html",
   "tipo": "resposta_diferente",
+  "pergunta": "A isenção do Imposto do Selo funciona da mesma forma que a do IMT?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Comprei uma casa por 400.000 €, quanto pago de IMT e Imposto do Selo?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "E se eu fizer 36 anos antes da escritura?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Em que situações posso perder a isenção depois da escritura?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Herdei uma quota de um imóvel, perco a isenção?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso acumular o IMT Jovem com a Garantia Pública no crédito habitação?"
+ },
+ {
+  "pagina": "imt-jovem.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso arrendar a casa depois de comprar com esta isenção?"
  },
  {
   "pagina": "imt-jovem.html",
@@ -872,6 +517,11 @@
  {
   "pagina": "majoracao-subsidio-desemprego.html",
   "tipo": "resposta_diferente",
+  "pergunta": "O que é a notificação da Segurança Social sobre a majoração?"
+ },
+ {
+  "pagina": "majoracao-subsidio-desemprego.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Quem tem direito à majoração de 10%?"
  },
  {
@@ -900,6 +550,51 @@
   "pergunta": "Quem tem direito a manuais escolares gratuitos?"
  },
  {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como funciona o atendimento por vídeo?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Do que preciso para marcar online no SIGA?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Marcar atendimento na Segurança Social tem algum custo?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso ir à Segurança Social sem marcar?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso tratar de vários assuntos na mesma marcação?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Qual é o número certo para marcar atendimento?"
+ },
+ {
+  "pagina": "marcar-atendimento-seguranca-social.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Tenho direito a atendimento prioritário — preciso de marcar na mesma?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como consulto o meu número de utente se não sei qual é?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso pedir o número de utente, o NIF e o NISS de uma só vez?"
+ },
+ {
   "pagina": "numero-utente-sns.html",
   "tipo": "resposta_diferente",
   "pergunta": "Preciso de pedir o número de utente se já tenho Cartão de Cidadão?"
@@ -907,7 +602,27 @@
  {
   "pagina": "numero-utente-sns.html",
   "tipo": "resposta_diferente",
+  "pergunta": "Sou cidadão da União Europeia em estadia temporária — preciso do número de utente português?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Sou estrangeiro/a — como peço o número de utente?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Ter número de utente dá-me direito automático a cuidados de saúde gratuitos?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Um recém-nascido também tem número de utente?"
+ },
+ {
+  "pagina": "numero-utente-sns.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "É gratuito pedir o número de utente do SNS?"
  },
  {
   "pagina": "outras-antecipacoes.html",
@@ -1165,6 +880,41 @@
   "pergunta": "Se recebo RSI agora, perco alguma coisa quando a PSU entrar em vigor?"
  },
  {
+  "pagina": "primeiro-direito.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O Decreto-Lei n.º 44/2025 mudou alguma coisa?"
+ },
+ {
+  "pagina": "primeiro-direito.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso candidatar-me directamente ao IHRU?"
+ },
+ {
+  "pagina": "primeiro-direito.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Que rendimento e património posso ter?"
+ },
+ {
+  "pagina": "prova-escolar.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como sei se a prova escolar já está registada?"
+ },
+ {
+  "pagina": "prova-escolar.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O que acontece se não fizer a prova em julho?"
+ },
+ {
+  "pagina": "prova-escolar.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Perco o dinheiro definitivamente?"
+ },
+ {
+  "pagina": "prova-escolar.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Tenho de fazer a prova escolar para o meu filho de 10 anos?"
+ },
+ {
   "pagina": "prova-escolar.html",
   "tipo": "so_visivel",
   "pergunta": "Recebo abono e pensão de sobrevivência ao mesmo tempo — faço duas provas?"
@@ -1362,12 +1112,42 @@
  {
   "pagina": "registo-criminal-online.html",
   "tipo": "resposta_diferente",
+  "pergunta": "A entidade que me pede o certificado pode confirmar que é verdadeiro?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "A partir de que idade posso pedir o meu próprio registo criminal?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como me autentico para pedir online?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Posso escolher a finalidade do certificado depois de o pedir?"
  },
  {
   "pagina": "registo-criminal-online.html",
   "tipo": "resposta_diferente",
   "pergunta": "Posso pedir o registo criminal de outra pessoa?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quanto custa pedir o certificado do registo criminal?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quanto tempo demora a ser emitido?"
+ },
+ {
+  "pagina": "registo-criminal-online.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quanto tempo é válido o certificado?"
  },
  {
   "pagina": "renovar-cartao-cidadao.html",
@@ -1408,6 +1188,11 @@
   "pagina": "renovar-cartao-cidadao.html",
   "tipo": "resposta_diferente",
   "pergunta": "É verdade que alguns Cartões de Cidadão têm de ser renovados antes do prazo, mesmo sem terem caducado?"
+ },
+ {
+  "pagina": "rsi.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como funciona o limite de património do RSI?"
  },
  {
   "pagina": "rsi.html",
@@ -1477,7 +1262,27 @@
  {
   "pagina": "senha-seguranca-social-direta.html",
   "tipo": "resposta_diferente",
+  "pergunta": "Esqueci-me da senha. Perco o acesso à conta?"
+ },
+ {
+  "pagina": "senha-seguranca-social-direta.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Porque me pedem um segundo código sempre que entro?"
+ },
+ {
+  "pagina": "senha-seguranca-social-direta.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Posso entrar na Segurança Social Direta sem senha própria?"
+ },
+ {
+  "pagina": "senha-seguranca-social-direta.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Preciso do NISS para me registar?"
+ },
+ {
+  "pagina": "senha-seguranca-social-direta.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Quanto tempo demora a receber a senha?"
  },
  {
   "pagina": "simulador-abono.html",
@@ -1652,6 +1457,11 @@
  {
   "pagina": "subsidio-parental.html",
   "tipo": "resposta_diferente",
+  "pergunta": "O que acontece se o pai não tirar os 28 dias obrigatórios?"
+ },
+ {
+  "pagina": "subsidio-parental.html",
+  "tipo": "resposta_diferente",
   "pergunta": "Os 28 dias do pai são dias úteis ou dias de calendário?"
  },
  {
@@ -1668,5 +1478,45 @@
   "pagina": "subsidio-parental.html",
   "tipo": "so_jsonld",
   "pergunta": "Como se calcula a remuneração de referência do subsídio parental?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Como sei se já tenho a tarifa social?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Não recebo nenhuma prestação, mas tenho rendimento baixo. Tenho direito?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "O contrato da luz está em nome de outra pessoa da casa. Tenho direito?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Recebo abono de família no 2.º escalão. Tenho direito?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Recebo pensão social de velhice. Tenho direito?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Recebo subsídio de desemprego (não o social). Conta?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Tenho contrato de luz no mercado livre. Também tenho direito?"
+ },
+ {
+  "pagina": "tarifa-social-energia.html",
+  "tipo": "resposta_diferente",
+  "pergunta": "Tenho de pedir a tarifa social?"
  }
 ]

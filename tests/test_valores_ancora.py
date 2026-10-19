@@ -1890,18 +1890,16 @@ def test_paer_pagamentos_ate_31_dezembro_2028_no_corpo():
 
 def test_paer_repete_idades_do_porta65_no_bloco_de_alternativas():
     """A secção de alternativas de apoio-extraordinario-renda.html repete
-    as idades do Porta 65 Jovem em duas formulações diferentes ('entre 18
-    e 35 anos' no corpo, '(18-35 anos)' no FAQPage JSON-LD) — é exactamente
+    as idades do Porta 65 Jovem ('entre 18 e 35 anos') — é exactamente
     aqui que a deriva começa se alguém actualizar porta-65.html sem
-    lembrar desta página irmã. As duas formulações têm de bater com o
-    mesmo par de valores do YAML."""
+    lembrar desta página irmã. Tem de bater com o par de valores do YAML.
+    (Havia uma 2.ª formulação, '(18-35 anos)', só no FAQPage JSON-LD; saiu
+    quando o JSON-LD passou a ser gerado da FAQ visível — #352.)"""
     html = _ler("apoio-extraordinario-renda.html")
     idade_min = _param_habitacao("porta65_jovem_idade_minima_anos")
     idade_max = _param_habitacao("porta65_jovem_idade_maxima_anos")
     frase_corpo = f"entre {idade_min} e {idade_max} anos"
-    frase_faq = f"{idade_min}-{idade_max} anos"
     assert frase_corpo in html, f"{frase_corpo!r} ausente de apoio-extraordinario-renda.html"
-    assert frase_faq in html, f"{frase_faq!r} ausente de apoio-extraordinario-renda.html"
 
 
 def test_paer_ressalva_dl_43_2024_acompanha_toda_afirmacao_da_data_limite():

@@ -6,7 +6,8 @@ Não uniformiza markup: lê os padrões que as páginas já usam, pela lista
 `SELECTORES_FAQ`. Uma caixa recolhível num contentor cujo `h2` diz «Erros
 comuns» nunca é FAQ (`RE_TITULO_NAO_FAQ`), nem a navegação. Pergunta = texto
 do `<summary>` (ou do `h3` de um `.faq-item`); resposta = texto simples do
-resto, sem `.fonte-inline` e sem HTML. Perguntas repetidas na página entram
+resto, sem HTML; o texto da `.fonte-inline` vai no fim da resposta, tal como
+está na página (`resposta_com_fonte`). Perguntas repetidas na página entram
 uma só vez (a primeira).
 
 Só reescreve o `mainEntity`: `@context`, `author`, `publisher` e qualquer
@@ -65,6 +66,17 @@ def _titulo_do_contentor(el) -> str:
     return ""
 
 
+def resposta_com_fonte(el) -> str:
+    """Texto da resposta de um item de FAQ, com a `.fonte-inline` no fim."""
+    resposta = copy.copy(el)
+    for x in resposta.select("summary, h3"):
+        x.decompose()
+    fontes = [normalizar(x.get_text(" ")) for x in resposta.select(".fonte-inline")]
+    for x in resposta.select(".fonte-inline"):
+        x.decompose()
+    return normalizar(" ".join([resposta.get_text(" "), *fontes]))
+
+
 def faq_visivel(html: str) -> list[tuple[str, str]]:
     """(pergunta, resposta) da FAQ visível, pela ordem da página."""
     soup = BeautifulSoup(html, "html.parser")
@@ -79,10 +91,7 @@ def faq_visivel(html: str) -> list[tuple[str, str]]:
         pergunta = normalizar(cabeca.get_text(" ", strip=True))
         if not pergunta or pergunta in vistos:
             continue
-        resposta = copy.copy(el)
-        for x in resposta.select("summary, h3, .fonte-inline"):
-            x.decompose()
-        texto = normalizar(resposta.get_text(" "))
+        texto = resposta_com_fonte(el)
         if texto:
             vistos.add(pergunta)
             faq.append((pergunta, texto))
@@ -99,6 +108,48 @@ def _main_entity(faq):
 def _indentar(dados, base: str) -> str:
     corpo = json.dumps(dados, ensure_ascii=False, indent=2)
     return "\n" + "\n".join(base + linha for linha in corpo.splitlines()) + "\n" + base
+
+
+RE_CHAVE_MAIN_ENTITY = re.compile(r'"mainEntity"\s*:\s*')
+
+
+def _fim_do_valor(texto: str, i: int) -> int:
+    """Índice a seguir ao valor JSON (lista/objecto) que começa em `texto[i]`."""
+    nivel, em_string, escape = 0, False, False
+    for j in range(i, len(texto)):
+        c = texto[j]
+        if em_string:
+            if escape:
+                escape = False
+            elif c == "\\":
+                escape = True
+            elif c == '"':
+                em_string = False
+            continue
+        if c == '"':
+            em_string = True
+        elif c in "[{":
+            nivel += 1
+        elif c in "]}":
+            nivel -= 1
+            if nivel == 0:
+                return j + 1
+    raise ValueError("JSON por fechar")
+
+
+def _trocar_main_entity(bloco: str, faq) -> str | None:
+    """O bloco com só o valor de `mainEntity` trocado, mantendo a formatação
+    do resto — o diff mostra só as perguntas e respostas que mudam. None se o
+    bloco não tiver exactamente um `mainEntity`."""
+    ms = list(RE_CHAVE_MAIN_ENTITY.finditer(bloco))
+    if len(ms) != 1:
+        return None
+    ini = ms[0].end()
+    fim = _fim_do_valor(bloco, ini)
+    linha = bloco[bloco.rfind("\n", 0, ms[0].start()) + 1:ms[0].start()]
+    base = re.match(r"[ \t]*", linha).group(0)
+    valor = json.dumps(_main_entity(faq), ensure_ascii=False, indent=2).replace("\n", "\n" + base)
+    return bloco[:ini] + valor + bloco[fim:]
 
 
 def sincronizar(html: str) -> str:
@@ -136,7 +187,11 @@ def sincronizar(html: str) -> str:
         if novo == dados:
             continue
         saida.append(html[pos:m.start(2)])
-        saida.append(_indentar(novo, base + "  "))
+        trocado = _trocar_main_entity(m.group(2), faq) if faq else None
+        if trocado is not None and json.loads(trocado) == novo:
+            saida.append(trocado)
+        else:
+            saida.append(_indentar(novo, base + "  "))
         pos = m.end(2)
     saida.append(html[pos:])
     return "".join(saida)

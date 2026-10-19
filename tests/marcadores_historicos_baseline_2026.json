@@ -36,7 +36,7 @@
     "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
     "tipo": "ano_letivo",
     "correspondencia": "2016/2017",
-    "frase": "Desde 2016/2017, os manuais escolares são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) via programa MEGA, independentemente do escalão ASE.",
+    "frase": "Desde 2016/2017, os manuais são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) através do programa MEGA, independentemente do escalão.",
     "ordinal": 1
   },
   {
@@ -45,7 +45,7 @@
     "tipo": "ano_letivo",
     "correspondencia": "2016/2017",
     "frase": "Desde 2016/2017, os manuais são gratuitos para todos os alunos do ensino público (1.º ao 12.º ano) através do programa MEGA, independentemente do escalão.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "acao-social-escolar.html",
@@ -65,6 +65,14 @@
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "março de 2023",
+    "frase": "Há uma excepção estreita, aditada pelo Decreto-Lei n.º 43/2024, de 2 de julho: se, cumulativamente, o teu contrato anterior a 15 de março de 2023 cessou comprovadamente por iniciativa do senhorio (nunca por tua iniciativa), o contrato que tens hoje é para o mesmo locatário e o mesmo imóvel, continua a ser a tua habitação permanente e domicílio fiscal, e isso é comprovado pela Autoridade Tributária a partir da comunicação obrigatória dos contratos, podes continuar abrangido.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "apoio-extraordinario-renda.html",
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
@@ -76,7 +84,7 @@
     "marcador": "\\bposterior a\\b",
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
-    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023 — salvo se o contrato anterior a essa data cessou por iniciativa do senhorio e continuas no mesmo imóvel (excepção estreita do Decreto-Lei n.º 43/2024, de 2 de julho, com mais condições cumulativas).",
+    "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023.",
     "ordinal": 1
   },
   {
@@ -85,7 +93,7 @@
     "tipo": "data_mes_ano",
     "correspondencia": "março de 2023",
     "frase": "Não, se o teu contrato de arrendamento for posterior a 15 de março de 2023.",
-    "ordinal": 1
+    "ordinal": 2
   },
   {
     "pagina": "apoio-extraordinario-renda.html",
@@ -124,8 +132,8 @@
     "marcador": "revisão urgente",
     "tipo": "data_mes_ano",
     "correspondencia": "agosto de 2025",
-    "frase": "A Provedoria de Justiça recebeu cerca de mil queixas sobre o regime, denunciando atrasos e irregularidades que afectaram sobretudo pessoas idosas, e pediu formalmente uma revisão urgente em agosto de 2025.",
-    "ordinal": 1
+    "frase": "A Provedoria de Justiça recebeu cerca de mil queixas sobre atrasos e irregularidades no processamento, que afectaram sobretudo pessoas idosas, e pediu uma revisão urgente em agosto de 2025.",
+    "ordinal": 2
   },
   {
     "pagina": "baixa-medica-subsidio-doenca.html",
@@ -877,14 +885,6 @@
     "tipo": "ano_letivo",
     "correspondencia": "2024/2025",
     "frase": "Despacho n.º 8368/2024, de 25 de julho — calendário escolar 2024/2025 a 2027/2028",
-    "ordinal": 1
-  },
-  {
-    "pagina": "calendario-escolar-apoios.html",
-    "marcador": "DATAS_PERMANENTES",
-    "tipo": "ano_letivo",
-    "correspondencia": "2024/2025",
-    "frase": "Entre 11 e 15 de setembro de 2026 — cada escola fixa o dia exato dentro deste intervalo, segundo o Despacho n.º 8368/2024, de 25 de julho (calendário escolar plurianual 2024/2025 a 2027/2028).",
     "ordinal": 1
   },
   {

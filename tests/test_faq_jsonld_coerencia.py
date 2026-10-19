@@ -10,7 +10,7 @@ Regras, por página com `FAQPage`:
 1. cada pergunta do JSON-LD aparece na página (num `<summary>` ou no `h3`
    de um `.faq-item`) com o mesmo texto;
 2. a resposta do JSON-LD é igual ao texto visível da resposta — espaços
-   normalizados, HTML retirado, `.fonte-inline` excluída;
+   normalizados, HTML retirado, com o texto da `.fonte-inline` no fim;
 3. a secção de FAQ visível não tem perguntas fora do JSON-LD.
 
 O que conta como FAQ visível: `<details>`/`.faq-item` fora da navegação
@@ -41,7 +41,7 @@ RAIZ = Path(__file__).parent.parent
 FICHEIRO_LISTA = RAIZ / "tests" / "faq_divergencias_por_corrigir.json"
 
 # Só desce: ao corrigir divergências, tirá-las da lista e baixar este número.
-TETO_FAQ_DIVERGENCIAS = 334
+TETO_FAQ_DIVERGENCIAS = 304
 
 RE_TITULO_FAQ = re.compile(r"(?i)d[úu]vidas|perguntas|zonas cinzentas|problemas comuns")
 # Par emparelhado quando a pergunta tem redacção diferente nos dois sítios.
@@ -115,9 +115,12 @@ def faq_visivel(soup, perguntas_jsonld) -> dict:
         if not (e_faq or pergunta in perguntas_jsonld) or pergunta in faq:
             continue  # pergunta repetida na página: conta a primeira
         resposta = copy.copy(el)
-        for x in resposta.select("summary, h3, .fonte-inline"):
+        for x in resposta.select("summary, h3"):
             x.decompose()
-        faq[pergunta] = _texto(resposta)
+        fontes = [_texto(x) for x in resposta.select(".fonte-inline")]
+        for x in resposta.select(".fonte-inline"):
+            x.decompose()
+        faq[pergunta] = _normalizar(" ".join([_texto(resposta), *fontes]))
     return faq
 
 
@@ -239,13 +242,21 @@ def _pagina(ld_faq, visivel, titulo="Dúvidas frequentes", extra=""):
     )
 
 
+FONTE = " Fonte: x · Verificado a 1/01/2026"
+
+
 def test_sintetico_par_igual_nao_diverge():
-    html = _pagina([("Quem?", "Todos, com <strong>A</strong>.")], [("Quem?", "Todos, com <strong>A</strong>.")])
+    html = _pagina([("Quem?", "Todos, com <strong>A</strong>." + FONTE)], [("Quem?", "Todos, com <strong>A</strong>.")])
     assert divergencias_da_pagina(html) == set()
 
 
+def test_sintetico_fonte_inline_em_falta_no_jsonld_diverge():
+    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Todos.")])
+    assert divergencias_da_pagina(html) == {("resposta_diferente", "Quem?")}
+
+
 def test_sintetico_resposta_diferente():
-    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Só alguns.")])
+    html = _pagina([("Quem?", "Todos." + FONTE)], [("Quem?", "Só alguns.")])
     assert divergencias_da_pagina(html) == {("resposta_diferente", "Quem?")}
 
 
@@ -255,7 +266,7 @@ def test_sintetico_so_jsonld_e_so_visivel():
 
 
 def test_sintetico_pergunta_com_redaccao_diferente():
-    html = _pagina([("Quanto tempo dura o apoio em 2026?", "Um ano.")], [("Quanto tempo dura o apoio?", "Um ano.")])
+    html = _pagina([("Quanto tempo dura o apoio em 2026?", "Um ano." + FONTE)], [("Quanto tempo dura o apoio?", "Um ano.")])
     assert divergencias_da_pagina(html) == {("pergunta_diferente", "Quanto tempo dura o apoio em 2026?")}
 
 
@@ -264,5 +275,5 @@ def test_sintetico_erros_comuns_nunca_contam_como_faq():
         "<section class='zona-cinzenta'><h2>Erros comuns</h2>"
         "<details><summary>Pensar que é automático</summary><p>Não é.</p></details></section>"
     )
-    html = _pagina([("Quem?", "Todos.")], [("Quem?", "Todos.")], extra=extra)
+    html = _pagina([("Quem?", "Todos." + FONTE)], [("Quem?", "Todos.")], extra=extra)
     assert divergencias_da_pagina(html) == set()

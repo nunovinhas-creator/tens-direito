@@ -51,7 +51,7 @@ ZONA = (
 
 
 @pytest.mark.parametrize("corpo, esperado", [
-    (ZONA, [("Quem tem direito?", "Quem cumprir A e B.")]),
+    (ZONA, [("Quem tem direito?", "Quem cumprir A e B. Fonte: x · Verificado a 1/01/2026")]),
     ("<main><details class='zona-cinzenta'><summary>Demora?</summary><p>Não.</p></details></main>",
      [("Demora?", "Não.")]),
     ("<section class='faq-section'><h2>Perguntas frequentes</h2><details><summary>Vinculativo?</summary>"
@@ -77,14 +77,14 @@ def test_reescreve_so_o_mainentity_e_mantem_author_publisher_e_howto():
     faq, howto = _blocos(g.sincronizar(html))
     assert faq["author"] == AUTOR and faq["publisher"] == AUTOR and faq["@context"] == "https://schema.org"
     assert [q["name"] for q in faq["mainEntity"]] == ["Quem tem direito?"]
-    assert faq["mainEntity"][0]["acceptedAnswer"]["text"] == "Quem cumprir A e B."
+    assert faq["mainEntity"][0]["acceptedAnswer"]["text"] == "Quem cumprir A e B. Fonte: x · Verificado a 1/01/2026"
     assert howto == HOWTO
 
 
-def test_resposta_sem_html_nem_fonte_inline():
+def test_resposta_sem_html_e_com_a_fonte_inline_no_fim():
     faq, = _blocos(g.sincronizar(_pagina([_faqpage([])], ZONA)))
     texto = faq["mainEntity"][0]["acceptedAnswer"]["text"]
-    assert "<" not in texto and "Verificado" not in texto
+    assert "<" not in texto and texto.endswith("Fonte: x · Verificado a 1/01/2026")
 
 
 def test_duas_seccoes_de_faq_entram_ambas_sem_repetidos():
@@ -110,7 +110,7 @@ def test_faqpage_dentro_de_lista_tambem_e_tratado():
 
 
 def test_pagina_ja_sincronizada_fica_byte_a_byte_igual():
-    html = _pagina([_faqpage([("Quem tem direito?", "Quem cumprir A e B.")])], ZONA)
+    html = _pagina([_faqpage([("Quem tem direito?", "Quem cumprir A e B. Fonte: x · Verificado a 1/01/2026")])], ZONA)
     assert g.sincronizar(html) == html
 
 
