@@ -7831,9 +7831,11 @@ automática) descartados: sem fonte (o comunicado do Governo de 05/05/2021
 sobre a renovação automática não fala de dados biométricos). **B23, B31, B33, B47**:
 citações confirmadas no PDF do Diário da República, entregue pelo Nuno.
 B23 — `como-pedir-psu.html`: «(artigo 6.º da Portaria n.º 394/2026/1)»
-(10 dias úteis, suspensão, notificação). O art. 6.º não fala dos «20 dias
-úteis nas Regiões Autónomas» que a página afirma em 7 sítios — por
-confirmar noutro artigo. B31/B33 — `creche-gratuita.html`: a Portaria n.º
+(10 dias úteis, suspensão, notificação). Os «20 dias úteis nas Regiões
+Autónomas» saíram dos 7 sítios: nem o art. 4.º, n.º 4 (prazo de 10 dias
+úteis, texto entregue pelo Nuno), nem o art. 6.º da Portaria, nem o DL
+166/2026 os prevêem; só um blogue de advogados os atribuía ao art. 4.º.
+O prazo de 10 dias passa a citar o art. 4.º, n.º 4. B31/B33 — `creche-gratuita.html`: a Portaria n.º
 158/2024/1 só altera os arts. 2.º, 5.º (n.º 1, al. a), e n.º 2) e 6.º da
 Portaria n.º 305/2022; art. 5.º, n.os 3 e 4, e art. 4.º ficam no texto
 original — notas de secção passam a dizê-lo, «Verificado a 19 de outubro
