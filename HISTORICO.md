@@ -7786,6 +7786,23 @@ guarda passa a ser o `--check` do gerador mais a leitura independente.
 (PAER «revisão urgente» + fevereiro de 2026), `test_faqpage_sem_duplicados`
 e `test_creche_idade_pagina` (fonte no fim). Baselines do auditor regenerados.
 
+
+## Última revisão: 2026-10-19 — PSU: citações confirmadas e garantia de valor pelo art. 57.º (PR #357)
+
+Citações lidas pelo Nuno no PDF do Diário da República: B50 («O Decreto-Lei
+n.º 166/2026 lista…»), B51 (Lei n.º 36/2026, art. 1.º, n.º 2), B52 (art.
+63.º). Garantia de valor na conversão para a PSU corrigida por prestação
+(DL 166/2026): RSI só durante o período de atribuição em curso (art. 57.º,
+n.º 1); pensão social de velhice, CES e pensão social de invalidez especial
+com garantia, 14 mensalidades e actualização anual (n.os 2, 4 e 6); viuvez e
+orfandade no agregado recalculadas, sem garantia (n.º 3); orfandade fora do
+agregado continua até à maioridade (art. 61.º, n.º 1); subsídios sociais de
+desemprego e parentalidade em curso continuam até ao fim da concessão, sem
+conversão (art. 61.º, n.º 2) — antes atribuídos ao art. 57.º em
+`subsidio-desemprego.html`, `subsidio-parental.html` e na `PSU_NOTA` de
+`scripts/atualizar_calendario.py`. Isenção de IRS citada pelo art. 29.º.
+B23, B31, B33 e B47 ficaram na issue #356, por confirmar.
+
 ---
 
 *Última revisão automática: 2026-10-18*
