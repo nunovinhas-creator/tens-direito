@@ -7810,6 +7810,48 @@ novembro de 2027. A data de página (`extrair_verificado_em`) não mudou em
 nenhuma das 8 páginas. `atualizar_calendario.py` entra em
 `SCRIPTS_SO_LEEM_DATAS` com motivo e guarda própria.
 
+
+## Última revisão: 2026-10-19 — BAS do CSI corrigido; ASE e calendário escolar sem afirmações sem fonte (#356, #350, #352)
+
+**#352 fechado**: a guarda FAQ visível/JSON-LD passa com zero divergências
+(PRs #353/#354/#357); o que restava passou para a #356.
+
+**#356 — B25 corrigido no texto visível, não reposto**: o Guia Prático N30 —
+Benefícios Adicionais de Saúde (ISS, I.P., v4.12, 25/06/2024) contradiz o
+facto que só estava no JSON-LD e também o texto visível: os medicamentos
+comparticipados com receita são gratuitos (já não «50% de desconto»), e o
+reembolso de óculos/lentes (75%, até 100 € em 2 anos) e de próteses
+dentárias removíveis (75%, até 250 € em 3 anos) tem de ser pedido no centro
+de saúde — o BAS não é «automático» por inteiro. Corrigido em
+`complemento-solidario-idosos.html` (cartão BAS, resumo, FAQ — nota de
+secção «Verificado a 19 de outubro de 2026», sem avançar o carimbo da
+página), `simulador-csi.html` e `data/clusters.json` (→ `index.html`).
+**B16** (coimas 100–700 €) e **B63** (impressões digitais na renovação
+automática) descartados: sem fonte (o comunicado do Governo de 05/05/2021
+sobre a renovação automática não fala de dados biométricos). **B23, B31, B33, B47**:
+citações confirmadas no PDF do Diário da República, entregue pelo Nuno.
+B23 — `como-pedir-psu.html`: «(artigo 6.º da Portaria n.º 394/2026/1)»
+(10 dias úteis, suspensão, notificação). O art. 6.º não fala dos «20 dias
+úteis nas Regiões Autónomas» que a página afirma em 7 sítios — por
+confirmar noutro artigo. B31/B33 — `creche-gratuita.html`: a Portaria n.º
+158/2024/1 só altera os arts. 2.º, 5.º (n.º 1, al. a), e n.º 2) e 6.º da
+Portaria n.º 305/2022; art. 5.º, n.os 3 e 4, e art. 4.º ficam no texto
+original — notas de secção passam a dizê-lo, «Verificado a 19 de outubro
+de 2026». B47 — `prestacao-social-para-a-inclusao.html`: «a Portaria n.º
+58-A/2026/1 produz efeitos…» (art. 6.º; DR n.º 23, suplemento, 03/02/2026).
+
+**#350**: `acao-social-escolar.html` perde a «renovação automática» e o
+prazo de decisão de «30 dias úteis» (corpo e HowTo) — remete para a escola
+ou câmara. `calendario-escolar-apoios.html`: secção «Prazos que se repetem
+todos os anos» passa a «E nos anos seguintes?», sem afirmar recorrência;
+MEGA e bolsa do ensino superior «não são fixos» em vez de «fixados por
+despacho todos os anos». `p/apoios-escolares.html`: bolsa de mérito «(anual)»
+→ «(Despacho n.º 5296/2017)», sem «repete-se todos os anos».
+`data/destaques_sazonais.json` (`escolar-setembro`) sem o ano lectivo fixo.
+Prova Escolar «mês anterior a completar 16 anos»: o Guia Prático 4011
+(v1.49, 29/04/2025) não a prevê — quem faz 16 anos segue o prazo geral de
+julho; a frase fica fora.
+
 ---
 
 *Última revisão automática: 2026-10-19*
