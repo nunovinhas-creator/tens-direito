@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-19",
+      "titulo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano",
+      "fonte_nome": "Jornal de Notícias",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPeUVGM2NfcjdUTF80c3VQY2NWVkw5UHpQZ0owMjQ5aVpweTBnSkRTY3JoMGhYcUhRdjZmaFptUnlBeWRzZS1Id25wb01FdXE2Zzg4WWNOaV9aQ25qdXh5SW4xY2JuOGluOGt4bHh5eFNaVWY2NUR2aWJaZ2huN0NZMkhEOE5Ma1FWTGlxRUtlcWdsVGg5S0pobnNwS1k5ZGoyUjNIR0VqMnJIOHNKdjZ0N2xmeG9nMG14R0E?oc=5",
+      "resumo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano Jornal de Notícias",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-19",
+      "titulo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem",
+      "fonte_nome": "Leak.pt",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9vWTVuSFo1eVB0c3FIS1NnczZnVG5oVy1GT1UwQ2c0dkZSQjdNTGNkR0pzb0Y3b2paSmxNWkQ2NE5TV3NKUjVVZ0doSG5kcm1lQ2NJbFltVHNjeDhPcHFBRzlHdTVrTm04VllXUU1FSTlYa0g2d3d3?oc=5",
+      "resumo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem Leak.pt",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
       "data_iso": "2026-10-18",
       "titulo": "Muitos pais não sabem, mas podem pedir mais abono de família na Segurança Social Direta",
       "fonte_nome": "4gnews",
@@ -17,6 +35,15 @@
       "resumo": "ESCALÃO E ABONO DE FAMÍLIA | TUDO O QUE VOCÊ PRECISA SABER SOBRE OS ABONOS E BENEFÍCIOS EM PORTUGAL Enfant (mNax5OsVTY) Unisba Media",
       "categoria": "apoios",
       "cluster_id": "familia"
+    },
+    {
+      "data_iso": "2026-10-15",
+      "titulo": "Datas de Pagamento das Prestações Sociais – 2ª Quinzena de Outubro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPdUpSTjJrSFJZMzE5OGgxNFpjMVlTWU5tblJ1R2s0RXRaNFNJQkFiWXFJMzhzWlhTWnMxNC1MM2VBQ3djc3ZSQmpnVk0tMUxzNGJ5MmxqVEZmcFc5MmtTLTV3Z1EwRFZXaHdiTFczQ1Z6bXhmclhpcjhKeHIzb1k2VnUzMFQ3MHNIODM0cjFlMmhuQ1JTQ1RQQ0ZhS3hla1VycWJXc1BocHpfaDg?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais – 2ª Quinzena de Outubro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-10-14",
