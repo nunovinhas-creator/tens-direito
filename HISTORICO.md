@@ -7856,4 +7856,4 @@ julho; a frase fica fora.
 
 ---
 
-*Última revisão automática: 2026-10-20*
+*Última revisão automática: 2026-10-21*
