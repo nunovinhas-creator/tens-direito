@@ -1,12 +1,12 @@
 {
   "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
   "url_original": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
-  "data_acesso": "2026-07-03T07:09:32.428539+00:00",
+  "data_acesso": "2026-10-22T11:33:37.850831+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "Rendimento Social de Inserção",
     "paragrafos": [
-      "É um apoio mensal em dinheiro e programa de integração para pessoas em pobreza extrema, com plano adaptado à família.",
+      "É um apoio para pessoas em situação de pobreza extrema e inclui: um apoio mensal em dinheiro para garantir as necessidades mínimas e um programa de integração social e profissional, com um plano de ações adaptado à situação da família (contrato de inserção).",
       "Pessoas que estão em situação de pobreza extrema que precisam de apoio para melhorar a sua integração social e profissional.",
       "O valor a receber corresponde à diferença entre o valor máximo que pode receber do Rendimento Social de Inserção (RSI) e os rendimentos do agregado familiar .",
       "Pode receber por um período de 12 meses , renovável automaticamente, desde que se mantenham as condições necessárias para ter direito ao Rendimento Social de Inserção (RSI).",
@@ -27,7 +27,7 @@
       "Pagamentos e dívidas",
       "Simuladores",
       "Ação Social",
-      "Apoios e respostas sociais",
+      "Apoios e Respostas Sociais",
       "Rendimento Social de Inserção",
       "morar em Portugal ou for equiparado a residente;",
       "não ter (nem o seu agregado familiar), na data do pedido, património mobiliário (depósitos bancários, ações, obrigações, certificados de aforro, títulos de participação e unidades de participação em instituições de investimento coletivo) que ultrapasse 60 vezes o valor do Indexante dos Apoios Sociais (IAS);",
@@ -54,5 +54,5 @@
       "Pensão Social de Velhice, de Sobrevivência, de Viuvez e de Orfandade"
     ]
   },
-  "hash_conteudo": "76f51cca1272cc8ec820413b472cf714e0d064f650817bfa6d6369aef31c9080"
+  "hash_conteudo": "7c99c3def6456ed8df4bf1dce01cc1befadbe03a8e2ced3cdd84f6f5192cb009"
 }
