@@ -1,8 +1,8 @@
 {
   "fonte": "seg_social_abono",
   "fonte_url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
-  "data_extracao": "2026-07-03T07:09:28.420981+00:00",
-  "sha256_conteudo": "563028394e98e416052426f18e6d66c5675b5553940841d3bc2e3152699aee5d",
+  "data_extracao": "2026-10-22T11:33:36.186236+00:00",
+  "sha256_conteudo": "62ca25194774c20d0135c98282c81ce05278d26d6025c3640c4a042bd45facd1",
   "estado": "OK",
   "valores_extraidos": {
     "titulo": "Abono de Família para Crianças e Jovens",
@@ -26,7 +26,7 @@
       "Ação Social",
       "Pagamentos e dívidas",
       "Simuladores",
-      "Desenvolvimento de crianças e jovens",
+      "Desenvolvimento de Crianças e Jovens",
       "Abono de Família para Crianças e Jovens",
       "a criança e os pais têm de ter cartão de cidadão",
       "a criança e os pais têm de residir em Portugal",
