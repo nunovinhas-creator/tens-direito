@@ -175,5 +175,14 @@
       "pesquisa DRE sem resultados — página canónica de \"zero resultados\" do próprio DRE (141 caracteres)"
     ],
     "chars_uteis": 141
+  },
+  {
+    "slug": "dge_ase",
+    "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
+    "data": "2026-10-23T11:14:29.398162+00:00",
+    "motivos": [
+      "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
+    ],
+    "chars_uteis": 0
   }
 ]

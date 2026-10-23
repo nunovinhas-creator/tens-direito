@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-22",
+      "titulo": "Pensões chegam mais cedo em novembro: Segurança Social paga a 6. Veja todas as datas",
+      "fonte_nome": "Contas Poupança",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPdU9mdkU4d0tPZUJMQm84WFpRc2gtWE8tVmhxQXluUU1FX1ZtOUFZLWNTZEt3bmJ2UDR6SEJvM1oyMUlzZnpOb3F1Q1ZMR3hPLWcwMk5RSVh1TmZkc0VTTnFNYXpmX0tQR1pNeXZtNk5ISHpxVF9YR2N3NVEtaUJsYmpsZG5obGVwS01XQzczWHczZE5ZZUtRRHVoTTlrdkVXLTdLY2FBaHVKWGc5MHNVdmxYcVpTckVPbVdSS3B6cmlWUG9rU2V5R2tKT05xQ1lNRU15Wmx3dVNQUm5XdjFZ?oc=5",
+      "resumo": "Pensões chegam mais cedo em novembro: Segurança Social paga a 6. Veja todas as datas Contas Poupança",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-10-22",
+      "titulo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto?",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPaHFQV29hRHBzbDJtdWdqWE9ybnhGRjl5SnlvcFRxSXdiWVZQQXNYaU9jZkh4Y3RSUmJZX1ZBTGdfdGpZZHRfQzltOXJQaEVrejVGT0F0S282THJwX1AydlBBOFlYZ1g0T3V0NUExVl9vU0FfSXlMeU92aTl5YndRVDFySzd6X3A4N2RtcU0xNHVxX0FNeEZQTzdZYmpEOUY2bHFIRWsybmNzVFJacVZ5MkZXS0pGR2dtOW1Z?oc=5",
+      "resumo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto? Notícias ao Minuto",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-10-21",
       "titulo": "Há mais 17 mil idosos a receber complemento solidário do que há um ano",
       "fonte_nome": "ECO",

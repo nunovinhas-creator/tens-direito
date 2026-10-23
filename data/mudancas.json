@@ -1,26 +1,21 @@
 [
   {
-    "slug": "seg_social_abono",
-    "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
-    "data": "2026-10-22",
-    "hora": "11:34",
-    "itens_adicionados": [
-      "Desenvolvimento de Crianças e Jovens"
-    ],
+    "slug": "dge_ase",
+    "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
+    "data": "2026-10-23",
+    "hora": "11:15",
+    "itens_adicionados": [],
     "itens_removidos": [
-      "Desenvolvimento de crianças e jovens"
-    ]
-  },
-  {
-    "slug": "seg_social_rsi",
-    "url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
-    "data": "2026-10-22",
-    "hora": "11:34",
-    "itens_adicionados": [
-      "Apoios e Respostas Sociais"
-    ],
-    "itens_removidos": [
-      "Apoios e respostas sociais"
+      "Transição para o EduQA, I.P.",
+      "Transição para o EduQA, I.P.",
+      "Transição para o EduQA, I.P.",
+      "Currículo Legislação Geral | FAQ Portal de Apoio Online Perfil dos Alunos Aprendizagens Essenciais Educação para a Cidadania Educação de Infância Currículo Nacional Português Língua Não Materna Projetos Curriculares AEC Conferências Estudos e Relatórios",
+      "Legislação Geral | FAQ",
+      "Portal de Apoio Online",
+      "Perfil dos Alunos",
+      "Aprendizagens Essenciais",
+      "Educação para a Cidadania",
+      "Educação de Infância"
     ]
   }
 ]
