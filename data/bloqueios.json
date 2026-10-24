@@ -184,5 +184,14 @@
       "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
     ],
     "chars_uteis": 0
+  },
+  {
+    "slug": "dge_ase",
+    "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
+    "data": "2026-10-24T10:38:18.908009+00:00",
+    "motivos": [
+      "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
+    ],
+    "chars_uteis": 0
   }
 ]

@@ -1,27 +1,5 @@
 [
   {
-    "data": "2026-10-09",
-    "saude_feeds": {
-      "abono_familia": "MORTO",
-      "subsidio_desemprego": "MORTO",
-      "rsi": "MORTO",
-      "psu_pensoes": "MORTO",
-      "acao_social_escolar": "MORTO",
-      "cuidador_informal": "MORTO",
-      "porta65_arrendamento": "MORTO",
-      "irs_fiscalidade": "MORTO",
-      "ias_valor_referencia": "MORTO",
-      "calendario_pagamentos_seg_social": "MORTO",
-      "habitacao_arrendamento": "MORTO",
-      "salario_minimo": "MORTO",
-      "csi_idosos": "MORTO"
-    },
-    "candidatos_por_feed": {},
-    "fora_da_janela_por_feed": {},
-    "candidatos": [],
-    "vencedores": []
-  },
-  {
     "data": "2026-10-10",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2247,6 +2225,185 @@
       },
       {
         "titulo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto? - Notícias ao Minuto",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-10-24",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 9,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 9,
+      "calendario_pagamentos_seg_social": 11,
+      "habitacao_arrendamento": 14,
+      "salario_minimo": 10,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões, subsídios e outros apoios: Saiba já quando os recebe em novembro - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-20",
+        "score": 5,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-20"
+      },
+      {
+        "titulo": "Subsídio de desemprego: quanto a Segurança Social te paga e o erro que faz perder dinheiro - Leak.pt",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-10-23",
+        "score": 3,
+        "decisao": "vencedor",
+        "motivo": "score=3, categoria=apoios"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – Novembro 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-10-21",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-21"
+      },
+      {
+        "titulo": "Pensões chegam mais cedo em novembro: Segurança Social paga a 6. Veja todas as datas - Contas Poupança",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-22",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – Novembro 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-21",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-21"
+      },
+      {
+        "titulo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem - Leak.pt",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-19",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Novembro traz pagamentos da Segurança Social para os portugueses que reúnem estes requisitos - Magazine.HD",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-22",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Arrendamento urbano: o que muda e como beneficiar - Montepio Associação Mutualista",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-10-20",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=habitacao"
+      },
+      {
+        "titulo": "A crua convergência dos salários para o Salário Mínimo Nacional - SEP | Sindicato dos Enfermeiros Portugueses",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-20",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-20"
+      },
+      {
+        "titulo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano - Jornal de Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-19",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-19"
+      },
+      {
+        "titulo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto? - Notícias ao Minuto",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-22",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-22"
+      },
+      {
+        "titulo": "Líderes empresariais reforçam alertas sobre o aumento do salário mínimo nacional em 2027 - Portugal Resident",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-23",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Há mais 17 mil idosos a receber complemento solidário do que há um ano - ECO",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-10-21",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "limite de 3 vencedores/dia já atingido"
+      },
+      {
+        "titulo": "Diferença entre salários mínimo e médio caiu mais de 10 pontos percentuais na última década? - SIC Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-22",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Subsídio de desemprego: quanto a Segurança Social te paga e o erro que faz perder dinheiro - Leak.pt",
+        "feed_nome": "subsidio_desemprego",
+        "score": 3
+      },
+      {
+        "titulo": "Arrendamento urbano: o que muda e como beneficiar - Montepio Associação Mutualista",
+        "feed_nome": "habitacao_arrendamento",
+        "score": 1
+      },
+      {
+        "titulo": "Líderes empresariais reforçam alertas sobre o aumento do salário mínimo nacional em 2027 - Portugal Resident",
         "feed_nome": "salario_minimo",
         "score": 1
       }
