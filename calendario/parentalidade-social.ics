@@ -10,12 +10,12 @@ X-WR-CALDESC:Datas de pagamento publicadas pela Segurança Social\, atualiz
 X-WR-TIMEZONE:Europe/Lisbon
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
-X-TD-GERADO-EM:2026-10-11
+X-TD-GERADO-EM:2026-10-25
 BEGIN:VEVENT
-UID:parentalidade-social-20261016@tensdireito.com
-DTSTAMP:20261011T000000Z
-DTSTART;VALUE=DATE:20261016
-DTEND;VALUE=DATE:20261017
+UID:parentalidade-social-20261028@tensdireito.com
+DTSTAMP:20261025T000000Z
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
 SUMMARY:Pagamento da Segurança Social: Subsídios de parentalidade (1.º o
  u 2.º pagamento)
 DESCRIPTION:Data do calendário de pagamentos da Segurança Social. A Segur
@@ -32,10 +32,30 @@ DESCRIPTION:Amanhã a Segurança Social paga: Subsídios de parentalidade (
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:parentalidade-social-20261028@tensdireito.com
-DTSTAMP:20261011T000000Z
-DTSTART;VALUE=DATE:20261028
-DTEND;VALUE=DATE:20261029
+UID:parentalidade-social-20261116@tensdireito.com
+DTSTAMP:20261025T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:Pagamento da Segurança Social: Subsídios de parentalidade (1.º o
+ u 2.º pagamento)
+DESCRIPTION:Data do calendário de pagamentos da Segurança Social. A Segur
+ ança Social paga esta prestação em dois dias do mês e não diz qual ca
+ be a cada pessoa: pode ser este dia ou o outro. Por transferência bancár
+ ia ou vale de correio. Confirma em https://tensdireito.com/calendario-paga
+ mentos-seguranca-social.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT12H
+DESCRIPTION:Amanhã a Segurança Social paga: Subsídios de parentalidade (
+ 1.º ou 2.º pagamento)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:parentalidade-social-20261127@tensdireito.com
+DTSTAMP:20261025T000000Z
+DTSTART;VALUE=DATE:20261127
+DTEND;VALUE=DATE:20261128
 SUMMARY:Pagamento da Segurança Social: Subsídios de parentalidade (1.º o
  u 2.º pagamento)
 DESCRIPTION:Data do calendário de pagamentos da Segurança Social. A Segur

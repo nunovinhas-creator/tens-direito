@@ -11,12 +11,12 @@ X-WR-CALDESC:Datas de pagamento publicadas pela Segurança Social\, atualiz
 X-WR-TIMEZONE:Europe/Lisbon
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
-X-TD-GERADO-EM:2026-10-11
+X-TD-GERADO-EM:2026-10-25
 BEGIN:VEVENT
-UID:abono-familia-20261016@tensdireito.com
-DTSTAMP:20261011T000000Z
-DTSTART;VALUE=DATE:20261016
-DTEND;VALUE=DATE:20261017
+UID:abono-familia-20261116@tensdireito.com
+DTSTAMP:20261025T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
 SUMMARY:Pagamento da Segurança Social: Abono de família e prestações fa
  miliares
 DESCRIPTION:Data do calendário de pagamentos da Segurança Social. Por tra

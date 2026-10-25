@@ -10,5 +10,21 @@ X-WR-CALDESC:Datas de pagamento publicadas pela Segurança Social\, atualiz
 X-WR-TIMEZONE:Europe/Lisbon
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 X-PUBLISHED-TTL:PT12H
-X-TD-GERADO-EM:2026-10-11
+X-TD-GERADO-EM:2026-10-25
+BEGIN:VEVENT
+UID:pensoes-20261106@tensdireito.com
+DTSTAMP:20261025T000000Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+SUMMARY:Pagamento da Segurança Social: Pensões
+DESCRIPTION:Data do calendário de pagamentos da Segurança Social. Por tra
+ nsferência bancária ou vale de correio. Confirma em https://tensdireito.
+ com/calendario-pagamentos-seguranca-social.html
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT12H
+DESCRIPTION:Amanhã a Segurança Social paga: Pensões
+END:VALARM
+END:VEVENT
 END:VCALENDAR
