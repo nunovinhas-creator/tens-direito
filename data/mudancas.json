@@ -1,28 +1,9 @@
 [
   {
-    "slug": "dge_ase",
-    "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
-    "data": "2026-11-02",
-    "hora": "14:01",
-    "itens_adicionados": [],
-    "itens_removidos": [
-      "Transição para o EduQA, I.P.",
-      "Transição para o EduQA, I.P.",
-      "Transição para o EduQA, I.P.",
-      "Currículo Legislação Geral | FAQ Portal de Apoio Online Perfil dos Alunos Aprendizagens Essenciais Educação para a Cidadania Educação de Infância Currículo Nacional Português Língua Não Materna Projetos Curriculares AEC Conferências Estudos e Relatórios",
-      "Legislação Geral | FAQ",
-      "Portal de Apoio Online",
-      "Perfil dos Alunos",
-      "Aprendizagens Essenciais",
-      "Educação para a Cidadania",
-      "Educação de Infância"
-    ]
-  },
-  {
     "slug": "iefp_desemprego",
     "url": "https://www.iefp.pt/subsidio-desemprego",
     "data": "2026-11-02",
-    "hora": "14:01",
+    "hora": "15:14",
     "itens_adicionados": [],
     "itens_removidos": []
   },
@@ -30,7 +11,7 @@
     "slug": "dre_psu",
     "url": "https://diariodarepublica.pt/dr/pesquisa",
     "data": "2026-11-02",
-    "hora": "14:01",
+    "hora": "15:14",
     "itens_adicionados": [
       "Regulamento n.º 1499/2026 - Diário da República n.º 211/2026, Série II de 2026-10-30"
     ],
@@ -40,7 +21,7 @@
     "slug": "dre_psu_regulamentacao",
     "url": "https://diariodarepublica.pt/dr/pesquisa",
     "data": "2026-11-02",
-    "hora": "14:01",
+    "hora": "15:14",
     "itens_adicionados": [
       "Regulamento n.º 1499/2026 - Diário da República n.º 211/2026, Série II de 2026-10-30"
     ],

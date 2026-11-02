@@ -196,10 +196,28 @@
   },
   {
     "slug": "dge_ase",
-    "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
-    "data": "2026-11-02T13:57:55.948609+00:00",
+    "url": "https://www.dge.mec.pt",
+    "data": "2026-11-02T15:11:02.992213+00:00",
     "motivos": [
-      "conteúdo suspeito: apenas 0 caracteres (mínimo 100)"
+      "falha de rede em todas as tentativas"
+    ],
+    "chars_uteis": 0
+  },
+  {
+    "slug": "dge_manuais",
+    "url": "https://www.dge.mec.pt/manuais-escolares",
+    "data": "2026-11-02T15:12:09.623408+00:00",
+    "motivos": [
+      "falha de rede em todas as tentativas"
+    ],
+    "chars_uteis": 0
+  },
+  {
+    "slug": "mega_datas",
+    "url": "https://www.dge.mec.pt/manuais-escolares",
+    "data": "2026-11-02T15:13:09.951031+00:00",
+    "motivos": [
+      "falha de rede em todas as tentativas"
     ],
     "chars_uteis": 0
   }

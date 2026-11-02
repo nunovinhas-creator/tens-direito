@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-02",
+      "titulo": "Fábrica da Ecco fecha em Portugal e deixa 632 trabalhadores no desemprego",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPci1TX0xNTHdIVXNGMko4VW1HVVg3MkdWcFVVOG14VFBxa0JPbEhHUWwxNG92dU1HMHRfVE1MQ25yLW1sbU81Uk1JOVNWby1PbG1jQjZ5a3VGaUJFNURiRnU1Y1NTNEpyeHE0X1VDU09wRldVOTN1S2gyVHdpNFRpblBtSGpnYlFDck5VWTBOQ3BMX3BadlVRVTczU2JiZTViNTJiUlloUk5oYTZMNVVwVEl6MFZ3LXNTLTl5MVBJMzB4ZHFZbGZQNUNSZHdyNHF3di1OSEZkNEduSXpLMXlQVA?oc=5",
+      "resumo": "Fábrica da Ecco fecha em Portugal e deixa 632 trabalhadores no desemprego CNN Portugal",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-30",
+      "titulo": "Da esquerda à direita, estas são as propostas dos partidos para a crise da habitação em Portugal",
+      "fonte_nome": "CNN Portugal",
+      "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxNckJXaUtoTnpjOFlGUUhRWlFyY2JlcE52NTNpVkI3akxMa0QxVFNJVTk4Q3VCM1FoVUNfcVBWdzF6bDhYSnk2TXZjZ2ZONXduWk9UdmRPZU83M0xJcHVlSDNuTmk5dlYwWjk4eE5GbnZ2UlJzMzl6UFp6LTN3S1hQVlRNUW9sbVVxQ0ZzSVlRdDI0ajlvS19aQVY3NGNNbkVaLVBZTW5YQWVDajJUSV9zYVlKMjZ0ZF9IUzlFN1BJeXdtT3ltMTZQWkpPTU13bHVzc3haOWc4REdqSWZzck5fRVVMajB6cElFVEdQd2VSUVBMZlJVbWhVVkEzdTJhR3NJcmNuaWlB?oc=5",
+      "resumo": "Da esquerda à direita, estas são as propostas dos partidos para a crise da habitação em Portugal CNN Portugal",
+      "categoria": "habitacao",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-10-29",
       "titulo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal",
       "fonte_nome": "Jornal de Negócios",
@@ -8,6 +26,15 @@
       "resumo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal Jornal de Negócios",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-27",
+      "titulo": "Subsídio de Natal dos reformados: uns recebem em novembro, outros só em dezembro — e há apoios extra. Veja o calendário de pagamentos",
+      "fonte_nome": "Executive Digest",
+      "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxNUXplM19aS3BmMFBUYmJ6TkFBMjB6RTBWcVZMWDIwbVE5aTZCYi02UjdMdTM5a0prbHRUTXpMUnJzbWxJdGNSUHFhcjhOQks1aG80LVpaODJLbTUzai1ucWQwYmtBR19QTjBhVk0xb05LdkdTZUhZZ1c3bHRlUzF4eWd4QkgzTDYyQ0dNN1V2dFFRbXJXYXMya1RoTVlfR2dFZDNCU08xMFJfTmp0QzNVaVlSVmZhZ05FenFFQ3VGa09RUlhUenFOR2NwNld0ZEx5VWRpRS1hZWktS3RscDBBaFFvVG1ldHN2ZWFnVnpITTFEVms?oc=5",
+      "resumo": "Subsídio de Natal dos reformados: uns recebem em novembro, outros só em dezembro — e há apoios extra. Veja o calendário de pagamentos Executive Digest",
+      "categoria": "apoios",
+      "cluster_id": "reformas"
     },
     {
       "data_iso": "2026-10-26",
