@@ -870,8 +870,7 @@ Se a fonte não confirmar o facto, o facto não entra no site.
 | Abono — simulador | https://www.seg-social.pt/ptss/sps/simulador/6 | OK |
 | Segurança Social Direta | https://www.seg-social.pt | OK (usar homepage — /ptss/ssd devolve 404 sem autenticação) |
 | Segurança Social (geral) | https://www.seg-social.pt | OK |
-| ASE — DGE homepage | https://www.dge.mec.pt | OK (subpath /acao-social-escolar devolve 403) |
-| MEGA — manuais | https://www.dge.mec.pt/manuais-escolares | OK |
+| ASE — base legal | https://diariodarepublica.pt/dr/detalhe/despacho/8452-a-2015-69927755 | Despacho n.º 8452-A/2015 (dge.mec.pt deixou de responder a 23/10/2026 — issue #367; não usar) |
 | MEGA — portal público | https://www.manuaisescolares.pt | OK |
 | Bolsa de mérito | https://dre.pt | OK (subpath DGE devolve 403 — usar DRE) |
 | Passe sub-23 | https://www.gov.pt | OK |
@@ -2590,7 +2589,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 
 | Página | Data a rever | Trigger |
 |---|---|---|
-| `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`dge.mec.pt` **e** `igefe.mec.pt`, desde 2026-07-06) — ver nota abaixo |
+| `manuais-escolares-mega.html` | **Datas de emissão 2026/2027 já publicadas (13/07/2026): 3 ago (1.º–4.º), 10 ago (5.º–9.º), 13 ago (10.º–12.º)** — próxima revisão jun. 2027 | Issue automática do scraper (`igefe.mec.pt`; `dge.mec.pt` saiu na issue #367) — ver nota abaixo |
 | `acao-social-escolar.html` | Setembro — confirmar que a página continua sem prazo de candidatura nacional (é fixado por cada câmara/agrupamento, ver nota abaixo), **nunca** escalões | Calendário anual |
 | `bolsa-de-merito.html` | Setembro — valor do ano lectivo (2,5×IAS em vigor), **nunca** um despacho próprio (ver nota abaixo) | Calendário anual — corrigida a 25/08/2026, ver nota |
 | `abono-de-familia.html` | Janeiro (novo IAS) | Issue automática do scraper |
@@ -2616,9 +2615,11 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `calendario-escolar-apoios.html` | Junho/Julho (antes do início do próximo ciclo de prazos) — `verificar_datas.py` confirmado a **não** disparar em jul. 2026 (mês de publicação) mas a disparar em 2027 nos meses 1/7/8/9 (padrão `data_mes_ano`, "setembro de 2026" na FAQ do início das aulas) — comportamento desejado, mesma lógica de `prova-escolar.html` | Calendário anual — agrega os prazos das páginas do cluster escolar ligadas a partir do próprio artigo (nunca fixadas aqui), revisão obrigatória sempre que qualquer um desses prazos mudar |
 | `renovar-cartao-cidadao.html` | Nota de verificação para **3 de agosto de 2031** — prazo-limite real remanescente (cartões com MRZ mas sem chip de contacto, emitidos até 10/06/2024; Regulamento (UE) 2025/1208). Corrigido a 2026-07-18: o prazo de 3/08/2026 **não** se aplica ao Cartão de Cidadão normal (tem MRZ desde 2007) — só afecta duas excepções raras (CC do Tratado de Porto Seguro, BI vitalício), conforme esclarecimento oficial do IRN de 30/12/2025. `verificar_datas.py` continua a disparar em 2027 nos meses 1/7/8/9 (o texto ainda cita "2026") — sem acção obrigatória nessa altura, só confirmar que a secção "Preciso de renovar antes do prazo?" continua correcta | Sem gatilho de acção — nota de contexto, a rever se saírem novos esclarecimentos oficiais do IRN antes de 2031 |
 
-**`manuais-escolares-mega.html` — mecanismo de vigilância sazonal**: duas
-fontes independentes, mesma chave de aviso. `mega_datas` vigia
-`dge.mec.pt`; `igefe_mega` (`scripts/scraper_playwright.py`,
+**`manuais-escolares-mega.html` — mecanismo de vigilância sazonal**:
+desde a issue #367 (2026-11-02) só `igefe_mega` — `dge.mec.pt` deixou de
+responder a 23/10/2026 e `dge_ase`/`dge_manuais`/`mega_datas` saíram do
+scraper (a página de manuais do EduQA trata da adopção, não dos vouchers).
+`igefe_mega` (`scripts/scraper_playwright.py`,
 `metodo="http"`) vigia directamente
 `https://www.igefe.mec.pt/Page/Index/199` — a entidade que emite de
 facto os vouchers aos encarregados de educação é a IGeFE, I.P., não a

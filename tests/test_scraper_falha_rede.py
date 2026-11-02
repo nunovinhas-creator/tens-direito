@@ -35,13 +35,14 @@ def test_playwright_falha_de_rede_regista_bloqueio(tmp_path, monkeypatch):
     _isolar(tmp_path, monkeypatch)
     monkeypatch.setattr(sp, "_obter_html", lambda *a, **k: None)
 
-    assert sp.scrape_playwright(page=None, fonte=_fonte("dge_manuais")) is None
+    fonte = _fonte("seg_social_abono")
+    assert sp.scrape_playwright(page=None, fonte=fonte) is None
 
     bloqueios = json.loads((tmp_path / "bloqueios.json").read_text(encoding="utf-8"))
-    assert [b["slug"] for b in bloqueios] == ["dge_manuais"]
-    assert bloqueios[0]["url"] == "https://www.dge.mec.pt/manuais-escolares"
+    assert [b["slug"] for b in bloqueios] == ["seg_social_abono"]
+    assert bloqueios[0]["url"] == fonte["url"]
     assert bloqueios[0]["motivos"] == ["falha de rede em todas as tentativas"]
-    assert not list(tmp_path.glob("dge_manuais_*.json"))
+    assert not list(tmp_path.glob("seg_social_abono_*.json"))
 
 
 def test_http_falha_de_rede_regista_bloqueio(tmp_path, monkeypatch):
@@ -63,14 +64,16 @@ def test_http_falha_de_rede_regista_bloqueio(tmp_path, monkeypatch):
 def test_falha_de_rede_conta_para_a_maquina_de_estados():
     """Com a entrada em bloqueios.json, a fonte deixa de ficar OK: o
     contador sobe e, ao 3.º dia, é elegível para issue."""
-    anterior = {"dge_manuais": {"estado": "BLOQUEADO", "dias_consecutivos_bloqueado": 2,
-                                "ultima_ok": "2026-10-22"}}
-    novo = calcular_novo_estado(anterior, ["dge_manuais"], SLUGS_MONITORIZADOS, hoje="2026-11-02")
-    assert novo["dge_manuais"] == {"estado": "BLOQUEADO", "dias_consecutivos_bloqueado": 3,
+    anterior = {"igefe_mega": {"estado": "BLOQUEADO", "dias_consecutivos_bloqueado": 2,
+                               "ultima_ok": "2026-10-22"}}
+    novo = calcular_novo_estado(anterior, ["igefe_mega"], SLUGS_MONITORIZADOS, hoje="2026-11-02")
+    assert novo["igefe_mega"] == {"estado": "BLOQUEADO", "dias_consecutivos_bloqueado": 3,
                                    "ultima_ok": "2026-10-22"}
 
 
-def test_dge_ase_sem_fallback_soft_404():
-    """O fallback dre.pt/pesquisa?q=... devolvia 0 caracteres (soft-404) e
-    gerou a falsa "Mudança detectada" da issue #362."""
-    assert "url_fallback" not in _fonte("dge_ase")
+def test_fontes_dge_retiradas():
+    """dge.mec.pt deixou de responder (issue #367): nenhuma fonte vigiada
+    nem monitorizada aponta para lá."""
+    assert not [f["slug"] for f in sp.FONTES_PLAYWRIGHT if "dge.mec.pt" in f["url"]]
+    for slug in ("dge_ase", "dge_manuais", "mega_datas"):
+        assert slug not in SLUGS_MONITORIZADOS

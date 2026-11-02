@@ -65,19 +65,16 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
         ancora_conteudo=("rendimento social de inserção",),
         metodo="playwright",
     ),
-    "dge_ase": FonteConfig(nome="DGE — ASE", min_chars_uteis=300),
-    "dge_manuais": FonteConfig(nome="DGE — Manuais Escolares", min_chars_uteis=300),
     "iefp_desemprego": FonteConfig(
         nome="IEFP — Subsídio de Desemprego",
         min_chars_uteis=500,
         ancora_conteudo=("subsídio de desemprego",),
         metodo="http",
     ),
-    "mega_datas": FonteConfig(nome="DGE — MEGA datas", min_chars_uteis=300),
     # IGeFE, I.P. é a entidade que emite de facto os vouchers MEGA aos
-    # encarregados de educação — mega_datas/dge_manuais só vigiam
-    # dge.mec.pt, que pode não ser a 1.ª fonte a reflectir o anúncio (ver
-    # CLAUDE.md "PÁGINAS COM DATAS SAZONAIS"). Calibrado com dados reais
+    # encarregados de educação — única fonte MEGA desde a issue #367
+    # (dge.mec.pt deixou de responder; dge_ase/dge_manuais/mega_datas
+    # retirados). Calibrado com dados reais
     # de um runner (2026-07-06): conteúdo útil real (título + parágrafo
     # ".ig-publicsite-paragraph") ~1000 chars — 300 dá margem sem deixar
     # passar um "conteúdo suspeito" como OK. "voucher" só aparece no
@@ -275,7 +272,7 @@ _FONTE_CONFIGS: dict[str, FonteConfig] = {
 # detecção (_detectar_datas_mega) e a mesma chave de aviso — para que o
 # pipeline dispare a MESMA Issue independentemente de qual fonte a detectar
 # primeiro (ver CLAUDE.md "PÁGINAS COM DATAS SAZONAIS").
-MEGA_SLUGS_DATAS_RICAS = ("mega_datas", "igefe_mega")
+MEGA_SLUGS_DATAS_RICAS = ("igefe_mega",)
 
 
 def _fonte_config(slug: str) -> FonteConfig:
@@ -419,30 +416,6 @@ FONTES_PLAYWRIGHT = [
             "listas": "ul li, ol li",
         },
     },
-    # dge.mec.pt/acao-social-escolar devolve 403 para bots — vigia-se a
-    # homepage da DGE. Sem url_fallback: o antigo (dre.pt/pesquisa?q=...)
-    # é um soft-404 (0 caracteres) e, com a DGE inacessível, gerou a falsa
-    # "Mudança detectada" da issue #362.
-    {
-        "slug": "dge_ase",
-        "url": "https://www.dge.mec.pt",
-        "nota": "dge.mec.pt/acao-social-escolar bloqueado — vigiar a homepage da DGE",
-        "seletores": {
-            "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li",
-            "links": "a[href]",
-        },
-    },
-    {
-        "slug": "dge_manuais",
-        "url": "https://www.dge.mec.pt/manuais-escolares",
-        "seletores": {
-            "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li",
-        },
-    },
     # IEFP só recebe o pedido; decisão e pagamento são da Seg. Social.
     # URL correcto: /subsidio-desemprego (sem /en/ e sem hífen duplo).
     # metodo="http" (ver _FONTE_CONFIGS) — página real acessível via
@@ -459,17 +432,6 @@ FONTES_PLAYWRIGHT = [
         },
     },
     {
-        "slug": "mega_datas",
-        "url": "https://www.dge.mec.pt/manuais-escolares",
-        "nota": "DGE manuais escolares — detectar datas de atribuição de vouchers 2026/2027",
-        "seletores": {
-            "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li",
-        },
-        "detectar_ano": "2026/2027",
-    },
-    {
         # metodo="http" (ver _FONTE_CONFIGS) — página real acessível via
         # pedido simples, confirmado num runner real (2026-07-06). O
         # conteúdo real (secção "Emissão de Vouchers", hoje ainda para o
@@ -480,8 +442,7 @@ FONTES_PLAYWRIGHT = [
         "url": "https://www.igefe.mec.pt/Page/Index/199",
         "nota": (
             "IGeFE, I.P. — entidade que emite os vouchers MEGA aos encarregados "
-            "de educação; complementa mega_datas/dge_manuais, que só vigiam "
-            "dge.mec.pt (ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')"
+            "de educação (ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')"
         ),
         "seletores": {
             "titulo": "h1",
@@ -1410,8 +1371,8 @@ def _detectar_datas_mega(slug: str, html: str, conteudo: dict, ano_detectar: str
     qualquer fonte em MEGA_SLUGS_DATAS_RICAS usa a mesma lógica e a
     mesma chave de aviso (mega_2026_2027_publicadas), para que o
     pipeline dispare a MESMA Issue independentemente de qual fonte a
-    detectar primeiro (dge.mec.pt via mega_datas, ou igefe.mec.pt via
-    igefe_mega — ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')."""
+    detectar primeiro (igefe.mec.pt via igefe_mega — dge.mec.pt saiu na
+    issue #367; ver CLAUDE.md 'PÁGINAS COM DATAS SAZONAIS')."""
     import re as _re
     html_lower = html.lower()
     ano_confirmado = ano_detectar in html

@@ -38,9 +38,6 @@ LIMIAR_DIAS_PARA_ISSUE = 3
 SLUGS_MONITORIZADOS = (
     "seg_social_abono",
     "seg_social_rsi",
-    "dge_ase",
-    "dge_manuais",
-    "mega_datas",
     "igefe_mega",
     "iefp_desemprego",
     "dre_psu",

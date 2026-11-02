@@ -170,9 +170,6 @@ jobs:
             const fontes = {
               'seg_social_abono': 'https://www.seg-social.pt/abono-de-familia',
               'seg_social_rsi': 'https://www.seg-social.pt/rendimento-social-de-insercao',
-              'dge_ase': 'https://www.dge.mec.pt',
-              'dge_manuais': 'https://www.dge.mec.pt/manuais-escolares',
-              'mega_datas': 'https://www.dge.mec.pt/manuais-escolares',
               'igefe_mega': 'https://www.igefe.mec.pt/Page/Index/199',
               'iefp_desemprego': 'https://www.iefp.pt/subsidio-desemprego',
               'dre_psu': 'https://diariodarepublica.pt/dr/home',
@@ -1380,11 +1377,8 @@ jobs:
             }
 
             // Issue específica: datas MEGA 2026/2027 detectadas
-            // (dge_manuais/mega_datas OU igefe_mega — ver
-            // MEGA_SLUGS_DATAS_RICAS em scraper_playwright.py; ambas
-            // registam a mesma chave de aviso, para que qualquer uma
-            // dispare esta Issue independentemente de qual detectar
-            // primeiro)
+            // (igefe_mega — ver MEGA_SLUGS_DATAS_RICAS em
+            // scraper_playwright.py)
             try {
               const avisos_txt = fs.readFileSync('data/scraped/avisos.log', 'utf8');
               // avisos.log é um log cumulativo, nunca rotacionado — um
@@ -1407,7 +1401,7 @@ jobs:
                 if (!duplicate) {
                   // Extrair excertos do log
                   const match = linha_mega.match(/mega_2026_2027_publicadas:(.*)$/);
-                  const excertos = match ? match[1].trim() : '(ver data/scraped/mega_datas_latest.json ou data/scraped/igefe_mega_latest.json)';
+                  const excertos = match ? match[1].trim() : '(ver data/scraped/igefe_mega_latest.json)';
                   await github.rest.issues.create({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -1416,7 +1410,7 @@ jobs:
                       `## 📅 Datas MEGA 2026/2027 detectadas automaticamente`,
                       ``,
                       `**Data/hora:** ${hoje} ${hora} UTC`,
-                      `**Fontes vigiadas:** https://www.dge.mec.pt/manuais-escolares e https://www.igefe.mec.pt/Page/Index/199`,
+                      `**Fonte vigiada:** https://www.igefe.mec.pt/Page/Index/199`,
                       ``,
                       `### Excertos detectados`,
                       `\`\`\``,
