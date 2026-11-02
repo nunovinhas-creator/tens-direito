@@ -111,6 +111,20 @@ def test_step2_mantem_camada_1_bloqueado_e_fallback_hashof():
     assert "hashOf(old_data)" in script
 
 
+def test_step2_ignora_scrape_de_hoje_com_aviso():
+    """Issue #362 (`dge_ase`): com dge.mec.pt inacessível, o fallback
+    devolveu 0 caracteres; o scraper marcou o ficheiro do dia com `aviso`
+    (conteúdo suspeito, latest não actualizado) mas este step comparou-o
+    com a baseline e abriu "Mudança detectada" com todo o conteúdo da DGE
+    como "removido". Um ficheiro com `aviso` nunca serve de baseline —
+    também nunca pode servir de lado "hoje"."""
+    script = _carregar_script_step2()
+    assert "if (new_data.aviso)" in script
+    pos_aviso = script.index("if (new_data.aviso)")
+    assert pos_aviso < script.index("MUDANÇA DETECTADA")
+    assert pos_aviso < script.index("const new_hash")
+
+
 def test_selecao_por_nome_exacto_nunca_apanha_slug_com_prefixo_partilhado():
     """Réplica pura em Python (sem YAML, sem Node) do achado real: com
     os nomes de ficheiro reais do dia 2026-08-18, o slug 'dre_psu'

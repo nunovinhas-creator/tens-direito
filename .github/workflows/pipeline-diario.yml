@@ -267,6 +267,17 @@ jobs:
                 continue;
               }
 
+              // Conteúdo suspeito (status "ok" com `aviso`): o scraper já o
+              // registou em bloqueios.json e não actualizou o latest — é
+              // cegueira, não mudança. Mesmo critério da baseline abaixo
+              // (`!d.aviso`). Issue #362: dge.mec.pt inacessível, o fallback
+              // devolveu 0 caracteres e a issue dizia que o conteúdo da DGE
+              // tinha sido "removido".
+              if (new_data.aviso) {
+                console.log(`${slug}: conteúdo suspeito (${new_data.aviso}) — a ignorar comparação de hash`);
+                continue;
+              }
+
               // Baseline: o ficheiro diário anterior mais recente, por
               // nome exacto e com dados válidos (status ok/ok_via_arquivo,
               // sem `aviso`) — nunca `_latest.json`. Esse ficheiro já foi

@@ -419,13 +419,14 @@ FONTES_PLAYWRIGHT = [
             "listas": "ul li, ol li",
         },
     },
-    # dge.mec.pt/acao-social-escolar devolve 403 para bots.
-    # Estratégia: homepage DGE para links/notícias ASE + DRE API para diplomas.
+    # dge.mec.pt/acao-social-escolar devolve 403 para bots — vigia-se a
+    # homepage da DGE. Sem url_fallback: o antigo (dre.pt/pesquisa?q=...)
+    # é um soft-404 (0 caracteres) e, com a DGE inacessível, gerou a falsa
+    # "Mudança detectada" da issue #362.
     {
         "slug": "dge_ase",
         "url": "https://www.dge.mec.pt",
-        "url_fallback": "https://dre.pt/pesquisa?q=acao+social+escolar",
-        "nota": "dge.mec.pt/acao-social-escolar bloqueado — usar DRE como fonte primária para ASE",
+        "nota": "dge.mec.pt/acao-social-escolar bloqueado — vigiar a homepage da DGE",
         "seletores": {
             "titulo": "h1",
             "paragrafos": "p",
@@ -978,6 +979,7 @@ def scrape_playwright(page, fonte: dict) -> dict | None:
             # Falha de navegação (rede/timeout), não de conteúdo bloqueado —
             # já esgotou as suas próprias 3 tentativas dentro de _tentar_goto,
             # sem sentido voltar a tentar aqui.
+            _registar_falha_rede(slug, url)
             return None
 
         url_usado, html = obtido
@@ -1470,6 +1472,19 @@ def _registar_bloqueio(slug: str, url: str, classif) -> None:
     log.info("Bloqueio registado: %s → %s", slug, BLOQUEIOS_PATH)
 
 
+def _registar_falha_rede(slug: str, url: str) -> None:
+    """Falha de rede em todas as tentativas (timeout, ligação recusada)
+    também é cegueira: sem esta entrada, a fonte não aparecia em
+    bloqueios.json e gerir_estado_fontes.py marcava-a OK com `ultima_ok`
+    de hoje. Caso real (issue #367, 2026-11-02): dge.mec.pt inacessível
+    desde 23/10 — `dge_manuais` e `mega_datas` sem um único ficheiro
+    diário e, ainda assim, OK."""
+    _registar_bloqueio(
+        slug, url,
+        SimpleNamespace(motivos=["falha de rede em todas as tentativas"], chars_uteis=0),
+    )
+
+
 def _limpar_bloqueio_hoje(slug: str) -> None:
     """Remove qualquer entrada de hoje desta fonte em data/bloqueios.json
     quando ela recupera (OK). Sem isto, uma fonte bloqueada numa corrida
@@ -1694,6 +1709,7 @@ def scrape_http(fonte: dict) -> dict | None:
 
     if classif is None:
         log.error("%s: falhou todas as %d tentativas por erro de rede", slug, TENTATIVAS_BLOQUEIO)
+        _registar_falha_rede(slug, url)
         return None
 
     if classif.estado != Estado.OK:
