@@ -52,7 +52,13 @@ jobs:
           sleep "$ESPERA"
 
       # ── Step 1: Scrape fontes ────────────────────────────────────────────────
+      # timeout-minutes: um scrape normal leva 2-3 min e, com todas as fontes
+      # bloqueadas (3 tentativas + esperas de 30-120 s), fica abaixo de ~60 min.
+      # Sem limite, um Playwright pendurado prende o job até às 6 h do runner
+      # (caso real 2026-11-02, fecho do contexto depois do dge.mec.pt).
+      # Exceder o limite falha o job — nunca segue como se tivesse corrido.
       - name: Scrape fontes oficiais
+        timeout-minutes: 75
         run: python scripts/scraper_playwright.py
         env:
           PYTHONUNBUFFERED: '1'

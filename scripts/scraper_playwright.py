@@ -340,6 +340,24 @@ def _perfil_fonte(slug: str) -> PerfilBrowser:
     return _PERFIL_POR_SLUG.get(slug, PerfilBrowser())
 
 
+def _fechar_pagina(page) -> None:
+    """Fecha a página sem ficar pendurado numa navegação que ficou a meio.
+
+    Caso real (2026-11-02, Playwright 1.64): depois de três `goto` falhados
+    contra o dge.mec.pt (timeout + ERR_CONNECTION_RESET), o passo do scrape
+    ficou parado sem limite entre o fim de uma fonte e o início do grupo
+    seguinte — ou seja, no fecho da página/contexto. Num teste local o
+    `page.close()` pendurou de forma intermitente nas mesmas condições.
+    Navegar primeiro para about:blank termina qualquer navegação pendente;
+    se até isso falhar, o `close()` segue na mesma.
+    """
+    try:
+        page.goto("about:blank", timeout=10_000)
+    except Exception as exc:
+        log.warning("about:blank antes de fechar a página falhou: %s", exc)
+    page.close()
+
+
 def _criar_context(browser, perfil: PerfilBrowser):
     kwargs = dict(
         user_agent=(
@@ -1767,6 +1785,7 @@ def main(mode: str = "scrape"):
         )
 
         for perfil, fontes_grupo in grupos.items():
+            log.info("A abrir contexto do browser (perfil=%s)", perfil)
             context = _criar_context(browser, perfil)
             page = context.new_page()
 
@@ -1782,8 +1801,10 @@ def main(mode: str = "scrape"):
                     log.exception("Erro inesperado em %s", fonte["slug"])
                     print(f"✗ Erro: {exc}")
 
-            page.close()
+            log.info("A fechar página e contexto (perfil=%s)", perfil)
+            _fechar_pagina(page)
             context.close()
+            log.info("Contexto fechado (perfil=%s)", perfil)
 
         browser.close()
 
