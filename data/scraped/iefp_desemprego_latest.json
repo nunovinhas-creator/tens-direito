@@ -1,7 +1,7 @@
 {
   "url": "https://www.iefp.pt/subsidio-desemprego",
   "url_original": "https://www.iefp.pt/subsidio-desemprego",
-  "data_acesso": "2026-07-03T16:37:38.931646+00:00",
+  "data_acesso": "2026-11-02T13:56:04.254194+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "Subsídio de desemprego",
@@ -15,11 +15,11 @@
       "Se considerar que não houve motivos válidos para a anulação da inscrição ou do subsídio, pode apresentar um recurso à Comissão de Recursos do IEFP .",
       "Esta informação destina-se a quem trabalhou no estrangeiro ou pretende ir para o estrangeiro enquanto recebe subsídio de desemprego.",
       "Posso procurar emprego no estrangeiro e continuar a receber o subsídio de desemprego de Portugal?",
-      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein, Andorra ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho num desses países.",
+      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho num desses países.",
       "Posso procurar emprego em Portugal e continuar a receber o subsídio de desemprego do estrangeiro?",
-      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein, Andorra ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho em Portugal.",
+      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho em Portugal.",
       "Posso pedir o subsídio de desemprego em Portugal após ficar desempregado no estrangeiro?",
-      "Sim. Se é cidadão da União Europeia, Islândia, Noruega, Liechtenstein, Andorra ou Suíça, e manteve a sua residência em Portugal enquanto trabalhou num desses países.",
+      "Sim. Se é cidadão da União Europeia, Islândia, Noruega, Liechtenstein ou Suíça, e manteve a sua residência em Portugal enquanto trabalhou num desses países.",
       "Página escrita de acordo com os princípios da Linguagem Clara"
     ],
     "itens_lista": [
@@ -56,5 +56,5 @@
     ]
   },
   "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
-  "hash_conteudo": "760aff5f5c268fb058d6eeccd9bbc7005ad8e3d0259b0078a93f4fc1bd52618f"
+  "hash_conteudo": "91cac087ba41dd4cb6956868caf7ecc8f8b7881852163b1c0fd0c3e3f5f80055"
 }

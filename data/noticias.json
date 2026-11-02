@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-10-29",
+      "titulo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal",
+      "fonte_nome": "Jornal de Negócios",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNYXEtSGFkRzYtQzR4VGZDU2g4TE56NHdKVzg0bnBySHdwSWNSWjdoWFlvQ0puRmQ4bXZVOC1UT2RKMjBEU1J6SVFsVnFPaWdhLWJYam9EdEV3OHJTWmVIZTZka1lLVzlHSHNsdGVMQUk2ajFObDN2bmhET0k3UUNQNnBmZHJNMHV6NUVXMUJ1WjJ5VDF1Vk9HeFZpUVl2OFlUeHdnQzRSNzNMV09feDBDV3UzUERuc25lXzBIYzVsLW44Ulp2T1dFX3g2YzVMemJocDNFNTliWEpGUUVRRmlYQ3UtNE5udjDSAeIBQVVfeXFMTjltWEdCVURCRC1BME94SG1pMFNmSWJ1M21rMDJwSHpseGRyNi01VU4xOXhnaUxyT3hUS3o3Q2E5eHpmck42Qy1VMUFwRVlQN3ZQZG1tZDR0TWlOWmU0U2xEOVR5RFItMnhWUUFwQzhQOFUzWHBhbGtNTUJBUU1mbGE3RWc0UUhWeVZWZTBiekRfVzhKSVZlLUhOTk1mbnFlb1pKWDZvVXN6TzNORzBWMEkwRUNJSUVtcWVvU05zcTlCMnVKcnFyQlpEUHdmaHViOHJmNzBDY001SG8taFg2WkJEUQ?oc=5",
+      "resumo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal Jornal de Negócios",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-26",
+      "titulo": "Segurança Social: Conheça as datas de pagamento das pensões e subsídios em novembro",
+      "fonte_nome": "SAPO",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNWDkzMG1VVDRDMVJmNnE1UV9xeFdlWXV6Rlk1RUdCVDJWcVo1LTBwR0JkYmJaT1VzcWtKNV93ZWdzOU5YRDRiMEJ1LW1sRWpkeXNzR1poX0UtRHN3aDBJUUJteU1QR0JqM2QtaEsyY3J3M2FRQ3pFWnRIUDlkQ0NVYWxxdWg0QTdERmg2eEg0OU5uaGxsSEFGUWgwbVkxc1dTWDNtLWlMXzFwTm5nU0ViS2RMTFZjU2lnZUw3LVZRcGRab21KU3hHVWxR?oc=5",
+      "resumo": "Segurança Social: Conheça as datas de pagamento das pensões e subsídios em novembro SAPO",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
       "data_iso": "2026-10-23",
       "titulo": "Subsídio de desemprego: quanto a Segurança Social te paga e o erro que faz perder dinheiro",
       "fonte_nome": "Leak.pt",

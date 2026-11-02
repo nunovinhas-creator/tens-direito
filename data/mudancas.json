@@ -2,8 +2,8 @@
   {
     "slug": "dge_ase",
     "url": "https://dre.pt/pesquisa?q=acao+social+escolar",
-    "data": "2026-10-24",
-    "hora": "10:39",
+    "data": "2026-11-02",
+    "hora": "14:01",
     "itens_adicionados": [],
     "itens_removidos": [
       "Transição para o EduQA, I.P.",
@@ -17,5 +17,33 @@
       "Educação para a Cidadania",
       "Educação de Infância"
     ]
+  },
+  {
+    "slug": "iefp_desemprego",
+    "url": "https://www.iefp.pt/subsidio-desemprego",
+    "data": "2026-11-02",
+    "hora": "14:01",
+    "itens_adicionados": [],
+    "itens_removidos": []
+  },
+  {
+    "slug": "dre_psu",
+    "url": "https://diariodarepublica.pt/dr/pesquisa",
+    "data": "2026-11-02",
+    "hora": "14:01",
+    "itens_adicionados": [
+      "Regulamento n.º 1499/2026 - Diário da República n.º 211/2026, Série II de 2026-10-30"
+    ],
+    "itens_removidos": []
+  },
+  {
+    "slug": "dre_psu_regulamentacao",
+    "url": "https://diariodarepublica.pt/dr/pesquisa",
+    "data": "2026-11-02",
+    "hora": "14:01",
+    "itens_adicionados": [
+      "Regulamento n.º 1499/2026 - Diário da República n.º 211/2026, Série II de 2026-10-30"
+    ],
+    "itens_removidos": []
   }
 ]
