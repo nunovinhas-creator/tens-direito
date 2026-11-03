@@ -2,12 +2,30 @@
   "itens": [
     {
       "data_iso": "2026-11-02",
+      "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro",
+      "fonte_nome": "Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNNUZiTGVQZlFyeHhLZ01aREVYVVdxT1cwWEc1VDlkdFk4dEM5VDd3Mll3OEVnU0w5VmNqWTJ2SVhlUU9Ha0VqQnNzel8wOUhmRTF1Yi13eGNYd2FCVG1rckcxNWVwU2VGenp4VS15TUhQWUdfV3BveXVsY3RvRTBmb2xhMDlEVzRhWFVCUVBtMVdTWDJBVzI4cDVxbG9TbnVjSENxNU9DaXQ1R0JqVXotakd0VDFpQlg4OE04?oc=5",
+      "resumo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro Notícias ao Minuto",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-02",
       "titulo": "Fábrica da Ecco fecha em Portugal e deixa 632 trabalhadores no desemprego",
       "fonte_nome": "CNN Portugal",
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPci1TX0xNTHdIVXNGMko4VW1HVVg3MkdWcFVVOG14VFBxa0JPbEhHUWwxNG92dU1HMHRfVE1MQ25yLW1sbU81Uk1JOVNWby1PbG1jQjZ5a3VGaUJFNURiRnU1Y1NTNEpyeHE0X1VDU09wRldVOTN1S2gyVHdpNFRpblBtSGpnYlFDck5VWTBOQ3BMX3BadlVRVTczU2JiZTViNTJiUlloUk5oYTZMNVVwVEl6MFZ3LXNTLTl5MVBJMzB4ZHFZbGZQNUNSZHdyNHF3di1OSEZkNEduSXpLMXlQVA?oc=5",
       "resumo": "Fábrica da Ecco fecha em Portugal e deixa 632 trabalhadores no desemprego CNN Portugal",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-11-02",
+      "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQOTVGY0UyelBkQ00yMGdDeTlqSHhpVWFDYlM5MWpRUHhDbXhiVzdUaERLUTV3UXlMYWFjY29TbVJ4OUlyaElpSlRvbjVEd0wxbGdHNkdEZ2RiY1BNMndQc01FV0xoZ04xbEhXVS1sM1FKd283d1hEN1NuMUdzSW1rREFHQUFCSm9qV2VjMkRUUHYxREI4RnB5TTI0ZUxqV3VhMjE2bmxKa0NrX0lm?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-10-30",
@@ -24,6 +42,15 @@
       "fonte_nome": "Jornal de Negócios",
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNYXEtSGFkRzYtQzR4VGZDU2g4TE56NHdKVzg0bnBySHdwSWNSWjdoWFlvQ0puRmQ4bXZVOC1UT2RKMjBEU1J6SVFsVnFPaWdhLWJYam9EdEV3OHJTWmVIZTZka1lLVzlHSHNsdGVMQUk2ajFObDN2bmhET0k3UUNQNnBmZHJNMHV6NUVXMUJ1WjJ5VDF1Vk9HeFZpUVl2OFlUeHdnQzRSNzNMV09feDBDV3UzUERuc25lXzBIYzVsLW44Ulp2T1dFX3g2YzVMemJocDNFNTliWEpGUUVRRmlYQ3UtNE5udjDSAeIBQVVfeXFMTjltWEdCVURCRC1BME94SG1pMFNmSWJ1M21rMDJwSHpseGRyNi01VU4xOXhnaUxyT3hUS3o3Q2E5eHpmck42Qy1VMUFwRVlQN3ZQZG1tZDR0TWlOWmU0U2xEOVR5RFItMnhWUUFwQzhQOFUzWHBhbGtNTUJBUU1mbGE3RWc0UUhWeVZWZTBiekRfVzhKSVZlLUhOTk1mbnFlb1pKWDZvVXN6TzNORzBWMEkwRUNJSUVtcWVvU05zcTlCMnVKcnFyQlpEUHdmaHViOHJmNzBDY001SG8taFg2WkJEUQ?oc=5",
       "resumo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal Jornal de Negócios",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-29",
+      "titulo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\"",
+      "fonte_nome": "Jornal de Notícias",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNMDNGUi1IczByMlpzZndINHF3TjFQUWNKaGlCTW9TMUozeTA3Qi1mbU15ZjREZHlWcmFLWEh2R0pUY0MtNTh5dFJmZGNRaThxQW5RNUJpR3pIYWdGNnlCNlc4MDVDbXRfWEhoeThWSXN3RWpGWnBqaFMyR1MteERzWkprZHluOHNZWF9YZFVzNE5scGNpZGo5cjVXUllrd1Y0QjE4YXZmOGtVMVXSAZsBQVVfeXFMTWhzSWZrRTJfb2M1bF9xQmhZY0RFS1F0bGs5R2p4RER2QUJ3RGdjZ1JRU1dHTkxfb3VJOFFQaHM5MWh5eUN5czBuTjQ5U212Vk1NX1ZrbTdJV3p3R3hMcVBaRGtacl9rc0Z0d1pQRzQwS3gtYlEycGRucWtvcVk0MGQwbjZ1Sjc1SlZDTXQ3dHBEYmFJYWt2anRyNHM?oc=5",
+      "resumo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" Jornal de Notícias",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },
