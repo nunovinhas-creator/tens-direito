@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-04",
+      "titulo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades",
+      "fonte_nome": "diariOnline Região Sul",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOd25FYXpQaWhCOTExRUlBSmJncGYzbzNGc21yNHQ2Nkh2Z3psV0JBYXgwaFlNRkY2bjMzTkpYRmhBQ1VZalN2NVhBUmQtMFFtZjdscnBqQnZGR3l6Nk1nNU5VMXBueEJPUnpTeUF1dC1QZENCdXRhSmpRZWVNX0V1THJCTFBrekkwV1RKY0JrYlVSU0VQcXRvMUZ6OUZFU2g5TVBjZE1QaTJ2ZVVVbllEaXhXNjdDNHdlY2tIRHZkQ2N2QQ?oc=5",
+      "resumo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades diariOnline Região Sul",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-11-02",
       "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro",
       "fonte_nome": "Notícias ao Minuto",
@@ -51,6 +60,15 @@
       "fonte_nome": "Jornal de Notícias",
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNMDNGUi1IczByMlpzZndINHF3TjFQUWNKaGlCTW9TMUozeTA3Qi1mbU15ZjREZHlWcmFLWEh2R0pUY0MtNTh5dFJmZGNRaThxQW5RNUJpR3pIYWdGNnlCNlc4MDVDbXRfWEhoeThWSXN3RWpGWnBqaFMyR1MteERzWkprZHluOHNZWF9YZFVzNE5scGNpZGo5cjVXUllrd1Y0QjE4YXZmOGtVMVXSAZsBQVVfeXFMTWhzSWZrRTJfb2M1bF9xQmhZY0RFS1F0bGs5R2p4RER2QUJ3RGdjZ1JRU1dHTkxfb3VJOFFQaHM5MWh5eUN5czBuTjQ5U212Vk1NX1ZrbTdJV3p3R3hMcVBaRGtacl9rc0Z0d1pQRzQwS3gtYlEycGRucWtvcVk0MGQwbjZ1Sjc1SlZDTXQ3dHBEYmFJYWt2anRyNHM?oc=5",
       "resumo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" Jornal de Notícias",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-10-29",
+      "titulo": "Aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\", diz ministra",
+      "fonte_nome": "Expresso",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNaGo4bVpWSjk1U1Z6RjIzenBsQWptMjluQ2VMVnd4Zjc5UEhfNk1tNDlmdjYtVkRGY0I1S1FYR0k1MnJCYlduYnQ2SkhlUDlNajNtZmJydldBYnlLYWRfakQ0N0tjT0FrRDEwVkRDdmZ3OERzTVd6QXlxQ2IwTVQwX0ZSVnpQYnRsbUlaak1kb2ZILUhNMktYWlZWNVBEbjJ2V0l4bUlrZXFwbFRHbVZwbTctcHhzMnRjUnVPZVlfT0RpaFhwenRRaEt3WjVwaHJWcE5fNVAxNXdFb1E?oc=5",
+      "resumo": "Aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\", diz ministra Expresso",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
     },

@@ -1,120 +1,5 @@
 [
   {
-    "data": "2026-10-20",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 13,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 14,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 13,
-      "csi_idosos": 14
-    },
-    "candidatos": [
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – 2ª Quinzena de Outubro de 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-15",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=fiscal"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem - Leak.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-10-19",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Impostos, habitação e propinas: as medidas do OE2027 que vão mexer com o orçamento familiar em Portugal - Euronews.com",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-10-14",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-14"
-      },
-      {
-        "titulo": "ESCALÃO E ABONO DE FAMÍLIA | TUDO O QUE VOCÊ PRECISA SABER SOBRE OS ABONOS E BENEFÍCIOS EM PORTUGAL Enfant (mNax5OsVTY) - Unisba Media",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-10-16",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano - Jornal de Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-19",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "“Salário típico em Portugal começa a ser perigosamente o salário mínimo” - ECO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-13",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – 2ª Quinzena de Outubro de 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 2
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem - Leak.pt",
-        "feed_nome": "csi_idosos",
-        "score": 2
-      },
-      {
-        "titulo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano - Jornal de Notícias",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-10-21",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1206,6 +1091,196 @@
       },
       {
         "titulo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" - Jornal de Notícias",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-11-04",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 13,
+      "subsidio_desemprego": 14,
+      "rsi": 14,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 14,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 9,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 11,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades - diariOnline Região Sul",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-04",
+        "score": 4,
+        "decisao": "vencedor",
+        "motivo": "score=4, categoria=apoios"
+      },
+      {
+        "titulo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades - diariOnline Região Sul",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-04",
+        "score": 4,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Já se sabe quando chegam as pensões, o subsídio de Natal e o bónus até 200 euros: Segurança Social divulga calendário de dezembro - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "RSI encolhe para menos de 150 mil beneficiários enquanto cresce a apreensão com a PSU - Público",
+        "feed_nome": "rsi",
+        "data_iso": "2026-11-03",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-11-02",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Subsídio de Natal dos pensionistas: CGA paga em novembro e Segurança Social em dezembro - O Vilaverdense",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-28",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Deputado pede abono de família - TDM",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Da esquerda à direita, estas são as propostas dos partidos para a crise da habitação em Portugal - CNN Portugal",
+        "feed_nome": "porta65_arrendamento",
+        "data_iso": "2026-10-30",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-10-30"
+      },
+      {
+        "titulo": "Atenção, reformados: Já se sabe quando cai na conta o bónus das pensões - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Subsídio de Natal 2026: há reformados que recebem em novembro e outros em dezembro - RFM",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-10-28",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\", diz ministra - Expresso",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-29",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Ministra do Trabalho: aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\" - SÁBADO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" - Jornal de Notícias",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Ministra do Trabalho defende que aumento de 50 euros no salário mínimo em 2027 “não é pouco num país como Portugal” - Novum Canal",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-10-29",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades - diariOnline Região Sul",
+        "feed_nome": "abono_familia",
+        "score": 4
+      },
+      {
+        "titulo": "Aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\", diz ministra - Expresso",
         "feed_nome": "salario_minimo",
         "score": 1
       }

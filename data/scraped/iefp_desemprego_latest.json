@@ -1,7 +1,7 @@
 {
   "url": "https://www.iefp.pt/subsidio-desemprego",
   "url_original": "https://www.iefp.pt/subsidio-desemprego",
-  "data_acesso": "2026-11-02T13:56:04.254194+00:00",
+  "data_acesso": "2026-11-04T13:49:20.988301+00:00",
   "status": "ok",
   "conteudo_extraido": {
     "titulo": "Subsídio de desemprego",
@@ -23,7 +23,7 @@
       "Página escrita de acordo com os princípios da Linguagem Clara"
     ],
     "itens_lista": [
-      "O IEFP Quem Somos Instituição História Recursos Humanos Planeamento e Gestão Instrumentos de Gestão Informações Estatísticas Estatísticas Rede de Serviços Rede de Serviços Comunicação Destaques / Notícias Canal Externo de Denúncias Mediateca Revista Dirigir&Formar Media Regulamento Geral Proteção de Dados RGPD Política de Privacidade de Dados Pessoais Lado a Lado Lado a Lado – Sistema de Gestão da Conciliação entre a vida profissional, familiar e pessoal no IEFP, I.P.",
+      "O IEFP Quem Somos Instituição História Recursos Humanos Planeamento e Gestão Instrumentos de Gestão Informações Estatísticas Estatísticas Rede de Serviços Rede de Serviços Comunicação Destaques / Notícias Canal Externo de Denúncias Mediateca Revista Dirigir&Formar Media Regulamento Geral Proteção de Dados Política de Privacidade de Dados Pessoais Política de Privacidade de Dados Pessoais Lado a Lado Lado a Lado – Sistema de Gestão da Conciliação entre a vida profissional, familiar e pessoal no IEFP, I.P.",
       "Quem Somos Instituição História Recursos Humanos",
       "Instituição",
       "Recursos Humanos",
@@ -38,7 +38,8 @@
       "Destaques / Notícias",
       "Canal Externo de Denúncias",
       "Revista Dirigir&Formar",
-      "Regulamento Geral Proteção de Dados RGPD Política de Privacidade de Dados Pessoais",
+      "Regulamento Geral Proteção de Dados Política de Privacidade de Dados Pessoais Política de Privacidade de Dados Pessoais",
+      "Política de Privacidade de Dados Pessoais",
       "Política de Privacidade de Dados Pessoais",
       "Lado a Lado Lado a Lado – Sistema de Gestão da Conciliação entre a vida profissional, familiar e pessoal no IEFP, I.P.",
       "Lado a Lado – Sistema de Gestão da Conciliação entre a vida profissional, familiar e pessoal no IEFP, I.P.",
@@ -51,10 +52,9 @@
       "Subsídio de Desemprego",
       "Comissão de Recursos",
       "Regresso a Portugal",
-      "Serviços ao Empregador Registar Ofertas de Emprego Procurar Trabalhadores Recrutar no Estrangeiro",
-      "Registar Ofertas de Emprego"
+      "Serviços ao Empregador Registar Ofertas de Emprego Procurar Trabalhadores Recrutar no Estrangeiro"
     ]
   },
   "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
-  "hash_conteudo": "91cac087ba41dd4cb6956868caf7ecc8f8b7881852163b1c0fd0c3e3f5f80055"
+  "hash_conteudo": "23149f29a284f28a567cc2b7d996c2fb8a18754f457cd173fc73c62a01729367"
 }
