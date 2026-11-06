@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-05",
+      "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra",
+      "fonte_nome": "ECO",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQaW5YNUc0MnllOTNkczFneGVQdURzdDRxdHNFZHZiazdwSGJYVU5UMFNCeXNQNkkwZExuSkF2bVFRc2M2a0ViTFpuMTVnT2Nra2FjY2ZJcnFGdFpZT1BNSWpWV3lwUzgzaDEzbEFpRy04dzhTZzZuX05WN2VyVTFZRFZ0SXJTOFBVMHp6cGVpWHBYdjc2eFNzRWhuTGZ2ck1YTFNaUGh1aHJxNU5WWi0xMlhZZGJLbW9rRHpNQ1ZSemdhbWNiXzR3?oc=5",
+      "resumo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra ECO",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-11-04",
       "titulo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades",
       "fonte_nome": "diariOnline Região Sul",
@@ -8,6 +17,15 @@
       "resumo": "Se recebe Abono de Família ou Subsídio de Desemprego... a Segurança Social tem novidades diariOnline Região Sul",
       "categoria": "apoios",
       "cluster_id": "familia"
+    },
+    {
+      "data_iso": "2026-11-03",
+      "titulo": "RSI encolhe para menos de 150 mil beneficiários enquanto cresce a apreensão com a PSU",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNdWpvMk5CU0dYY3U3YVo0QlJpbUlqbHJVS3VRNFM0bkE0U21LQ2NrelE1aHR3TkRHQXo3bDdnaEZIMkVaLUpPdl91Qk1ORTlDRmp4QlRzbTZDclZONzFhcWgwM0xoZGljX29WV1MwV2FyaGhjZENMUG9IcWZNTUw2RGdFTTFSb2JBRV9MUHVyWGhyT2FzLVVWSUlVR01CNnBFZjBUQi1pY2hhUDRtS3BaLWFabmZxQ1RfSkJRcg?oc=5",
+      "resumo": "RSI encolhe para menos de 150 mil beneficiários enquanto cresce a apreensão com a PSU Público",
+      "categoria": "apoios",
+      "cluster_id": "prestacao-social-unica"
     },
     {
       "data_iso": "2026-11-03",
