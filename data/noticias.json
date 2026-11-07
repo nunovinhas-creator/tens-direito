@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-06",
+      "titulo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário",
+      "fonte_nome": "Executive Digest",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPTEVpbWNBdG9mVmk4SHItZ1ctcDNYeXIwSnVLZkVWbHFGLWxnUUg3dUUtTWhqcnRkUmZva29RMWoybjJpU2xTbmFtV3Njd1lNak1PanNoREZDU0ZNZVRqSEsyakRsdUw0RkJHcmRfenNDRkZ2dXFZR1cyMHp2cUxfanBRN1FaN1cwT2hMZ2Fzc3NldHlXZFAyY1d5UnhfdDVnbzZIX2JEeEJDYWY5cEg2UEZMa0VJX3RicFlIa3p0TmJUQXJ0bGt5NGN1VXo1VllvbmJ2dGJHZWI0REh4LXc?oc=5",
+      "resumo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário Executive Digest",
+      "categoria": "apoios",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-06",
+      "titulo": "Governo afasta subida extra do salário mínimo nacional e aponta para os 970 euros em 2027",
+      "fonte_nome": "oRegiões",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQeExEOGxtck8wOU95YWF6a1ZWTWszQUo2dG96T3VYeElhSVl5dnNNM241NjJ3VnRFaWRjdUJ1MzB0UG9oaWNveUNGUEJDeUNlaWpsSWdNUkFwUzlGTUZkcjZaMXBFQkRxalUwTWVXZ0Y5NHNmS2N5VHM2cG4weHlNdkdXaDBzWkp1THdFam96YTlDd3JvZEp5UnZ3b0Jhd1I4Ymp5U3ptN3V0LVp3NDZzS19pdjE?oc=5",
+      "resumo": "Governo afasta subida extra do salário mínimo nacional e aponta para os 970 euros em 2027 oRegiões",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
+    },
+    {
       "data_iso": "2026-11-05",
       "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra",
       "fonte_nome": "ECO",
@@ -35,6 +53,15 @@
       "resumo": "Já se sabe quando chegam as pensões, o subsídio de Natal e o bónus até 200 euros: Segurança Social divulga calendário de dezembro Executive Digest",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-03",
+      "titulo": "Abertas candidaturas à 2.ª fase do apoio ao arrendamento e crédito à habitação",
+      "fonte_nome": "Câmara Municipal de Gondomar",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOU3FrSzZYU3hybUk2YWY4Q2hEM0lWcVlHbmhSZHE2bjlmbV8teDIySFZnenpmbGFickdRMHlHb0cyRk1nbGVHSlVWRzdUTzFIT0hPUl9YR0E2TmxLSUNoaUFuZEhETnJBM2VxVnViRmZ6OU13d2FJLUJvOEM2dERmNy1KRzdGeGt0azQyZ0lhVXhNZkpHZ2t1NkNITFF2OXZYRXVUNXJpcGpKZw?oc=5",
+      "resumo": "Abertas candidaturas à 2.ª fase do apoio ao arrendamento e crédito à habitação Câmara Municipal de Gondomar",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
     },
     {
       "data_iso": "2026-11-02",

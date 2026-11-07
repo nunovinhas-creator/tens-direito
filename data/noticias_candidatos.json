@@ -1,163 +1,5 @@
 [
   {
-    "data": "2026-10-23",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 14,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 11,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 11,
-      "csi_idosos": 13
-    },
-    "candidatos": [
-      {
-        "titulo": "Pensões, subsídios e outros apoios: Saiba já quando os recebe em novembro - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-20",
-        "score": 5,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-20"
-      },
-      {
-        "titulo": "Muitos pais não sabem, mas podem pedir mais abono de família na Segurança Social Direta - 4gnews",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-10-18",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-18"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Novembro 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-10-21",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-21"
-      },
-      {
-        "titulo": "Pensões chegam mais cedo em novembro: Segurança Social paga a 6. Veja todas as datas - Contas Poupança",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-22",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=apoios"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – Novembro 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-21",
-        "score": 2,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-21"
-      },
-      {
-        "titulo": "Complemento Solidário para Idosos: o erro que deixa milhares de fora do apoio sem saberem - Leak.pt",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-10-19",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Novembro traz pagamentos da Segurança Social para os portugueses que reúnem estes requisitos - Magazine.HD",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-22",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Inflação vai cortar para metade ganho real do salário mínimo no próximo ano - Jornal de Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-19",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-19"
-      },
-      {
-        "titulo": "A crua convergência dos salários para o Salário Mínimo Nacional - SEP | Sindicato dos Enfermeiros Portugueses",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-20",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-20"
-      },
-      {
-        "titulo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto? - Notícias ao Minuto",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-22",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Há mais 17 mil idosos a receber complemento solidário do que há um ano - ECO",
-        "feed_nome": "csi_idosos",
-        "data_iso": "2026-10-21",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Diferença entre salários mínimo e médio caiu mais de 10 pontos percentuais na última década? - SIC Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-22",
-        "score": 0,
-        "decisao": "rejeitado_score",
-        "motivo": "score <= 0"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Pensões chegam mais cedo em novembro: Segurança Social paga a 6. Veja todas as datas - Contas Poupança",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 2
-      },
-      {
-        "titulo": "\"Está em cima da mesa cumprir o acordo\": Salário mínimo sobe para quanto? - Notícias ao Minuto",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-10-24",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -1372,6 +1214,249 @@
       },
       {
         "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra - ECO",
+        "feed_nome": "salario_minimo",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "data": "2026-11-07",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 9,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 13,
+      "subsidio_desemprego": 14,
+      "rsi": 14,
+      "psu_pensoes": 14,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 12,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 9,
+      "calendario_pagamentos_seg_social": 8,
+      "habitacao_arrendamento": 14,
+      "salario_minimo": 13,
+      "csi_idosos": 11
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 4,
+        "decisao": "vencedor",
+        "motivo": "score=4, categoria=apoios"
+      },
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Já se sabe quando chegam as pensões, o subsídio de Natal e o bónus até 200 euros: Segurança Social divulga calendário de dezembro - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abertas candidaturas à 2.ª fase do apoio ao arrendamento e crédito à habitação - Câmara Municipal de Gondomar",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-11-03",
+        "score": 3,
+        "decisao": "vencedor",
+        "motivo": "score=3, categoria=habitacao"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "RSI encolhe para menos de 150 mil beneficiários enquanto cresce a apreensão com a PSU - Público",
+        "feed_nome": "rsi",
+        "data_iso": "2026-11-03",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
+        "feed_nome": "psu_pensoes",
+        "data_iso": "2026-11-02",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Governo está a avaliar eficácia do abono de família no combate à pobreza infantil - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Atribuição automática do Abono de Família Pré-Natal já se encontra disponível - diariOnline Região Sul",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social: conheça as datas de pagamento em dezembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Atenção, reformados: Já se sabe quando cai na conta o bónus das pensões - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-05",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-05"
+      },
+      {
+        "titulo": "Governo afasta subida extra do salário mínimo nacional e aponta para os 970 euros em 2027 - oRegiões",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=emprego"
+      },
+      {
+        "titulo": "Após sete anos de estatuto do cuidador informal, ainda “falta fazer tudo” - Público",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Mais de 40% dos cuidadores informais não sentem benefícios do estatuto - dnoticias.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Dia do Cuidador Informal: projeto em Barcelos ajuda quem dedica a vida a cuidar dos outros - SIC Notícias",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Mais de 250 mil idosos recebem CSI em Portugal - Diário do Distrito",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-07",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Mais de 250 mil idosos recebem CSI em Portugal - SAPO",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-07",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Suplemento extraordinário para pensionistas: saiba quanto recebe em 2026 - DECO Proteste",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-02",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 4
+      },
+      {
+        "titulo": "Abertas candidaturas à 2.ª fase do apoio ao arrendamento e crédito à habitação - Câmara Municipal de Gondomar",
+        "feed_nome": "habitacao_arrendamento",
+        "score": 3
+      },
+      {
+        "titulo": "Governo afasta subida extra do salário mínimo nacional e aponta para os 970 euros em 2027 - oRegiões",
         "feed_nome": "salario_minimo",
         "score": 1
       }
