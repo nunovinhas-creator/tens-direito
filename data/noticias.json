@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-09",
+      "titulo": "Abono de família sobe 2,2% com retroativos a janeiro",
+      "fonte_nome": "RTP",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNS2V4LV80WjNibnFpTTRXNFdRTmstNUhyTDVuTUY5UVpsbmlRcWFuczlPc09TQ2lxMkU4Mnhyc2thRE50Y1BhSU9EakRQWnhWTjVjQk4tV2VzdUZOYkpDSGhhWmQ4VG9SdWxtcHpwQ1c4cHZDdjRZX1dfX2stVUtpZGxwYk5WYkJWc1JxbTVyQ0JqN0hUQUxJQ08wcFZkUQ?oc=5",
+      "resumo": "Abono de família sobe 2,2% com retroativos a janeiro RTP",
+      "categoria": "apoios",
+      "cluster_id": "familia"
+    },
+    {
       "data_iso": "2026-11-06",
       "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio",
       "fonte_nome": "Jornal SOL",
@@ -17,6 +26,15 @@
       "resumo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário Executive Digest",
       "categoria": "apoios",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-06",
+      "titulo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio",
+      "fonte_nome": "The Portugal News",
+      "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxQYXhIZWgtY0ZSY0NHVTY3dTBKd21mV3FYYTVrM0RaZVVFeEdSOUM5NHVTVzNYOFVfekR6NFhCRkJETldIN1NIOXBmTlZ4NGpMRkxacHBGNnRMY2ZaNjVqZDRJdlN0LWlxYnhmd0w5QjRnQWpQY0VSMFRJS3NkcUFtU3k2RTB6THdTcXh4VlY2dlloWml6WllQeG5GbnhoeGdwTnpNM0JWMGFUOC1PRkdaTFRLQm5LOHZLRTBMcGo1S3FFSnc2azZGYUhZTDRkVGkySXhGMFdkRWxQZFNkNm1yZ2ViS3R5a2IzY0lJUXRVR1pwLTFQV1Q2ZFVoanBLUUk?oc=5",
+      "resumo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio The Portugal News",
+      "categoria": "emprego",
+      "cluster_id": "trabalho-rendimento"
     },
     {
       "data_iso": "2026-11-06",

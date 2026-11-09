@@ -1507,5 +1507,235 @@
         "score": 2
       }
     ]
+  },
+  {
+    "data": "2026-11-09",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 13,
+      "subsidio_desemprego": 13,
+      "rsi": 14,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 12,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 10,
+      "calendario_pagamentos_seg_social": 7,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 13,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 4,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Já se sabe quando chegam as pensões, o subsídio de Natal e o bónus até 200 euros: Segurança Social divulga calendário de dezembro - Executive Digest",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-03"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio - The Portugal News",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "vencedor",
+        "motivo": "score=2, categoria=emprego"
+      },
+      {
+        "titulo": "RSI encolhe para menos de 150 mil beneficiários enquanto cresce a apreensão com a PSU - Público",
+        "feed_nome": "rsi",
+        "data_iso": "2026-11-03",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-03"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-02"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Abono de família sobe 2,2% com retroativos a janeiro - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-09",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Governo está a avaliar eficácia do abono de família no combate à pobreza infantil - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Maioria das pensões vai aumentar 3,3% em 2027 - Público",
+        "feed_nome": "ias_valor_referencia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Pagamentos da Segurança Social em novembro: vê quando recebes - Leak.pt",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-02",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social: conheça as datas de pagamento em dezembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Atenção, reformados: Já se sabe quando cai na conta o bónus das pensões - Notícias ao Minuto",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-03",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-05",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros - Jornal SOL",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'emprego' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Após sete anos de estatuto do cuidador informal, ainda “falta fazer tudo” - Público",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Dia do Cuidador Informal: projeto em Barcelos ajuda quem dedica a vida a cuidar dos outros - SIC Notícias",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Mais de 40% dos cuidadores informais não sentem benefícios do estatuto - dnoticias.pt",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio - The Portugal News",
+        "feed_nome": "subsidio_desemprego",
+        "score": 2
+      },
+      {
+        "titulo": "Abono de família sobe 2,2% com retroativos a janeiro - RTP",
+        "feed_nome": "abono_familia",
+        "score": 1
+      }
+    ]
   }
 ]
