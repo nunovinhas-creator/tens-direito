@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-10",
+      "titulo": "Município de Lagoa já investiu mais de 1,3 milhões de euros no apoio ao arrendamento",
+      "fonte_nome": "diariOnline Região Sul",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPVnJ6Z24zTUV4VEhHNWVTYTVlUDgyRDRPUkZVVTRydi1ZZDZfa3B2el9WRzQ0LVpGVWU0RlRkVDNYNTJZbFNWV2ZyNERyczdhNkxrdUtIZ0lON2hhNGU1Sm5Faklpby1ucWxuTmtNajUyYXZuaThjR0NTUl9nREJqbWxUN2JxZndxdFJ1bDgwYUpSc1NVOW1qTExHQjFoWTRTR2N5al9waVB6Ti1GUnlSNERaUGd4eDM5YzZNNWI0dw?oc=5",
+      "resumo": "Município de Lagoa já investiu mais de 1,3 milhões de euros no apoio ao arrendamento diariOnline Região Sul",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
+    },
+    {
       "data_iso": "2026-11-09",
       "titulo": "Abono de família sobe 2,2% com retroativos a janeiro",
       "fonte_nome": "RTP",
@@ -20,6 +29,15 @@
     },
     {
       "data_iso": "2026-11-06",
+      "titulo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros",
+      "fonte_nome": "Jornal SOL",
+      "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxObi1qWDI3VWJLT2VBbTgzQlJpbzcwcXJvSWlxbzEzUGpGYmx4SzllM3JqTTFrVGxiOHhtVGZWVUluSGw4UzFIeW9KOWFyRlBFdzUyckNCakpUTzVkbDVZMWJQR1BETnZpcGU4bzJocGoyckJkVmJCQXA1X3BDM0lFQzBIQ2ZfM2FtYlBLdUZtNG1WMkYxb2Z2RGYycU56Mnh6T1lFVnRTV3g1R0FmdlcyTUxUTjNDVl96NEszdS1GOGlJdWVUNDZkT0hQRVM3bnZlbXBjaWU0RlI4c1JnQmZ6MHhxNURrV0diYV9wZmFVOFkxT2Ra?oc=5",
+      "resumo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros Jornal SOL",
+      "categoria": "emprego",
+      "cluster_id": "idosos-incapacidade-cuidadores"
+    },
+    {
+      "data_iso": "2026-11-06",
       "titulo": "Pensões chegam esta sexta-feira: Segurança Social antecipa pagamento e há mais apoios a caminho. Veja o calendário",
       "fonte_nome": "Executive Digest",
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPTEVpbWNBdG9mVmk4SHItZ1ctcDNYeXIwSnVLZkVWbHFGLWxnUUg3dUUtTWhqcnRkUmZva29RMWoybjJpU2xTbmFtV3Njd1lNak1PanNoREZDU0ZNZVRqSEsyakRsdUw0RkJHcmRfenNDRkZ2dXFZR1cyMHp2cUxfanBRN1FaN1cwT2hMZ2Fzc3NldHlXZFAyY1d5UnhfdDVnbzZIX2JEeEJDYWY5cEg2UEZMa0VJX3RicFlIa3p0TmJUQXJ0bGt5NGN1VXo1VllvbmJ2dGJHZWI0REh4LXc?oc=5",
@@ -35,6 +53,15 @@
       "resumo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio The Portugal News",
       "categoria": "emprego",
       "cluster_id": "trabalho-rendimento"
+    },
+    {
+      "data_iso": "2026-11-06",
+      "titulo": "Maioria das pensões vai aumentar 3,3% em 2027",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPaTdxNS1lZnl6WHdMZUlweGlsOV83VWJHNlhVUFhyM1BGcDdDQ0t5SnFkckM3RGdjd0xrSzVhRzZaZDhsbEo4YUtkTlpfNjNwa2JEb1drNkZ2WFdZSlZDWVQzc3JMMmltUWhLcVVkODF1M3p2RUZrZ0ZuS1BNM0wyLUJOdEtwUk0xcjlJSGpBR0hvTXc5TzR0V2o1WQ?oc=5",
+      "resumo": "Maioria das pensões vai aumentar 3,3% em 2027 Público",
+      "categoria": "apoios",
+      "cluster_id": null
     },
     {
       "data_iso": "2026-11-06",
