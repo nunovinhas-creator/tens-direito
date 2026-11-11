@@ -1948,5 +1948,174 @@
         "score": 1
       }
     ]
+  },
+  {
+    "data": "2026-11-11",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 14,
+      "subsidio_desemprego": 13,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 12,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 10,
+      "calendario_pagamentos_seg_social": 13,
+      "habitacao_arrendamento": 14,
+      "salario_minimo": 13,
+      "csi_idosos": 13
+    },
+    "candidatos": [
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "O subsídio de desemprego parcial em Portugal permite que algumas pessoas trabalhem enquanto recebem o subsídio - The Portugal News",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Município de Lagoa já investiu mais de 1,3 milhões de euros no apoio ao arrendamento - diariOnline Região Sul",
+        "feed_nome": "habitacao_arrendamento",
+        "data_iso": "2026-11-10",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-10"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Governo está a avaliar eficácia do abono de família no combate à pobreza infantil - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Maioria das pensões vai aumentar 3,3% em 2027 - Público",
+        "feed_nome": "ias_valor_referencia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Segurança Social: conheça as datas de pagamento em dezembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Salário mínimo deve mesmo subir para 970 euros. “Novo acordo não está em cima da mesa”, diz ministra - ECO",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-05",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-05"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros - Jornal SOL",
+        "feed_nome": "salario_minimo",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Salário mínimo sobe para 970 euros em 2027. CSI passa a ter valor de referência de 720 euros - Jornal SOL",
+        "feed_nome": "csi_idosos",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Após sete anos de estatuto do cuidador informal, ainda “falta fazer tudo” - Público",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "19 mil com Estatuto de Cuidador Informal - RTP",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      },
+      {
+        "titulo": "Dia do Cuidador Informal: projeto em Barcelos ajuda quem dedica a vida a cuidar dos outros - SIC Notícias",
+        "feed_nome": "cuidador_informal",
+        "data_iso": "2026-11-05",
+        "score": 0,
+        "decisao": "rejeitado_score",
+        "motivo": "score <= 0"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Governo está a avaliar eficácia do abono de família no combate à pobreza infantil - RTP",
+        "feed_nome": "abono_familia",
+        "score": 1
+      }
+    ]
   }
 ]
