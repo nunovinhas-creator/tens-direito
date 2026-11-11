@@ -7854,6 +7854,42 @@ Prova Escolar «mês anterior a completar 16 anos»: o Guia Prático 4011
 (v1.49, 29/04/2025) não a prevê — quem faz 16 anos segue o prazo geral de
 julho; a frase fica fora.
 
+## Última revisão: 2026-11-11 — Licença parental: lei aprovada a 16/10, ainda por publicar; revisão marcada em `verificar_datas.py` (issue #331)
+
+**Estado legislativo (11/11/2026)**: o Projeto de Lei n.º 176/XVII/1.ª
+(alargamento da licença parental e jornada contínua) foi aprovado em votação
+final global a 16/10/2026. Nenhuma fonte confirma promulgação nem publicação
+em Diário da República até esta data. Grau de confirmação: várias fontes
+secundárias independentes (Observador, DN, RTP, Cuatrecasas, ECO, Academia
+das Finanças, Contas Poupança, Rádio Comercial); parlamento.pt,
+diariodarepublica.pt, files.dre.pt e presidencia.pt inacessíveis a partir
+desta sessão (ligação recusada pela rede do ambiente). Divergência registada:
+a TVI refere abstenção do PCP; o texto público não afirma unanimidade.
+
+**`subsidio-parental.html`**: retirada a frase de que faltava a votação final
+global (texto de 13/10); `.aviso-lei` reescrito (aprovado, não promulgado nem
+publicado; 1/1/2027 só se a lei já estiver em vigor — entrada em vigor ligada
+ao Orçamento do Estado seguinte à publicação). Card «O que muda com a lei
+aprovada» com duas tabelas (licença inicial; pai e mãe) e a jornada contínua
+(art. 56.º-A, não automática). Confirmados em ≥2 fontes: 150 dias a 100%; 180
+com partilha a 100%; 210 a 86% (partilha) ou 90% (pai ≥60 dias sozinho); pai
+28 dias obrigatórios com 14 seguidos + 14 facultativos. Só uma fonte, ficam
+«por confirmar no texto publicado»: fim dos 120 dias e 180 sem partilha a
+83%. Sem confirmação, não descritos: monoparentais, outros familiares,
+violência doméstica. Tabela das regras em vigor intacta. Nova FAQ «já está em
+vigor?» (JSON-LD regenerado). Carimbo e `dateModified` a 11/11/2026; sitemap e
+`ATUALIZACOES:HOME` sincronizados. `fontes.html`: «licença parental alargada»
+→ «alargamento da licença parental inicial» (a alargada é outra licença).
+
+**Vigilância**: `verificar_datas.py` ganha `PADRAO_REVISAO_MARCADA`
+(`data-rever-ate`) — ver CLAUDE.md, Shadow Mode, ponto 1. Testes novos:
+`tests/test_revisao_marcada.py`; `tests/test_vigilancia_licenca_parental.py`
+reescrito (o antigo testava a frase de 15/11, agora retirada). PSU: sem
+alteração — as páginas não descrevem durações da licença; nota na página de
+que as percentagens não se aplicam automaticamente à PSU.
+
+PR: #373 (aberto, draft). Issue #331 continua aberta — acompanhamento da publicação.
+
 ---
 
 *Última revisão automática: 2026-11-10*
