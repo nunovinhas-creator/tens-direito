@@ -770,6 +770,50 @@ PADRAO_CARIMBO = {
 }
 
 
+# Revisão marcada (issue #331, 2026-11-11): um texto sobre legislação ainda
+# por publicar (ex.: lei aprovada no Parlamento, não promulgada) declara a
+# data-limite da próxima verificação num atributo explícito,
+# `data-rever-ate="AAAA-MM-DD"`. Antes, a única "vigilância" era uma frase
+# ("voltamos a confirmar até 15 de novembro de 2026") que os marcadores
+# PENDENTE/HISTORICOS suprimiam e que os PADROES só voltariam a ver em 2027,
+# nos meses de REVER_EM — o prazo passava sem alerta nenhum. Aqui não há
+# marcadores nem REVER_EM: alerta todos os meses a partir do dia seguinte à
+# data, e um valor que não seja uma data válida também alerta (nunca fica em
+# silêncio por estar mal escrito).
+REGEX_REVER_ATE = r'data-rever-ate="([^"]*)"'
+PADRAO_REVISAO_MARCADA = {
+    "regex": REGEX_REVER_ATE,
+    "tipo": "revisao_marcada",
+    "descricao": "Revisão marcada vencida (data-rever-ate)",
+}
+
+
+def revisoes_marcadas(conteudo):
+    """Lista de (valor bruto, date ou None se inválido) de cada data-rever-ate."""
+    res = []
+    for m in re.finditer(REGEX_REVER_ATE, conteudo):
+        bruto = m.group(1)
+        try:
+            d = date.fromisoformat(bruto) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", bruto) else None
+        except ValueError:
+            d = None
+        res.append((bruto, d))
+    return res
+
+
+def _revisao_marcada_vencida(conteudo, ano, mes, dia=None):
+    """Alguma data-rever-ate já passou (ou é inválida)? Sem `dia`, compara ao mês."""
+    for _, d in revisoes_marcadas(conteudo):
+        if d is None:
+            return True
+        if dia is None:
+            if (d.year, d.month) < (ano, mes):
+                return True
+        elif d < date(ano, mes, dia):
+            return True
+    return False
+
+
 def _pagina_tem_alerta(conteudo, padrao, ano, mes, verificado_em=None, pagina=None):
     tipo = padrao["tipo"]
 
@@ -846,11 +890,16 @@ def _contexto_representativo(conteudo, padrao):
     return m.group(0), _janela_contexto(conteudo, m.start(), m.end())
 
 
-def detectar_alertas(conteudo, nome_pagina, ano, mes):
-    """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado."""
+def detectar_alertas(conteudo, nome_pagina, ano, mes, dia=None):
+    """Devolve o alerta (dict) para `nome_pagina`, ou None se nada de expirado for encontrado.
+
+    `dia` só afina a revisão marcada (data-rever-ate); sem ele compara ao mês.
+    """
     verificado_em = verificado_em_do_texto(conteudo)
-    for padrao in PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]:
-        if padrao is PADRAO_COMPROMISSO_FUTURO:
+    for padrao in [PADRAO_REVISAO_MARCADA] + PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]:
+        if padrao is PADRAO_REVISAO_MARCADA:
+            tem_alerta = _revisao_marcada_vencida(conteudo, ano, mes, dia)
+        elif padrao is PADRAO_COMPROMISSO_FUTURO:
             tem_alerta = _compromisso_futuro_expirado(conteudo, ano, mes, verificado_em, nome_pagina)
         elif padrao is PADRAO_CARIMBO:
             tem_alerta = _carimbo_antigo(conteudo, ano, mes)
@@ -874,6 +923,15 @@ def detectar_alertas(conteudo, nome_pagina, ano, mes):
                     f"Esta Issue foi gerada automaticamente pelo pipeline diário."
                 ),
             }
+            if padrao is PADRAO_REVISAO_MARCADA:
+                datas = ", ".join(b for b, _ in revisoes_marcadas(conteudo))
+                alerta["corpo"] += (
+                    f"\n\n**Revisão marcada:** `data-rever-ate` = {datas}. A página "
+                    f"prometeu voltar a verificar um estado legislativo até esta "
+                    f"data. Confirmar o estado na fonte oficial, actualizar o texto "
+                    f"e marcar a próxima data de revisão (ou retirar o atributo "
+                    f"se o assunto ficou fechado)."
+                )
             # Camada 2 (classificar_datas) + Camada 3 (decisao_datas):
             # metadado informativo, adicionado sem influenciar se o alerta
             # é gerado nem os campos que o pipeline usa para criar a Issue
@@ -916,7 +974,7 @@ def main():
             print(f"Erro ao ler {html_path}: {e}")
             continue
 
-        alerta = detectar_alertas(conteudo, nome, ano, mes)
+        alerta = detectar_alertas(conteudo, nome, ano, mes, dia=hoje.day)
         if alerta:
             alertas.append(alerta)
 

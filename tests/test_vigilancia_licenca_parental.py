@@ -1,64 +1,164 @@
-"""Vigilância da proposta de alteração à licença parental (PR #330).
+"""Licença parental — estado legislativo e vigilância (issues #330/#331).
 
-A secção "O que pode mudar" de subsidio-parental.html promete voltar a
-confirmar o estado da proposta até 15 de novembro de 2026. Testa o efeito,
-não a redacção: com a data simulada a 01/12/2026, verificar_datas.py tem de
-dar alerta por causa dessa frase; a 14/10/2026 (dia da verificação), não.
+O alargamento (Projeto de Lei n.º 176/XVII/1.ª) foi aprovado em votação final
+global a 16/10/2026 e, à data da verificação, não estava promulgado nem
+publicado. Estes testes trancam o que a página pode e não pode dizer até a lei
+ser publicada, e provam que a revisão marcada (`data-rever-ate`) dá alerta
+quando o prazo passa — o mecanismo antigo (frase "voltamos a confirmar até
+15 de novembro de 2026") não dava alerta nenhum em 2026.
 """
 import re
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 RAIZ_REPO = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ_REPO / "scripts"))
 
 import verificar_datas as v  # noqa: E402
+from sincronizar_clusters import verificado_em_do_texto  # noqa: E402
 
 PAGINA = RAIZ_REPO / "subsidio-parental.html"
-DATA = "15 de novembro de 2026"
 
 
 def _html():
     return PAGINA.read_text(encoding="utf-8")
 
 
-def _frase_da_data(html):
-    """A frase (entre fins de frase/tags) que contém DATA."""
-    ocorrencias = [m.start() for m in re.finditer(re.escape(DATA), html)]
-    assert len(ocorrencias) == 1, f"esperada 1 ocorrência de {DATA!r}, encontradas {len(ocorrencias)}"
-    i = ocorrencias[0]
-    inicio = max(html.rfind(".", 0, i), html.rfind(">", 0, i)) + 1
-    fim = html.index(".", i + len(DATA)) + 1
-    return inicio, fim
+def _texto():
+    """Texto visível aproximado: sem tags, espaços normalizados."""
+    t = re.sub(r"<script\b.*?</script>|<style\b.*?</style>", " ", _html(), flags=re.S)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))
 
 
-def _frase_da_alerta(html, ano, mes):
-    """Mesma decisão de _compromisso_futuro_expirado, restrita à frase da DATA."""
-    inicio, fim = _frase_da_data(html)
-    verificado_em = v.verificado_em_do_texto(html)
-    for m in re.finditer(v.REGEX_COMPROMISSO_FUTURO, html, re.IGNORECASE):
-        if not (inicio <= m.start() < fim):
-            continue
-        d = v._data_do_compromisso(m)
-        if d is None or (d.year, d.month) >= (ano, mes):
-            continue
-        if v._esta_suprimido(html, m.start(), m.end(), ano, mes,
-                             data_ocorrencia=d, verificado_em=verificado_em):
-            continue
-        return True
-    return False
+def _celulas():
+    return [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", c)).strip()
+            for c in re.findall(r"<tr>(.*?)</tr>", _html(), flags=re.S)]
+
+
+# --- estado legislativo -----------------------------------------------------
+
+def test_regista_a_votacao_final_global_de_16_de_outubro():
+    t = _texto()
+    assert "16 de outubro de 2026" in t
+    assert "votação final global" in t
+    assert "176/XVII" in t
+
+
+def test_nunca_volta_a_dizer_que_falta_a_votacao_final_global():
+    t = _texto()
+    proibido = re.compile(
+        r"(ainda tem de ser|falta|aguarda|antes d[ao]|até à)[^.]{0,120}votação final global",
+        re.IGNORECASE,
+    )
+    assert not proibido.search(t), proibido.search(t).group(0)
+
+
+def test_nunca_apresenta_a_lei_aprovada_como_em_vigor():
+    t = _texto()
+    proibidos = [
+        r"(já|agora) (está|estão) em vigor(?!\?)",
+        r"entra(m)? (automaticamente )?em vigor (a|em) 1 de janeiro de 2027",
+        r"em vigor desde 1 de janeiro de 2027",
+        r"publicad[ao] em Diário da República (a|em) \d",
+    ]
+    for p in proibidos:
+        m = re.search(p, t, re.IGNORECASE)
+        assert not m, f"afirmação de vigência sem publicação confirmada: {m.group(0)!r}"
+    assert re.search(r"ainda não está em vigor", t, re.IGNORECASE)
+    assert re.search(r"Orçamento do Estado seguinte à publicação", t)
+
+
+def test_data_de_2027_nunca_aparece_como_certa():
+    t = _texto()
+    for m in re.finditer(r"1 de janeiro de 2027", t):
+        janela = t[max(0, m.start() - 250):m.end() + 250]
+        assert re.search(r"só se|ainda não é certo|depende|ligada ao Orçamento", janela), (
+            f"1/1/2027 sem a condição da entrada em vigor: …{janela}…"
+        )
+
+
+# --- regras em vigor vs. texto aprovado ------------------------------------
+
+def test_tabela_das_regras_em_vigor_preservada():
+    linhas = _celulas()
+    esperadas = [
+        ("120 dias", "100%"), ("150 dias", "80%"), ("150 dias", "100%"),
+        ("180 dias", "83%"), ("180 dias", "90%"),
+    ]
+    tabela_vigor = [linha for linha in linhas if linha.startswith(("Gozo exclusivo", "Partilhada"))]
+    for dias, pct in esperadas:
+        assert any(dias in linha and linha.endswith(pct) for linha in tabela_vigor), (dias, pct)
+
+
+def test_tabela_do_texto_aprovado():
+    linhas = _celulas()
+
+    def linha(prefixo):
+        achadas = [x for x in linhas if x.startswith(prefixo)]
+        assert len(achadas) == 1, (prefixo, achadas)
+        return achadas[0]
+
+    assert linha("150 dias sem partilha").endswith("100%")
+    assert linha("180 dias com partilha").endswith("100%")
+    assert linha("210 dias com partilha").endswith("86%")
+    assert linha("210 dias com o pai").endswith("90%")
+    assert "por confirmar" in linha("120 dias a 100%")
+    assert "por confirmar" in linha("180 dias sem partilha")
+    pai_obr = linha("Pai — dias obrigatórios")
+    assert "7 seguidos" in pai_obr and "14 seguidos" in pai_obr
+    pai_fac = linha("Pai — dias facultativos")
+    assert pai_fac.startswith("Pai — dias facultativos 7 dias") and "14 dias" in pai_fac
+    assert "42 dias após o parto" in linha("Mãe — dias obrigatórios")
+
+
+def test_jornada_continua_nao_e_apresentada_como_automatica():
+    t = _texto()
+    assert "56.º-A" in t
+    assert re.search(r"Não é automática", t)
+    assert re.search(r"convenção coletiva", t) and re.search(r"acordo com o empregador", t)
+
+
+def test_percentagens_nao_sao_aplicadas_a_psu():
+    t = _texto()
+    assert re.search(r"não se aplicam automaticamente à PSU", t)
+
+
+# --- vigilância -------------------------------------------------------------
+
+def test_pagina_tem_revisao_marcada_coerente_com_o_carimbo():
+    html = _html()
+    revs = v.revisoes_marcadas(html)
+    assert len(revs) == 1, revs
+    _, d = revs[0]
+    verificado = verificado_em_do_texto(html)
+    assert d is not None and verificado is not None
+    assert verificado <= d <= verificado + timedelta(days=60)
 
 
 def test_sem_alerta_no_dia_da_verificacao():
     html = _html()
-    assert not _frase_da_alerta(html, 2026, 10)
-    assert v.detectar_alertas(html, PAGINA.name, 2026, 10) is None
+    verificado = verificado_em_do_texto(html)
+    assert v.detectar_alertas(html, PAGINA.name, verificado.year, verificado.month,
+                              dia=verificado.day) is None
 
 
-def test_alerta_a_1_de_dezembro_de_2026():
+def test_alerta_no_dia_seguinte_ao_prazo_da_revisao():
     html = _html()
-    assert _frase_da_alerta(html, 2026, 12), (
-        f"a frase com {DATA!r} já não dá alerta em dezembro de 2026"
-    )
-    alerta = v.detectar_alertas(html, PAGINA.name, 2026, 12)
-    assert alerta is not None and alerta["tipo"] == "compromisso_futuro"
+    _, d = v.revisoes_marcadas(html)[0]
+    no_prazo = v.detectar_alertas(html, PAGINA.name, d.year, d.month, dia=d.day)
+    assert no_prazo is None
+    dia_seguinte = d + timedelta(days=1)
+    alerta = v.detectar_alertas(html, PAGINA.name, dia_seguinte.year, dia_seguinte.month,
+                                dia=dia_seguinte.day)
+    assert alerta is not None and alerta["tipo"] == "revisao_marcada"
+    assert d.isoformat() in alerta["corpo"]
+
+
+def test_alerta_continua_nos_meses_fora_de_rever_em():
+    """Ao contrário dos PADROES, a revisão marcada não espera por jan/jul/ago/set."""
+    html = _html()
+    _, d = v.revisoes_marcadas(html)[0]
+    seguinte = date(d.year + (d.month == 12), d.month % 12 + 1, 1)
+    alerta = v.detectar_alertas(html, PAGINA.name, seguinte.year, seguinte.month)
+    assert alerta is not None and alerta["tipo"] == "revisao_marcada"
