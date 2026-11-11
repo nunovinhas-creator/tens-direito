@@ -6,6 +6,17 @@ publicado. Estes testes trancam o que a página pode e não pode dizer até a le
 ser publicada, e provam que a revisão marcada (`data-rever-ate`) dá alerta
 quando o prazo passa — o mecanismo antigo (frase "voltamos a confirmar até
 15 de novembro de 2026") não dava alerta nenhum em 2026.
+
+Estado legislativo declarado no `.aviso-lei` (`data-estado-legislativo`):
+- `aprovado-por-publicar` — a página tem de dizer que a lei ainda não está em
+  vigor e nunca a pode apresentar como em vigor;
+- `publicado` — passagem legítima a regras em vigor: exige o diploma citado
+  por número (Lei n.º N/AAAA), a entrada em vigor e as condições de
+  aplicação, e deixa de exigir «ainda não está em vigor».
+Qualquer outro valor (ou nenhum) falha — a página tem de declarar o estado.
+Factos das tabelas: projeto de decreto da AR (arts. 40.º e 43.º do Código do
+Trabalho e art. 30.º do DL 91/2009, na redação aprovada), entregues pelo Nuno
+a 11/11/2026 com o artigo citado.
 """
 import re
 import sys
@@ -36,7 +47,31 @@ def _celulas():
             for c in re.findall(r"<tr>(.*?)</tr>", _html(), flags=re.S)]
 
 
+ESTADOS = {"aprovado-por-publicar", "publicado"}
+
+
+def _estado():
+    m = re.search(r'class="aviso-lei"[^>]*data-estado-legislativo="([^"]*)"', _html())
+    return m.group(1) if m else None
+
+
+def _pendente():
+    return _estado() == "aprovado-por-publicar"
+
+
 # --- estado legislativo -----------------------------------------------------
+
+def test_estado_legislativo_declarado():
+    assert _estado() in ESTADOS, f"data-estado-legislativo inválido ou em falta: {_estado()!r}"
+
+
+def test_estado_publicado_exige_diploma_vigencia_e_condicoes():
+    if _estado() != "publicado":
+        return
+    t = _texto()
+    assert re.search(r"Lei n\.º \d+/20\d\d", t), "falta o número do diploma publicado"
+    assert re.search(r"entra(m)? em vigor|em vigor desde|produz efeitos", t, re.IGNORECASE)
+    assert re.search(r"licenças? (que comecem|iniciadas)", t, re.IGNORECASE), "faltam as condições de aplicação"
 
 def test_regista_a_votacao_final_global_de_16_de_outubro():
     t = _texto()
@@ -55,6 +90,8 @@ def test_nunca_volta_a_dizer_que_falta_a_votacao_final_global():
 
 
 def test_nunca_apresenta_a_lei_aprovada_como_em_vigor():
+    if not _pendente():
+        return
     t = _texto()
     proibidos = [
         r"(já|agora) (está|estão) em vigor(?!\?)",
@@ -70,6 +107,8 @@ def test_nunca_apresenta_a_lei_aprovada_como_em_vigor():
 
 
 def test_data_de_2027_nunca_aparece_como_certa():
+    if not _pendente():
+        return
     t = _texto()
     for m in re.finditer(r"1 de janeiro de 2027", t):
         janela = t[max(0, m.start() - 250):m.end() + 250]
@@ -100,11 +139,14 @@ def test_tabela_do_texto_aprovado():
         return achadas[0]
 
     assert linha("150 dias sem partilha").endswith("100%")
-    assert linha("180 dias com partilha").endswith("100%")
-    assert linha("210 dias com partilha").endswith("86%")
-    assert linha("210 dias com o pai").endswith("90%")
-    assert "por confirmar" in linha("120 dias a 100%")
-    assert "por confirmar" in linha("180 dias sem partilha")
+    assert linha("180 dias sem partilha").endswith("83%")
+    l180 = linha("180 dias com partilha")
+    assert l180.endswith("100%") and "2×15" in l180
+    l86 = linha("210 dias com partilha")
+    assert l86.endswith("86%") and "30 dias seguidos" in l86 and "2×15 dias seguidos" in l86
+    l90 = linha("210 dias com o pai")
+    assert l90.endswith("90%") and "60 dias seguidos" in l90 and "2×30 dias seguidos" in l90
+    assert linha("120 dias a 100%").endswith("Deixa de existir")
     pai_obr = linha("Pai — dias obrigatórios")
     assert "7 seguidos" in pai_obr and "14 seguidos" in pai_obr
     pai_fac = linha("Pai — dias facultativos")
@@ -117,6 +159,17 @@ def test_jornada_continua_nao_e_apresentada_como_automatica():
     assert "56.º-A" in t
     assert re.search(r"Não é automática", t)
     assert re.search(r"convenção coletiva", t) and re.search(r"acordo com o empregador", t)
+
+
+def test_situacoes_especiais_com_condicoes_e_nunca_automaticas():
+    t = _texto()
+    assert "n.os 17 a 21" in t
+    assert re.search(r"Famílias monoparentais:", t)
+    assert re.search(r"Outros familiares:.{0,200}não é uma possibilidade aberta a todas", t)
+    vd = re.search(r"Vítimas de violência doméstica:(.{0,500})", t).group(1)
+    for condicao in ("todas", "queixa-crime", "medida de coação", "proibição de contacto",
+                     "casa de morada de família", "Não é automático"):
+        assert condicao in vd, condicao
 
 
 def test_percentagens_nao_sao_aplicadas_a_psu():

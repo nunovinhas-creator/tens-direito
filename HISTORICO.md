@@ -7890,6 +7890,33 @@ que as percentagens não se aplicam automaticamente à PSU.
 
 PR: #373 (aberto, draft). Issue #331 continua aberta — acompanhamento da publicação.
 
+## Última revisão: 2026-11-11 — Licença parental: revisão com o projeto de decreto da AR (issue #331, PR #373)
+
+**Fonte**: projeto de decreto da Assembleia da República do Projeto de Lei
+n.º 176/XVII/1.ª (BID=315518), analisado pelo Nuno e entregue com o artigo
+citado. parlamento.pt e openar.pt não resolvem a partir desta sessão — o
+texto não foi lido aqui e as páginas do PDF não foram conferidas.
+Transcrito como entregue: art. 40.º (150/180/210 dias; 120 deixa de
+constar), art. 30.º do DL 91/2009 (100/83/100/86/90%), art. 43.º (28 dias
+obrigatórios do pai, 14 logo após o nascimento, + 14 facultativos);
+partilha de 30 dias seguidos ou 2×15 (86%) e pai 60 dias seguidos ou 2×30
+(90%). Situações especiais (art. 40.º, n.os 17 a 21): o Nuno deu os números
+dos artigos, não o texto — conteúdo resumido de várias fontes secundárias
+(Governo, TSF, Renascença, JN, Observador), com a ressalva visível.
+Arts. 8.º e 9.º (efeitos e vigência): texto não entregue; a página mantém
+«licenças a partir de 1/1/2027, entrada em vigor ligada ao Orçamento do
+Estado seguinte», de fontes secundárias.
+
+`subsidio-parental.html`: tabela do texto aprovado (180 sem partilha 83%;
+120 deixa de existir; condições 2×15 e 2×30), bloco «Situações familiares
+especiais», `data-rever-ate` 15/11/2026, `data-estado-legislativo`.
+Testes: estado declarado, estado `publicado` exige diploma/vigência/
+condições, tabelas e condições da violência doméstica — três mutações
+provadas a falhar. Limitação documentada no CLAUDE.md: nada detecta a
+publicação antes da data marcada.
+
+PR: #373 (aberto, draft).
+
 ---
 
 *Última revisão automática: 2026-11-10*

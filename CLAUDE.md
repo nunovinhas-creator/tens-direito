@@ -2606,7 +2606,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `garantia-publica-credito-habitacao.html` | **31 de dezembro de 2026** — prazo-limite dos contratos abrangidos pela Garantia Pública (Portaria n.º 236-A/2024/1), sem prorrogação confirmada. 9 ocorrências na página (meta/og description, FAQ, HowTo, resposta rápida, checklist, aviso) — nenhuma lê o valor em runtime | `dre_habitacao_garantia` (Decreto-Lei) + `dre_habitacao_garantia_portaria` (Portaria, 2026-09-15 — cobre a via mais plausível de prorrogação, uma Portaria que altera o protocolo) — ver "CLUSTER HABITAÇÃO" |
 | `fontes.html` | Idem — cartões do DL 44/2024 e da Portaria n.º 236-A/2024/1 citam a mesma cláusula de vigência (2 ocorrências) | Idem — ver "CLUSTER HABITAÇÃO" |
 | `p/habitacao.html` | Idem — 4 ocorrências (FAQ e corpo, secções "Comprar"/"Perguntas") | Idem — ver "CLUSTER HABITAÇÃO" |
-| `subsidio-parental.html` | Janeiro (novo IAS) + **acompanhamento da lei da licença parental** (Projeto de Lei n.º 176/XVII/1.ª, aprovado a 16/10/2026, por promulgar/publicar — issue #331): revisão marcada em `data-rever-ate` no `.aviso-lei`; quando a lei for publicada, passar o texto aprovado a regras em vigor só com o número do diploma, a entrada em vigor e as normas transitórias confirmados | Issue automática do scraper + alerta `revisao_marcada` de `verificar_datas.py` no dia seguinte a `data-rever-ate` |
+| `subsidio-parental.html` | Janeiro (novo IAS) + **acompanhamento da lei da licença parental** (Projeto de Lei n.º 176/XVII/1.ª, aprovado a 16/10/2026, por promulgar/publicar — issue #331): revisão marcada em `data-rever-ate` no `.aviso-lei` (curta: nenhum sentinela detecta a publicação antes); quando a lei for publicada, mudar `data-estado-legislativo` para `publicado` e passar o texto aprovado a regras em vigor só com o número do diploma, a entrada em vigor e as normas transitórias confirmados | Issue automática do scraper + alerta `revisao_marcada` de `verificar_datas.py` no dia seguinte a `data-rever-ate` |
 | `tarifa-social-energia.html` | **Antes de 1/1/2027** (desconto da luz de 2027 — o de 2026 é 33,8%) e **antes de 1/10/2027** (desconto do gás de 2027/2028 — o de 1/10/2026 a 30/9/2027 é 31,2%); frase da PSU a acompanhar em 2027 (issue #293). O cartão de `p/habitacao.html` repete os dois descontos | `test_tarifa_social_descontos_dentro_do_periodo_de_vigencia` (`tests/test_valores_ancora.py`, corre todos os dias no Step 4c) falha quando o período acaba sem entrada nova em `dados/parametros/energia.yaml` — `verificar_datas.py` não apanha "33,8% (2026)" e só trataria uma data de 2027 como antiga em 2028 |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
@@ -4821,7 +4821,15 @@ uma Issue é criada ou um valor é alterado:
    data válida, entre o carimbo "Verificado a" e +120 dias) e
    `tests/test_vigilancia_licenca_parental.py`. Complementa o marcador
    `ESPERA-LEGAL` (`tests/test_espera_legal.py`, CI vermelho aos 60 dias),
-   não o substitui.
+   não o substitui. **Limitação**: o alerta só chega no dia seguinte à
+   data marcada — nada detecta sozinho uma promulgação ou publicação
+   anterior (não há sentinela DRE para estas leis); por isso a data fica
+   curta (dias, não meses). O `.aviso-lei` declara também
+   `data-estado-legislativo` (`aprovado-por-publicar` | `publicado`):
+   os testes de «ainda não está em vigor» só se aplicam ao primeiro; o
+   segundo exige o diploma por número, a entrada em vigor e as condições
+   de aplicação — a passagem a regras em vigor é legítima, nunca
+   bloqueada por um teste.
 2. **Classificação** (`classificar_datas.py`) — `EstadoData`: `OK`,
    `OUTDATED_AUTOFIXABLE`, `OUTDATED_REVIEW_REQUIRED`, `STATIC_REFERENCE`,
    `BLOCKED_SOURCE`.
