@@ -2278,5 +2278,118 @@
         "score": 3
       }
     ]
+  },
+  {
+    "data": "2026-11-13",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 13,
+      "subsidio_desemprego": 14,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 10,
+      "calendario_pagamentos_seg_social": 12,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Segurança Social altera data de pagamentos dos subsídios em dezembro - Magazine.HD",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-11",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-11"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "subsidio_desemprego",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Segurança Social: já há datas para os pagamentos de dezembro. Saiba quando recebe cada apoio - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 2,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Abono de família sobe 2,2% com retroativos a janeiro - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-09",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-09"
+      },
+      {
+        "titulo": "Maioria das pensões vai aumentar 3,3% em 2027 - Público",
+        "feed_nome": "ias_valor_referencia",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-06"
+      },
+      {
+        "titulo": "Segurança Social: conheça as datas de pagamento em dezembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-06",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Segurança Social: conheça as datas de pagamento em dezembro de 2026 - Pplware",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 1
+      }
+    ]
   }
 ]

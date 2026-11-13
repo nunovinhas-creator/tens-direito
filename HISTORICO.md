@@ -7975,4 +7975,4 @@ telemóvel).
 
 ---
 
-*Última revisão automática: 2026-11-12*
+*Última revisão automática: 2026-11-13*
