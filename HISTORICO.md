@@ -8035,3 +8035,9 @@ recentemente», «Como funciona» e os botões secundários do hero; o script
 deixou de gerar `DESTAQUES:HOME`/`ATUALIZACOES:HOME`. Detalhe em CLAUDE.md
 → «HOMEPAGE CURTA».
 
+### Última revisão: 2026-11-13 — sem ligação aos tipos de letra da Google e comentário do consentimento corrigido
+
+- Retirado de 112 páginas o `<link rel="preconnect" href="https://fonts.googleapis.com">`: nenhuma página carrega tipos de letra da Google, e o preconnect abria uma ligação a um servidor da Google antes de a pessoa aceitar os cookies.
+- O comentário do bloco de consentimento (112 páginas e `scripts/migrar_consentimento.py`) dizia «o Google Analytics só carrega após aceitação», falso desde o Consent Mode avançado (13/07). Passou a «carrega sempre, mas só guarda cookies depois de a pessoa aceitar».
+- Dois testes novos em `tests/test_consentimento.py`, provados a falhar com o HTML anterior. Retirado o `page.route` para `fonts.googleapis.com` de dois testes de simuladores (já não há pedido a bloquear).
+

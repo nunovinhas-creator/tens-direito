@@ -55,6 +55,27 @@ def test_nenhuma_pagina_referencia_cookieyes(caminho):
 
 
 @pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_nenhuma_pagina_liga_aos_tipos_de_letra_da_google(caminho):
+    """2026-11-13: 112 páginas tinham um preconnect a fonts.googleapis.com sem
+    nenhuma folha de estilo da Google — uma ligação a um servidor da Google
+    antes do consentimento, que não trazia nada. Não pode voltar por cópia."""
+    html = caminho.read_text(encoding="utf-8")
+    assert "fonts.googleapis.com" not in html and "fonts.gstatic.com" not in html, (
+        f"{caminho.name}: liga aos tipos de letra da Google — o site não os usa"
+    )
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
+def test_comentario_do_consentimento_descreve_o_consent_mode_avancado(caminho):
+    """Desde 2026-07-13 o gtag.js carrega sempre (Consent Mode avançado); o
+    comentário antigo dizia que só carregava depois de aceitar."""
+    html = caminho.read_text(encoding="utf-8")
+    assert "só carrega após aceitação" not in html, (
+        f"{caminho.name}: comentário do consentimento desactualizado"
+    )
+
+
+@pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
 def test_toda_a_pagina_tem_o_bloco_de_consentimento_proprio(caminho):
     html = caminho.read_text(encoding="utf-8")
     assert "/assets/js/consentimento.js" in html, f"{caminho.name}: sem consentimento.js"
