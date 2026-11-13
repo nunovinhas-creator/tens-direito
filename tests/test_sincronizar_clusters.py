@@ -22,7 +22,7 @@ from sincronizar_clusters import (
     artigos_relacionados,
     contagem_str,
     extrair_verificado_em,
-    render_atualizacoes_home,
+    render_home_cards,
 )
 
 RAIZ = Path(__file__).parent.parent
@@ -105,14 +105,6 @@ _HOME_COM_MARCADOR = """<!DOCTYPE html>
   <section id="guias-de-apoios">
     <!-- CLUSTERS:HOME:INICIO -->
     <!-- CLUSTERS:HOME:FIM -->
-  </section>
-  <section id="guias-principais">
-    <!-- DESTAQUES:HOME:INICIO -->
-    <!-- DESTAQUES:HOME:FIM -->
-  </section>
-  <section id="atualizado-recentemente">
-    <!-- ATUALIZACOES:HOME:INICIO -->
-    <!-- ATUALIZACOES:HOME:FIM -->
   </section>
   <div class="urgente-cards" role="list">
         <!-- PRAZOS:HOME:INICIO -->
@@ -251,9 +243,9 @@ def test_injeta_cartoes_na_home(tmp_path):
     assert "Cluster B" in conteudo
     assert "2 guias" in conteudo  # cluster-a tem 2 artigos
     assert "1 guia<" in conteudo  # cluster-b tem 1 artigo (singular, não "1 guias")
-    assert "/artigo-1.html" in conteudo  # destaque do cluster-a
-    assert "/artigo-3.html" in conteudo  # destaque do cluster-b
-    assert "/artigo-2.html" not in conteudo  # não é destaque — não aparece nos "guias principais"
+    # Desde 2026-11-13 a homepage não lista artigos soltos ("Guias principais"
+    # e "Atualizado recentemente" saíram) — só os temas.
+    assert "/artigo-1.html" not in conteudo
 
 
 # ── Idempotência (obrigatória) ───────────────────────────────────────────
@@ -545,73 +537,14 @@ def test_extrai_devolve_none_para_ficheiro_inexistente(tmp_path):
     assert extrair_verificado_em(tmp_path / "nao-existe.html") is None
 
 
-def test_render_atualizacoes_home_ordena_por_data_desc(tmp_path):
+def test_render_home_cards_compacto_sem_descricao(tmp_path):
+    """Homepage curta (2026-11-13): cada tema é só ícone, nome e contagem —
+    a descrição longa fica na página do tema."""
     clusters = _clusters(tmp_path)
-    _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 10/01/2026</p>")
-    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
-    _escrever(tmp_path, "artigo-3.html", "<p>Verificado a 15/03/2026</p>")
-
-    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
-
-    pos_2 = html_gerado.index("/artigo-2.html")
-    pos_3 = html_gerado.index("/artigo-3.html")
-    pos_1 = html_gerado.index("/artigo-1.html")
-    assert pos_2 < pos_3 < pos_1
-    assert "Verificado a 1 jul. 2026." in html_gerado
-
-
-def test_render_atualizacoes_home_respeita_limite(tmp_path):
-    clusters = _clusters(tmp_path)
-    _escrever(tmp_path, "artigo-1.html", "<p>Verificado a 10/01/2026</p>")
-    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
-    _escrever(tmp_path, "artigo-3.html", "<p>Verificado a 15/03/2026</p>")
-
-    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=2)
-
-    assert html_gerado.count('class="apoio-card"') == 2
-    assert "/artigo-2.html" in html_gerado
-    assert "/artigo-3.html" in html_gerado
-    assert "/artigo-1.html" not in html_gerado
-
-
-def test_render_atualizacoes_home_ignora_paginas_sem_data(tmp_path):
-    clusters = _clusters(tmp_path)
-    _escrever(tmp_path, "artigo-1.html", "<p>Sem data de verificação.</p>")
-    _escrever(tmp_path, "artigo-2.html", "<p>Verificado a 1 de julho de 2026</p>")
-    # artigo-3.html nem sequer existe em disco
-
-    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
-
-    assert "/artigo-2.html" in html_gerado
-    assert "/artigo-1.html" not in html_gerado
-    assert "/artigo-3.html" not in html_gerado
-
-
-def test_render_atualizacoes_home_so_considera_artigos_nao_ferramentas(tmp_path):
-    """Ferramentas nunca aparecem em 'Atualizado recentemente' — mesma
-    regra de CLUSTER-BADGE/RELACIONADOS (só tipo: "artigo")."""
-    dados = {
-        "clusters": [{
-            "id": "cluster-c",
-            "nome": "Cluster C",
-            "descricao_curta": "Descrição.",
-            "icone": "🅲",
-            "pillar": "/p/cluster-c.html",
-            "paginas": [
-                {"slug": "artigo-4.html", "titulo": "Artigo 4", "tipo": "artigo", "destaque": False},
-                {"slug": "simulador-x.html", "titulo": "Simulador X", "tipo": "ferramenta", "destaque": False},
-            ],
-            "relacionados": [],
-        }]
-    }
-    caminho_json = tmp_path / "clusters.json"
-    caminho_json.write_text(json.dumps(dados, ensure_ascii=False), encoding="utf-8")
-    clusters = carregar_clusters(caminho_json)
-
-    _escrever(tmp_path, "artigo-4.html", "<p>Verificado a 1 de julho de 2026</p>")
-    _escrever(tmp_path, "simulador-x.html", "<p>Verificado a 1 de julho de 2026</p>")
-
-    html_gerado = render_atualizacoes_home(clusters, raiz=tmp_path, limite=4)
-
-    assert "/artigo-4.html" in html_gerado
-    assert "/simulador-x.html" not in html_gerado
+    html_gerado = render_home_cards(clusters)
+    assert 'class="tema-card"' in html_gerado
+    assert 'class="tema-nome"' in html_gerado and 'class="tema-conta"' in html_gerado
+    assert 'aria-hidden="true"' in html_gerado
+    for c in clusters:
+        if not c.oculta_em_apoios:
+            assert c.descricao_curta not in html_gerado

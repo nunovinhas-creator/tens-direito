@@ -8024,3 +8024,14 @@ A página estava publicada desde as 16:47 (smoke test confirmou a versão servid
 - tem uma ligação no início do conteúdo de 7 guias: PSU, RSI, Reformas, idade normal da reforma, CSI, licença parental e garantia pública (bloco `VER-2027:INICIO/FIM`, estilo `.ver-2027` em `nav.css`, escondido na impressão).
 Sem facto novo: datas de verificação das páginas não mudaram.
 
+### Última revisão: 2026-11-13 — homepage curta
+
+Homepage de ~8,5 ecrãs para ~3 no computador (6776px → ~2480px) e de ~18
+para ~5 no telemóvel (13580px → ~3800px). Ficam: hero (um só botão),
+«Escolhe o teu tema» (cartões compactos gerados por `sincronizar_clusters.py`),
+5 simuladores, «Datas a não perder», notícias compactas e o convite do
+canal. Saem «Comece por aqui», «Guias principais», «Atualizado
+recentemente», «Como funciona» e os botões secundários do hero; o script
+deixou de gerar `DESTAQUES:HOME`/`ATUALIZACOES:HOME`. Detalhe em CLAUDE.md
+→ «HOMEPAGE CURTA».
+
