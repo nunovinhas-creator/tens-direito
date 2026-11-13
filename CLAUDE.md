@@ -4838,6 +4838,13 @@ uma Issue é criada ou um valor é alterado:
    mais de `LIMIAR_ANOMALIA_PAGINAS` (25) páginas analisadas como **anomalia
    explícita** em vez de "sistema estável" — "0" nunca é lido em silêncio
    como "está tudo bem" (ver `tests/test_run_shadow_daily_fonte_propria.py`).
+   Fora dos meses de `REVER_EM` (ex.: out-dez, mar-mai) só
+   `compromisso_futuro` e `carimbo_antigo` correm, por isso a anomalia
+   aparece nesses meses sem a detecção estar partida — a prova de que
+   cada tipo com data própria dispara (página mínima, marcadores vizinhos
+   que não regem a data, e cada página real de `_paginas_elegiveis`) está
+   nos testes "Shadow Mode: 0 alertas" de `tests/test_verificar_datas.py`
+   (2026-11-13).
    ~~Limitação conhecida (Fase 5): `_paginas_elegiveis()`/`verificar_datas.main()`
    só cobriam a raiz~~ — **fechada a 2026-07-07**: ambos passaram a cobrir
    também `p/` e `documentos/` (52 páginas elegíveis; mudam sempre juntos,

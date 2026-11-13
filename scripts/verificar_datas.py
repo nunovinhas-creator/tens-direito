@@ -42,12 +42,20 @@ marcadores de supressão) e tem regra própria: alerta `carimbo_antigo`
 quando um carimbo tem mais de LIMITE_MESES_CARIMBO meses face ao mês de
 execução, em qualquer mês do ano.
 
-Âmbito deliberado, sem data prevista de expansão: só os 3 tipos com uma
-data própria e sem ambiguidade — data_mes_ano, data_numerica,
-prazo_outono. `ano_letivo` (par de anos, sem dia) e `valor_ias` (ano
-solto na janela, sem grupo dedicado) ficam de fora — nenhum caso
-concreto os exige, e derivar uma data única a partir deles seria
-ambíguo (ver CLAUDE.md, secção do portão de confirmação).
+Âmbito deliberado do portão de confirmação (não dos alertas), sem data
+prevista de expansão: só os 3 tipos com uma data própria e sem
+ambiguidade — data_mes_ano, data_numerica, prazo_outono. `ano_letivo`
+(par de anos, sem dia) e `valor_ias` (ano solto na janela, sem grupo
+dedicado) ficam de fora — nenhum caso concreto os exige, e derivar uma
+data única a partir deles seria ambíguo (ver CLAUDE.md, secção do
+portão de confirmação).
+
+Quando corre cada alerta: os 5 tipos de PADROES só são avaliados nos
+meses de REVER_EM (data_mes_ano e data_numerica em jan/jul/ago/set,
+prazo_outono em ago/set, valor_ias em jan/fev, ano_letivo em jun/jul);
+compromisso_futuro e carimbo_antigo correm todos os meses. Num mês fora
+de REVER_EM, 0 alertas é o esperado, não sinal de detecção partida —
+ver os testes "Shadow Mode: 0 alertas" em tests/test_verificar_datas.py.
 """
 
 import glob

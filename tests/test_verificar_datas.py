@@ -20,11 +20,17 @@ real em produção):
 """
 import re
 import sys
+from datetime import date as _date
 from pathlib import Path
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from verificar_datas import detectar_alertas, PADROES
+from verificar_datas import (
+    JANELA, JANELA_LINK, PADRAO_CARIMBO, PADRAO_COMPROMISSO_FUTURO, PADROES, REVER_EM,
+    _pagina_tem_alerta, detectar_alertas,
+)
 
 ANO = 2026
 MES = 7  # julho — activa data_mes_ano, data_numerica e ano_letivo
@@ -757,3 +763,137 @@ def test_paginas_reais_hoje_sem_alerta_de_compromisso_futuro():
         assert not _compromisso_futuro_expirado(
             conteudo, 2026, 10, verificado_em_do_texto(conteudo)
         ), pagina.name
+
+
+# ── Shadow Mode: 0 alertas em 108 páginas (2026-11-08 a 2026-11-12) ───────────
+# Os 3 tipos com data própria (data_mes_ano, data_numerica, prazo_outono) só
+# são avaliados nos meses de REVER_EM — data_mes_ano/data_numerica em jan,
+# jul, ago e set; prazo_outono em ago e set. Em novembro nenhum dos 3 corre:
+# só compromisso_futuro e carimbo_antigo correm todos os meses. O "zero" de
+# novembro é este desenho, não detecção partida. Estes testes provam, com
+# datas relativas ao dia de execução (nunca ficam vermelhos com o
+# calendário), que cada tipo dispara quando é avaliado — em página mínima,
+# ao lado de marcadores que não regem a data, e em cada página real que o
+# Shadow Mode analisa.
+
+_HOJE = _date.today()
+_ANO_PASSADO = _HOJE.year - 2
+_MESES_PT = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
+             "agosto", "setembro", "outubro", "novembro", "dezembro")
+_CARIMBO_HOJE = (f"<p>Verificado a {_HOJE.day} de {_MESES_PT[_HOJE.month - 1]} "
+                 f"de {_HOJE.year} pela redação do Tens Direito</p>")
+
+# Uma frase por tipo, que só corresponde a esse tipo: "15 de outubro AAAA"
+# (sem "de" antes do ano) é prazo_outono e não data_mes_ano — com "de", o
+# data_mes_ano vem primeiro em PADROES e é ele o alerta devolvido.
+FRASE_EXPIRADA = {
+    "data_mes_ano": f"<p>O prazo de candidatura terminou em março de {_ANO_PASSADO}.</p>",
+    "data_numerica": f"<p>O prazo de candidatura terminou a 15/03/{_ANO_PASSADO}.</p>",
+    "prazo_outono": f"<p>As candidaturas encerraram a 15 de outubro {_ANO_PASSADO}.</p>",
+}
+TIPOS_COM_DATA = tuple(FRASE_EXPIRADA)
+
+
+def _padrao(tipo):
+    return next(p for p in PADROES if p["tipo"] == tipo)
+
+
+def _tipos_que_correspondem(conteudo):
+    return {p["tipo"] for p in PADROES + [PADRAO_COMPROMISSO_FUTURO, PADRAO_CARIMBO]
+            if re.search(p["regex"], conteudo, re.IGNORECASE)}
+
+
+@pytest.mark.parametrize("tipo", TIPOS_COM_DATA)
+def test_frase_sintetica_so_corresponde_ao_seu_tipo(tipo):
+    # Guarda dos testes abaixo: sem isto, um alerta de outro tipo podia
+    # passar por alerta deste.
+    assert _tipos_que_correspondem(FRASE_EXPIRADA[tipo]) == {tipo}
+
+
+@pytest.mark.parametrize("tipo", TIPOS_COM_DATA)
+def test_pagina_minima_com_data_expirada_dispara_hoje(tipo):
+    html = _html(FRASE_EXPIRADA[tipo] + _CARIMBO_HOJE)
+    assert _pagina_tem_alerta(html, _padrao(tipo), _HOJE.year, _HOJE.month,
+                              verificado_em=_HOJE, pagina="sintetica.html")
+
+
+@pytest.mark.parametrize("tipo", TIPOS_COM_DATA)
+def test_detectar_alertas_dispara_o_tipo_certo_so_nos_meses_de_rever_em(tipo):
+    html = _html(FRASE_EXPIRADA[tipo] + _CARIMBO_HOJE)
+    for mes in range(1, 13):
+        alerta = detectar_alertas(html, "sintetica.html", _HOJE.year, mes)
+        if mes in REVER_EM[tipo]:
+            assert alerta is not None and alerta["tipo"] == tipo, (tipo, mes)
+        else:
+            assert alerta is None, (tipo, mes, alerta and alerta["tipo"])
+
+
+def test_prazo_outono_com_de_antes_do_ano_tambem_dispara():
+    # A forma habitual, "15 de setembro de AAAA", também é prazo_outono —
+    # só não é o alerta devolvido por detectar_alertas (data_mes_ano vem antes).
+    html = _html(f"<p>As candidaturas encerraram a 15 de setembro de {_ANO_PASSADO}.</p>")
+    assert _pagina_tem_alerta(html, _padrao("prazo_outono"), _HOJE.year, 8)
+
+
+# Guarda contra supressão excessiva (mesmo padrão do marcador "salvaguarda",
+# #170/#172): uma citação de diploma com "em vigor desde" e um carimbo
+# recente na mesma janela de 220 caracteres não regem a data expirada, que
+# continua a disparar; a data da própria citação continua suprimida.
+_CONTEXTO_DIPLOMA = ("<p>Valores da Portaria n.º 480-A/2025/1, de 30 de dezembro, "
+                     "em vigor desde 1 de janeiro.</p>")
+
+
+@pytest.mark.parametrize("tipo", TIPOS_COM_DATA)
+def test_marcadores_vizinhos_nao_suprimem_a_data_expirada(tipo):
+    html = _html(_CONTEXTO_DIPLOMA + FRASE_EXPIRADA[tipo] + _CARIMBO_HOJE)
+    m = re.search(_padrao(tipo)["regex"], html, re.IGNORECASE)
+    assert m.start() - html.index("Portaria") < JANELA  # marcadores dentro da janela
+    assert _pagina_tem_alerta(html, _padrao(tipo), _HOJE.year, _HOJE.month,
+                              verificado_em=_HOJE, pagina="sintetica.html")
+    mes = REVER_EM[tipo][0]
+    alerta = detectar_alertas(html, "sintetica.html", _HOJE.year, mes)
+    assert alerta is not None and alerta["tipo"] == tipo
+
+
+@pytest.mark.parametrize("tipo, data", [
+    ("data_mes_ano", f"15 de março de {_ANO_PASSADO}"),
+    ("data_numerica", f"15/03/{_ANO_PASSADO}"),
+    ("prazo_outono", f"15 de outubro {_ANO_PASSADO}"),
+])
+def test_data_da_propria_citacao_continua_suprimida(tipo, data):
+    html = _html(f"<p>Fonte: Portaria n.º 12/{_ANO_PASSADO}, de {data}.</p>" + _CARIMBO_HOJE)
+    assert re.search(_padrao(tipo)["regex"], html, re.IGNORECASE)  # não é vácuo
+    assert not _pagina_tem_alerta(html, _padrao(tipo), _HOJE.year, _HOJE.month,
+                                  verificado_em=_HOJE, pagina="sintetica.html")
+
+
+def test_nenhuma_pagina_real_do_shadow_mode_e_cega_aos_3_tipos():
+    """As páginas que o Shadow Mode analisa (a mesma lista, `_paginas_elegiveis`):
+    para cada tipo, cada página ou já dispara sozinha, ou dispara com uma
+    data expirada injectada antes de </main>, entre texto neutro (fora da
+    janela de qualquer marcador da página). Prova que o "zero" não vem de
+    uma supressão ao nível da página (carimbo, DATAS_PERMANENTES, HTML)."""
+    from run_shadow_daily import _paginas_elegiveis
+    from shadow_report_md import LIMIAR_ANOMALIA_PAGINAS
+    from sincronizar_clusters import verificado_em_do_texto
+
+    paginas = _paginas_elegiveis(RAIZ_REPO)
+    assert len(paginas) > LIMIAR_ANOMALIA_PAGINAS
+    neutro = "<p>" + "Texto neutro de enchimento. " * 12 + "</p>"
+    assert len(neutro) > max(JANELA, JANELA_LINK)
+    cegas, provadas = [], dict.fromkeys(TIPOS_COM_DATA, 0)
+    for caminho in paginas:
+        nome = caminho.relative_to(RAIZ_REPO).as_posix()
+        original = caminho.read_text(encoding="utf-8")
+        assert original.count("</main>") == 1, nome
+        for tipo in TIPOS_COM_DATA:
+            injectado = original.replace("</main>", neutro + FRASE_EXPIRADA[tipo] + neutro + "</main>")
+            args = (_padrao(tipo), _HOJE.year, _HOJE.month)
+            if _pagina_tem_alerta(original, *args, verificado_em_do_texto(original), nome):
+                continue  # já dispara sozinha — não é cega a este tipo
+            if _pagina_tem_alerta(injectado, *args, verificado_em_do_texto(injectado), nome):
+                provadas[tipo] += 1
+            else:
+                cegas.append((nome, tipo))
+    assert cegas == []
+    assert all(provadas.values()), provadas  # cada tipo provado pela injecção, não vácuo
