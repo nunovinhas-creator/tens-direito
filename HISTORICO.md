@@ -7901,6 +7901,63 @@ reinsere-o depois do `<loc>`, à mesma indentação. `--check` antes: divergente
 actualizar já na ordem, retirar numa excepção, idempotência — falha com o
 script antigo).
 
+
+## Última revisão: 2026-11-13 — Barra do topo: próximo pagamento + canal de WhatsApp
+
+Barra de 40px, fixa acima da nav, em todas as páginas (111), que alterna
+«🔔 Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança
+Social →» (`utm_content=barra_topo`) com «📅 Próximo pagamento: <dia> —
+<resumo> →». Substitui a barra do calendário que só existia na homepage
+(`.cal-topo-regiao`). Decisões do Nuno nesta sessão: marcadores próprios
+`BARRA-TOPO` escritos pelo `sincronizar_nav.py` + datas num JSON gerado;
+«da Segurança Social» no texto (o canal ainda não avisa as pensões da CGA,
+que a mensagem do calendário mostra); botão de pausa além do hover/foco
+(WCAG 2.2.2); gerador de documentos só com a mensagem do WhatsApp, sem
+fetch nem evento (rede-zero).
+
+Antes de implementar, verificado contra a REGRA DE OURO: a parte fixa
+entre marcadores, escrita num script de sessão manual, é a categoria da
+NAV — não colide; as datas dentro de cada HTML colidiriam (o
+`calendario-mensal.yml` teria de reescrever 110 páginas protegidas todos
+os meses), por isso vivem em `data/calendario_barra.json`, gerado pelo
+`atualizar_calendario.py` com a mesma função de `#cal-home-dados`
+(`_dados_por_mes()`), e o guardrail + `git add` do `calendario-mensal.yml`
+passaram a incluí-lo. Não foi para `calendario/` porque
+`test_calendarios_ics.py` exige só `.ics` nessa pasta.
+
+- `scripts/sincronizar_nav.py`: `render_barra_topo()`, `bootstrap_barra()`
+  (a seguir ao skip-link; recusa sem skip-link ou com `cal-topo`),
+  `barra_estatica()`, `hoje-lisboa.js` no `<head>` onde a barra lê datas,
+  e `sincronizar_conteudo()` — a transformação pura de uma página, para os
+  testes provarem que só mexe nos blocos NAV/BARRA-TOPO e no `<head>`. 98
+  páginas sincronizadas na 2.ª passagem (as 13 do gerador já iguais);
+  3.ª passagem: 0 alterações.
+- `assets/js/nav.js`: `iniciarBarraTopo()` — fade a cada 6 s, começa na
+  mensagem do WhatsApp (a mesma que se vê sem JS, sem salto ao carregar),
+  `aria-live="off"`, pausa ao hover/foco/página escondida/botão;
+  reduced-motion, sem dados do mês de Lisboa, sem pagamento a partir de
+  hoje, fetch falhado ou JSON partido → só WhatsApp. Texto montado com
+  `textContent`, nunca `innerHTML`.
+- `assets/css/nav.css`: estilos da barra (antes inline na homepage),
+  nav a `top: 40px`, menu móvel a `top: 100px`,
+  `html { scroll-padding-top: 108px }`; `simulador-universal.html`:
+  `scroll-margin-top` 88 → 20px (mesma folga de 28px por baixo do topo
+  fixo, agora 100px).
+- `index.html`: barra antiga, o seu CSS, o script que promovia a data e
+  o `cal_home_clique` saíram; a zona `CAL-HOME` ficou logo a seguir aos
+  marcadores novos.
+- GA4: `barra_topo_clique` `{ destino }` em vez de `cal_home_clique`.
+
+Testes: `tests/test_barra_topo.py` (novo, 584 casos — parametrizado sobre
+as 111 páginas + Chromium com relógio fixo), `tests/test_calendario_frescura.py`
+(4 testes da barra da homepage adaptados + JSON igual a `#cal-home-dados` e
+sincronizado — corre no workflow mensal antes do commit),
+`tests/test_eventos_ga4.py` (evento novo, `cal_home_clique` sem restos,
+modo estático sai antes do evento e do fetch). Provados a falhar com seis
+sabotagens descartáveis: sem o filtro `dia >= hoje` (caso «tudo pago»),
+sem a saída por reduced-motion, sem a saída do modo estático, sem a pausa
+ao hover, sem a pausa ao foco e sem a linha do guardrail do workflow.
+
 ---
 
 *Última revisão automática: 2026-11-12*

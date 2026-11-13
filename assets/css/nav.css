@@ -385,3 +385,99 @@ a.reportar-erro {
   .nav-links, .nav-wrap > nav > .nav-search { display: none; }
   .nav-toggle { display: flex; }
 }
+
+/*
+ * Barra do topo (BARRA-TOPO, scripts/sincronizar_nav.py) — em todas as
+ * páginas, fixa (sticky) acima da nav, uma linha de 40px. Sem JS só mostra
+ * a mensagem do canal de WhatsApp; o nav.js alterna-a com o próximo
+ * pagamento do mês (datas de data/calendario_barra.json) e mostra o botão
+ * de pausa (WCAG 2.2.2). A nav e o menu móvel descem 40px — o combinador
+ * de irmão só actua onde a barra existe. scroll-padding-top: as âncoras
+ * não ficam tapadas pela barra + nav fixas (40 + 60px).
+ */
+html { scroll-padding-top: 108px; }
+
+.barra-topo-regiao {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0F766E;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.barra-topo-regiao ~ .nav-wrap { top: 40px; }
+.barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { top: 100px; max-height: calc(100vh - 100px); }
+
+.barra-topo-mensagens {
+  height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  transition: opacity 0.4s ease;
+}
+
+.barra-topo-mensagens.barra-topo-a-trocar { opacity: 0; }
+
+.barra-topo-msg {
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 1rem;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.barra-topo-msg[hidden],
+.barra-topo-pausa[hidden] { display: none; }
+
+.barra-topo-msg:hover { background: #115E59; }
+.barra-topo-msg:focus-visible { outline: 3px solid #FFFFFF; outline-offset: -3px; }
+
+.barra-topo-texto { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barra-topo-seta { flex: none; }
+.barra-topo-curto { display: none; }
+
+/* Botão de pausa — 40×40px, à direita, fora do fluxo do texto centrado. */
+.barra-topo-pausa {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.barra-topo-pausa:hover { background: #115E59; }
+.barra-topo-pausa[data-pausado="false"] .barra-topo-icone-retomar,
+.barra-topo-pausa[data-pausado="true"] .barra-topo-icone-pausa { display: none; }
+.barra-topo-pausa:focus-visible { outline: 3px solid #FFFFFF; outline-offset: -3px; }
+/* Com o botão visível (classe posta pelo nav.js), o texto deixa 40px de
+   cada lado — continua centrado e nunca passa por baixo do botão. */
+.barra-topo-animada .barra-topo-mensagens { margin: 0 40px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .barra-topo-mensagens { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .barra-topo-msg { font-size: 0.86rem; padding: 0 0.75rem; }
+  .barra-topo-longo { display: none; }
+  .barra-topo-curto { display: inline; }
+}

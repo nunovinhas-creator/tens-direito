@@ -32,9 +32,11 @@ RAIZ = Path(__file__).parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
 from atualizar_calendario import (  # noqa: E402
+    BARRA_JSON,
     INDEX,
     PAGINA,
     _encontrar_mes,
+    atualizar_barra_json,
     atualizar_homepage,
     atualizar_pagina,
     carregar_dados,
@@ -470,6 +472,23 @@ def test_homepage_barra_sincronizada_com_os_dados_e_idempotente():
     )
 
 
+def test_barra_json_igual_aos_dados_da_homepage_e_sincronizado():
+    """data/calendario_barra.json (barra do topo das outras páginas, lido por
+    fetch) tem de ser exactamente o que o gerador escreveria para o mês com
+    que a homepage foi gerada — e o mesmo conteúdo de #cal-home-dados: as
+    duas barras nunca podem mostrar datas diferentes."""
+    import json as _json
+    data_mes, por_mes = _cal_home()
+    assert BARRA_JSON.exists(), "data/calendario_barra.json em falta"
+    assert _json.loads(BARRA_JSON.read_text(encoding="utf-8")) == por_mes
+    hoje = (dt.date(int(data_mes[:4]), int(data_mes[5:]), 1) if data_mes
+            else hoje_lisboa())
+    assert not atualizar_barra_json(carregar_dados(), hoje, escrever=False), (
+        "scripts/atualizar_calendario.py produziria outro data/calendario_barra.json "
+        "— correr o script e commitar o resultado"
+    )
+
+
 def test_homepage_cal_home_dados_coerente_com_o_json_e_mes_corrente():
     data_mes, por_mes = _cal_home()
     assert isinstance(por_mes, dict), "#cal-home-dados tem de ser {AAAA-MM: [...]}"
@@ -721,13 +740,14 @@ class TestMobilePlaywright:
             page = browser.new_page(viewport={"width": 375, "height": 800})
             page.goto(servidor + INDEX_URL)
             page.wait_for_load_state("networkidle")
-            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            texto, a_rodar = _barra_calendario(page)
             if futuros:
                 assert "Próximo pagamento" in texto and f"{futuros[0]} de " in texto, (
                     f"esperava promover o dia {futuros[0]}, obteve: {texto!r}")
+                assert a_rodar
             else:
-                # todos processados: nunca inventa — mantém o rótulo genérico
-                assert "Próximo pagamento" not in texto
+                # todos processados: nunca inventa — só a mensagem do WhatsApp
+                assert "Próximo pagamento" not in texto and not a_rodar
             browser.close()
 
     def test_barra_homepage_nunca_promove_num_mes_velho(self, servidor):
@@ -738,11 +758,23 @@ class TestMobilePlaywright:
             page = browser.new_page(viewport={"width": 375, "height": 800})
             page.goto(servidor + INDEX_VELHO_URL)
             page.wait_for_load_state("networkidle")
-            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            texto, a_rodar = _barra_calendario(page)
             assert "Próximo pagamento" not in texto, (
                 f"barra promoveu uma data num mês velho: {texto!r}")
-            assert "Calendário de pagamentos" in texto
+            assert not a_rodar, "barra a rodar sem dados do mês corrente"
+            assert page.locator('.barra-topo-msg[data-destino="whatsapp"]').is_visible()
             browser.close()
+
+
+def _barra_calendario(page) -> tuple[str, bool]:
+    """(texto da mensagem do calendário na barra do topo, rotação activa?).
+
+    A barra começa na mensagem do WhatsApp e só mostra a do calendário ao
+    fim do intervalo — por isso lê-se o texto já preenchido (text_content,
+    também com a mensagem escondida) e se o botão de pausa apareceu, que só
+    acontece quando o nav.js encontrou um pagamento a partir de hoje."""
+    msg = page.locator('.barra-topo-msg[data-destino="calendario"]')
+    return msg.text_content().strip(), page.locator(".barra-topo-pausa").is_visible()
 
 
 # ── Viragem de mês do lado do cliente, com relógio fixo (#280) ─────────────
@@ -825,8 +857,9 @@ class TestViragemDeMesLisboa:
             browser, page, erros = _abrir(pw, servidor + INDEX_SET_OUT_URL,
                                           instante="2026-09-30T23:30:00+00:00",
                                           fuso="America/Sao_Paulo")
-            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            texto, a_rodar = _barra_calendario(page)
             assert "Próximo pagamento" in texto and "2 de outubro" in texto, texto
+            assert a_rodar
             assert erros == [], f"erros JS: {erros}"
             browser.close()
 
@@ -834,7 +867,8 @@ class TestViragemDeMesLisboa:
         with sync_playwright() as pw:
             browser, page, erros = _abrir(pw, servidor + INDEX_SO_SET_URL,
                                           instante="2026-10-01T09:00:00+00:00", fuso="UTC")
-            texto = page.locator(".cal-topo .cal-topo-texto").inner_text().strip()
+            texto, a_rodar = _barra_calendario(page)
             assert "Próximo pagamento" not in texto, texto
-            assert "Calendário de pagamentos" in texto
+            assert not a_rodar
+            assert page.locator('.barra-topo-msg[data-destino="whatsapp"]').is_visible()
             browser.close()

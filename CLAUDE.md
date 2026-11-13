@@ -45,8 +45,8 @@ pipeline automático (mesma categoria que `CLUSTERS:HOME`/`DESTAQUES:HOME` —
 ver secção "SISTEMA DE CLUSTERS"). Não entra nesta lista porque não é o
 pipeline `pipeline-diario.yml` a escrevê-lo.
 
-Nota 2: o marcador `<!-- CAL-HOME:INICIO/FIM -->` (dados da barra fixa
-"Próximo pagamento" no topo da homepage) também vive em `index.html`, mas é
+Nota 2: o marcador `<!-- CAL-HOME:INICIO/FIM -->` (datas da barra do topo
+da homepage, `#cal-home-dados`) também vive em `index.html`, mas é
 escrito por `scripts/atualizar_calendario.py`, corrido pelo workflow
 **`calendario-mensal.yml`** — não pelo `pipeline-diario.yml`. É a única zona
 de `index.html` fora do âmbito do pipeline diário; o guardrail próprio de
@@ -54,6 +54,19 @@ de `index.html` fora do âmbito do pipeline diário; o guardrail próprio de
 (ver secção "CALENDÁRIO DE PAGAMENTOS"). O `pipeline-diario.yml` nunca toca em
 `CAL-HOME` (só nas suas 3 zonas), por isso os dois workflows coexistem sem
 colidir — mais o `concurrency: main-writes` partilhado a serializar os pushes.
+O mesmo `atualizar_calendario.py` escreve também `data/calendario_barra.json`
+(as datas da barra do topo das outras páginas, ver Nota 3) — nunca o HTML
+dessas páginas.
+
+Nota 3: o bloco `<!-- BARRA-TOPO:INICIO/FIM -->` (barra do topo — próximo
+pagamento + canal de WhatsApp) vive em TODAS as páginas, incluindo
+`index.html`, mas é escrito por `scripts/sincronizar_nav.py` — script de
+**sessão manual**, mesma categoria da NAV, nunca pelo pipeline. Só a parte
+fixa vive no HTML; as datas mudam todos os meses e por isso vêm de
+`data/calendario_barra.json` (lido por `fetch` pelo `nav.js`) ou, na
+homepage, de `#cal-home-dados` — pô-las dentro de cada página obrigaria o
+`calendario-mensal.yml` a reescrever todas as páginas protegidas todos os
+meses. Ver secção "NAVEGAÇÃO PRINCIPAL" → "Barra do topo".
 
 **Segundo workflow com push, âmbito completamente separado**: `shadow-daily.yml`
 só pode escrever em `shadow_history/*.md` (relatórios do Shadow Mode — ver secção
@@ -339,14 +352,15 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 | `integridade.yml` | push a main, **pull_request para main** (2026-07-17; desde 2026-09-30 também `edited` — mudança de base para main — e `ready_for_review`, sem filtro por job, issue #266), cron semanal, manual | Gitleaks (segredos) + Ruff + pip-audit + validador HTML5 + `verificar_injecao.py` (prompt injection em `data/`/`shadow_history/`) + **suite `pytest` completa** (job `testes-python`, 2026-07-04). Todos os jobs são determinísticos (dependem apenas do checkout) — o canário de URLs oficiais saiu para `canario-urls.yml` a 2026-09-30. `concurrency` com `cancel-in-progress` só em PRs (pushes sucessivos cancelam runs obsoletos; em main/schedule nunca cancela) | ❌ não |
 | `canario-urls.yml` | cron diário `23 7 * * *` + manual (nunca push nem PR — a disponibilidade de um portal não depende do commit) | `scripts/verificar_urls_como_pedir.py`: HEAD (e GET de recurso com cabeçalhos de navegador se HEAD ≥ 400) aos URLs de `data/urls_como_pedir.json`; 404/410/domínio inexistente falham logo, o resto tem 4 tentativas (esperas 15/45/90 s); uma falha abre ou actualiza UMA issue `canario-urls` (atribuída ao Nuno, @menção, status HEAD/GET de cada URL; comentário só quando muda o conjunto de URLs a falhar), fechada sozinha na primeira corrida verde; o job fica vermelho sempre que há falhas | ❌ não — só gere a issue (`issues: write`) |
 | `smoke-producao.yml` | `push` a main + cron `30 6 * * *` (rede de segurança) + manual | `scripts/smoke_producao.sh`: `curl` às páginas críticas em produção (lista em `scripts/urls_criticas.txt`), com retry/backoff; falha se alguma não devolver 200, se um simulador devolver 200 com conteúdo errado/antigo, ou se os HTML que o commit alterou não forem servidos nessa versão (#281, gate rígido — ver secção "SMOKE TEST DE PRODUÇÃO") | ❌ não |
-| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — barra "Próximo pagamento" da homepage + `calendario/*.ics` — calendários subscrevíveis; guardrail próprio) |
+| `calendario-mensal.yml` | cron `0 6 25 * *` + `0 6 28 * *` (retry) + `30 5 1 * *` (virar mês) + manual | Calendário de pagamentos: se o JSON já tem o mês → injecção + testes + commit confinado; senão → **raspa a fonte pública oficial** (`/ptss/pssd/pagamentos`) e grava o mês; só se o scraper falhar abre Issue `calendario-manual` (ver secção "CALENDÁRIO DE PAGAMENTOS") | ✅ sim (SÓ `data/calendario_pagamentos.json` + `calendario-pagamentos-seguranca-social.html` entre marcadores CAL:* + `index.html` só na zona `CAL-HOME:*` — datas da barra do topo da homepage + `data/calendario_barra.json` — as mesmas datas, para a barra do topo das outras páginas + `calendario/*.ics` — calendários subscrevíveis; guardrail próprio) |
 | `limpar-branches.yml` | `push` a main + cron `0 5 * * *` + manual | Apaga automaticamente branches remotas != `main` já totalmente integradas (via GITHUB_TOKEN do Actions, nunca depende de sessão logada); as que têm commits únicos ficam registadas numa Issue única — ver secção "LIMPEZA AUTOMÁTICA DE BRANCHES" | ❌ não faz push de conteúdo — a única escrita é apagar refs `heads/*` != `main` (`contents: write`) + gerir a Issue (`issues: write`) |
 
 **`pipeline-diario.yml`, `shadow-daily.yml` e `calendario-mensal.yml` são os
 únicos que fazem `git push` de conteúdo, cada um com um âmbito de escrita
 disjunto e garantido por guardrail próprio** (ficheiros de conteúdo/dados vs.
-só `shadow_history/*.md` vs. só o JSON do calendário + a página do calendário
-entre marcadores CAL:* + a barra `CAL-HOME:*` do `index.html`).
+só `shadow_history/*.md` vs. só os dois JSON do calendário + a página do
+calendário entre marcadores CAL:* + a zona `CAL-HOME:*` do `index.html` +
+`calendario/*.ics`).
 `limpar-branches.yml` é uma terceira categoria de escrita, à parte — nunca toca
 em conteúdo do repositório, só apaga refs de branch e gere uma Issue. Os
 restantes só lêem. Isto elimina race conditions entre workflows concorrentes.
@@ -701,7 +715,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
 - [ ] Página nova com carimbo "Verificado a … pela redação do Tens Direito"? Correr `python scripts/inserir_reportar_erro.py --write` (idempotente — insere o link "Reportar um erro nesta página" → `/sobre.html#contacto` logo a seguir ao carimbo, entre `<!-- REPORTAR-ERRO:INICIO/FIM -->`; `tests/test_reportar_erro.py` falha se faltar)
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
-- [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única (ver secção "NAVEGAÇÃO PRINCIPAL")
+- [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única e a barra do topo (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
 - [ ] Novo artigo de conteúdo? Inclui obrigatoriamente os dois blocos — ver secção "RESPOSTA RÁPIDA + CHECKLIST FINAL": `.resposta-rapida` (rótulo "⚡ Resposta rápida" + tempo de leitura, dentro do `.resposta-direta` já existente no hero, ≤60 palavras) e `.checklist-final` (checklist accionável antes do FAQ, liga `assets/css/checklist.css` + `assets/js/checklist.js`)
@@ -834,6 +848,7 @@ tens-direito/
 │   ├── feeds_saude_hoje.json ← snapshot diário da saúde de cada feed de notícias, consumido por gerir_estado_feeds.py
 │   ├── estado_feeds.json     ← máquina de estados por feed de notícias (ver "FRESCURA DA HOMEPAGE")
 │   ├── noticias_candidatos.json ← log auditável de candidatos/decisões, últimos 14 dias (ver "FRESCURA DA HOMEPAGE")
+│   ├── calendario_barra.json ← datas da barra do topo (gerado por atualizar_calendario.py, ver "NAVEGAÇÃO PRINCIPAL")
 │   └── pagina_fonte.json     ← mapeamento manual página → fonte(s) (ver "REVALIDAÇÃO DE CARIMBO")
 ├── shadow_history/
 │   └── shadow_report_AAAA-MM-DD.md ← 1 relatório/dia, gerado por shadow-daily.yml
@@ -1517,6 +1532,60 @@ todas as páginas).
   contágio desapareceu; o template `estrutura-pagina` sempre esteve
   limpo.
 
+### Barra do topo — próximo pagamento + canal de WhatsApp (2026-11-13)
+
+Faixa de 40px, fixa (sticky) acima da nav, em todas as páginas, entre
+`<!-- BARRA-TOPO:INICIO/FIM -->` logo a seguir ao skip-link — escrita por
+`scripts/sincronizar_nav.py` (`render_barra_topo()`; bootstrap insere os
+marcadores a seguir ao skip-link e recusa uma página sem skip-link ou com a
+barra antiga `cal-topo`). Substitui a barra do calendário que só existia na
+homepage (`.cal-topo-regiao`); na homepage a zona `CAL-HOME` fica logo a
+seguir aos marcadores, fora deles — os dois scripts nunca escrevem um por
+cima do outro.
+
+- **Duas mensagens**, alternadas com fade (6 s cada): «🔔 Recebe no
+  WhatsApp o aviso na véspera de cada pagamento da Segurança Social →»
+  (canal, `utm_content=barra_topo`, `target="_blank" rel="noopener"`) e
+  «📅 Próximo pagamento: 16 de novembro — <resumo> →» (calendário). No
+  telemóvel (≤760px) há textos curtos: «🔔 Aviso na véspera, no WhatsApp →»
+  e «📅 Próximo pagamento: dia 16 →». «da Segurança Social» é deliberado: o
+  canal ainda não avisa as pensões da CGA (ver "CANAL DE WHATSAPP"), que a
+  mensagem do calendário mostra.
+- **Datas**: `data/calendario_barra.json`, gerado por
+  `atualizar_calendario.py` com a mesma `_dados_por_mes()` de
+  `#cal-home-dados` (mês corrente e seguinte) — o `nav.js` lê o inline na
+  homepage e faz `fetch` nas outras. Escolhe o mês de Lisboa
+  (`hoje-lisboa.js`, que o `sincronizar_nav.py` acrescenta ao `<head>`) e o
+  primeiro dia `>=` hoje.
+- **Sem JS, `prefers-reduced-motion`, sem pagamento a partir de hoje no
+  mês de Lisboa, mês em falta, `fetch` falhado ou JSON partido**: só a
+  mensagem do WhatsApp, parada — nunca uma data passada.
+- **WCAG 2.2.2**: `aria-live="off"` na rotação; pausa ao hover, ao foco
+  (até o foco sair da barra), com a página escondida e num botão de pausa
+  de 40×40px (aria-label «Pausar/Retomar as mensagens»; «Retomar» retoma
+  mesmo com o foco ainda no botão, padrão de carrossel do WAI-ARIA APG).
+- **Gerador de documentos** (`documentos.html` + `documentos/*.html`,
+  `barra_estatica()`): barra estática (`data-barra-modo="estatico"`), só a
+  mensagem do WhatsApp — sem `fetch`, sem `hoje-lisboa.js`, sem evento GA4
+  (garantia de rede-zero, decisão do Nuno).
+- **Evento GA4** `barra_topo_clique` `{ destino }` — ver "MEDIÇÃO DE
+  CONVERSÃO".
+- `html { scroll-padding-top: 108px }` em `nav.css`: as âncoras não ficam
+  tapadas pela barra + nav fixas (40 + 60px); o menu móvel desce para
+  `top: 100px`.
+- **Testes**: `tests/test_barra_topo.py` — um bloco por página, igual ao
+  gerado e logo a seguir ao skip-link; utm; modo estático exactamente no
+  gerador; o `sincronizar_nav.py` só muda os blocos NAV/BARRA-TOPO e o
+  `<head>` (nunca DESTAQUE/NOTICIA-HOME/CAL-HOME/data de revisão); o
+  `atualizar_calendario.py` só muda a zona CAL-HOME da homepage; guardrail
+  do `calendario-mensal.yml`; o `pipeline-diario.yml` nunca escreve a
+  barra; e, no Chromium com relógio fixo, sem JS, reduced-motion, rotação,
+  pausas, último dia do mês, os cinco casos de «nunca uma data passada»,
+  uma linha de 40px sem overflow a 375px, evento GA4 e rede-zero no
+  gerador. `tests/test_calendario_frescura.py` (corrido pelo workflow
+  mensal antes do commit) exige o JSON igual a `#cal-home-dados` e
+  sincronizado com o gerador.
+
 Dois achados sinalizados no fecho da Fase 4 (não relacionados com o
 ponto acima) — JSON-LD inválido em `simulador-ase.html` e OG
 tags/disclaimer em falta nas páginas institucionais — **foram
@@ -2081,7 +2150,9 @@ via `gtag`) — um evento GA4 é uma chamada de rede real, e a mensagem "os
 dados que preenches nunca saem do teu dispositivo" tem de ser verdade a
 sério, não só quanto ao conteúdo do formulário. Zero
 `localStorage`/`sessionStorage` — estado só em memória (mesmo padrão de
-`checklist.js`).
+`checklist.js`). Pela mesma razão, a barra do topo é estática nestas
+páginas: só a mensagem do WhatsApp, sem `fetch` das datas nem evento GA4
+(ver "NAVEGAÇÃO PRINCIPAL" → "Barra do topo").
 
 ### Integração no sistema de clusters
 
@@ -2228,13 +2299,17 @@ silenciosa.
   à meia-noite de Lisboa sem esperar pelo `calendario-mensal.yml` (cujo
   cron do dia 1 chega a correr com horas de atraso). O HTML estático
   continua a ser regenerado pelo workflow: é a base sem JS e o que o
-  Google vê (incluindo `<title>`/description). A barra `CAL-HOME` da
-  homepage segue o mesmo princípio: `#cal-home-dados` é
-  `{"AAAA-MM": [...]}` com o mês corrente e o seguinte.
+  Google vê (incluindo `<title>`/description). A barra do topo segue o
+  mesmo princípio: `#cal-home-dados` (homepage) e
+  `data/calendario_barra.json` (outras páginas, por `fetch`) são o mesmo
+  `{"AAAA-MM": [...]}` com o mês corrente e o seguinte (`_dados_por_mes()`),
+  e o `nav.js` escolhe o mês de Lisboa (ver "NAVEGAÇÃO PRINCIPAL" → "Barra
+  do topo").
 - **Destaque "Próximo pagamento"** no topo, antes da tabela: camada
   estática (sempre visível mesmo sem JS, com todas as datas do mês) +
   `#cal-dados` (JSON `dia`+`resumo` curto por dia, incluindo o dia da CGA
-  — o mesmo `_dados_js()` alimenta `#cal-home-dados` da homepage) que o script
+  — o mesmo `_dados_js()` alimenta `#cal-home-dados` da homepage e
+  `data/calendario_barra.json`) que o script
   de runtime lê para promover a próxima data a contar de hoje (Lisboa) —
   só quando o topo (depois da troca) é o mês de Lisboa; num mês velho
   (aviso de desatualização activo) ou em estado degradado nunca inventa
@@ -2341,7 +2416,9 @@ Segurança Social e da validação dele (fonte, regra e entidade são outras).
 publicadas pela CGA; revisão anual em `docs/FONTE-CALENDARIO.md`. No estado
 degradado (sem mês da Segurança Social) a página continua a dar a data da
 CGA, numa frase, nunca numa tabela. **Por fazer**: aviso de véspera da CGA
-no canal de WhatsApp (o canal só lê o JSON da Segurança Social).
+no canal de WhatsApp (o canal só lê o JSON da Segurança Social). Quando
+existir, a mensagem do canal na barra do topo pode deixar cair «da
+Segurança Social» (`render_barra_topo()` em `sincronizar_nav.py`).
 
 Para o `pipeline-diario.yml`, esta página continua a ser HTML manual
 protegido como qualquer outra. `pagamento-apos-deferimento.html`
@@ -2390,7 +2467,7 @@ simulador, nunca um valor introduzido).
 | `calendario_descarregado` | `simulador-universal.html`, clique em "Adicionar ao meu calendário" no ecrã de resultados | `pagina` (pathname) | O `.ics` é criado no navegador a partir de `data/calendario_pagamentos.json` (só datas publicadas, de hoje em diante, dos apoios prováveis com `calendario:` no YAML de condições) e nunca sai do dispositivo; o evento não diz quais apoios nem quantas datas. |
 | `comecar_aqui_percurso` | `comecar-aqui.html` | evento de início (`etapa: 'inicio'`, primeira escolha) e evento final (`etapa: 'fim'`, `destino` = pathname recomendado) | Mede a taxa de conclusão do funil. `destino` é o apoio recomendado (primeiro card) ou `/#guias-de-apoios`, nunca as respostas do quiz. |
 | `calendario_subscrito` | `calendario-pagamentos-seguranca-social.html` (zona `CAL:SUBSCREVER`, gerada), clique no 📅 de uma linha da lista «Quando recebo?» | `destino` (`apple`/`google`, conforme o aparelho) | Nunca a prestação escolhida — diria que apoio a pessoa recebe. |
-| `cal_home_clique` | `index.html`, clique na barra fixa `.cal-topo` (é um `<a>`, é clicável) | — | GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. |
+| `barra_topo_clique` | `assets/js/nav.js`, clique numa das duas mensagens da barra do topo (todas as páginas menos o gerador de documentos) | `destino` (`calendario`/`whatsapp`, do `data-destino` do próprio link) | Substituiu o `cal_home_clique` da barra antiga da homepage (2026-11-13) — a série desse evento acaba aí. GA4 usa `sendBeacon` por omissão, por isso o evento sobrevive à navegação. Nunca no gerador de documentos (barra estática). |
 
 **`documento_gerado` — deliberadamente NÃO implementado**: o gerador de
 documentos tem a invariante dura, documentada e testada, de **zero pedidos
@@ -2431,7 +2508,9 @@ não é possível por código — é na interface do GA4 (Admin → Events → m
 como key event). Marcar: `simulacao_concluida`, `comecar_aqui_percurso` (o
 evento final, `etapa: 'fim'`) e — quando/se instrumentado — `documento_gerado`
 (hoje não existe, ver acima). `menu_tool_click`, `partilha_clique` e
-`cal_home_clique` são úteis como micro-conversões, opcional marcá-los.
+`barra_topo_clique` (com `destino = whatsapp`, o clique para o canal) são
+úteis como micro-conversões, opcional marcá-los. Se o `cal_home_clique`
+estava marcado, marcar o `barra_topo_clique` no lugar dele.
 
 ---
 
@@ -3635,6 +3714,11 @@ promete ao leitor: **"Avisamos na véspera de cada pagamento da
 Segurança Social e quando uma regra muda a sério — sem grupo, sem
 responderes a nada."** (texto actualizado a 2026-09-25, com os avisos
 de véspera — antes: "Avisamos só quando uma regra muda a sério").
+Desde 2026-11-13 a barra do topo de todas as páginas repete o convite
+(«Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança
+Social», `utm_content=barra_topo` — ver "NAVEGAÇÃO PRINCIPAL" → "Barra do
+topo"). «da Segurança Social» fica enquanto o canal não avisar as pensões
+da CGA (ver "CALENDÁRIO DE PAGAMENTOS" → "Pensões da CGA" → "Por fazer").
 A partir do 1.º seguidor essa frase é
 uma obrigação editorial, não só copy — sem um critério explícito do que
 justifica um post, o canal morre por omissão, o mesmo padrão de páginas
