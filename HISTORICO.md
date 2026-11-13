@@ -7854,6 +7854,53 @@ Prova Escolar «mês anterior a completar 16 anos»: o Guia Prático 4011
 (v1.49, 29/04/2025) não a prevê — quem faz 16 anos segue o prazo geral de
 julho; a frase fica fora.
 
+## Última revisão: 2026-11-13 — Shadow Mode com 0 alertas: detecção confirmada, testes de regressão
+
+Os relatórios de 2026-11-08 a 2026-11-12 deram 0 alertas em 108 páginas e
+marcaram anomalia. **Sem bug**: `data_mes_ano`/`data_numerica` só são
+avaliados em jan/jul/ago/set e `prazo_outono` em ago/set (`REVER_EM`) — em
+novembro nenhum dos três corre; só `compromisso_futuro` e `carimbo_antigo`
+correm todos os meses. Medido sobre as 108 páginas reais: 0 em nov 2026;
+dez 2026 → 1 (`subsidio-parental.html`, compromisso «A próxima confirmação
+será até 15 de novembro de 2026»); jan 2027 → 38 (31 `data_mes_ano` + 7
+`data_numerica`). Sem `REVER_EM`, em novembro de 2026 só `data_numerica`
+dispararia, em 2 páginas — datas dormentes até janeiro de 2027:
+`complemento-solidario-idosos.html` (versão do Guia Prático N30,
+«25/06/2024», 3 ocorrências) e `tarifa-social-energia.html` («com efeitos a
+1/1/2023», num comentário HTML).
+
+`tests/test_verificar_datas.py`, secção «Shadow Mode: 0 alertas» (datas
+relativas ao dia de execução, nunca vermelhos com o calendário): uma frase
+por tipo que só corresponde a esse tipo; página mínima dispara hoje em
+`_pagina_tem_alerta`; `detectar_alertas` devolve o tipo certo nos meses de
+`REVER_EM` e nada nos outros; citação de diploma + «em vigor desde» + carimbo
+na mesma janela não suprimem a data expirada, e a data da própria citação
+continua suprimida; cada página de `_paginas_elegiveis` ou já dispara ou
+dispara com a data injectada antes de `</main>`. Provados a falhar com três
+sabotagens descartáveis: `data_numerica` nunca dispara (4 testes vermelhos),
+«em vigor desde» a suprimir por proximidade (3), `DATAS_PERMANENTES` a cobrir
+a página toda (o teste das páginas reais). Docstring de `verificar_datas.py`
+clarificado: o «âmbito deliberado» dos 3 tipos é o do portão de confirmação,
+não o dos alertas; novo parágrafo sobre os meses de `REVER_EM`.
+
+## Última revisão: 2026-11-13 — Sitemap: `<lastmod>` logo a seguir ao `<loc>`
+
+`scripts/sincronizar_sitemap_lastmod.py` passa a dar a ordem do protocolo
+de sitemaps.org, loc → lastmod → changefreq → priority. Antes, inserir
+acrescentava o `<lastmod>` no fim do `<url>` (depois do `<priority>`) e
+actualizar substituía-o no lugar: 86 entradas tinham-no no fim e 17 já
+logo a seguir ao `<loc>`. Agora o script retira sempre o `<lastmod>` e
+reinsere-o depois do `<loc>`, à mesma indentação. `--check` antes: divergente
+(exit 1); `--write`: 86 linhas movidas, mesmas 109 URLs e mesmas datas;
+`--check` e 2.ª corrida de `--write`: sem alterações. As 6 páginas de
+`EXCECOES_SEM_LASTMOD` continuam sem `<lastmod>`.
+
+`tests/test_sitemap_lastmod.py`: `test_ordem_dos_elementos_no_sitemap`
+(cada `<url>` real, falhou nas 86 antes do `--write`) e
+`test_sincronizar_poe_lastmod_logo_a_seguir_ao_loc` (inserir, mover do fim,
+actualizar já na ordem, retirar numa excepção, idempotência — falha com o
+script antigo).
+
 ---
 
 *Última revisão automática: 2026-11-12*
