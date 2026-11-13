@@ -425,10 +425,17 @@ FONTES_PLAYWRIGHT = [
         "slug": "iefp_desemprego",
         "url": "https://www.iefp.pt/subsidio-desemprego",
         "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
+        # Só o artigo (`.journal-content-article`), nunca a página inteira:
+        # com "ul li" os 30 itens de lista eram todos do menu e do rodapé
+        # do site do IEFP (Issue #371 — uma mudança no menu deu "mudança
+        # detectada") e os passos reais do guia nunca entravam, por causa
+        # do limite de 30. Se o IEFP mudar o nome do contentor, fica só o
+        # título (22 caracteres) e o scraper marca "conteúdo suspeito" —
+        # nunca um OK silencioso.
         "seletores": {
             "titulo": "h1",
-            "paragrafos": "p",
-            "listas": "ul li, ol li",
+            "paragrafos": ".journal-content-article p",
+            "listas": ".journal-content-article li",
         },
     },
     {

@@ -8111,3 +8111,17 @@ deixou de gerar `DESTAQUES:HOME`/`ATUALIZACOES:HOME`. Detalhe em CLAUDE.md
 - O comentário do bloco de consentimento (112 páginas e `scripts/migrar_consentimento.py`) dizia «o Google Analytics só carrega após aceitação», falso desde o Consent Mode avançado (13/07). Passou a «carrega sempre, mas só guarda cookies depois de a pessoa aceitar».
 - Dois testes novos em `tests/test_consentimento.py`, provados a falhar com o HTML anterior. Retirado o `page.route` para `fonts.googleapis.com` de dois testes de simuladores (já não há pedido a bloquear).
 
+
+### Última revisão: 2026-11-13 — IEFP: o diff deixa de ver o menu do site (issue #371)
+
+A issue #371 («Mudança detectada: iefp_desemprego») vinha só do menu e do
+rodapé do site do IEFP. Com `"listas": "ul li, ol li"`, os 30 itens de
+lista guardados eram todos de navegação — e, por causa do limite de 30, os
+passos reais do guia nunca entravam. Selectores de `iefp_desemprego`
+confinados ao artigo (`.journal-content-article p` / `li`); `h1` mantém-se.
+Sem o contentor, fica só o título (22 caracteres) e o scraper marca
+«conteúdo suspeito», nunca um OK silencioso. Guarda:
+`tests/test_iefp_seletores.py` (HTML real da fixture; 3 dos 4 casos falham
+com os selectores antigos). A primeira corrida com os selectores novos vai
+registar uma última «mudança» — a própria troca: sai o menu, entram os
+passos do guia —, que se fecha sem acção.
