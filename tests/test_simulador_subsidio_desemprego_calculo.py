@@ -134,7 +134,6 @@ def pagina_real(servidor):
         browser = p.chromium.launch(executable_path=_CHROMIUM_PATH)
         page = browser.new_page()
         page.route("https://www.googletagmanager.com/**", lambda route: route.abort())
-        page.route("https://fonts.googleapis.com/**", lambda route: route.abort())
         page.goto(f"{servidor}/simulador-subsidio-desemprego.html", wait_until="domcontentloaded")
         # Os parâmetros carregam de forma assíncrona (fetch de
         # /dados/parametros.json) — esperar que o botão fique activo

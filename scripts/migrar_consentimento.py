@@ -19,7 +19,7 @@ pelo bloco novo (stub inline com Consent Mode v2 negado por omissão +
 assets/js/consentimento.js, que só carrega o gtag.js DEPOIS de o visitante
 aceitar — bloqueio real de script, sem serviços externos):
 
-    <!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->
+    <!-- Consentimento de cookies (banner próprio) — o Google Analytics carrega sempre, mas só guarda cookies depois de a pessoa aceitar (assets/js/consentimento.js) -->
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
     gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'});</script>
     <script src="/assets/js/consentimento.js" data-ga4="G-..." defer></script>
@@ -53,7 +53,7 @@ MARCA_NOVO = "assets/js/consentimento.js"
 
 def bloco_novo(indent: str, ga4: str) -> str:
     return (
-        f"{indent}<!-- Consentimento de cookies (banner próprio) — o Google Analytics só carrega após aceitação (assets/js/consentimento.js) -->\n"
+        f"{indent}<!-- Consentimento de cookies (banner próprio) — o Google Analytics carrega sempre, mas só guarda cookies depois de a pessoa aceitar (assets/js/consentimento.js) -->\n"
         f"{indent}<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}\n"
         f"{indent}gtag('consent','default',{{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied'}});</script>\n"
         f'{indent}<script src="/assets/js/consentimento.js" data-ga4="{ga4}" defer></script>\n'
