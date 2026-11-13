@@ -54,12 +54,12 @@ jobs:
               print("A validar todas as páginas HTML como salvaguarda.")
               alterados = [
                   str(p) for p in Path(".").glob("*.html")
-                  if p.name not in EXCLUIR
+                  if p.name not in EXCLUIR and not re.match(r"^noticias-[0-9]{4}[.]html$", p.name)
               ]
           else:
               alterados = [
                   f for f in result.stdout.strip().splitlines()
-                  if f.endswith(".html") and Path(f).name not in EXCLUIR and Path(f).exists()
+                  if f.endswith(".html") and Path(f).name not in EXCLUIR and not re.match(r"^noticias-[0-9]{4}[.]html$", Path(f).name) and Path(f).exists()
               ]
 
           if not alterados:

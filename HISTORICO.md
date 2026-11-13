@@ -8125,3 +8125,19 @@ Sem o contentor, fica só o título (22 caracteres) e o scraper marca
 com os selectores antigos). A primeira corrida com os selectores novos vai
 registar uma última «mudança» — a própria troca: sai o menu, entram os
 passos do guia —, que se fecha sem acção.
+
+### Última revisão: 2026-11-13 — notícias divididas: últimos 3 meses + arquivo por ano
+
+`noticias.html` tinha 266 KB e crescia todos os dias (215 notícias, de junho
+a novembro de 2026). Passa a levar só os 3 meses mais recentes (contados a
+partir da notícia mais recente) — 145 KB hoje, e deixa de crescer sem fim;
+as mais antigas vão para `noticias-AAAA.html` (hoje `noticias-2026.html`,
+junho a agosto). Geradas por `gerar_noticias.py` a partir do `noticias.html`
+(`separar_por_janela()`, `render_pagina_ano()`); `noindex, follow`, fora do
+sitemap/pesquisa/tabela, imagem og partilhada, ligadas no bloco novo
+`ARQUIVO-ANOS`. Ajustados para as páginas de ano: guardrail de escrita
+(`PADRAO_ARQUIVO_ANO`), guardrail e `git add` do pipeline, sanitização do
+Step 3b, `validar-conteudo.yml`, `verificar_datas.e_auto_gerado()` (usado
+também pelo auditor de marcadores e pelo botão de partilha),
+`validar_consistencia()` e os testes de indexação, og, pesquisa, anos em
+metadados e espera legal. Testes novos: `tests/test_noticias_por_ano.py`.

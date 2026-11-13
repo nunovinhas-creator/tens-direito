@@ -78,6 +78,14 @@ SECCOES_PERMITIDAS = {
     "index.html": ("NOTICIA-HOME:INICIO", "NOTICIA-HOME:FIM"),
 }
 
+# Arquivo de notícias por ano (noticias-AAAA.html): escrita livre, como
+# noticias.html — são gerados a partir dele (ver regenerar_noticias_html).
+PADRAO_ARQUIVO_ANO = re.compile(r"^noticias-\d{4}\.html$")
+
+# Quantos meses ficam em noticias.html (o do item mais recente e os
+# anteriores); o resto vai para noticias-AAAA.html.
+MESES_NA_PAGINA_PRINCIPAL = 3
+
 
 def _verificar_escrita_confinada(caminho, conteudo_novo, marcador_inicio, marcador_fim):
     """Garante que `conteudo_novo` só difere do ficheiro em disco dentro da
@@ -111,7 +119,7 @@ def escrever_ficheiro_seguro(caminho, conteudo):
     nunca escrito por omissão."""
     nome = os.path.basename(caminho)
 
-    if nome in FICHEIROS_AUTO_GERADOS:
+    if nome in FICHEIROS_AUTO_GERADOS or PADRAO_ARQUIVO_ANO.match(nome):
         with open(caminho, "w", encoding="utf-8") as f:
             f.write(conteudo)
         return
@@ -937,37 +945,133 @@ def render_noticia_home(itens: List[ItemNoticia], limite: int = 3) -> str:
     return "\n".join(cartoes)
 
 
+def _indice_mes(data_iso: str) -> int:
+    ano, mes, _ = data_iso.split("-")
+    return int(ano) * 12 + int(mes) - 1
+
+
+def separar_por_janela(
+    itens: List[ItemNoticia], meses: int = MESES_NA_PAGINA_PRINCIPAL
+) -> Tuple[List[ItemNoticia], Dict[str, List[ItemNoticia]]]:
+    """(itens de noticias.html, {ano: itens de noticias-AAAA.html}).
+
+    A janela conta a partir do mês do item mais recente — nunca da data de
+    hoje —, por isso o resultado só depende de data/noticias.json."""
+    ordenados = ordenar_itens(itens)
+    if not ordenados:
+        return [], {}
+    limite = _indice_mes(ordenados[0].data_iso) - (meses - 1)
+    recentes = [i for i in ordenados if _indice_mes(i.data_iso) >= limite]
+    por_ano: Dict[str, List[ItemNoticia]] = {}
+    for i in ordenados:
+        if _indice_mes(i.data_iso) < limite:
+            por_ano.setdefault(i.data_iso[:4], []).append(i)
+    return recentes, por_ano
+
+
+def render_cards_por_mes(itens: List[ItemNoticia], mapa_clusters: Dict[str, Cluster]) -> str:
+    blocos = []
+    for chave, grupo in agrupar_por_mes(itens):
+        blocos.append(f'          <h3 class="mes-header" data-mes="{chave}">{label_mes(chave)}</h3>')
+        blocos.extend(render_arquivo_card(i, mapa_clusters) for i in grupo)
+    return "\n".join(blocos)
+
+
+def render_anos(anos: List[str], atual: Optional[str] = None) -> str:
+    """Ligações para o arquivo de cada ano (mais recente primeiro)."""
+    if not anos:
+        return ""
+    links = []
+    for ano in sorted(anos, reverse=True):
+        if ano == atual:
+            links.append(f'<strong aria-current="page">{ano}</strong>')
+        else:
+            links.append(f'<a href="/noticias-{ano}.html">{ano}</a>')
+    rotulo = "Arquivo por ano" if atual else "Notícias mais antigas"
+    return f' <p class="arquivo-anos">{rotulo}: {" · ".join(links)}</p>'
+
+
+_RE_DESTAQUE = re.compile(r"<!-- DESTAQUE-INICIO -->[\s\S]*?<!-- DESTAQUE-FIM -->")
+_RE_ARQUIVO = re.compile(r"(<!-- ARQUIVO-INICIO -->)[\s\S]*?(<!-- ARQUIVO-FIM -->)")
+_RE_ANOS = re.compile(r"(<!-- ARQUIVO-ANOS-INICIO -->)[\s\S]*?(<!-- ARQUIVO-ANOS-FIM -->)")
+
+
+def _com_anos(conteudo: str, bloco: str) -> str:
+    return _RE_ANOS.sub(lambda m: f"{m.group(1)}\n{bloco}\n {m.group(2)}" if bloco else f"{m.group(1)}\n {m.group(2)}", conteudo)
+
+
+def render_pagina_ano(principal: str, ano: str, itens: List[ItemNoticia],
+                      anos: List[str], mapa_clusters: Dict[str, Cluster]) -> str:
+    """noticias-AAAA.html a partir do noticias.html já gerado: mesmos nav,
+    barra, filtros e rodapé; sem destaque; noindex (só lista ligações a
+    outros sites, e não entra no sitemap)."""
+    titulo = f"Notícias de {ano} — Tens Direito"
+    descricao = (f"Arquivo das notícias de {ano} sobre apoios, direitos e burocracia "
+                 f"em Portugal, com ligação à fonte.")
+    url = f"https://tensdireito.com/noticias-{ano}.html"
+    def lit(texto):
+        return lambda _m: texto
+
+    c = principal
+    c = re.sub(r'<meta name="robots" content="[^"]*">', lit('<meta name="robots" content="noindex, follow">'), c, count=1)
+    c = re.sub(r"<title>[^<]*</title>", lit(f"<title>{titulo}</title>"), c, count=1)
+    c = re.sub(r'<meta name="description" content="[^"]*">', lit(f'<meta name="description" content="{descricao}">'), c, count=1)
+    c = re.sub(r'<meta property="og:title" content="[^"]*">', lit(f'<meta property="og:title" content="{titulo}">'), c, count=1)
+    c = re.sub(r'<meta property="og:description" content="[^"]*">', lit(f'<meta property="og:description" content="{descricao}">'), c, count=1)
+    c = c.replace("https://tensdireito.com/noticias.html", url)
+    c = c.replace('"name": "Atualidades — Tens Direito"', f'"name": "{titulo}"', 1)
+    c = re.sub(r'"description": "O que mudou nos apoios[^"]*"', lit(f'"description": "{descricao}"'), c, count=1)
+    c = re.sub(
+        r"<h1>[^<]*</h1>(\s*)<p>[^<]*</p>",
+        lambda m: (f"<h1>Notícias de {ano}</h1>{m.group(1)}<p>Arquivo das notícias de {ano}. "
+                   f'As mais recentes estão em <a href="/noticias.html">Atualidades</a>.</p>'),
+        c, count=1,
+    )
+    c = _RE_DESTAQUE.sub("<!-- DESTAQUE-INICIO -->\n        <!-- DESTAQUE-FIM -->", c, count=1)
+    cards = render_cards_por_mes(itens, mapa_clusters)
+    c = _RE_ARQUIVO.sub(lambda m: f"{m.group(1)}\n{cards}\n        {m.group(2)}", c, count=1)
+    return _com_anos(c, render_anos(anos, atual=ano))
+
+
 def regenerar_noticias_html(itens: List[ItemNoticia], caminho: Path = RAIZ / "noticias.html") -> bool:
-    """Substitui só os blocos DESTAQUE e ARQUIVO — nunca a nav, o hero, os
-    filtros ou o rodapé, que ficam fora do alcance deste script. Devolve
-    True se o conteúdo mudou."""
-    itens_ordenados = ordenar_itens(itens)
+    """Substitui só os blocos DESTAQUE, ARQUIVO e ARQUIVO-ANOS de
+    noticias.html — nunca a nav, o hero, os filtros ou o rodapé — e escreve
+    noticias-AAAA.html para as notícias fora da janela
+    (`MESES_NA_PAGINA_PRINCIPAL`). Devolve True se algum ficheiro mudou."""
+    recentes, por_ano = separar_por_janela(itens)
     conteudo = caminho.read_text(encoding="utf-8")
     original = conteudo
 
-    # Uma só leitura de data/clusters.json por regeneração — partilhada
-    # pelo destaque e pelo arquivo inteiro, nunca recarregada por card.
+    # Uma só leitura de data/clusters.json por regeneração.
     mapa_clusters = carregar_mapa_clusters()
 
-    if itens_ordenados:
-        novo_destaque = render_destaque(itens_ordenados[0], mapa_clusters)
-        conteudo = re.sub(
-            r"<!-- DESTAQUE-INICIO -->[\s\S]*?<!-- DESTAQUE-FIM -->",
-            lambda m: novo_destaque,
-            conteudo,
-        )
+    if recentes:
+        novo_destaque = render_destaque(recentes[0], mapa_clusters)
+        conteudo = _RE_DESTAQUE.sub(lambda m: novo_destaque, conteudo)
 
-    novo_arquivo = render_arquivo(itens_ordenados, mapa_clusters)
-    conteudo = re.sub(
-        r"(<!-- ARQUIVO-INICIO -->)[\s\S]*?(<!-- ARQUIVO-FIM -->)",
-        lambda m: f"{m.group(1)}\n{novo_arquivo}\n        {m.group(2)}",
-        conteudo,
+    novo_arquivo = render_cards_por_mes(recentes[1:], mapa_clusters)
+    conteudo = _RE_ARQUIVO.sub(
+        lambda m: f"{m.group(1)}\n{novo_arquivo}\n        {m.group(2)}", conteudo,
     )
+    anos = list(por_ano)
+    conteudo = _com_anos(conteudo, render_anos(anos))
 
-    if conteudo == original:
-        return False
-    escrever_ficheiro_seguro(str(caminho), conteudo)
-    return True
+    mudou = conteudo != original
+    if mudou:
+        escrever_ficheiro_seguro(str(caminho), conteudo)
+
+    if anos and not _RE_ANOS.search(conteudo):
+        raise Exception(
+            "noticias.html sem <!-- ARQUIVO-ANOS-INICIO/FIM --> — as notícias antigas "
+            "ficariam sem ligação a partir da página principal."
+        )
+    for ano, itens_ano in por_ano.items():
+        destino = caminho.parent / f"noticias-{ano}.html"
+        pagina = render_pagina_ano(conteudo, ano, itens_ano, anos, mapa_clusters)
+        if not destino.exists() or destino.read_text(encoding="utf-8") != pagina:
+            escrever_ficheiro_seguro(str(destino), pagina)
+            mudou = True
+    return mudou
 
 
 def atualizar_index_home(itens: List[ItemNoticia], caminho: str = "index.html", limite: int = 3) -> bool:

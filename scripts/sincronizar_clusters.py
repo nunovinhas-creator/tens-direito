@@ -487,7 +487,7 @@ def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str
 
     for nome in sorted(existentes):
         base = Path(nome).name
-        if base in EXCLUIDAS or nome in pillares or base in referenciados:
+        if base in EXCLUIDAS or re.match(r"^noticias-\d{4}\.html$", base) or nome in pillares or base in referenciados:
             continue
         problemas.append(f"'{nome}' existe no repositório mas não está em nenhum cluster nem em EXCLUIDAS")
 

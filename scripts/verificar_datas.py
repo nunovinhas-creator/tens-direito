@@ -71,6 +71,14 @@ from sincronizar_clusters import verificado_em_do_texto
 
 # Ficheiros que o pipeline gera — ignorar
 AUTO_GERADOS = ["index.html", "noticias.html", "404.html"]
+# Arquivo de notícias por ano (noticias-AAAA.html), gerado de noticias.html
+# por scripts/gerar_noticias.py — mesma categoria de noticias.html.
+_RE_ARQUIVO_NOTICIAS_ANO = re.compile(r"^noticias-\d{4}\.html$")
+
+
+def e_auto_gerado(nome: str) -> bool:
+    """Páginas regeneradas pelo pipeline, fora da vigilância de datas."""
+    return nome in AUTO_GERADOS or bool(_RE_ARQUIVO_NOTICIAS_ANO.match(nome))
 
 JANELA = 220  # caracteres de contexto para cada lado da correspondência
 JANELA_LINK = 300  # caracteres a olhar para trás ao detectar se está dentro de um <a>
@@ -973,7 +981,7 @@ def main():
                + sorted(glob.glob("documentos/*.html")))
     for html_path in paginas:
         nome = html_path.replace(os.sep, "/")
-        if os.path.basename(html_path) in AUTO_GERADOS:
+        if e_auto_gerado(os.path.basename(html_path)):
             continue
         try:
             with open(html_path, encoding="utf-8") as f:
