@@ -129,7 +129,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
         "name": "O CSI vai passar a ser de 720 € para todos?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Não. Os 720 € anunciados para 2027 são o valor de referência do CSI, não um pagamento igual para todos. O CSI paga a diferença entre os rendimentos da pessoa e esse valor, por isso o montante recebido depende dos rendimentos de cada um. Fonte: anúncio do Governo de 1 de outubro de 2026 · Verificado a 13 de novembro de 2026"
+          "text": "Não. Os 720 € anunciados para 2027 são o valor de referência do CSI, não um pagamento igual para todos. O montante que cada pessoa recebe depende dos rendimentos considerados pela Segurança Social e das condições legais de atribuição. Fonte: anúncio do Governo de 1 de outubro de 2026 · Verificado a 13 de novembro de 2026"
         }
       },
       {
@@ -212,9 +212,23 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
   <script src="/scripts/pesquisa.js" defer></script>
   <link rel="stylesheet" href="/assets/css/share.css">
   <script src="/assets/js/share.js" defer></script>
+  <script src="/assets/js/hoje-lisboa.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+  <!-- BARRA-TOPO:INICIO -->
+  <div class="barra-topo-regiao" role="region" aria-label="Avisos de pagamento" data-barra-dados="/data/calendario_barra.json">
+    <div class="barra-topo-mensagens" aria-live="off">
+      <a class="barra-topo-msg" data-destino="calendario" href="/calendario-pagamentos-seguranca-social.html" hidden>
+        <span class="barra-topo-texto"><span class="barra-topo-longo">📅 Calendário de pagamentos da Segurança Social</span><span class="barra-topo-curto">📅 Calendário de pagamentos</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+      <a class="barra-topo-msg" data-destino="whatsapp" href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=barra_topo" target="_blank" rel="noopener">
+        <span class="barra-topo-texto">🔔 <span class="barra-topo-longo">Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança Social</span><span class="barra-topo-curto">Aviso na véspera, no WhatsApp</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <button class="barra-topo-pausa" type="button" aria-label="Pausar as mensagens" data-pausado="false" hidden><svg class="barra-topo-icone-pausa" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg><svg class="barra-topo-icone-retomar" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 1.5v11l9.5-5.5z" fill="currentColor"/></svg></button>
+  </div>
+<!-- BARRA-TOPO:FIM -->
   <!-- NAV:INICIO -->
 <div class="nav-wrap">
     <nav>
@@ -308,7 +322,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
 
       <div class="resposta-direta resposta-rapida">
         <span class="resposta-rapida-label">⚡ Resposta rápida</span>
-        <p class="resposta-rapida-texto">Em 2027, a Prestação Social Única (PSU) começa a ser paga, a idade normal da reforma passa para 66 anos e 11 meses e a licença parental deve ser alargada. As pensões, o IAS, o CSI e o salário mínimo também devem subir, mas os valores finais só ficam fixados no fim de dezembro de 2026.</p>
+        <p class="resposta-rapida-texto">Em 2027, o regime da Prestação Social Única (PSU) já produz efeitos, a idade normal da reforma passa para 66 anos e 11 meses e a licença parental deve ser alargada. As pensões, o IAS, o CSI e o salário mínimo também devem subir, mas os valores finais só ficam fixados no fim de dezembro de 2026.</p>
         <span class="resposta-rapida-tempo">📖 Leitura completa: 14 min</span>
       </div>
     </div>
@@ -318,7 +332,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
 
     <div class="resumo-rapido" role="note" aria-label="Resumo rápido">
       <ul>
-        <li>✅ <strong>Já decidido em lei:</strong> a PSU começa a ser paga, a idade da reforma sobe, a dedução de rendas sobe e o desconto da tarifa social da luz mantém-se.</li>
+        <li>✅ <strong>Já decidido em lei:</strong> o regime da PSU começa a produzir efeitos, a idade da reforma sobe, a dedução de rendas sobe e o desconto da tarifa social da luz mantém-se.</li>
         <li>🏛️ <strong>Aprovado no Parlamento, por publicar:</strong> alargamento da licença parental inicial, para licenças que comecem a partir de 1 de janeiro de 2027.</li>
         <li>⏳ <strong>Anunciado, ainda por fixar:</strong> aumento das pensões, do IAS e do Complemento Solidário para Idosos (CSI), salário mínimo, continuidade da garantia pública, limites do IMT Jovem e propinas do ensino superior.</li>
         <li>📅 <strong>Quando se fica a saber:</strong> o Orçamento do Estado é votado a 24 de novembro de 2026; os valores do IAS e das pensões saem em portaria no fim de dezembro.</li>
@@ -331,8 +345,8 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <h2>O que já está em lei publicada</h2>
       <p>Estas mudanças já constam de diplomas publicados em Diário da República ou de decisões oficiais. Não dependem do Orçamento do Estado para 2027.</p>
 
-      <h3>1. A Prestação Social Única (PSU) começa a ser paga</h3>
-      <p>O Decreto-Lei n.º 166/2026 já está em vigor, mas só produz efeitos a <strong>31 de dezembro de 2026</strong> (artigo 63.º). É a partir dessa data que a PSU passa a ser paga e substitui 13 apoios sociais não contributivos.</p>
+      <h3>1. O regime da Prestação Social Única (PSU) começa a produzir efeitos</h3>
+      <p>O Decreto-Lei n.º 166/2026 já está em vigor, mas só produz efeitos a <strong>31 de dezembro de 2026</strong> (artigo 63.º). É a partir dessa data que o novo regime se aplica e que a PSU substitui 13 apoios sociais não contributivos. A data de produção de efeitos não é necessariamente o dia do primeiro pagamento: vê <a href="/calendario-pagamentos-psu.html">quando a PSU é paga</a>.</p>
       <p>Quem recebe Rendimento Social de Inserção (RSI) ou pensão social de velhice passa para a PSU automaticamente — não é preciso fazer nenhum pedido (artigo 57.º). Os outros apoios da lista seguem regras diferentes: vê <a href="/psu-lista-13-apoios.html">o que acontece a cada um dos 13 apoios</a> e <a href="/psu-quando-entra-em-vigor.html">o calendário completo da PSU</a>.</p>
       <p class="fonte-item">Fonte: Decreto-Lei n.º 166/2026, de 13 de agosto, artigos 57.º e 63.º</p>
 
@@ -352,9 +366,9 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <p class="fonte-item">Fonte: Decreto-Lei n.º 166/2026, artigo 49.º, que altera o artigo 28.º-A do Decreto-Lei n.º 220/2006</p>
 
       <h3>5. Tarifa social da luz: o desconto de 33,8% mantém-se</h3>
-      <p>Segundo a Entidade Reguladora dos Serviços Energéticos (ERSE), em 2027 quem tem tarifa social da luz continua a ter um desconto de <strong>33,8%</strong>, tanto no mercado regulado como no mercado livre. No gás natural, o desconto de 31,2% vale até 30 de setembro de 2027.</p>
+      <p>O Despacho n.º 12419/2026, de 13 de outubro, publicado em Diário da República, fixa o desconto da tarifa social da luz a partir de 1 de janeiro de 2027: <strong>33,8%</strong>, o mesmo de 2026. Aplica-se tanto no mercado regulado como no mercado livre. No gás natural, o desconto de 31,2% vale até 30 de setembro de 2027.</p>
       <p>Vê <a href="/tarifa-social-energia.html">quem tem direito à tarifa social</a> — não é preciso pedir.</p>
-      <p class="fonte-item">Fonte: ERSE — comunicado da proposta de tarifas de eletricidade para 2027</p>
+      <p class="fonte-item">Fonte: Despacho n.º 12419/2026, de 13 de outubro (luz); Entidade Reguladora dos Serviços Energéticos — ERSE (gás natural)</p>
     </div>
 
     <!-- 1B. APROVADO, POR PUBLICAR -->
@@ -379,7 +393,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
         </table>
       </div>
       <p class="nota-tabela">Texto aprovado pelo Parlamento, ainda não publicado. Verificado a 13/11/2026.</p>
-      <p>O texto aprovado prevê ainda que a licença exclusiva do pai possa chegar aos 42 dias e que as famílias monoparentais possam gozar os 180 ou 210 dias sem partilha.</p>
+      <p>O texto aprovado prevê ainda que a licença exclusiva do pai possa chegar aos 42 dias e que as famílias monoparentais possam gozar os 180 ou 210 dias sem partilha. A própria Assembleia da República assinalou que o texto não deixa claro qual das percentagens dos 210 dias (86% ou 90%) se aplica nesse caso — confirma no diploma publicado.</p>
       <p>Segundo o texto aprovado, o novo regime aplica-se às licenças que comecem a partir de 1 de janeiro de 2027 e entra em vigor com a lei do Orçamento do Estado para 2027. Até lá, valem as regras actuais: vê <a href="/subsidio-parental.html">como funciona hoje a licença parental</a>.</p>
       <p class="fonte-item">Fonte: Projeto de Lei n.º 176/XVII/1.ª, texto final aprovado em votação final global a 16 de outubro de 2026 (Assembleia da República, nota de redação final de 29 de outubro de 2026) e comunicado do Governo de 19 de outubro de 2026 — ainda não publicado em Diário da República</p>
     </div>
@@ -389,7 +403,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <span class="badge badge-pendente">Ainda por fixar</span>
       <h2>O que foi anunciado, mas ainda não está fixado</h2>
       <div class="aviso">
-        Estes valores foram anunciados pelo Governo ou constam da proposta de Orçamento do Estado para 2027. Estão confirmados em várias fontes secundárias independentes, não no texto oficial do Diário da República. Só ficam definitivos quando forem publicados — até lá, podem mudar.
+        Estes valores foram anunciados pelo Governo ou constam da proposta de Orçamento do Estado para 2027 entregue no Parlamento. Só ficam definitivos quando forem aprovados e publicados em Diário da República — até lá, podem mudar.
       </div>
 
       <h3>Pensões: aumento previsto de 3,3% nas pensões mais baixas</h3>
@@ -412,9 +426,9 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <p>Os valores deste site continuam a ser os de 2026 até ser publicada a portaria do IAS para 2027.</p>
 
       <h3>Complemento Solidário para Idosos (CSI): 720 € anunciados</h3>
-      <p>O Governo anunciou que o valor de referência do CSI sobe de 670 € para <strong>720 €</strong> por mês em 2027, e que o aumento entra no Orçamento do Estado. O valor de referência não é o que cada pessoa recebe: o CSI paga a diferença entre os rendimentos da pessoa e esse valor. O aumento só fica fixado com a portaria de 2027.</p>
+      <p>O Governo anunciou que o valor de referência do CSI sobe de 670 € para <strong>720 €</strong> por mês em 2027, e que o aumento entra no Orçamento do Estado. O valor de referência não é o que cada pessoa recebe: o montante depende dos rendimentos considerados pela Segurança Social e das condições legais de atribuição. O aumento só fica fixado com a portaria de 2027.</p>
       <p>Vê <a href="/complemento-solidario-idosos.html">quem tem direito ao CSI</a>.</p>
-      <p class="fonte-item">Valor de 2026: Portaria n.º 480-D/2025/1 (8.040 € por ano). Anúncio para 2027: Governo, 1 de outubro de 2026</p>
+      <p class="fonte-item">Valor de 2026: Portaria n.º 480-D/2025/1 (8.040 € por ano). Valor para 2027: anúncio do Governo de 1 de outubro de 2026, em portugal.gov.pt</p>
 
       <h3>Suplemento extraordinário das pensões: não está garantido</h3>
       <p>Em 2024, 2025 e 2026 houve um suplemento extraordinário pago aos pensionistas com pensões mais baixas. Para 2027, não há nenhum suplemento decidido: os partidos do Governo admitem pagá-lo só se as contas públicas o permitirem ao longo do ano.</p>
@@ -432,7 +446,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <p>Vê <a href="/imt-jovem.html">as condições do IMT Jovem</a>.</p>
 
       <h3>Propinas do ensino superior: podem subir em 2027/2028</h3>
-      <p>A proposta de Orçamento do Estado para 2027 prevê que, no ano lectivo 2027/2028, a propina máxima das licenciaturas e dos cursos técnicos superiores profissionais no ensino público passe a ser o valor actual (697 €) actualizado pela inflação média de 2026, sem habitação. O valor exacto só se sabe quando o Instituto Nacional de Estatística publicar a inflação do ano. No Orçamento para 2026, uma proposta semelhante foi rejeitada no Parlamento e a propina ficou nos 697 €.</p>
+      <p>A proposta de Orçamento do Estado para 2027 prevê que, no ano lectivo 2027/2028, a propina máxima das licenciaturas e dos cursos técnicos superiores profissionais no ensino público passe a ser o valor actual (697 €) actualizado pela inflação média de 2026, sem habitação. A mesma regra aplica-se aos mestrados integrados e aos mestrados indispensáveis para aceder a uma profissão (por exemplo, os exigidos por uma ordem profissional). Nos outros mestrados e nos doutoramentos, a proposta diz apenas que a propina deve ter em consideração o custo real da formação. O valor exacto só se sabe quando o Instituto Nacional de Estatística publicar a inflação do ano. No Orçamento para 2026, uma proposta semelhante foi rejeitada no Parlamento e a propina ficou nos 697 €.</p>
       <p>Vê <a href="/bolsa-de-estudo-ensino-superior.html">as bolsas de estudo do ensino superior</a>.</p>
     </div>
 
@@ -511,7 +525,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       <details>
         <summary><h3>O CSI vai passar a ser de 720 € para todos?</h3></summary>
         <div class="resposta">
-          <p>Não. Os 720 € anunciados para 2027 são o valor de referência do CSI, não um pagamento igual para todos. O CSI paga a diferença entre os rendimentos da pessoa e esse valor, por isso o montante recebido depende dos rendimentos de cada um.</p>
+          <p>Não. Os 720 € anunciados para 2027 são o valor de referência do CSI, não um pagamento igual para todos. O montante que cada pessoa recebe depende dos rendimentos considerados pela Segurança Social e das condições legais de atribuição.</p>
           <p class="fonte-inline">Fonte: anúncio do Governo de 1 de outubro de 2026 · Verificado a 13 de novembro de 2026</p>
         </div>
       </details>
@@ -546,7 +560,7 @@ summary h3{display:inline;font-size:1rem;font-weight:600;margin:0}
       Portaria n.º 476/2025/1, de 29 de dezembro (idade normal de acesso à pensão de velhice em 2027)<br>
       Decreto-Lei n.º 97/2026, de 20 de maio (dedução de rendas no IRS)<br>
       Portaria n.º 236-A/2024/1 (garantia pública no crédito à habitação para jovens)<br>
-      ERSE — comunicado da proposta de tarifas de eletricidade para 2027<br>
+      Despacho n.º 12419/2026, de 13 de outubro (desconto da tarifa social da luz a partir de 1 de janeiro de 2027) — confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República; ERSE — desconto da tarifa social do gás natural de outubro de 2026 a setembro de 2027<br>
       Portaria n.º 480-D/2025/1 (valor de referência do CSI em 2026); anúncio do Governo sobre o CSI de 2027, portugal.gov.pt, 1 de outubro de 2026<br>
       Projeto de Lei n.º 176/XVII/1.ª (licença parental inicial), texto final aprovado a 16 de outubro de 2026; Assembleia da República, nota de redação final de 29 de outubro de 2026; comunicado do Governo de 19 de outubro de 2026 — ainda não publicado em Diário da República<br>
       Proposta de Lei do Orçamento do Estado para 2027 e relatório que a acompanha; declarações da secretária de Estado da Segurança Social no Parlamento, a 6 de novembro de 2026 — confirmados em várias fontes secundárias independentes, não no texto oficial do Diário da República<br>
