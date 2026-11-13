@@ -120,6 +120,15 @@ muda a sério" em todas as páginas com o bloco `<!-- CANAL WHATSAPP -->`;
 na homepage, a abertura passou a "Sabe primeiro quando cai cada
 pagamento e quando os apoios mudarem".
 
+**Barra do topo em todas as páginas (2026-11-13)**: alterna «🔔 Recebe no
+WhatsApp o aviso na véspera de cada pagamento da Segurança Social →»
+(`utm_content=barra_topo`) com o próximo pagamento do mês — ver CLAUDE.md →
+"NAVEGAÇÃO PRINCIPAL" → "Barra do topo". Evento GA4 novo
+`barra_topo_clique` `{ destino }` (substituiu `cal_home_clique`): se o
+antigo estava marcado como key event no GA4, marcar o novo — passo manual
+do Nuno. Quando o canal passar a avisar a véspera das pensões da CGA, a
+barra pode deixar cair «da Segurança Social».
+
 **Preparação automática do rascunho — implementada (2026-08-31), com
 um caminho automático novo para o gatilho 1 (1b — sem esperar pela
 fila manual)**:

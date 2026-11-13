@@ -79,22 +79,6 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .nav-mobile-menu form { display: flex; align-items: center; background: #F3F4F6; border-radius: 8px; padding: 0.4rem 0.75rem; gap: 0.4rem; margin-bottom: 0.5rem; border: 2px solid transparent; }
 .nav-mobile-menu form:focus-within { border-color: #0F766E; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
 .nav-mobile-menu input { flex: 1; border: none; background: transparent; font-size: 0.95rem; color: var(--ink); outline: none; }
-/* Barra fixa do calendário de pagamentos — só na homepage. Sempre visível
-   (sticky) no topo, acima da nav; o combinador de irmão (.cal-topo ~ .nav-wrap)
-   desce a nav só aqui, sem tocar nas outras páginas. */
-.cal-topo-regiao { position: sticky; top: 0; z-index: 101; }
-.cal-topo { height: 40px; display: flex; align-items: center; justify-content: center; gap: 0.4rem; background: var(--teal); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.92rem; padding: 0 1rem; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
-.cal-topo:hover { background: var(--teal-dark); }
-.cal-topo:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }
-.cal-topo span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cal-topo .cal-topo-curto { display: none; }
-.cal-topo-regiao ~ .nav-wrap { top: 40px; }
-.cal-topo-regiao ~ .nav-wrap .nav-mobile-menu { top: 100px; }
-@media (max-width: 760px) {
-  .cal-topo { font-size: 0.86rem; }
-  .cal-topo .cal-topo-longo { display: none; }
-  .cal-topo .cal-topo-curto { display: inline; }
-}
 .hero { padding: 3.5rem 1rem 3rem; text-align: center; background: var(--white); }
 .hero h1 { font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.75rem; color: var(--ink); }
 .hero h1 em { color: var(--teal); font-style: normal; }
@@ -228,18 +212,26 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
   <link rel="stylesheet" href="/assets/css/nav.css">
   <script src="/assets/js/nav.js" defer></script>
   <script src="/scripts/pesquisa.js" defer></script>
+  <script src="/assets/js/hoje-lisboa.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
-
-  <div class="cal-topo-regiao" role="region" aria-label="Calendário de pagamentos">
-    <a class="cal-topo" href="/calendario-pagamentos-seguranca-social.html">
-      <span class="cal-topo-texto">📅 <span class="cal-topo-longo">Calendário de pagamentos da Segurança Social — ver as datas do mês</span><span class="cal-topo-curto">Calendário de pagamentos SS</span></span> <span class="cal-topo-seta" aria-hidden="true">→</span>
-    </a>
+  <!-- BARRA-TOPO:INICIO -->
+  <div class="barra-topo-regiao" role="region" aria-label="Avisos de pagamento" data-barra-dados="/data/calendario_barra.json">
+    <div class="barra-topo-mensagens" aria-live="off">
+      <a class="barra-topo-msg" data-destino="calendario" href="/calendario-pagamentos-seguranca-social.html" hidden>
+        <span class="barra-topo-texto"><span class="barra-topo-longo">📅 Calendário de pagamentos da Segurança Social</span><span class="barra-topo-curto">📅 Calendário de pagamentos</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+      <a class="barra-topo-msg" data-destino="whatsapp" href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=barra_topo" target="_blank" rel="noopener">
+        <span class="barra-topo-texto">🔔 <span class="barra-topo-longo">Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança Social</span><span class="barra-topo-curto">Aviso na véspera, no WhatsApp</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <button class="barra-topo-pausa" type="button" aria-label="Pausar as mensagens" data-pausado="false" hidden><svg class="barra-topo-icone-pausa" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg><svg class="barra-topo-icone-retomar" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 1.5v11l9.5-5.5z" fill="currentColor"/></svg></button>
+  </div>
+<!-- BARRA-TOPO:FIM -->
     <!-- CAL-HOME:INICIO -->
     <script id="cal-home-dados" type="application/json" data-mes="2026-11">{"2026-11": [{"dia": 3, "resumo": "Doença profissional"}, {"dia": 6, "resumo": "Pensões da Segurança Social · PSI · CSI · Reembolso de funeral · Apoio à renda"}, {"dia": 16, "resumo": "Abono e prestações familiares · 1.º desemprego/doença/parentalidade"}, {"dia": 19, "resumo": "Pensões da CGA"}, {"dia": 20, "resumo": "Fundo de Garantia de Alimentos"}, {"dia": 23, "resumo": "Fundo de Garantia Salarial · Suspensão de atividade cultural · RSI"}, {"dia": 27, "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"}]}</script>
 <!-- CAL-HOME:FIM -->
-  </div>
 
   <div role="region" aria-label="Destaque">
   <!-- DESTAQUE:INICIO -->
@@ -821,52 +813,6 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
         }
       }
     });
-  </script>
-
-  <script src="/assets/js/hoje-lisboa.js"></script>
-  <script>
-  // Barra fixa do calendário — promove a próxima data de pagamento a contar
-  // de hoje em Europe/Lisbon (progressive enhancement, zero rede).
-  // #cal-home-dados (escrito por scripts/atualizar_calendario.py) traz os
-  // dias por mês, {"AAAA-MM": [...]}, com o mês corrente e o seguinte: a
-  // barra usa a entrada do mês de Lisboa e vira à meia-noite de Lisboa, sem
-  // esperar pelo workflow mensal (#280). Sem entrada para esse mês (dados por
-  // actualizar), mantém o rótulo genérico — nunca inventa uma data velha.
-  (function () {
-    var d = document.getElementById('cal-home-dados');
-    var texto = document.querySelector('.cal-topo .cal-topo-texto');
-    if (!d || !texto || typeof window.tdHojeLisboa !== 'function') return;
-    var hoje = window.tdHojeLisboa();
-    var porMes;
-    try { porMes = JSON.parse(d.textContent); } catch (e) { return; }
-    var itens = porMes && porMes[hoje.chave];
-    if (!Array.isArray(itens) || !itens.length) return;
-    var nomes = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    var prox = null;
-    for (var i = 0; i < itens.length; i++) {
-      if (itens[i].dia >= hoje.dia) { prox = itens[i]; break; }
-    }
-    if (!prox) return;  // pagamentos do mês já processados — mantém o rótulo genérico
-    texto.innerHTML = '📅 Próximo pagamento: <strong>' + prox.dia + ' de ' + nomes[hoje.mes - 1] + '</strong>';
-  })();
-  </script>
-
-  <script>
-  // Evento de conversão GA4 no clique da barra fixa do calendário. Só
-  // regista o clique — nenhum dado do utilizador. Guarda typeof gtag
-  // (Consent Mode v2 avançado: o gtag.js carrega sempre; em 'denied' segue
-  // como ping sem cookies). O GA4 usa sendBeacon por omissão, por isso o
-  // evento sobrevive à navegação para a página do calendário.
-  (function () {
-    var barra = document.querySelector('a.cal-topo');
-    if (!barra) return;
-    barra.addEventListener('click', function () {
-      if (typeof gtag === 'function') {
-        gtag('event', 'cal_home_clique');
-      }
-    });
-  })();
   </script>
 
 </body>

@@ -17,7 +17,9 @@
 # de shadow-daily.yml): só data/calendario_pagamentos.json,
 # calendario-pagamentos-seguranca-social.html (entre marcadores CAL:*) e
 # index.html (só entre marcadores CAL-HOME:*, a barra fixa "Próximo
-# pagamento" da homepage) — confinamento garantido por
+# pagamento" da homepage), data/calendario_barra.json (as mesmas datas, lidas
+# por fetch pela barra do topo das outras páginas — nunca HTML delas) e
+# calendario/*.ics — confinamento garantido por
 # scripts/atualizar_calendario.py; o guardrail abaixo falha o job se
 # qualquer outro ficheiro aparecer modificado antes do commit.
 
@@ -99,6 +101,7 @@ jobs:
               data/calendario_pagamentos.json) ;;
               calendario-pagamentos-seguranca-social.html) ;;
               index.html) ;;
+              data/calendario_barra.json) ;;
               calendario/*.ics) ;;
               *) echo "::error::Ficheiro fora do âmbito deste workflow modificado: $f"; ERRO=1 ;;
             esac
@@ -112,7 +115,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add data/calendario_pagamentos.json calendario-pagamentos-seguranca-social.html index.html calendario/
+            git add data/calendario_pagamentos.json data/calendario_barra.json calendario-pagamentos-seguranca-social.html index.html calendario/
             git commit -m "auto(calendario): sincronizar página e barra da homepage (alvo ${{ steps.verificar.outputs.mes_alvo }}, estado ${{ steps.verificar.outputs.estado }})"
             git pull --rebase --autostash origin main
             git push origin main
