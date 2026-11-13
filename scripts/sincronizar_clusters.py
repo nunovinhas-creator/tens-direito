@@ -497,7 +497,7 @@ def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str
 def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAIZ, escrever: bool = True) -> Resultado:
     nome = str(caminho.relative_to(raiz))
 
-    if caminho.name in EXCLUIDAS:
+    if caminho.name in EXCLUIDAS or re.match(r"^noticias-\d{4}\.html$", caminho.name):
         return Resultado(nome, False, "excluída do sistema de clusters")
 
     pillar = cluster_do_pillar(clusters, nome)
