@@ -716,6 +716,7 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] Avançaste um `dateModified` ou um "Verificado a" (ou criaste uma página)? Correr `python scripts/sincronizar_sitemap_lastmod.py --write` no mesmo commit — `tests/test_sitemap_lastmod.py` falha se o `<lastmod>` do sitemap divergir da data da página (ver "SITEMAP — LASTMOD")
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
+- [ ] Guia novo (artigo de um cluster ou pillar)? Correr `python scripts/inserir_botao_imprimir.py --write` (botão «Imprimir» no bloco de partilha — ver "VERSÃO PARA IMPRIMIR")
 - [ ] Página nova com carimbo "Verificado a … pela redação do Tens Direito"? Correr `python scripts/inserir_reportar_erro.py --write` (idempotente — insere o link "Reportar um erro nesta página" → `/sobre.html#contacto` logo a seguir ao carimbo, entre `<!-- REPORTAR-ERRO:INICIO/FIM -->`; `tests/test_reportar_erro.py` falha se faltar)
 - [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS") — se tem um simulador próprio, `"simulador": "simulador-x.html"` na entrada (dá a etiqueta «Tem simulador»; a página tem de ligar ao simulador)
 - [ ] A página tem um prazo para o leitor cumprir (ou uma data a não perder)? Acrescenta-o a `data/prazos.json` com a frase exacta da página e corre `python scripts/sincronizar_clusters.py` — ver "FRESCURA DA HOMEPAGE" → C
@@ -812,6 +813,7 @@ tens-direito/
 │   ├── migrar_noticias.py    ← migração única do noticias.html legado para data/noticias.json (não corre no pipeline)
 │   ├── gerar_pagina.py       ← utilitário de geração HTML
 │   ├── inserir_botao_partilhar.py ← insere assets/js/share.js + assets/css/share.css (idempotente)
+│   ├── inserir_botao_imprimir.py ← botão «Imprimir» nos guias, dentro do bloco de partilha (idempotente, --check)
 │   ├── inserir_reportar_erro.py ← link "Reportar um erro nesta página" a seguir ao carimbo canónico (idempotente)
 │   ├── sincronizar_sitemap_lastmod.py ← <lastmod> do sitemap = dateModified/"Verificado a" de cada página (idempotente, --check)
 │   ├── adicionar_canonicas.py ← insere <link rel="canonical"> auto-referente nas páginas do site (idempotente)
@@ -2188,7 +2190,17 @@ decidir» (`body[data-endereco]::after`, endereço posto pelo `nav.js`).
 `break-inside: avoid` só em linhas de tabela, perguntas e imagens —
 em cartões grandes deixava meia página em branco. Testes em
 `tests/test_prazos_navegador.py` (`emulate_media("print")`, provados a
-falhar sem o bloco). Sem botão «Imprimir» por agora.
+falhar sem o bloco).
+
+**Botão «🖨️ Imprimir»** (2026-11-13): nos guias — páginas `tipo: "artigo"` e
+pillars de `data/clusters.json`, mais `EXTRAS` em
+`scripts/inserir_botao_imprimir.py` —, ao lado do botão de partilha, dentro
+do mesmo bloco `partilhar:inicio/fim`. Nasce `hidden`; `iniciarImpressao()`
+no `nav.js` mostra-o e liga-lhe `window.print()` (sem JavaScript não
+aparece). Nunca nos simuladores, no gerador de documentos nem nas páginas
+institucionais. Guia novo: correr `python scripts/inserir_botao_imprimir.py
+--write`; `tests/test_inserir_botao_imprimir.py` falha se um guia ficar sem
+o botão ou se outra página o tiver.
 
 ## GERADOR DE DOCUMENTOS
 
