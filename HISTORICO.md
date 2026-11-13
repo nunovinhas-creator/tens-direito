@@ -7928,4 +7928,6 @@ tarifa social da luz (33,8%) — o canário fica vermelho a 1/1/2027;
 
 ---
 
+Acrescento no mesmo dia (2.ª auditoria, base UTAO 18/2026 + proposta OE2027): a página ganhou um 3.º estado, «Aprovado, por publicar», com a licença parental inicial (Projeto de Lei n.º 176/XVII/1.ª, votação final global a 16/10/2026; tabela 150/180/210 dias confirmada pela nota de redação final da AR de 29/10/2026 e pelo comunicado do Governo de 19/10/2026 — uma notícia de 12/11 com 120/150/180 dias descrevia o regime actual e não foi usada). Em «Ainda por fixar»: CSI 720 € (anúncio do Governo, 1/10/2026), suplemento extraordinário de pensões não garantido, propinas 2027/2028 indexadas à inflação (proposta OE2027). Deixados de fora, por serem só dotações orçamentais e não aumentos individuais: cuidadores informais, PSI, Garantia para a Infância, Creche Feliz.
+
 *Última revisão automática: 2026-11-12*
