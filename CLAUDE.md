@@ -38,13 +38,12 @@ O guardrail está implementado em dois locais:
 1. `scripts/gerar_noticias.py` — função `escrever_ficheiro_seguro()` é uma allow-list estrita: `FICHEIROS_AUTO_GERADOS` (`noticias.html`, `noticias.json`, `feeds_saude_hoje.json`, `noticias_candidatos.json` — escrita livre) ou `SECCOES_PERMITIDAS` (`index.html`, só dentro de `NOTICIA-HOME:INICIO/FIM` — `_verificar_escrita_confinada()` compara o ficheiro em disco com o novo conteúdo fora da secção marcada; qualquer diferença aí, ou o marcador não existir, bloqueia a escrita). Qualquer nome fora das listas é **sempre bloqueado**, nunca escrito por omissão (corrigido na Fase 1 do sistema de notícias — antes havia um "fallthrough" que escrevia livremente qualquer ficheiro não-HTML não listado). Ver `tests/test_gerar_noticias_guardrail.py`. `data/estado_feeds.json` fica fora desta allow-list de propósito — é escrito directamente por `gerir_estado_feeds.py`, script dedicado e de confiança por construção, mesmo padrão de `estado_fontes.json`/`gerir_estado_fontes.py`.
 2. `.github/workflows/pipeline-diario.yml` — step "Verificar ficheiros protegidos" faz `exit 1` se algum HTML protegido for detectado como modificado antes do commit (ficheiros `.json` em `data/` nunca passam por este guardrail — só HTML é protegido). `dados/observacoes/<slug>.json` fica fora da allow-list de `escrever_ficheiro_seguro()` de propósito — mesmo padrão de `data/estado_feeds.json`: é escrito directamente por `scripts/registar_observacao.py`, que tem a sua própria allow-list restrita a `SLUGS_MONITORIZADOS` (ver secção "DADOS ABERTOS").
 
-Nota: o marcador `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` (bloco "Atualizado
-recentemente") também vive em `index.html`, mas é escrito por
+Nota: o marcador `<!-- CLUSTERS:HOME:INICIO/FIM -->` (cartões «Escolhe o
+teu tema») também vive em `index.html`, mas é escrito por
 `scripts/sincronizar_clusters.py` — um script de **sessão manual**, não do
-pipeline automático (mesma categoria que `CLUSTERS:HOME`/`DESTAQUES:HOME` —
-ver secção "SISTEMA DE CLUSTERS"). Não entra nesta lista porque não é o
-pipeline `pipeline-diario.yml` a escrevê-lo. O mesmo vale para
-`<!-- PRAZOS:HOME:INICIO/FIM -->` (cartões "⏰ Datas a não perder", de
+pipeline automático (ver secção "SISTEMA DE CLUSTERS"). Não entra nesta
+lista porque não é o pipeline `pipeline-diario.yml` a escrevê-lo. O mesmo
+vale para `<!-- PRAZOS:HOME:INICIO/FIM -->` (cartões "⏰ Datas a não perder", de
 `data/prazos.json`), escrito pelo mesmo script — ver "FRESCURA DA
 HOMEPAGE" → C.
 
@@ -1383,17 +1382,15 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
 2. **`scripts/sincronizar_clusters.py`** — idempotente, `--dry-run`
    disponível. Injecta HTML só entre estes marcadores; se um marcador
    não existir numa página que devia tê-lo, reporta e não altera nada:
-   - `<!-- CLUSTERS:HOME:INICIO/FIM -->` — cartões de clusters no `index.html`
-   - `<!-- DESTAQUES:HOME:INICIO/FIM -->` — um cartão por cluster (o(s) `destaque: true`), no `index.html`
-   - `<!-- ATUALIZACOES:HOME:INICIO/FIM -->` — 3-4 artigos mais recentemente verificados (data real extraída de "Verificado a ..." em cada página, nunca inventada), no `index.html` — ver secção "FRESCURA DA HOMEPAGE"
+   - `<!-- CLUSTERS:HOME:INICIO/FIM -->` — cartões compactos de tema no `index.html` (ícone, nome, contagem — sem descrição; ver "HOMEPAGE CURTA")
    - `<!-- CLUSTER-BADGE:INICIO/FIM -->` — breadcrumb visível + "este artigo pertence ao guia X", num artigo
    - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
    - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
    - `<!-- PILLAR-JSONLD:INICIO/FIM -->` — JSON-LD `CollectionPage` + `ItemList` da pillar page (no `<head>`), gerado por `render_pillar_jsonld()` (ver secção "SCHEMA.ORG — GRAFO DO SITE")
    - `<!-- PRAZOS:HOME:INICIO/FIM -->` — cartões "⏰ Datas a não perder" da homepage, de `data/prazos.json` (ver "FRESCURA DA HOMEPAGE" → C)
 
-   **Etiquetas nas listas de guias** (2026-11-13): `PILLAR-LISTA`,
-   `DESTAQUES:HOME` e `ATUALIZACOES:HOME` levam, por página,
+   **Etiquetas nas listas de guias** (2026-11-13): `PILLAR-LISTA` leva,
+   por página,
    `<span class="etiquetas">` com «🧮 Tem simulador» (campo `simulador`
    da página em `clusters.json` — `validar_consistencia()` exige que
    aponte para uma página `tipo: "ferramenta"`; `tests/test_prazos.py`
@@ -1859,7 +1856,7 @@ browser, nunca SSG, mesmo princípio do `inserir_botao_partilhar.py`:
 
 | Fonte de verdade | Script sincronizador | Marcadores que possui |
 |---|---|---|
-| `data/clusters.json` | `scripts/sincronizar_clusters.py` | `CLUSTERS:HOME`, `DESTAQUES:HOME`, `CLUSTER-BADGE`, `RELACIONADOS`, `PILLAR-LISTA` |
+| `data/clusters.json` | `scripts/sincronizar_clusters.py` | `CLUSTERS:HOME`, `PRAZOS:HOME`, `CLUSTER-BADGE`, `RELACIONADOS`, `PILLAR-LISTA`, `PILLAR-JSONLD` |
 | `data/clusters.json` (reaproveitado) | `scripts/sincronizar_nav.py` | `NAV:INICIO`/`NAV:FIM` |
 
 Ambos: `--dry-run` disponível, correm sobre as páginas reais (não
@@ -1934,9 +1931,10 @@ correr ambos.
 
 ## FRESCURA DA HOMEPAGE — NOTÍCIAS E ATUALIZAÇÕES
 
-Duas fontes de frescura na homepage, ambas automáticas e nenhuma inventa
-datas: A) "Últimas notícias", de `data/noticias.json`; B) "Atualizado
-recentemente", do carimbo real de cada artigo. Diagnóstico e narrativa da
+Fontes de frescura na homepage, automáticas e sem datas inventadas:
+A) "Últimas notícias", de `data/noticias.json`; C) "Datas a não perder", de
+`data/prazos.json` (o bloco B, "Atualizado recentemente", saiu a 2026-11-13
+— ver "HOMEPAGE CURTA"). Diagnóstico e narrativa da
 reformulação original (2026-07-02) e das correcções seguintes de feeds/
 selecção (2026-07-04) vivem em `HISTORICO.md`, não aqui.
 
@@ -2031,21 +2029,11 @@ dentro da janela de recência (`vencedor`/`rejeitado_score`/
 `rejeitado_duplicado`/`nao_escolhido`) — para "o sistema viu a notícia X?"
 ter sempre resposta.
 
-### B) "Atualizado recentemente" — `sincronizar_clusters.py` + `ATUALIZACOES:HOME:INICIO/FIM`
+### B) "Atualizado recentemente" — retirado (2026-11-13)
 
-3-4 artigos com o "Verificado a ..." mais recente (extraído do corpo real de
-cada página `tipo: "artigo"`, nunca do RSS, nunca inventado) — sempre
-verdadeiro por construção, porque reflecte edições reais do site.
-`extrair_verificado_em()` aceita os 3 formatos usados nos artigos publicados
-(`DD/MM/AAAA`, "D de mês de AAAA", "D mês AAAA") e usa sempre a **última**
-ocorrência no ficheiro (a mais próxima do bloco de fontes no fim do corpo —
-as anteriores são notas por secção). Ordem determinística: data
-decrescente, slug como desempate — nunca aleatória, para a saída ser
-idempotente. Escrito por `scripts/sincronizar_clusters.py` (script de
-**sessão manual**, não do pipeline automático — ver "REGRA DE OURO").
-
-**Posição na homepage**: logo a seguir a "Guias principais"
-(`DESTAQUES:HOME`) e antes de "Como funciona".
+Saiu da homepage com a «HOMEPAGE CURTA» (marcador `ATUALIZACOES:HOME` e
+`render_atualizacoes_home()` apagados). `extrair_verificado_em()` fica —
+usado pelo sitemap e pelo JSON-LD `Article`.
 
 ### C) "⏰ Datas a não perder" — gerado de `data/prazos.json`
 
@@ -2099,6 +2087,28 @@ fonte externa, nunca um link interno inventado; sem vencedor no dia,
 resto do site.
 
 ---
+
+## HOMEPAGE CURTA (2026-11-13)
+
+Pedido do Nuno: perceber em segundos «o que é isto» e «o que fazer a
+seguir». Medido no Chromium (1280×800 e 375×740): 6776px → ~2480px no
+computador, 13580px → ~3800px no telemóvel. Ordem: barra do topo e banner
+de destaque → hero (pesquisa, um só botão «Descobre a que tens direito»,
+selos com «Como verificamos →») → «Escolhe o teu tema» (`#guias-de-apoios`,
+`CLUSTERS:HOME`, cartões `.tema-card` só com ícone, nome e contagem; uma
+coluna no telemóvel) → «Simuladores» (`#simuladores-home`, 5 cartões
+`.sim-card` escritos à mão: PSU, abono, subsídio de desemprego, baixa
+médica, CSI; os restantes em `/simuladores.html`) → «Datas a não perder» →
+«Últimas notícias» (cartões compactos, sem o resumo — o resumo do feed só
+repetia o título) → convite do canal de WhatsApp.
+
+Saíram «Comece por aqui» (duplicava os temas; o teste fica no link «Faz o
+teste →»), «Guias principais» (`DESTAQUES:HOME`), «Atualizado recentemente»
+(`ATUALIZACOES:HOME`), «Como funciona» e os dois botões secundários do
+hero. Os campos `destaque`/`emoji`/`desc` das páginas em
+`data/clusters.json` deixaram de ter uso na homepage. Âncoras
+`#guias-de-apoios` e `#simuladores-home` mantêm-se (a pesquisa e o
+simulador universal ligam para a primeira).
 
 ## RESPOSTA RÁPIDA + CHECKLIST FINAL
 

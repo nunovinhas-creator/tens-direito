@@ -82,7 +82,7 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .hero { padding: 3.5rem 1rem 3rem; text-align: center; background: var(--white); }
 .hero h1 { font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; max-width: 640px; margin: 0 auto 0.75rem; color: var(--ink); }
 .hero h1 em { color: var(--teal); font-style: normal; }
-.hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin: 0 auto 2rem; }
+.hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin: 0 auto 1.25rem; }
 .hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 1.75rem; }
 .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: background .15s, color .15s, border-color .15s; white-space: nowrap; }
 .btn-primary { background: var(--teal); color: var(--white); border-color: var(--teal); }
@@ -116,21 +116,9 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .destaque-cta { display: inline-block; background: #92400E; color: white; font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 6px; white-space: nowrap; text-decoration: none; }
 .destaque-cta:hover { background: #78350f; }
 @media (max-width: 640px) { .destaque-banda { flex-direction: column; text-align: center; gap: 0.6rem; } }
-.apoios-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem; }
-.section-header { margin-bottom: 1.75rem; }
+.section-header { margin-bottom: 1rem; }
 .section-header h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--ink); }
 .section-header p { font-size: 0.9rem; color: var(--muted); margin-top: 0.25rem; }
-.apoios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.apoio-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: box-shadow .15s, border-color .15s; position: relative; }
-.apoio-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, .1); border-color: #D1D5DB; }
-.apoio-card .emoji { font-size: 2rem; margin-bottom: 0.6rem; }
-.apoio-card h3 { font-size: 1rem; font-weight: 800; color: var(--ink); margin-bottom: 0.3rem; }
-.apoio-card .desc { font-size: 0.875rem; color: var(--muted); line-height: 1.5; flex: 1; margin-bottom: 0.85rem; }
-.apoio-card .tag-verif { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--teal); background: var(--teal-light); padding: 0.2rem 0.55rem; border-radius: 20px; display: inline-block; margin-bottom: 0.75rem; }
-.apoio-card .link-ver { font-size: 0.875rem; font-weight: 700; color: var(--teal); display: inline-flex; align-items: center; gap: 0.25rem; margin-top: auto; }
-.apoio-card .link-ver:hover { color: var(--teal-dark); }
-.apoio-card-destaque { border: 2px solid var(--teal); background: var(--teal-light); }
-.apoio-card-destaque .tag-destaque { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white); background: var(--teal); padding: 0.2rem 0.55rem; border-radius: 20px; display: inline-block; margin-bottom: 0.75rem; }
 .hero-search { max-width: 480px; margin: 0 auto 1.25rem; }
 .hero-search form { display: flex; align-items: center; background: var(--white); border: 2px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; gap: 0.5rem; box-shadow: var(--shadow); }
 .hero-search form:focus-within { border-color: #0F766E; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
@@ -141,31 +129,28 @@ nav { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap
 .hero-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; margin-bottom: 1.5rem; }
 .chip { background: var(--teal-light); color: var(--teal-dark); border: 1px solid var(--teal-mid); border-radius: 20px; padding: 0.35rem 0.85rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; }
 .chip:hover { background: var(--teal-mid); }
-.comece-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem 1rem; }
-.necessidade-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; list-style: none; margin: 0; padding: 0; }
-.necessidade-grid li { display: contents; }
-.necessidade-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1rem; text-align: center; box-shadow: var(--shadow); transition: box-shadow .15s, border-color .15s; }
-.necessidade-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, .1); border-color: #D1D5DB; }
-.necessidade-card .emoji { font-size: 1.75rem; margin-bottom: 0.5rem; }
-.necessidade-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
-.necessidade-card p { font-size: 0.78rem; color: var(--muted); }
-.comece-cta { text-align: center; margin-top: 1.5rem; font-size: 0.88rem; color: var(--muted); }
-.comece-cta a { color: var(--teal); font-weight: 700; }
-.como-section { background: var(--teal-light); padding: 3rem 1rem; }
-.como-inner { max-width: 1080px; margin: 0 auto; }
-.como-inner .section-header { text-align: center; }
-.passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
-.passo { background: var(--white); border-radius: var(--radius); padding: 1.5rem 1.25rem; text-align: center; box-shadow: var(--shadow); }
-.passo .num { display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; background: var(--teal); color: var(--white); border-radius: 50%; font-weight: 800; font-size: 1rem; margin-bottom: 0.75rem; }
-.passo .passo-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
-.passo h3 { font-size: 0.95rem; font-weight: 800; color: var(--ink); margin-bottom: 0.4rem; }
-.passo p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
-.noticia-section { max-width: 1080px; margin: 0 auto; padding: 3rem 1rem; }
+.home-section { max-width: 1080px; margin: 0 auto; padding: 2.25rem 1rem; }
+.home-cta { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--muted); }
+.home-cta a { color: var(--teal); font-weight: 700; }
+.tema-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+.tema-card { display: flex; align-items: center; gap: 0.75rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; box-shadow: var(--shadow); transition: box-shadow .15s, border-color .15s; }
+.tema-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, .1); border-color: #D1D5DB; }
+.tema-card .emoji { font-size: 1.6rem; flex-shrink: 0; }
+.tema-texto { display: flex; flex-direction: column; min-width: 0; }
+.tema-nome { font-size: 0.95rem; font-weight: 800; color: var(--ink); line-height: 1.25; }
+.tema-conta { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+.sim-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+.sim-card { display: flex; flex-direction: column; gap: 0.35rem; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); transition: box-shadow .15s, border-color .15s; }
+.sim-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, .1); border-color: #D1D5DB; }
+.sim-card .emoji { font-size: 1.5rem; flex-shrink: 0; }
+.sim-card h3 { font-size: 0.92rem; font-weight: 800; color: var(--ink); line-height: 1.3; }
+.sim-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+.noticia-section { max-width: 1080px; margin: 0 auto; padding: 2.25rem 1rem; }
 .noticia-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-.noticia-card { background: var(--teal-light); border: 1px solid var(--teal-mid); border-radius: var(--radius); padding: 1.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.noticia-card { background: var(--teal-light); border: 1px solid var(--teal-mid); border-radius: var(--radius); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .noticia-card .badge-hoje { display: inline-block; align-self: flex-start; background: var(--teal); color: var(--white); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.25rem 0.6rem; border-radius: 20px; }
-.noticia-card h3 { font-size: 1.15rem; font-weight: 800; color: var(--ink); line-height: 1.35; }
-.noticia-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+.noticia-card h3 { font-size: 0.95rem; font-weight: 800; color: var(--ink); line-height: 1.35; }
+.noticia-card p { display: none; }
 .noticia-card .link-ler { font-size: 0.9rem; font-weight: 700; color: var(--teal); display: inline-flex; align-items: center; gap: 0.25rem; }
 .noticia-card .link-ler:hover { color: var(--teal-dark); }
 .ver-todas-noticias { margin-top: 1.1rem; font-size: 0.9rem; font-weight: 700; color: var(--teal); text-align: center; }
@@ -176,20 +161,21 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 .footer-links a { font-size: 0.875rem; color: var(--muted); font-weight: 500; }
 .footer-links a:hover { color: var(--teal); }
 .footer-note { font-size: 0.8rem; color: #6E737C; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
-@media (max-width: 900px) { .apoios-grid { grid-template-columns: repeat(2, 1fr); }
-.passos { grid-template-columns: repeat(3, 1fr); }
-.necessidade-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .tema-grid { grid-template-columns: repeat(2, 1fr); }
+.sim-grid { grid-template-columns: repeat(3, 1fr); }
     }
 @media (max-width: 640px) { .nav-links { display: none; }
 .nav-toggle { display: flex; }
-.hero { padding: 2.5rem 1rem 2rem; }
+.hero { padding: 1.75rem 1rem 1.5rem; }
 .hero-ctas { flex-direction: column; align-items: stretch; }
 .btn { justify-content: center; width: 100%; }
 .trust-seals { gap: 0.4rem 1rem; }
-.apoios-grid { grid-template-columns: 1fr; }
-.necessidade-grid { grid-template-columns: 1fr; }
-.passos { grid-template-columns: 1fr; gap: 1rem; }
+.tema-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+.tema-card { padding: 0.6rem 0.9rem; }
+.sim-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+.sim-card { flex-direction: row; align-items: center; gap: 0.75rem; padding: 0.75rem 0.9rem; }
+.home-section { padding: 1.75rem 1rem; }
+.noticia-section { padding: 1.75rem 1rem; }
 .urgente-card { width: 200px; }
     }
 </style>
@@ -353,334 +339,88 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
 
     <div class="hero-ctas">
       <a href="/simulador-universal.html" class="btn btn-primary">Descobre a que tens direito →</a>
-      <a href="/p/apoios-escolares.html" class="btn btn-outline">Ver apoios escolares →</a>
-      <a href="/abono-de-familia.html" class="btn btn-outline">Abono de família →</a>
     </div>
     <div class="trust-seals" aria-label="Selos de confiança">
       <span><span class="tick">✓</span> Fontes oficiais</span>
       <span><span class="tick">✓</span> Valores em vigor: 2026</span>
       <span><span class="tick">✓</span> Sem fins comerciais</span>
+      <span><a href="/sobre.html#metodo">Como verificamos →</a></span>
     </div>
     <p class="revisao-auto">Fontes oficiais verificadas automaticamente · última revisão: <span id="ultima-revisao-mes">novembro 2026</span></p>
   </header>
 
   <main id="main-content">
-  <!-- SIMULADORES -->
-  <section class="apoios-section" id="simuladores-home" aria-labelledby="simuladores-titulo">
+  <!-- TEMAS -->
+  <section class="home-section" id="guias-de-apoios" aria-labelledby="apoios-titulo">
     <div class="section-header">
-      <h2 id="simuladores-titulo">Simuladores e Calculadoras</h2>
-      <p>Estima o teu escalão e valor mensal — cálculos no navegador, sem envio de dados.</p>
+      <h2 id="apoios-titulo">Escolhe o teu tema</h2>
+      <p>Cada tema junta os guias, com fonte oficial e data de verificação.</p>
     </div>
-
-    <div class="apoios-grid">
-      <a href="/simulador-psu.html" class="apoio-card apoio-card-destaque">
-        <div class="emoji">🔄</div>
-        <h3>Simulador da PSU</h3>
-        <p class="desc">Valor mensal da Prestação Social Única — resultado a partir de 31/12/2026.</p>
-        <span class="badge-novo">NOVO</span>
-        <span class="tag-verif">Verificado a 13/08/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-abono.html" class="apoio-card">
-        <div class="emoji">👶</div>
-        <h3>Simulador de Abono de Família</h3>
-        <p class="desc">Escalão e valor mensal com base no rendimento e nas idades das crianças.</p>
-        <span class="tag-verif">Verificado a 24/06/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-ase.html" class="apoio-card">
-        <div class="emoji">🎒</div>
-        <h3>Simulador de Ação Social Escolar (ASE)</h3>
-        <p class="desc">Escalão A ou B e o que cobre — refeições, material e transportes.</p>
-        <span class="tag-verif">Verificado a 24/06/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-csi.html" class="apoio-card">
-        <div class="emoji">👴</div>
-        <h3>Simulador do Complemento Solidário para Idosos</h3>
-        <p class="desc">Estimativa mensal do CSI com base na idade, situação e rendimentos.</p>
-        <span class="tag-verif">Verificado a 25/06/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-subsidio-doenca.html" class="apoio-card">
-        <div class="emoji">🤒</div>
-        <h3>Simulador de Subsídio de Doença</h3>
-        <p class="desc">Estimativa da baixa médica por escalão, com dias de espera e majoração.</p>
-        <span class="tag-verif">Verificado a 05/07/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-rsi.html" class="apoio-card">
-        <div class="emoji">💶</div>
-        <h3>Simulador do RSI</h3>
-        <p class="desc">Valor mensal do RSI com base na composição do agregado e nos rendimentos.</p>
-        <span class="tag-verif">Verificado a 13/07/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-subsidio-desemprego.html" class="apoio-card">
-        <div class="emoji">📋</div>
-        <h3>Simulador do Subsídio de Desemprego</h3>
-        <p class="desc">Valor mensal e duração estimada com base na remuneração, idade e descontos.</p>
-        <span class="tag-verif">Verificado a 13/07/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-imt-jovem.html" class="apoio-card">
-        <div class="emoji">🔑</div>
-        <h3>Simulador de IMT Jovem</h3>
-        <p class="desc">Quanto poupas de IMT e Imposto do Selo na compra da primeira casa.</p>
-        <span class="tag-verif">Verificado a 20/07/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-      <a href="/simulador-condicoes-reforma.html" class="apoio-card">
-        <div class="emoji">🧓</div>
-        <h3>Condições de Acesso à Reforma</h3>
-        <p class="desc">Já podes reformar-te, e por que via? Carreiras muito longas, flexibilização ou idade pessoal.</p>
-        <span class="tag-verif">Verificado a 07/09/2026</span>
-        <span class="link-ver">→ Simular</span>
-      </a>
-    </div>
-    <p class="comece-cta"><a href="/simuladores.html">Ver todos os simuladores →</a></p>
-  </section>
-
-  <hr class="divider">
-
-  <!-- COMECE POR AQUI -->
-  <section class="comece-section" aria-labelledby="comece-titulo">
-    <div class="section-header">
-      <h2 id="comece-titulo">Comece por aqui</h2>
-      <p>Escolhe a situação mais próxima da tua.</p>
-    </div>
-    <ul class="necessidade-grid">
-      <li><a href="/p/familia.html" class="necessidade-card">
-        <div class="emoji">👶</div>
-        <h3>Tenho filhos</h3>
-        <p>Abono e licença parental</p>
-      </a></li>
-      <li><a href="/p/apoios-escolares.html" class="necessidade-card">
-        <div class="emoji">🎒</div>
-        <h3>Sou estudante</h3>
-        <p>ASE, bolsas e manuais</p>
-      </a></li>
-      <li><a href="/p/idosos-incapacidade-cuidadores.html" class="necessidade-card">
-        <div class="emoji">🤝</div>
-        <h3>Sou reformado ou tenho uma incapacidade</h3>
-        <p>CSI, AMIM e cuidador informal</p>
-      </a></li>
-      <li><a href="/p/trabalho-rendimento.html" class="necessidade-card">
-        <div class="emoji">💶</div>
-        <h3>Estou sem trabalho ou com rendimento baixo</h3>
-        <p>Desemprego e RSI</p>
-      </a></li>
-      <li><a href="/prestacao-social-unica.html" class="necessidade-card">
-        <div class="emoji">🔄</div>
-        <h3>Quero saber sobre a PSU</h3>
-        <p>O que muda e quando</p>
-      </a></li>
-    </ul>
-    <p class="comece-cta">Não sabes qual escolher? <a href="/comecar-aqui.html">Faz o teste completo →</a></p>
-  </section>
-
-  <hr class="divider">
-
-  <!-- CLUSTERS -->
-  <section class="apoios-section" id="guias-de-apoios" aria-labelledby="apoios-titulo">
-    <div class="section-header">
-      <h2 id="apoios-titulo">Todos os guias, por tema</h2>
-      <p>Cada tema reúne os guias relacionados, com fonte oficial e data de actualização.</p>
-    </div>
-
-    <div class="apoios-grid">
+    <div class="tema-grid">
       <!-- CLUSTERS:HOME:INICIO -->
-      <a href="/p/apoios-escolares.html" class="apoio-card">
-        <div class="emoji">🎒</div>
-        <h3>Apoios Escolares</h3>
-        <p class="desc">ASE, bolsa de mérito, manuais MEGA, passe sub-23, prova escolar, bolsa de estudo do ensino superior e o calendário de prazos — os apoios e obrigações escolares, mais o simulador de ASE.</p>
-        <span class="tag-verif">7 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/apoios-escolares.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">🎒</span>
+        <span class="tema-texto"><span class="tema-nome">Apoios Escolares</span><span class="tema-conta">7 guias · 1 simulador</span></span>
       </a>
-      <a href="/prestacao-social-unica.html" class="apoio-card">
-        <div class="emoji">🔄</div>
-        <h3>Prestação Social Única</h3>
-        <p class="desc">PSU 2026: unifica 13 apoios sociais num regime único não contributivo. Decreto-Lei n.º 166/2026 em vigor — pagamento a partir de 31/12/2026.</p>
-        <span class="tag-verif">7 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/prestacao-social-unica.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">🔄</span>
+        <span class="tema-texto"><span class="tema-nome">Prestação Social Única</span><span class="tema-conta">7 guias · 1 simulador</span></span>
       </a>
-      <a href="/p/familia.html" class="apoio-card">
-        <div class="emoji">👶</div>
-        <h3>Família e Crianças</h3>
-        <p class="desc">Abono de família, licença parental, faltas para assistência e simulador para quem tem filhos.</p>
-        <span class="tag-verif">5 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/familia.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">👶</span>
+        <span class="tema-texto"><span class="tema-nome">Família e Crianças</span><span class="tema-conta">5 guias · 1 simulador</span></span>
       </a>
-      <a href="/p/idosos-incapacidade-cuidadores.html" class="apoio-card">
-        <div class="emoji">🤝</div>
-        <h3>Idosos, Incapacidade e Cuidadores</h3>
-        <p class="desc">Complemento Solidário para Idosos, Estatuto do Cuidador Informal, Atestado Médico de Incapacidade Multiuso (AMIM) e Prestação Social para a Inclusão (PSI).</p>
-        <span class="tag-verif">6 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/idosos-incapacidade-cuidadores.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">🤝</span>
+        <span class="tema-texto"><span class="tema-nome">Idosos, Incapacidade e Cuidadores</span><span class="tema-conta">6 guias · 1 simulador</span></span>
       </a>
-      <a href="/p/trabalho-rendimento.html" class="apoio-card">
-        <div class="emoji">💶</div>
-        <h3>Trabalho e Rendimento</h3>
-        <p class="desc">Subsídio de desemprego, RSI e baixa médica — apoios para quem está sem trabalho, com rendimentos baixos ou temporariamente incapacitado.</p>
-        <span class="tag-verif">4 guias · 3 simuladores</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/trabalho-rendimento.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">💶</span>
+        <span class="tema-texto"><span class="tema-nome">Trabalho e Rendimento</span><span class="tema-conta">4 guias · 3 simuladores</span></span>
       </a>
-      <a href="/p/habitacao.html" class="apoio-card">
-        <div class="emoji">🏠</div>
-        <h3>Habitação</h3>
-        <p class="desc">Arrendar (Porta 65), comprar (IMT Jovem, Garantia Pública) ou carência habitacional (1.º Direito) — os apoios à habitação em vigor em 2026.</p>
-        <span class="tag-verif">7 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/habitacao.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">🏠</span>
+        <span class="tema-texto"><span class="tema-nome">Habitação</span><span class="tema-conta">7 guias · 1 simulador</span></span>
       </a>
-      <a href="/p/reformas.html" class="apoio-card">
-        <div class="emoji">🧓</div>
-        <h3>Reformas e Pensões</h3>
-        <p class="desc">Quando te podes reformar, como é calculada a pensão e o que muda se antecipares ou adiares — as regras estruturais do regime geral, sempre em vigor, nunca os valores que mudam todos os anos.</p>
-        <span class="tag-verif">20 guias · 1 simulador</span>
-        <span class="link-ver">→ Ver guias</span>
+      <a href="/p/reformas.html" class="tema-card">
+        <span class="emoji" aria-hidden="true">🧓</span>
+        <span class="tema-texto"><span class="tema-nome">Reformas e Pensões</span><span class="tema-conta">20 guias · 1 simulador</span></span>
       </a>
   <!-- CLUSTERS:HOME:FIM -->
     </div>
+    <p class="home-cta">Não sabes por onde começar? <a href="/comecar-aqui.html">Faz o teste →</a></p>
   </section>
 
-  <hr class="divider">
-
-  <!-- GUIAS PRINCIPAIS -->
-  <section class="apoios-section" id="guias-principais" aria-labelledby="destaques-titulo">
+  <!-- SIMULADORES -->
+  <section class="home-section" id="simuladores-home" aria-labelledby="simuladores-titulo">
     <div class="section-header">
-      <h2 id="destaques-titulo">Guias principais</h2>
-      <p>Um destaque por tema — o resto está em cada guia acima.</p>
+      <h2 id="simuladores-titulo">Simuladores</h2>
+      <p>Faz as contas no navegador. Os dados não saem do teu dispositivo.</p>
     </div>
-
-    <div class="apoios-grid">
-      <!-- DESTAQUES:HOME:INICIO -->
-      <a href="/acao-social-escolar.html" class="apoio-card">
-        <div class="emoji">🎒</div>
-        <h3>Ação Social Escolar</h3>
-        <p class="desc">Refeições, transportes e material escolar grátis ou com desconto.</p>
-        <span class="etiquetas"><span class="etiqueta etiqueta-simulador">🧮 Tem simulador</span></span>
-        <span class="link-ver">→ Ver guia</span>
+    <div class="sim-grid">
+      <a href="/simulador-psu.html" class="sim-card">
+        <span class="emoji" aria-hidden="true">🔄</span>
+        <div><h3>Prestação Social Única (PSU)</h3><p>Valor mensal da nova prestação.</p></div>
       </a>
-      <a href="/psu-quando-entra-em-vigor.html" class="apoio-card">
-        <div class="emoji">🔄</div>
-        <h3>PSU 2026: decreto-lei publicado — timeline completa</h3>
-        <p class="desc">Timeline da PSU: Decreto-Lei n.º 166/2026 publicado e em vigor — pagamento a partir de 31/12/2026.</p>
-        <span class="link-ver">→ Ver guia</span>
+      <a href="/simulador-abono.html" class="sim-card">
+        <span class="emoji" aria-hidden="true">👶</span>
+        <div><h3>Abono de família</h3><p>Escalão e valor por criança.</p></div>
       </a>
-      <a href="/abono-de-familia.html" class="apoio-card">
-        <div class="emoji">👶</div>
-        <h3>Abono de família</h3>
-        <p class="desc">Prestação mensal para crianças e jovens. Escalões e valores 2026.</p>
-        <span class="etiquetas"><span class="etiqueta etiqueta-simulador">🧮 Tem simulador</span></span>
-        <span class="link-ver">→ Ver guia</span>
+      <a href="/simulador-subsidio-desemprego.html" class="sim-card">
+        <span class="emoji" aria-hidden="true">📋</span>
+        <div><h3>Subsídio de desemprego</h3><p>Valor mensal e duração.</p></div>
       </a>
-      <a href="/complemento-solidario-idosos.html" class="apoio-card">
-        <div class="emoji">👴</div>
-        <h3>Complemento Solidário para Idosos</h3>
-        <p class="desc">CSI 2026: quem tem direito, cálculo do valor, benefícios de saúde (BAS) e filhos não contam.</p>
-        <span class="etiquetas"><span class="etiqueta etiqueta-simulador">🧮 Tem simulador</span></span>
-        <span class="link-ver">→ Ver guia</span>
+      <a href="/simulador-subsidio-doenca.html" class="sim-card">
+        <span class="emoji" aria-hidden="true">🤒</span>
+        <div><h3>Baixa médica</h3><p>Quanto recebes de subsídio de doença.</p></div>
       </a>
-      <a href="/subsidio-desemprego.html" class="apoio-card">
-        <div class="emoji">📋</div>
-        <h3>Subsídio de desemprego</h3>
-        <p class="desc">Como pedir ao IEFP, processo passo a passo e situações especiais na UE.</p>
-        <span class="etiquetas"><span class="etiqueta etiqueta-simulador">🧮 Tem simulador</span></span>
-        <span class="link-ver">→ Ver guia</span>
+      <a href="/simulador-csi.html" class="sim-card">
+        <span class="emoji" aria-hidden="true">👴</span>
+        <div><h3>Complemento Solidário para Idosos</h3><p>Valor mensal do CSI.</p></div>
       </a>
-      <a href="/porta-65.html" class="apoio-card">
-        <div class="emoji">🏠</div>
-        <h3>Porta 65 Jovem e Porta 65+</h3>
-        <p class="desc">Apoio ao arrendamento para jovens até 35 anos. Candidaturas contínuas, sem prazo.</p>
-        <span class="link-ver">→ Ver guia</span>
-      </a>
-      <a href="/idade-normal.html" class="apoio-card">
-        <div class="emoji">🧓</div>
-        <h3>Idade normal de reforma</h3>
-        <p class="desc">Porque sobe todos os anos, e onde vês a idade do teu ano.</p>
-        <span class="link-ver">→ Ver guia</span>
-      </a>
-  <!-- DESTAQUES:HOME:FIM -->
     </div>
+    <p class="home-cta"><a href="/simuladores.html">Ver todos os simuladores →</a></p>
   </section>
-
-  <hr class="divider">
-
-  <!-- ATUALIZADO RECENTEMENTE -->
-  <section class="apoios-section" id="atualizado-recentemente" aria-labelledby="atualizado-titulo">
-    <div class="section-header">
-      <h2 id="atualizado-titulo">Atualizado recentemente</h2>
-      <p>Os guias que mudaram por último — data real de cada verificação, nunca "hoje".</p>
-    </div>
-
-    <div class="apoios-grid">
-      <!-- ATUALIZACOES:HOME:INICIO -->
-      <a href="/prova-escolar.html" class="apoio-card">
-        <div class="emoji">🕓</div>
-        <h3>Prova Escolar</h3>
-        <p class="desc">Verificado a 18 out. 2026.</p>
-        <span class="etiquetas"><span class="etiqueta etiqueta-prazo" data-prazo="--08-01/--12-31" hidden>⏳ Prazo a decorrer</span></span>
-        <span class="link-ver">→ Ler guia</span>
-      </a>
-      <a href="/subsidio-parental.html" class="apoio-card">
-        <div class="emoji">🕓</div>
-        <h3>Licença parental</h3>
-        <p class="desc">Verificado a 14 out. 2026.</p>
-        <span class="link-ver">→ Ler guia</span>
-      </a>
-      <a href="/bolsa-de-merito.html" class="apoio-card">
-        <div class="emoji">🕓</div>
-        <h3>Bolsa de mérito</h3>
-        <p class="desc">Verificado a 5 out. 2026.</p>
-        <span class="link-ver">→ Ler guia</span>
-      </a>
-      <a href="/tarifa-social-energia.html" class="apoio-card">
-        <div class="emoji">🕓</div>
-        <h3>Tarifa social de energia</h3>
-        <p class="desc">Verificado a 5 out. 2026.</p>
-        <span class="link-ver">→ Ler guia</span>
-      </a>
-  <!-- ATUALIZACOES:HOME:FIM -->
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- COMO FUNCIONA -->
-  <section class="como-section" aria-labelledby="como-titulo">
-    <div class="como-inner">
-      <div class="section-header">
-        <h2 id="como-titulo">Como funciona</h2>
-        <p>Sem opiniões. Só factos verificáveis.</p>
-      </div>
-      <div class="passos" role="list">
-
-        <div class="passo" role="listitem">
-          <div class="passo-icon" aria-hidden="true">🔍</div>
-          <div class="num" aria-hidden="true">1</div>
-          <h3>Pesquisamos nas fontes oficiais</h3>
-          <p>Diário da República, Segurança Social, DGE — nunca de memória.</p>
-        </div>
-
-        <div class="passo" role="listitem">
-          <div class="passo-icon" aria-hidden="true">📅</div>
-          <div class="num" aria-hidden="true">2</div>
-          <h3>Verificamos cada facto com data</h3>
-          <p>Cada valor tem a data em que foi confirmado e o link à fonte.</p>
-        </div>
-
-        <div class="passo" role="listitem">
-          <div class="passo-icon" aria-hidden="true">✅</div>
-          <div class="num" aria-hidden="true">3</div>
-          <h3>Tu confirmas no simulador oficial</h3>
-          <p>Nunca afirmamos "tens direito a X". Esse passo é sempre teu.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
 
   <!-- URGENTE AGORA -->
   <div class="urgente-banda" aria-labelledby="urgente-titulo">
@@ -742,8 +482,6 @@ footer { background: #F9FAFB; border-top: 1px solid var(--border); padding: 2rem
       </div>
     </div>
   </div>
-
-  <hr class="divider">
 
   <!-- ÚLTIMAS NOTÍCIAS -->
   <section class="noticia-section" aria-labelledby="noticia-titulo">
