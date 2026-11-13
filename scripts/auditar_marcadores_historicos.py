@@ -95,7 +95,7 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 
 from sincronizar_clusters import encontrar_paginas, verificado_em_do_texto  # noqa: E402
 from verificar_datas import (  # noqa: E402
-    AUTO_GERADOS,
+    e_auto_gerado,
     MARCADORES_HISTORICOS,
     MARCADORES_ISENTOS_DO_PORTAO,
     PADROES,
@@ -161,7 +161,7 @@ def paginas_do_corpus(raiz: Path = RAIZ) -> list[Path]:
     conteúdo manual)."""
     return [
         p for p in encontrar_paginas(raiz)
-        if p.name not in AUTO_GERADOS
+        if not e_auto_gerado(p.name)
     ]
 
 

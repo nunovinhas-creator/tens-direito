@@ -15,7 +15,8 @@ O pipeline automático (`pipeline-diario.yml`) só pode escrever em:
   - data de verificação (`id="ultima-revisao-mes"` + `dateModified` do JSON-LD) — `sed`, Step 6
   - `<!-- DESTAQUE:INICIO/FIM -->` — banner sazonal/evento, Step 6a
   - `<!-- NOTICIA-HOME:INICIO/FIM -->` — card "Últimas notícias", Step 3 (`gerar_noticias.py`)
-- `noticias.html` — arquivo de notícias, gerado a partir de `data/noticias.json` (ficheiro inteiro, sem marcadores)
+- `noticias.html` — notícias dos últimos meses, gerado a partir de `data/noticias.json` (ficheiro inteiro, sem marcadores)
+- `noticias-AAAA.html` — arquivo por ano das notícias mais antigas, gerado a partir de `noticias.html` pelo mesmo script (ficheiro inteiro; um por ano, criado sozinho quando as notícias desse ano saem da janela — ver "FRESCURA DA HOMEPAGE" → A)
 - `data/noticias.json` — fonte de verdade das notícias (ver secção "FRESCURA DA HOMEPAGE")
 - `HISTORICO.md` — data de revisão automática
 - `README.md` — estado do repositório
@@ -347,7 +348,7 @@ em `tests/test_pesquisa_hero.py`, que extrai o JS/CSS directamente do
 
 | Ficheiro | Trigger | Função | `git push`? |
 |---|---|---|---|
-| `pipeline-diario.yml` | cron `0 6 * * *` | Scrape → detectar mudanças → notícias → validar valores → README → push único | ✅ sim (`data/`, `index.html`, `noticias.html`, `README.md`, `HISTORICO.md`) |
+| `pipeline-diario.yml` | cron `0 6 * * *` | Scrape → detectar mudanças → notícias → validar valores → README → push único | ✅ sim (`data/`, `index.html`, `noticias.html`, `noticias-AAAA.html`, `README.md`, `HISTORICO.md`) |
 | `shadow-daily.yml` | `workflow_run` após "Pipeline Diário" + cron `0 8 * * *` (rede de segurança) | `run_shadow_daily.py`: Shadow Mode → analytics → relatório Markdown → guarda em `shadow_history/` | ✅ sim (só `shadow_history/*.md`) |
 | `verificar-links.yml` | cron `0 7 * * 1` (segunda) | lychee testa todos os links HTML + Issue se 404 | ❌ não |
 | `validar-conteudo.yml` | push para main `**.html` | Valida GA4, OG tags, JSON-LD, disclaimer, data verificação + HTML5 validator | ❌ não |
@@ -1943,7 +1944,22 @@ selecção (2026-07-04) vivem em `HISTORICO.md`, não aqui.
 `data/noticias.json` é a fonte de verdade — `noticias.html` (destaque +
 arquivo por mês, ordenado por data real desc) e o bloco `NOTICIA-HOME` de
 `index.html` (2-3 itens mais recentes) são sempre **gerados** a partir dele,
-nunca editados directamente. `sincronizar_saidas()` é o único ponto que
+nunca editados directamente.
+
+**Arquivo por ano** (2026-11-13): `noticias.html` só leva os
+`MESES_NA_PAGINA_PRINCIPAL` (3) meses mais recentes, contados a partir do
+mês da notícia mais recente (nunca da data de hoje — o resultado só depende
+do JSON). As mais antigas vão para `noticias-AAAA.html`, uma página por ano,
+gerada a partir do `noticias.html` já escrito (mesmos nav, barra, filtros e
+rodapé; sem destaque; título «Notícias de AAAA»). Cada notícia fica numa só
+página. Os anos ligam-se entre si e a partir de `noticias.html`, no bloco
+`<!-- ARQUIVO-ANOS-INICIO/FIM -->`; sem esse bloco, com notícias antigas, a
+regeneração falha em vez de as deixar sem ligação. As páginas de ano são
+`noindex, follow`, ficam fora do sitemap, da pesquisa e da tabela «PÁGINAS
+PUBLICADAS», usam a imagem og de `noticias.html` e saem da vigilância de
+datas (`verificar_datas.e_auto_gerado()`), como `noticias.html`. O guardrail
+do pipeline e o `git add` aceitam `noticias-[0-9]{4}.html`; a sanitização do
+Step 3b corre também nelas. Testes: `tests/test_noticias_por_ano.py`. `sincronizar_saidas()` é o único ponto que
 regenera as duas saídas a partir do JSON em disco — idempotente, chamado
 sempre no fim de `main()` (com ou sem vencedor novo no dia, para nunca
 ficarem presas a conteúdo antigo se o JSON mudar por outra via); disponível

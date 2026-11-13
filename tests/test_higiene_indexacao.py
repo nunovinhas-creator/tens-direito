@@ -70,6 +70,12 @@ EXCLUSOES_SITEMAP = {
 PAGINAS = encontrar_paginas()
 IDS = [str(p.relative_to(RAIZ)) for p in PAGINAS]
 
+# Arquivo de notícias por ano (noticias-AAAA.html), gerado pelo pipeline a
+# partir de noticias.html: noindex, fora do sitemap e da tabela «PÁGINAS
+# PUBLICADAS» (aparece um por ano, sem sessão manual), mas sempre ligado a
+# partir de noticias.html — por isso continua sujeito ao teste de órfãs.
+_RE_ARQUIVO_ANO = re.compile(r"^noticias-\d{4}\.html$")
+
 
 def _url_para_ficheiro(url: str) -> str:
     caminho = url.replace(f"{DOMINIO}/", "")
@@ -106,6 +112,10 @@ def test_pagina_publica_esta_no_sitemap_ou_tem_exclusao_justificada(caminho):
     rel = str(caminho.relative_to(RAIZ))
     urls_sitemap = set(_urls_sitemap())
     url_esperado = _ficheiro_para_url(rel)
+    if _RE_ARQUIVO_ANO.match(rel):
+        assert url_esperado not in urls_sitemap
+        assert '<meta name="robots" content="noindex, follow">' in caminho.read_text(encoding="utf-8")
+        return
     if rel in EXCLUSOES_SITEMAP:
         assert url_esperado not in urls_sitemap, (
             f"{rel} está marcada como exclusão deliberada do sitemap mas aparece lá — "
@@ -296,6 +306,9 @@ _TABELA_CLAUDE_MD = _tabela_paginas_publicadas_claude_md()
 @pytest.mark.parametrize("caminho", PAGINAS, ids=IDS)
 def test_pagina_publica_esta_na_tabela_claude_md_ou_tem_exclusao_justificada(caminho):
     rel = str(caminho.relative_to(RAIZ))
+    if _RE_ARQUIVO_ANO.match(rel):
+        assert rel not in _TABELA_CLAUDE_MD
+        return
     if rel in EXCLUSOES_TABELA_PAGINAS:
         assert rel not in _TABELA_CLAUDE_MD, (
             f"{rel} está marcada como exclusão deliberada da tabela 'PÁGINAS PUBLICADAS' "

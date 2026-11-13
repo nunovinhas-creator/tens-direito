@@ -395,31 +395,33 @@ jobs:
       - name: Sanitizar noticias.html
         run: |
           python3 << 'PYEOF'
-          import re
-          with open('noticias.html', 'r', encoding='utf-8') as f:
-              conteudo = f.read()
+          import glob, re
+          # noticias.html e o arquivo por ano (noticias-AAAA.html, gerado dele).
+          for nome in ['noticias.html'] + sorted(glob.glob('noticias-[0-9][0-9][0-9][0-9].html')):
+              with open(nome, 'r', encoding='utf-8') as f:
+                  conteudo = f.read()
 
-          # Remover todas as formas de non-breaking space (incluindo dupla codificação)
-          conteudo = conteudo.replace('&amp;nbsp;', ' ')
-          conteudo = conteudo.replace('&nbsp;&nbsp;', ' ')
-          conteudo = conteudo.replace('&nbsp;', ' ')
-          conteudo = conteudo.replace('&#160;', ' ')
-          conteudo = conteudo.replace('\xa0', ' ')
+              # Remover todas as formas de non-breaking space (incluindo dupla codificação)
+              conteudo = conteudo.replace('&amp;nbsp;', ' ')
+              conteudo = conteudo.replace('&nbsp;&nbsp;', ' ')
+              conteudo = conteudo.replace('&nbsp;', ' ')
+              conteudo = conteudo.replace('&#160;', ' ')
+              conteudo = conteudo.replace('\xa0', ' ')
 
-          # Limpar espaços múltiplos DENTRO de texto (nunca a indentação HTML no
-          # início de linha) — achado real, 2026-08-17: `r'  +'` sem lookbehind
-          # colapsava também a indentação de render_destaque()/render_arquivo_card()
-          # (scripts/gerar_noticias.py), deixando noticias.html sempre "achatado"
-          # a cada corrida do pipeline, mesmo sem nenhum &nbsp; por limpar.
-          # `(?<=\S)` exige um carácter não-espaço imediatamente antes do troço —
-          # nunca verdade logo a seguir a uma quebra de linha, por isso a
-          # indentação sobrevive; espaços a mais dentro de texto continuam a
-          # colapsar como sempre.
-          conteudo = re.sub(r'(?<=\S)[ \t]{2,}', ' ', conteudo)
+              # Limpar espaços múltiplos DENTRO de texto (nunca a indentação HTML no
+              # início de linha) — achado real, 2026-08-17: `r'  +'` sem lookbehind
+              # colapsava também a indentação de render_destaque()/render_arquivo_card()
+              # (scripts/gerar_noticias.py), deixando noticias.html sempre "achatado"
+              # a cada corrida do pipeline, mesmo sem nenhum &nbsp; por limpar.
+              # `(?<=\S)` exige um carácter não-espaço imediatamente antes do troço —
+              # nunca verdade logo a seguir a uma quebra de linha, por isso a
+              # indentação sobrevive; espaços a mais dentro de texto continuam a
+              # colapsar como sempre.
+              conteudo = re.sub(r'(?<=\S)[ \t]{2,}', ' ', conteudo)
 
-          with open('noticias.html', 'w', encoding='utf-8') as f:
-              f.write(conteudo)
-          print('✓ noticias.html sanitizado')
+              with open(nome, 'w', encoding='utf-8') as f:
+                  f.write(conteudo)
+              print(f'✓ {nome} sanitizado')
           PYEOF
 
       # ── Step 4: Validar valores estruturados ────────────────────────────────
@@ -858,14 +860,16 @@ jobs:
       - name: Verificar ficheiros protegidos
         run: |
           python3 -c "
-          import subprocess, sys
+          import re, subprocess, sys
           AUTO_GERADOS = ['index.html', 'noticias.html', 'HISTORICO.md', 'README.md']
+          # noticias-AAAA.html: arquivo por ano, gerado por gerar_noticias.py
+          ARQUIVO_ANO = re.compile(r'^noticias-[0-9]{4}[.]html$')
           result = subprocess.run(
               ['git', 'diff', '--name-only', 'HEAD'],
               capture_output=True, text=True
           )
           modificados = [f.strip() for f in result.stdout.strip().split('\n') if f.strip()]
-          violacoes = [f for f in modificados if f.endswith('.html') and f not in AUTO_GERADOS]
+          violacoes = [f for f in modificados if f.endswith('.html') and f not in AUTO_GERADOS and not ARQUIVO_ANO.match(f)]
           if violacoes:
               print('ERRO CRITICO: ficheiros protegidos modificados pelo pipeline:')
               for f in violacoes:
@@ -882,6 +886,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ index.html noticias.html README.md HISTORICO.md
+          for f in noticias-[0-9][0-9][0-9][0-9].html; do
+            [ -e "$f" ] && git add "$f"
+          done
           if git diff --staged --quiet; then
             echo "Sem alterações para commitar."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
