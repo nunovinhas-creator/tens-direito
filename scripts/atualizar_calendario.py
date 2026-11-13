@@ -8,6 +8,10 @@ marcadas de calendario-pagamentos-seguranca-social.html:
   <!-- CAL:META:INICIO -->  ... <!-- CAL:META:FIM -->   (title + meta description)
   <!-- CAL:CORPO:INICIO --> ... <!-- CAL:CORPO:FIM -->  (tabelas do mês)
 
+e ainda a zona CAL-HOME do index.html (dados da barra do topo da homepage),
+data/calendario_barra.json (os mesmos dados, para a barra do topo das outras
+páginas — lidos por fetch pelo nav.js) e calendario/*.ics.
+
 Invariante crítico (CALENDARIO-PAGAMENTOS-SPEC.md): a página NUNCA
 mostra um mês passado como se fosse o corrente. Se o JSON não tiver o
 mês corrente, a zona CAL:CORPO degrada para um bloco explícito
@@ -40,6 +44,11 @@ RAIZ = Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data" / "calendario_pagamentos.json"
 PAGINA = RAIZ / "calendario-pagamentos-seguranca-social.html"
 INDEX = RAIZ / "index.html"
+# Datas da barra do topo das outras páginas (BARRA-TOPO, sincronizar_nav.py):
+# o mesmo conteúdo de #cal-home-dados, num ficheiro servido que o nav.js lê
+# por fetch. Pôr as datas dentro de cada HTML obrigaria este workflow a
+# reescrever todas as páginas protegidas todos os meses (REGRA DE OURO).
+BARRA_JSON = RAIZ / "data" / "calendario_barra.json"
 
 FONTE_OFICIAL_FALLBACK = "https://www.seg-social.pt"
 
@@ -650,6 +659,26 @@ def render_corpo(dados: dict, hoje: dt.date) -> str:
     return "\n\n".join(blocos)
 
 
+def _dados_por_mes(dados: dict, hoje: dt.date) -> dict:
+    """{"AAAA-MM": [{dia, resumo}, ...]} com o mês corrente e o seguinte,
+    quando existem no JSON — partilhado pela zona CAL-HOME da homepage e
+    por data/calendario_barra.json (barra do topo das outras páginas)."""
+    atual = _encontrar_mes(dados, hoje.year, hoje.month)
+    ano_s, mes_s = _mes_seguinte(hoje.year, hoje.month)
+    seguinte = _encontrar_mes(dados, ano_s, mes_s)
+    return {
+        f'{m["ano"]}-{m["mes"]:02d}': _dados_js(m) for m in (atual, seguinte) if m
+    }
+
+
+def render_barra_json(dados: dict, hoje: dt.date) -> str:
+    """Conteúdo de data/calendario_barra.json — o mesmo de #cal-home-dados.
+
+    Sem chave para o mês de Lisboa (dados por actualizar), o nav.js mostra
+    só a mensagem do WhatsApp — nunca uma data velha."""
+    return json.dumps(_dados_por_mes(dados, hoje), ensure_ascii=False, indent=2) + "\n"
+
+
 def render_home(dados: dict, hoje: dt.date) -> str:
     """Zona CAL-HOME do index.html: dados para a barra fixa 'Próximo
     pagamento' da homepage, por mês — {"AAAA-MM": [{dia, resumo}, ...]} —
@@ -663,13 +692,8 @@ def render_home(dados: dict, hoje: dt.date) -> str:
     mês corrente no JSON — mesma honestidade do estado degradado da página).
     """
     atual = _encontrar_mes(dados, hoje.year, hoje.month)
-    ano_s, mes_s = _mes_seguinte(hoje.year, hoje.month)
-    seguinte = _encontrar_mes(dados, ano_s, mes_s)
-    por_mes = {
-        f'{m["ano"]}-{m["mes"]:02d}': _dados_js(m) for m in (atual, seguinte) if m
-    }
     data_mes = f"{hoje.year}-{hoje.month:02d}" if atual else ""
-    dados_json = json.dumps(por_mes, ensure_ascii=False)
+    dados_json = json.dumps(_dados_por_mes(dados, hoje), ensure_ascii=False)
     return (
         f'    <script id="cal-home-dados" type="application/json" '
         f'data-mes="{data_mes}">{dados_json}</script>'
@@ -746,6 +770,18 @@ def atualizar_homepage(
     return mudou
 
 
+def atualizar_barra_json(
+    dados: dict, hoje: dt.date, caminho: Path = BARRA_JSON, escrever: bool = True
+) -> bool:
+    """Regenera data/calendario_barra.json. Devolve True se mudou."""
+    novo = render_barra_json(dados, hoje)
+    original = caminho.read_text(encoding="utf-8") if caminho.exists() else None
+    mudou = novo != original
+    if mudou and escrever:
+        caminho.write_text(novo, encoding="utf-8")
+    return mudou
+
+
 def atualizar_pagina(
     dados: dict, hoje: dt.date, caminho: Path = PAGINA, escrever: bool = True
 ) -> bool:
@@ -779,6 +815,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         mudou = atualizar_pagina(dados, hoje, escrever=not args.dry_run)
         mudou_home = atualizar_homepage(dados, hoje, escrever=not args.dry_run)
+        mudou_barra = atualizar_barra_json(dados, hoje, escrever=not args.dry_run)
         # Calendários subscrevíveis (calendario/*.ics), das mesmas datas.
         from gerar_calendarios_ics import atualizar_ics
         ics_mudados = atualizar_ics(dados, hoje, escrever=not args.dry_run)
@@ -800,6 +837,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"{PAGINA.name}: {estado}; página {_accao(mudou)}.")
     print(f"{INDEX.name}: barra do calendário {_accao(mudou_home)}.")
+    print(f"data/{BARRA_JSON.name}: {_accao(mudou_barra)}.")
     print(f"calendario/*.ics: {_accao(bool(ics_mudados))}"
           + (f" ({', '.join(ics_mudados)})" if ics_mudados else "") + ".")
     return 0

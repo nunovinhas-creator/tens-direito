@@ -184,9 +184,23 @@ footer a{color:#5C6770}
   <script src="/scripts/pesquisa.js" defer></script>
   <link rel="stylesheet" href="/assets/css/checklist.css">
   <script src="/assets/js/checklist.js" defer></script>
+  <script src="/assets/js/hoje-lisboa.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar para o conteúdo</a>
+  <!-- BARRA-TOPO:INICIO -->
+  <div class="barra-topo-regiao" role="region" aria-label="Avisos de pagamento" data-barra-dados="/data/calendario_barra.json">
+    <div class="barra-topo-mensagens" aria-live="off">
+      <a class="barra-topo-msg" data-destino="calendario" href="/calendario-pagamentos-seguranca-social.html" hidden>
+        <span class="barra-topo-texto"><span class="barra-topo-longo">📅 Calendário de pagamentos da Segurança Social</span><span class="barra-topo-curto">📅 Calendário de pagamentos</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+      <a class="barra-topo-msg" data-destino="whatsapp" href="https://whatsapp.com/channel/0029VbDwKbZCsU9QFFWi3K1W?utm_source=tensdireito&amp;utm_medium=site&amp;utm_campaign=canal_whatsapp&amp;utm_content=barra_topo" target="_blank" rel="noopener">
+        <span class="barra-topo-texto">🔔 <span class="barra-topo-longo">Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança Social</span><span class="barra-topo-curto">Aviso na véspera, no WhatsApp</span></span> <span class="barra-topo-seta" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <button class="barra-topo-pausa" type="button" aria-label="Pausar as mensagens" data-pausado="false" hidden><svg class="barra-topo-icone-pausa" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg><svg class="barra-topo-icone-retomar" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 1.5v11l9.5-5.5z" fill="currentColor"/></svg></button>
+  </div>
+<!-- BARRA-TOPO:FIM -->
   <!-- NAV:INICIO -->
 <div class="nav-wrap">
     <nav>
