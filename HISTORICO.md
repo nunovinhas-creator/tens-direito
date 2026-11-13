@@ -8016,3 +8016,11 @@ Parecer externo ao PR #378 (mesmo dia), aplicado: PSU descrita como «começa a 
 ---
 
 *Última revisão automática: 2026-11-13*
+
+### Última revisão: 2026-11-13 — «O que muda em 2027» no topo da homepage e nos guias relacionados
+
+A página estava publicada desde as 16:47 (smoke test confirmou a versão servida), mas só aparecia nos cartões «Datas a não perder», mais abaixo na homepage. Agora:
+- é o banner de destaque do topo da homepage (`data/destaque_evento.json`, id `o-que-muda-2027`, no lugar do banner da PSU — a página de 2027 também cobre a PSU); a zona `DESTAQUE:INICIO/FIM` de `index.html` foi actualizada no mesmo commit, para não esperar pelo pipeline do dia seguinte;
+- tem uma ligação no início do conteúdo de 7 guias: PSU, RSI, Reformas, idade normal da reforma, CSI, licença parental e garantia pública (bloco `VER-2027:INICIO/FIM`, estilo `.ver-2027` em `nav.css`, escondido na impressão).
+Sem facto novo: datas de verificação das páginas não mudaram.
+
