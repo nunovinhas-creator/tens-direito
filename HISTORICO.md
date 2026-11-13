@@ -7883,6 +7883,24 @@ a página toda (o teste das páginas reais). Docstring de `verificar_datas.py`
 clarificado: o «âmbito deliberado» dos 3 tipos é o do portão de confirmação,
 não o dos alertas; novo parágrafo sobre os meses de `REVER_EM`.
 
+## Última revisão: 2026-11-13 — Sitemap: `<lastmod>` logo a seguir ao `<loc>`
+
+`scripts/sincronizar_sitemap_lastmod.py` passa a dar a ordem do protocolo
+de sitemaps.org, loc → lastmod → changefreq → priority. Antes, inserir
+acrescentava o `<lastmod>` no fim do `<url>` (depois do `<priority>`) e
+actualizar substituía-o no lugar: 86 entradas tinham-no no fim e 17 já
+logo a seguir ao `<loc>`. Agora o script retira sempre o `<lastmod>` e
+reinsere-o depois do `<loc>`, à mesma indentação. `--check` antes: divergente
+(exit 1); `--write`: 86 linhas movidas, mesmas 109 URLs e mesmas datas;
+`--check` e 2.ª corrida de `--write`: sem alterações. As 6 páginas de
+`EXCECOES_SEM_LASTMOD` continuam sem `<lastmod>`.
+
+`tests/test_sitemap_lastmod.py`: `test_ordem_dos_elementos_no_sitemap`
+(cada `<url>` real, falhou nas 86 antes do `--write`) e
+`test_sincronizar_poe_lastmod_logo_a_seguir_ao_loc` (inserir, mover do fim,
+actualizar já na ordem, retirar numa excepção, idempotência — falha com o
+script antigo).
+
 ---
 
 *Última revisão automática: 2026-11-12*

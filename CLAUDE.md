@@ -3930,7 +3930,10 @@ ou, sem ele, o último "Verificado a" (`extrair_verificado_em()`). Gerado por
 `scripts/sincronizar_sitemap_lastmod.py --write` (idempotente; `--check`),
 nunca à mão. **Quem avança um carimbo corre o script no mesmo commit.**
 `tests/test_sitemap_lastmod.py` falha se um `<lastmod>` faltar ou divergir
-da data da página. Excepções nominais (`EXCECOES_SEM_LASTMOD`, motivo por
+da data da página. Ordem em cada `<url>` (2026-11-13): loc → lastmod →
+changefreq → priority, a do protocolo de sitemaps.org — o script retira
+sempre o `<lastmod>` e reinsere-o logo a seguir ao `<loc>`, a actualizar ou
+a inserir; `test_ordem_dos_elementos_no_sitemap` falha noutra ordem. Excepções nominais (`EXCECOES_SEM_LASTMOD`, motivo por
 página): `index.html`/`noticias.html` (alteradas todos os dias pelo
 pipeline, que não escreve no sitemap) e `comecar-aqui.html`/`sobre.html`/
 `privacidade.html`/`acessibilidade.html` (institucionais, sem data

@@ -88,6 +88,57 @@ def test_sitemap_sincronizado():
     assert S.sincronizar(xml) == xml, "correr python scripts/sincronizar_sitemap_lastmod.py --write"
 
 
+# ── Ordem dos elementos: loc → lastmod → changefreq → priority ──
+# Protocolo de sitemaps.org. O script retira sempre o <lastmod> existente e
+# reinsere-o logo a seguir ao <loc>, no caminho de actualizar e no de inserir.
+
+@pytest.mark.parametrize("corpo", _URLS, ids=[e[0] for e in ENTRADAS])
+def test_ordem_dos_elementos_no_sitemap(corpo):
+    tags = re.findall(r"<(\w+)>", corpo)
+    esperado = ["loc", "lastmod", "changefreq", "priority"]
+    assert tags in (esperado, [t for t in esperado if t != "lastmod"]), tags
+
+
+_XML_TESTE = (
+    "<urlset>\n"
+    "  <url>\n    <loc>https://tensdireito.com/nova.html</loc>\n"
+    "    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
+    "  <url>\n    <loc>https://tensdireito.com/no-fim.html</loc>\n"
+    "    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n"
+    "    <lastmod>2026-01-01</lastmod>\n  </url>\n"
+    "  <url>\n    <loc>https://tensdireito.com/ja-na-ordem.html</loc>\n"
+    "    <lastmod>2026-01-01</lastmod>\n"
+    "    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n"
+    "  <url>\n    <loc>https://tensdireito.com/sobre.html</loc>\n"
+    "    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n"
+    "    <lastmod>2026-01-01</lastmod>\n  </url>\n"
+    "</urlset>\n"
+)
+_DATAS_TESTE = {"nova.html": "2026-11-13", "no-fim.html": "2026-11-13",
+                "ja-na-ordem.html": "2026-11-13", "sobre.html": None}
+
+
+def _url_de(xml, slug):
+    return re.search(rf"  <url>\n    <loc>https://tensdireito.com/{slug}</loc>.*?</url>", xml, re.S).group(0)
+
+
+def test_sincronizar_poe_lastmod_logo_a_seguir_ao_loc(monkeypatch):
+    monkeypatch.setattr(S, "lastmod_esperado", lambda c: _DATAS_TESTE[c.name])
+    novo = S.sincronizar(_XML_TESTE)
+    for slug in ("nova.html", "no-fim.html", "ja-na-ordem.html"):  # inserir, mover, actualizar
+        assert _url_de(novo, slug) == (
+            f"  <url>\n    <loc>https://tensdireito.com/{slug}</loc>\n"
+            "    <lastmod>2026-11-13</lastmod>\n"
+            "    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>"
+        ), slug
+    assert _url_de(novo, "sobre.html") == (  # excepção: sai, o resto fica igual
+        "  <url>\n    <loc>https://tensdireito.com/sobre.html</loc>\n"
+        "    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>"
+    )
+    assert novo.count("<lastmod>") == 3
+    assert S.sincronizar(novo) == novo  # idempotente
+
+
 def test_verificador_apoios_e_noindex():
     html = (RAIZ / "verificador-apoios.html").read_text(encoding="utf-8")
     assert re.search(r'<meta name="robots" content="noindex[^"]*">', html), (
