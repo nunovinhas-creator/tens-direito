@@ -502,3 +502,92 @@ html { scroll-padding-top: 117px; }
   .barra-topo-regiao ~ .nav-wrap { top: 0; }
   .barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { max-height: calc(100vh - 100%); }
 }
+
+/*
+ * Etiquetas nas listas de guias (geradas por scripts/sincronizar_clusters.py):
+ * «Tem simulador» (data/clusters.json) e «Prazo a decorrer»
+ * (data/prazos.json — nasce `hidden`, o nav.js mostra-a só enquanto o
+ * prazo está em curso). A regra [hidden] tem de ganhar ao display da
+ * classe, senão o atributo deixava de esconder.
+ */
+.etiquetas { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; vertical-align: middle; }
+.etiquetas:not(:has(.etiqueta:not([hidden]))) { display: none; }
+li > .etiquetas { margin-left: 0.35rem; }
+.apoio-card .etiquetas { margin-bottom: 0.75rem; }
+.etiqueta {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.etiqueta-simulador { background: #E6F4F1; color: #0F5F58; }
+.etiqueta-prazo { background: #FEF3C7; color: #78350F; }
+[data-prazo][hidden], .etiqueta[hidden] { display: none !important; }
+
+/*
+ * Versão para imprimir (guias, simuladores, pillar pages, homepage):
+ * só o conteúdo, a preto sobre branco, com as perguntas frequentes
+ * abertas (::details-content aqui; o nav.js abre-as também no
+ * beforeprint), o endereço das fontes oficiais a seguir a cada ligação
+ * externa e o endereço da página no fim (data-endereco, posto pelo nav.js).
+ */
+@media print {
+  @page { margin: 15mm 14mm; }
+
+  .skip-link,
+  .barra-topo-regiao,
+  .nav-wrap,
+  .td-consent,
+  .partilhar-artigo,
+  .botao-partilhar,
+  .reportar-erro,
+  .pertence-guia,
+  .cluster-relacionados,
+  .relacionados-noticias,
+  .resposta-rapida-tempo,
+  .checklist-progresso,
+  .hero-search,
+  .nav-search,
+  main p:has(a[href*="whatsapp.com"]),
+  footer {
+    display: none !important;
+  }
+
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  html, body { background: #fff !important; font-size: 11pt; }
+  .hero, .hero-inner, main { padding-top: 0 !important; margin-top: 0 !important; }
+  .card, .resposta-direta, .resumo-rapido, .aviso-info, .disclaimer, .zona-cinzenta details {
+    border: 1px solid #999 !important;
+  }
+
+  a { text-decoration: underline; }
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+
+  details::details-content { content-visibility: visible; display: block; }
+  details > summary { list-style: none; font-weight: 700; }
+  details > summary::-webkit-details-marker { display: none; }
+
+  h1, h2, h3 { break-after: avoid; }
+  tr, details, img, svg { break-inside: avoid; }
+
+  body[data-endereco]::after {
+    content: "Impresso de " attr(data-endereco) " — confirma sempre na fonte oficial antes de decidir.";
+    display: block;
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #000;
+    font-size: 9pt;
+  }
+}

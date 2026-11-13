@@ -8004,6 +8004,15 @@ Acrescento no mesmo dia (2.ª auditoria, base UTAO 18/2026 + proposta OE2027): a
 
 
 Parecer externo ao PR #378 (mesmo dia), aplicado: PSU descrita como «começa a produzir efeitos» (não «começa a ser paga»), com ligação ao calendário de pagamentos; tarifa social da luz de 2027 passa a citar o Despacho n.º 12419/2026, de 13 de outubro (33,8%, GRAU 2 — cartão novo em fontes.html; entrada de 2027 em `dados/parametros/energia.yaml`, por isso o canário da tarifa social já não fica vermelho a 1/1/2027); nota sobre a ambiguidade dos 210 dias nas famílias monoparentais, assinalada pela própria AR na nota de redação final; CSI sem a fórmula «paga a diferença»; propinas com a distinção dos mestrados (proposta OE2027); aviso de «Ainda por fixar» sem a menção a fontes secundárias. `dados/parametros/csi.yaml` ganhou a idade de 2027 (803 meses, Portaria n.º 476/2025/1): a 1/1/2027, `test_valores_ancora.py` falha até `complemento-solidario-idosos.html` e o simulador do CSI passarem a dizer 66 anos e 11 meses — de propósito. Também: merge de `main` (conflito só no HISTORICO.md) e barra do topo (#376) injectada na página nova por `sincronizar_nav.py`.
+
+## Última revisão: 2026-11-13 — Etiquetas nas listas de guias, «Datas a não perder» gerado, versão para imprimir
+
+- **`data/prazos.json` + `scripts/prazos.py`** (decisão do Nuno: ficheiro próprio, não marcadores nas páginas): prazos e datas com a frase exacta da página; `validar()` falha se a frase sair da página ou não citar a data de fim. Entradas iniciais: Prova Escolar (anual, 1/8–31/12), Garantia pública (até 31/12/2026), Bolsa do ensino superior fora de prazo (3/10/2026–31/5/2027), PSU paga a partir de 31/12/2026, O que muda em 2027, Passe sub-23 (permanente). O cartão da PSU passou a dizer «só é paga a partir de 31 de dezembro de 2026», como a página.
+- **«Datas a não perder»**: os 4 cartões manuais de `index.html` foram substituídos pela zona `PRAZOS:HOME`, gerada por `sincronizar_clusters.py`; cartão novo do próximo pagamento, lido de `#cal-home-dados`. Cartões com data nascem `hidden` e o `nav.js` mostra só os em curso pela data de Lisboa (decisão do Nuno: sem JS, nenhuma data). `.urgente-card` ganhou `max-width: 300px` (o resumo do pagamento esticava o cartão).
+- **Etiquetas**: «🧮 Tem simulador» (campo `simulador` em `clusters.json`, 7 páginas que já ligam ao seu simulador) e «⏳ Prazo a decorrer» em `PILLAR-LISTA`, `DESTAQUES:HOME` e `ATUALIZACOES:HOME`.
+- **Impressão**: `@media print` em `nav.css` + `iniciarImpressao()` no `nav.js`.
+- **Testes**: `tests/test_prazos.py`, `tests/test_prazos_navegador.py` (provados a falhar sem o bloco de impressão e sem a verificação de datas do JS); `tests/test_urgente_home_frescura.py` adaptado.
+
 ---
 
 *Última revisão automática: 2026-11-13*

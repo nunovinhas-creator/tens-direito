@@ -9,6 +9,8 @@ preservado):
 
     <!-- CLUSTERS:HOME:INICIO/FIM -->     cartões de clusters na homepage
     <!-- DESTAQUES:HOME:INICIO/FIM -->    um cartão por cluster em destaque, na homepage
+    <!-- PRAZOS:HOME:INICIO/FIM -->       cartões "Datas a não perder" (data/prazos.json,
+                                          via scripts/prazos.py)
     <!-- ATUALIZACOES:HOME:INICIO/FIM --> 3-4 artigos mais recentemente
                                           verificados, por "Verificado a"
                                           real de cada página, na homepage
@@ -42,7 +44,10 @@ import sys
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import prazos as prazos_mod  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
 CLUSTERS_JSON = RAIZ / "data" / "clusters.json"
@@ -120,6 +125,7 @@ EXCLUIDAS = {
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
 MARCADOR_DESTAQUES = ("DESTAQUES:HOME:INICIO", "DESTAQUES:HOME:FIM")
 MARCADOR_ATUALIZACOES = ("ATUALIZACOES:HOME:INICIO", "ATUALIZACOES:HOME:FIM")
+MARCADOR_PRAZOS = ("PRAZOS:HOME:INICIO", "PRAZOS:HOME:FIM")
 MARCADOR_BADGE = ("CLUSTER-BADGE:INICIO", "CLUSTER-BADGE:FIM")
 MARCADOR_RELACIONADOS = ("RELACIONADOS:INICIO", "RELACIONADOS:FIM")
 MARCADOR_PILLAR_LISTA = ("PILLAR-LISTA:INICIO", "PILLAR-LISTA:FIM")
@@ -157,6 +163,10 @@ class Pagina:
     destaque: bool
     emoji: str = ""
     desc: str = ""
+    # Simulador desta página (slug de uma página tipo "ferramenta") — dá a
+    # etiqueta «Tem simulador». tests/test_etiquetas_guias.py exige que o
+    # simulador exista e que a página lhe ligue.
+    simulador: str = ""
 
 
 @dataclass(frozen=True)
@@ -226,6 +236,16 @@ def _substituir_bloco(conteudo: str, marca: Tuple[str, str], novo_interior: str)
     )
 
 
+def _substituir_bloco_prazos(conteudo: str, novo_interior: str) -> Optional[str]:
+    """Como _substituir_bloco, mas com a indentação dos cartões dentro de
+    .urgente-cards (8 espaços) e uma linha em branco à volta."""
+    inicio, fim = MARCADOR_PRAZOS
+    padrao = re.compile(rf"(<!-- {re.escape(inicio)} -->)([\s\S]*?)(\s*<!-- {re.escape(fim)} -->)")
+    if not padrao.search(conteudo):
+        return None
+    return padrao.sub(lambda m: f"{m.group(1)}\n\n{novo_interior}\n\n        <!-- {fim} -->", conteudo)
+
+
 def contagem_str(cluster: Cluster) -> str:
     """'4 guias · 1 simulador' — conta por tipo para não contradizer
     descrições que falam de um número fixo de guias (ex.: "os quatro
@@ -258,10 +278,31 @@ def render_home_cards(clusters: List[Cluster]) -> str:
     return "\n".join(cartoes)
 
 
-def render_destaques_home(clusters: List[Cluster]) -> str:
+def render_etiquetas(p: Pagina, prazos_pagina: Dict[str, list]) -> str:
+    """Etiquetas de uma página numa lista de guias: «🧮 Tem simulador» (de
+    clusters.json) e «⏳ Prazo a decorrer» (de data/prazos.json, escondida —
+    o nav.js mostra-a só enquanto o prazo está em curso). Vazio sem nenhuma."""
+    partes = []
+    if p.simulador:
+        partes.append('<span class="etiqueta etiqueta-simulador">🧮 Tem simulador</span>')
+    prazo = prazos_mod.etiqueta_prazo(prazos_pagina.get(p.slug, []))
+    if prazo:
+        partes.append(prazo)
+    if not partes:
+        return ""
+    return '<span class="etiquetas">' + "".join(partes) + "</span>"
+
+
+def _prazos_pagina() -> Dict[str, list]:
+    return prazos_mod.prazos_por_pagina(prazos_mod.carregar_prazos())
+
+
+def render_destaques_home(clusters: List[Cluster], prazos_pagina: Optional[Dict[str, list]] = None) -> str:
     """Um cartão por cluster (o(s) `destaque: true` do JSON) — substitui
     a antiga grelha de 14 cartões hardcoded; ver secção "Guias principais"
     do plano de reorganização."""
+    if prazos_pagina is None:
+        prazos_pagina = _prazos_pagina()
     cartoes = []
     for c in clusters:
         if c.oculta_em_apoios:
@@ -269,13 +310,15 @@ def render_destaques_home(clusters: List[Cluster]) -> str:
         for p in c.paginas:
             if not p.destaque:
                 continue
+            etiquetas = render_etiquetas(p, prazos_pagina)
             cartoes.append(
                 f'      <a href="/{p.slug}" class="apoio-card">\n'
                 f'        <div class="emoji">{p.emoji}</div>\n'
                 f'        <h3>{p.titulo}</h3>\n'
                 f'        <p class="desc">{p.desc}</p>\n'
-                f'        <span class="link-ver">→ Ver guia</span>\n'
-                f'      </a>'
+                + (f'        {etiquetas}\n' if etiquetas else '')
+                + '        <span class="link-ver">→ Ver guia</span>\n'
+                '      </a>'
             )
     return "\n".join(cartoes)
 
@@ -315,7 +358,10 @@ def extrair_verificado_em(caminho: Path) -> Optional[date]:
     return verificado_em_do_texto(caminho.read_text(encoding="utf-8"))
 
 
-def render_atualizacoes_home(clusters: List[Cluster], raiz: Path = RAIZ, limite: int = MAX_ATUALIZACOES) -> str:
+def render_atualizacoes_home(
+    clusters: List[Cluster], raiz: Path = RAIZ, limite: int = MAX_ATUALIZACOES,
+    prazos_pagina: Optional[Dict[str, list]] = None,
+) -> str:
     """3-4 artigos mais recentemente verificados, por data real extraída
     do corpo de cada página (nunca do RSS, nunca inventada) — reflecte
     edições reais do site. Ordem determinística: data desc, slug asc
@@ -331,6 +377,8 @@ def render_atualizacoes_home(clusters: List[Cluster], raiz: Path = RAIZ, limite:
 
     candidatos.sort(key=lambda par: (-par[0].toordinal(), par[1].slug))
     escolhidos = candidatos[:limite]
+    if prazos_pagina is None:
+        prazos_pagina = _prazos_pagina()
 
     cartoes = []
     for data_verificacao, p in escolhidos:
@@ -340,21 +388,27 @@ def render_atualizacoes_home(clusters: List[Cluster], raiz: Path = RAIZ, limite:
             f'        <div class="emoji">🕓</div>\n'
             f'        <h3>{p.titulo}</h3>\n'
             f'        <p class="desc">Verificado a {data_str}.</p>\n'
-            f'        <span class="link-ver">→ Ler guia</span>\n'
-            f'      </a>'
+            + (f'        {render_etiquetas(p, prazos_pagina)}\n' if render_etiquetas(p, prazos_pagina) else '')
+            + '        <span class="link-ver">→ Ler guia</span>\n'
+            '      </a>'
         )
     return "\n".join(cartoes)
 
 
-def render_pillar_lista(cluster: Cluster) -> str:
+def render_pillar_lista(cluster: Cluster, prazos_pagina: Optional[Dict[str, list]] = None) -> str:
     """Itens de <li> — a página envolve o marcador no seu próprio <ul>
     (ver p/apoios-escolares.html, prestacao-social-unica.html).
     Ferramentas ganham um badge discreto (classe .badge, já existente em
     todas as pillar pages) para se distinguirem dos guias na mesma lista."""
+    if prazos_pagina is None:
+        prazos_pagina = _prazos_pagina()
     itens = []
     for p in cluster.paginas:
         badge = ' <span class="badge">Ferramenta</span>' if p.tipo == "ferramenta" else ""
-        itens.append(f'      <li><a href="/{p.slug}">{p.titulo}</a>{badge}</li>')
+        etiquetas = render_etiquetas(p, prazos_pagina)
+        if etiquetas:
+            etiquetas = " " + etiquetas
+        itens.append(f'      <li><a href="/{p.slug}">{p.titulo}</a>{badge}{etiquetas}</li>')
     return "\n".join(itens)
 
 
@@ -496,6 +550,10 @@ def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str
             referenciados.add(p.slug)
             if p.slug not in existentes:
                 problemas.append(f"{c.id}: página '{p.slug}' no JSON não tem ficheiro correspondente")
+            if p.simulador:
+                alvo = next((q for cc in clusters for q in cc.paginas if q.slug == p.simulador), None)
+                if alvo is None or alvo.tipo != "ferramenta":
+                    problemas.append(f"{c.id}: '{p.slug}' tem simulador '{p.simulador}', que não é uma página tipo ferramenta")
         if c.pillar.lstrip("/") not in existentes:
             problemas.append(f"{c.id}: pillar '{c.pillar}' não tem ficheiro correspondente")
 
@@ -594,6 +652,12 @@ def processar_home(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAIZ,
     else:
         conteudo = novo
 
+    novo = _substituir_bloco_prazos(conteudo, prazos_mod.render_cartoes_home(prazos_mod.carregar_prazos()))
+    if novo is None:
+        faltam.append("PRAZOS:HOME")
+    else:
+        conteudo = novo
+
     if faltam:
         return Resultado(caminho.name, False, f"marcador(es) em falta: {', '.join(faltam)} — sem alterações")
     if conteudo == conteudo_original:
@@ -612,6 +676,7 @@ def main() -> int:
     clusters = carregar_clusters()
 
     problemas = validar_consistencia(clusters)
+    problemas += prazos_mod.validar(prazos_mod.carregar_prazos())
     if problemas:
         print("=== Inconsistências entre clusters.json e o repositório ===")
         for p in problemas:
