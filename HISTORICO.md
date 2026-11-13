@@ -7901,6 +7901,31 @@ reinsere-o depois do `<loc>`, à mesma indentação. `--check` antes: divergente
 actualizar já na ordem, retirar numa excepção, idempotência — falha com o
 script antigo).
 
+## Última revisão: 2026-11-13 — Página nova `o-que-muda-em-2027.html`
+
+Página anual cross-cluster (`EXCLUIDAS` em `sincronizar_clusters.py`, mesma
+categoria de `comecar-aqui.html`), em dois blocos separados por grau de
+confirmação. **Já decidido** (diploma publicado ou decisão oficial): PSU a
+produzir efeitos a 31/12/2026 (DL 166/2026, arts. 57.º e 63.º), idade normal
+de reforma de 66 anos e 11 meses em 2027 (Portaria n.º 476/2025/1 — ganhou
+cartão em `fontes.html`), dedução de rendas de 1.000 € para rendas de 2027
+(DL 97/2026), majoração do desemprego ajustada à PSU (art. 49.º), tarifa
+social da luz a 33,8% em 2027 (comunicado da ERSE). **Ainda por fixar** (GRAU
+2, várias fontes secundárias independentes): pensões +3,3%/2,79%/abaixo da
+inflação e IAS +3,3% (secretária de Estado da Segurança Social, Parlamento,
+6/11/2026), salário mínimo de 970 €, continuidade da garantia pública
+(relatório da proposta de OE 2027, sem prorrogação publicada), IMT Jovem
+338.141 €/676.185 € (proposta de OE 2027). O valor do IAS de 2027 em euros
+**não** é publicado: seria uma conta nossa, não um valor oficial. Cartão novo
+em «Datas a não perder» da homepage (`data-ate="2026-12-31"`).
+
+Rever depois da votação final global do OE 2027 (24/11/2026) e depois das
+portarias do IAS e das pensões (fim de dezembro). Fora do âmbito, por
+tratar: `dados/parametros/energia.yaml` ainda sem a entrada de 2027 da
+tarifa social da luz (33,8%) — o canário fica vermelho a 1/1/2027;
+`csi.yaml` usa a idade normal de 2026 (801 meses) e precisa da entrada de
+2027.
+
 ---
 
 *Última revisão automática: 2026-11-12*

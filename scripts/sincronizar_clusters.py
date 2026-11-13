@@ -111,6 +111,10 @@ EXCLUIDAS = {
     # dados/condicoes/ ao mesmo tempo, por isso é cross-cluster por
     # construção, mesma categoria de simuladores.html/comecar-aqui.html.
     "simulador-universal.html",
+    # Página anual "O que muda em 2027" — resume mudanças de vários
+    # clusters (PSU, reformas, habitação, energia), por isso cross-cluster
+    # por construção, mesma categoria de comecar-aqui.html.
+    "o-que-muda-em-2027.html",
 }
 
 MARCADOR_HOME = ("CLUSTERS:HOME:INICIO", "CLUSTERS:HOME:FIM")
