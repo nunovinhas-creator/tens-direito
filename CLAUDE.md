@@ -669,6 +669,7 @@ para esses três casos.
 | `majoracao-subsidio-desemprego.html` | Majoração de 10% do subsídio de desemprego 2026 | 4 set. 2026 |
 | `creche-gratuita.html` | Creche gratuita 2026: quem tem direito e o que está incluído | 16 set. 2026 |
 | `tarifa-social-energia.html` | Tarifa Social de Energia 2026: luz e gás, quem tem direito | 5 out. 2026 |
+| `o-que-muda-em-2027.html` | O que muda em 2027: apoios sociais, pensões e salário mínimo | 13 nov. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |
@@ -2701,6 +2702,7 @@ Páginas que têm datas que expiram e precisam de revisão manual anual:
 | `subsidio-parental.html` | Janeiro (novo IAS) | Issue automática do scraper |
 | `tarifa-social-energia.html` | **Antes de 1/1/2027** (desconto da luz de 2027 — o de 2026 é 33,8%) e **antes de 1/10/2027** (desconto do gás de 2027/2028 — o de 1/10/2026 a 30/9/2027 é 31,2%); frase da PSU a acompanhar em 2027 (issue #293). O cartão de `p/habitacao.html` repete os dois descontos | `test_tarifa_social_descontos_dentro_do_periodo_de_vigencia` (`tests/test_valores_ancora.py`, corre todos os dias no Step 4c) falha quando o período acaba sem entrada nova em `dados/parametros/energia.yaml` — `verificar_datas.py` não apanha "33,8% (2026)" e só trataria uma data de 2027 como antiga em 2028 |
 | `amim.html` | Janeiro (novo IAS: afeta IRS 4×/2,5×IAS e valor PSI) | Issue automática do scraper |
+| `o-que-muda-em-2027.html` | **24 de novembro de 2026** (votação final global do OE 2027) e **fim de dezembro de 2026** (portarias do IAS e das pensões) — passar os itens confirmados de «Ainda por fixar» para «Já decidido», ou retirá-los; em 2027, decidir se a página passa a «o que mudou» ou dá lugar a uma página de 2028 | Verificação manual — `verificar_datas.py` expõe as datas de 2026 a partir de janeiro de 2027 |
 | `prestacao-social-para-a-inclusao.html` | Janeiro/Fevereiro (nova portaria de actualização da PSI) | Verificação manual/news dre.pt |
 | `prova-escolar.html` | Junho (ano letivo seguinte) | Calendário anual — ver nota abaixo |
 | `bolsa-de-estudo-ensino-superior.html` | Verão (Despacho anual de prazos, ex.: Despacho n.º 7994/2026 para 2026/2027 — a data muda de ano para ano) | Verificação manual/news dges.gov.pt |

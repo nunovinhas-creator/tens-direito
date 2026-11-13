@@ -7973,6 +7973,37 @@ relação medida na página; provados a falhar com três sabotagens (barra fixa
 no telemóvel, menu com `top` fixo, `scroll-padding` de ecrã largo no
 telemóvel).
 
+## Última revisão: 2026-11-13 — Página nova `o-que-muda-em-2027.html`
+
+Página anual cross-cluster (`EXCLUIDAS` em `sincronizar_clusters.py`, mesma
+categoria de `comecar-aqui.html`), em dois blocos separados por grau de
+confirmação. **Já decidido** (diploma publicado ou decisão oficial): PSU a
+produzir efeitos a 31/12/2026 (DL 166/2026, arts. 57.º e 63.º), idade normal
+de reforma de 66 anos e 11 meses em 2027 (Portaria n.º 476/2025/1 — ganhou
+cartão em `fontes.html`), dedução de rendas de 1.000 € para rendas de 2027
+(DL 97/2026), majoração do desemprego ajustada à PSU (art. 49.º), tarifa
+social da luz a 33,8% em 2027 (comunicado da ERSE). **Ainda por fixar** (GRAU
+2, várias fontes secundárias independentes): pensões +3,3%/2,79%/abaixo da
+inflação e IAS +3,3% (secretária de Estado da Segurança Social, Parlamento,
+6/11/2026), salário mínimo de 970 €, continuidade da garantia pública
+(relatório da proposta de OE 2027, sem prorrogação publicada), IMT Jovem
+338.141 €/676.185 € (proposta de OE 2027). O valor do IAS de 2027 em euros
+**não** é publicado: seria uma conta nossa, não um valor oficial. Cartão novo
+em «Datas a não perder» da homepage (`data-ate="2026-12-31"`).
+
+Rever depois da votação final global do OE 2027 (24/11/2026) e depois das
+portarias do IAS e das pensões (fim de dezembro). Fora do âmbito, por
+tratar: `dados/parametros/energia.yaml` ainda sem a entrada de 2027 da
+tarifa social da luz (33,8%) — o canário fica vermelho a 1/1/2027;
+`csi.yaml` usa a idade normal de 2026 (801 meses) e precisa da entrada de
+2027.
+
+---
+
+Acrescento no mesmo dia (2.ª auditoria, base UTAO 18/2026 + proposta OE2027): a página ganhou um 3.º estado, «Aprovado, por publicar», com a licença parental inicial (Projeto de Lei n.º 176/XVII/1.ª, votação final global a 16/10/2026; tabela 150/180/210 dias confirmada pela nota de redação final da AR de 29/10/2026 e pelo comunicado do Governo de 19/10/2026 — uma notícia de 12/11 com 120/150/180 dias descrevia o regime actual e não foi usada). Em «Ainda por fixar»: CSI 720 € (anúncio do Governo, 1/10/2026), suplemento extraordinário de pensões não garantido, propinas 2027/2028 indexadas à inflação (proposta OE2027). Deixados de fora, por serem só dotações orçamentais e não aumentos individuais: cuidadores informais, PSI, Garantia para a Infância, Creche Feliz.
+
+
+Parecer externo ao PR #378 (mesmo dia), aplicado: PSU descrita como «começa a produzir efeitos» (não «começa a ser paga»), com ligação ao calendário de pagamentos; tarifa social da luz de 2027 passa a citar o Despacho n.º 12419/2026, de 13 de outubro (33,8%, GRAU 2 — cartão novo em fontes.html; entrada de 2027 em `dados/parametros/energia.yaml`, por isso o canário da tarifa social já não fica vermelho a 1/1/2027); nota sobre a ambiguidade dos 210 dias nas famílias monoparentais, assinalada pela própria AR na nota de redação final; CSI sem a fórmula «paga a diferença»; propinas com a distinção dos mestrados (proposta OE2027); aviso de «Ainda por fixar» sem a menção a fontes secundárias. `dados/parametros/csi.yaml` ganhou a idade de 2027 (803 meses, Portaria n.º 476/2025/1): a 1/1/2027, `test_valores_ancora.py` falha até `complemento-solidario-idosos.html` e o simulador do CSI passarem a dizer 66 anos e 11 meses — de propósito. Também: merge de `main` (conflito só no HISTORICO.md) e barra do topo (#376) injectada na página nova por `sincronizar_nav.py`.
 ---
 
 *Última revisão automática: 2026-11-13*
