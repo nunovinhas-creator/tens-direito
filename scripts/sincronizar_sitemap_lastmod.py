@@ -11,6 +11,10 @@ nunca uma data inventada.
 todos os dias pelo pipeline, que não escreve no sitemap, ou institucionais
 sem data editorial).
 
+Ordem dentro de cada `<url>`: loc → lastmod → changefreq → priority, a do
+protocolo de sitemaps.org. O `<lastmod>` existente é sempre retirado e
+reinserido logo a seguir ao `<loc>` — actualizar e inserir dão a mesma ordem.
+
 Uso: python scripts/sincronizar_sitemap_lastmod.py [--write | --check]
 """
 from __future__ import annotations
@@ -41,9 +45,10 @@ SEM_LASTMOD = {
 
 _RE_DATE_MODIFIED = re.compile(r'"dateModified"\s*:\s*"(\d{4}-\d{2}-\d{2})')
 _RE_URL = re.compile(r"(?P<indent>[ \t]*)<url>(?P<corpo>.*?)</url>", re.S)
-_RE_LOC = re.compile(r"<loc>(.*?)</loc>")
-_RE_LASTMOD = re.compile(r"\n[ \t]*<lastmod>[^<]*</lastmod>")
-_RE_LASTMOD_VALOR = re.compile(r"<lastmod>[^<]*</lastmod>")
+# A quebra de linha e a indentação antes do <loc> são reaproveitadas para o
+# <lastmod>, que fica logo a seguir, à mesma indentação.
+_RE_LOC = re.compile(r"(?P<antes>\n[ \t]*)?<loc>(?P<loc>[^<]*)</loc>")
+_RE_LASTMOD = re.compile(r"\n?[ \t]*<lastmod>[^<]*</lastmod>")
 
 
 def caminho_de_loc(loc: str) -> Path:
@@ -68,16 +73,12 @@ def lastmod_esperado(caminho: Path) -> str | None:
 def sincronizar(xml: str) -> str:
     def _url(m: re.Match) -> str:
         indent, corpo = m.group("indent"), m.group("corpo")
-        loc = _RE_LOC.search(corpo).group(1)
-        data = lastmod_esperado(caminho_de_loc(loc))
-        if _RE_LASTMOD_VALOR.search(corpo):
-            if data:
-                corpo = _RE_LASTMOD_VALOR.sub(f"<lastmod>{data}</lastmod>", corpo, count=1)
-            else:
-                corpo = _RE_LASTMOD.sub("", corpo)
-        elif data:
-            fecho = corpo.rstrip()
-            corpo = f"{fecho}\n{indent}  <lastmod>{data}</lastmod>{corpo[len(fecho):]}"
+        data = lastmod_esperado(caminho_de_loc(_RE_LOC.search(corpo).group("loc")))
+        corpo = _RE_LASTMOD.sub("", corpo)
+        if data:
+            m_loc = _RE_LOC.search(corpo)
+            antes = m_loc.group("antes") or f"\n{indent}  "
+            corpo = f"{corpo[:m_loc.end()]}{antes}<lastmod>{data}</lastmod>{corpo[m_loc.end():]}"
         return f"{indent}<url>{corpo}</url>"
 
     return _RE_URL.sub(_url, xml)

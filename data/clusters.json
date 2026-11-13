@@ -7,7 +7,7 @@
       "icone": "🎒",
       "pillar": "/p/apoios-escolares.html",
       "paginas": [
-        {"slug": "acao-social-escolar.html", "titulo": "Ação Social Escolar", "tipo": "artigo", "destaque": true, "emoji": "🎒", "desc": "Refeições, transportes e material escolar grátis ou com desconto."},
+        {"slug": "acao-social-escolar.html", "titulo": "Ação Social Escolar", "tipo": "artigo", "destaque": true, "emoji": "🎒", "desc": "Refeições, transportes e material escolar grátis ou com desconto.", "simulador": "simulador-ase.html"},
         {"slug": "bolsa-de-merito.html", "titulo": "Bolsa de mérito", "tipo": "artigo", "destaque": false},
         {"slug": "manuais-escolares-mega.html", "titulo": "Manuais escolares gratuitos (MEGA)", "tipo": "artigo", "destaque": false},
         {"slug": "passe-sub23.html", "titulo": "Passe sub-23 gratuito", "tipo": "artigo", "destaque": false},
@@ -43,7 +43,7 @@
       "icone": "👶",
       "pillar": "/p/familia.html",
       "paginas": [
-        {"slug": "abono-de-familia.html", "titulo": "Abono de família", "tipo": "artigo", "destaque": true, "emoji": "👶", "desc": "Prestação mensal para crianças e jovens. Escalões e valores 2026."},
+        {"slug": "abono-de-familia.html", "titulo": "Abono de família", "tipo": "artigo", "destaque": true, "emoji": "👶", "desc": "Prestação mensal para crianças e jovens. Escalões e valores 2026.", "simulador": "simulador-abono.html"},
         {"slug": "garantia-para-a-infancia.html", "titulo": "Garantia para a Infância", "tipo": "artigo", "destaque": false},
         {"slug": "subsidio-parental.html", "titulo": "Licença parental", "tipo": "artigo", "destaque": false},
         {"slug": "assistencia-familia-filhos.html", "titulo": "Faltas e licenças para assistência a filhos e família", "tipo": "artigo", "destaque": false},
@@ -59,7 +59,7 @@
       "icone": "🤝",
       "pillar": "/p/idosos-incapacidade-cuidadores.html",
       "paginas": [
-        {"slug": "complemento-solidario-idosos.html", "titulo": "Complemento Solidário para Idosos", "tipo": "artigo", "destaque": true, "emoji": "👴", "desc": "CSI 2026: quem tem direito, cálculo do valor, benefícios de saúde (BAS) e filhos não contam."},
+        {"slug": "complemento-solidario-idosos.html", "titulo": "Complemento Solidário para Idosos", "tipo": "artigo", "destaque": true, "emoji": "👴", "desc": "CSI 2026: quem tem direito, cálculo do valor, benefícios de saúde (BAS) e filhos não contam.", "simulador": "simulador-csi.html"},
         {"slug": "cuidador-informal.html", "titulo": "Cuidador Informal", "tipo": "artigo", "destaque": false},
         {"slug": "amim.html", "titulo": "AMIM — Atestado Médico de Incapacidade Multiuso", "tipo": "artigo", "destaque": false},
         {"slug": "prestacao-social-para-a-inclusao.html", "titulo": "Prestação Social para a Inclusão (PSI)", "tipo": "artigo", "destaque": false},
@@ -76,10 +76,10 @@
       "icone": "💶",
       "pillar": "/p/trabalho-rendimento.html",
       "paginas": [
-        {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true, "emoji": "📋", "desc": "Como pedir ao IEFP, processo passo a passo e situações especiais na UE."},
+        {"slug": "subsidio-desemprego.html", "titulo": "Subsídio de desemprego", "tipo": "artigo", "destaque": true, "emoji": "📋", "desc": "Como pedir ao IEFP, processo passo a passo e situações especiais na UE.", "simulador": "simulador-subsidio-desemprego.html"},
         {"slug": "majoracao-subsidio-desemprego.html", "titulo": "Majoração de 10% do subsídio de desemprego", "tipo": "artigo", "destaque": false},
-        {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false},
-        {"slug": "baixa-medica-subsidio-doenca.html", "titulo": "Baixa médica e subsídio de doença", "tipo": "artigo", "destaque": false},
+        {"slug": "rsi.html", "titulo": "RSI — Rendimento Social de Inserção", "tipo": "artigo", "destaque": false, "simulador": "simulador-rsi.html"},
+        {"slug": "baixa-medica-subsidio-doenca.html", "titulo": "Baixa médica e subsídio de doença", "tipo": "artigo", "destaque": false, "simulador": "simulador-subsidio-doenca.html"},
         {"slug": "simulador-subsidio-doenca.html", "titulo": "Simulador de Subsídio de Doença", "tipo": "ferramenta", "destaque": false},
         {"slug": "simulador-rsi.html", "titulo": "Simulador do RSI", "tipo": "ferramenta", "destaque": false},
         {"slug": "simulador-subsidio-desemprego.html", "titulo": "Simulador do Subsídio de Desemprego", "tipo": "ferramenta", "destaque": false}
@@ -118,7 +118,7 @@
         {"slug": "porta-65.html", "titulo": "Porta 65 Jovem e Porta 65+", "tipo": "artigo", "destaque": true, "emoji": "🏠", "desc": "Apoio ao arrendamento para jovens até 35 anos. Candidaturas contínuas, sem prazo."},
         {"slug": "deducao-rendas-irs.html", "titulo": "Dedução de rendas no IRS", "tipo": "artigo", "destaque": false},
         {"slug": "apoio-extraordinario-renda.html", "titulo": "Apoio Extraordinário à Renda: o que aconteceu e alternativas", "tipo": "artigo", "destaque": false},
-        {"slug": "imt-jovem.html", "titulo": "IMT Jovem 2026: isenção na compra da primeira casa", "tipo": "artigo", "destaque": false},
+        {"slug": "imt-jovem.html", "titulo": "IMT Jovem 2026: isenção na compra da primeira casa", "tipo": "artigo", "destaque": false, "simulador": "simulador-imt-jovem.html"},
         {"slug": "garantia-publica-credito-habitacao.html", "titulo": "Garantia Pública no Crédito Habitação Jovem 2026", "tipo": "artigo", "destaque": false},
         {"slug": "primeiro-direito.html", "titulo": "1.º Direito", "tipo": "artigo", "destaque": false},
         {"slug": "tarifa-social-energia.html", "titulo": "Tarifa social de energia", "tipo": "artigo", "destaque": false},

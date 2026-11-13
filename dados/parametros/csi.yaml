@@ -67,6 +67,11 @@ idade_minima_meses_totais:
       fonte_url: "https://diariodarepublica.pt/dr/detalhe/portaria/358-2024-901536090"
       fonte_url_complementar: "https://www.seg-social.pt/ptss/pssd/documento/cmc20buk100owkl2yi68k318c"
       verificado_em: "2026-07-19"
+    - vigencia_inicio: "2027-01-01"
+      valor: 803
+      referencia_legal: "Portaria n.º 476/2025/1, de 29 de dezembro, nos termos do art. 20.º n.º 3 do Decreto-Lei n.º 187/2007, de 10 de maio (idade normal de acesso à pensão de velhice em 2027: 66 anos e 11 meses)"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-11-13"
 
 # Sessão de 27/09/2026 (série "simulador universal", PR 2). Fonte
 # encontrada: formulário oficial "CSI 1 — Requerimento" do ISS, I.P.

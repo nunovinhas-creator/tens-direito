@@ -60,9 +60,8 @@ SIMULADORES = {
 # vivem — usado no varrimento global anti-dados-pessoais.
 EVENTOS_POR_FICHEIRO = {
     "assets/js/share.js": ["partilha_clique"],
-    "assets/js/nav.js": ["menu_tool_click"],
+    "assets/js/nav.js": ["menu_tool_click", "barra_topo_clique"],
     "comecar-aqui.html": ["comecar_aqui_percurso"],
-    "index.html": ["cal_home_clique"],
     "calendario-pagamentos-seguranca-social.html": ["calendario_subscrito"],
     **{ficheiro: ["simulacao_concluida"] for ficheiro in SIMULADORES},
     "simulador-universal.html": ["simulacao_concluida", "partilha_whatsapp", "calendario_descarregado"],
@@ -76,9 +75,9 @@ def _ler(rel):
 def _chamadas_evento(fonte, nome):
     """(indice, corpo_do_objecto) de cada gtag('event','<nome>', {...}).
 
-    O objecto de parâmetros é opcional (eventos sem parâmetros existem, ex.
-    cal_home_clique). Assume objectos sem chavetas aninhadas — é o caso de
-    todos os eventos deste site.
+    O objecto de parâmetros é opcional (um evento pode não ter parâmetros).
+    Assume objectos sem chavetas aninhadas — é o caso de todos os eventos
+    deste site.
     """
     padrao = re.compile(
         r"gtag\(\s*['\"]event['\"]\s*,\s*['\"]"
@@ -214,15 +213,34 @@ def test_comecar_aqui_percurso_nao_envia_dados_pessoais():
         assert "respostas" not in corpo
 
 
-# ── cal_home_clique ──────────────────────────────────────────────────────
+# ── barra_topo_clique (barra do topo, todas as páginas) ──────────────────
 
-def test_cal_home_clique_existe_e_guardado():
-    fonte = _ler("index.html")
-    chamadas = _chamadas_evento(fonte, "cal_home_clique")
+def test_barra_topo_clique_existe_guardado_e_so_com_destino():
+    fonte = _ler("assets/js/nav.js")
+    chamadas = _chamadas_evento(fonte, "barra_topo_clique")
     assert len(chamadas) == 1, "esperava exactamente uma definição do evento"
     indice, corpo = chamadas[0]
-    assert _tem_guarda_antes(fonte, indice), "cal_home_clique sem guarda typeof gtag"
+    assert _tem_guarda_antes(fonte, indice), "barra_topo_clique sem guarda typeof gtag"
     assert not _sem_tokens_proibidos(corpo), corpo
+    # Só o destino do link (calendario/whatsapp), lido do data-destino do
+    # próprio link — nunca a data ou a prestação mostradas.
+    assert re.fullmatch(r"\{\s*destino:\s*link\.getAttribute\('data-destino'\)\s*\}", corpo), corpo
+
+
+def test_cal_home_clique_foi_substituido_pela_barra_do_topo():
+    # A barra antiga da homepage tinha o seu próprio evento; a barra do topo
+    # (todas as páginas, incluindo a homepage) usa só barra_topo_clique.
+    for rel in ("index.html", "assets/js/nav.js"):
+        assert "cal_home_clique" not in _ler(rel), rel
+
+
+def test_barra_topo_estatica_sai_antes_de_registar_o_evento():
+    # Gerador de documentos: barra estática, sem evento nem fetch (garantia
+    # de rede-zero) — o nav.js tem de sair antes de ligar o clique.
+    fonte = _ler("assets/js/nav.js")
+    saida = fonte.index("getAttribute('data-barra-modo') === 'estatico') return;")
+    assert saida < fonte.index("'barra_topo_clique'")
+    assert saida < fonte.index("fetch(")
 
 
 # ── menu_tool_click (grelha de ferramentas do menu móvel) ────────────────

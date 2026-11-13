@@ -385,3 +385,214 @@ a.reportar-erro {
   .nav-links, .nav-wrap > nav > .nav-search { display: none; }
   .nav-toggle { display: flex; }
 }
+
+/*
+ * Barra do topo (BARRA-TOPO, scripts/sincronizar_nav.py) — em todas as
+ * páginas, fixa (sticky) acima da nav a partir de 641px (em ecrãs mais
+ * estreitos sai com o scroll — ver o fim deste ficheiro), uma linha de 40px. Sem JS só mostra
+ * a mensagem do canal de WhatsApp; o nav.js alterna-a com o próximo
+ * pagamento do mês (datas de data/calendario_barra.json) e mostra o botão
+ * de pausa (WCAG 2.2.2). A nav desce 40px — o combinador de irmão só
+ * actua onde a barra existe. O menu móvel fica preso por baixo da própria
+ * nav (absolute dentro da .nav-wrap, que é sticky), nunca a um `top` fixo
+ * ao ecrã: a nav tem 69px (logo + padding), não os 60px que o `top: 60px`
+ * antigo assumia. scroll-padding-top: as âncoras não ficam tapadas pela
+ * barra + nav fixas (40 + 69px, mais 8px de folga).
+ */
+html { scroll-padding-top: 117px; }
+
+.barra-topo-regiao {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0F766E;
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.barra-topo-regiao ~ .nav-wrap { top: 40px; }
+.barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { position: absolute; top: 100%; max-height: calc(100vh - 100% - 40px); }
+
+.barra-topo-mensagens {
+  height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  transition: opacity 0.4s ease;
+}
+
+.barra-topo-mensagens.barra-topo-a-trocar { opacity: 0; }
+
+.barra-topo-msg {
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 1rem;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.barra-topo-msg[hidden],
+.barra-topo-pausa[hidden] { display: none; }
+
+.barra-topo-msg:hover { background: #115E59; }
+.barra-topo-msg:focus-visible { outline: 3px solid #FFFFFF; outline-offset: -3px; }
+
+.barra-topo-texto { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barra-topo-seta { flex: none; }
+.barra-topo-curto { display: none; }
+
+/* Botão de pausa — 40×40px, à direita, fora do fluxo do texto centrado. */
+.barra-topo-pausa {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.barra-topo-pausa:hover { background: #115E59; }
+.barra-topo-pausa[data-pausado="false"] .barra-topo-icone-retomar,
+.barra-topo-pausa[data-pausado="true"] .barra-topo-icone-pausa { display: none; }
+.barra-topo-pausa:focus-visible { outline: 3px solid #FFFFFF; outline-offset: -3px; }
+/* Com o botão visível (classe posta pelo nav.js), o texto deixa 40px de
+   cada lado — continua centrado e nunca passa por baixo do botão. */
+.barra-topo-animada .barra-topo-mensagens { margin: 0 40px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .barra-topo-mensagens { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .barra-topo-msg { font-size: 0.86rem; padding: 0 0.75rem; }
+  .barra-topo-longo { display: none; }
+  .barra-topo-curto { display: inline; }
+}
+
+/*
+ * Ecrãs estreitos (≤640px): a barra do topo NÃO fica fixa — aparece no
+ * topo da página e sai com o scroll; só a nav fica fixa no topo do ecrã.
+ * A nav está a 40px no topo da página e a 0px depois do scroll; o menu
+ * móvel, preso por baixo da nav, acompanha-a nos dois estados (um `top`
+ * fixo ao ecrã só acertaria num deles). max-height: o espaço por baixo da
+ * nav quando ela está no topo do ecrã (100% = altura da .nav-wrap); no topo
+ * da página o fim do menu passa uns 40px do ecrã e o scroll traz-o. As
+ * âncoras só precisam de passar a nav (69px, mais 8px de folga).
+ */
+@media (max-width: 640px) {
+  html { scroll-padding-top: 77px; }
+  .barra-topo-regiao { position: relative; }
+  .barra-topo-regiao ~ .nav-wrap { top: 0; }
+  .barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { max-height: calc(100vh - 100%); }
+}
+
+/*
+ * Etiquetas nas listas de guias (geradas por scripts/sincronizar_clusters.py):
+ * «Tem simulador» (data/clusters.json) e «Prazo a decorrer»
+ * (data/prazos.json — nasce `hidden`, o nav.js mostra-a só enquanto o
+ * prazo está em curso). A regra [hidden] tem de ganhar ao display da
+ * classe, senão o atributo deixava de esconder.
+ */
+.etiquetas { display: inline-flex; flex-wrap: wrap; gap: 0.3rem; vertical-align: middle; }
+.etiquetas:not(:has(.etiqueta:not([hidden]))) { display: none; }
+li > .etiquetas { margin-left: 0.35rem; }
+.apoio-card .etiquetas { margin-bottom: 0.75rem; }
+.etiqueta {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.etiqueta-simulador { background: #E6F4F1; color: #0F5F58; }
+.etiqueta-prazo { background: #FEF3C7; color: #78350F; }
+[data-prazo][hidden], .etiqueta[hidden] { display: none !important; }
+
+/*
+ * Versão para imprimir (guias, simuladores, pillar pages, homepage):
+ * só o conteúdo, a preto sobre branco, com as perguntas frequentes
+ * abertas (::details-content aqui; o nav.js abre-as também no
+ * beforeprint), o endereço das fontes oficiais a seguir a cada ligação
+ * externa e o endereço da página no fim (data-endereco, posto pelo nav.js).
+ */
+/* Ligação ao resumo "O que muda em 2027", no topo dos guias relacionados */
+.ver-2027 { margin: 0 0 1.25rem; padding: .75rem 1rem; background: #F0FDFA; border-left: 4px solid #0D9488; border-radius: 6px; color: #1F2937; font-size: .95rem; line-height: 1.5; }
+.ver-2027 a { color: #0F766E; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+@media print { .ver-2027 { display: none !important; } }
+
+@media print {
+  @page { margin: 15mm 14mm; }
+
+  .skip-link,
+  .barra-topo-regiao,
+  .nav-wrap,
+  .td-consent,
+  .partilhar-artigo,
+  .botao-partilhar,
+  .reportar-erro,
+  .pertence-guia,
+  .cluster-relacionados,
+  .relacionados-noticias,
+  .resposta-rapida-tempo,
+  .checklist-progresso,
+  .hero-search,
+  .nav-search,
+  main p:has(a[href*="whatsapp.com"]),
+  footer {
+    display: none !important;
+  }
+
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  html, body { background: #fff !important; font-size: 11pt; }
+  .hero, .hero-inner, main { padding-top: 0 !important; margin-top: 0 !important; }
+  .card, .resposta-direta, .resumo-rapido, .aviso-info, .disclaimer, .zona-cinzenta details {
+    border: 1px solid #999 !important;
+  }
+
+  a { text-decoration: underline; }
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+
+  details::details-content { content-visibility: visible; display: block; }
+  details > summary { list-style: none; font-weight: 700; }
+  details > summary::-webkit-details-marker { display: none; }
+
+  h1, h2, h3 { break-after: avoid; }
+  tr, details, img, svg { break-inside: avoid; }
+
+  body[data-endereco]::after {
+    content: "Impresso de " attr(data-endereco) " — confirma sempre na fonte oficial antes de decidir.";
+    display: block;
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #000;
+    font-size: 9pt;
+  }
+}

@@ -25,6 +25,11 @@ tarifa_social_luz_desconto_pct:
       referencia_legal: "ERSE — desconto da tarifa social de eletricidade para 2026 (Decreto-Lei n.º 15/2022)"
       fonte_url: "https://www.erse.pt"
       verificado_em: "2026-10-05"
+    - vigencia_inicio: "2027-01-01"
+      valor: 33.8
+      referencia_legal: "Despacho n.º 12419/2026, de 13 de outubro (DR, 2.ª série) — desconto da tarifa social de eletricidade a partir de 1 de janeiro de 2027 (Decreto-Lei n.º 15/2022, art. 198.º); GRAU 2"
+      fonte_url: "https://diariodarepublica.pt"
+      verificado_em: "2026-11-13"
 
 tarifa_social_gas_desconto_pct:
   descricao: "Tarifa social do gás natural — desconto em vigor de 1 de outubro a 30 de setembro do ano seguinte (ano gás)"

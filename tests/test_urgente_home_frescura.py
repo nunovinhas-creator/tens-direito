@@ -2,13 +2,15 @@
 Canário de frescura dos cartões "⏰ Datas a não perder" da homepage
 (`.urgente-banda` em `index.html`).
 
-Esta secção é 100% MANUAL — não tem marcadores de injecção
-(`<!-- X:INICIO/FIM -->`), nenhum script em `scripts/` lhe toca, e
-`scripts/verificar_datas.py` exclui `index.html` por inteiro
-(`AUTO_GERADOS`) da sua varredura, porque o resto do ficheiro é gerido
-pelo pipeline. Isso deixa esta secção manual sem nenhum guardrail —
-foi assim que "Prazo 31 de julho" ficou publicado, marcado URGENTE,
-com o prazo já passado há semanas (achado real, 2026-08-23).
+Até 2026-11-13 esta secção era 100% manual — foi assim que "Prazo 31 de
+julho" ficou publicado, marcado URGENTE, com o prazo já passado há
+semanas (achado real, 2026-08-23). Desde então os cartões são gerados
+de data/prazos.json (scripts/prazos.py, zona PRAZOS:HOME:INICIO/FIM,
+escrita por scripts/sincronizar_clusters.py — ver tests/test_prazos.py).
+Um cartão com data nasce `hidden` com `data-prazo="INICIO/FIM"` e o
+nav.js só o mostra enquanto está em curso: a regra 2 abaixo vale só para
+cartões visíveis sem JavaScript, que nunca podem ter data. Um prazo
+anual usa `data-ate="--MM-DD"` (o ano é o da próxima ocorrência).
 
 Desde a issue #283 cada cartão declara a sua data de fim num atributo
 `data-ate="AAAA-MM-DD"` (ou `data-ate="permanente"`), e o teste verifica:
@@ -82,6 +84,8 @@ class Cartao:
     titulo: str
     data_ate: str | None  # valor bruto do atributo, None se ausente
     texto: str  # texto visível, sem tags
+    escondido: bool = False  # `hidden` no HTML — o nav.js decide se mostra
+    data_prazo: str | None = None
 
 
 @dataclass(frozen=True)
@@ -100,6 +104,7 @@ def _cartoes(html: str) -> list[Cartao]:
     cartoes = []
     for abertura, corpo in zip(partes[1::2], partes[2::2]):
         m_ate = re.search(r'\bdata-ate="([^"]*)"', abertura)
+        m_prazo = re.search(r'\bdata-prazo="([^"]*)"', abertura)
         m_tit = re.search(r"<h3>(.*?)</h3>", corpo, re.S)
         texto = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", corpo)).strip()
         cartoes.append(
@@ -107,6 +112,8 @@ def _cartoes(html: str) -> list[Cartao]:
                 titulo=m_tit.group(1).strip() if m_tit else "(sem título)",
                 data_ate=m_ate.group(1) if m_ate else None,
                 texto=texto,
+                escondido=re.search(r"\shidden(?:[\s>=]|$)", abertura) is not None,
+                data_prazo=m_prazo.group(1) if m_prazo else None,
             )
         )
     assert len(cartoes) == html.count('class="urgente-card"'), (
@@ -132,11 +139,17 @@ def _cards_urgente_banda() -> list[Cartao]:
     return _cartoes(m.group(1))
 
 
-def _data_ate(cartao: Cartao) -> date | None:
-    """`data-ate` como data, ou None para `permanente`/ausente/inválido."""
+def _data_ate(cartao: Cartao, hoje: date | None = None) -> date | None:
+    """`data-ate` como data, ou None para `permanente`/ausente/inválido.
+    "--MM-DD" (todos os anos) dá a próxima ocorrência a partir de hoje."""
     if cartao.data_ate is None or cartao.data_ate == "permanente":
         return None
     try:
+        if cartao.data_ate.startswith("--"):
+            hoje = hoje or date.today()
+            mes, dia = (int(x) for x in cartao.data_ate[2:].split("-"))
+            d = date(hoje.year, mes, dia)
+            return d if d >= hoje else date(hoje.year + 1, mes, dia)
         return date.fromisoformat(cartao.data_ate)
     except ValueError:
         return None
@@ -191,11 +204,11 @@ def falhas_cartao(cartao: Cartao, hoje: date) -> list[str]:
         if meses:
             return [f'data-ate="permanente" com nome de mês no texto: {", ".join(meses)}']
         return []
-    ate = _data_ate(cartao)
+    ate = _data_ate(cartao, hoje)
     if ate is None:
         return [f'data-ate={cartao.data_ate!r} não é uma data AAAA-MM-DD válida nem "permanente"']
     falhas = []
-    if ate < hoje:
+    if ate < hoje and not cartao.escondido:
         falhas.append(f"data-ate {ate.isoformat()} já passou")
     ocorrencias = detectar_datas(cartao.texto, ate.year)
     if any(o.ano_implicito for o in ocorrencias) and ate >= _mais_um_ano(hoje):
@@ -253,6 +266,36 @@ def test_nenhum_cartao_de_urgente_banda_tem_data_ate_invalida_passada_ou_incoere
         "(ver CLAUDE.md secção 'INVARIANTE') antes de publicar:\n  - "
         + "\n  - ".join(falhas)
     )
+
+
+def test_cartao_com_data_nasce_escondido_com_data_prazo():
+    """Sem JavaScript nunca aparece uma data: todo o cartão com data nasce
+    `hidden`, com data-prazo cujo fim é o data-ate (o nav.js decide)."""
+    falhas = []
+    for c in _cards_urgente_banda():
+        if c.data_ate == "permanente":
+            if c.escondido or c.data_prazo:
+                falhas.append(f"{c.titulo!r}: permanente com hidden/data-prazo")
+            continue
+        if not (c.escondido and c.data_prazo):
+            falhas.append(f"{c.titulo!r}: cartão com data visível sem JavaScript")
+        elif not c.data_prazo.endswith("/" + (c.data_ate or "")):
+            falhas.append(f"{c.titulo!r}: data-ate {c.data_ate!r} não é o fim de data-prazo {c.data_prazo!r}")
+    assert not falhas, "\n  - ".join(["cartões de 'Datas a não perder':"] + falhas)
+
+
+def test_cartao_escondido_pode_ter_passado_mas_visivel_nao():
+    passado = Cartao("X", "2026-01-31", "Até 31 de janeiro de 2026.", escondido=True, data_prazo="/2026-01-31")
+    assert falhas_cartao(passado, date(2026, 3, 1)) == []
+    visivel = Cartao("X", "2026-01-31", "Até 31 de janeiro de 2026.")
+    assert falhas_cartao(visivel, date(2026, 3, 1)) == ["data-ate 2026-01-31 já passou"]
+
+
+def test_data_ate_anual_usa_a_proxima_ocorrencia():
+    anual = Cartao("Prova", "--12-31", "Até 31 de dezembro.", escondido=True, data_prazo="--08-01/--12-31")
+    assert _data_ate(anual, date(2026, 11, 13)) == date(2026, 12, 31)
+    assert _data_ate(anual, date(2027, 1, 2)) == date(2027, 12, 31)
+    assert falhas_cartao(anual, date(2027, 1, 2)) == []
 
 
 def test_badge_urgente_nunca_acompanha_prazo_ja_passado():

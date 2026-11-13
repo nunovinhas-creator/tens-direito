@@ -52,6 +52,7 @@ PAGINAS_ALVO = [
     "amim-beneficios-fiscais.html",
     "cartao-europeu-estacionamento.html",
     "tarifa-social-energia.html",
+    "o-que-muda-em-2027.html",
 ]
 
 # Só as páginas com secção "Dúvidas frequentes" dedicada é que permitem
@@ -77,6 +78,7 @@ MARCADOR_FAQ_POR_PAGINA = {
     "amim-beneficios-fiscais.html": "Perguntas frequentes",
     "cartao-europeu-estacionamento.html": "Perguntas frequentes",
     "tarifa-social-energia.html": "Dúvidas frequentes",
+    "o-que-muda-em-2027.html": "Dúvidas frequentes",
 }
 
 MAX_PALAVRAS_RESPOSTA_RAPIDA = 60

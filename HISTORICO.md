@@ -7917,6 +7917,197 @@ publicação antes da data marcada.
 
 PR: #373 (aberto, draft).
 
+## Última revisão: 2026-11-13 — Shadow Mode com 0 alertas: detecção confirmada, testes de regressão
+
+Os relatórios de 2026-11-08 a 2026-11-12 deram 0 alertas em 108 páginas e
+marcaram anomalia. **Sem bug**: `data_mes_ano`/`data_numerica` só são
+avaliados em jan/jul/ago/set e `prazo_outono` em ago/set (`REVER_EM`) — em
+novembro nenhum dos três corre; só `compromisso_futuro` e `carimbo_antigo`
+correm todos os meses. Medido sobre as 108 páginas reais: 0 em nov 2026;
+dez 2026 → 1 (`subsidio-parental.html`, compromisso «A próxima confirmação
+será até 15 de novembro de 2026»); jan 2027 → 38 (31 `data_mes_ano` + 7
+`data_numerica`). Sem `REVER_EM`, em novembro de 2026 só `data_numerica`
+dispararia, em 2 páginas — datas dormentes até janeiro de 2027:
+`complemento-solidario-idosos.html` (versão do Guia Prático N30,
+«25/06/2024», 3 ocorrências) e `tarifa-social-energia.html` («com efeitos a
+1/1/2023», num comentário HTML).
+
+`tests/test_verificar_datas.py`, secção «Shadow Mode: 0 alertas» (datas
+relativas ao dia de execução, nunca vermelhos com o calendário): uma frase
+por tipo que só corresponde a esse tipo; página mínima dispara hoje em
+`_pagina_tem_alerta`; `detectar_alertas` devolve o tipo certo nos meses de
+`REVER_EM` e nada nos outros; citação de diploma + «em vigor desde» + carimbo
+na mesma janela não suprimem a data expirada, e a data da própria citação
+continua suprimida; cada página de `_paginas_elegiveis` ou já dispara ou
+dispara com a data injectada antes de `</main>`. Provados a falhar com três
+sabotagens descartáveis: `data_numerica` nunca dispara (4 testes vermelhos),
+«em vigor desde» a suprimir por proximidade (3), `DATAS_PERMANENTES` a cobrir
+a página toda (o teste das páginas reais). Docstring de `verificar_datas.py`
+clarificado: o «âmbito deliberado» dos 3 tipos é o do portão de confirmação,
+não o dos alertas; novo parágrafo sobre os meses de `REVER_EM`.
+
+## Última revisão: 2026-11-13 — Sitemap: `<lastmod>` logo a seguir ao `<loc>`
+
+`scripts/sincronizar_sitemap_lastmod.py` passa a dar a ordem do protocolo
+de sitemaps.org, loc → lastmod → changefreq → priority. Antes, inserir
+acrescentava o `<lastmod>` no fim do `<url>` (depois do `<priority>`) e
+actualizar substituía-o no lugar: 86 entradas tinham-no no fim e 17 já
+logo a seguir ao `<loc>`. Agora o script retira sempre o `<lastmod>` e
+reinsere-o depois do `<loc>`, à mesma indentação. `--check` antes: divergente
+(exit 1); `--write`: 86 linhas movidas, mesmas 109 URLs e mesmas datas;
+`--check` e 2.ª corrida de `--write`: sem alterações. As 6 páginas de
+`EXCECOES_SEM_LASTMOD` continuam sem `<lastmod>`.
+
+`tests/test_sitemap_lastmod.py`: `test_ordem_dos_elementos_no_sitemap`
+(cada `<url>` real, falhou nas 86 antes do `--write`) e
+`test_sincronizar_poe_lastmod_logo_a_seguir_ao_loc` (inserir, mover do fim,
+actualizar já na ordem, retirar numa excepção, idempotência — falha com o
+script antigo).
+
+
+## Última revisão: 2026-11-13 — Barra do topo: próximo pagamento + canal de WhatsApp
+
+Barra de 40px, fixa acima da nav, em todas as páginas (111), que alterna
+«🔔 Recebe no WhatsApp o aviso na véspera de cada pagamento da Segurança
+Social →» (`utm_content=barra_topo`) com «📅 Próximo pagamento: <dia> —
+<resumo> →». Substitui a barra do calendário que só existia na homepage
+(`.cal-topo-regiao`). Decisões do Nuno nesta sessão: marcadores próprios
+`BARRA-TOPO` escritos pelo `sincronizar_nav.py` + datas num JSON gerado;
+«da Segurança Social» no texto (o canal ainda não avisa as pensões da CGA,
+que a mensagem do calendário mostra); botão de pausa além do hover/foco
+(WCAG 2.2.2); gerador de documentos só com a mensagem do WhatsApp, sem
+fetch nem evento (rede-zero).
+
+Antes de implementar, verificado contra a REGRA DE OURO: a parte fixa
+entre marcadores, escrita num script de sessão manual, é a categoria da
+NAV — não colide; as datas dentro de cada HTML colidiriam (o
+`calendario-mensal.yml` teria de reescrever 110 páginas protegidas todos
+os meses), por isso vivem em `data/calendario_barra.json`, gerado pelo
+`atualizar_calendario.py` com a mesma função de `#cal-home-dados`
+(`_dados_por_mes()`), e o guardrail + `git add` do `calendario-mensal.yml`
+passaram a incluí-lo. Não foi para `calendario/` porque
+`test_calendarios_ics.py` exige só `.ics` nessa pasta.
+
+- `scripts/sincronizar_nav.py`: `render_barra_topo()`, `bootstrap_barra()`
+  (a seguir ao skip-link; recusa sem skip-link ou com `cal-topo`),
+  `barra_estatica()`, `hoje-lisboa.js` no `<head>` onde a barra lê datas,
+  e `sincronizar_conteudo()` — a transformação pura de uma página, para os
+  testes provarem que só mexe nos blocos NAV/BARRA-TOPO e no `<head>`. 98
+  páginas sincronizadas na 2.ª passagem (as 13 do gerador já iguais);
+  3.ª passagem: 0 alterações.
+- `assets/js/nav.js`: `iniciarBarraTopo()` — fade a cada 6 s, começa na
+  mensagem do WhatsApp (a mesma que se vê sem JS, sem salto ao carregar),
+  `aria-live="off"`, pausa ao hover/foco/página escondida/botão;
+  reduced-motion, sem dados do mês de Lisboa, sem pagamento a partir de
+  hoje, fetch falhado ou JSON partido → só WhatsApp. Texto montado com
+  `textContent`, nunca `innerHTML`.
+- `assets/css/nav.css`: estilos da barra (antes inline na homepage),
+  nav a `top: 40px`, menu móvel a `top: 100px`,
+  `html { scroll-padding-top: 108px }`; `simulador-universal.html`:
+  `scroll-margin-top` 88 → 20px (mesma folga de 28px por baixo do topo
+  fixo, agora 100px).
+- `index.html`: barra antiga, o seu CSS, o script que promovia a data e
+  o `cal_home_clique` saíram; a zona `CAL-HOME` ficou logo a seguir aos
+  marcadores novos.
+- GA4: `barra_topo_clique` `{ destino }` em vez de `cal_home_clique`.
+
+Testes: `tests/test_barra_topo.py` (novo, 584 casos — parametrizado sobre
+as 111 páginas + Chromium com relógio fixo), `tests/test_calendario_frescura.py`
+(4 testes da barra da homepage adaptados + JSON igual a `#cal-home-dados` e
+sincronizado — corre no workflow mensal antes do commit),
+`tests/test_eventos_ga4.py` (evento novo, `cal_home_clique` sem restos,
+modo estático sai antes do evento e do fetch). Provados a falhar com seis
+sabotagens descartáveis: sem o filtro `dia >= hoje` (caso «tudo pago»),
+sem a saída por reduced-motion, sem a saída do modo estático, sem a pausa
+ao hover, sem a pausa ao foco e sem a linha do guardrail do workflow.
+
+**Ajuste pedido pelo Nuno antes do PR — ecrãs até 640px**: a barra deixa de
+ser fixa (aparece no topo e sai com o scroll); só a nav fica fixa. Ao medir
+as posições no Chromium apareceu que a nav tem 69px em todas as páginas (nas
+duas larguras), não os 60px que o `top: 60px` antigo do menu móvel assumia —
+o menu já tapava 9px da nav, e o `scroll-padding-top` de 108px do primeiro
+commit ficava 1px curto. Corrigido: `scroll-padding-top` 117px (largo) / 77px
+(≤640px); menu móvel preso por baixo da própria nav (`position: absolute;
+top: 100%` dentro da `.nav-wrap` sticky), o que o mantém colado à nav no topo
+da página e depois do scroll, e também na homepage, onde a faixa de destaque
+fica entre a barra e a nav; `max-height` = ecrã − nav. Testes de posição em
+`test_barra_topo.py` (375px no artigo e na homepage, 700px e 1200px), por
+relação medida na página; provados a falhar com três sabotagens (barra fixa
+no telemóvel, menu com `top` fixo, `scroll-padding` de ecrã largo no
+telemóvel).
+
+**Actualização a 13/11/2026 (integração em main)**: estado reconfirmado —
+aprovado a 16/10, ainda sem promulgação nem publicação (Doutor Finanças, 11/11;
+Academia das Finanças: em redação final a 6/11). Carimbo, `dateModified`,
+`ESPERA-LEGAL` e fontes da FAQ passam a 13/11; `data-rever-ate` passa a
+2026-11-20. Conflitos com main resolvidos: o bloco «Atualizado recentemente»
+saiu da homepage (#381), o `<lastmod>` foi regenerado.
+
+## Última revisão: 2026-11-13 — Página nova `o-que-muda-em-2027.html`
+
+Página anual cross-cluster (`EXCLUIDAS` em `sincronizar_clusters.py`, mesma
+categoria de `comecar-aqui.html`), em dois blocos separados por grau de
+confirmação. **Já decidido** (diploma publicado ou decisão oficial): PSU a
+produzir efeitos a 31/12/2026 (DL 166/2026, arts. 57.º e 63.º), idade normal
+de reforma de 66 anos e 11 meses em 2027 (Portaria n.º 476/2025/1 — ganhou
+cartão em `fontes.html`), dedução de rendas de 1.000 € para rendas de 2027
+(DL 97/2026), majoração do desemprego ajustada à PSU (art. 49.º), tarifa
+social da luz a 33,8% em 2027 (comunicado da ERSE). **Ainda por fixar** (GRAU
+2, várias fontes secundárias independentes): pensões +3,3%/2,79%/abaixo da
+inflação e IAS +3,3% (secretária de Estado da Segurança Social, Parlamento,
+6/11/2026), salário mínimo de 970 €, continuidade da garantia pública
+(relatório da proposta de OE 2027, sem prorrogação publicada), IMT Jovem
+338.141 €/676.185 € (proposta de OE 2027). O valor do IAS de 2027 em euros
+**não** é publicado: seria uma conta nossa, não um valor oficial. Cartão novo
+em «Datas a não perder» da homepage (`data-ate="2026-12-31"`).
+
+Rever depois da votação final global do OE 2027 (24/11/2026) e depois das
+portarias do IAS e das pensões (fim de dezembro). Fora do âmbito, por
+tratar: `dados/parametros/energia.yaml` ainda sem a entrada de 2027 da
+tarifa social da luz (33,8%) — o canário fica vermelho a 1/1/2027;
+`csi.yaml` usa a idade normal de 2026 (801 meses) e precisa da entrada de
+2027.
+
 ---
 
-*Última revisão automática: 2026-11-10*
+Acrescento no mesmo dia (2.ª auditoria, base UTAO 18/2026 + proposta OE2027): a página ganhou um 3.º estado, «Aprovado, por publicar», com a licença parental inicial (Projeto de Lei n.º 176/XVII/1.ª, votação final global a 16/10/2026; tabela 150/180/210 dias confirmada pela nota de redação final da AR de 29/10/2026 e pelo comunicado do Governo de 19/10/2026 — uma notícia de 12/11 com 120/150/180 dias descrevia o regime actual e não foi usada). Em «Ainda por fixar»: CSI 720 € (anúncio do Governo, 1/10/2026), suplemento extraordinário de pensões não garantido, propinas 2027/2028 indexadas à inflação (proposta OE2027). Deixados de fora, por serem só dotações orçamentais e não aumentos individuais: cuidadores informais, PSI, Garantia para a Infância, Creche Feliz.
+
+
+Parecer externo ao PR #378 (mesmo dia), aplicado: PSU descrita como «começa a produzir efeitos» (não «começa a ser paga»), com ligação ao calendário de pagamentos; tarifa social da luz de 2027 passa a citar o Despacho n.º 12419/2026, de 13 de outubro (33,8%, GRAU 2 — cartão novo em fontes.html; entrada de 2027 em `dados/parametros/energia.yaml`, por isso o canário da tarifa social já não fica vermelho a 1/1/2027); nota sobre a ambiguidade dos 210 dias nas famílias monoparentais, assinalada pela própria AR na nota de redação final; CSI sem a fórmula «paga a diferença»; propinas com a distinção dos mestrados (proposta OE2027); aviso de «Ainda por fixar» sem a menção a fontes secundárias. `dados/parametros/csi.yaml` ganhou a idade de 2027 (803 meses, Portaria n.º 476/2025/1): a 1/1/2027, `test_valores_ancora.py` falha até `complemento-solidario-idosos.html` e o simulador do CSI passarem a dizer 66 anos e 11 meses — de propósito. Também: merge de `main` (conflito só no HISTORICO.md) e barra do topo (#376) injectada na página nova por `sincronizar_nav.py`.
+
+## Última revisão: 2026-11-13 — Etiquetas nas listas de guias, «Datas a não perder» gerado, versão para imprimir
+
+- **`data/prazos.json` + `scripts/prazos.py`** (decisão do Nuno: ficheiro próprio, não marcadores nas páginas): prazos e datas com a frase exacta da página; `validar()` falha se a frase sair da página ou não citar a data de fim. Entradas iniciais: Prova Escolar (anual, 1/8–31/12), Garantia pública (até 31/12/2026), Bolsa do ensino superior fora de prazo (3/10/2026–31/5/2027), PSU paga a partir de 31/12/2026, O que muda em 2027, Passe sub-23 (permanente). O cartão da PSU passou a dizer «só é paga a partir de 31 de dezembro de 2026», como a página.
+- **«Datas a não perder»**: os 4 cartões manuais de `index.html` foram substituídos pela zona `PRAZOS:HOME`, gerada por `sincronizar_clusters.py`; cartão novo do próximo pagamento, lido de `#cal-home-dados`. Cartões com data nascem `hidden` e o `nav.js` mostra só os em curso pela data de Lisboa (decisão do Nuno: sem JS, nenhuma data). `.urgente-card` ganhou `max-width: 300px` (o resumo do pagamento esticava o cartão).
+- **Etiquetas**: «🧮 Tem simulador» (campo `simulador` em `clusters.json`, 7 páginas que já ligam ao seu simulador) e «⏳ Prazo a decorrer» em `PILLAR-LISTA`, `DESTAQUES:HOME` e `ATUALIZACOES:HOME`.
+- **Impressão**: `@media print` em `nav.css` + `iniciarImpressao()` no `nav.js`.
+- **Testes**: `tests/test_prazos.py`, `tests/test_prazos_navegador.py` (provados a falhar sem o bloco de impressão e sem a verificação de datas do JS); `tests/test_urgente_home_frescura.py` adaptado.
+
+---
+
+*Última revisão automática: 2026-11-13*
+
+### Última revisão: 2026-11-13 — «O que muda em 2027» no topo da homepage e nos guias relacionados
+
+A página estava publicada desde as 16:47 (smoke test confirmou a versão servida), mas só aparecia nos cartões «Datas a não perder», mais abaixo na homepage. Agora:
+- é o banner de destaque do topo da homepage (`data/destaque_evento.json`, id `o-que-muda-2027`, no lugar do banner da PSU — a página de 2027 também cobre a PSU); a zona `DESTAQUE:INICIO/FIM` de `index.html` foi actualizada no mesmo commit, para não esperar pelo pipeline do dia seguinte;
+- tem uma ligação no início do conteúdo de 7 guias: PSU, RSI, Reformas, idade normal da reforma, CSI, licença parental e garantia pública (bloco `VER-2027:INICIO/FIM`, estilo `.ver-2027` em `nav.css`, escondido na impressão).
+Sem facto novo: datas de verificação das páginas não mudaram.
+
+### Última revisão: 2026-11-13 — homepage curta
+
+Homepage de ~8,5 ecrãs para ~3 no computador (6776px → ~2480px) e de ~18
+para ~5 no telemóvel (13580px → ~3800px). Ficam: hero (um só botão),
+«Escolhe o teu tema» (cartões compactos gerados por `sincronizar_clusters.py`),
+5 simuladores, «Datas a não perder», notícias compactas e o convite do
+canal. Saem «Comece por aqui», «Guias principais», «Atualizado
+recentemente», «Como funciona» e os botões secundários do hero; o script
+deixou de gerar `DESTAQUES:HOME`/`ATUALIZACOES:HOME`. Detalhe em CLAUDE.md
+→ «HOMEPAGE CURTA».
+
+### Última revisão: 2026-11-13 — sem ligação aos tipos de letra da Google e comentário do consentimento corrigido
+
+- Retirado de 112 páginas o `<link rel="preconnect" href="https://fonts.googleapis.com">`: nenhuma página carrega tipos de letra da Google, e o preconnect abria uma ligação a um servidor da Google antes de a pessoa aceitar os cookies.
+- O comentário do bloco de consentimento (112 páginas e `scripts/migrar_consentimento.py`) dizia «o Google Analytics só carrega após aceitação», falso desde o Consent Mode avançado (13/07). Passou a «carrega sempre, mas só guarda cookies depois de a pessoa aceitar».
+- Dois testes novos em `tests/test_consentimento.py`, provados a falhar com o HTML anterior. Retirado o `page.route` para `fonts.googleapis.com` de dois testes de simuladores (já não há pedido a bloquear).
+
