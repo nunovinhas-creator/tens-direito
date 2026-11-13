@@ -43,7 +43,10 @@ recentemente") também vive em `index.html`, mas é escrito por
 `scripts/sincronizar_clusters.py` — um script de **sessão manual**, não do
 pipeline automático (mesma categoria que `CLUSTERS:HOME`/`DESTAQUES:HOME` —
 ver secção "SISTEMA DE CLUSTERS"). Não entra nesta lista porque não é o
-pipeline `pipeline-diario.yml` a escrevê-lo.
+pipeline `pipeline-diario.yml` a escrevê-lo. O mesmo vale para
+`<!-- PRAZOS:HOME:INICIO/FIM -->` (cartões "⏰ Datas a não perder", de
+`data/prazos.json`), escrito pelo mesmo script — ver "FRESCURA DA
+HOMEPAGE" → C.
 
 Nota 2: o marcador `<!-- CAL-HOME:INICIO/FIM -->` (datas da barra do topo
 da homepage, `#cal-home-dados`) também vive em `index.html`, mas é
@@ -715,7 +718,8 @@ Antes de qualquer `git commit`, verificar cada ponto:
 - [ ] `scripts/pesquisa.js` actualizado com nova página (se nova página de conteúdo)
 - [ ] Nova página de conteúdo? Correr `python scripts/inserir_botao_partilhar.py` (idempotente — adiciona o botão de partilha só às páginas que ainda não o têm: "Partilhar este simulador" em `simulador-*.html`, "Partilhar este artigo" no resto; numa página que já o tem, só sincroniza o texto/`aria-label` do `<button>` — `tests/test_inserir_botao_partilhar.py` falha se uma página real divergir)
 - [ ] Página nova com carimbo "Verificado a … pela redação do Tens Direito"? Correr `python scripts/inserir_reportar_erro.py --write` (idempotente — insere o link "Reportar um erro nesta página" → `/sobre.html#contacto` logo a seguir ao carimbo, entre `<!-- REPORTAR-ERRO:INICIO/FIM -->`; `tests/test_reportar_erro.py` falha se faltar)
-- [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS")
+- [ ] Nova página pertence a um cluster? Actualizar `data/clusters.json` e correr `python scripts/sincronizar_clusters.py` (ver secção "SISTEMA DE CLUSTERS") — se tem um simulador próprio, `"simulador": "simulador-x.html"` na entrada (dá a etiqueta «Tem simulador»; a página tem de ligar ao simulador)
+- [ ] A página tem um prazo para o leitor cumprir (ou uma data a não perder)? Acrescenta-o a `data/prazos.json` com a frase exacta da página e corre `python scripts/sincronizar_clusters.py` — ver "FRESCURA DA HOMEPAGE" → C
 - [ ] Nova página? Correr `python scripts/sincronizar_nav.py` para injectar a nav principal única e a barra do topo (ver secção "NAVEGAÇÃO PRINCIPAL")
 - [ ] Testes de coerência a passar: `pytest tests/test_breadcrumb_coerencia.py tests/test_nav_coerencia.py` (parametrizados sobre as páginas reais — cobrem a página nova automaticamente) — desde 2026-07-04 a suite completa também corre no CI a cada push a `main` (job "Suite de Testes (pytest)" em `integridade.yml`), mas correr localmente primeiro continua a poupar uma volta de CI vermelho
 - [ ] Página nova nasce a passar `pytest tests/test_acessibilidade.py` (axe-core real, WCAG 2.1 AA — ver secção "ACESSIBILIDADE — WCAG 2.1 AA") — parametrizado sobre as páginas reais, cobre a página nova automaticamente; zero tolerância a critical/serious, limiar documentado para moderate/minor
@@ -827,6 +831,7 @@ tens-direito/
 │   ├── run_shadow_daily.py   ← orquestrador único: liga os 3 acima + guarda histórico
 │   ├── validar_carimbos_elegiveis.py ← validação manual das simulações de carimbo (só leitura, sessão manual — passo humano do critério ≥14)
 │   ├── sincronizar_clusters.py ← lê data/clusters.json, injecta breadcrumb/relacionados/pillar-lista (idempotente)
+│   ├── prazos.py             ← lê/valida data/prazos.json; gera cartões "Datas a não perder" e etiqueta "Prazo a decorrer"
 │   ├── sincronizar_nav.py    ← bootstrap + sincroniza a nav principal única (idempotente)
 │   ├── limpar_css_morto_nav.py ← inventário/remoção de CSS morto da nav antiga (idempotente, --check p/ CI)
 │   ├── inventario_css_morto.py ← generaliza o script acima a TODO o CSS do site (externo + inline), idempotente, `--check`/`--csv` disponíveis, não wired ao CI (ver "LIMPEZA DE CSS MORTO — SITE INTEIRO")
@@ -840,6 +845,7 @@ tens-direito/
 │                                (estes dois últimos correm sobre as páginas reais, não fixtures)
 ├── data/
 │   ├── clusters.json         ← fonte única de verdade da arquitectura de clusters
+│   ├── prazos.json           ← prazos e datas a não perder (curado à mão, ver "FRESCURA DA HOMEPAGE" → C)
 │   ├── noticias.json         ← fonte de verdade das notícias (ver "FRESCURA DA HOMEPAGE")
 │   ├── scraped/              ← JSONs diários por fonte + *_latest.json
 │   ├── mudancas.json         ← mudanças detectadas pelo pipeline
@@ -1384,6 +1390,17 @@ entre marcadores** — nunca fetch de JSON no browser, nunca SSG.
    - `<!-- RELACIONADOS:INICIO/FIM -->` — secção final de artigos relacionados, num artigo
    - `<!-- PILLAR-LISTA:INICIO/FIM -->` — lista de artigos do cluster, numa pillar page
    - `<!-- PILLAR-JSONLD:INICIO/FIM -->` — JSON-LD `CollectionPage` + `ItemList` da pillar page (no `<head>`), gerado por `render_pillar_jsonld()` (ver secção "SCHEMA.ORG — GRAFO DO SITE")
+   - `<!-- PRAZOS:HOME:INICIO/FIM -->` — cartões "⏰ Datas a não perder" da homepage, de `data/prazos.json` (ver "FRESCURA DA HOMEPAGE" → C)
+
+   **Etiquetas nas listas de guias** (2026-11-13): `PILLAR-LISTA`,
+   `DESTAQUES:HOME` e `ATUALIZACOES:HOME` levam, por página,
+   `<span class="etiquetas">` com «🧮 Tem simulador» (campo `simulador`
+   da página em `clusters.json` — `validar_consistencia()` exige que
+   aponte para uma página `tipo: "ferramenta"`; `tests/test_prazos.py`
+   exige que a página lhe ligue) e «⏳ Prazo a decorrer» (páginas com
+   uma entrada `tipo: "prazo"` em `data/prazos.json`; nasce `hidden`,
+   o `nav.js` mostra-a só enquanto o prazo está em curso). Estilo em
+   `assets/css/nav.css`.
    Também corre `validar_consistencia()`: reporta páginas do JSON sem
    ficheiro, pillars por criar, e ficheiros HTML sem entrada no JSON
    (fora da lista `EXCLUIDAS`: `index.html`, `noticias.html`,
@@ -2030,23 +2047,46 @@ idempotente. Escrito por `scripts/sincronizar_clusters.py` (script de
 **Posição na homepage**: logo a seguir a "Guias principais"
 (`DESTAQUES:HOME`) e antes de "Como funciona".
 
-### C) "⏰ Datas a não perder" — cartões manuais com `data-ate`
+### C) "⏰ Datas a não perder" — gerado de `data/prazos.json`
 
-Secção 100% manual de `index.html` (`.urgente-banda`), sem marcadores nem
-script — `verificar_datas.py` exclui `index.html`. Desde a issue #283, cada
-`.urgente-card` declara a data de fim em `data-ate="AAAA-MM-DD"` (ou
-`data-ate="permanente"`), e `tests/test_urgente_home_frescura.py` exige:
-1) `data-ate` presente e válido; 2) `data-ate` ainda não passou;
-3) `permanente` só num cartão sem nenhum nome de mês no texto;
-4) `data-ate` nunca posterior à data não histórica mais tardia do texto, e
-— se o texto tiver uma data sem ano — a menos de 12 meses de hoje (sem
-este limite, `data-ate="2030-12-31"` arrastava o ano implícito de "até 31
-de dezembro" e passava). O detector reconhece dia + mês, mês sem dia
-("setembro" → último dia do mês) e sequências ("julho/agosto" → 31 de
-agosto); "todos os meses" nunca conta. Uma data sem ano usa o ano do
-`data-ate`, nunca o ano corrente. A supressão por `MARCADORES_HISTORICOS`
-é por ocorrência (só a frase da data), nunca pelo cartão inteiro. Cartão
-novo: escrever sempre o `data-ate` no mesmo commit.
+Desde 2026-11-13 os cartões já não são escritos à mão: vivem entre
+`<!-- PRAZOS:HOME:INICIO/FIM -->` dentro de `.urgente-cards`, gerados por
+`scripts/sincronizar_clusters.py` a partir de `data/prazos.json`
+(`scripts/prazos.py`). Cada entrada tem `id`, `pagina`, `tipo` (`prazo` —
+cartão + etiqueta «Prazo a decorrer» nas listas de guias; `data` — só
+cartão; `permanente` — cartão sempre visível, sem datas), `inicio`/`fim`
+(`AAAA-MM-DD`, ou `MM-DD` com `"recorrente": "anual"`; `inicio: null` =
+já a decorrer), `icone`, `titulo`, `texto` e `frase`.
+
+- **Nunca uma data passada, sem regenerar o HTML**: o HTML gerado não
+  depende de hoje. Cada cartão (e etiqueta) com data nasce `hidden` com
+  `data-prazo="INICIO/FIM"` (`--MM-DD` nos anuais); `iniciarPrazos()` em
+  `assets/js/nav.js` mostra só os que estão em curso pela data de Lisboa
+  (`hoje-lisboa.js`). Sem JavaScript ficam escondidos — aparecem só os
+  permanentes e o cartão do calendário (decisão do Nuno, mesma regra da
+  barra do topo). Um prazo que acaba desaparece sozinho; pode ficar no
+  JSON ou ser apagado numa sessão.
+- **Cartão do próximo pagamento** (primeiro, sempre presente,
+  `data-cartao-pagamento`): sem JS diz «Calendário de pagamentos»; com
+  JS, `nav.js` lê `#cal-home-dados` (o mesmo da barra do topo,
+  `proximoPagamento()`) e mostra «Próximo pagamento: D de mês» + o
+  resumo. Sem pagamento a partir de hoje no mês de Lisboa, fica a
+  ligação ao calendário.
+- **Vigilância**: `prazos.validar()` exige que a `frase` exista, tal e
+  qual, no texto visível da `pagina` e cite a data de fim («31 de
+  dezembro», ou «fim de dezembro» se o fim é o último dia do mês); o
+  `texto` do cartão também a cita, com o ano nas datas fixas e sem ano
+  nas anuais; um permanente não tem datas nem nomes de meses. Se a
+  página mudar o prazo, `tests/test_prazos.py` falha até alguém
+  actualizar o JSON. O mesmo ficheiro de testes exige a zona igual ao
+  gerado e todas as páginas sincronizadas.
+- **`tests/test_urgente_home_frescura.py`** continua a guardar os
+  cartões reais (`data-ate` válido e coerente com o texto), com duas
+  mudanças: um cartão com data tem de nascer `hidden` com `data-prazo`
+  cujo fim é o `data-ate`, e só um cartão visível sem JavaScript falha
+  por `data-ate` passado. `data-ate="--MM-DD"` = próxima ocorrência.
+- **Comportamento no navegador**: `tests/test_prazos_navegador.py`
+  (Chromium, relógio fixo, fuso do aparelho diferente de Lisboa, sem JS).
 
 ### Regra de honestidade
 
@@ -2121,6 +2161,24 @@ do artigo — nunca inventar uma secção que a página não tem.
 o número de casos.
 
 ---
+
+## VERSÃO PARA IMPRIMIR (2026-11-13)
+
+Pedido para quem imprime os guias para outras pessoas (assistentes
+sociais, escolas, juntas de freguesia). Um único `@media print` em
+`assets/css/nav.css` (carregado em todas as páginas): esconde a nav, a
+barra do topo, o banner de consentimento, os botões de partilha, o
+«Reportar um erro», os relacionados, o convite do canal de WhatsApp e o
+rodapé; tudo a preto sobre branco; o endereço de cada ligação externa
+dentro de `<main>` a seguir à ligação; perguntas frequentes abertas
+(`details::details-content` e, no `nav.js`, `iniciarImpressao()` abre os
+`<details>` no `beforeprint` e repõe-nos no `afterprint`); no fim,
+«Impresso de <endereço> — confirma sempre na fonte oficial antes de
+decidir» (`body[data-endereco]::after`, endereço posto pelo `nav.js`).
+`break-inside: avoid` só em linhas de tabela, perguntas e imagens —
+em cartões grandes deixava meia página em branco. Testes em
+`tests/test_prazos_navegador.py` (`emulate_media("print")`, provados a
+falhar sem o bloco). Sem botão «Imprimir» por agora.
 
 ## GERADOR DE DOCUMENTOS
 

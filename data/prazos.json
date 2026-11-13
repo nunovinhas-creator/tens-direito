@@ -1,0 +1,70 @@
+{
+  "_nota": "Prazos e datas que alimentam a etiqueta «Prazo a decorrer» (listas de guias) e os cartões «Datas a não perder» da homepage. Curado à mão numa sessão editorial, nunca pelo pipeline. Cada entrada repete uma data que já está publicada na página indicada: 'frase' tem de existir, tal e qual, no texto visível dessa página, e tem de conter a data de fim (tests/test_prazos.py falha se a página mudar). Tipos: 'prazo' (ganha a etiqueta e um cartão), 'data' (só cartão — um marco, não um prazo para o leitor cumprir) e 'permanente' (cartão sempre visível, sem datas). Datas: 'AAAA-MM-DD', ou 'MM-DD' com \"recorrente\": \"anual\". 'inicio' pode ser null (já a decorrer). Os cartões e as etiquetas com data nascem escondidos e o assets/js/nav.js só mostra os que estão em curso pela data de Lisboa — um prazo que acabou desaparece sozinho, sem regenerar o HTML. Depois de mudar este ficheiro: python scripts/sincronizar_clusters.py.",
+  "prazos": [
+    {
+      "id": "prova-escolar-regularizacao",
+      "pagina": "prova-escolar.html",
+      "tipo": "prazo",
+      "recorrente": "anual",
+      "inicio": "08-01",
+      "fim": "12-31",
+      "icone": "📋",
+      "titulo": "Prova Escolar",
+      "texto": "Ainda não fizeste? Se a entregares até 31 de dezembro, a suspensão é levantada e recebes os meses em atraso.",
+      "frase": "Se a entregares até 31 de dezembro, a suspensão é levantada e recebes os meses em atraso"
+    },
+    {
+      "id": "garantia-publica-contratos",
+      "pagina": "garantia-publica-credito-habitacao.html",
+      "tipo": "prazo",
+      "inicio": null,
+      "fim": "2026-12-31",
+      "icone": "🔑",
+      "titulo": "Garantia pública na compra de casa",
+      "texto": "Só para contratos de crédito celebrados até 31 de dezembro de 2026.",
+      "frase": "contrato tem de ser celebrado até 31 de dezembro de 2026"
+    },
+    {
+      "id": "bolsa-ensino-superior-tardia",
+      "pagina": "bolsa-de-estudo-ensino-superior.html",
+      "tipo": "prazo",
+      "inicio": "2026-10-03",
+      "fim": "2027-05-31",
+      "icone": "🎓",
+      "titulo": "Bolsa de estudo do ensino superior",
+      "texto": "Fora do prazo geral, ainda podes pedir até 31 de maio de 2027, com valor proporcional.",
+      "frase": "É possível submeter a candidatura entre 3 de outubro e 31 de maio"
+    },
+    {
+      "id": "psu-producao-de-efeitos",
+      "pagina": "prestacao-social-unica.html",
+      "tipo": "data",
+      "inicio": null,
+      "fim": "2026-12-31",
+      "icone": "🔄",
+      "titulo": "Prestação Social Única",
+      "texto": "Já podes pedir a PSU, mas só é paga a partir de 31 de dezembro de 2026.",
+      "frase": "só é paga a partir de 31 de dezembro de 2026"
+    },
+    {
+      "id": "o-que-muda-em-2027",
+      "pagina": "o-que-muda-em-2027.html",
+      "tipo": "data",
+      "inicio": null,
+      "fim": "2026-12-31",
+      "icone": "🗓️",
+      "titulo": "O que muda em 2027",
+      "texto": "PSU, idade da reforma, pensões e salário mínimo: o que já está decidido e o que fica fixado no fim de dezembro de 2026.",
+      "frase": "os valores finais só ficam fixados no fim de dezembro de 2026"
+    },
+    {
+      "id": "passe-sub23",
+      "pagina": "passe-sub23.html",
+      "tipo": "permanente",
+      "icone": "🚌",
+      "titulo": "Passe sub-23",
+      "texto": "Gratuito dos 4 aos 23 anos. Tem de ser carregado todos os meses.",
+      "frase": "Tem de ser carregado todos os meses"
+    }
+  ]
+}

@@ -114,6 +114,10 @@ _HOME_COM_MARCADOR = """<!DOCTYPE html>
     <!-- ATUALIZACOES:HOME:INICIO -->
     <!-- ATUALIZACOES:HOME:FIM -->
   </section>
+  <div class="urgente-cards" role="list">
+        <!-- PRAZOS:HOME:INICIO -->
+        <!-- PRAZOS:HOME:FIM -->
+  </div>
 </body>
 </html>
 """
