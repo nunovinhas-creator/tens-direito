@@ -68,6 +68,14 @@
       },
       {
         "@type": "Question",
+        "name": "A licença parental de 5 meses paga a 100% já está em vigor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ainda não. O alargamento foi aprovado na Assembleia da República a 16 de outubro de 2026, mas à data desta verificação ainda não foi promulgado nem publicado em Diário da República. O texto aprovado aplica-se a licenças que comecem a partir de 1 de janeiro de 2027, mas a entrada em vigor está ligada ao Orçamento do Estado seguinte à publicação. Até a lei estar em vigor, aplicam-se as modalidades atuais: 120 dias a 100%, 150 dias a 80% ou 100% com partilha, e 180 dias a 83% ou 90%. Fonte: Projeto de Lei n.º 176/XVII/1.ª (parlamento.pt) — confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República, a 13/11/2026"
+        }
+      },
+      {
+        "@type": "Question",
         "name": "A licença parental conta para a reforma?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -131,7 +139,7 @@
     "author": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "publisher": {"@id": "https://tensdireito.com/sobre.html#nvlabs"},
     "datePublished": "2026-06",
-    "dateModified": "2026-10-14"
+    "dateModified": "2026-11-13"
   }
   </script>
 
@@ -353,14 +361,15 @@ footer a{color:#5C6770}
       </ul>
     </div>
 
-    <div class="aviso-lei">
-      <p>⚠️ <strong>Licença parental: alterações aprovadas no Parlamento, ainda não estão em vigor.</strong></p>
-      <p style="margin-top:.5rem">A 13 de outubro de 2026, o grupo de trabalho parlamentar aprovou um texto conjunto do PSD e do PS que alarga a licença parental paga a 100%. Ainda tem de ser confirmado na Comissão de Trabalho, aprovado em votação final global, promulgado e publicado em Diário da República. Não há data de entrada em vigor. <strong>Até lá aplicam-se as regras desta página.</strong></p>
-      <p style="margin-top:.5rem">Foi também aprovada a jornada contínua no sector privado para quem tem filhos menores de 12 anos, mas depende de acordo com o empregador ou de convenção colectiva e também ainda não está em vigor.</p>
-      <p style="margin-top:.5rem">Acompanha em <a href="https://www.parlamento.pt" target="_blank" rel="noopener">parlamento.pt</a> (o DRE publica apenas diplomas já promulgados e em vigor).</p>
+    <!-- ESPERA-LEGAL: verificado_em="2026-11-13" -->
+    <div class="aviso-lei" data-rever-ate="2026-11-20" data-estado-legislativo="aprovado-por-publicar">
+      <p>⚠️ <strong>Licença parental: lei aprovada no Parlamento, ainda não está em vigor.</strong></p>
+      <p style="margin-top:.5rem">A 16 de outubro de 2026, a Assembleia da República aprovou em votação final global o alargamento da licença parental (Projeto de Lei n.º 176/XVII/1.ª). À data desta verificação, a lei ainda não foi promulgada pelo Presidente da República nem publicada em Diário da República. <strong>Até lá aplicam-se as regras desta página.</strong></p>
+      <p style="margin-top:.5rem">O texto aprovado aplica-se às licenças que comecem a partir de 1 de janeiro de 2027, mas só se a lei já estiver em vigor nessa altura: a entrada em vigor está ligada ao Orçamento do Estado seguinte à publicação. Por isso, ainda não é certo que as novas regras valham para quem tenha um filho em janeiro de 2027. Ver <a href="#o-que-pode-mudar">o que muda</a>.</p>
+      <p style="margin-top:.5rem">Acompanha em <a href="https://www.parlamento.pt/ActividadeParlamentar/Paginas/IniciativasLegislativas.aspx" target="_blank" rel="noopener">parlamento.pt</a> (projeto de lei n.º 176/XVII/1.ª) e em <a href="https://diariodarepublica.pt" target="_blank" rel="noopener">diariodarepublica.pt</a> (onde a lei aparece depois de publicada).</p>
     </div>
 
-    <p class="verif">Verificado a 14 de outubro de 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a><!-- REPORTAR-ERRO:INICIO --> · <a class="reportar-erro" href="/sobre.html#contacto">Reportar um erro nesta página</a><!-- REPORTAR-ERRO:FIM --> · Fontes: <a href="https://www.gov.pt" style="color:#0F766E">gov.pt</a> · <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · Base legal: Código do Trabalho + Decreto-Lei n.º 91/2009</p>
+    <p class="verif">Verificado a 13 de novembro de 2026 pela redação do <a href="/sobre.html#metodo">Tens Direito</a><!-- REPORTAR-ERRO:INICIO --> · <a class="reportar-erro" href="/sobre.html#contacto">Reportar um erro nesta página</a><!-- REPORTAR-ERRO:FIM --> · Fontes: <a href="https://www.gov.pt" style="color:#0F766E">gov.pt</a> · <a href="https://www.seg-social.pt" style="color:#0F766E">seg-social.pt</a> · Base legal: Código do Trabalho + Decreto-Lei n.º 91/2009</p>
 
     <div class="card">
       <span class="badge">O que é</span>
@@ -405,30 +414,69 @@ footer a{color:#5C6770}
       <p class="nota-tabela">A percentagem é calculada sobre a <em>remuneração de referência</em> (ver cálculo abaixo). Mínimo diário 2026: <strong>14,32 €</strong> (80% × 1/30 × IAS 537,13 €).<br><strong>Atenção:</strong> na modalidade de 180 dias a 90%, os 60 dias do pai estão <strong>incluídos</strong> nos 180 dias totais — não são adicionados ao período máximo.</p>
     </div>
 
-    <div class="card">
-      <span class="badge">Proposta aprovada a 13/10/2026</span>
-      <h2>O que pode mudar</h2>
-      <p>Valores do texto aprovado no grupo de trabalho. Não estão em vigor e podem ainda mudar até à votação final global.</p>
+    <div class="card" id="o-que-pode-mudar">
+      <span class="badge">Aprovado no Parlamento a 16/10/2026</span>
+      <h2>O que muda com a lei aprovada</h2>
+      <!-- ESPERA-LEGAL: verificado_em="2026-11-13" -->
+      <p>O texto foi aprovado em votação final global a 16 de outubro de 2026. <strong>Ainda não está em vigor</strong>: falta a promulgação e a publicação em Diário da República, e a entrada em vigor depende do Orçamento do Estado seguinte à publicação. Durações, percentagens e dias do pai abaixo estão confirmados no texto aprovado pela Assembleia da República (projeto de decreto: artigos 40.º e 43.º do Código do Trabalho e artigo 30.º do Decreto-Lei n.º 91/2009, na redação aprovada). Não são ainda direitos em vigor.</p>
 
+      <h3 style="font-size:1rem;margin:1rem 0 .5rem">Licença parental inicial</h3>
       <div class="tabela-wrap">
         <table>
           <thead>
             <tr>
               <th>Modalidade</th>
-              <th>Hoje</th>
-              <th>Texto aprovado a 13/10</th>
+              <th>Regras em vigor</th>
+              <th>Texto aprovado a 16/10/2026</th>
             </tr>
           </thead>
           <tbody>
             <tr><td>150 dias sem partilha</td><td>80%</td><td><strong>100%</strong></td></tr>
             <tr><td>180 dias sem partilha</td><td>não existe</td><td><strong>83%</strong></td></tr>
-            <tr><td>180 dias com partilha (cada progenitor ≥30 dias seguidos ou 2×15)</td><td>83% (90% com pai ≥60 dias)</td><td><strong>100%</strong></td></tr>
-            <tr><td>210 dias</td><td>não existe</td><td><strong>86%</strong> com partilha; <strong>90%</strong> se o pai gozar ≥60 dias seguidos ou 2×30 — por confirmar no texto final</td></tr>
+            <tr><td>180 dias com partilha (cada progenitor goza pelo menos 30 dias seguidos ou 2×15 dias seguidos)</td><td>83% (90% com o pai a gozar ≥60 dias)</td><td><strong>100%</strong></td></tr>
+            <tr><td>210 dias com partilha (cada progenitor goza pelo menos 30 dias seguidos ou 2×15 dias seguidos)</td><td>não existe</td><td><strong>86%</strong></td></tr>
+            <tr><td>210 dias com o pai a gozar sozinho pelo menos 60 dias seguidos ou 2×30 dias seguidos</td><td>não existe</td><td><strong>90%</strong></td></tr>
+            <tr><td>120 dias a 100%</td><td>existe</td><td>Deixa de existir</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="nota-tabela">As restantes regras (dias obrigatórios da mãe e do pai, remuneração de referência, prazo do pedido) não foram alteradas nesta votação.</p>
-      <p class="nota-tabela">Estado confirmado a 14/10/2026. A próxima confirmação será até 15 de novembro de 2026.</p>
+
+      <h3 style="font-size:1rem;margin:1rem 0 .5rem">Licença exclusiva do pai e da mãe</h3>
+      <div class="tabela-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Quem</th>
+              <th>Regras em vigor</th>
+              <th>Texto aprovado a 16/10/2026</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Pai — dias obrigatórios</td><td>28 dias, dos quais 7 seguidos logo após o nascimento</td><td>28 dias, dos quais <strong>14 seguidos</strong> logo após o nascimento</td></tr>
+            <tr><td>Pai — dias facultativos</td><td>7 dias</td><td><strong>14 dias</strong> (até 42 dias no total)</td></tr>
+            <tr><td>Mãe — dias obrigatórios</td><td>42 dias após o parto</td><td>Sem alteração noticiada</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:1rem;margin:1rem 0 .5rem">Jornada contínua no setor privado</h3>
+      <ul>
+        <li>Novo direito no Código do Trabalho (artigo 56.º-A) para quem tem filho com menos de 12 anos ou, sem limite de idade, filho com deficiência, doença crónica ou doença oncológica que viva com o trabalhador.</li>
+        <li>Concentra o horário num dos períodos do dia, com redução do horário diário até 1 hora.</li>
+        <li><strong>Não é automática</strong>: depende do que diga a convenção coletiva ou, se não disser nada, de acordo com o empregador.</li>
+        <li>Pedido por escrito, com 30 dias de antecedência, por um período até 5 anos.</li>
+      </ul>
+
+      <p class="nota-tabela">Licença inicial e subsídio são coisas diferentes: a lei do trabalho dá o direito a faltar (licença) e a Segurança Social paga o subsídio. O texto aprovado altera os dois.</p>
+      <h3 style="font-size:1rem;margin:1rem 0 .5rem">Situações familiares especiais</h3>
+      <p>O texto aprovado tem regras próprias para três situações (artigo 40.º, n.os 17 a 21, do Código do Trabalho, na redação aprovada). Resumimos o que está confirmado em várias fontes secundárias independentes. As condições exatas só ficam certas com a lei publicada.</p>
+      <ul>
+        <li><strong>Famílias monoparentais:</strong> poderão ter acesso às modalidades mais longas sem a partilha entre os dois progenitores (n.os 17 a 19).</li>
+        <li><strong>Outros familiares:</strong> em situações determinadas, a licença poderá ser partilhada com outros familiares. Quem pode e em que casos está no n.º 20 — não é uma possibilidade aberta a todas as famílias.</li>
+        <li><strong>Vítimas de violência doméstica:</strong> poderão ter a licença paga a 100% sem partilha, mas só se se cumprirem <strong>todas</strong> as condições do n.º 21: queixa-crime apresentada, medida de coação ou pena acessória de proibição de contacto, e saída da vítima ou do agressor da casa de morada de família durante a gravidez ou durante a licença. Não é automático.</li>
+      </ul>
+      <p class="nota-tabela">Quem não tem descontos suficientes recebe hoje o subsídio social parental, que passa para a Prestação Social Única a 31 de dezembro de 2026. As percentagens acima são do subsídio parental (para quem descontou) e não se aplicam automaticamente à PSU.</p>
+      <p class="nota-tabela">Estado verificado a 13/11/2026: aprovado, não promulgado, não publicado. Próxima verificação até 20/11/2026.</p>
     </div>
 
     <div class="card">
@@ -541,6 +589,14 @@ footer a{color:#5C6770}
         <div class="resposta">
           <p>Os 28 dias do pai são <strong>intransmissíveis</strong> — a mãe não os pode usar. Se o pai não gozar os seus dias obrigatórios, esses dias <strong>perdem-se</strong> e o subsídio correspondente não é pago. A partilha da licença inicial (que dá acesso às modalidades de 150 dias a 100% ou 180 dias a 83%/90%) também fica condicionada ao cumprimento dos períodos obrigatórios do pai.</p>
           <p class="fonte-inline">Fonte: Código do Trabalho — verificado 24/06/2026</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>A licença parental de 5 meses paga a 100% já está em vigor?</summary>
+        <div class="resposta">
+          <p>Ainda não. O alargamento foi aprovado na Assembleia da República a 16 de outubro de 2026, mas à data desta verificação ainda não foi promulgado nem publicado em Diário da República. O texto aprovado aplica-se a licenças que comecem a partir de 1 de janeiro de 2027, mas a entrada em vigor está ligada ao Orçamento do Estado seguinte à publicação. Até a lei estar em vigor, aplicam-se as modalidades atuais: 120 dias a 100%, 150 dias a 80% ou 100% com partilha, e 180 dias a 83% ou 90%.</p>
+          <p class="fonte-inline">Fonte: Projeto de Lei n.º 176/XVII/1.ª (parlamento.pt) — confirmado em várias fontes secundárias independentes, não no texto oficial do Diário da República, a 13/11/2026</p>
         </div>
       </details>
 

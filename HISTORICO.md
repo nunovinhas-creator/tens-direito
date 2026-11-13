@@ -7854,6 +7854,69 @@ Prova Escolar «mês anterior a completar 16 anos»: o Guia Prático 4011
 (v1.49, 29/04/2025) não a prevê — quem faz 16 anos segue o prazo geral de
 julho; a frase fica fora.
 
+## Última revisão: 2026-11-11 — Licença parental: lei aprovada a 16/10, ainda por publicar; revisão marcada em `verificar_datas.py` (issue #331)
+
+**Estado legislativo (11/11/2026)**: o Projeto de Lei n.º 176/XVII/1.ª
+(alargamento da licença parental e jornada contínua) foi aprovado em votação
+final global a 16/10/2026. Nenhuma fonte confirma promulgação nem publicação
+em Diário da República até esta data. Grau de confirmação: várias fontes
+secundárias independentes (Observador, DN, RTP, Cuatrecasas, ECO, Academia
+das Finanças, Contas Poupança, Rádio Comercial); parlamento.pt,
+diariodarepublica.pt, files.dre.pt e presidencia.pt inacessíveis a partir
+desta sessão (ligação recusada pela rede do ambiente). Divergência registada:
+a TVI refere abstenção do PCP; o texto público não afirma unanimidade.
+
+**`subsidio-parental.html`**: retirada a frase de que faltava a votação final
+global (texto de 13/10); `.aviso-lei` reescrito (aprovado, não promulgado nem
+publicado; 1/1/2027 só se a lei já estiver em vigor — entrada em vigor ligada
+ao Orçamento do Estado seguinte à publicação). Card «O que muda com a lei
+aprovada» com duas tabelas (licença inicial; pai e mãe) e a jornada contínua
+(art. 56.º-A, não automática). Confirmados em ≥2 fontes: 150 dias a 100%; 180
+com partilha a 100%; 210 a 86% (partilha) ou 90% (pai ≥60 dias sozinho); pai
+28 dias obrigatórios com 14 seguidos + 14 facultativos. Só uma fonte, ficam
+«por confirmar no texto publicado»: fim dos 120 dias e 180 sem partilha a
+83%. Sem confirmação, não descritos: monoparentais, outros familiares,
+violência doméstica. Tabela das regras em vigor intacta. Nova FAQ «já está em
+vigor?» (JSON-LD regenerado). Carimbo e `dateModified` a 11/11/2026; sitemap e
+`ATUALIZACOES:HOME` sincronizados. `fontes.html`: «licença parental alargada»
+→ «alargamento da licença parental inicial» (a alargada é outra licença).
+
+**Vigilância**: `verificar_datas.py` ganha `PADRAO_REVISAO_MARCADA`
+(`data-rever-ate`) — ver CLAUDE.md, Shadow Mode, ponto 1. Testes novos:
+`tests/test_revisao_marcada.py`; `tests/test_vigilancia_licenca_parental.py`
+reescrito (o antigo testava a frase de 15/11, agora retirada). PSU: sem
+alteração — as páginas não descrevem durações da licença; nota na página de
+que as percentagens não se aplicam automaticamente à PSU.
+
+PR: #373 (aberto, draft). Issue #331 continua aberta — acompanhamento da publicação.
+
+## Última revisão: 2026-11-11 — Licença parental: revisão com o projeto de decreto da AR (issue #331, PR #373)
+
+**Fonte**: projeto de decreto da Assembleia da República do Projeto de Lei
+n.º 176/XVII/1.ª (BID=315518), analisado pelo Nuno e entregue com o artigo
+citado. parlamento.pt e openar.pt não resolvem a partir desta sessão — o
+texto não foi lido aqui e as páginas do PDF não foram conferidas.
+Transcrito como entregue: art. 40.º (150/180/210 dias; 120 deixa de
+constar), art. 30.º do DL 91/2009 (100/83/100/86/90%), art. 43.º (28 dias
+obrigatórios do pai, 14 logo após o nascimento, + 14 facultativos);
+partilha de 30 dias seguidos ou 2×15 (86%) e pai 60 dias seguidos ou 2×30
+(90%). Situações especiais (art. 40.º, n.os 17 a 21): o Nuno deu os números
+dos artigos, não o texto — conteúdo resumido de várias fontes secundárias
+(Governo, TSF, Renascença, JN, Observador), com a ressalva visível.
+Arts. 8.º e 9.º (efeitos e vigência): texto não entregue; a página mantém
+«licenças a partir de 1/1/2027, entrada em vigor ligada ao Orçamento do
+Estado seguinte», de fontes secundárias.
+
+`subsidio-parental.html`: tabela do texto aprovado (180 sem partilha 83%;
+120 deixa de existir; condições 2×15 e 2×30), bloco «Situações familiares
+especiais», `data-rever-ate` 15/11/2026, `data-estado-legislativo`.
+Testes: estado declarado, estado `publicado` exige diploma/vigência/
+condições, tabelas e condições da violência doméstica — três mutações
+provadas a falhar. Limitação documentada no CLAUDE.md: nada detecta a
+publicação antes da data marcada.
+
+PR: #373 (aberto, draft).
+
 ## Última revisão: 2026-11-13 — Shadow Mode com 0 alertas: detecção confirmada, testes de regressão
 
 Os relatórios de 2026-11-08 a 2026-11-12 deram 0 alertas em 108 páginas e
@@ -7972,6 +8035,13 @@ fica entre a barra e a nav; `max-height` = ecrã − nav. Testes de posição em
 relação medida na página; provados a falhar com três sabotagens (barra fixa
 no telemóvel, menu com `top` fixo, `scroll-padding` de ecrã largo no
 telemóvel).
+
+**Actualização a 13/11/2026 (integração em main)**: estado reconfirmado —
+aprovado a 16/10, ainda sem promulgação nem publicação (Doutor Finanças, 11/11;
+Academia das Finanças: em redação final a 6/11). Carimbo, `dateModified`,
+`ESPERA-LEGAL` e fontes da FAQ passam a 13/11; `data-rever-ate` passa a
+2026-11-20. Conflitos com main resolvidos: o bloco «Atualizado recentemente»
+saiu da homepage (#381), o `<lastmod>` foi regenerado.
 
 ## Última revisão: 2026-11-13 — Página nova `o-que-muda-em-2027.html`
 
