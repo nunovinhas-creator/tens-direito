@@ -1534,8 +1534,10 @@ todas as páginas).
 
 ### Barra do topo — próximo pagamento + canal de WhatsApp (2026-11-13)
 
-Faixa de 40px, fixa (sticky) acima da nav, em todas as páginas, entre
-`<!-- BARRA-TOPO:INICIO/FIM -->` logo a seguir ao skip-link — escrita por
+Faixa de 40px acima da nav, em todas as páginas — fixa (sticky) a partir de
+641px; em ecrãs até 640px aparece no topo da página e sai com o scroll, e só
+a nav fica fixa —, entre `<!-- BARRA-TOPO:INICIO/FIM -->` logo a seguir ao
+skip-link — escrita por
 `scripts/sincronizar_nav.py` (`render_barra_topo()`; bootstrap insere os
 marcadores a seguir ao skip-link e recusa uma página sem skip-link ou com a
 barra antiga `cal-topo`). Substitui a barra do calendário que só existia na
@@ -1570,9 +1572,17 @@ cima do outro.
   (garantia de rede-zero, decisão do Nuno).
 - **Evento GA4** `barra_topo_clique` `{ destino }` — ver "MEDIÇÃO DE
   CONVERSÃO".
-- `html { scroll-padding-top: 108px }` em `nav.css`: as âncoras não ficam
-  tapadas pela barra + nav fixas (40 + 60px); o menu móvel desce para
-  `top: 100px`.
+- **Posição** (`nav.css`): a nav tem 69px (não os 60px que o `top: 60px`
+  antigo do menu móvel assumia). `scroll-padding-top` = o que está fixo +
+  8px: 117px em ecrã largo (barra 40 + nav 69), 77px até 640px (só a nav).
+  O menu móvel fica preso por baixo da própria nav (`position: absolute;
+  top: 100%` dentro da `.nav-wrap`, que é sticky), nunca a um `top` fixo ao
+  ecrã — até 640px a nav está a 40px no topo da página e a 0px depois do
+  scroll, e o menu acompanha-a nos dois estados. `max-height`: o espaço por
+  baixo da nav quando ela está no topo do ecrã; no topo da página, em ecrã
+  estreito, o fim do menu passa uns 40px do ecrã e o scroll traz-o.
+  `simulador-universal.html` usa `scroll-margin-top: 11px` (a mesma folga
+  de 19px por baixo do topo fixo que tinha antes da barra).
 - **Testes**: `tests/test_barra_topo.py` — um bloco por página, igual ao
   gerado e logo a seguir ao skip-link; utm; modo estático exactamente no
   gerador; o `sincronizar_nav.py` só muda os blocos NAV/BARRA-TOPO e o
@@ -1581,8 +1591,11 @@ cima do outro.
   do `calendario-mensal.yml`; o `pipeline-diario.yml` nunca escreve a
   barra; e, no Chromium com relógio fixo, sem JS, reduced-motion, rotação,
   pausas, último dia do mês, os cinco casos de «nunca uma data passada»,
-  uma linha de 40px sem overflow a 375px, evento GA4 e rede-zero no
-  gerador. `tests/test_calendario_frescura.py` (corrido pelo workflow
+  uma linha de 40px sem overflow a 375px, evento GA4, rede-zero no
+  gerador e a posição antes e depois do scroll (375px no artigo e na
+  homepage, 700 e 1200px): barra, nav, menu colado à nav e a acabar no
+  fundo do ecrã, `scroll-padding-top` — sempre por relação medida na
+  página, nunca por alturas supostas. `tests/test_calendario_frescura.py` (corrido pelo workflow
   mensal antes do commit) exige o JSON igual a `#cal-home-dados` e
   sincronizado com o gerador.
 

@@ -7958,6 +7958,21 @@ sabotagens descartáveis: sem o filtro `dia >= hoje` (caso «tudo pago»),
 sem a saída por reduced-motion, sem a saída do modo estático, sem a pausa
 ao hover, sem a pausa ao foco e sem a linha do guardrail do workflow.
 
+**Ajuste pedido pelo Nuno antes do PR — ecrãs até 640px**: a barra deixa de
+ser fixa (aparece no topo e sai com o scroll); só a nav fica fixa. Ao medir
+as posições no Chromium apareceu que a nav tem 69px em todas as páginas (nas
+duas larguras), não os 60px que o `top: 60px` antigo do menu móvel assumia —
+o menu já tapava 9px da nav, e o `scroll-padding-top` de 108px do primeiro
+commit ficava 1px curto. Corrigido: `scroll-padding-top` 117px (largo) / 77px
+(≤640px); menu móvel preso por baixo da própria nav (`position: absolute;
+top: 100%` dentro da `.nav-wrap` sticky), o que o mantém colado à nav no topo
+da página e depois do scroll, e também na homepage, onde a faixa de destaque
+fica entre a barra e a nav; `max-height` = ecrã − nav. Testes de posição em
+`test_barra_topo.py` (375px no artigo e na homepage, 700px e 1200px), por
+relação medida na página; provados a falhar com três sabotagens (barra fixa
+no telemóvel, menu com `top` fixo, `scroll-padding` de ecrã largo no
+telemóvel).
+
 ---
 
 *Última revisão automática: 2026-11-12*

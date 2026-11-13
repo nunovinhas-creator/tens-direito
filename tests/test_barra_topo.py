@@ -374,6 +374,88 @@ def test_telemovel_uma_linha_sem_overflow(browser, servidor):
     page.context.close()
 
 
+# ── Posição: fixa só em ecrãs largos (>640px) ─────────────────────────────
+# Em ecrãs estreitos a barra aparece no topo e sai com o scroll; só a nav
+# fica fixa. O menu móvel fica sempre colado por baixo da nav (no topo da
+# página e depois do scroll) e cabe no ecrã quando a nav está no topo. As
+# âncoras passam o que estiver fixo: nav (+ barra, em ecrã largo) + 8px.
+# Relações medidas na página, nunca alturas supostas — a nav tem 69px, não
+# os 60px que o CSS antigo assumia. O menu começa no fundo da caixa interior
+# da nav (top: 100%), por cima da borda de 1px.
+
+_POSICOES = """() => {
+    const r = el => document.querySelector(el).getBoundingClientRect();
+    const menu = document.getElementById('navMobileMenu');
+    const nav = document.querySelector('.nav-wrap');
+    return {
+        scroll: window.scrollY,
+        alto: window.innerHeight,
+        barra: r('.barra-topo-regiao').top,
+        nav: r('.nav-wrap').top,
+        navAltura: r('.nav-wrap').height,
+        navInteriorFim: r('.nav-wrap').top + nav.clientTop + nav.clientHeight,
+        navInterior: nav.clientHeight,
+        menu: menu.getBoundingClientRect().top,
+        menuFim: menu.getBoundingClientRect().bottom,
+        padding: parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop),
+    };
+}"""
+
+
+def _abrir_menu_comprido(page):
+    """Abre o menu móvel e enche-o de conteúdo: a altura dele passa a ser a
+    do max-height (o valor usado — o calculado fica em calc() com %)."""
+    page.click(".nav-toggle")
+    page.evaluate("""() => {
+        const d = document.createElement('div');
+        d.style.cssText = 'height: 3000px; flex: none';
+        document.getElementById('navMobileMenu').appendChild(d);
+    }""")
+
+
+def _posicoes(page, scroll_y=None):
+    if scroll_y is not None:
+        page.evaluate(f"window.scrollTo({{top: {scroll_y}, behavior: 'instant'}})")
+        page.wait_for_timeout(50)
+    return page.evaluate(_POSICOES)
+
+
+@pytest.mark.parametrize("url", [ARTIGO, "/index.html"])
+def test_telemovel_barra_sai_com_o_scroll_e_so_a_nav_fica_fixa(browser, servidor, url):
+    page, _ = _abrir(browser, servidor, url)
+    _abrir_menu_comprido(page)  # antes de fazer scroll
+    topo = _posicoes(page)
+    assert topo["barra"] == 0 and topo["nav"] >= 40, topo  # na homepage o destaque fica pelo meio
+    assert topo["menu"] == topo["navInteriorFim"], "menu móvel descolado da nav no topo da página"
+    assert topo["padding"] == topo["navAltura"] + 8, "as âncoras só têm de passar a nav"
+    # max-height = ecrã − nav: no topo da página o fim passa do ecrã (o scroll traz-o)
+    assert topo["menuFim"] - topo["menu"] == topo["alto"] - topo["navInterior"]
+
+    abaixo = _posicoes(page, 600)
+    assert abaixo["scroll"] == 600
+    assert abaixo["barra"] == -600, "a barra ficou fixa num ecrã estreito"
+    assert abaixo["nav"] == 0, "a nav deixou de ficar fixa no topo"
+    assert abaixo["menu"] == abaixo["navInteriorFim"], "menu móvel descolado da nav depois do scroll"
+    assert abaixo["menuFim"] == abaixo["alto"], "o menu não acaba no fundo do ecrã"
+    assert page.locator("#navMobileMenu").is_visible()
+    page.context.close()
+
+
+@pytest.mark.parametrize("largura", [700, 1200])
+def test_ecra_largo_barra_e_nav_ficam_fixas(browser, servidor, largura):
+    page, _ = _abrir(browser, servidor, ARTIGO, largura=largura)
+    if largura == 700:  # o botão do menu móvel ainda aparece até 700px
+        _abrir_menu_comprido(page)
+    for scroll_y in (None, 600):
+        pos = _posicoes(page, scroll_y)
+        assert (pos["barra"], pos["nav"]) == (0, 40), pos
+        assert pos["padding"] == 40 + pos["navAltura"] + 8, pos
+        if largura == 700:
+            assert pos["menu"] == pos["navInteriorFim"], pos
+            assert pos["menuFim"] == pos["alto"], pos
+    page.context.close()
+
+
 def test_pausa_ao_hover(browser, servidor):
     page, _ = _abrir(browser, servidor, ARTIGO)
     page.hover(WA)

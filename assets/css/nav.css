@@ -388,14 +388,18 @@ a.reportar-erro {
 
 /*
  * Barra do topo (BARRA-TOPO, scripts/sincronizar_nav.py) — em todas as
- * páginas, fixa (sticky) acima da nav, uma linha de 40px. Sem JS só mostra
+ * páginas, fixa (sticky) acima da nav a partir de 641px (em ecrãs mais
+ * estreitos sai com o scroll — ver o fim deste ficheiro), uma linha de 40px. Sem JS só mostra
  * a mensagem do canal de WhatsApp; o nav.js alterna-a com o próximo
  * pagamento do mês (datas de data/calendario_barra.json) e mostra o botão
- * de pausa (WCAG 2.2.2). A nav e o menu móvel descem 40px — o combinador
- * de irmão só actua onde a barra existe. scroll-padding-top: as âncoras
- * não ficam tapadas pela barra + nav fixas (40 + 60px).
+ * de pausa (WCAG 2.2.2). A nav desce 40px — o combinador de irmão só
+ * actua onde a barra existe. O menu móvel fica preso por baixo da própria
+ * nav (absolute dentro da .nav-wrap, que é sticky), nunca a um `top` fixo
+ * ao ecrã: a nav tem 69px (logo + padding), não os 60px que o `top: 60px`
+ * antigo assumia. scroll-padding-top: as âncoras não ficam tapadas pela
+ * barra + nav fixas (40 + 69px, mais 8px de folga).
  */
-html { scroll-padding-top: 108px; }
+html { scroll-padding-top: 117px; }
 
 .barra-topo-regiao {
   position: sticky;
@@ -411,7 +415,7 @@ html { scroll-padding-top: 108px; }
 }
 
 .barra-topo-regiao ~ .nav-wrap { top: 40px; }
-.barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { top: 100px; max-height: calc(100vh - 100px); }
+.barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { position: absolute; top: 100%; max-height: calc(100vh - 100% - 40px); }
 
 .barra-topo-mensagens {
   height: 100%;
@@ -480,4 +484,21 @@ html { scroll-padding-top: 108px; }
   .barra-topo-msg { font-size: 0.86rem; padding: 0 0.75rem; }
   .barra-topo-longo { display: none; }
   .barra-topo-curto { display: inline; }
+}
+
+/*
+ * Ecrãs estreitos (≤640px): a barra do topo NÃO fica fixa — aparece no
+ * topo da página e sai com o scroll; só a nav fica fixa no topo do ecrã.
+ * A nav está a 40px no topo da página e a 0px depois do scroll; o menu
+ * móvel, preso por baixo da nav, acompanha-a nos dois estados (um `top`
+ * fixo ao ecrã só acertaria num deles). max-height: o espaço por baixo da
+ * nav quando ela está no topo do ecrã (100% = altura da .nav-wrap); no topo
+ * da página o fim do menu passa uns 40px do ecrã e o scroll traz-o. As
+ * âncoras só precisam de passar a nav (69px, mais 8px de folga).
+ */
+@media (max-width: 640px) {
+  html { scroll-padding-top: 77px; }
+  .barra-topo-regiao { position: relative; }
+  .barra-topo-regiao ~ .nav-wrap { top: 0; }
+  .barra-topo-regiao ~ .nav-wrap .nav-mobile-menu { max-height: calc(100vh - 100%); }
 }
