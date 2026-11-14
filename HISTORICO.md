@@ -8139,3 +8139,7 @@ com intervalo). Testes: `tests/test_inserir_botao_imprimir.py` (todos os
 guias e só os guias) e `tests/test_prazos_navegador.py` (escondido sem JS,
 chama `window.print`, invisível na impressão, ausente em simulador,
 institucional e gerador).
+
+---
+
+*Última revisão automática: 2026-11-14*

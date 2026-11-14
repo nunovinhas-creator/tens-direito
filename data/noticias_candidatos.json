@@ -2391,5 +2391,86 @@
         "score": 1
       }
     ]
+  },
+  {
+    "data": "2026-11-14",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 14,
+      "subsidio_desemprego": 15,
+      "rsi": 14,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 11,
+      "calendario_pagamentos_seg_social": 14,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Segurança Social antecipa pagamentos antes do Natal: desemprego e RSI chegam 6 dias mais cedo - Contas Poupança",
+        "feed_nome": "rsi",
+        "data_iso": "2026-11-09",
+        "score": 3,
+        "decisao": "vencedor",
+        "motivo": "score=3, categoria=apoios"
+      },
+      {
+        "titulo": "Segurança Social altera data de pagamentos dos subsídios em dezembro - Magazine.HD",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-11",
+        "score": 3,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      },
+      {
+        "titulo": "Abono de família sobe 2,2% com retroativos a janeiro - RTP",
+        "feed_nome": "abono_familia",
+        "data_iso": "2026-11-09",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Segurança Social antecipa pagamentos antes do Natal: desemprego e RSI chegam 6 dias mais cedo - Contas Poupança",
+        "feed_nome": "rsi",
+        "score": 3
+      }
+    ]
   }
 ]

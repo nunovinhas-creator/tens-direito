@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **13 de novembro de 2026**.
+Actualizado automaticamente a partir do repositório em **14 de novembro de 2026**.
 
 ### Páginas publicadas
 
@@ -67,6 +67,7 @@ Actualizado automaticamente a partir do repositório em **13 de novembro de 2026
 | [`marcar-atendimento-seguranca-social.html`](marcar-atendimento-seguranca-social.html) | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
+| [`o-que-muda-em-2027.html`](o-que-muda-em-2027.html) | O que muda em 2027: apoios sociais, pensões e salário mínimo |
 | [`outras-antecipacoes.html`](outras-antecipacoes.html) | Outras Antecipações da Reforma: desemprego, deficiência e mais |
 | [`pagamento-apos-deferimento.html`](pagamento-apos-deferimento.html) | Pedido deferido: quando cai o primeiro pagamento da Segurança Social |
 | [`passe-sub23.html`](passe-sub23.html) | Passe sub-23 gratuito 2026: dos 4 aos 23 (ou 25) anos |
@@ -307,6 +308,7 @@ tens-direito/
 │   ├── gerar_parametros_json.py
 │   ├── gerir_estado_feeds.py
 │   ├── gerir_estado_fontes.py
+│   ├── inserir_botao_imprimir.py
 │   ├── inserir_botao_partilhar.py
 │   ├── inserir_reportar_erro.py
 │   ├── inventario_css_morto.py
@@ -314,6 +316,7 @@ tens-direito/
 │   ├── migrar_consentimento.py
 │   ├── migrar_noticias.py
 │   ├── orquestrador_datas.py
+│   ├── prazos.py
 │   ├── preparar_canal.py
 │   ├── registar_observacao.py
 │   ├── run_shadow_daily.py
@@ -450,6 +453,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 13 de novembro de 2026 às 14:25 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 14 de novembro de 2026 às 13:20 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->

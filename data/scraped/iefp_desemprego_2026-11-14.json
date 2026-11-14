@@ -1,0 +1,48 @@
+{
+  "url": "https://www.iefp.pt/subsidio-desemprego",
+  "url_original": "https://www.iefp.pt/subsidio-desemprego",
+  "data_acesso": "2026-11-14T13:18:54.567976+00:00",
+  "status": "ok",
+  "conteudo_extraido": {
+    "titulo": "Subsídio de desemprego",
+    "paragrafos": [
+      "O subsídio de desemprego é um apoio para quem perdeu o emprego de forma involuntária (contra a sua vontade). Para ter este apoio é necessário estar inscrito como desempregado no IEFP.",
+      "Pode fazer no iefponline ou presencialmente num Serviço de Emprego.",
+      "Pode consultar as condições de acesso ao Subsídio de Desemprego na Segurança Social Direta .",
+      "Posso pedir o subsídio de desemprego online?",
+      "Sim, se trabalhou por conta de outrem. Nas outras situações, o pedido do subsídio deve ser feito presencialmente, num Serviço de Emprego.",
+      "Se não cumprir os deveres para com o IEFP, a inscrição e o subsídio de desemprego podem ser anulados.",
+      "Se considerar que não houve motivos válidos para a anulação da inscrição ou do subsídio, pode apresentar um recurso à Comissão de Recursos do IEFP .",
+      "Esta informação destina-se a quem trabalhou no estrangeiro ou pretende ir para o estrangeiro enquanto recebe subsídio de desemprego.",
+      "Posso procurar emprego no estrangeiro e continuar a receber o subsídio de desemprego de Portugal?",
+      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho num desses países.",
+      "Posso procurar emprego em Portugal e continuar a receber o subsídio de desemprego do estrangeiro?",
+      "Sim. Se é cidadão da União Europeia (UE), Islândia, Noruega, Liechtenstein ou Suíça pode continuar a receber o subsídio por um período de 3 meses enquanto procura trabalho em Portugal.",
+      "Posso pedir o subsídio de desemprego em Portugal após ficar desempregado no estrangeiro?",
+      "Sim. Se é cidadão da União Europeia, Islândia, Noruega, Liechtenstein ou Suíça, e manteve a sua residência em Portugal enquanto trabalhou num desses países.",
+      "Página escrita de acordo com os princípios da Linguagem Clara"
+    ],
+    "itens_lista": [
+      "Faz a inscrição para emprego e faz o pedido do subsídio.",
+      "Decide se tem direito ao subsídio de desemprego e faz o pagamento.",
+      "Deve pedir nos 90 dias seguidos a contar do dia seguinte ao fim do contrato.",
+      "Se pedir nos primeiros 90 dias: Começa a receber a partir da data do pedido.",
+      "Se pedir após os 90 dias: Ainda pode fazer o pedido, mas o tempo de atraso será descontado na duração total do seu subsídio (recebe durante menos tempo).",
+      "Faça o registo no portal e a sua inscrição para emprego no iefponline .",
+      "Entre na sua área pessoal.",
+      "Selecione a opção \"Requerimento do Subsídio de Desemprego\".",
+      "Preencha o formulário online e anexe a declaração passada pela entidade empregadora..",
+      "Pedir o \"Documento Portátil U2\" junto da Segurança Social em Portugal antes de partir;",
+      "Inscrever-se nos serviços de emprego do país de destino no prazo máximo de 7 dias após a saída de Portugal (data indicada no U2).",
+      "Pedir o \"Documento Portátil U2\" junto da entidade que lhe paga o subsídio;",
+      "Inscrever-se no IEFP no prazo máximo de 7 dias após a chegada (data indicada no U2).",
+      "Pedir o \"Documento Portátil U1\", emitido pela entidade de Segurança Social do país onde trabalhou;",
+      "Inscrever-se no IEFP com o U1;",
+      "Entregar na Segurança Social portuguesa o Documento Portátil U1 e declaração de inscrição no IEFP.",
+      "Guia de apoio à submissão online do requerimento do subsídio de desemprego",
+      "Guias práticos do subsídio de desemprego da Segurança Social"
+    ]
+  },
+  "nota": "IEFP recebe pedido; decisão e pagamento são da Segurança Social",
+  "hash_conteudo": "3044260bc04e222da21770287a0fc4ddc53b56ac579361946c34764dc2064630"
+}
