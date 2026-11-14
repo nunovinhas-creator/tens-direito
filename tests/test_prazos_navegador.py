@@ -223,3 +223,33 @@ def test_pdf_gera(browser, servidor):
     page = _abrir(browser, servidor, "/rsi.html", _utc(2026, 11, 13))
     pdf = page.pdf(format="A4")
     assert pdf[:4] == b"%PDF" and len(pdf) > 10_000
+
+
+# ── 3. Botão «Imprimir» ──────────────────────────────────────────────────
+
+
+def test_botao_imprimir_escondido_sem_javascript(browser, servidor):
+    page = _abrir(browser, servidor, "/rsi.html", _utc(2026, 11, 13), js=False)
+    assert page.locator(".botao-imprimir").count() == 1
+    assert page.locator(".botao-imprimir").is_hidden()
+
+
+def test_botao_imprimir_chama_window_print(browser, servidor):
+    page = _abrir(browser, servidor, "/rsi.html", _utc(2026, 11, 13))
+    page.evaluate("window.__impressoes = 0; window.print = function () { window.__impressoes++; }; 0")
+    botao = page.locator(".botao-imprimir")
+    assert botao.is_visible()
+    assert botao.inner_text().strip() == "🖨️ Imprimir"
+    botao.click()
+    assert page.evaluate("window.__impressoes") == 1
+
+
+def test_botao_imprimir_nao_aparece_na_impressao(browser, servidor):
+    page = _abrir(browser, servidor, "/rsi.html", _utc(2026, 11, 13), media="print")
+    assert page.locator(".botao-imprimir").is_hidden()
+
+
+@pytest.mark.parametrize("url", ["/simulador-abono.html", "/sobre.html", "/documentos.html"])
+def test_botao_imprimir_so_nos_guias(browser, servidor, url):
+    page = _abrir(browser, servidor, url, _utc(2026, 11, 13))
+    assert page.locator(".botao-imprimir").count() == 0

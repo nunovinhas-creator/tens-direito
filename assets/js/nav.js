@@ -332,6 +332,13 @@ function iniciarPrazos() {
  */
 function iniciarImpressao() {
   document.body.setAttribute('data-endereco', location.origin + location.pathname);
+  // Botão «Imprimir» dos guias: nasce hidden (sem JS não imprime nada).
+  if (typeof window.print === 'function') {
+    document.querySelectorAll('.botao-imprimir').forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener('click', function () { window.print(); });
+    });
+  }
   var fechados = [];
   window.addEventListener('beforeprint', function () {
     fechados = [];

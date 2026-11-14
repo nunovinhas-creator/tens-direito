@@ -8125,3 +8125,17 @@ Sem o contentor, fica só o título (22 caracteres) e o scraper marca
 com os selectores antigos). A primeira corrida com os selectores novos vai
 registar uma última «mudança» — a própria troca: sai o menu, entram os
 passos do guia —, que se fecha sem acção.
+
+### Última revisão: 2026-11-13 — botão «Imprimir» nos guias
+
+`scripts/inserir_botao_imprimir.py` (novo, idempotente, `--check`) põe
+`<button class="botao-imprimir" hidden>🖨️ Imprimir</button>` ao lado do
+botão de partilha em 78 guias (artigos e pillars de `data/clusters.json` +
+`o-que-muda-em-2027.html`, `calendario-pagamentos-seguranca-social.html`,
+`pagamento-apos-deferimento.html`). O `nav.js` mostra-o e liga-lhe
+`window.print()`; sem JavaScript fica escondido; o `@media print` já
+escondia o bloco. Estilo em `share.css` (`.partilhar-artigo` passa a flex
+com intervalo). Testes: `tests/test_inserir_botao_imprimir.py` (todos os
+guias e só os guias) e `tests/test_prazos_navegador.py` (escondido sem JS,
+chama `window.print`, invisível na impressão, ausente em simulador,
+institucional e gerador).
