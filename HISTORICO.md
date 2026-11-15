@@ -8142,4 +8142,4 @@ institucional e gerador).
 
 ---
 
-*Última revisão automática: 2026-11-14*
+*Última revisão automática: 2026-11-15*
