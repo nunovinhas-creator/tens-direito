@@ -8158,8 +8158,8 @@ metadados e espera legal. Testes novos: `tests/test_noticias_por_ano.py`.
 
 ---
 
-*Última revisão automática: 2026-11-15*
+**Última revisão: 2026-11-16 — Issue #387 (`iefp_desemprego`, mudança detectada a 2026-11-14).** A página do IEFP foi reorganizada: o scraper passou a apanhar o conteúdo em vez do menu. Comparado o texto actual do IEFP (entregue pelo Nuno) com `subsidio-desemprego.html`: o pedido do subsídio faz-se online no iefponline (área pessoal → «Requerimento do Subsídio de Desemprego», com a declaração da entidade empregadora em anexo), só para quem trabalhou por conta de outrem; nas outras situações, presencialmente num Serviço de Emprego. A página dizia «na Segurança Social Direta» — corrigido no passo a passo, no resumo, na checklist e no HowTo JSON-LD. O prazo passou a contar «do dia seguinte ao fim do contrato», e a página diz agora que, dentro dos 90 dias, se recebe a partir da data do pedido. Prazo de 90 dias, desconto do atraso, Comissão de Recursos e U2 (UE/EEE/Suíça, 7 dias, 3 meses) já batiam certo. Carimbo e `dateModified` avançados para 16/11/2026, sitemap sincronizado.
 
 ---
 
-**Última revisão: 2026-11-16 — Issue #387 (`iefp_desemprego`, mudança detectada a 2026-11-14).** A página do IEFP foi reorganizada: o scraper passou a apanhar o conteúdo em vez do menu. Comparado o texto actual do IEFP (entregue pelo Nuno) com `subsidio-desemprego.html`: o pedido do subsídio faz-se online no iefponline (área pessoal → «Requerimento do Subsídio de Desemprego», com a declaração da entidade empregadora em anexo), só para quem trabalhou por conta de outrem; nas outras situações, presencialmente num Serviço de Emprego. A página dizia «na Segurança Social Direta» — corrigido no passo a passo, no resumo, na checklist e no HowTo JSON-LD. O prazo passou a contar «do dia seguinte ao fim do contrato», e a página diz agora que, dentro dos 90 dias, se recebe a partir da data do pedido. Prazo de 90 dias, desconto do atraso, Comissão de Recursos e U2 (UE/EEE/Suíça, 7 dias, 3 meses) já batiam certo. Carimbo e `dateModified` avançados para 16/11/2026, sitemap sincronizado.
+*Última revisão automática: 2026-11-16*

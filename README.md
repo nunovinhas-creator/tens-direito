@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **15 de novembro de 2026**.
+Actualizado automaticamente a partir do repositório em **16 de novembro de 2026**.
 
 ### Páginas publicadas
 
@@ -65,6 +65,7 @@ Actualizado automaticamente a partir do repositório em **15 de novembro de 2026
 | [`majoracao-subsidio-desemprego.html`](majoracao-subsidio-desemprego.html) | Majoração de 10% do subsídio de desemprego 2026 |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares MEGA 2026/2027: como levantar os vales |
 | [`marcar-atendimento-seguranca-social.html`](marcar-atendimento-seguranca-social.html) | Marcar Atendimento na Segurança Social 2026: SIGA, telefone e presencial |
+| [`noticias-2026.html`](noticias-2026.html) | Notícias de 2026 — Tens Direito |
 | [`noticias.html`](noticias.html) | Atualidades — Tens Direito |
 | [`numero-utente-sns.html`](numero-utente-sns.html) | Número de utente do SNS: como pedir em 2026 |
 | [`o-que-muda-em-2027.html`](o-que-muda-em-2027.html) | O que muda em 2027: apoios sociais, pensões e salário mínimo |
@@ -453,6 +454,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 15 de novembro de 2026 às 13:34 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 16 de novembro de 2026 às 15:19 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
