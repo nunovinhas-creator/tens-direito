@@ -487,7 +487,7 @@ def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str
 
     for nome in sorted(existentes):
         base = Path(nome).name
-        if base in EXCLUIDAS or nome in pillares or base in referenciados:
+        if base in EXCLUIDAS or re.match(r"^noticias-\d{4}\.html$", base) or nome in pillares or base in referenciados:
             continue
         problemas.append(f"'{nome}' existe no repositório mas não está em nenhum cluster nem em EXCLUIDAS")
 
@@ -497,7 +497,7 @@ def validar_consistencia(clusters: List[Cluster], raiz: Path = RAIZ) -> List[str
 def processar_pagina(caminho: Path, clusters: List[Cluster], *, raiz: Path = RAIZ, escrever: bool = True) -> Resultado:
     nome = str(caminho.relative_to(raiz))
 
-    if caminho.name in EXCLUIDAS:
+    if caminho.name in EXCLUIDAS or re.match(r"^noticias-\d{4}\.html$", caminho.name):
         return Resultado(nome, False, "excluída do sistema de clusters")
 
     pillar = cluster_do_pillar(clusters, nome)

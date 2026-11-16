@@ -219,6 +219,11 @@ def test_sem_ano_civil_desactualizado_em_title_ou_description(caminho):
     pagina = str(caminho.relative_to(RAIZ))
     html = caminho.read_text(encoding="utf-8")
     texto = _title(html) + " " + _meta_description(html)
+    m = re.match(r"^noticias-(\d{4})\.html$", pagina)
+    if m:
+        # Arquivo de notícias de um ano: o título é esse ano, por definição.
+        assert _anos_antigos(texto) <= {int(m.group(1))}
+        return
 
     anos_antigos = sorted(_anos_antigos(texto))
     nao_excecionados = [a for a in anos_antigos if (pagina, a) not in EXCECOES_ANOS_HISTORICOS]

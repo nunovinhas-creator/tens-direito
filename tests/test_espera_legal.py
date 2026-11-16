@@ -84,7 +84,7 @@ LIMIAR_DIAS = 60
 
 # noticias.html é arquivo auto-gerado de snapshots datados — nunca uma
 # afirmação viva do site (ver docstring do módulo, ponto 3).
-PAGINAS_EXCLUIDAS = {"noticias.html"}
+PAGINAS_EXCLUIDAS = {"noticias.html"} | {p.name for p in RAIZ.glob("noticias-[0-9][0-9][0-9][0-9].html")}
 
 VERBO_ESPERA = (
     r"(?:aguarda(?:m)?|ainda\s+n[ãa]o\s+(?:est[áa]|entrou)\s+em\s+vigor"

@@ -60,7 +60,11 @@ def test_indice_nao_esta_vazio():
 
 
 @pytest.mark.parametrize(
-    "caminho", encontrar_paginas(), ids=lambda p: str(p.relative_to(RAIZ))
+    "caminho",
+    # noticias-AAAA.html: arquivo por ano, noindex, gerado pelo pipeline —
+    # fora do índice como as próprias notícias (a pesquisa liga a noticias.html).
+    [p for p in encontrar_paginas() if not re.match(r"^noticias-\d{4}\.html$", p.name)],
+    ids=lambda p: str(p.relative_to(RAIZ)),
 )
 def test_todas_as_paginas_elegiveis_estao_no_indice(caminho):
     if caminho.name in NAO_INDEXADAS:

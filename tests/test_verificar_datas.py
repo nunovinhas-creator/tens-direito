@@ -757,7 +757,7 @@ def test_paginas_reais_hoje_sem_alerta_de_compromisso_futuro():
     from verificar_datas import _compromisso_futuro_expirado
     from sincronizar_clusters import encontrar_paginas, verificado_em_do_texto
     for pagina in encontrar_paginas():
-        if pagina.name in ("index.html", "noticias.html", "404.html"):
+        if pagina.name in ("index.html", "noticias.html", "404.html") or pagina.name.startswith("noticias-"):
             continue
         conteudo = pagina.read_text(encoding="utf-8")
         assert not _compromisso_futuro_expirado(

@@ -51,7 +51,7 @@ from pathlib import Path
 from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from verificar_datas import AUTO_GERADOS  # reutiliza a lista já existente — sem duplicar
+from verificar_datas import AUTO_GERADOS, e_auto_gerado  # reutiliza a lista já existente — sem duplicar
 
 RAIZ = Path(__file__).resolve().parent.parent
 
@@ -191,7 +191,7 @@ def processar_pagina(caminho: Path, *, raiz: Path = RAIZ) -> ResultadoPagina:
 
 def encontrar_paginas_alvo(raiz: Path = RAIZ) -> List[Path]:
     candidatos = sorted(raiz.glob("*.html")) + sorted(raiz.glob("p/*.html"))
-    return [c for c in candidatos if c.name not in AUTO_GERADOS]
+    return [c for c in candidatos if not e_auto_gerado(c.name)]
 
 
 def _imprimir_relatorio(resultados: List[ResultadoPagina]) -> None:
