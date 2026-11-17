@@ -1571,6 +1571,14 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Em vigor a 1 de janeiro de 2025.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "junho de 2019",
     "frase": "Verificado no texto publicado (Diário da República, 1.ª série, n.º 118, de 24 de junho de 2019), não numa versão consolidada.",
     "ordinal": 1
@@ -2092,6 +2100,14 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2025",
+    "frase": "Em vigor a 1 de janeiro de 2025.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
     "frase": "Fonte: Código do IRS, artigo 12.º-B; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
     "ordinal": 1
   },
@@ -2108,7 +2124,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2025",
-    "frase": "Fonte: Código do IRS, artigo 99.º-F; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "frase": "Fonte: Código do IRS, artigo 99.º-F, n.os 4 e 5, na redação da Lei n.º 45-A/2024; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
     "ordinal": 1
   },
   {
@@ -2116,7 +2132,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2025",
-    "frase": "Fonte: Código do IRS, artigo 99.º-F; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "frase": "Fonte: Código do IRS, artigo 99.º-F, n.os 4 e 5, na redação da Lei n.º 45-A/2024; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
     "ordinal": 2
   },
   {
@@ -2124,7 +2140,7 @@
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
     "correspondencia": "janeiro de 2025",
-    "frase": "· Newsletter da AT de 27 de janeiro de 2025 — pedido ao empregador ao abrigo do artigo 99.º-F do Código do IRS, ano de início a indicar, trabalho por conta de outrem",
+    "frase": "· Newsletter da AT de 27 de janeiro de 2025 — pedido ao empregador ao abrigo do artigo 99.º-F do Código do IRS, para trabalho por conta de outrem",
     "ordinal": 1
   },
   {

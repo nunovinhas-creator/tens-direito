@@ -111,8 +111,8 @@ Três links do Diário da República adicionados a `acao-social-escolar.html` (l
 
 ---
 
-## IRS Jovem — Lei n.º 45-A/2024, art. 116.º, n.º 2 — 2026-11-17
+## IRS Jovem — art. 99.º-F do CIRS depois da Lei n.º 73-A/2025 (OE 2026) — 2026-11-17
 
-- **Página**: `irs-jovem.html` (e cartão da Lei n.º 45-A/2024 em `fontes.html`)
-- **O que falta**: a regra transitória (contam os anos anteriores com rendimentos A ou B; não contam os de dependente) está citada a partir da nota da AT ao art. 12.º-B, não lida no Diário da República (a página diz isso no bloco de fontes e em `fontes.html`).
+- **Página**: `irs-jovem.html` (secção «Como pedir», FAQ e HowTo) e cartão do art. 99.º-F em `fontes.html`
+- **O que falta**: o art. 99.º-F está confirmado na redação da Lei n.º 45-A/2024 (n.º 4: taxa da totalidade do rendimento aplicada só à parte não isenta; n.º 5: indicar ao empregador em que ano de rendimentos se está). Confirmar que a Lei n.º 73-A/2025 (Orçamento do Estado para 2026) não alterou os n.os 4 e 5.
 - **Fora da página, por agora**: o código de rendimento a assinalar no anexo A (só encontrado em fonte secundária) e a página de perguntas frequentes da AT (indisponível a 17/11/2026).
