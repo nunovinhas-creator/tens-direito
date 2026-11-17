@@ -543,6 +543,8 @@ DATAS_PERMANENTES: dict[tuple[str, str], str] = {
         "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
     ("psu-quando-entra-em-vigor.html", "30/07/2026"):
         "Aprovação do Decreto-Lei n.º 166/2026 em Conselho de Ministros — facto fixo.",
+    ("irs-jovem.html", "27 de janeiro de 2025"):
+        "Data da Newsletter da AT citada como fonte (pedido ao empregador, art. 99.º-F do CIRS) — facto fixo.",
 }
 
 

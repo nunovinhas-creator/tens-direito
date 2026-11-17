@@ -108,3 +108,12 @@ Três links do Diário da República adicionados a `acao-social-escolar.html` (l
 |------|---------|-------|-----------|------------|
 | 23/06/2026 | 5 | 13 | 0 | 0 |
 | 24/06/2026 | 1 (acao-social-escolar.html) | 3 novos (DRE) | pendente verificação manual | — |
+
+---
+
+## IRS Jovem — redação literal do art. 12.º-B, n.º 9 — 2026-11-17
+
+- **Página**: `irs-jovem.html` (e cartão do art. 12.º-B em `fontes.html`)
+- **O que falta**: a página da AT com o art. 12.º-B foi lida por uma ferramenta que devolve resumo, não o texto literal. A página afirma que fica de fora quem «beneficia ou já beneficiou» do regime dos residentes não habituais ou do IFICI — confirmar a redação exacta do n.º 9 («beneficiem ou tenham beneficiado») por leitura directa **antes do merge**.
+- **Também por confirmar**: a Lei n.º 45-A/2024, art. 116.º, n.º 2, está citada a partir da nota da AT ao art. 12.º-B, não lida no Diário da República (a página diz isso no bloco de fontes e em `fontes.html`).
+- **Fora da página, por agora**: o código de rendimento a assinalar no anexo A (só encontrado em fonte secundária) e a página de perguntas frequentes da AT (indisponível a 17/11/2026).
