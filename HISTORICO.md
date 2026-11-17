@@ -8166,4 +8166,4 @@ metadados e espera legal. Testes novos: `tests/test_noticias_por_ano.py`.
 
 ---
 
-*Última revisão automática: 2026-11-16*
+*Última revisão automática: 2026-11-17*

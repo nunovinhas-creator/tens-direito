@@ -14,7 +14,7 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **16 de novembro de 2026**.
+Actualizado automaticamente a partir do repositório em **17 de novembro de 2026**.
 
 ### Páginas publicadas
 
@@ -61,6 +61,7 @@ Actualizado automaticamente a partir do repositório em **16 de novembro de 2026
 | [`imt-jovem.html`](imt-jovem.html) | IMT Jovem 2026: isenção até 330.539 € na 1.ª casa |
 | [`index.html`](index.html) | Tens Direito — Apoios Sociais e Direitos em Portugal |
 | [`invalidez-relativa-ou-absoluta.html`](invalidez-relativa-ou-absoluta.html) | Invalidez Relativa ou Absoluta: a diferença e o que muda |
+| [`irs-jovem.html`](irs-jovem.html) | IRS Jovem 2026: quem tem direito, quanto fica isento e como pedir |
 | [`mais-cedo-ou-mais-tarde.html`](mais-cedo-ou-mais-tarde.html) | Reformar Mais Cedo ou Mais Tarde: o corte e a bonificação |
 | [`majoracao-subsidio-desemprego.html`](majoracao-subsidio-desemprego.html) | Majoração de 10% do subsídio de desemprego 2026 |
 | [`manuais-escolares-mega.html`](manuais-escolares-mega.html) | Manuais escolares MEGA 2026/2027: como levantar os vales |
@@ -454,6 +455,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 16 de novembro de 2026 às 15:19 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 17 de novembro de 2026 às 15:51 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
