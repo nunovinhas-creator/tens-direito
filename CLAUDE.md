@@ -1959,7 +1959,10 @@ página. Os anos ligam-se entre si e a partir de `noticias.html`, no bloco
 `<!-- ARQUIVO-ANOS-INICIO/FIM -->`; sem esse bloco, com notícias antigas, a
 regeneração falha em vez de as deixar sem ligação. As páginas de ano são
 `noindex, follow`, ficam fora do sitemap, da pesquisa e da tabela «PÁGINAS
-PUBLICADAS», usam a imagem og de `noticias.html` e saem da vigilância de
+PUBLICADAS», usam a imagem og de `noticias.html` (o `gerar_og_images.py`
+exclui-as por `PADRAO_ARQUIVO_ANO`, importado daqui: sem imagem própria,
+sem entrada no manifest, sem reescrita de metas — issue #391;
+`tests/test_og_images_arquivo_ano.py`) e saem da vigilância de
 datas (`verificar_datas.e_auto_gerado()`), como `noticias.html`. O guardrail
 do pipeline e o `git add` aceitam `noticias-[0-9]{4}.html`; a sanitização do
 Step 3b corre também nelas. Testes: `tests/test_noticias_por_ano.py`. `sincronizar_saidas()` é o único ponto que
