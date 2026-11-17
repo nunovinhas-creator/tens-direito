@@ -33,6 +33,7 @@ import pytest
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "scripts"))
 
+from gerar_noticias import PADRAO_ARQUIVO_ANO  # noqa: E402
 from gerar_og_images import (  # noqa: E402
     DIR_OG,
     DOMINIO,
@@ -46,10 +47,9 @@ from gerar_og_images import (  # noqa: E402
 
 # noticias-AAAA.html (arquivo por ano, gerado pelo pipeline sem Chromium)
 # usa a imagem de noticias.html — ver test_arquivo_ano_usa_a_imagem_das_noticias.
-_ARQUIVOS_ANO = [str(p.relative_to(RAIZ)) for p in encontrar_paginas()
-                 if re.match(r"^noticias-\d{4}\.html$", p.name)]
-PAGINAS = [str(p.relative_to(RAIZ)) for p in encontrar_paginas()
-           if str(p.relative_to(RAIZ)) not in _ARQUIVOS_ANO]
+_ARQUIVOS_ANO = [p.name for p in sorted(RAIZ.glob("*.html"))
+                 if PADRAO_ARQUIVO_ANO.match(p.name)]
+PAGINAS = [str(p.relative_to(RAIZ)) for p in encontrar_paginas()]
 
 
 @pytest.mark.parametrize("pagina", _ARQUIVOS_ANO, ids=str)

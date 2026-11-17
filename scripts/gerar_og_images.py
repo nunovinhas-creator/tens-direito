@@ -38,6 +38,9 @@ import json
 import re
 from pathlib import Path
 
+# Mesma regra que o gerador do arquivo por ano usa — nunca uma cópia local.
+from gerar_noticias import PADRAO_ARQUIVO_ANO
+
 RAIZ = Path(__file__).resolve().parent.parent
 DIR_OG = RAIZ / "assets" / "img" / "og"
 MANIFEST = DIR_OG / "manifest.json"
@@ -129,11 +132,19 @@ _TEMPLATE = """<!DOCTYPE html>
 
 
 def encontrar_paginas() -> list[Path]:
-    return (
-        sorted(RAIZ.glob("*.html"))
-        + sorted((RAIZ / "p").glob("*.html"))
-        + sorted((RAIZ / "documentos").glob("*.html"))
-    )
+    """Páginas com imagem própria. Fica de fora o arquivo de notícias por
+    ano (noticias-AAAA.html, `PADRAO_ARQUIVO_ANO`): é regenerado pelo
+    pipeline, que lhe escreve a og:image de noticias.html — sem render,
+    sem entrada no manifest, sem reescrita de metas aqui (issue #391)."""
+    return [
+        p
+        for p in (
+            sorted(RAIZ.glob("*.html"))
+            + sorted((RAIZ / "p").glob("*.html"))
+            + sorted((RAIZ / "documentos").glob("*.html"))
+        )
+        if not PADRAO_ARQUIVO_ANO.match(p.name)
+    ]
 
 
 def slug_imagem(rel: str) -> str:
