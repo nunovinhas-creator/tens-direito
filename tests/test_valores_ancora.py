@@ -2122,3 +2122,35 @@ def test_tarifa_social_valores_fixos_da_lei_no_corpo():
     assert f"máximo de {elementos} elementos" in html
     assert _param_energia("tarifa_social_luz_acrescimo_por_elemento")["valor"] == 0.5
     assert "50% por cada elemento" in html
+
+
+# ── IRS Jovem (irs-jovem.html, 2026-11-17) ──
+# Limite anual da isenção = 55 × IAS (Código do IRS, art. 12.º-B). Derivado do
+# IAS, por isso fica vermelho sozinho quando a Portaria do IAS mudar — força a
+# revisão do título, da description e dos dois exemplos ao mesmo tempo.
+
+IRS_JOVEM_MULTIPLO_IAS = 55
+
+
+def _fmt_eur(v: float) -> str:
+    return f"{v:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def test_irs_jovem_meta_description_limite_55x_ias():
+    desc = _meta_description("irs-jovem.html")
+    assert _valores_eur(desc) == [round(IRS_JOVEM_MULTIPLO_IAS * IAS_2026, 2)], desc
+
+
+def test_irs_jovem_og_description_espelha_description():
+    assert _meta_og("irs-jovem.html", "og:description") == _meta_description("irs-jovem.html")
+    assert _meta_og("irs-jovem.html", "og:title") == _title("irs-jovem.html")
+
+
+def test_irs_jovem_corpo_limite_e_exemplo_acima_do_limite():
+    html = _ler("irs-jovem.html")
+    limite = round(IRS_JOVEM_MULTIPLO_IAS * IAS_2026, 2)
+    assert _fmt_eur(limite) in html
+    assert _fmt_eur(IAS_2026) in html
+    # Exemplo 2: 40.000 € no 1.º ano — isento o limite, tributado o resto.
+    assert "40.000 €" in html
+    assert _fmt_eur(round(40000 - limite, 2)) in html

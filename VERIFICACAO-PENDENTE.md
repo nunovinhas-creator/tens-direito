@@ -108,3 +108,11 @@ Três links do Diário da República adicionados a `acao-social-escolar.html` (l
 |------|---------|-------|-----------|------------|
 | 23/06/2026 | 5 | 13 | 0 | 0 |
 | 24/06/2026 | 1 (acao-social-escolar.html) | 3 novos (DRE) | pendente verificação manual | — |
+
+---
+
+## IRS Jovem — art. 99.º-F do CIRS depois da Lei n.º 73-A/2025 (OE 2026) — 2026-11-17
+
+- **Página**: `irs-jovem.html` (secção «Como pedir», FAQ e HowTo) e cartão do art. 99.º-F em `fontes.html`
+- **O que falta**: o art. 99.º-F está confirmado na redação da Lei n.º 45-A/2024 (n.º 4: taxa da totalidade do rendimento aplicada só à parte não isenta; n.º 5: indicar ao empregador em que ano de rendimentos se está). Confirmar que a Lei n.º 73-A/2025 (Orçamento do Estado para 2026) não alterou os n.os 4 e 5.
+- **Fora da página, por agora**: o código de rendimento a assinalar no anexo A (só encontrado em fonte secundária) e a página de perguntas frequentes da AT (indisponível a 17/11/2026).

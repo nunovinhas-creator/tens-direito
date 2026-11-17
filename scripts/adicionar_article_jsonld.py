@@ -116,6 +116,7 @@ DATAS_PUBLICACAO = {
     "que-anos-contam.html": "2026-09-04",
     "mais-cedo-ou-mais-tarde.html": "2026-09-04",
     "majoracao-subsidio-desemprego.html": "2026-09-04",
+    "irs-jovem.html": "2026-11-17",
     "invalidez-relativa-ou-absoluta.html": "2026-09-05",
     "pensao-e-trabalho.html": "2026-09-05",
     "quando-a-invalidez-vira-velhice.html": "2026-09-05",

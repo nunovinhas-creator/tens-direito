@@ -1371,6 +1371,14 @@
     "pagina": "fontes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Em vigor a 1 de janeiro de 2025.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "fontes.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
     "correspondencia": "junho de 2019",
     "frase": "Verificado no texto publicado (Diário da República, 1.ª série, n.º 118, de 24 de junho de 2019), não numa versão consolidada.",
     "ordinal": 1
@@ -1694,6 +1702,70 @@
     "correspondencia": "outubro de 2025",
     "frase": "A Autoridade Tributária esclareceu, em informação vinculativa divulgada em outubro de 2025, que um terreno para construção não é, no momento da compra, um prédio destinado a habitação — e que é irrelevante a construção da moradia já estar em curso à data da escritura.",
     "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Em vigor a 1 de janeiro de 2025.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Fonte: Código do IRS, artigo 12.º-B; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Fonte: Código do IRS, artigo 12.º-B; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "ordinal": 2
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Fonte: Código do IRS, artigo 99.º-F, n.os 4 e 5, na redação da Lei n.º 45-A/2024; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "Fonte: Código do IRS, artigo 99.º-F, n.os 4 e 5, na redação da Lei n.º 45-A/2024; Newsletter da AT de 27 de janeiro de 2025 — verificado 17/11/2026",
+    "ordinal": 2
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "DATAS_PERMANENTES",
+    "tipo": "data_mes_ano",
+    "correspondencia": "janeiro de 2025",
+    "frase": "· Newsletter da AT de 27 de janeiro de 2025 — pedido ao empregador ao abrigo do artigo 99.º-F do Código do IRS, para trabalho por conta de outrem",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "portaria",
+    "tipo": "valor_ias",
+    "correspondencia": "IAS de 537,13 €",
+    "frase": "Em 2026, nunca ficam isentos mais de 29.542,15 € por ano (55 × IAS de 537,13 €).",
+    "ordinal": 1
+  },
+  {
+    "pagina": "irs-jovem.html",
+    "marcador": "portaria",
+    "tipo": "valor_ias",
+    "correspondencia": "IAS de 537,13 €",
+    "frase": "Em 2026, nunca ficam isentos mais de 29.542,15 € por ano (55 × IAS de 537,13 €).",
+    "ordinal": 2
   },
   {
     "pagina": "majoracao-subsidio-desemprego.html",
