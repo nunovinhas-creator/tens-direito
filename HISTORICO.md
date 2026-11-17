@@ -8164,6 +8164,8 @@ metadados e espera legal. Testes novos: `tests/test_noticias_por_ano.py`.
 
 **Última revisão: 2026-11-17 (2) — IRS Jovem: Lei n.º 45-A/2024 lida em fonte primária.** O Nuno leu o PDF do Diário da República (Suplemento, 1.ª série, n.º 253, 31/12/2024): art. 116.º, n.º 2 confirmado literalmente — a página estava conforme. A lei passa a grau 1 em `fontes.html` e no bloco de fontes de `irs-jovem.html` (art. 116.º, n.º 2; art. 334.º, alínea a), que revoga os n.os 2, 6 e 7 do art. 12.º-B; em vigor a 1/1/2025), sem a nota «citada a partir da nota da AT». O art. 99.º-F passa a grau 1 na redação dessa lei: o pedido ao empregador indica em que ano de rendimentos se está (ex.: o 5.º), para o empregador saber a percentagem a aplicar (n.º 5) — antes dizia «o ano em que começou a ter rendimentos sem ser dependente»; corrigido no corpo, na FAQ, no HowTo e no cartão de `fontes.html`. A data de entrada em vigor entrou em `DATAS_PERMANENTES` nas duas páginas. Fica pendente em `VERIFICACAO-PENDENTE.md`: confirmar que a Lei n.º 73-A/2025 (OE 2026) não alterou os n.os 4 e 5 do art. 99.º-F.
 
+**Última revisão: 2026-11-17 (3) — IRS Jovem: art. 99.º-F, n.os 4 e 5, sem alteração posterior.** O Nuno confirmou a 17/11/2026, na versão consolidada do Código do IRS no portal da AT (`irs99f.aspx`), que os n.os 4 e 5 do art. 99.º-F têm a anotação «Redação da Lei n.º 45-A/2024, de 31 de dezembro» e nenhuma alteração posterior indicada, incluindo pela Lei n.º 73-A/2025. Base: a consolidação da AT, não uma leitura do texto do OE 2026. Ponto retirado de `VERIFICACAO-PENDENTE.md` (fica só a nota do que está fora da página: código do anexo A e perguntas frequentes da AT). Sem alterações a `irs-jovem.html` nem a `fontes.html`.
+
 ---
 
 *Última revisão automática: 2026-11-17*
