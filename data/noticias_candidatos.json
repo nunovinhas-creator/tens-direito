@@ -1,184 +1,5 @@
 [
   {
-    "data": "2026-11-03",
-    "saude_feeds": {
-      "abono_familia": "OK",
-      "subsidio_desemprego": "OK",
-      "rsi": "OK",
-      "psu_pensoes": "OK",
-      "acao_social_escolar": "OK",
-      "cuidador_informal": "OK",
-      "porta65_arrendamento": "OK",
-      "irs_fiscalidade": "OK",
-      "ias_valor_referencia": "OK",
-      "calendario_pagamentos_seg_social": "OK",
-      "habitacao_arrendamento": "OK",
-      "salario_minimo": "OK",
-      "csi_idosos": "OK"
-    },
-    "candidatos_por_feed": {
-      "abono_familia": 15,
-      "subsidio_desemprego": 15,
-      "rsi": 15,
-      "psu_pensoes": 15,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 15,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 15,
-      "csi_idosos": 15
-    },
-    "fora_da_janela_por_feed": {
-      "abono_familia": 13,
-      "subsidio_desemprego": 14,
-      "rsi": 15,
-      "psu_pensoes": 14,
-      "acao_social_escolar": 15,
-      "cuidador_informal": 15,
-      "porta65_arrendamento": 15,
-      "irs_fiscalidade": 15,
-      "ias_valor_referencia": 15,
-      "calendario_pagamentos_seg_social": 10,
-      "habitacao_arrendamento": 15,
-      "salario_minimo": 10,
-      "csi_idosos": 15
-    },
-    "candidatos": [
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-11-02",
-        "score": 3,
-        "decisao": "vencedor",
-        "motivo": "score=3, categoria=apoios"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "data_iso": "2026-11-02",
-        "score": 2,
-        "decisao": "vencedor",
-        "motivo": "score=2, categoria=fiscal"
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-11-02",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'fiscal' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Subsídio de Natal dos pensionistas: CGA paga em novembro e Segurança Social em dezembro - O Vilaverdense",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-28",
-        "score": 2,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Abono de família em 2026: quem tem direito? - Montepio Associação Mutualista",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-10-27",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Deputado pede abono de família - TDM",
-        "feed_nome": "abono_familia",
-        "data_iso": "2026-11-02",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Fábrica da Ecco fecha em Portugal e deixa 632 trabalhadores no desemprego - CNN Portugal",
-        "feed_nome": "subsidio_desemprego",
-        "data_iso": "2026-11-02",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-11-02"
-      },
-      {
-        "titulo": "Datas dos pagamentos da Segurança Social durante o mês de novembro estão definidas - diariOnline Região Sul",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-27",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Subsídio de Natal 2026: há reformados que recebem em novembro e outros em dezembro - RFM",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "data_iso": "2026-10-28",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "categoria 'apoios' já tem vencedor hoje"
-      },
-      {
-        "titulo": "Ministra do Trabalho diz que aumentos do salário mínimo \"não são pouco\" para Portugal - Jornal de Negócios",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-29",
-        "score": 1,
-        "decisao": "rejeitado_duplicado",
-        "motivo": "duplicado de 2026-10-29"
-      },
-      {
-        "titulo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" - Jornal de Notícias",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-29",
-        "score": 1,
-        "decisao": "vencedor",
-        "motivo": "score=1, categoria=emprego"
-      },
-      {
-        "titulo": "Ministra do Trabalho: aumento de 50 euros no salário mínimo \"não é pouco num país como Portugal\" - SÁBADO",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Ministra do Trabalho defende que aumento de 50 euros no salário mínimo em 2027 “não é pouco num país como Portugal” - Novum Canal",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      },
-      {
-        "titulo": "Ministra diz que aumento de 50 euros no salário mínimo “não é pouco num país como Portugal” - O Vilaverdense",
-        "feed_nome": "salario_minimo",
-        "data_iso": "2026-10-29",
-        "score": 1,
-        "decisao": "nao_escolhido",
-        "motivo": "limite de 3 vencedores/dia já atingido"
-      }
-    ],
-    "vencedores": [
-      {
-        "titulo": "Recebe subsídios ou pensões? Confira as datas de pagamento de novembro - Notícias ao Minuto",
-        "feed_nome": "calendario_pagamentos_seg_social",
-        "score": 3
-      },
-      {
-        "titulo": "Datas de Pagamento das Prestações Sociais – 1ª Quinzena de Novembro de 2026 - Economia e Finanças",
-        "feed_nome": "psu_pensoes",
-        "score": 2
-      },
-      {
-        "titulo": "Aumentos previstos do salário mínimo \"não são pouco para Portugal\" - Jornal de Notícias",
-        "feed_nome": "salario_minimo",
-        "score": 1
-      }
-    ]
-  },
-  {
     "data": "2026-11-04",
     "saude_feeds": {
       "abono_familia": "OK",
@@ -2312,5 +2133,86 @@
       }
     ],
     "vencedores": []
+  },
+  {
+    "data": "2026-11-18",
+    "saude_feeds": {
+      "abono_familia": "OK",
+      "subsidio_desemprego": "OK",
+      "rsi": "OK",
+      "psu_pensoes": "OK",
+      "acao_social_escolar": "OK",
+      "cuidador_informal": "OK",
+      "porta65_arrendamento": "OK",
+      "irs_fiscalidade": "OK",
+      "ias_valor_referencia": "OK",
+      "calendario_pagamentos_seg_social": "OK",
+      "habitacao_arrendamento": "OK",
+      "salario_minimo": "OK",
+      "csi_idosos": "OK"
+    },
+    "candidatos_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 10,
+      "calendario_pagamentos_seg_social": 15,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "fora_da_janela_por_feed": {
+      "abono_familia": 15,
+      "subsidio_desemprego": 15,
+      "rsi": 15,
+      "psu_pensoes": 15,
+      "acao_social_escolar": 15,
+      "cuidador_informal": 15,
+      "porta65_arrendamento": 15,
+      "irs_fiscalidade": 15,
+      "ias_valor_referencia": 10,
+      "calendario_pagamentos_seg_social": 12,
+      "habitacao_arrendamento": 15,
+      "salario_minimo": 15,
+      "csi_idosos": 15
+    },
+    "candidatos": [
+      {
+        "titulo": "Segurança Social altera data de pagamentos dos subsídios em dezembro - Magazine.HD",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-11",
+        "score": 3,
+        "decisao": "rejeitado_duplicado",
+        "motivo": "duplicado de 2026-11-11"
+      },
+      {
+        "titulo": "Há dinheiro da Segurança Social a chegar mais cedo em dezembro. Conheça as datas - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-17",
+        "score": 1,
+        "decisao": "vencedor",
+        "motivo": "score=1, categoria=apoios"
+      },
+      {
+        "titulo": "Segurança Social antecipa pagamentos em dezembro e milhares de portugueses vão receber mais cedo - 4gnews",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "data_iso": "2026-11-16",
+        "score": 1,
+        "decisao": "nao_escolhido",
+        "motivo": "categoria 'apoios' já tem vencedor hoje"
+      }
+    ],
+    "vencedores": [
+      {
+        "titulo": "Há dinheiro da Segurança Social a chegar mais cedo em dezembro. Conheça as datas - Jornal SOL",
+        "feed_nome": "calendario_pagamentos_seg_social",
+        "score": 1
+      }
+    ]
   }
 ]
