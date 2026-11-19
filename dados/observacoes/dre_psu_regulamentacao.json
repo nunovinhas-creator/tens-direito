@@ -1,8 +1,8 @@
 {
   "fonte": "dre_psu_regulamentacao",
   "fonte_url": "https://diariodarepublica.pt/dr/pesquisa",
-  "data_extracao": "2026-11-02T14:01:06.353676+00:00",
-  "sha256_conteudo": "6437d0bc69dcfbe16d92798f81e7a96daa58a4143c02d75409e52d02259ce137",
+  "data_extracao": "2026-11-19T15:26:22.055624+00:00",
+  "sha256_conteudo": "5d1a631eeb6fefc964ebcaf04c48e6395810cd95fcec51eb51c9f69e0b98bc72",
   "estado": "OK",
   "valores_extraidos": {
     "titulo": "Resultados de pesquisa: \"prestação social única\"",
@@ -28,7 +28,6 @@
       "Decreto-Lei n.º 166/2026",
       "Decreto-Lei n.º 166/2026 - Diário da República n.º 156/2026, Série I de 2026-08-13",
       "Lei n.º 36/2026",
-      "Lei n.º 73-B/2025 - Diário da República n.º 251/2025, Suplemento, Série I de 2025-12-31",
       "Despacho n.º 9782/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
       "Despacho n.º 9777/2026 - Diário da República n.º 149/2026, Série II de 2026-08-04",
       "Despacho n.º 7619/2025 - Diário da República n.º 128/2025, Série II de 2025-07-07",
