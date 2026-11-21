@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "pagina": "subsidio-parental.html",
+    "tipo": "revisao_marcada",
+    "titulo": "📅 REVER: subsidio-parental.html — Revisão marcada vencida (data-rever-ate)",
+    "corpo": "A página `subsidio-parental.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Revisão marcada vencida (data-rever-ate)\n**Mês actual:** 11/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário.\n\n**Revisão marcada:** `data-rever-ate` = 2026-11-20. A página prometeu voltar a verificar um estado legislativo até esta data. Confirmar o estado na fonte oficial, actualizar o texto e marcar a próxima data de revisão (ou retirar o atributo se o assunto ficou fechado).",
+    "classificacao": {
+      "data": "data-rever-ate=\"2026-11-20\"",
+      "estado": "OK",
+      "contexto": "ng> gov.pt → Família → Parentalidade → Subsídio parental inicial. Prazo: até 6 meses após o 1.º dia de falta.</li>\n      </ul>\n    </div>\n\n    <!-- ESPERA-LEGAL: verificado_em=\"2026-11-13\" -->\n    <div class=\"aviso-lei\" data-rever-ate=\"2026-11-20\" data-estado-legislativo=\"aprovado-por-publicar\">\n      <p>⚠️ <strong>Licença parental: lei aprovada no Parlamento, ainda não está em vigor.</strong></p>\n      <p style=\"margin-top:.5rem\">A 16 de outubro de 2026, a Assem"
+    },
+    "decisao": {
+      "estado": "OK",
+      "acao": "IGNORAR",
+      "contexto": {
+        "data": "data-rever-ate=\"2026-11-20\"",
+        "estado": "OK",
+        "contexto": "ng> gov.pt → Família → Parentalidade → Subsídio parental inicial. Prazo: até 6 meses após o 1.º dia de falta.</li>\n      </ul>\n    </div>\n\n    <!-- ESPERA-LEGAL: verificado_em=\"2026-11-13\" -->\n    <div class=\"aviso-lei\" data-rever-ate=\"2026-11-20\" data-estado-legislativo=\"aprovado-por-publicar\">\n      <p>⚠️ <strong>Licença parental: lei aprovada no Parlamento, ainda não está em vigor.</strong></p>\n      <p style=\"margin-top:.5rem\">A 16 de outubro de 2026, a Assem"
+      }
+    }
+  }
+]
