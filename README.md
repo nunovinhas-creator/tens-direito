@@ -14,13 +14,14 @@ Este repositório é disponibilizado exclusivamente para consulta e demonstraç�
 
 ## ESTADO ATUAL
 
-Actualizado automaticamente a partir do repositório em **21 de novembro de 2026**.
+Actualizado automaticamente a partir do repositório em **22 de novembro de 2026**.
 
 ### Páginas publicadas
 
 | Ficheiro | Título |
 |---|---|
 | [`abono-de-familia.html`](abono-de-familia.html) | Abono de Família 2026: até 190,98 €, escalões e como pedir |
+| [`abono-pre-natal.html`](abono-pre-natal.html) | Abono pré-natal 2026: quem tem direito, quanto recebe e como pedir |
 | [`acao-social-escolar.html`](acao-social-escolar.html) | Ação Social Escolar 2026/2027: quem tem direito, como candidatar e prazos |
 | [`acessibilidade.html`](acessibilidade.html) | Acessibilidade — Tens Direito |
 | [`alterar-morada.html`](alterar-morada.html) | Alterar morada no Cartão de Cidadão: online, grátis e prazos |
@@ -31,6 +32,7 @@ Actualizado automaticamente a partir do repositório em **21 de novembro de 2026
 | [`baixa-medica-subsidio-doenca.html`](baixa-medica-subsidio-doenca.html) | Baixa médica 2026: percentagens, prazos e autodeclaração |
 | [`bolsa-de-estudo-ensino-superior.html`](bolsa-de-estudo-ensino-superior.html) | Bolsa de Estudo do Ensino Superior 2026/2027: quem tem direito e como candidatar |
 | [`bolsa-de-merito.html`](bolsa-de-merito.html) | Bolsa de mérito 2026/2027: 1.342,83 €, requisitos e prazo |
+| [`bonificacao-deficiencia-abono.html`](bonificacao-deficiencia-abono.html) | Bonificação por deficiência do abono de família 2026: valores e como pedir |
 | [`caixa-geral-aposentacoes.html`](caixa-geral-aposentacoes.html) | Caixa Geral de Aposentações: quem está abrangido e como funciona |
 | [`calendario-escolar-apoios.html`](calendario-escolar-apoios.html) | Calendário de Apoios Escolares 2026/2027: todos os prazos |
 | [`calendario-pagamentos-psu.html`](calendario-pagamentos-psu.html) | Duração e pagamento da PSU 2026: 12 meses renováveis (DL 166/2026) |
@@ -44,10 +46,12 @@ Actualizado automaticamente a partir do repositório em **21 de novembro de 2026
 | [`como-e-calculada.html`](como-e-calculada.html) | Como é Calculada a Pensão: as três peças da fórmula |
 | [`como-pedir-niss.html`](como-pedir-niss.html) | Pedir NISS online em 2026: formulário, documentos e levantamento |
 | [`como-pedir-psu.html`](como-pedir-psu.html) | Como pedir a PSU 2026: requerimento, prazos e documentos (DL 166/2026) |
+| [`complemento-dependencia.html`](complemento-dependencia.html) | Complemento por dependência 2026: quem tem direito e quanto recebe |
 | [`complemento-solidario-idosos.html`](complemento-solidario-idosos.html) | Complemento Solidário para Idosos 2026: quem tem direito, valor e como pedir o CSI |
 | [`creche-gratuita.html`](creche-gratuita.html) | Creche gratuita 2026: quem tem direito e o que está incluído |
 | [`cuidador-informal.html`](cuidador-informal.html) | Estatuto do Cuidador Informal 2026: subsídio, quem tem direito e como pedir |
 | [`dados.html`](dados.html) | Dados Abertos — Tens Direito |
+| [`decimo-quarto-mes-pensoes.html`](decimo-quarto-mes-pensoes.html) | 14.º mês das pensões 2026: quando é pago e diferença para o subsídio de Natal |
 | [`declaracao-situacao-contributiva.html`](declaracao-situacao-contributiva.html) | Declaração de situação contributiva: certidão de não dívida 2026 |
 | [`deducao-rendas-irs.html`](deducao-rendas-irs.html) | Dedução de rendas no IRS 2026: até 900 € por ano |
 | [`documentos.html`](documentos.html) | Gerador de Documentos — minutas grátis para a Segurança Social |
@@ -110,6 +114,7 @@ Actualizado automaticamente a partir do repositório em **21 de novembro de 2026
 | [`simuladores.html`](simuladores.html) | Simuladores e Calculadoras — Tens Direito |
 | [`sobre.html`](sobre.html) | Sobre — Tens Direito |
 | [`subsidio-desemprego.html`](subsidio-desemprego.html) | Subsídio de desemprego 2026: valor, duração e como pedir |
+| [`subsidio-natal.html`](subsidio-natal.html) | Subsídio de Natal 2026: quando é pago no privado e na função pública |
 | [`subsidio-parental.html`](subsidio-parental.html) | Licença parental 2026: dias, valores e como pedir o subsídio parental |
 | [`subsidio-por-morte.html`](subsidio-por-morte.html) | Subsídio por Morte: quem recebe, quanto e como pedir |
 | [`tarifa-social-energia.html`](tarifa-social-energia.html) | Tarifa Social de Energia 2026: luz e gás, quem tem direito |
@@ -455,6 +460,6 @@ Google "O Ano em Pesquisa 2025" (PT); estudo Santander de literacia financeira (
 
 ---
 
-*Atualizado em 21 de novembro de 2026 às 14:40 · gerado automaticamente por `pipeline-diario.yml`*
+*Atualizado em 22 de novembro de 2026 às 14:30 · gerado automaticamente por `pipeline-diario.yml`*
 
 <!-- END:RODAPE -->
