@@ -232,6 +232,78 @@
     "ordinal": 1
   },
   {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\banterior(?:es)?\\s+a\\b",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "Sei se o pedido é novo (em regra, até aos 10 anos) ou se mantém um direito anterior a outubro de 2019",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "Nos direitos reconhecidos desde outubro de 2019, a bonificação termina antes dos 11 anos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "Nos pedidos feitos desde 1 de outubro de 2019, em regra até aos 10 anos, com pagamento até ao mês anterior àquele em que a criança completa 11 anos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "Nos pedidos feitos desde 1 de outubro de 2019, em regra até aos 10 anos, com pagamento até ao mês anterior àquele em que a criança completa 11 anos.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "Pedidos feitos desde 1 de outubro de 2019: regra geral, crianças até aos 10 anos, com pagamento até ao mês anterior àquele em que completem 11 anos, desde que se mantenham as condições.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "data_mes_ano",
+    "correspondencia": "outubro de 2019",
+    "frase": "👶 Idade: novos pedidos desde outubro de 2019, em regra até aos 10 anos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de outubro de 2019",
+    "frase": "Nos pedidos feitos desde 1 de outubro de 2019, em regra até aos 10 anos, com pagamento até ao mês anterior àquele em que a criança completa 11 anos.",
+    "ordinal": 1
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de outubro de 2019",
+    "frase": "Nos pedidos feitos desde 1 de outubro de 2019, em regra até aos 10 anos, com pagamento até ao mês anterior àquele em que a criança completa 11 anos.",
+    "ordinal": 2
+  },
+  {
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "marcador": "\\bdesde\\s+(?:\\d|(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\\s+de\\s+\\d)",
+    "tipo": "prazo_outono",
+    "correspondencia": "1 de outubro de 2019",
+    "frase": "Pedidos feitos desde 1 de outubro de 2019: regra geral, crianças até aos 10 anos, com pagamento até ao mês anterior àquele em que completem 11 anos, desde que se mantenham as condições.",
+    "ordinal": 1
+  },
+  {
     "pagina": "caixa-geral-aposentacoes.html",
     "marcador": "DATAS_PERMANENTES",
     "tipo": "data_mes_ano",

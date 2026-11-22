@@ -674,6 +674,11 @@ para esses três casos.
 | `tarifa-social-energia.html` | Tarifa Social de Energia 2026: luz e gás, quem tem direito | 5 out. 2026 |
 | `o-que-muda-em-2027.html` | O que muda em 2027: apoios sociais, pensões e salário mínimo | 13 nov. 2026 |
 | `irs-jovem.html` | IRS Jovem 2026: quem tem direito, quanto fica isento e como pedir | 17 nov. 2026 |
+| `abono-pre-natal.html` | Abono pré-natal 2026: quem tem direito, quanto recebe e como pedir | 22 nov. 2026 |
+| `bonificacao-deficiencia-abono.html` | Bonificação por deficiência do abono de família 2026: valores e como pedir | 22 nov. 2026 |
+| `complemento-dependencia.html` | Complemento por dependência 2026: quem tem direito e quanto recebe | 22 nov. 2026 |
+| `subsidio-natal.html` | Subsídio de Natal 2026: quando é pago no privado e na função pública | 22 nov. 2026 |
+| `decimo-quarto-mes-pensoes.html` | 14.º mês das pensões 2026: quando é pago e diferença para o subsídio de Natal | 22 nov. 2026 |
 | `noticias.html` | Notícias | jun. 2026 |
 | `sobre.html` | Sobre o Tens Direito | jun. 2026 |
 | `fontes.html` | Fontes Oficiais | jun. 2026 |

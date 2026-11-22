@@ -54,6 +54,11 @@ PAGINAS_ALVO = [
     "tarifa-social-energia.html",
     "o-que-muda-em-2027.html",
     "irs-jovem.html",
+    "abono-pre-natal.html",
+    "bonificacao-deficiencia-abono.html",
+    "complemento-dependencia.html",
+    "subsidio-natal.html",
+    "decimo-quarto-mes-pensoes.html",
 ]
 
 # Só as páginas com secção "Dúvidas frequentes" dedicada é que permitem
@@ -81,6 +86,11 @@ MARCADOR_FAQ_POR_PAGINA = {
     "tarifa-social-energia.html": "Dúvidas frequentes",
     "o-que-muda-em-2027.html": "Dúvidas frequentes",
     "irs-jovem.html": "Dúvidas frequentes",
+    "abono-pre-natal.html": "Dúvidas frequentes",
+    "bonificacao-deficiencia-abono.html": "Dúvidas frequentes",
+    "complemento-dependencia.html": "Dúvidas frequentes",
+    "subsidio-natal.html": "Dúvidas frequentes",
+    "decimo-quarto-mes-pensoes.html": "Dúvidas frequentes",
 }
 
 MAX_PALAVRAS_RESPOSTA_RAPIDA = 60

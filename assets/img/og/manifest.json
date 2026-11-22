@@ -9,6 +9,11 @@
     "pagina": "abono-de-familia.html",
     "titulo": "Abono de família 2026: escalões, valores e como pedir"
   },
+  "abono-pre-natal": {
+    "chip": "Família e Crianças",
+    "pagina": "abono-pre-natal.html",
+    "titulo": "Abono pré-natal 2026: quem tem direito, quanto recebe e como pedir"
+  },
   "acao-social-escolar": {
     "chip": "Apoios Escolares",
     "pagina": "acao-social-escolar.html",
@@ -58,6 +63,11 @@
     "chip": "Apoios Escolares",
     "pagina": "bolsa-de-merito.html",
     "titulo": "Bolsa de mérito 2026/2027: 1.342,83 €, requisitos e prazo"
+  },
+  "bonificacao-deficiencia-abono": {
+    "chip": "Família e Crianças",
+    "pagina": "bonificacao-deficiencia-abono.html",
+    "titulo": "Bonificação por deficiência do abono de família 2026: valores e como pedir"
   },
   "caixa-geral-aposentacoes": {
     "chip": "Reformas e Pensões",
@@ -124,6 +134,11 @@
     "pagina": "como-pedir-psu.html",
     "titulo": "Como pedir a PSU 2026: requerimento, prazos e documentos"
   },
+  "complemento-dependencia": {
+    "chip": "Idosos, Incapacidade e Cuidadores",
+    "pagina": "complemento-dependencia.html",
+    "titulo": "Complemento por dependência 2026: quem tem direito e quanto recebe"
+  },
   "complemento-solidario-idosos": {
     "chip": "Idosos, Incapacidade e Cuidadores",
     "pagina": "complemento-solidario-idosos.html",
@@ -143,6 +158,11 @@
     "chip": null,
     "pagina": "dados.html",
     "titulo": "Dados Abertos"
+  },
+  "decimo-quarto-mes-pensoes": {
+    "chip": "Reformas e Pensões",
+    "pagina": "decimo-quarto-mes-pensoes.html",
+    "titulo": "14.º mês das pensões 2026: quando é pago e diferença para o subsídio de Natal"
   },
   "declaracao-situacao-contributiva": {
     "chip": "Como Pedir",
@@ -543,6 +563,11 @@
     "chip": "Trabalho e Rendimento",
     "pagina": "subsidio-desemprego.html",
     "titulo": "Subsídio de desemprego 2026: valor, duração e como pedir"
+  },
+  "subsidio-natal": {
+    "chip": "Trabalho e Rendimento",
+    "pagina": "subsidio-natal.html",
+    "titulo": "Subsídio de Natal 2026: quando é pago no privado e na função pública"
   },
   "subsidio-parental": {
     "chip": "Família e Crianças",
