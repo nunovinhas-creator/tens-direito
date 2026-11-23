@@ -1,6 +1,24 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-22",
+      "titulo": "Datas de Pagamento das Prestações Sociais – Dezembro 2026",
+      "fonte_nome": "Economia e Finanças",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPdVlXSjFObERiOGJwc2FjREl0eDc4azZzb29WVXpGQlB6cGVPWDJZQ1hLYml3Ty0waXNOTEZLZk1jLS1JS0pHR0I4Q3czY3dHY1NSRnVOSEQ2VUVvNTdmeUxsSWZ3cW02TUhjRkU5R1pzZnZNdy1ZY0pSMFZkVE5kbk1QdXhCRlVBYXN1YnpCcUpyRGJN?oc=5",
+      "resumo": "Datas de Pagamento das Prestações Sociais – Dezembro 2026 Economia e Finanças",
+      "categoria": "fiscal",
+      "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-20",
+      "titulo": "Apoios ao arrendamento serão integrados num único programa",
+      "fonte_nome": "Público",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNaU1TU1F0MjVlcy1lQ1d4T1pPMVhRTGNCRmczUFk1enRDb0VWb3I2TDFQVXlUWlhwMUxlSEtLczR3T0t2Ym5xVVBpN2xZVE5Gbm83d1R3d0QwalFocFNseG1JS0dCcmVhNnVBQjFYaVBtQzJfMFZ3ek5MSUhQcGYzUmk2NW5nck1kSkN0MEV1d1o3c2IwQ2pfVGdlQ2NhaHNLTTFVdTNaMHpkM2pqOTVv?oc=5",
+      "resumo": "Apoios ao arrendamento serão integrados num único programa Público",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
+    },
+    {
       "data_iso": "2026-11-19",
       "titulo": "Da comissão de reembolso à garantia de rendas: as nove medidas para a habitação que foram aprovadas",
       "fonte_nome": "Público",

@@ -2,21 +2,9 @@
   {
     "slug": "seg_social_abono",
     "url": "https://www.seg-social.pt/ptss/pssd/menu/familia/desenvolvimento-criancas-jovens/abono-familia-criancas-jovens",
-    "data": "2026-11-22",
-    "hora": "14:30",
+    "data": "2026-11-23",
+    "hora": "17:56",
     "itens_adicionados": [
-      "Organismos da Segurança Social",
-      "Estatísticas",
-      "Procedimentos concursais",
-      "Programas de financiamento",
-      "Simulador de Desemprego",
-      "Simulador de Parentalidade",
-      "Simulador de Certificados de Reforma",
-      "Simulador de Prestações Sociais",
-      "Simulador de Pensões",
-      "Simulador Proteção Jurídica"
-    ],
-    "itens_removidos": [
       "a criança e os pais têm de ter cartão de cidadão",
       "a criança e os pais têm de residir em Portugal",
       "a criança tem de ter nascido nos últimos 12 meses",
@@ -27,6 +15,18 @@
       "os pais descontam para a Segurança Social",
       "enquadramento do agregado familiar até ao 4º escalão",
       "pertencer a um agregado familiar que, à data do pedido, não tiver património mobiliário (depósitos bancários, ações, obrigações, certificados de aforro, títulos de participação e unidades de participação em instituições de investimento coletivo) que ultrapasse 240 vezes o valor do Indexante dos Apoios Sociais (IAS);"
+    ],
+    "itens_removidos": [
+      "Organismos da Segurança Social",
+      "Estatísticas",
+      "Procedimentos concursais",
+      "Programas de financiamento",
+      "Simulador de Desemprego",
+      "Simulador de Parentalidade",
+      "Simulador de Certificados de Reforma",
+      "Simulador de Prestações Sociais",
+      "Simulador de Pensões",
+      "Simulador Proteção Jurídica"
     ]
   }
 ]
