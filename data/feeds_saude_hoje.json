@@ -4,32 +4,32 @@
     "url": "https://news.google.com/rss/search?q=abono+de+fam%C3%ADlia+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 100,
-    "data": "2026-11-24"
+    "n_entradas": 45,
+    "data": "2026-11-25"
   },
   {
     "nome": "subsidio_desemprego",
     "url": "https://news.google.com/rss/search?q=subs%C3%ADdio+de+desemprego+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 100,
-    "data": "2026-11-24"
+    "n_entradas": 41,
+    "data": "2026-11-25"
   },
   {
     "nome": "rsi",
     "url": "https://news.google.com/rss/search?q=RSI+rendimento+social+de+inser%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 42,
-    "data": "2026-11-24"
+    "n_entradas": 100,
+    "data": "2026-11-25"
   },
   {
     "nome": "psu_pensoes",
     "url": "https://news.google.com/rss/search?q=presta%C3%A7%C3%A3o+social+%C3%BAnica+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 100,
-    "data": "2026-11-24"
+    "n_entradas": 44,
+    "data": "2026-11-25"
   },
   {
     "nome": "acao_social_escolar",
@@ -37,23 +37,23 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 74,
-    "data": "2026-11-24"
+    "data": "2026-11-25"
   },
   {
     "nome": "cuidador_informal",
     "url": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 32,
-    "data": "2026-11-24"
+    "n_entradas": 31,
+    "data": "2026-11-25"
   },
   {
     "nome": "porta65_arrendamento",
     "url": "https://news.google.com/rss/search?q=Porta+65+arrendamento+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 79,
-    "data": "2026-11-24"
+    "n_entradas": 35,
+    "data": "2026-11-25"
   },
   {
     "nome": "irs_fiscalidade",
@@ -61,31 +61,31 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 32,
-    "data": "2026-11-24"
+    "data": "2026-11-25"
   },
   {
     "nome": "ias_valor_referencia",
     "url": "https://news.google.com/rss/search?q=IAS+indexante+apoios+sociais+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 11,
-    "data": "2026-11-24"
+    "n_entradas": 12,
+    "data": "2026-11-25"
   },
   {
     "nome": "calendario_pagamentos_seg_social",
     "url": "https://news.google.com/rss/search?q=calend%C3%A1rio+pagamentos+seguran%C3%A7a+social+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 54,
-    "data": "2026-11-24"
+    "n_entradas": 100,
+    "data": "2026-11-25"
   },
   {
     "nome": "habitacao_arrendamento",
     "url": "https://news.google.com/rss/search?q=apoio+arrendamento+habita%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 34,
-    "data": "2026-11-24"
+    "n_entradas": 82,
+    "data": "2026-11-25"
   },
   {
     "nome": "salario_minimo",
@@ -93,7 +93,7 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 46,
-    "data": "2026-11-24"
+    "data": "2026-11-25"
   },
   {
     "nome": "csi_idosos",
@@ -101,6 +101,6 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 42,
-    "data": "2026-11-24"
+    "data": "2026-11-25"
   }
 ]
