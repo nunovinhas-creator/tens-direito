@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-25",
+  "atualizado_em": "2026-11-25",
   "fonte_nome": "Segurança Social — datas de pagamento dos subsídios sociais e pensões",
   "fonte_url": "https://www.seg-social.pt/ptss/pssd/pagamentos",
   "verificacao": "Julho 2026 triangulado por fontes independentes que reproduzem o calendário oficial — ver docs/FONTE-CALENDARIO.md. Agosto deliberadamente ausente: sem confirmação robusta da fonte oficial à data de 2026-07-12.",
@@ -386,6 +386,70 @@
           "metodo": [
             "transferencia_bancaria",
             "vale_de_correio"
+          ]
+        }
+      ]
+    },
+    {
+      "ano": 2026,
+      "mes": 12,
+      "pagamentos": [
+        {
+          "dia": 3,
+          "prestacoes": [
+            "doenca_profissional"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 7,
+          "prestacoes": [
+            "psi",
+            "apoio_renda",
+            "pensoes",
+            "csi",
+            "reembolso_despesas_funeral"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 16,
+          "prestacoes": [
+            "desemprego_doenca_parentalidade_acao_social_1",
+            "prestacoes_familiares"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 21,
+          "prestacoes": [
+            "desemprego_doenca_parentalidade_acao_social_2",
+            "subsidio_suspensao_atividade_cultural",
+            "cuidador_informal",
+            "rsi",
+            "fgadm"
+          ],
+          "metodo": [
+            "transferencia_bancaria",
+            "vale_de_correio"
+          ]
+        },
+        {
+          "dia": 23,
+          "prestacoes": [
+            "fgs"
+          ],
+          "metodo": [
+            "transferencia_bancaria"
           ]
         }
       ]

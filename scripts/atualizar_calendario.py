@@ -122,8 +122,12 @@ DIAS_PLAUSIVEIS = {
     "fgadm": (16, 26),
     "rsi": (18, 28),
     "fgs": (18, 28),
-    "desemprego_doenca_parentalidade_acao_social_2": (24, 31),
-    "cuidador_informal": (24, 31),
+    # Mínimo 20, não 24: em dezembro a Segurança Social antecipa estes
+    # pagamentos por causa do Natal — dezembro de 2026 é a 21, confirmado na
+    # página oficial (o intervalo antigo [24-31] fez falhar o workflow
+    # mensal a 2026-11-25 com dados correctos).
+    "desemprego_doenca_parentalidade_acao_social_2": (20, 31),
+    "cuidador_informal": (20, 31),
 }
 
 # Secção "Por prestação" — âncoras exigidas pela spec + guia interno.

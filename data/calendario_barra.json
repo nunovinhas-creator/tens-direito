@@ -28,5 +28,31 @@
       "dia": 27,
       "resumo": "2.º desemprego/doença/parentalidade · Cuidador informal"
     }
+  ],
+  "2026-12": [
+    {
+      "dia": 3,
+      "resumo": "Doença profissional"
+    },
+    {
+      "dia": 7,
+      "resumo": "PSI · Apoio à renda · Pensões da Segurança Social · CSI · Reembolso de funeral"
+    },
+    {
+      "dia": 16,
+      "resumo": "1.º desemprego/doença/parentalidade · Abono e prestações familiares"
+    },
+    {
+      "dia": 18,
+      "resumo": "Pensões da CGA"
+    },
+    {
+      "dia": 21,
+      "resumo": "2.º desemprego/doença/parentalidade · Suspensão de atividade cultural · Cuidador informal · RSI · Fundo de Garantia de Alimentos"
+    },
+    {
+      "dia": 23,
+      "resumo": "Fundo de Garantia Salarial"
+    }
   ]
 }
