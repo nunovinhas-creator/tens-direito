@@ -122,8 +122,8 @@ DIAS_PLAUSIVEIS = {
     "fgadm": (16, 26),
     "rsi": (18, 28),
     "fgs": (18, 28),
-    "desemprego_doenca_parentalidade_acao_social_2": (24, 31),
-    "cuidador_informal": (24, 31),
+    "desemprego_doenca_parentalidade_acao_social_2": (20, 31),
+    "cuidador_informal": (20, 31),
 }
 
 # Secção "Por prestação" — âncoras exigidas pela spec + guia interno.
