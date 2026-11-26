@@ -1,5 +1,25 @@
 [
   {
+    "pagina": "irs-jovem.html",
+    "tipo": "revisao_marcada",
+    "titulo": "📅 REVER: irs-jovem.html — Revisão marcada vencida (data-rever-ate)",
+    "corpo": "A página `irs-jovem.html` contém datas ou valores que podem estar desactualizados para 2026.\n\n**Tipo detectado:** Revisão marcada vencida (data-rever-ate)\n**Mês actual:** 11/2026\n\n**Acção:** abrir a página, verificar cada data/valor com a fonte oficial e actualizar se necessário.\n\nEsta Issue foi gerada automaticamente pelo pipeline diário.\n\n**Revisão marcada:** `data-rever-ate` = 2026-11-25. A página prometeu voltar a verificar um estado legislativo até esta data. Confirmar o estado na fonte oficial, actualizar o texto e marcar a próxima data de revisão (ou retirar o atributo se o assunto ficou fechado).",
+    "classificacao": {
+      "data": "data-rever-ate=\"2026-11-25\"",
+      "estado": "OK",
+      "contexto": "o é apurado na declaração anual.</p>\n      <p>Se pagas renda de casa, vê também <a href=\"/deducao-rendas-irs.html\">quanto podes deduzir das rendas no IRS</a>.</p>\n    </div>\n\n    <!-- E EM 2027 -->\n    <div class=\"card\" data-rever-ate=\"2026-11-25\">\n      <span class=\"badge\">E em 2027?</span>\n      <h2>E em 2027?</h2>\n      <p>A 9 de outubro de 2026, o Governo anunciou, na apresentação da proposta de Orçamento do Estado para 2027, que o regime alargado continua pa"
+    },
+    "decisao": {
+      "estado": "OK",
+      "acao": "IGNORAR",
+      "contexto": {
+        "data": "data-rever-ate=\"2026-11-25\"",
+        "estado": "OK",
+        "contexto": "o é apurado na declaração anual.</p>\n      <p>Se pagas renda de casa, vê também <a href=\"/deducao-rendas-irs.html\">quanto podes deduzir das rendas no IRS</a>.</p>\n    </div>\n\n    <!-- E EM 2027 -->\n    <div class=\"card\" data-rever-ate=\"2026-11-25\">\n      <span class=\"badge\">E em 2027?</span>\n      <h2>E em 2027?</h2>\n      <p>A 9 de outubro de 2026, o Governo anunciou, na apresentação da proposta de Orçamento do Estado para 2027, que o regime alargado continua pa"
+      }
+    }
+  },
+  {
     "pagina": "subsidio-parental.html",
     "tipo": "revisao_marcada",
     "titulo": "📅 REVER: subsidio-parental.html — Revisão marcada vencida (data-rever-ate)",
