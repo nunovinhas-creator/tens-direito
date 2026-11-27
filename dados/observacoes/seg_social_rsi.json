@@ -1,8 +1,8 @@
 {
   "fonte": "seg_social_rsi",
   "fonte_url": "https://www.seg-social.pt/ptss/pssd/menu/acao-social/apoios-respostas-sociais/rendimento-social-insercao",
-  "data_extracao": "2026-10-22T11:33:37.850831+00:00",
-  "sha256_conteudo": "7c99c3def6456ed8df4bf1dce01cc1befadbe03a8e2ced3cdd84f6f5192cb009",
+  "data_extracao": "2026-11-27T16:36:47.018733+00:00",
+  "sha256_conteudo": "390cc20135036f4cdb029d5082bf3317fce7c4f411377e0e2c832825e57cff69",
   "estado": "OK",
   "valores_extraidos": {
     "titulo": "Rendimento Social de Inserção",
@@ -16,6 +16,7 @@
       "Consulte os documentos necessários no requerimento (RSI 1 - Requerimento de Rendimento Social de Inserção) disponível na secção \"Documentação de apoio\", em \"Formulários\".",
       "De seguida, registe o seu pedido no e-Clic .",
       "Se pretende outro tipo de atendimento, consulte a página de contactos e canais de atendimento da Segurança Social .",
+      "Nota: O pedido deve ser feito até 30 de dezembro de 2026. Após esta data, deve verificar se reúne as condições necessárias para aceder à Prestação Social Única.",
       "Além dos documentos, existem algumas condições a ter em conta quando for pedir o RSI:",
       "O plano de ações (contrato de inserção) deve ser celebrado pelo técnico gestor do processo, pelo titular e, se for caso disso, pelas restantes pessoas do agregado familiar que o devam cumprir.",
       "O prazo máximo é de 45 dias seguidos após começar a receber o RSI.",
