@@ -8175,4 +8175,4 @@ A corrida de `calendario-mensal.yml` de 25/11 (run 45652303029) ficou em `precis
 
 ---
 
-*Última revisão automática: 2026-11-27*
+*Última revisão automática: 2026-11-28*

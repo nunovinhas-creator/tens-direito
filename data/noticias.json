@@ -1,6 +1,15 @@
 {
   "itens": [
     {
+      "data_iso": "2026-11-27",
+      "titulo": "IFRRU 2030 reforça apoio ao arrendamento",
+      "fonte_nome": "CASA SAPO",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOc3N6d2xhMFdSVUpyazQ1b2VPcUZPZXAwNnE4OWhVRXhwTnMtN2RYS09zVWZwaHJUNzlySmZ6Y083aGt1Q3pSbGFDTGR5UEhXM2JvY0RfTHk3U29SU2tMaVppRTV5dnZaY2VYa1ZCcktxakloZHl1V0JkRFYtM0ZpYmZ2RjJvQ0U?oc=5",
+      "resumo": "IFRRU 2030 reforça apoio ao arrendamento CASA SAPO",
+      "categoria": "habitacao",
+      "cluster_id": "habitacao"
+    },
+    {
       "data_iso": "2026-11-25",
       "titulo": "“O salário mínimo nacional subiu, nestes dois anos, 150 euros”, como referiu Paulo Rangel? Falso",
       "fonte_nome": "Público",
@@ -44,6 +53,15 @@
       "resumo": "Datas de Pagamento das Prestações Sociais – Dezembro 2026 Economia e Finanças",
       "categoria": "fiscal",
       "cluster_id": null
+    },
+    {
+      "data_iso": "2026-11-21",
+      "titulo": "Complemento Solidário para Idosos aumenta 50 euros já em junho - Diario Luso-Galaico",
+      "fonte_nome": "",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOaTluVm5lYXVkeG11a3NZdUNIWW1tTS1FMXljVmVtQW9vYU5Za0F3UzZyeEJZeThxZURQV1k3OEw1S2RMMXVhMkZfVkhWazBFbGg3Q1I5dkN1c21JcDUxZ3pmUDNQdHl4cG9qQTgwWE4tZDd5OHNrcVZ5czhaVmZWeElaRmtUWlJ4QlRURnF2OFk1TnY4YVgxc2d4Q21kWWNkTHluOUdNM3VnN2gtR1F6eEZpQ0xTeFota3d4b0Fpb2lWNnBCekHSAcsBQVVfeXFMTWs3cFVwa0N2cm1wdUFhNXdxWHFCWDhTQ1pJLTRmV1VnZHJGbGxqYlJScnlHRFZzRFQ2Z0IwbkdZQU9MYXVpZnNncXZ0cjg5OVhHX2I3bVFPQW84dTBQRFVPRms2ZHJZY3YxWDJGSWloUWI2Z3JfQnhtOFlvMjRBRVVMeEQxTUd3emhfR1F4MmlWOWNCemZQYjdHUFRWcDdRNXdpN1NmeDJ6bU9OOEFrcmxoYjNyMVlyMkQtYUM1YmZRdVNJVmtuQmlPdUE?oc=5",
+      "resumo": "Complemento Solidário para Idosos aumenta 50 euros já em junho Diario Luso-Galaico",
+      "categoria": "apoios",
+      "cluster_id": "idosos-incapacidade-cuidadores"
     },
     {
       "data_iso": "2026-11-20",

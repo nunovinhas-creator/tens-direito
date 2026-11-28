@@ -5,63 +5,63 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-11-27"
+    "data": "2026-11-28"
   },
   {
     "nome": "subsidio_desemprego",
     "url": "https://news.google.com/rss/search?q=subs%C3%ADdio+de+desemprego+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 40,
-    "data": "2026-11-27"
+    "n_entradas": 100,
+    "data": "2026-11-28"
   },
   {
     "nome": "rsi",
     "url": "https://news.google.com/rss/search?q=RSI+rendimento+social+de+inser%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 100,
-    "data": "2026-11-27"
+    "n_entradas": 40,
+    "data": "2026-11-28"
   },
   {
     "nome": "psu_pensoes",
     "url": "https://news.google.com/rss/search?q=presta%C3%A7%C3%A3o+social+%C3%BAnica+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 42,
-    "data": "2026-11-27"
+    "n_entradas": 100,
+    "data": "2026-11-28"
   },
   {
     "nome": "acao_social_escolar",
     "url": "https://news.google.com/rss/search?q=a%C3%A7%C3%A3o+social+escolar+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
-    "estado": "OK",
-    "motivo": "",
-    "n_entradas": 34,
-    "data": "2026-11-27"
+    "estado": "MORTO",
+    "motivo": "erro_parsing_xml",
+    "n_entradas": 0,
+    "data": "2026-11-28"
   },
   {
     "nome": "cuidador_informal",
     "url": "https://news.google.com/rss/search?q=cuidador+informal+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 32,
-    "data": "2026-11-27"
+    "n_entradas": 58,
+    "data": "2026-11-28"
   },
   {
     "nome": "porta65_arrendamento",
     "url": "https://news.google.com/rss/search?q=Porta+65+arrendamento+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 79,
-    "data": "2026-11-27"
+    "n_entradas": 35,
+    "data": "2026-11-28"
   },
   {
     "nome": "irs_fiscalidade",
     "url": "https://news.google.com/rss/search?q=IRS+declara%C3%A7%C3%A3o+de+rendimentos+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 98,
-    "data": "2026-11-27"
+    "n_entradas": 33,
+    "data": "2026-11-28"
   },
   {
     "nome": "ias_valor_referencia",
@@ -69,31 +69,31 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 51,
-    "data": "2026-11-27"
+    "data": "2026-11-28"
   },
   {
     "nome": "calendario_pagamentos_seg_social",
     "url": "https://news.google.com/rss/search?q=calend%C3%A1rio+pagamentos+seguran%C3%A7a+social+pens%C3%B5es+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 53,
-    "data": "2026-11-27"
+    "n_entradas": 100,
+    "data": "2026-11-28"
   },
   {
     "nome": "habitacao_arrendamento",
     "url": "https://news.google.com/rss/search?q=apoio+arrendamento+habita%C3%A7%C3%A3o+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 79,
-    "data": "2026-11-27"
+    "n_entradas": 34,
+    "data": "2026-11-28"
   },
   {
     "nome": "salario_minimo",
     "url": "https://news.google.com/rss/search?q=sal%C3%A1rio+m%C3%ADnimo+nacional+portugal&hl=pt-PT&gl=PT&ceid=PT:pt",
     "estado": "OK",
     "motivo": "",
-    "n_entradas": 100,
-    "data": "2026-11-27"
+    "n_entradas": 46,
+    "data": "2026-11-28"
   },
   {
     "nome": "csi_idosos",
@@ -101,6 +101,6 @@
     "estado": "OK",
     "motivo": "",
     "n_entradas": 100,
-    "data": "2026-11-27"
+    "data": "2026-11-28"
   }
 ]
